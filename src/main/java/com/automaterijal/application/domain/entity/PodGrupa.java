@@ -7,19 +7,19 @@ import lombok.experimental.FieldDefaults;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "podgrupa")
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Grupa {
+public class PodGrupa {
 
     @Id
+    @Column(name = "podgrupaid")
+    Long podGrupaId;
     @Column(name = "grupaid")
-    String grupaid;
-
+    String grupaId;
     @Column(name = "naziv")
     String naziv;
-
-    @Column(name = "nikadpopust")
-    int nikadpopust;
 }

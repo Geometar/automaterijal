@@ -1,6 +1,6 @@
 package com.automaterijal.application.controller;
 
-import com.automaterijal.application.domain.entity.Roba;
+import com.automaterijal.application.domain.dto.RobaDto;
 import com.automaterijal.application.services.RobaService;
 import lombok.AccessLevel;
 import lombok.NonNull;
@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/roba")
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -25,18 +23,18 @@ import java.util.List;
 public class RobaController {
 
     @NonNull
-    private
+    private final
     RobaService robaService;
 
     @GetMapping
-    public ResponseEntity<List<Roba>> pronadjiSvuRobu(
+    public ResponseEntity<Page<RobaDto>> pronadjiSvuRobu(
             @RequestParam(required = false) final Integer page,
             @RequestParam(required = false) final Integer pageSize
     ) {
         final Integer internalPage = page == null ? 0 : page;
         final Integer internalPageSize = pageSize == null ? 5 : page;
 
-        final Page<Roba> roba = robaService.findAll(internalPage, internalPageSize);
+        final Page<RobaDto> roba = robaService.findAll(internalPage, internalPageSize);
         if(roba != null) {
             return new ResponseEntity(roba, HttpStatus.OK);
         }

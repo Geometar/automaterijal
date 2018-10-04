@@ -8,11 +8,12 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RobaDto {
 
-    String kataloskiBr;
-    String kataloskiBrProizvodjaca;
+    String katbr;
+    String katbrpro;
     String naziv;
     String proizvodjac;
     String grupa;
+    String podGrupa;
     double stanje;
 
 }

@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @Transactional
@@ -20,11 +21,20 @@ import javax.transaction.Transactional;
 public class ProizvodjacService {
 
     @NonNull
+    final
     ProizvodjacRepository proizvodjacRepository;
+    List<Proizvodjac> proizvodjaci;
 
-    public Proizvodjac findById(final String id) {
-        final Proizvodjac proizvodjac = proizvodjacRepository.getOne(id);
-        return proizvodjac;
+    public void pronadjiSveProizvodjace() {
+        proizvodjaci = proizvodjacRepository.findAll();
+    }
+
+    public String vrateNazivProizvodjacaPoId(final String id) {
+        return proizvodjaci.stream()
+                .filter(grupa -> grupa.getProid().equals(id))
+                .map(Proizvodjac::getNaziv)
+                .findFirst()
+                .get();
     }
 
 }

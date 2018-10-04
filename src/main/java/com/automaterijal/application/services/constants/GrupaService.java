@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @Transactional
@@ -19,10 +20,19 @@ import javax.transaction.Transactional;
 public class GrupaService {
 
     @NonNull
-    GrupaRepository grupaRepository;
+    final GrupaRepository grupaRepository;
+    List<Grupa> grupe;
 
-    public Grupa findById(String id) {
-        return grupaRepository.getOne(id);
+    public void pronadjiSveGrupe() {
+        grupe = grupaRepository.findAll();
+    }
+
+    public String vratiNazivGrupePoId(final String id) {
+        return grupe.stream()
+                .filter(grupa -> grupa.getGrupaid().equals(id))
+                .map(Grupa::getNaziv)
+                .findFirst()
+                .get();
     }
 
 }

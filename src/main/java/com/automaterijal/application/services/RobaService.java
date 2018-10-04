@@ -1,11 +1,11 @@
 package com.automaterijal.application.services;
 
 import com.automaterijal.application.domain.dto.RobaDto;
-import com.automaterijal.application.domain.entity.Grupa;
-import com.automaterijal.application.domain.entity.Proizvodjac;
 import com.automaterijal.application.domain.entity.Roba;
+import com.automaterijal.application.domain.mapper.RobaMapper;
 import com.automaterijal.application.domain.repository.RobaRepository;
 import com.automaterijal.application.services.constants.GrupaService;
+import com.automaterijal.application.services.constants.PodGrupaService;
 import com.automaterijal.application.services.constants.ProizvodjacService;
 import lombok.AccessLevel;
 import lombok.NonNull;
@@ -17,8 +17,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @Transactional
@@ -28,24 +26,30 @@ import java.util.List;
 public class RobaService {
 
     @NonNull
-    final
-    ProizvodjacService proizvodjacService;
-
+    final ProizvodjacService proizvodjacService;
     @NonNull
-    final
-    GrupaService grupaService;
-
+    final GrupaService grupaService;
     @NonNull
-    final
-    RobaRepository robaRepository;
+    final PodGrupaService podGrupaService;
+    @NonNull final RobaRepository robaRepository;
+    final RobaMapper mapper = RobaMapper.INSTANCE;
 
-    public Page<Roba> findAll(final Integer page, final Integer pageSize) {
-        final List<RobaDto> robaDtos = new ArrayList<>();
-        final Page<Roba> roba = robaRepository.findAll(PageRequest.of(page, pageSize));
-        roba.getContent().forEach(robaElement -> {
-            final Grupa grupa = grupaService.findById(robaElement.getGrupaid());
-            final Proizvodjac proizvodjac = proizvodjacService.findById(robaElement.getProid());
-        });
-        return null;
+    public Page<RobaDto> findAll(final Integer page, final Integer pageSize) {
+        return robaRepository.findAll(PageRequest.of(page, pageSize))
+                .map(this::pretvoriUDTO);
+    }
+
+    private RobaDto pretvoriUDTO(final Roba roba) {
+        final RobaDto dto = mapper.map(roba);
+        dto.setGrupa(
+                grupaService.vratiNazivGrupePoId(roba.getGrupaid())
+        );
+        dto.setPodGrupa(
+                podGrupaService.vratiNazivPodGrupe(roba.getPodgrupaid(), roba.getGrupaid())
+        );
+        dto.setProizvodjac(
+                proizvodjacService.vrateNazivProizvodjacaPoId(roba.getProid())
+        );
+        return dto;
     }
 }
