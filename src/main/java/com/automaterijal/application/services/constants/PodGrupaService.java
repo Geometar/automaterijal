@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -27,9 +28,14 @@ public class PodGrupaService {
     }
 
     public String vratiNazivPodGrupe(final int podGrupaId, final String grupaId) {
-        return podGrupe.stream()
+        String retVal = null;
+        final Optional<String> naziv = podGrupe.stream()
                 .filter(podGrupa -> podGrupa.getGrupaId().equals(grupaId) && podGrupa.getPodGrupaId() == podGrupaId)
                 .map(PodGrupa::getNaziv)
-                .findFirst().get();
+                .findFirst();
+        if(naziv.isPresent()) {
+            retVal = naziv.get();
+        }
+        return retVal;
     }
 }

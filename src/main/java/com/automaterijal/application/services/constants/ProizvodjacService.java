@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -30,11 +31,14 @@ public class ProizvodjacService {
     }
 
     public String vrateNazivProizvodjacaPoId(final String id) {
-        return proizvodjaci.stream()
+        String retVal = null;
+        final Optional<String> naziv =  proizvodjaci.stream()
                 .filter(grupa -> grupa.getProid().equals(id))
                 .map(Proizvodjac::getNaziv)
-                .findFirst()
-                .get();
+                .findFirst();
+        if(naziv.isPresent()) {
+            retVal = naziv.get();
+        }
+        return retVal;
     }
-
 }

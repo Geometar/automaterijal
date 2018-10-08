@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -28,11 +29,14 @@ public class GrupaService {
     }
 
     public String vratiNazivGrupePoId(final String id) {
-        return grupe.stream()
+        String retVal = null;
+        final Optional<String> naziv =  grupe.stream()
                 .filter(grupa -> grupa.getGrupaid().equals(id))
                 .map(Grupa::getNaziv)
-                .findFirst()
-                .get();
+                .findFirst();
+        if(naziv.isPresent()) {
+            retVal = naziv.get();
+        }
+        return retVal;
     }
-
 }
