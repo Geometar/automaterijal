@@ -26,4 +26,8 @@ public class RobaKatBrProService {
         return katBrProRepository.findByKatbrContainingOrKatbrproContaining(pretraga, pretraga);
     }
 
+    public List<RobaKatBrPro> pronadjuKatBrProPoKataloskimBrojevima(List<String> katBrPros) {
+        return katBrProRepository.findByKatbrproIn(katBrPros);
+    }
+
 }

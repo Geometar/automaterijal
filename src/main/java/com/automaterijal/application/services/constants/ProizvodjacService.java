@@ -4,6 +4,7 @@ package com.automaterijal.application.services.constants;
 import com.automaterijal.application.domain.entity.Proizvodjac;
 import com.automaterijal.application.domain.repository.ProizvodjacRepository;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -22,12 +23,16 @@ import java.util.Optional;
 public class ProizvodjacService {
 
     @NonNull
-    final
-    ProizvodjacRepository proizvodjacRepository;
+    final ProizvodjacRepository proizvodjacRepository;
+
+    @Getter
     List<Proizvodjac> proizvodjaci;
 
+    static final String SVI_PROIZVODJACI = "SVI";
+
     public void pronadjiSveProizvodjace() {
-        proizvodjaci = proizvodjacRepository.findAll();
+        proizvodjaci = proizvodjacRepository.findAllByOrderByNazivAsc();
+        proizvodjaci.add(0, new Proizvodjac("-99", SVI_PROIZVODJACI));
     }
 
     public String vrateNazivProizvodjacaPoId(final String id) {
@@ -38,6 +43,15 @@ public class ProizvodjacService {
                 .findFirst();
         if(naziv.isPresent()) {
             retVal = naziv.get();
+        }
+        return retVal;
+    }
+
+    public String vratiProizvodjacaPoNazivu(final String naziv) {
+        String retVal = null;
+        final Optional<String> proid = getProizvodjaci().stream().filter(proizvodjac -> proizvodjac.getNaziv().equals(naziv)).map(Proizvodjac::getProid).findAny();
+        if(proid.isPresent()) {
+            retVal = proid.get();
         }
         return retVal;
     }

@@ -9,6 +9,7 @@ import java.util.List;
 public interface RobaKatBrProRepository extends JpaRepository<RobaKatBrPro, Long> {
 
     List<RobaKatBrPro> findByKatbrContainingOrKatbrproContaining(String katBr, String katBrPr);
+    List<RobaKatBrPro> findByKatbrproIn(List<String> katBrPr);
 
 
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Optional;
 
 @Service
@@ -31,7 +32,9 @@ public class RobaCeneService {
         final Long id = robaId;
         final Optional<RobaCene> robaCene = robaCeneRepository.findByMagacinidAndRobaid(GLAVNI_MAGACIN, id);
         if(robaCene.isPresent()) {
-            retVal = robaCene.get().getProdajnacena();
+            retVal = robaCene.get().getDeviznacena()
+                                   .multiply(new BigDecimal(120))
+                                   .setScale(0, RoundingMode.CEILING);
         }
         return retVal;
     }
