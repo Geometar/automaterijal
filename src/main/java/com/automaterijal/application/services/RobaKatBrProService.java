@@ -22,11 +22,19 @@ public class RobaKatBrProService {
     @NonNull
     final RobaKatBrProRepository katBrProRepository;
 
+    public List<RobaKatBrPro> pronadjiSve() {
+        return katBrProRepository.findAll();
+    }
+
     public List<RobaKatBrPro> pronadjiPoPretrazi(final String pretraga) {
         return katBrProRepository.findByKatbrContainingOrKatbrproContaining(pretraga, pretraga);
     }
 
-    public List<RobaKatBrPro> pronadjuKatBrProPoKataloskimBrojevima(List<String> katBrPros) {
+    public List<RobaKatBrPro> pronadjiPoPretraziUPodGrupi(final String pretraga) {
+        return katBrProRepository.findByKatbrContainingOrKatbrproContaining(pretraga, pretraga);
+    }
+
+    public List<RobaKatBrPro> pronadjuKatBrProPoKataloskimBrojevima(final List<String> katBrPros) {
         return katBrProRepository.findByKatbrproIn(katBrPros);
     }
 

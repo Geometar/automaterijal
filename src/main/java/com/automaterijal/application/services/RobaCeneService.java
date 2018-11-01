@@ -31,10 +31,10 @@ public class RobaCeneService {
         BigDecimal retVal = null;
         final Long id = robaId;
         final Optional<RobaCene> robaCene = robaCeneRepository.findByMagacinidAndRobaid(GLAVNI_MAGACIN, id);
-        if(robaCene.isPresent()) {
+        if (robaCene.isPresent()) {
             retVal = robaCene.get().getDeviznacena()
-                                   .multiply(new BigDecimal(120))
-                                   .setScale(0, RoundingMode.CEILING);
+                    .multiply(new BigDecimal(120))
+                    .setScale(0, RoundingMode.CEILING);
         }
         return retVal;
     }

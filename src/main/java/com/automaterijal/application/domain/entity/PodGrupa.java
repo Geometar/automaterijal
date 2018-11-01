@@ -17,7 +17,7 @@ public class PodGrupa {
 
     @Id
     @Column(name = "podgrupaid")
-    Long podGrupaId;
+    Integer podGrupaId;
     @Column(name = "grupaid")
     String grupaId;
     @Column(name = "naziv")

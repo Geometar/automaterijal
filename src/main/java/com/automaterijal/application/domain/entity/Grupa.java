@@ -7,8 +7,10 @@ import lombok.experimental.FieldDefaults;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "grupa")
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Grupa {

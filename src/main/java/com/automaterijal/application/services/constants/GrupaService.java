@@ -3,6 +3,7 @@ package com.automaterijal.application.services.constants;
 import com.automaterijal.application.domain.entity.Grupa;
 import com.automaterijal.application.domain.repository.GrupaRepository;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -22,10 +24,18 @@ public class GrupaService {
 
     @NonNull
     final GrupaRepository grupaRepository;
+    @Getter
     List<Grupa> grupe;
 
     public void pronadjiSveGrupe() {
         grupe = grupaRepository.findAll();
+    }
+
+    public List<String> vratiSveIdGrupePoNazivu(final String naziv) {
+        return getGrupe().stream()
+                .filter(grupa -> grupa.getNaziv().equals(naziv))
+                .map(Grupa::getGrupaid)
+                .collect(Collectors.toList());
     }
 
     public String vratiNazivGrupePoId(final String id) {
