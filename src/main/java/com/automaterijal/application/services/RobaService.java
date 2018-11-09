@@ -2,6 +2,7 @@ package com.automaterijal.application.services;
 
 import com.automaterijal.application.domain.entity.Roba;
 import com.automaterijal.application.domain.repository.RobaRepository;
+import com.automaterijal.application.services.security.UserDetailsService;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,10 @@ public class RobaService {
     @NonNull
     final RobaRepository robaRepository;
 
+    @NonNull
+    final
+    UserDetailsService service;
+
     public List<Roba> pronadjiSvuRobu() {
        return robaRepository.findAll();
     }
@@ -34,6 +39,7 @@ public class RobaService {
     }
 
     public Page<Roba> pronadjiSvuRobu(final boolean naStanju, final Pageable pageable) {
+        service.vratiUlogovanogKorisnika();
         if(naStanju) {
             return robaRepository.findByStanjeGreaterThan(0, pageable);
         } else {

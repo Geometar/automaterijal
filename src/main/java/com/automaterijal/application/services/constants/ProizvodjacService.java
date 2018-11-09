@@ -45,6 +45,17 @@ public class ProizvodjacService {
         proizvodjaci.add(0, new Proizvodjac("-99", SVI_PROIZVODJACI));
     }
 
+    public List<Proizvodjac> sviProzivodjaciNaStanju() {
+        final Set<String> svaRoba = robaService.pronadjiSvuRobu()
+                .stream()
+                .filter(r -> r.getStanje() > 0)
+                .map(Roba::getProid)
+                .collect(Collectors.toSet());
+        final List<Proizvodjac> proizvodjaci = getProizvodjaci().stream().filter(proizvodjac -> svaRoba.contains(proizvodjac.getProid())).collect(Collectors.toList());
+        proizvodjaci.add(0, new Proizvodjac("-99", SVI_PROIZVODJACI));
+        return proizvodjaci;
+    }
+
     public List<Proizvodjac> proizvodjaciFiltera() {
         final List<Integer> podGrupeId = podGrupaService.vratiSvePodGrupeIdPoNazivu(GrupeKonstante.FILTER);
         final Set<String> filterRoba = robaService.pronadjiSvuRobu()

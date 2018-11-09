@@ -1,0 +1,143 @@
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "~bootstrap/dist/css/bootstrap.css";
+
+html, body { height: 100%; }
+body { margin: 0; font-family: 'Roboto', sans-serif; }
+
+.forms-input {
+  display: flex;
+  border-radius: 45px;
+  width: 30%;
+  padding: 1px;
+  margin-top: 20px;
+  background: white;
+  border:2px solid grey;
+  width: 40%;
+  font-weight: bold;
+  text-align: center;
+}
+.kolicina-labela {
+width: 50px;
+}
+.filter-div-test {
+display:flex;
+padding: 10px;
+margin-top: 10px;
+background: white;
+box-shadow: 0 3px 1px -2px rgba(0,0,0.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,1.12); 
+}
+
+.centar {
+text-align:center; 
+display:flex;
+}
+
+.razmak {
+  margin-left: 10px;
+}
+
+.search__input {
+  border: none;
+  margin-left: 5%;
+}
+
+.mat-icon-button {
+  padding: 0;
+  min-width: 0;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  line-height: 40px;
+  border-radius: 50%;
+}
+
+input {
+  font-size:18px;
+}
+
+input:focus {
+  outline:none;
+}
+
+.search-icon {
+  width: 3%;
+  height: 100%;
+  border: none;
+  margin-left: 2px;
+}
+
+.grid-container {
+  margin: 2%;
+}
+
+.container-search {
+  width: 100%;
+}
+
+table {
+  width: 100%;
+  margin-top: 2%;
+}
+
+mat-paginator {
+  width: 98%;
+  margin: 1%;
+}
+
+.tabela-div {
+  width: 80%;
+  margin-left: 10%;
+}
+
+.mat-spinner {
+  margin-left: 45%;
+}
+
+@media only screen and (max-device-width : 640px) { 
+.forms-input {
+  border-radius: 45px;
+  background: white;
+  border:2px solid grey;
+  width:100%;
+  margin-left: 1%;
+  font-weight: bold;
+  text-align: center;
+  display: flex;
+  }
+
+  .search__input {
+    margin-left: 5%;
+    font-weight: bold;
+    text-align: center;
+    border: none;
+  }
+
+  
+  .tabela-div {
+    width: 95%;
+    margin-left: 2%;
+    display: flex;
+    z-index: 1;
+    justify-content: center;
+  }
+  h3 {
+      font-size: 1.05em;
+    }
+  
+  p {
+      display: block;
+      font-size: 0.85em;
+    }
+  
+  label {
+      font-size: 0.85em;
+    }
+  .filter-form {
+      width: 90%;
+    }
+
+    .razmak {
+      margin-left: 0px;
+    }
+}
+

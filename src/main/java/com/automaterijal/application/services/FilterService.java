@@ -33,8 +33,6 @@ public class FilterService {
     @NonNull
     final RobaService robaService;
     @NonNull
-    final RobaKatBrProService robaKatBrProService;
-    @NonNull
     final RobaSpringBeanUtils robaSpringBeanUtils;
 
     public Page<RobaDto> pronadjiSveFiltere(
