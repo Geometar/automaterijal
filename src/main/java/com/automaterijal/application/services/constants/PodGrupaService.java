@@ -3,7 +3,6 @@ package com.automaterijal.application.services.constants;
 import com.automaterijal.application.domain.entity.PodGrupa;
 import com.automaterijal.application.domain.repository.PodGrupaRepository;
 import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -23,16 +22,13 @@ public class PodGrupaService {
     @NonNull
     final PodGrupaRepository podGrupaRepository;
 
-    @Getter
-    List<PodGrupa> podGrupe;
-
-    public void pronadjiSvePodGrupe() {
-        podGrupe = podGrupaRepository.findAll();
+    public List<PodGrupa> pronadjiSvePodGrupe() {
+       return podGrupaRepository.findAll();
     }
 
     public String vratiNazivPodGrupe(final int podGrupaId, final String grupaId) {
         String retVal = null;
-        final Optional<String> naziv = getPodGrupe().stream()
+        final Optional<String> naziv = pronadjiSvePodGrupe().stream()
                 .filter(podGrupa -> podGrupa.getGrupaId().equals(grupaId) && podGrupa.getPodGrupaId() == podGrupaId)
                 .map(PodGrupa::getNaziv)
                 .findFirst();
@@ -43,7 +39,7 @@ public class PodGrupaService {
     }
 
     public List<Integer> vratiSvePodGrupeIdPoNazivu(final String naziv) {
-        return getPodGrupe().stream()
+        return pronadjiSvePodGrupe().stream()
                 .filter(podGrupa -> podGrupa.getNaziv().equals(naziv))
                 .map(PodGrupa::getPodGrupaId)
                 .collect(Collectors.toList());

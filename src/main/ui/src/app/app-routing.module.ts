@@ -12,6 +12,8 @@ import { LoginComponent } from './login/login.component';
 const routes: Routes = [
   {path: '', redirectTo: '/naslovna', pathMatch: 'full' },
   {path: 'naslovna' , component: DasboardComponent},
+  {path: 'o-nama' , component: DasboardComponent},
+  {path: 'kontakt' , component: DasboardComponent},
   {path: 'roba' , component: RobaComponent},
   {path: 'filteri' , component: FilteriComponent},
   {path: 'ulja' , component: UljaComponent},

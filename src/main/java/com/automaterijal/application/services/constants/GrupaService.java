@@ -3,7 +3,6 @@ package com.automaterijal.application.services.constants;
 import com.automaterijal.application.domain.entity.Grupa;
 import com.automaterijal.application.domain.repository.GrupaRepository;
 import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -24,15 +23,13 @@ public class GrupaService {
 
     @NonNull
     final GrupaRepository grupaRepository;
-    @Getter
-    List<Grupa> grupe;
 
-    public void pronadjiSveGrupe() {
-        grupe = grupaRepository.findAll();
+    public List<Grupa> pronadjiSveGrupe() {
+       return grupaRepository.findAll();
     }
 
     public List<String> vratiSveIdGrupePoNazivu(final String naziv) {
-        return getGrupe().stream()
+        return pronadjiSveGrupe().stream()
                 .filter(grupa -> grupa.getNaziv().equals(naziv))
                 .map(Grupa::getGrupaid)
                 .collect(Collectors.toList());
@@ -40,7 +37,7 @@ public class GrupaService {
 
     public String vratiNazivGrupePoId(final String id) {
         String retVal = null;
-        final Optional<String> naziv =  grupe.stream()
+        final Optional<String> naziv =  pronadjiSveGrupe().stream()
                 .filter(grupa -> grupa.getGrupaid().equals(id))
                 .map(Grupa::getNaziv)
                 .findFirst();

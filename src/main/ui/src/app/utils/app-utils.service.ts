@@ -35,7 +35,7 @@ export class AppUtilsService {
 
   public dodajUKorpu(roba: Roba): string {
     let snackBarPoruka = 'Artikal je ubacen u korpu.';
-    if (roba.kolicina == null) {
+    if (roba.kolicina == null || roba.kolicina <= 0) {
       roba.kolicina = 1;
     }
     if (roba.stanje < roba.kolicina) {
@@ -71,7 +71,7 @@ export class AppUtilsService {
 
     Object.keys(map).forEach(function (elem, index) {
       const value = map[elem];
-      if (value || value === 0) {
+      if (value != null || value === 0) {
         if (parameterString) {
           parameterString += '&';
         }

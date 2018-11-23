@@ -26,7 +26,7 @@ public class ProizvodjacController {
 
     @GetMapping
     public ResponseEntity<List<Proizvodjac>> pronadjiSve() {
-        return new ResponseEntity(proizvodjacService.sviProzivodjaciNaStanju(), HttpStatus.OK);
+        return new ResponseEntity(proizvodjacService.pronadjiSveProizvodjace(), HttpStatus.OK);
     }
     @GetMapping(value = "/filteri")
     public ResponseEntity<List<Proizvodjac>> pronadjiSveProizvodjaceFiltera() {

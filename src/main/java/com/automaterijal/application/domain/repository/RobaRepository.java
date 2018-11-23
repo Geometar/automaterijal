@@ -31,6 +31,7 @@ public interface RobaRepository extends JpaRepository<Roba, Long> {
     //
     List<Roba> findByGrupaidIn(Collection<String> ids);
     Page<Roba> findByGrupaidInAndStanjeGreaterThan(Collection<String> ids, double stanje, Pageable pageable);
+    List<Roba> findByGrupaidInAndStanjeGreaterThan(Collection<String> ids, double stanje);
     Page<Roba> findByRobaidInAndProidAndGrupaidIn(Collection<Long> ids, String proId, Collection<String> grupeId, Pageable pageable);
     Page<Roba> findByRobaidInAndGrupaidIn(Collection<Long> ids, Collection<String> podGrupe, Pageable pageable);
     Page<Roba> findByRobaidInAndProidAndGrupaidInAndStanjeGreaterThan(Collection<Long> ids, String proId, Collection<String> grupeId, double stanje, Pageable pageable);
@@ -38,5 +39,6 @@ public interface RobaRepository extends JpaRepository<Roba, Long> {
 
     List<Roba> findByPodgrupaidIn(Collection<Integer> ids);
     Page<Roba> findByPodgrupaidInAndStanjeGreaterThan(Collection<Integer> ids, double stanje, Pageable pageable);
+    List<Roba> findByPodgrupaidInAndStanjeGreaterThan(Collection<Integer> ids, double stanje);
 }
 

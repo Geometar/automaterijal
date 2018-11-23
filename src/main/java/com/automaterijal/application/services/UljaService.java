@@ -1,8 +1,8 @@
 package com.automaterijal.application.services;
 
-import com.automaterijal.application.domain.constants.RobaSortiranjePolja;
 import com.automaterijal.application.domain.dto.RobaDto;
 import com.automaterijal.application.domain.entity.Roba;
+import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.services.constants.PodGrupaService;
 import com.automaterijal.application.utils.RobaSpringBeanUtils;
 import com.automaterijal.application.utils.RobaStaticUtils;
@@ -37,24 +37,18 @@ public class UljaService {
     @NonNull
     final RobaSpringBeanUtils robaSpringBeanUtils;
 
-    public Page<RobaDto> pronadjiSvaUlja(
-            final String vrstaUlja,
-            final Integer page,
-            final Integer pageSize,
-            final RobaSortiranjePolja sortiranjePolja,
-            final Sort.Direction direction,
-            final String searchTerm,
-            final String proizvodjacId,
-            final Boolean naStanju
-    ) {
+    public Page<RobaDto> pronadjiSvaUlja(final UniverzalniParametri parametri,
+                                         final String vrstaUlja) {
         final Page<Roba> roba;
         final List<Integer> svePodGrupeUlja = new ArrayList<>();
         pronadjiSvePodGrupeUZavisnostiOdVrste(svePodGrupeUlja, vrstaUlja);
-        final Pageable pageable = PageRequest.of(page, pageSize, new Sort(direction, sortiranjePolja.getFieldName()));
-        if (searchTerm == null && proizvodjacId == null) {
-            roba = vratiSvuRobuUZavisnostiOdTrazenogStanja(naStanju, svePodGrupeUlja, pageable);
+        final Pageable pageable = PageRequest.of(
+                parametri.getPage(), parametri.getPageSize(), new Sort(parametri.getDirection(), parametri.getSortiranjePolja().getFieldName())
+        );
+        if (parametri.getTrazenKatBroj() == null && parametri.getProizvodjac() == null) {
+            roba = vratiSvuRobuUZavisnostiOdTrazenogStanja(parametri.getNaStanju(), svePodGrupeUlja, pageable);
         } else {
-            roba = vratiRobuUZavisnostiOdKriterijuma(searchTerm, svePodGrupeUlja, proizvodjacId, naStanju, pageable);
+            roba = vratiRobuUZavisnostiOdKriterijuma(parametri, svePodGrupeUlja, pageable);
         }
 
         return roba.map(robaSpringBeanUtils::pretvoriUDTO);
@@ -77,18 +71,18 @@ public class UljaService {
         return roba;
     }
 
-    private Page<Roba> vratiRobuUZavisnostiOdKriterijuma(final String searchTerm, final List<Integer> svePodGrupeUlja, final String proizvodjacId, final Boolean naStanju, final Pageable pageable) {
+    private Page<Roba> vratiRobuUZavisnostiOdKriterijuma(final UniverzalniParametri parametri, final List<Integer> svePodGrupeUlja, final Pageable pageable) {
         final List<String> kataloskiBrojevi;
-        if (searchTerm != null) {
-            kataloskiBrojevi = robaSpringBeanUtils.vratiSveKataloskeBrojevePoTrazenojReciIPodGrupi(searchTerm, svePodGrupeUlja);
+        if (parametri.getTrazenKatBroj() != null) {
+            kataloskiBrojevi = robaSpringBeanUtils.vratiSveKataloskeBrojevePoTrazenojReciIPodGrupi(parametri.getTrazenKatBroj(), svePodGrupeUlja);
         } else {
             kataloskiBrojevi = robaSpringBeanUtils.vratiSveKataloskeBrojevePoPodGrupi(svePodGrupeUlja);
         }
         return robaSpringBeanUtils.pronadjiRobuPoIzvucenimKatBrojevima(
                 kataloskiBrojevi,
                 svePodGrupeUlja,
-                proizvodjacId,
-                naStanju,
+                parametri.getProizvodjac(),
+                parametri.getNaStanju(),
                 pageable);
     }
 }

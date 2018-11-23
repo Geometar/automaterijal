@@ -11,7 +11,7 @@ import { TouchSequence } from 'selenium-webdriver';
 @Component({
   selector: 'app-korpa',
   templateUrl: './korpa.component.html',
-  styleUrls: ['./korpa.component.css']
+  styleUrls: ['./korpa.component.scss']
 })
 export class KorpaComponent implements OnInit {
 
@@ -71,9 +71,9 @@ export class KorpaComponent implements OnInit {
     this.korpa.roba.forEach(roba => {
       this.korpa.ukupno =  this.korpa.ukupno + roba.cenaUkupno;
     });
-    this.bezPdv = (this.korpa.ukupno / 1.2) + ',00';
-    this.pdv = (this.korpa.ukupno - this.korpa.ukupno / 1.2) + ',00';
-    this.ukupno =  this.korpa.ukupno + ',00';
+    this.bezPdv = (this.korpa.ukupno / 1.2).toFixed(2);
+    this.pdv = (this.korpa.ukupno - this.korpa.ukupno / 1.2).toFixed(2);
+    this.ukupno =  this.korpa.ukupno.toFixed(2);
   }
 
 }

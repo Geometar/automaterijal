@@ -1,28 +1,101 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
-import { Observable } from 'rxjs';
+import { throwError, BehaviorSubject, EMPTY } from 'rxjs';
 import { Credentials } from '../model/credentials';
-import { map, timeout, catchError } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
+import { timeoutWith, catchError, finalize } from 'rxjs/operators';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { AppUtilsService } from '../utils/app-utils.service';
+import { Partner } from '../model/partner';
+import { Router } from '@angular/router';
+import { LocalStorageService } from './local-storage.service';
+
+const TIMEOUT = 15000;
+const TIMEOUT_ERROR = 'Timeout error!';
 
 const DOMAIN_URL = 'http://localhost:8080';
 const LOGIN_URL = '/login';
+const LOGOUT_URL = '/logout';
+const PARTNER_URL = '/api/partner';
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
 
-  constructor(private http: HttpClient) { }
+  private partner: Partner = this.storageServis.procitajPartneraIzMemorije() || new Partner();
+  private partnerSubjekat = new BehaviorSubject(this.partner);
+  public ulogovaniPartner = this.partnerSubjekat.asObservable();
+
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private utils: AppUtilsService,
+    private storageServis: LocalStorageService) {
+      this.partner.email = 'radespasoje@gmail.com';
+      this.partner.naziv = 'Automaterijal';
+      this.partner.ppid = 7;
+      this.partnerSubjekat.next(this.partner);
+    }
 
   public ulogujSe(credentials: Credentials) {
-    let fullUrl = DOMAIN_URL + LOGIN_URL;
-    fullUrl = fullUrl + '?' +
-    'username=' + credentials.username +
-    '&password=' + credentials.password +
-    '&submit=' + 'Login';
+    const parameterObject = {};
+    parameterObject['username'] = credentials.username;
+    parameterObject['password'] = credentials.password;
+    parameterObject['submit'] = 'Login';
+    const parametersString = this.utils.vratiKveriParametre(parameterObject);
+    const fullUrl = DOMAIN_URL + LOGIN_URL + parametersString;
 
-    return this.http.post(fullUrl, {}).subscribe(response => {
-          console.log('EVO me');
+    this.http.post(fullUrl, {}, { responseType: 'text' })
+      .pipe(
+        timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
+        catchError((error: any) => throwError(error))
+      ).subscribe(res => {
+        this.vratiUlogovanogKorisnika();
+      },
+        error => {
+          this.partner = new Partner();
+          this.partnerSubjekat.next(this.partner);
+          this.storageServis.logout();
+          console.log('Greska kod logovanja');
+        });
+  }
+
+  public logout() {
+    const fullUrl = DOMAIN_URL + LOGOUT_URL;
+    this.http.post(fullUrl, {}, { responseType: 'text' })
+      .pipe(
+        timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
+        catchError((error: any) => throwError(error))
+      )
+      .subscribe(() => {
+        this.partner = new Partner();
+        this.partnerSubjekat.next(this.partner);
+        this.storageServis.logout();
+        this.router.navigateByUrl('naslovna');
+      },
+        error => {
+          console.log('Greska kod logout-a');
+        });
+  }
+
+  private vratiUlogovanogKorisnika() {
+    const fullUrl = DOMAIN_URL + PARTNER_URL;
+    this.http.get(fullUrl)
+      .pipe(
+        // map((response: any) => response.json()),
+        timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
+        catchError((error: HttpErrorResponse) => {
+          if (error.status === 404) {
+            return EMPTY;
+          }
+          return throwError(error);
+        })
+      ).subscribe(res => {
+        this.partner = res;
+        this.storageServis.sacuvajPartneraUMemoriju(this.partner);
+        this.partnerSubjekat.next(this.partner);
+        this.router.navigateByUrl('naslovna');
+      },
+        error => {
+          console.log('Logovanje nije uspelo.');
         });
   }
 }

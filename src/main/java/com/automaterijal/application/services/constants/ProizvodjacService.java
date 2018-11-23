@@ -8,7 +8,6 @@ import com.automaterijal.application.domain.repository.ProizvodjacRepository;
 import com.automaterijal.application.services.RobaService;
 import com.automaterijal.application.utils.RobaStaticUtils;
 import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -35,49 +34,32 @@ public class ProizvodjacService {
     @NonNull
     final RobaService robaService;
 
-    @Getter
-    List<Proizvodjac> proizvodjaci;
-
     static final String SVI_PROIZVODJACI = "SVI";
 
-    public void pronadjiSveProizvodjace() {
-        proizvodjaci = proizvodjacRepository.findAllByOrderByNazivAsc();
-        proizvodjaci.add(0, new Proizvodjac("-99", SVI_PROIZVODJACI));
-    }
-
-    public List<Proizvodjac> sviProzivodjaciNaStanju() {
-        final Set<String> svaRoba = robaService.pronadjiSvuRobu()
-                .stream()
-                .filter(r -> r.getStanje() > 0)
-                .map(Roba::getProid)
-                .collect(Collectors.toSet());
-        final List<Proizvodjac> proizvodjaci = getProizvodjaci().stream().filter(proizvodjac -> svaRoba.contains(proizvodjac.getProid())).collect(Collectors.toList());
+    public List<Proizvodjac> pronadjiSveProizvodjace() {
+        final List<Proizvodjac> proizvodjaci = proizvodjacRepository.findAllByOrderByNazivAsc();
         proizvodjaci.add(0, new Proizvodjac("-99", SVI_PROIZVODJACI));
         return proizvodjaci;
     }
 
     public List<Proizvodjac> proizvodjaciFiltera() {
         final List<Integer> podGrupeId = podGrupaService.vratiSvePodGrupeIdPoNazivu(GrupeKonstante.FILTER);
-        final Set<String> filterRoba = robaService.pronadjiSvuRobu()
+        final Set<String> filterRoba = robaService.pronadjiSvuRobuPoPodGrupiIdLista(podGrupeId)
                 .stream()
-                .filter(r -> podGrupeId.contains(r.getPodgrupaid()))
-                .filter(r -> r.getStanje() > 0)
                 .map(Roba::getProid)
                 .collect(Collectors.toSet());
-        final List<Proizvodjac> proizvodjaci = getProizvodjaci().stream().filter(proizvodjac -> filterRoba.contains(proizvodjac.getProid())).collect(Collectors.toList());
+        final List<Proizvodjac> proizvodjaci = pronadjiSveProizvodjace().stream().filter(proizvodjac -> filterRoba.contains(proizvodjac.getProid())).collect(Collectors.toList());
         proizvodjaci.add(0, new Proizvodjac("-99", SVI_PROIZVODJACI));
         return proizvodjaci;
     }
 
     public List<Proizvodjac> proizvodjaciAkumulatora() {
         final List<String> grupeId = grupaService.vratiSveIdGrupePoNazivu(GrupeKonstante.AKUMULATOR);
-        final Set<String> filterRoba = robaService.pronadjiSvuRobu()
+        final Set<String> filterRoba = robaService.pronadjuSvuRobuPoGrupiIdNaStanju(grupeId)
                 .stream()
-                .filter(r -> grupeId.contains(r.getGrupaid()))
-                .filter(r -> r.getStanje() > 0)
                 .map(Roba::getProid)
                 .collect(Collectors.toSet());
-        final List<Proizvodjac> proizvodjaci = getProizvodjaci().stream().filter(proizvodjac -> filterRoba.contains(proizvodjac.getProid())).collect(Collectors.toList());
+        final List<Proizvodjac> proizvodjaci = proizvodjacRepository.findAllByOrderByNazivAsc().stream().filter(proizvodjac -> filterRoba.contains(proizvodjac.getProid())).collect(Collectors.toList());
         proizvodjaci.add(0, new Proizvodjac("-99", SVI_PROIZVODJACI));
         return proizvodjaci;
     }
@@ -85,13 +67,11 @@ public class ProizvodjacService {
     public List<Proizvodjac> proizvodjaciUlja(final String vrstaUlja) {
         final List<Integer> svePodGrupeUlja = new ArrayList<>();
         pronadjiSvePodGrupeUZavisnostiOdVrste(svePodGrupeUlja, vrstaUlja);
-        final Set<String> filterRoba = robaService.pronadjiSvuRobu()
+        final Set<String> filterRoba = robaService.pronadjiSvuRobuPoPodGrupiIdLista(svePodGrupeUlja)
                 .stream()
-                .filter(r -> svePodGrupeUlja.contains(r.getPodgrupaid()))
-                .filter(r -> r.getStanje() > 0)
                 .map(Roba::getProid)
                 .collect(Collectors.toSet());
-        final List<Proizvodjac> proizvodjaci = getProizvodjaci().stream().filter(proizvodjac -> filterRoba.contains(proizvodjac.getProid())).collect(Collectors.toList());
+        final List<Proizvodjac> proizvodjaci = pronadjiSveProizvodjace().stream().filter(proizvodjac -> filterRoba.contains(proizvodjac.getProid())).collect(Collectors.toList());
         proizvodjaci.add(0, new Proizvodjac("-99", SVI_PROIZVODJACI));
         return proizvodjaci;
     }
@@ -105,7 +85,7 @@ public class ProizvodjacService {
 
     public String vrateNazivProizvodjacaPoId(final String id) {
         String retVal = null;
-        final Optional<String> naziv = proizvodjaci.stream()
+        final Optional<String> naziv = pronadjiSveProizvodjace().stream()
                 .filter(grupa -> grupa.getProid().equals(id))
                 .map(Proizvodjac::getNaziv)
                 .findFirst();

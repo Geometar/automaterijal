@@ -2,7 +2,6 @@ package com.automaterijal.application.services;
 
 import com.automaterijal.application.domain.entity.Roba;
 import com.automaterijal.application.domain.repository.RobaRepository;
-import com.automaterijal.application.services.security.UserDetailsService;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -26,12 +25,8 @@ public class RobaService {
     @NonNull
     final RobaRepository robaRepository;
 
-    @NonNull
-    final
-    UserDetailsService service;
-
     public List<Roba> pronadjiSvuRobu() {
-       return robaRepository.findAll();
+        return robaRepository.findAll();
     }
 
     public List<Roba> pronadjiSvuRobuPoProId(final String proId) {
@@ -39,21 +34,27 @@ public class RobaService {
     }
 
     public Page<Roba> pronadjiSvuRobu(final boolean naStanju, final Pageable pageable) {
-        service.vratiUlogovanogKorisnika();
-        if(naStanju) {
+        if (naStanju) {
             return robaRepository.findByStanjeGreaterThan(0, pageable);
         } else {
             return robaRepository.findAll(pageable);
         }
     }
+
     public List<Roba> pronadjuSvuRobuPoPretrazi(final String searchTerm) {
         return robaRepository.findByKatbrContainingOrKatbrproContaining(searchTerm, searchTerm);
     }
+
     public List<Roba> pronadjuSvuRobuPodGrupomId(final List<Integer> podGrupeId) {
         return robaRepository.findByPodgrupaidIn(podGrupeId);
     }
+
     public List<Roba> pronadjuSvuRobuPoGrupiId(final List<String> GrupeId) {
         return robaRepository.findByGrupaidIn(GrupeId);
+    }
+
+    public List<Roba> pronadjuSvuRobuPoGrupiIdNaStanju(final List<String> grupeId) {
+        return robaRepository.findByGrupaidInAndStanjeGreaterThan(grupeId, -1);
     }
 
     public List<Roba> pronadjiRobuPoKatBrojevima(final List<String> katBrojevi) {
@@ -62,7 +63,7 @@ public class RobaService {
 
     public Page<Roba> pronadjiRobuPoKljucevima(final Set<Long> ids, final String proizvdojacId, final Boolean naStanju, final Pageable pageable) {
         final Page<Roba> retVal;
-        if(naStanju == false) {
+        if (naStanju == false) {
             retVal = pronadjiSvuRobu(ids, proizvdojacId, pageable);
         } else {
             retVal = pronadjiSvuRobuNaStanju(ids, proizvdojacId, pageable);
@@ -72,7 +73,7 @@ public class RobaService {
 
     public Page<Roba> pronadjiRobuPoKljucevimaIPodGrupi(final Set<Long> ids, final List<Integer> podGrupe, final String proizvdojacId, final Boolean naStanju, final Pageable pageable) {
         final Page<Roba> retVal;
-        if(naStanju == false) {
+        if (naStanju == false) {
             retVal = pronadjiSvuRobuPodGrupe(ids, podGrupe, proizvdojacId, pageable);
         } else {
             retVal = pronadjiSvuRobuNaStanjuPodGrupe(ids, podGrupe, proizvdojacId, pageable);
@@ -82,7 +83,7 @@ public class RobaService {
 
     public Page<Roba> pronadjiRobuPoKljucevimaIGrupiId(final Set<Long> ids, final List<String> grupeId, final String proizvdojacId, final Boolean naStanju, final Pageable pageable) {
         final Page<Roba> retVal;
-        if(naStanju == false) {
+        if (naStanju == false) {
             retVal = pronadjiSvuRobuGrupeId(ids, grupeId, proizvdojacId, pageable);
         } else {
             retVal = pronadjiSvuRobuNaStanjuGrupeId(ids, grupeId, proizvdojacId, pageable);
@@ -98,6 +99,10 @@ public class RobaService {
         return robaRepository.findByPodgrupaidInAndStanjeGreaterThan(podGrupaId, -1, pageable);
     }
 
+    public List<Roba> pronadjiSvuRobuPoPodGrupiIdLista(final List<Integer> podGrupaId) {
+        return robaRepository.findByPodgrupaidInAndStanjeGreaterThan(podGrupaId, -1);
+    }
+
 
     public Page<Roba> pronadjiSvuRobuPoGrupiIdNaStanju(final List<String> grupaId, final Pageable pageable) {
         return robaRepository.findByGrupaidInAndStanjeGreaterThan(grupaId, 0, pageable);
@@ -108,7 +113,7 @@ public class RobaService {
     }
 
     private Page<Roba> pronadjiSvuRobuNaStanju(final Set<Long> ids, final String filterProizvodjac, final Pageable pageable) {
-        if(filterProizvodjac!=null) {
+        if (filterProizvodjac != null) {
             return robaRepository.findByRobaidInAndStanjeGreaterThanAndProid(ids, 0, filterProizvodjac, pageable);
         } else {
             return robaRepository.findByRobaidInAndStanjeGreaterThan(ids, 0, pageable);
@@ -116,9 +121,8 @@ public class RobaService {
     }
 
 
-
     private Page<Roba> pronadjiSvuRobuNaStanjuGrupeId(final Set<Long> ids, final List<String> grupeId, final String proizvdojacId, final Pageable pageable) {
-        if(proizvdojacId != null) {
+        if (proizvdojacId != null) {
             return robaRepository.findByRobaidInAndProidAndGrupaidInAndStanjeGreaterThan(ids, proizvdojacId, grupeId, 0, pageable);
         } else {
             return robaRepository.findByRobaidInAndGrupaidInAndStanjeGreaterThan(ids, grupeId, 0, pageable);
@@ -126,7 +130,7 @@ public class RobaService {
     }
 
     private Page<Roba> pronadjiSvuRobuGrupeId(final Set<Long> ids, final List<String> grupeId, final String proizvdojacId, final Pageable pageable) {
-        if(proizvdojacId != null) {
+        if (proizvdojacId != null) {
             return robaRepository.findByRobaidInAndProidAndGrupaidIn(ids, proizvdojacId, grupeId, pageable);
         } else {
             return robaRepository.findByRobaidInAndGrupaidIn(ids, grupeId, pageable);
@@ -134,7 +138,7 @@ public class RobaService {
     }
 
     private Page<Roba> pronadjiSvuRobuNaStanjuPodGrupe(final Set<Long> ids, final List<Integer> podGrupe, final String proizvdojacId, final Pageable pageable) {
-        if(proizvdojacId != null) {
+        if (proizvdojacId != null) {
             return robaRepository.findByRobaidInAndProidAndPodgrupaidInAndStanjeGreaterThan(ids, proizvdojacId, podGrupe, 0, pageable);
         } else {
             return robaRepository.findByRobaidInAndPodgrupaidInAndStanjeGreaterThan(ids, podGrupe, 0, pageable);
@@ -142,7 +146,7 @@ public class RobaService {
     }
 
     private Page<Roba> pronadjiSvuRobuPodGrupe(final Set<Long> ids, final List<Integer> podGrupe, final String proizvdojacId, final Pageable pageable) {
-        if(proizvdojacId != null) {
+        if (proizvdojacId != null) {
             return robaRepository.findByRobaidInAndProidAndPodgrupaidIn(ids, proizvdojacId, podGrupe, pageable);
         } else {
             return robaRepository.findByRobaidInAndPodgrupaidIn(ids, podGrupe, pageable);
@@ -150,7 +154,7 @@ public class RobaService {
     }
 
     private Page<Roba> pronadjiSvuRobu(final Set<Long> ids, final String filterProizvodjac, final Pageable pageable) {
-        if(filterProizvodjac!=null) {
+        if (filterProizvodjac != null) {
             return robaRepository.findByRobaidInAndProid(ids, filterProizvodjac, pageable);
         } else {
             return robaRepository.findByRobaidIn(ids, pageable);

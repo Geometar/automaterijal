@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "users")
@@ -28,7 +29,7 @@ public class Users {
     @Column(name = "login_count")
     Integer loginCount;
     @Column(name = "last_login")
-    Integer lastLogin;
+    Timestamp lastLogin;
     @Column(name = "user_status")
     Integer userStatus;
 }

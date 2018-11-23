@@ -8,7 +8,7 @@ import * as _ from 'lodash';
 @Component({
   selector: 'app-izmena-kolicine-modal',
   templateUrl: './izmena-kolicine-modal.component.html',
-  styleUrls: ['./izmena-kolicine-modal.component.css']
+  styleUrls: ['./izmena-kolicine-modal.component.scss']
 })
 export class IzmenaKolicineModalComponent implements OnInit {
 

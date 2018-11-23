@@ -12,7 +12,7 @@ import { MatGridListModule, MatCardModule, MatMenuModule, MatIconModule, MatButt
 import { LayoutModule } from '@angular/cdk/layout';
 import { HttpModule } from '@angular/http';
 import { AppRoutingModule } from './app-routing.module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FilteriComponent } from './roba/filteri/filteri.component';
 import { AkumulatoriComponent } from './roba/akumulatori/akumulatori.component';
 import { UljaComponent } from './roba/ulja/ulja.component';
@@ -26,6 +26,7 @@ import { IzmenaKolicineModalComponent } from './korpa/izmena-kolicine-modal/izme
 import { LoginComponent } from './login/login.component';
 import { LoginService } from './service/login.service';
 import { HttpClientModule } from '@angular/common/http';
+import { LogoutModalComponent } from './navigacija/logout-modal/logout-modal.component';
 
 @NgModule({
   declarations: [
@@ -43,12 +44,14 @@ import { HttpClientModule } from '@angular/common/http';
     IndustrijskaComponent,
     KorpaComponent,
     IzmenaKolicineModalComponent,
-    LoginComponent
+    LoginComponent,
+    LogoutModalComponent
   ],
   imports: [
     BrowserModule,
     HttpModule,
     HttpClientModule,
+    ReactiveFormsModule,
     StorageServiceModule,
     BrowserAnimationsModule,
     MaterialModule,
@@ -57,6 +60,6 @@ import { HttpClientModule } from '@angular/common/http';
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [IzmenaKolicineModalComponent]
+  entryComponents: [IzmenaKolicineModalComponent, LogoutModalComponent]
 })
 export class AppModule { }

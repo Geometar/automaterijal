@@ -1,10 +1,10 @@
 package com.automaterijal.application.services;
 
 import com.automaterijal.application.domain.constants.GrupeKonstante;
-import com.automaterijal.application.domain.constants.RobaSortiranjePolja;
 import com.automaterijal.application.domain.dto.RobaDto;
 import com.automaterijal.application.domain.entity.Roba;
 import com.automaterijal.application.domain.entity.RobaKatBrPro;
+import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.services.constants.GrupaService;
 import com.automaterijal.application.utils.RobaSpringBeanUtils;
 import com.automaterijal.application.utils.RobaStaticUtils;
@@ -41,23 +41,17 @@ public class AkumulatoriService {
     @NonNull
     final RobaSpringBeanUtils robaSpringBeanUtils;
 
-    public Page<RobaDto> pronadjiSveAkumulatore(
-            final Integer page,
-            final Integer pageSize,
-            final RobaSortiranjePolja sortiranjePolja,
-            final Sort.Direction direction,
-            final String searchTerm,
-            final String proizvodjacId,
-            final Boolean naStanju
-    ) {
+    public Page<RobaDto> pronadjiSveAkumulatore(final UniverzalniParametri parametri) {
         final Page<Roba> roba;
         final List<String> sveAkumulatorGrupeId = grupaService.vratiSveIdGrupePoNazivu(GrupeKonstante.AKUMULATOR);
-        final Pageable pageable = PageRequest.of(page, pageSize, new Sort(direction, sortiranjePolja.getFieldName()));
+        final Pageable pageable = PageRequest.of(
+                parametri.getPage(), parametri.getPageSize(), new Sort(parametri.getDirection(), parametri.getSortiranjePolja().getFieldName())
+        );
 
-        if (searchTerm == null && proizvodjacId == null) {
-            roba = vratiSvuRobuUZavisnostiOdTrazenogStanja(naStanju, sveAkumulatorGrupeId, pageable);
+        if (parametri.getTrazenKatBroj() == null && parametri.getProizvodjac()== null) {
+            roba = vratiSvuRobuUZavisnostiOdTrazenogStanja(parametri.getNaStanju(), sveAkumulatorGrupeId, pageable);
         } else {
-            roba = vratiRobuUZavisnostiOdKriterijuma(searchTerm, sveAkumulatorGrupeId, proizvodjacId, naStanju, pageable);
+            roba = vratiRobuUZavisnostiOdKriterijuma(parametri, sveAkumulatorGrupeId, pageable);
         }
 
         return roba.map(robaSpringBeanUtils::pretvoriUDTO);
@@ -73,18 +67,18 @@ public class AkumulatoriService {
         return roba;
     }
 
-    private Page<Roba> vratiRobuUZavisnostiOdKriterijuma(final String searchTerm, final List<String> sveAkumulatorGrupeId, final String proizvodjacId, final Boolean naStanju, final Pageable pageable) {
+    private Page<Roba> vratiRobuUZavisnostiOdKriterijuma(final UniverzalniParametri parametri, final List<String> sveAkumulatorGrupeId, final Pageable pageable) {
         final List<String> kataloskiBrojevi;
-        if (searchTerm != null) {
-            kataloskiBrojevi = vratiSveKataloskeBrojevePoTrazenojReci(searchTerm, sveAkumulatorGrupeId);
+        if (parametri.getTrazenKatBroj() != null) {
+            kataloskiBrojevi = vratiSveKataloskeBrojevePoTrazenojReci(parametri.getTrazenKatBroj(), sveAkumulatorGrupeId);
         } else {
             kataloskiBrojevi = vratiSveKataloskeBrojeve(sveAkumulatorGrupeId);
         }
         return pronadjiRobuPoIzvucenimKatBrojevima(
                 kataloskiBrojevi,
                 sveAkumulatorGrupeId,
-                proizvodjacId,
-                naStanju,
+                parametri.getProizvodjac(),
+                parametri.getNaStanju(),
                 pageable);
     }
 
