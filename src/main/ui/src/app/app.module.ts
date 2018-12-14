@@ -7,9 +7,6 @@ import { MaterialModule } from './shared/material/material.module';
 import { NavigacijaComponent } from './navigacija/navigacija.component';
 import { RobaComponent } from './roba/roba.component';
 import { DasboardComponent } from './dasboard/dasboard.component';
-import { MatGridListModule, MatCardModule, MatMenuModule, MatIconModule, MatButtonModule, MatTableModule,
-   MatPaginatorModule, MatSortModule } from '@angular/material';
-import { LayoutModule } from '@angular/cdk/layout';
 import { HttpModule } from '@angular/http';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -24,9 +21,13 @@ import { IndustrijskaComponent } from './roba/ulja/industrijska/industrijska.com
 import { KorpaComponent } from './korpa/korpa.component';
 import { IzmenaKolicineModalComponent } from './korpa/izmena-kolicine-modal/izmena-kolicine-modal.component';
 import { LoginComponent } from './login/login.component';
-import { LoginService } from './service/login.service';
 import { HttpClientModule } from '@angular/common/http';
 import { LogoutModalComponent } from './navigacija/logout-modal/logout-modal.component';
+import { FakturaComponent } from './faktura/faktura.component';
+import { TranslatePipe } from './pipes/PrevodilacPipe';
+import { EmptyPipe } from './pipes/EmptyPipe';
+import { FakturaDetaljiComponent } from './faktura/faktura-detalji/faktura-detalji.component';
+import { DatePipe } from './pipes/DatePipe';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,12 @@ import { LogoutModalComponent } from './navigacija/logout-modal/logout-modal.com
     KorpaComponent,
     IzmenaKolicineModalComponent,
     LoginComponent,
-    LogoutModalComponent
+    LogoutModalComponent,
+    FakturaComponent,
+    TranslatePipe,
+    EmptyPipe,
+    DatePipe,
+    FakturaDetaljiComponent
   ],
   imports: [
     BrowserModule,

@@ -1,16 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { RobaService } from '../service/roba.service';
-import { Roba } from '../model/roba';
+import { Roba, Proizvodjac, Partner } from '../model/dto';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY } from 'rxjs';
 import { Sort, MatSnackBar } from '@angular/material';
-import { Proizvodjac } from '../model/proizvodjac';
 import { ProizvodjacService } from '../service/proizvodjac.service';
 import { DataService } from '../service/data.service';
 import { Korpa } from '../model/porudzbenica';
 import { AppUtilsService } from '../utils/app-utils.service';
 import { LoginService } from '../service/login.service';
-import { Partner } from '../model/partner';
 
 @Component({
   selector: 'app-roba',

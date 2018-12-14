@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Proizvodjac } from '../model/proizvodjac';
-import { Roba } from '../model/roba';
+import { Proizvodjac, Roba } from '../model/dto';
 import { RobaKorpa, Korpa } from '../model/porudzbenica';
 import { DataService } from '../service/data.service';
 

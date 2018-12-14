@@ -1,8 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
-import { Roba } from 'src/app/model/roba';
+import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import { RobaKorpa } from 'src/app/model/porudzbenica';
-import { LocalStorageService } from 'src/app/service/local-storage.service';
 import * as _ from 'lodash';
 
 @Component({

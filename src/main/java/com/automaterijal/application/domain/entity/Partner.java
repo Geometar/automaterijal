@@ -4,10 +4,8 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "partner")
@@ -65,4 +63,7 @@ public class Partner {
     Double dozvoljeniminus;
     @Column(name = "dozvoljeniminus_rok")
     Double dozvoljeniminusRok;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "ppid")
+    List<Popusti> popustiList;
 }

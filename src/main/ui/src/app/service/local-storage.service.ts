@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { SESSION_STORAGE, StorageService } from 'angular-webstorage-service';
 import { Korpa, RobaKorpa } from '../model/porudzbenica';
-import { Partner } from '../model/partner';
+import { Partner } from '../model/dto';
 
 const KORPA_KLJUC = 'korpa_roba';
 const PARTNER_KLJUC = 'partner_kljuc';

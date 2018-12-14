@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DataService } from '../service/data.service';
-import { Korpa } from '../model/porudzbenica';
 import { LoginService } from '../service/login.service';
-import { Partner } from '../model/partner';
+import { Partner } from '../model/dto';
 import { MatDialog } from '@angular/material';
 import { LogoutModalComponent } from './logout-modal/logout-modal.component';
 

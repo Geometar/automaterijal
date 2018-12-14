@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Roba } from 'src/app/model/roba';
-import { Proizvodjac } from 'src/app/model/proizvodjac';
+import { Roba, Proizvodjac, Partner} from 'src/app/model/dto';
 import { RobaService } from 'src/app/service/roba.service';
 import { ProizvodjacService } from 'src/app/service/proizvodjac.service';
 import { Sort, MatSnackBar } from '@angular/material';
@@ -9,7 +8,6 @@ import { throwError, EMPTY } from 'rxjs';
 import { AppUtilsService } from 'src/app/utils/app-utils.service';
 import { DataService } from 'src/app/service/data.service';
 import { Korpa } from 'src/app/model/porudzbenica';
-import { Partner } from 'src/app/model/partner';
 import { LoginService } from 'src/app/service/login.service';
 
 @Component({

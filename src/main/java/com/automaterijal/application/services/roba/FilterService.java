@@ -1,8 +1,9 @@
-package com.automaterijal.application.services;
+package com.automaterijal.application.services.roba;
 
 
 import com.automaterijal.application.domain.constants.GrupeKonstante;
 import com.automaterijal.application.domain.dto.RobaDto;
+import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.Roba;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.services.constants.PodGrupaService;
@@ -35,7 +36,7 @@ public class FilterService {
     @NonNull
     final RobaSpringBeanUtils robaSpringBeanUtils;
 
-    public Page<RobaDto> pronadjiSveFiltere(final UniverzalniParametri parametri) {
+    public Page<RobaDto> pronadjiSveFiltere(final UniverzalniParametri parametri, final Partner ulogovaniPartner) {
         final Page<Roba> roba;
         final List<Integer> sveFilterPodGrupeId = podGrupaService.vratiSvePodGrupeIdPoNazivu(GrupeKonstante.FILTER);
         final Pageable pageable = PageRequest.of(parametri.getPage(), parametri.getPageSize(), new Sort(parametri.getDirection(), parametri.getSortiranjePolja().getFieldName()));
@@ -45,7 +46,7 @@ public class FilterService {
             roba = vratiRobuUZavisnostiOdKriterijuma(parametri, sveFilterPodGrupeId, pageable);
         }
 
-        return roba.map(robaSpringBeanUtils::pretvoriUDTO);
+        return roba.map(artikli -> robaSpringBeanUtils.pretvoriUDTO(artikli, ulogovaniPartner));
     }
 
     private Page<Roba> vratiRobuUZavisnostiOdKriterijuma(final UniverzalniParametri parametri, final List<Integer> sveFilterPodGrupeId, final Pageable pageable) {

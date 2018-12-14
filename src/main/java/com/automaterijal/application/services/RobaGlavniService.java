@@ -1,9 +1,11 @@
 package com.automaterijal.application.services;
 
 import com.automaterijal.application.domain.dto.RobaDto;
+import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.Roba;
 import com.automaterijal.application.domain.entity.RobaKatBrPro;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
+import com.automaterijal.application.services.roba.RobaService;
 import com.automaterijal.application.utils.RobaSpringBeanUtils;
 import com.automaterijal.application.utils.RobaStaticUtils;
 import lombok.AccessLevel;
@@ -37,7 +39,7 @@ public class RobaGlavniService {
     @NonNull
     final RobaSpringBeanUtils robaSpringBeanUtils;
 
-    public Page<RobaDto> pronadjiRobuPoPretrazi(final UniverzalniParametri parametri) {
+    public Page<RobaDto> pronadjiRobuPoPretrazi(final UniverzalniParametri parametri, final Partner ulogovaniPartner) {
 
         final Pageable pageable = PageRequest.of(
                 parametri.getPage(), parametri.getPageSize(), new Sort(parametri.getDirection(), parametri.getSortiranjePolja().getFieldName())
@@ -49,7 +51,7 @@ public class RobaGlavniService {
             roba = vratiRobuUZavisnostiOdKriterijuma(parametri, pageable);
         }
 
-        return roba.map(robaSpringBeanUtils::pretvoriUDTO);
+        return roba.map(artikli -> robaSpringBeanUtils.pretvoriUDTO(artikli, ulogovaniPartner));
     }
 
     private Page<Roba> vratiRobuUZavisnostiOdKriterijuma(final UniverzalniParametri parametri, final Pageable pageable) {

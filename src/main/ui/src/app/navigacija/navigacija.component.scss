@@ -14,6 +14,15 @@
   top: 0;
 }
 
+.header-navigacija {
+  font-size: 13px !important;
+  width: 160px;
+}
+
+.header-sirina {
+  width: 160px !important;
+}
+
 p {
   font-size: 14px;
   padding: 0px;
@@ -58,7 +67,7 @@ mat-divider {
 }
 
 .header-pozicija {
-  top: 0;
+  top: 0px;
   position: fixed;
   z-index:999;
 }

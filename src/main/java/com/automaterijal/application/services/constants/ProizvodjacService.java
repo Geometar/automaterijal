@@ -5,7 +5,7 @@ import com.automaterijal.application.domain.constants.GrupeKonstante;
 import com.automaterijal.application.domain.entity.Proizvodjac;
 import com.automaterijal.application.domain.entity.Roba;
 import com.automaterijal.application.domain.repository.ProizvodjacRepository;
-import com.automaterijal.application.services.RobaService;
+import com.automaterijal.application.services.roba.RobaService;
 import com.automaterijal.application.utils.RobaStaticUtils;
 import lombok.AccessLevel;
 import lombok.NonNull;
@@ -93,5 +93,9 @@ public class ProizvodjacService {
             retVal = naziv.get();
         }
         return retVal;
+    }
+
+    public Optional<Proizvodjac> vratiProizvodjacaPoPk(final String id) {
+        return proizvodjacRepository.findById(id);
     }
 }

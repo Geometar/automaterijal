@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable, throwError } from 'rxjs';
-import { RobaPage } from '../model/roba';
+import { RobaPage } from '../model/dto';
 import { map, timeoutWith, catchError } from 'rxjs/operators';
 import { Sort } from '@angular/material';
 import { AppUtilsService } from '../utils/app-utils.service';

@@ -1,6 +1,7 @@
-package com.automaterijal.application.services;
+package com.automaterijal.application.services.roba;
 
 import com.automaterijal.application.domain.dto.RobaDto;
+import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.Roba;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.services.constants.PodGrupaService;
@@ -31,14 +32,13 @@ public class UljaService {
     @NonNull
     final RobaService robaService;
     @NonNull
-    final RobaKatBrProService robaKatBrProService;
-    @NonNull
     final PodGrupaService podGrupaService;
     @NonNull
     final RobaSpringBeanUtils robaSpringBeanUtils;
 
     public Page<RobaDto> pronadjiSvaUlja(final UniverzalniParametri parametri,
-                                         final String vrstaUlja) {
+                                         final String vrstaUlja,
+                                         final Partner ulogovaniPartner) {
         final Page<Roba> roba;
         final List<Integer> svePodGrupeUlja = new ArrayList<>();
         pronadjiSvePodGrupeUZavisnostiOdVrste(svePodGrupeUlja, vrstaUlja);
@@ -51,7 +51,7 @@ public class UljaService {
             roba = vratiRobuUZavisnostiOdKriterijuma(parametri, svePodGrupeUlja, pageable);
         }
 
-        return roba.map(robaSpringBeanUtils::pretvoriUDTO);
+        return roba.map(artikli -> robaSpringBeanUtils.pretvoriUDTO(artikli, ulogovaniPartner));
     }
 
     private void pronadjiSvePodGrupeUZavisnostiOdVrste(final List<Integer> svePodGrupeUlja, final String vrstaUlja) {

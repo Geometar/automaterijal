@@ -1,10 +1,12 @@
-package com.automaterijal.application.services;
+package com.automaterijal.application.services.roba;
 
 import com.automaterijal.application.domain.constants.GrupeKonstante;
 import com.automaterijal.application.domain.dto.RobaDto;
+import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.Roba;
 import com.automaterijal.application.domain.entity.RobaKatBrPro;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
+import com.automaterijal.application.services.RobaKatBrProService;
 import com.automaterijal.application.services.constants.GrupaService;
 import com.automaterijal.application.utils.RobaSpringBeanUtils;
 import com.automaterijal.application.utils.RobaStaticUtils;
@@ -41,7 +43,7 @@ public class AkumulatoriService {
     @NonNull
     final RobaSpringBeanUtils robaSpringBeanUtils;
 
-    public Page<RobaDto> pronadjiSveAkumulatore(final UniverzalniParametri parametri) {
+    public Page<RobaDto> pronadjiSveAkumulatore(final UniverzalniParametri parametri, final Partner ulogovaniPartner) {
         final Page<Roba> roba;
         final List<String> sveAkumulatorGrupeId = grupaService.vratiSveIdGrupePoNazivu(GrupeKonstante.AKUMULATOR);
         final Pageable pageable = PageRequest.of(
@@ -54,7 +56,7 @@ public class AkumulatoriService {
             roba = vratiRobuUZavisnostiOdKriterijuma(parametri, sveAkumulatorGrupeId, pageable);
         }
 
-        return roba.map(robaSpringBeanUtils::pretvoriUDTO);
+        return roba.map(artikli -> robaSpringBeanUtils.pretvoriUDTO(artikli, ulogovaniPartner));
     }
 
     private Page<Roba> vratiSvuRobuUZavisnostiOdTrazenogStanja(final Boolean naStanju, final List<String> sveAkumulatorGrupeId, final Pageable pageable) {

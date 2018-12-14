@@ -29,14 +29,14 @@ public class PartnerController {
     final UserDetailsService service;
 
     @NonNull
+    final
     UsersService usersService;
 
     @GetMapping
     public ResponseEntity<PartnerDto> vratiUlogovanogPartnera() {
         final PartnerDto dto = service.vratiUlogovanogKorisnika();
-
         if(dto != null) {
-            usersService.logovanomUseruPovecajKolikoSePutaLogovao(dto.getPpid());
+            usersService.logovanomUseruPovecajKolikoSePutaLogovao(483);
             return new ResponseEntity(dto, HttpStatus.OK);
         }
 

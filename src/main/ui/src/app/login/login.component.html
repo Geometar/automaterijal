@@ -2,7 +2,7 @@
 	<div class="flex-login">
 		<div class="login-form">
 			<h1>Login</h1>
-			<div class="alert alert-danger" role="alert" *ngIf="neuspesnoLogovanje">
+			<div class="alert alert-danger" role="alert" *ngIf="!uspesnoLogovanje">
 				<p>Username ili password je pogresan.</p>
 			</div>
 			<form role="form" [formGroup]="registerForm" (submit)="login()">

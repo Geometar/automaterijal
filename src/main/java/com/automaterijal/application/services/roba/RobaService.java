@@ -1,4 +1,4 @@
-package com.automaterijal.application.services;
+package com.automaterijal.application.services.roba;
 
 import com.automaterijal.application.domain.entity.Roba;
 import com.automaterijal.application.domain.repository.RobaRepository;
@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.TransactionScoped;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -24,6 +25,10 @@ public class RobaService {
 
     @NonNull
     final RobaRepository robaRepository;
+
+    public Optional<Roba> pronadjiRobuPoPrimarnomKljucu(final Long id) {
+        return robaRepository.findById(id);
+    }
 
     public List<Roba> pronadjiSvuRobu() {
         return robaRepository.findAll();

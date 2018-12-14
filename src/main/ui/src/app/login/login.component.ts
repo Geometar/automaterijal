@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Credentials } from '../model/credentials';
+import { Credentials, Partner } from '../model/dto';
 import { LoginService } from '../service/login.service';
-import { takeWhile } from 'rxjs/operators';
-import { Partner } from '../model/partner';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -16,7 +14,7 @@ export class LoginComponent implements OnInit {
   public submitted = false;
   public credentials: Credentials = {};
   public partner: Partner;
-  public neuspesnoLogovanje = false;
+  public uspesnoLogovanje = true;
 
   constructor(private loginServis: LoginService, private formBuilder: FormBuilder) { }
 
@@ -38,6 +36,6 @@ export class LoginComponent implements OnInit {
     }
     this.loginServis.ulogujSe(this.credentials);
     this.loginServis.ulogovaniPartner.subscribe(partner => this.partner = partner);
-    this.neuspesnoLogovanje = this.partner.ppid == null;
+    this.loginServis.daLiJeLogovanjeUspesno.subscribe(b => this.uspesnoLogovanje = b);
   }
 }

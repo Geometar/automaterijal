@@ -2,15 +2,16 @@ package com.automaterijal.application.utils;
 
 
 import com.automaterijal.application.domain.dto.RobaDto;
+import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.Roba;
 import com.automaterijal.application.domain.entity.RobaKatBrPro;
 import com.automaterijal.application.domain.mapper.RobaMapper;
 import com.automaterijal.application.services.RobaCeneService;
 import com.automaterijal.application.services.RobaKatBrProService;
-import com.automaterijal.application.services.RobaService;
 import com.automaterijal.application.services.constants.GrupaService;
 import com.automaterijal.application.services.constants.PodGrupaService;
 import com.automaterijal.application.services.constants.ProizvodjacService;
+import com.automaterijal.application.services.roba.RobaService;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -49,11 +50,11 @@ public class RobaSpringBeanUtils {
 
     final RobaMapper mapper = RobaMapper.INSTANCE;
 
-    public RobaDto pretvoriUDTO(final Roba roba) {
+    public RobaDto pretvoriUDTO(final Roba roba, final Partner partner) {
         manager.clear();
         final RobaDto dto = mapper.map(roba);
         dto.setProizvodjac(proizvodjacService.vrateNazivProizvodjacaPoId(roba.getProid()));
-        dto.setCena(robaCeneService.vratiCenuRobePoRobiId(roba.getRobaid()));
+        dto.setCena(robaCeneService.vratiCenuRobePoRobiId(roba, partner));
         dto.setGrupa(grupaService.vratiNazivGrupePoId(roba.getGrupaid()));
         dto.setPodGrupa(podGrupaService.vratiNazivPodGrupe(roba.getPodgrupaid(), roba.getGrupaid()));
         return dto;

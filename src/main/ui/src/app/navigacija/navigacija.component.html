@@ -2,12 +2,12 @@
   <mat-sidenav #drawer class="sidenav sidebar-color" fixedInViewport="true" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
     [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="!(isHandset$ | async)">
     <mat-toolbar *ngIf="partner.ppid" class="side-toolbar sidebar-color header-pozicija">
-      <div class="d-flex flex-column">
-        <div class="d-flex justify-content-center">
+      <div class="d-flex flex-column ">
+        <div class="d-flex justify-content-center header-sirina">
           <mat-icon class="icon-color">person</mat-icon>
         </div>
-        <p class="text-center">{{partner.naziv}}</p>
-        <p class="text-center">{{partner.email}}</p>
+        <p class="text-center header-navigacija">{{partner.naziv}}</p>
+        <p class="text-center header-navigacija">{{partner.email}}</p>
       </div>
     </mat-toolbar>
     <mat-nav-list [class.margin-gore]="partner.ppid">
@@ -22,7 +22,7 @@
         <p mat-line>O nama</p>
       </mat-list-item>
 
-      <mat-list-item class="material-icons" [routerLink]="['kontakt']">
+      <mat-list-item class="material-icons" [routerLink]="['kontakt']" [routerLinkActive]="['is-active']">
         <mat-icon class="icon-color" mat-list-icon>contact_phone</mat-icon>
         <p mat-line>Kontakt</p>
       </mat-list-item>
@@ -70,7 +70,7 @@
         <mat-icon class="icon-color" mat-list-icon>person</mat-icon>
         <p mat-line>Licni Podaci</p>
       </mat-list-item>
-      <mat-list-item class="material-icons" [routerLink]="['korpa']" [routerLinkActive]="['is-active']">
+      <mat-list-item class="material-icons" [routerLink]="['porudzbenice']" [routerLinkActive]="['is-active']">
         <mat-icon class="icon-color" mat-list-icon>list</mat-icon>
         <p mat-line>Porudzbine</p>
       </mat-list-item>

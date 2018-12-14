@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { throwError, BehaviorSubject, EMPTY } from 'rxjs';
-import { Credentials } from '../model/credentials';
+import { Credentials, Partner } from '../model/dto';
 import { timeoutWith, catchError, finalize } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { AppUtilsService } from '../utils/app-utils.service';
-import { Partner } from '../model/partner';
 import { Router } from '@angular/router';
 import { LocalStorageService } from './local-storage.service';
 
@@ -24,16 +23,15 @@ export class LoginService {
   private partnerSubjekat = new BehaviorSubject(this.partner);
   public ulogovaniPartner = this.partnerSubjekat.asObservable();
 
+  private uspesnoLogovanje = true;
+  private logovanjeSubjekat = new BehaviorSubject(this.uspesnoLogovanje);
+  public daLiJeLogovanjeUspesno = this.logovanjeSubjekat.asObservable();
+
   constructor(
     private http: HttpClient,
     private router: Router,
     private utils: AppUtilsService,
-    private storageServis: LocalStorageService) {
-      this.partner.email = 'radespasoje@gmail.com';
-      this.partner.naziv = 'Automaterijal';
-      this.partner.ppid = 7;
-      this.partnerSubjekat.next(this.partner);
-    }
+    private storageServis: LocalStorageService) { }
 
   public ulogujSe(credentials: Credentials) {
     const parameterObject = {};
@@ -51,8 +49,7 @@ export class LoginService {
         this.vratiUlogovanogKorisnika();
       },
         error => {
-          this.partner = new Partner();
-          this.partnerSubjekat.next(this.partner);
+          this.logovanjeSubjekat.next(false);
           this.storageServis.logout();
           console.log('Greska kod logovanja');
         });
@@ -67,11 +64,13 @@ export class LoginService {
       )
       .subscribe(() => {
         this.partner = new Partner();
+        this.logovanjeSubjekat.next(true);
         this.partnerSubjekat.next(this.partner);
         this.storageServis.logout();
         this.router.navigateByUrl('naslovna');
       },
         error => {
+          this.logovanjeSubjekat.next(false);
           console.log('Greska kod logout-a');
         });
   }
@@ -80,10 +79,10 @@ export class LoginService {
     const fullUrl = DOMAIN_URL + PARTNER_URL;
     this.http.get(fullUrl)
       .pipe(
-        // map((response: any) => response.json()),
         timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
         catchError((error: HttpErrorResponse) => {
           if (error.status === 404) {
+            this.logovanjeSubjekat.next(false);
             return EMPTY;
           }
           return throwError(error);

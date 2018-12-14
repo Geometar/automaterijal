@@ -44,4 +44,11 @@ public class PodGrupaService {
                 .map(PodGrupa::getPodGrupaId)
                 .collect(Collectors.toList());
     }
+
+    public List<Integer> vratiSvePodGrupePoNazivima(final List<String> nazivi) {
+        return pronadjiSvePodGrupe().stream()
+                .filter(podGrupa -> nazivi.contains(podGrupa.getNaziv()))
+                .map(PodGrupa::getPodGrupaId)
+                .collect(Collectors.toList());
+    }
 }

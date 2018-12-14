@@ -3,10 +3,7 @@ import { DataService } from '../service/data.service';
 import { Korpa, RobaKorpa } from '../model/porudzbenica';
 import { LocalStorageService } from '../service/local-storage.service';
 import { MatTable, MatDialog } from '@angular/material';
-import { Roba } from '../model/roba';
 import { IzmenaKolicineModalComponent } from './izmena-kolicine-modal/izmena-kolicine-modal.component';
-import { of } from 'rxjs';
-import { TouchSequence } from 'selenium-webdriver';
 
 @Component({
   selector: 'app-korpa',
