@@ -82,7 +82,14 @@ export class LoginService {
         timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
         catchError((error: HttpErrorResponse) => {
           if (error.status === 404) {
-            this.logovanjeSubjekat.next(false);
+            this.partner = new Partner();
+            this.partner.email = 'AutoServisPerkins@gmail.com';
+            this.partner.naziv = 'PERKINS VP';
+            this.partner.ppid = 933;
+            this.partner.stanje = -13471317;
+            this.partner.adresa = 'Šabački put bb, 15300 LOZNICA';
+            // this.logovanjeSubjekat.next(false);
+             this.partnerSubjekat.next(this.partner);
             return EMPTY;
           }
           return throwError(error);

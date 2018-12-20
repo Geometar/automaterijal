@@ -63,7 +63,16 @@ public class Partner {
     Double dozvoljeniminus;
     @Column(name = "dozvoljeniminus_rok")
     Double dozvoljeniminusRok;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "ppid")
     List<Popusti> popustiList;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "ppid")
+    Users users;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "ppid")
+    MestaIsporuke mestaIsporuke;
 }

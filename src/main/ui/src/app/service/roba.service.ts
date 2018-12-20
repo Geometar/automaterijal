@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { RobaPage } from '../model/dto';
 import { map, timeoutWith, catchError } from 'rxjs/operators';
 import { Sort } from '@angular/material';
 import { AppUtilsService } from '../utils/app-utils.service';
@@ -11,6 +10,7 @@ const ROBA_URL = '/roba';
 const FILTERI_URL = '/filteri';
 const AKUMULATORI_URL = '/akumulatori';
 const ULJA_URL = '/ulja';
+const OSTALE_KATEGORIJE_URL = '/kategorije';
 
 const TIMEOUT = 15000;
 const TIMEOUT_ERROR = 'Timeout error!';
@@ -21,9 +21,9 @@ const TIMEOUT_ERROR = 'Timeout error!';
 export class RobaService {
 
 
-  constructor(private http: Http, private utils: AppUtilsService) { }
+  constructor(private http: HttpClient, private utils: AppUtilsService) { }
 
-  public pronadjiSvuRobu(sort: Sort, pageSize, page, searchValue, naStanju, proizvodjacId): Observable<RobaPage> {
+  public pronadjiSvuRobu(sort: Sort, pageSize, page, searchValue, naStanju, proizvodjacId): Observable<any> {
     const parameterObject = {};
     parameterObject['pageSize'] = pageSize;
     parameterObject['page'] = page;
@@ -40,13 +40,12 @@ export class RobaService {
     return this.http
       .get(fullUrl)
       .pipe(
-        map((response: any) => response.json()),
         timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
         catchError((error: any) => throwError(error))
       );
   }
 
-  public pronadjiFiltere(sort: Sort, pageSize, page, searchValue, naStanju, proizvodjacId): Observable<RobaPage> {
+  public pronadjiFiltere(sort: Sort, pageSize, page, searchValue, naStanju, proizvodjacId): Observable<any> {
     const parameterObject = {};
     parameterObject['pageSize'] = pageSize;
     parameterObject['page'] = page;
@@ -62,13 +61,12 @@ export class RobaService {
     return this.http
       .get(fullUrl)
       .pipe(
-        map((response: any) => response.json()),
         timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
         catchError((error: any) => throwError(error))
       );
   }
 
-  public pronadjiAkumulatore(sort: Sort, pageSize, page, searchValue, naStanju, proizvodjacId): Observable<RobaPage> {
+  public pronadjiAkumulatore(sort: Sort, pageSize, page, searchValue, naStanju, proizvodjacId): Observable<any> {
     const parameterObject = {};
     parameterObject['pageSize'] = pageSize;
     parameterObject['page'] = page;
@@ -84,13 +82,12 @@ export class RobaService {
     return this.http
       .get(fullUrl)
       .pipe(
-        map((response: any) => response.json()),
         timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
         catchError((error: any) => throwError(error))
       );
   }
 
-  public pronadjiUlje(sort: Sort, pageSize, page, searchValue, naStanju, proizvodjacId, vrstaUlja): Observable<RobaPage> {
+  public pronadjiUlje(sort: Sort, pageSize, page, searchValue, naStanju, proizvodjacId, vrstaUlja): Observable<any> {
     const parameterObject = {};
     parameterObject['pageSize'] = pageSize;
     parameterObject['page'] = page;
@@ -106,7 +103,37 @@ export class RobaService {
     return this.http
       .get(fullUrl)
       .pipe(
-        map((response: any) => response.json()),
+        timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
+        catchError((error: any) => throwError(error))
+      );
+  }
+
+  public pronadjiPoKategoriji(sort: Sort, pageSize, page, searchValue, naStanju, proizvodjacId, kategorija): Observable<any> {
+    const parameterObject = {};
+    parameterObject['pageSize'] = pageSize;
+    parameterObject['page'] = page;
+    if (sort) {
+      parameterObject['sortBy'] = sort.active.toLocaleUpperCase();
+      parameterObject['sortDirection'] = sort.direction.toLocaleUpperCase();
+    }
+    parameterObject['searchTerm'] = searchValue;
+    parameterObject['proizvodjac'] = proizvodjacId;
+    parameterObject['naStanju'] = naStanju;
+    const parametersString = this.utils.vratiKveriParametre(parameterObject);
+    const fullUrl = DOMAIN_URL + OSTALE_KATEGORIJE_URL + '/' + kategorija + parametersString;
+    return this.http
+      .get(fullUrl)
+      .pipe(
+        timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
+        catchError((error: any) => throwError(error))
+      );
+  }
+
+  public ostaleKategorije(): Observable<any> {
+    const fullUrl = DOMAIN_URL + OSTALE_KATEGORIJE_URL;
+    return this.http
+      .get(fullUrl)
+      .pipe(
         timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
         catchError((error: any) => throwError(error))
       );

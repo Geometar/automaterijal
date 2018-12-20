@@ -9,6 +9,9 @@ import { KorpaComponent } from './korpa/korpa.component';
 import { LoginComponent } from './login/login.component';
 import { FakturaComponent } from './faktura/faktura.component';
 import { FakturaDetaljiComponent } from './faktura/faktura-detalji/faktura-detalji.component';
+import { OstaloComponent } from './roba/ostalo/ostalo.component';
+import { KategorijaSpecificnaComponent } from './roba/ostalo/kategorija-specificna/kategorija-specificna.component';
+import { PartnerComponent } from './partner/partner.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/naslovna', pathMatch: 'full' },
@@ -19,7 +22,11 @@ const routes: Routes = [
   {path: 'filteri' , component: FilteriComponent},
   {path: 'ulja' , component: UljaComponent},
   {path: 'akumulatori' , component: AkumulatoriComponent},
+  {path: 'ostalo' , component: OstaloComponent},
+  {path: 'ostalo/:id', component: KategorijaSpecificnaComponent},
   {path: 'login' , component: LoginComponent},
+  {path: 'kontakt' , component: DasboardComponent},
+  {path: 'licni-podaci' , component: PartnerComponent},
   {path: 'porudzbenice', component: FakturaComponent},
   {path: 'porudzbenice/:id', component: FakturaDetaljiComponent},
   {path: 'korpa', component: KorpaComponent}

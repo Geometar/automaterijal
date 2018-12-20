@@ -59,7 +59,7 @@ public class RobaService {
     }
 
     public List<Roba> pronadjuSvuRobuPoGrupiIdNaStanju(final List<String> grupeId) {
-        return robaRepository.findByGrupaidInAndStanjeGreaterThan(grupeId, -1);
+        return robaRepository.findByGrupaidInAndStanjeGreaterThan(grupeId, 0);
     }
 
     public List<Roba> pronadjiRobuPoKatBrojevima(final List<String> katBrojevi) {
@@ -105,7 +105,7 @@ public class RobaService {
     }
 
     public List<Roba> pronadjiSvuRobuPoPodGrupiIdLista(final List<Integer> podGrupaId) {
-        return robaRepository.findByPodgrupaidInAndStanjeGreaterThan(podGrupaId, -1);
+        return robaRepository.findByPodgrupaidInAndStanjeGreaterThan(podGrupaId, 0);
     }
 
 

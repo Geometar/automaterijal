@@ -1,7 +1,8 @@
 package com.automaterijal.application.controller;
 
+import com.automaterijal.application.domain.constants.RobaKategorije;
 import com.automaterijal.application.domain.entity.Proizvodjac;
-import com.automaterijal.application.services.constants.ProizvodjacService;
+import com.automaterijal.application.services.ProizvodjacService;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -41,5 +42,11 @@ public class ProizvodjacController {
             @PathVariable("vrsta") final String vrstaUlja
     ) {
         return new ResponseEntity(proizvodjacService.proizvodjaciUlja(vrstaUlja), HttpStatus.OK);
+    }
+    @GetMapping(value = "/kategorija/{kategorija}")
+    public ResponseEntity<List<Proizvodjac>> pronadjiSveProizvodjaceUlja(
+            @PathVariable("kategorija") final RobaKategorije kategorija
+    ) {
+        return new ResponseEntity(proizvodjacService.porizvodjacZaKategoriju(kategorija.getFieldName()), HttpStatus.OK);
     }
 }

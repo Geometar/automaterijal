@@ -36,16 +36,16 @@ public class FakturaController {
         final Integer iPageSize = pageSize == null ? 10 : pageSize;
 
         if (authentication == null) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         final CurrentUser user = (CurrentUser) authentication.getPrincipal();
 
         if (ppid != null && ppid.intValue() != user.getId().intValue()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
         final Page<FakturaDto> fakture = fakturaService.vratiSveFaktureUlogovanogKorisnika(user.vratiPartnera(), iPage, iPageSize);
-        return new ResponseEntity<>(fakture, HttpStatus.OK);
+        return ResponseEntity.ok(fakture);
     }
 
     @GetMapping(value = "/{ppid}/{id}")
@@ -55,18 +55,18 @@ public class FakturaController {
             final Authentication authentication
     ) {
         if (authentication == null) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         final CurrentUser user = (CurrentUser) authentication.getPrincipal();
 
         if (ppid != null && ppid.intValue() != user.getId().intValue()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
         final FakturaDto fakture = fakturaService.vratiFakuturuPojedinacno(user.vratiPartnera(), id);
         if(fakture != null) {
-            return new ResponseEntity<>(fakture, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.ok(fakture);
+    }
+        return ResponseEntity.notFound().build();
     }
 }

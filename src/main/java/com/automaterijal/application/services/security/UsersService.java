@@ -1,4 +1,4 @@
-package com.automaterijal.application.services;
+package com.automaterijal.application.services.security;
 
 import com.automaterijal.application.domain.entity.Users;
 import com.automaterijal.application.domain.repository.UsersRepository;
@@ -21,8 +21,8 @@ import java.util.Optional;
 public class UsersService {
 
     @NonNull
+    final UsersRepository usersRepository;
     final
-    UsersRepository usersRepository;
 
     public Optional<Users> pronadjiUseraPoIdu(final Integer id) {
         return usersRepository.findById(id);
@@ -38,7 +38,4 @@ public class UsersService {
            usersRepository.save(user);
        }
     }
-
-
-
 }

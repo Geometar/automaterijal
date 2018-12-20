@@ -4,7 +4,7 @@ import {MatButtonModule, MatCheckboxModule, MatTableModule, MatTabsModule,
   MatToolbarModule, MatSidenavModule, MatIconModule, MatListModule, MatGridListModule,
    MatCardModule, MatMenuModule, MatPaginatorModule, MatSortModule, MatExpansionModule,
     MatFormField, MatFormFieldModule, MatChipsModule, MatSelectModule, MatAutocompleteModule, 
-    MatRadioModule, MatSnackBarModule, MatBadgeModule, MatDialogModule, MatProgressSpinnerModule} from '@angular/material';
+    MatRadioModule, MatSnackBarModule, MatBadgeModule, MatDialogModule, MatProgressSpinnerModule, MatInputModule} from '@angular/material';
 import { LayoutModule } from '@angular/cdk/layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -13,6 +13,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatButtonModule,
     MatCheckboxModule,
     MatExpansionModule,
+    MatFormFieldModule,
+    MatInputModule,
     MatDialogModule,
     MatFormFieldModule,
     MatSnackBarModule,
@@ -45,6 +47,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatProgressSpinnerModule,
     MatExpansionModule,
     ReactiveFormsModule,
+    MatInputModule,
+    MatDialogModule,
     MatBadgeModule,
     MatRadioModule,
     MatFormFieldModule,

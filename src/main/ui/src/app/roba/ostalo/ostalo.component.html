@@ -1,0 +1,16 @@
+<div class="container-fluid">
+  <main *ngIf="kategorije">
+    <h1>Kategorije</h1>
+    <div *ngFor="let slovo of pocetnaSlova">
+      <div class="d-flex flex-row">
+        <div class="slovo">
+          <h2>{{slovo}}</h2>
+        </div>
+        <div *ngFor="let kategorija of vratiKategorijuNaSlovo(slovo)">
+          <a [routerLink]="[kategorija]" mat-button color="primary">{{"kategorija_" + kategorija | translate}}</a>
+        </div>
+      </div>
+      <hr>
+    </div>
+  </main>
+</div>

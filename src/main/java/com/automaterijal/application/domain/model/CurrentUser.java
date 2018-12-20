@@ -8,8 +8,8 @@ public class CurrentUser extends org.springframework.security.core.userdetails.U
 
     private final Partner partner;
 
-    public CurrentUser(final Partner partner, final String password) {
-        super(partner.getWebKorisnik(), password, AuthorityUtils.createAuthorityList(partner.getPrivilegije().toString()));
+    public CurrentUser(final Partner partner) {
+        super(partner.getWebKorisnik(), partner.getUsers().getPassword(), AuthorityUtils.createAuthorityList(partner.getPrivilegije().toString()));
         this.partner = partner;
     }
 

@@ -1,10 +1,12 @@
-package com.automaterijal.application.services.constants;
+package com.automaterijal.application.services;
 
 
 import com.automaterijal.application.domain.constants.GrupeKonstante;
 import com.automaterijal.application.domain.entity.Proizvodjac;
 import com.automaterijal.application.domain.entity.Roba;
 import com.automaterijal.application.domain.repository.ProizvodjacRepository;
+import com.automaterijal.application.services.constants.GrupaService;
+import com.automaterijal.application.services.constants.PodGrupaService;
 import com.automaterijal.application.services.roba.RobaService;
 import com.automaterijal.application.utils.RobaStaticUtils;
 import lombok.AccessLevel;
@@ -72,6 +74,18 @@ public class ProizvodjacService {
                 .map(Roba::getProid)
                 .collect(Collectors.toSet());
         final List<Proizvodjac> proizvodjaci = pronadjiSveProizvodjace().stream().filter(proizvodjac -> filterRoba.contains(proizvodjac.getProid())).collect(Collectors.toList());
+        proizvodjaci.add(0, new Proizvodjac("-99", SVI_PROIZVODJACI));
+        return proizvodjaci;
+    }
+
+    public List<Proizvodjac> porizvodjacZaKategoriju(final List<String> podVrsta) {
+        final List<Integer> svePodGrupeUlja = new ArrayList<>();
+        podVrsta.forEach(naziv -> svePodGrupeUlja.addAll(podGrupaService.vratiSvePodGrupeIdPoNazivu(naziv)));
+        final Set<String> roba = robaService.pronadjiSvuRobuPoPodGrupiIdLista(svePodGrupeUlja)
+                .stream()
+                .map(Roba::getProid)
+                .collect(Collectors.toSet());
+        final List<Proizvodjac> proizvodjaci = pronadjiSveProizvodjace().stream().filter(proizvodjac -> roba.contains(proizvodjac.getProid())).collect(Collectors.toList());
         proizvodjaci.add(0, new Proizvodjac("-99", SVI_PROIZVODJACI));
         return proizvodjaci;
     }

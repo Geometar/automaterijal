@@ -25,7 +25,10 @@ export class Partner {
     ppid?: number;
     naziv?: string;
     email?: string;
+    adresa?: string;
     webKorisnik?: string;
+    noviPassword?: string;
+    stariPassword?: string;
     stanje?: number;
     stanjeporoku?: number;
 }

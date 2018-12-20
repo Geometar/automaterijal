@@ -11,7 +11,10 @@ public class PartnerDto {
     Integer ppid;
     String naziv;
     String email;
+    String adresa;
     String webKorisnik;
+    String noviPassword;
+    String stariPassword;
     Double stanje;
     Double stanjeporoku;
 

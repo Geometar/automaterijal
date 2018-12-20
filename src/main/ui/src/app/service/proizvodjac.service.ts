@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { map, timeoutWith, catchError } from 'rxjs/operators';
-import { Proizvodjac } from '../model/dto';
+import { timeoutWith, catchError } from 'rxjs/operators';
 import { AppUtilsService } from '../utils/app-utils.service';
 import { HttpClient } from '@angular/common/http';
 
@@ -10,6 +9,7 @@ const ROBA_URL = '/proizvodjaci';
 const FILTERI_URL = '/filteri';
 const AKUMULATORI_URL = '/akumulatori';
 const ULJA_URL = '/ulja';
+const KATEGORIJA_URL = '/kategorija';
 
 const TIMEOUT = 15000;
 const TIMEOUT_ERROR = 'Timeout error!';
@@ -34,6 +34,17 @@ export class ProizvodjacService {
 
   public pronadjiSveProizvodjaceFiltera(): Observable<any> {
     const fullUrl = DOMAIN_URL + ROBA_URL + FILTERI_URL;
+
+    return this.http
+        .get(fullUrl)
+        .pipe(
+          timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
+          catchError((error: any) => throwError(error))
+        );
+  }
+
+  public pronadjiSveProizvodjaceKategorije(kategorija): Observable<any> {
+    const fullUrl = DOMAIN_URL + ROBA_URL + KATEGORIJA_URL + '/' + kategorija;
 
     return this.http
         .get(fullUrl)

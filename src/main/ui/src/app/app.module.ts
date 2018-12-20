@@ -28,6 +28,9 @@ import { TranslatePipe } from './pipes/PrevodilacPipe';
 import { EmptyPipe } from './pipes/EmptyPipe';
 import { FakturaDetaljiComponent } from './faktura/faktura-detalji/faktura-detalji.component';
 import { DatePipe } from './pipes/DatePipe';
+import { OstaloComponent } from './roba/ostalo/ostalo.component';
+import { KategorijaSpecificnaComponent } from './roba/ostalo/kategorija-specificna/kategorija-specificna.component';
+import { PartnerComponent } from './partner/partner.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +54,10 @@ import { DatePipe } from './pipes/DatePipe';
     TranslatePipe,
     EmptyPipe,
     DatePipe,
-    FakturaDetaljiComponent
+    FakturaDetaljiComponent,
+    OstaloComponent,
+    KategorijaSpecificnaComponent,
+    PartnerComponent
   ],
   imports: [
     BrowserModule,
