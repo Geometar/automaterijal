@@ -8,7 +8,6 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,26 +26,26 @@ public class ProizvodjacController {
 
     @GetMapping
     public ResponseEntity<List<Proizvodjac>> pronadjiSve() {
-        return new ResponseEntity(proizvodjacService.pronadjiSveProizvodjace(), HttpStatus.OK);
+        return ResponseEntity.ok(proizvodjacService.pronadjiSveProizvodjace());
     }
     @GetMapping(value = "/filteri")
     public ResponseEntity<List<Proizvodjac>> pronadjiSveProizvodjaceFiltera() {
-        return new ResponseEntity(proizvodjacService.proizvodjaciFiltera(), HttpStatus.OK);
+        return ResponseEntity.ok(proizvodjacService.proizvodjaciFiltera());
     }
     @GetMapping(value = "/akumulatori")
     public ResponseEntity<List<Proizvodjac>> pronadjiSveProizvodjaceAkumulatora() {
-        return new ResponseEntity(proizvodjacService.proizvodjaciAkumulatora(), HttpStatus.OK);
+        return ResponseEntity.ok(proizvodjacService.proizvodjaciAkumulatora());
     }
     @GetMapping(value = "/ulja/{vrsta}")
     public ResponseEntity<List<Proizvodjac>> pronadjiSveProizvodjaceUlja(
             @PathVariable("vrsta") final String vrstaUlja
     ) {
-        return new ResponseEntity(proizvodjacService.proizvodjaciUlja(vrstaUlja), HttpStatus.OK);
+        return ResponseEntity.ok(proizvodjacService.proizvodjaciUlja(vrstaUlja));
     }
     @GetMapping(value = "/kategorija/{kategorija}")
     public ResponseEntity<List<Proizvodjac>> pronadjiSveProizvodjaceUlja(
             @PathVariable("kategorija") final RobaKategorije kategorija
     ) {
-        return new ResponseEntity(proizvodjacService.porizvodjacZaKategoriju(kategorija.getFieldName()), HttpStatus.OK);
+        return ResponseEntity.ok(proizvodjacService.porizvodjacZaKategoriju(kategorija.getFieldName()));
     }
 }

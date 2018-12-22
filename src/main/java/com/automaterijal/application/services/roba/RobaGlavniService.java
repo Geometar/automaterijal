@@ -1,11 +1,10 @@
-package com.automaterijal.application.services;
+package com.automaterijal.application.services.roba;
 
 import com.automaterijal.application.domain.dto.RobaDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.Roba;
 import com.automaterijal.application.domain.entity.RobaKatBrPro;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
-import com.automaterijal.application.services.roba.RobaService;
 import com.automaterijal.application.utils.RobaSpringBeanUtils;
 import com.automaterijal.application.utils.RobaStaticUtils;
 import lombok.AccessLevel;

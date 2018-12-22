@@ -3,12 +3,13 @@ package com.automaterijal.application.controller;
 import com.automaterijal.application.domain.constants.RobaSortiranjePolja;
 import com.automaterijal.application.domain.dto.RobaDto;
 import com.automaterijal.application.domain.entity.Partner;
-import com.automaterijal.application.domain.model.CurrentUser;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
-import com.automaterijal.application.services.RobaGlavniService;
 import com.automaterijal.application.services.roba.AkumulatoriService;
 import com.automaterijal.application.services.roba.FilterService;
+import com.automaterijal.application.services.roba.RobaGlavniService;
 import com.automaterijal.application.services.roba.UljaService;
+import com.automaterijal.application.utils.PartnerStaticUtils;
+import com.automaterijal.application.utils.RobaStaticUtils;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,6 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.util.CollectionUtils;
@@ -50,28 +50,18 @@ public class RobaController {
             @RequestParam(required = false) final String searchTerm,
             final Authentication authentication
     ) {
-        final Integer iPage = page == null ? 0 : page;
-        final Integer iPageSize = pageSize == null ? 10 : pageSize;
-        final String iProizvodjac = proizvodjac == null ? null : proizvodjac;
-        final Boolean iNaStanju = naStanju == null ? true : naStanju;
-        final RobaSortiranjePolja iSortiranjePolja = sortBy == null ? RobaSortiranjePolja.KATBR : sortBy;
-        final Sort.Direction iDirection = sortDirection == null ? Sort.Direction.ASC: sortDirection;
-        final String iSearchTerm = searchTerm == null ? null : searchTerm.trim().toUpperCase();
-        Partner ulogovaniPartner= null;
-        if (authentication != null && authentication.isAuthenticated() && authentication.getPrincipal() instanceof CurrentUser) {
-            final CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
-            ulogovaniPartner = currentUser.vratiPartnera();
-        }
-            popuniParametreZaServis(iPage, iPageSize, iProizvodjac, iNaStanju, iSortiranjePolja, iDirection, iSearchTerm);
+
+        final UniverzalniParametri univerzalniParametri = RobaStaticUtils.popuniIVratiGenerickeParametreZaServis(page, pageSize, sortBy, sortBy, proizvodjac, naStanju, sortBy, sortDirection, searchTerm);
+        final Partner ulogovaniPartner = PartnerStaticUtils.vratiPartneraIsSesije(authentication);
 
         final Page<RobaDto> roba = robaGlavniService.pronadjiRobuPoPretrazi(
-                popuniParametreZaServis(iPage, iPageSize, iProizvodjac, iNaStanju, iSortiranjePolja, iDirection, iSearchTerm), ulogovaniPartner
+                univerzalniParametri, ulogovaniPartner
         );
 
-        if(!CollectionUtils.isEmpty(roba.getContent())) {
-            return new ResponseEntity(roba, HttpStatus.OK);
+        if (!CollectionUtils.isEmpty(roba.getContent())) {
+            return ResponseEntity.ok(roba);
         }
-        return new ResponseEntity(HttpStatus.NOT_FOUND);
+        return ResponseEntity.notFound().build();
     }
 
     @GetMapping(value = "/filteri")
@@ -85,27 +75,17 @@ public class RobaController {
             @RequestParam(required = false) final String searchTerm,
             final Authentication authentication
     ) {
-        final Integer iPage = page == null ? 0 : page;
-        final Integer iPageSize = pageSize == null ? 10 : pageSize;
-        final String iProizvodjac = proizvodjac == null ? null : proizvodjac;
-        final Boolean iNaStanju = naStanju == null ? true : naStanju;
-        final RobaSortiranjePolja iSortiranjePolja = sortBy == null ? RobaSortiranjePolja.KATBR : sortBy;
-        final Sort.Direction iDirection = sortDirection == null ? Sort.Direction.ASC: sortDirection;
-        final String iSearchTerm = searchTerm == null ? null : searchTerm.trim().toUpperCase();
-        Partner ulogovaniPartner= null;
-        if (authentication != null && authentication.isAuthenticated() && authentication.getPrincipal() instanceof CurrentUser) {
-            final CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
-            ulogovaniPartner = currentUser.vratiPartnera();
-        }
-        final Page<RobaDto> roba =  filterService.pronadjiSveFiltere(
-                popuniParametreZaServis(iPage, iPageSize, iProizvodjac, iNaStanju, iSortiranjePolja, iDirection, iSearchTerm),
-                ulogovaniPartner
+        final UniverzalniParametri univerzalniParametri = RobaStaticUtils.popuniIVratiGenerickeParametreZaServis(page, pageSize, sortBy, sortBy, proizvodjac, naStanju, sortBy, sortDirection, searchTerm);
+        final Partner ulogovaniPartner = PartnerStaticUtils.vratiPartneraIsSesije(authentication);
+        final Page<RobaDto> roba = filterService.pronadjiSveFiltere(
+                univerzalniParametri, ulogovaniPartner
         );
 
-        if(!CollectionUtils.isEmpty(roba.getContent())) {
-            return new ResponseEntity(roba, HttpStatus.OK);
+        if (!CollectionUtils.isEmpty(roba.getContent())) {
+            return ResponseEntity.ok(roba);
         }
-        return new ResponseEntity(HttpStatus.NOT_FOUND);
+
+        return ResponseEntity.notFound().build();
     }
 
     @GetMapping(value = "/akumulatori")
@@ -119,29 +99,18 @@ public class RobaController {
             @RequestParam(required = false) final String searchTerm,
             final Authentication authentication
     ) {
-        final Integer iPage = page == null ? 0 : page;
-        final Integer iPageSize = pageSize == null ? 10 : pageSize;
-        final String iProizvodjac = proizvodjac == null ? null : proizvodjac;
-        final Boolean iNaStanju = naStanju == null ? true : naStanju;
-        final RobaSortiranjePolja iSortiranjePolja = sortBy == null ? RobaSortiranjePolja.KATBR : sortBy;
-        final Sort.Direction iDirection = sortDirection == null ? Sort.Direction.ASC: sortDirection;
-        final String iSearchTerm = searchTerm == null ? null : searchTerm.trim().toUpperCase();
-        Partner ulogovaniPartner= null;
-        if (authentication != null && authentication.isAuthenticated() && authentication.getPrincipal() instanceof CurrentUser) {
-            final CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
-            ulogovaniPartner = currentUser.vratiPartnera();
-        }
 
-        final Page<RobaDto> roba =  akumulatoriService.pronadjiSveAkumulatore(
-                popuniParametreZaServis(iPage, iPageSize, iProizvodjac, iNaStanju, iSortiranjePolja, iDirection, iSearchTerm),
-                ulogovaniPartner
+        final UniverzalniParametri univerzalniParametri = RobaStaticUtils.popuniIVratiGenerickeParametreZaServis(page, pageSize, sortBy, sortBy, proizvodjac, naStanju, sortBy, sortDirection, searchTerm);
+        final Partner ulogovaniPartner = PartnerStaticUtils.vratiPartneraIsSesije(authentication);
+
+        final Page<RobaDto> roba = akumulatoriService.pronadjiSveAkumulatore(
+                univerzalniParametri, ulogovaniPartner
         );
 
-
-        if(!CollectionUtils.isEmpty(roba.getContent())) {
-            return new ResponseEntity(roba, HttpStatus.OK);
+        if (!CollectionUtils.isEmpty(roba.getContent())) {
+            return ResponseEntity.ok(roba);
         }
-        return new ResponseEntity(HttpStatus.NOT_FOUND);
+        return ResponseEntity.notFound().build();
     }
 
     @GetMapping(value = "/ulja/{vrsta}")
@@ -156,31 +125,16 @@ public class RobaController {
             @RequestParam(required = false) final String searchTerm,
             final Authentication authentication
     ) {
-        final Integer iPage = page == null ? 0 : page;
-        final Integer iPageSize = pageSize == null ? 10 : pageSize;
-        final String iProizvodjac = proizvodjac == null ? null : proizvodjac;
-        final Boolean iNaStanju = naStanju == null ? true : naStanju;
-        final RobaSortiranjePolja iSortiranjePolja = sortBy == null ? RobaSortiranjePolja.KATBR : sortBy;
-        final Sort.Direction iDirection = sortDirection == null ? Sort.Direction.ASC: sortDirection;
-        final String iSearchTerm = searchTerm == null ? null : searchTerm.trim().toUpperCase();
-        Partner ulogovaniPartner= null;
-        if (authentication != null && authentication.isAuthenticated() && authentication.getPrincipal() instanceof CurrentUser) {
-            final CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
-            ulogovaniPartner = currentUser.vratiPartnera();
-        }
+        final UniverzalniParametri univerzalniParametri = RobaStaticUtils.popuniIVratiGenerickeParametreZaServis(page, pageSize, sortBy, sortBy, proizvodjac, naStanju, sortBy, sortDirection, searchTerm);
+        final Partner ulogovaniPartner = PartnerStaticUtils.vratiPartneraIsSesije(authentication);
 
-        final Page<RobaDto> roba =  uljaService.pronadjiSvaUlja(
-                popuniParametreZaServis(iPage, iPageSize, iProizvodjac, iNaStanju, iSortiranjePolja, iDirection, iSearchTerm),
-                vrstaUlja, ulogovaniPartner
+        final Page<RobaDto> roba = uljaService.pronadjiSvaUlja(
+                univerzalniParametri, vrstaUlja, ulogovaniPartner
         );
 
-        if(!CollectionUtils.isEmpty(roba.getContent())) {
-            return new ResponseEntity(roba, HttpStatus.OK);
+        if (!CollectionUtils.isEmpty(roba.getContent())) {
+            return ResponseEntity.ok(roba);
         }
-        return new ResponseEntity(HttpStatus.NOT_FOUND);
-    }
-
-    private UniverzalniParametri popuniParametreZaServis(final Integer internalPage, final Integer internalPageSize, final String internalProizvodjac, final Boolean internalNaStanju, final RobaSortiranjePolja internalSortiranjePolja, final Sort.Direction internalDirection, final String internalSearchTerm) {
-        return new UniverzalniParametri(internalPage, internalPageSize, internalProizvodjac, internalNaStanju, internalSortiranjePolja, internalDirection, internalSearchTerm);
+        return ResponseEntity.notFound().build();
     }
 }

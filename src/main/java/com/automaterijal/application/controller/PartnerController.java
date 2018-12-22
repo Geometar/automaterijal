@@ -1,9 +1,11 @@
 package com.automaterijal.application.controller;
 
 import com.automaterijal.application.domain.dto.PartnerDto;
+import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.services.PartnerService;
 import com.automaterijal.application.services.security.UserDetailsService;
 import com.automaterijal.application.services.security.UsersService;
+import com.automaterijal.application.utils.PartnerStaticUtils;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -34,22 +36,26 @@ public class PartnerController {
     final PartnerService partnerService;
 
     @GetMapping
-    public ResponseEntity<PartnerDto> vratiUlogovanogPartnera() {
-        final PartnerDto dto = service.vratiUlogovanogKorisnika();
+    public ResponseEntity<PartnerDto> vratiUlogovanogPartnera(final Authentication authentication) {
+        final PartnerDto dto = service.vratiUlogovanogKorisnika(authentication);
         if(dto != null) {
             usersService.logovanomUseruPovecajKolikoSePutaLogovao(dto.getPpid());
-            return new ResponseEntity(dto, HttpStatus.OK);
+            return ResponseEntity.ok(dto);
         }
 
-        return new ResponseEntity(HttpStatus.NOT_FOUND);
+        return ResponseEntity.notFound().build();
     }
 
     @PutMapping
     public ResponseEntity<PartnerDto> updejtujPartnera(@RequestBody final PartnerDto partnerDto, final Authentication authentication) {
-        final PartnerDto partner = partnerService.updejtPartnera(partnerDto, authentication);
-        if(partner == null) {
+        final Partner partner = PartnerStaticUtils.vratiPartneraIsSesije(authentication);
+        if(partner.getPpid().intValue() != partnerDto.getPpid().intValue()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        final PartnerDto response = partnerService.updejtPartnera(partnerDto, authentication);
+        if(response == null) {
             return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.ok(partner);
+        return ResponseEntity.ok(response);
     }
 }

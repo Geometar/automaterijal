@@ -1,4 +1,4 @@
-package com.automaterijal.application.services.constants;
+package com.automaterijal.application.services.roba.grupe;
 
 import com.automaterijal.application.domain.entity.Grupa;
 import com.automaterijal.application.domain.repository.GrupaRepository;
@@ -29,20 +29,17 @@ public class GrupaService {
     }
 
     public List<String> vratiSveIdGrupePoNazivu(final String naziv) {
-        return pronadjiSveGrupe().stream()
-                .filter(grupa -> grupa.getNaziv().equals(naziv))
+        return grupaRepository.findByNaziv(naziv)
+                .stream()
                 .map(Grupa::getGrupaid)
                 .collect(Collectors.toList());
     }
 
     public String vratiNazivGrupePoId(final String id) {
         String retVal = null;
-        final Optional<String> naziv =  pronadjiSveGrupe().stream()
-                .filter(grupa -> grupa.getGrupaid().equals(id))
-                .map(Grupa::getNaziv)
-                .findFirst();
-        if(naziv.isPresent()) {
-            retVal = naziv.get();
+        final Optional<Grupa> grupa =  grupaRepository.findById(id);
+        if(grupa.isPresent()) {
+            retVal = grupa.get().getNaziv();
         }
         return retVal;
     }

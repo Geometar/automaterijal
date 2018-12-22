@@ -1,4 +1,4 @@
-package com.automaterijal.application.services;
+package com.automaterijal.application.services.roba;
 
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.Popusti;

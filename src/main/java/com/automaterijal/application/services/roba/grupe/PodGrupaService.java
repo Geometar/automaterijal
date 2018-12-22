@@ -1,4 +1,4 @@
-package com.automaterijal.application.services.constants;
+package com.automaterijal.application.services.roba.grupe;
 
 import com.automaterijal.application.domain.entity.PodGrupa;
 import com.automaterijal.application.domain.repository.PodGrupaRepository;
@@ -23,31 +23,28 @@ public class PodGrupaService {
     final PodGrupaRepository podGrupaRepository;
 
     public List<PodGrupa> pronadjiSvePodGrupe() {
-       return podGrupaRepository.findAll();
+        return podGrupaRepository.findAll();
     }
 
     public String vratiNazivPodGrupe(final int podGrupaId, final String grupaId) {
         String retVal = null;
-        final Optional<String> naziv = pronadjiSvePodGrupe().stream()
-                .filter(podGrupa -> podGrupa.getGrupaId().equals(grupaId) && podGrupa.getPodGrupaId() == podGrupaId)
-                .map(PodGrupa::getNaziv)
-                .findFirst();
-        if (naziv.isPresent()) {
-            retVal = naziv.get();
+        final Optional<PodGrupa> podGrupa = podGrupaRepository.findByPodGrupaIdAndGrupaId(podGrupaId, grupaId);
+        if (podGrupa.isPresent()) {
+            retVal = podGrupa.get().getNaziv();
         }
         return retVal;
     }
 
     public List<Integer> vratiSvePodGrupeIdPoNazivu(final String naziv) {
-        return pronadjiSvePodGrupe().stream()
-                .filter(podGrupa -> podGrupa.getNaziv().equals(naziv))
+        return podGrupaRepository.findByNazivIn(naziv)
+                .stream()
                 .map(PodGrupa::getPodGrupaId)
                 .collect(Collectors.toList());
     }
 
     public List<Integer> vratiSvePodGrupePoNazivima(final List<String> nazivi) {
-        return pronadjiSvePodGrupe().stream()
-                .filter(podGrupa -> nazivi.contains(podGrupa.getNaziv()))
+        return podGrupaRepository.findByNazivIn(nazivi)
+                .stream()
                 .map(PodGrupa::getPodGrupaId)
                 .collect(Collectors.toList());
     }

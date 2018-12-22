@@ -11,6 +11,7 @@ import com.automaterijal.application.domain.repository.MestaIsporukeRepository;
 import com.automaterijal.application.domain.repository.valuehelp.NacinPlacanjaRepository;
 import com.automaterijal.application.domain.repository.valuehelp.NacinPrevozaRepository;
 import com.automaterijal.application.domain.repository.valuehelp.StatusRepository;
+import com.automaterijal.application.services.roba.RobaCeneService;
 import com.automaterijal.application.services.roba.RobaService;
 import lombok.AccessLevel;
 import lombok.NonNull;

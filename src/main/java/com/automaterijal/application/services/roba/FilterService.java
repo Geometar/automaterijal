@@ -6,7 +6,7 @@ import com.automaterijal.application.domain.dto.RobaDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.Roba;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
-import com.automaterijal.application.services.constants.PodGrupaService;
+import com.automaterijal.application.services.roba.grupe.PodGrupaService;
 import com.automaterijal.application.utils.RobaSpringBeanUtils;
 import lombok.AccessLevel;
 import lombok.NonNull;
