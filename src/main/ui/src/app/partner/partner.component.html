@@ -131,6 +131,9 @@
                   <p class="upozorenje">Korisničko ime mora imati vise od 3 karaktera</p>
                 </div>
               </div>
+              <div *ngIf="usernameSubmited && korisnickoImeJeZauzeto">
+                <p class="upozorenje">Korisničko ime je vec zazueto</p>
+              </div>
               <div class="button-div">
                 <button class="button-glavni" (click)="promeniUsername(username.value)" mat-raised-button>Sacuvaj</button>
                 <button *ngIf="korisnickoImeMetod != 'email'" class="button-error float-right" (click)="username.value = ''; usernameSubmited=false"
@@ -150,7 +153,7 @@
                   <input matInput type="password" #staraSifra formControlName="staraSifra" placeholder="Stara šifra">
                 </mat-form-field>
                 <div *ngIf="passwordSubmited && !s.staraSifra.errors && losaSifra">
-                    <p class="upozorenje">Stara šifra nije tačna</p>
+                  <p class="upozorenje">Stara šifra nije tačna</p>
                 </div>
                 <div *ngIf="passwordSubmited && s.staraSifra.errors">
                   <div *ngIf="s.staraSifra.errors.required">

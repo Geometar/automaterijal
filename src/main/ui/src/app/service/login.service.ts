@@ -88,7 +88,7 @@ export class LoginService {
             this.partner.ppid = 933;
             this.partner.stanje = -13471317;
             this.partner.adresa = 'Šabački put bb, 15300 LOZNICA';
-            // this.logovanjeSubjekat.next(false);
+            this.logovanjeSubjekat.next(false);
              this.partnerSubjekat.next(this.partner);
             return EMPTY;
           }

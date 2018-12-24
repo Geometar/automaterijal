@@ -1,6 +1,6 @@
 <div class="container-fluid">
     <main>
-        <div *ngIf="faktura && fakturaDetalji">
+        <div *ngIf="faktura && fakturaDetalji && dataSource != null && dataSource.length > 0">
             <h1>Detalji fakture: {{faktura.orderId}}</h1>
             <div class="d-flex flex-row-reverse bd-highlight">
                 <button class="button-glavni nazad-button" mat-raised-button (click)="idiNazad()">
@@ -139,8 +139,20 @@
                 </div>
             </div>
         </div>
+        <div *ngIf="dataSource == null || dataSource.length == 0">
+            <div class="d-flex flex-row-reverse bd-highlight">
+                <button class="button-glavni nazad-button nazad-button-dole" mat-raised-button (click)="idiNazad()">
+                    <mat-icon>keyboard_arrow_left</mat-icon> Nazad
+                </button>
+            </div>
+            <div class="d-flex flex-column prazna-tabela" *ngIf="!pronadjenaRoba">
+                <i class="material-icons icon-size">
+                    error_outline
+                </i>
+                <h1 class="h1-upozorenje">Porudzbenica je prazna</h1>
+            </div>
+        </div>
         <div *ngIf="error">
-
             <div class="d-flex flex-row-reverse bd-highlight">
                 <button class="button-glavni nazad-button greska-button" mat-raised-button (click)="idiNazad()">
                     <mat-icon>keyboard_arrow_left</mat-icon> Nazad

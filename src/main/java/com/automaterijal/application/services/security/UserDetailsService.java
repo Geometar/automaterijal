@@ -5,21 +5,25 @@ import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.mapper.PartnerMapper;
 import com.automaterijal.application.domain.model.CurrentUser;
 import com.automaterijal.application.domain.repository.PartnerRepository;
-import com.automaterijal.application.domain.repository.UsersRepository;
-import com.automaterijal.application.utils.PartnerStaticUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.automaterijal.application.utils.PartnerSpringBeanUtils;
+import lombok.AccessLevel;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
-    @Autowired
-    public PartnerRepository partnerRepository;
+    @NonNull
+    final PartnerRepository partnerRepository;
 
-    @Autowired
-    public UsersRepository usersRepository;
+    @NonNull
+    final PartnerSpringBeanUtils partnerSpringBeanUtils;
 
     final PartnerMapper mapper = PartnerMapper.INSTANCE;
 
@@ -34,7 +38,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 
     public PartnerDto vratiUlogovanogKorisnika(final Authentication authentication) {
         PartnerDto partnerDto = null;
-        final Partner partner = PartnerStaticUtils.vratiPartneraIsSesije(authentication);
+        final Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
         if (partner != null) {
             partnerDto = mapper.map(partner);
         }

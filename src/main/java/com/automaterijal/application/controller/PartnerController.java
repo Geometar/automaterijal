@@ -5,7 +5,7 @@ import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.services.PartnerService;
 import com.automaterijal.application.services.security.UserDetailsService;
 import com.automaterijal.application.services.security.UsersService;
-import com.automaterijal.application.utils.PartnerStaticUtils;
+import com.automaterijal.application.utils.PartnerSpringBeanUtils;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +35,9 @@ public class PartnerController {
     @NonNull
     final PartnerService partnerService;
 
+    @NonNull
+    final PartnerSpringBeanUtils partnerSpringBeanUtils;
+
     @GetMapping
     public ResponseEntity<PartnerDto> vratiUlogovanogPartnera(final Authentication authentication) {
         final PartnerDto dto = service.vratiUlogovanogKorisnika(authentication);
@@ -48,9 +51,15 @@ public class PartnerController {
 
     @PutMapping
     public ResponseEntity<PartnerDto> updejtujPartnera(@RequestBody final PartnerDto partnerDto, final Authentication authentication) {
-        final Partner partner = PartnerStaticUtils.vratiPartneraIsSesije(authentication);
+        final Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
         if(partner.getPpid().intValue() != partnerDto.getPpid().intValue()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        if(partnerDto.getWebKorisnik() != null
+                && !partnerDto.getWebKorisnik().equals(partner.getWebKorisnik())
+                && partnerService.daLiPostojiVecZauzetaRegistracije(partnerDto)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
         }
         final PartnerDto response = partnerService.updejtPartnera(partnerDto, authentication);
         if(response == null) {

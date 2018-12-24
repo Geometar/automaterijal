@@ -92,9 +92,9 @@ public class ProizvodjacService {
 
     private void pronadjiSvePodGrupeUZavisnostiOdVrste(final List<Integer> svePodGrupeUlja, final String vrstaUlja) {
         final String[] vrsteUlja = RobaStaticUtils.pronadjiSveVrsteUlja(vrstaUlja);
-        Arrays.stream(vrsteUlja).forEach(vrsta -> {
-            svePodGrupeUlja.addAll(podGrupaService.vratiSvePodGrupeIdPoNazivu(vrsta));
-        });
+        Arrays.stream(vrsteUlja)
+                .filter(str ->  str != null)
+                .forEach(vrsta -> svePodGrupeUlja.addAll(podGrupaService.vratiSvePodGrupeIdPoNazivu(vrsta)));
     }
 
     public String vrateNazivProizvodjacaPoId(final String id) {

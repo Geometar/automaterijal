@@ -43,4 +43,17 @@ public class PartnerService {
         }
         return retVal;
     }
+
+    public boolean daLiPostojiVecZauzetaRegistracije(final PartnerDto partnerDto) {
+        return partnerRepository.findByWebKorisnik(partnerDto.getWebKorisnik()) != null;
+    }
+
+    public Partner pronadjiPartneraPoId(final Integer id) {
+        Partner retVal = null;
+        final Optional<Partner> optionalPartner = partnerRepository.findById(id);
+        if(optionalPartner.isPresent()) {
+            retVal = optionalPartner.get();
+        }
+        return retVal;
+    }
 }

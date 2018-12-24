@@ -6,7 +6,7 @@ import com.automaterijal.application.domain.dto.RobaDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.services.roba.RobaKategorijeService;
-import com.automaterijal.application.utils.PartnerStaticUtils;
+import com.automaterijal.application.utils.PartnerSpringBeanUtils;
 import com.automaterijal.application.utils.RobaStaticUtils;
 import lombok.AccessLevel;
 import lombok.NonNull;
@@ -34,6 +34,9 @@ public class RobaKategorijeController {
     final
     RobaKategorijeService kategorijeService;
 
+    @NonNull
+    final PartnerSpringBeanUtils partnerSpringBeanUtils;
+
     @GetMapping
     public List<String> vratiSveKategorije() {
         return Arrays.stream(RobaKategorije.values()).map(RobaKategorije::name).collect(Collectors.toList());
@@ -54,7 +57,7 @@ public class RobaKategorijeController {
 
         final UniverzalniParametri parametri = RobaStaticUtils.popuniIVratiGenerickeParametreZaServis(page, pageSize, sortBy, sortBy, proizvodjac, naStanju, sortBy, sortDirection, searchTerm);
         final List<String> iKategorije = kategorija == null ? null : kategorija.getFieldName();
-        final Partner ulogovaniPartner = PartnerStaticUtils.vratiPartneraIsSesije(authentication);
+        final Partner ulogovaniPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
 
         final Page<RobaDto> roba = kategorijeService.pronadjiRobuIzKategorije(
                 parametri,

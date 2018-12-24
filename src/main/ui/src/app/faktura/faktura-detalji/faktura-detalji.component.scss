@@ -23,6 +23,10 @@ table {
     height: 40px !important;
 }
 
+.nazad-button-dole {
+    top: 40px;
+}
+
 .greska-button {
     position: relative;
     top: 50px;
@@ -46,6 +50,10 @@ table {
     .nazad-button {
         border-radius: 12px;
         margin-right: 0% !important;
+    }
+    
+    .nazad-button-dole {
+        top: 10px;
     }
     .greska-button {
         position: relative;

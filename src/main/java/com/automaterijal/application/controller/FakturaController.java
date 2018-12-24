@@ -3,6 +3,7 @@ package com.automaterijal.application.controller;
 import com.automaterijal.application.domain.dto.FakturaDto;
 import com.automaterijal.application.domain.model.CurrentUser;
 import com.automaterijal.application.services.FakturaService;
+import com.automaterijal.application.utils.PartnerSpringBeanUtils;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,8 @@ public class FakturaController {
 
     @NonNull
     final FakturaService fakturaService;
+    @NonNull
+    final PartnerSpringBeanUtils partnerSpringBeanUtils;
 
     @GetMapping(value = "/{ppid}")
     public ResponseEntity<Page<FakturaDto>> vratiSveFaktureKorisnika(
@@ -39,7 +42,7 @@ public class FakturaController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         final CurrentUser user = (CurrentUser) authentication.getPrincipal();
-
+//        final CurrentUser user = partnerSpringBeanUtils.mockujUsera();
         if (ppid != null && ppid.intValue() != user.getId().intValue()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -58,15 +61,16 @@ public class FakturaController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         final CurrentUser user = (CurrentUser) authentication.getPrincipal();
+//        final CurrentUser user = partnerSpringBeanUtils.mockujUsera();
 
         if (ppid != null && ppid.intValue() != user.getId().intValue()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
         final FakturaDto fakture = fakturaService.vratiFakuturuPojedinacno(user.vratiPartnera(), id);
-        if(fakture != null) {
+        if (fakture != null) {
             return ResponseEntity.ok(fakture);
-    }
+        }
         return ResponseEntity.notFound().build();
     }
 }

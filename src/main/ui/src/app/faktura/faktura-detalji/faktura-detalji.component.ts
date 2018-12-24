@@ -15,7 +15,7 @@ export class FakturaDetaljiComponent implements OnInit {
   public faktura: Fakutra = new Fakutra();
   public fakturaDetalji: FakturaDetalji[];
   public dataSource: any;
-  
+
   public error = false;
 
   // Paging and Sorting elements

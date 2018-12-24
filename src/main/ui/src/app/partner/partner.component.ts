@@ -19,6 +19,7 @@ export class PartnerComponent implements OnInit {
   public daLiDuguje = false;
   public korisnickoImeMetod = 'novo';
   public losaSifra = false;
+  public korisnickoImeJeZauzeto = false;
 
   public ucitavanje = false;
   private alive = true;
@@ -99,14 +100,34 @@ export class PartnerComponent implements OnInit {
     }
     const poruka = 'Vaše novo korisničko ime je: ' + username;
     this.partner.webKorisnik = username;
-    this.updejtPartnera(this.partner, poruka);
+    this.partnerServis.updejtujPartnera(this.partner)
+      .pipe(
+        takeWhile(() => this.alive),
+        catchError((error: Response) => {
+          if (error.status === 400) {
+            this.korisnickoImeJeZauzeto = true;
+            return EMPTY;
+          }
+          return throwError(error);
+        }),
+        finalize(() => this.ucitavanje = false)
+      )
+      .subscribe(
+        res => {
+          this.korisnickoImeJeZauzeto = false;
+          this.partner = res;
+          this.otvoriSnackBar(poruka);
+        },
+        error => {
+          console.log('Updejtovanje partnera nije uspelo');
+        });
   }
 
   promeniSifru(staraSifra: string, novaSifra: string, novaSifra2: string) {
     this.passwordSubmited = true;
     if (this.passwordForm.invalid ||
-        novaSifra === staraSifra) {
-          const a = this.s.staraSifra.errors.minLength;
+      novaSifra === staraSifra) {
+      const a = this.s.staraSifra.errors.minLength;
       return;
     }
     this.partner.noviPassword = novaSifra;

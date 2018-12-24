@@ -56,9 +56,9 @@ public class UljaService {
 
     private void pronadjiSvePodGrupeUZavisnostiOdVrste(final List<Integer> svePodGrupeUlja, final String vrstaUlja) {
         final String[] vrsteUlja = RobaStaticUtils.pronadjiSveVrsteUlja(vrstaUlja);
-        Arrays.stream(vrsteUlja).forEach(vrsta -> {
-            svePodGrupeUlja.addAll(podGrupaService.vratiSvePodGrupeIdPoNazivu(vrsta));
-        });
+        Arrays.stream(vrsteUlja)
+                .filter(str -> str != null)
+                .forEach(vrsta -> svePodGrupeUlja.addAll(podGrupaService.vratiSvePodGrupeIdPoNazivu(vrsta)));
     }
 
     private Page<Roba> vratiSvuRobuUZavisnostiOdTrazenogStanja(final Boolean naStanju, final List<Integer> svePodGrupeUlja, final Pageable pageable) {

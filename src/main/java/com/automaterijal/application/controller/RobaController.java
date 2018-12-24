@@ -8,7 +8,7 @@ import com.automaterijal.application.services.roba.AkumulatoriService;
 import com.automaterijal.application.services.roba.FilterService;
 import com.automaterijal.application.services.roba.RobaGlavniService;
 import com.automaterijal.application.services.roba.UljaService;
-import com.automaterijal.application.utils.PartnerStaticUtils;
+import com.automaterijal.application.utils.PartnerSpringBeanUtils;
 import com.automaterijal.application.utils.RobaStaticUtils;
 import lombok.AccessLevel;
 import lombok.NonNull;
@@ -38,6 +38,8 @@ public class RobaController {
     final UljaService uljaService;
     @NonNull
     final AkumulatoriService akumulatoriService;
+    @NonNull
+    final PartnerSpringBeanUtils partnerSpringBeanUtils;
 
     @GetMapping
     public ResponseEntity<Page<RobaDto>> pronadjiSvuRobu(
@@ -52,7 +54,7 @@ public class RobaController {
     ) {
 
         final UniverzalniParametri univerzalniParametri = RobaStaticUtils.popuniIVratiGenerickeParametreZaServis(page, pageSize, sortBy, sortBy, proizvodjac, naStanju, sortBy, sortDirection, searchTerm);
-        final Partner ulogovaniPartner = PartnerStaticUtils.vratiPartneraIsSesije(authentication);
+        final Partner ulogovaniPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
 
         final Page<RobaDto> roba = robaGlavniService.pronadjiRobuPoPretrazi(
                 univerzalniParametri, ulogovaniPartner
@@ -76,7 +78,7 @@ public class RobaController {
             final Authentication authentication
     ) {
         final UniverzalniParametri univerzalniParametri = RobaStaticUtils.popuniIVratiGenerickeParametreZaServis(page, pageSize, sortBy, sortBy, proizvodjac, naStanju, sortBy, sortDirection, searchTerm);
-        final Partner ulogovaniPartner = PartnerStaticUtils.vratiPartneraIsSesije(authentication);
+        final Partner ulogovaniPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
         final Page<RobaDto> roba = filterService.pronadjiSveFiltere(
                 univerzalniParametri, ulogovaniPartner
         );
@@ -101,7 +103,7 @@ public class RobaController {
     ) {
 
         final UniverzalniParametri univerzalniParametri = RobaStaticUtils.popuniIVratiGenerickeParametreZaServis(page, pageSize, sortBy, sortBy, proizvodjac, naStanju, sortBy, sortDirection, searchTerm);
-        final Partner ulogovaniPartner = PartnerStaticUtils.vratiPartneraIsSesije(authentication);
+        final Partner ulogovaniPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
 
         final Page<RobaDto> roba = akumulatoriService.pronadjiSveAkumulatore(
                 univerzalniParametri, ulogovaniPartner
@@ -126,7 +128,7 @@ public class RobaController {
             final Authentication authentication
     ) {
         final UniverzalniParametri univerzalniParametri = RobaStaticUtils.popuniIVratiGenerickeParametreZaServis(page, pageSize, sortBy, sortBy, proizvodjac, naStanju, sortBy, sortDirection, searchTerm);
-        final Partner ulogovaniPartner = PartnerStaticUtils.vratiPartneraIsSesije(authentication);
+        final Partner ulogovaniPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
 
         final Page<RobaDto> roba = uljaService.pronadjiSvaUlja(
                 univerzalniParametri, vrstaUlja, ulogovaniPartner
