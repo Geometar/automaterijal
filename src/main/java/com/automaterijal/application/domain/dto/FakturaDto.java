@@ -16,6 +16,7 @@ public class FakturaDto {
     ValueHelpDto nacinPlacanja;
     ValueHelpDto nacinPrevoza;
     ValueHelpDto adresa;
+    String napomena;
     Double iznos;
     Integer brojStavki;
     List<FakturaDetaljiDto> detalji;

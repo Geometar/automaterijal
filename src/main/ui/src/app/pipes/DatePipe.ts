@@ -7,9 +7,10 @@ export class DatePipe implements PipeTransform {
         if (!value) {
             value = 'N/A';
         } else {
-            const datumNiz = value.split('-');
+            const datumNVremeiz = value.split('T');
+            const datumNiz = datumNVremeiz[0].split('-');
             datumNiz[1] = mesec['mesec_' + datumNiz[1]];
-            value = datumNiz[0] + '-' +  datumNiz[1] + '-' + datumNiz[2] + ' ' + datumNiz[3];
+            value = datumNiz[0] + '-' +  datumNiz[1] + '-' + datumNiz[2] + ' ' + datumNVremeiz[1].substr(0, 5);
         }
         return value;
     }

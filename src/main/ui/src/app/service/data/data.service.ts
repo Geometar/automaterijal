@@ -1,8 +1,14 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { Korpa, RobaKorpa } from '../model/porudzbenica';
+import { Observable, throwError, BehaviorSubject } from 'rxjs';
+import {  timeoutWith, catchError } from 'rxjs/operators';
+import { Korpa, RobaKorpa } from '../../model/porudzbenica';
 import { LocalStorageService } from './local-storage.service';
-import { Roba } from '../model/dto';
+import { Roba } from '../../model/dto';
+import { HttpClient } from '@angular/common/http';
+
+const DOMAIN_URL = 'http://localhost:8080/api/informacije/';
+const TIMEOUT = 15000;
+const TIMEOUT_ERROR = 'Timeout error!';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +18,7 @@ export class DataService {
   private korpaSubjekat = new BehaviorSubject(this.korpa);
   public trenutnaKorpa = this.korpaSubjekat.asObservable();
 
-  constructor(private korpaStorage: LocalStorageService) { }
+  constructor(private korpaStorage: LocalStorageService, private http: HttpClient) { }
 
   ubaciUKorpu(robaKorpa: RobaKorpa) {
     if (this.korpa.roba.length === 0) {
@@ -50,5 +56,21 @@ export class DataService {
     this.korpa.roba.splice(index, 1);
     this.korpaStorage.izbaciIzMemorije(index);
     this.korpaSubjekat.next(this.korpa);
+  }
+
+  public vratiOpsteInformacije(vrsta: string): Observable<any> {
+    const fullUrl = DOMAIN_URL + vrsta;
+    return this.http
+    .get(fullUrl)
+    .pipe(
+      timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
+      catchError((error: any) => throwError(error))
+    );
+  }
+
+  public ocistiKorpu() {
+    this.korpa = new Korpa();
+    this.korpaSubjekat.next(this.korpa);
+    this.korpaStorage.ocistiKorpuIzMemorije();
   }
 }

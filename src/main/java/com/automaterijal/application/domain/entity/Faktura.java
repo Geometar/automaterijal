@@ -15,7 +15,7 @@ import java.util.List;
 public class Faktura {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     Integer id;
     @Column(name = "ppid")
@@ -48,7 +48,7 @@ public class Faktura {
     Double iznosNarucen;
     @Column(name = "iznos_potvrdjeno")
     Double iznosPotvrdjen;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id")
     List<FakturaDetalji> detalji;
 

@@ -4,6 +4,103 @@ p {
   text-align: left !important;
 }
 
-.sirina-cena {
+h3 {
+  font-size: 20px;
+  font-weight: bold;
+  padding-left: 10px;
+  padding-top: 10px;
+  color: $automaterijal-primary-100;
+}
+
+hr {
   width: 90%;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+h4 {
+  font-size: 16px;
+  font-weight: bold;
+  padding-left: 10px;
+  color: $automaterijal-primary-100;
+}
+
+textarea{
+  font-size: 15px;
+  color: $automaterijal-primary-50;
+}
+
+label {
+  font-size: 15px;
+  color: $automaterijal-primary-50;
+  font-weight: bold;
+}
+
+.example-radio-group {
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.example-radio-button {
+  margin: 2px;
+  font-size: 14px !important;
+}
+
+.example-selected-value {
+  margin: 15px 0;
+}
+
+.sirina-cena {
+  width: 95%;
+}
+.dugme-sirina {
+  width: 150px;
+  height: 40px;
+  border-radius: 5px;
+}
+
+.granice {
+  box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12); 
+  background-color: white;
+  padding-left: 5px;
+  width: 95%;
+  margin:5px;
+}
+
+.pomeri-dole {
+  margin-top: 5px;
+}
+
+.pomeri-dole {
+  margin-top: 0px;
+}
+
+.mat-radio-outer-circle {
+  border-color: $automaterijal-primary-100 !important;
+}
+
+.upozorenje {
+    text-align: left;
+    font-family: sans-serif;
+    font-size: 12px;
+    color: red;
+    margin-top: -15px;
+    margin-bottom: 0px;
+}
+
+.visina {
+  height: 180px;
+}
+.visina-prevoza {
+  height: 177px;
+}
+.napomena {
+  height: 80px;
+}
+
+@media only screen and (max-device-width : 640px) { 
+
+  .sirina-cena {
+    width: 95%;
+    margin-left: 2%;
+  }
 }

@@ -1,11 +1,10 @@
 .smanji {
-    width: 30%;
+    width: 450px;
     float: right;
 }
 .forms-input-industrija {
     display: flex;
     border-radius: 45px;
-    width: 30%;
     padding: 1px;
     margin-top: 5px;
     background: white;
@@ -14,6 +13,21 @@
     font-weight: bold;
     text-align: center;
 }
+
+@media only screen and (max-device-width :1025px) { 
+
+    .forms-input-industrija {
+      display: flex;
+      border-radius: 45px;
+      padding: 1px;
+      margin-top: 30px;
+      background: white;
+      border:2px solid grey;
+      width: 80%;
+      font-weight: bold;
+      text-align: center;
+    }
+  }
 
 @media only screen and (max-device-width : 640px) { 
     .smanji {

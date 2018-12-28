@@ -7,7 +7,7 @@
           <mat-icon class="icon-color">person</mat-icon>
         </div>
         <p class="text-center header-navigacija">{{partner.naziv}}</p>
-        <p class="text-center header-navigacija">{{partner.email}}</p>
+        <p class="text-center header-navigacija">{{partner.email  | lowercase}}</p>
       </div>
     </mat-toolbar>
     <mat-nav-list [class.margin-gore]="partner.ppid">

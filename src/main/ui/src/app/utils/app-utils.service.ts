@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Proizvodjac, Roba } from '../model/dto';
 import { RobaKorpa, Korpa } from '../model/porudzbenica';
-import { DataService } from '../service/data.service';
+import { DataService } from '../service/data/data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -41,7 +41,9 @@ export class AppUtilsService {
       snackBarPoruka = 'Maksimalan kolicina ' + roba.stanje + '. ' + snackBarPoruka;
       roba.kolicina = roba.stanje;
     }
-    const robaKorpa = new RobaKorpa(roba.katbr, roba.katbrpro, roba.naziv, roba.proizvodjac, roba.kolicina, roba.cena, roba.stanje);
+    const robaKorpa =
+      new RobaKorpa(roba.robaid, roba.katbr, roba.katbrpro, roba.naziv, roba.proizvodjac, 
+        roba.kolicina, roba.rabat, roba.cena, roba.stanje);
     this.dataService.ubaciUKorpu(robaKorpa);
     return snackBarPoruka;
   }

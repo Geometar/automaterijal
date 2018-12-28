@@ -54,6 +54,18 @@ public class RobaCeneService {
         return retVal;
     }
 
+    public Double vratiRabatPartneraNaArtikal(final Roba roba, final Partner partner) {
+        manager.clear();
+        Double popust = 0.0;
+        if (partner != null) {
+            popust = preracunajPopustNaArtkalZaUlogovanogPartnera(roba, partner);
+            if(popust > 0) {
+                popust = popust  * 100 - 100;
+            }
+        }
+        return Math.abs(popust);
+    }
+
     private Double preracunajPopustNaArtkalZaUlogovanogPartnera(final Roba roba, final Partner partner) {
         Optional<Double> retVal = Optional.empty();
         if (partner.getPopustiList() != null) {

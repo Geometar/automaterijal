@@ -5,7 +5,7 @@ import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY } from 'rxjs';
 import { Sort, MatSnackBar } from '@angular/material';
 import { ProizvodjacService } from '../service/proizvodjac.service';
-import { DataService } from '../service/data.service';
+import { DataService } from '../service/data/data.service';
 import { Korpa } from '../model/porudzbenica';
 import { AppUtilsService } from '../utils/app-utils.service';
 import { LoginService } from '../service/login.service';
@@ -45,6 +45,7 @@ export class RobaComponent implements OnInit {
     { def: 'katbrpro', ifNotAuth: true },
     { def: 'proizvodjac', ifNotAuth: true },
     { def: 'naziv', ifNotAuth: true },
+    { def: 'rabat', ifNotAuth: false },
     { def: 'cena', ifNotAuth: true },
     { def: 'stanje', ifNotAuth: true },
     { def: 'kolicina', ifNotAuth: false },

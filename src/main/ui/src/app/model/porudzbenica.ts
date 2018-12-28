@@ -1,25 +1,35 @@
+import { ValueHelp, Proizvodjac } from "./dto";
+
 export class Korpa {
     public roba: RobaKorpa[] = [];
     public ukupno: number;
+    public nacinPlacanja: number;
+    public nacinIsporuke: number;
+    public napomena: string;
 }
 
 export class RobaKorpa {
 
+    public robaid: number;
     public katbr: string;
     public katbrpro: string;
     public naziv: string;
-    public proizvodjac: string;
+    public proizvodjac: Proizvodjac;
     public kolicina: number;
+    public rabat: number;
     public cenaKom: number;
     public stanje: number;
     public cenaUkupno: number;
 
-    constructor(katbr: string, katbrpro: string, naziv: string, proizvodjac: string, kolicina: number, cena: number, stanje: number) {
+    constructor(robaid: number, katbr: string, katbrpro: string, naziv: string, proizvodjac: Proizvodjac,
+         kolicina: number, rabat: number, cena: number, stanje: number) {
+        this.robaid = robaid;
         this.katbr = katbr;
         this.katbrpro = katbrpro;
         this.naziv = naziv;
         this.proizvodjac = proizvodjac;
         this.kolicina = kolicina;
+        this.rabat = rabat;
         this.cenaKom = cena;
         this.cenaUkupno = cena * kolicina;
         this.stanje = stanje;

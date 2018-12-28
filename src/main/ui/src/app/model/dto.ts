@@ -6,14 +6,16 @@ export class ValueHelp {
 }
 
 export class Roba {
+    public robaid: number;
     public katbr: string;
     public katbrpro: string;
     public naziv: string;
-    public proizvodjac: string;
+    public proizvodjac: Proizvodjac;
     public grupa: string;
     public podGrupa: string;
     public stanje: number;
     public cena: number;
+    public rabat: number;
     public kolicina: number;
 }
 
@@ -54,7 +56,7 @@ export class FakturaPage extends Page {
 export class FakturaDetalji {
     robaId?: number;
     kataloskiBroj?: string;
-    proizvodjac?: string;
+    proizvodjac?: Proizvodjac;
     kolicina?: number;
     potvrdjenaKolicina?: number;
     cena?: number;

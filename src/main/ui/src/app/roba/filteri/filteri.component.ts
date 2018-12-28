@@ -5,7 +5,7 @@ import { ProizvodjacService } from 'src/app/service/proizvodjac.service';
 import { Sort, MatSnackBar } from '@angular/material';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY } from 'rxjs';
-import { DataService } from 'src/app/service/data.service';
+import { DataService } from 'src/app/service/data/data.service';
 import { Korpa } from 'src/app/model/porudzbenica';
 import { AppUtilsService } from 'src/app/utils/app-utils.service';
 import { LoginService } from 'src/app/service/login.service';
@@ -45,6 +45,7 @@ export class FilteriComponent implements OnInit {
     { def: 'katbrpro', ifNotAuth: true },
     { def: 'proizvodjac', ifNotAuth: true },
     { def: 'naziv', ifNotAuth: true },
+    { def: 'rabat', ifNotAuth: false },
     { def: 'cena', ifNotAuth: true },
     { def: 'stanje', ifNotAuth: true },
     { def: 'kolicina', ifNotAuth: false },

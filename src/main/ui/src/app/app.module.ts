@@ -31,6 +31,7 @@ import { DatePipe } from './pipes/DatePipe';
 import { OstaloComponent } from './roba/ostalo/ostalo.component';
 import { KategorijaSpecificnaComponent } from './roba/ostalo/kategorija-specificna/kategorija-specificna.component';
 import { PartnerComponent } from './partner/partner.component';
+import { UspesnoPorucivanjeModalComponent } from './korpa/uspesno-porucivanje-modal/uspesno-porucivanje-modal.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { PartnerComponent } from './partner/partner.component';
     FakturaDetaljiComponent,
     OstaloComponent,
     KategorijaSpecificnaComponent,
-    PartnerComponent
+    PartnerComponent,
+    UspesnoPorucivanjeModalComponent
   ],
   imports: [
     BrowserModule,
@@ -72,6 +74,6 @@ import { PartnerComponent } from './partner/partner.component';
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [IzmenaKolicineModalComponent, LogoutModalComponent]
+  entryComponents: [IzmenaKolicineModalComponent, LogoutModalComponent, UspesnoPorucivanjeModalComponent]
 })
 export class AppModule { }

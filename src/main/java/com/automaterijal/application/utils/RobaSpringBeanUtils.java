@@ -55,6 +55,7 @@ public class RobaSpringBeanUtils {
         final RobaDto dto = mapper.map(roba);
         dto.setProizvodjac(proizvodjacService.vrateNazivProizvodjacaPoId(roba.getProid()));
         dto.setCena(robaCeneService.vratiCenuRobePoRobiId(roba, partner));
+        dto.setRabat(robaCeneService.vratiRabatPartneraNaArtikal(roba, partner));
         dto.setGrupa(grupaService.vratiNazivGrupePoId(roba.getGrupaid()));
         dto.setPodGrupa(podGrupaService.vratiNazivPodGrupe(roba.getPodgrupaid(), roba.getGrupaid()));
         return dto;

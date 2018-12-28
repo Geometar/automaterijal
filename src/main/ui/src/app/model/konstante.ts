@@ -1,9 +1,9 @@
 export declare const TIMEOUT = 100000;
 
 export const transformator = {
-    prevoz_1: 'Automaterijal vozi robu',
-    prevoz_2: 'Mi vozimo robu',
-    prevoz_3: 'Treće lice vozi robu',
+    prevoz_0: 'Automaterijal vozi robu',
+    prevoz_1: 'Vi vozite robu',
+    prevoz_2: 'Treće lice vozi robu',
     kategorija_AMORTIZER: 'Amortizeri',
     kategorija_BRAVA: 'Brava vrata i elek. ulozak brave',
     kategorija_BREGASTA: 'Bregasta osovina',

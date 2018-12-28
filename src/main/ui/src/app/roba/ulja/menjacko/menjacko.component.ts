@@ -6,7 +6,7 @@ import { Sort, MatSnackBar } from '@angular/material';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY } from 'rxjs';
 import { AppUtilsService } from 'src/app/utils/app-utils.service';
-import { DataService } from 'src/app/service/data.service';
+import { DataService } from 'src/app/service/data/data.service';
 import { Korpa } from 'src/app/model/porudzbenica';
 import { LoginService } from 'src/app/service/login.service';
 
@@ -44,6 +44,7 @@ export class MenjackoComponent implements OnInit {
     { def: 'katbr', ifNotAuth: true },
     { def: 'katbrpro', ifNotAuth: true },
     { def: 'proizvodjac', ifNotAuth: true },
+    { def: 'rabat', ifNotAuth: false },
     { def: 'naziv', ifNotAuth: true },
     { def: 'cena', ifNotAuth: true },
     { def: 'stanje', ifNotAuth: true },

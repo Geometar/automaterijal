@@ -1,5 +1,6 @@
 package com.automaterijal.application.domain.dto;
 
+import com.automaterijal.application.domain.entity.Proizvodjac;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
@@ -10,13 +11,15 @@ import java.math.BigDecimal;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RobaDto {
 
+    Long robaid;
     String katbr;
     String katbrpro;
     String naziv;
-    String proizvodjac;
+    Proizvodjac proizvodjac;
     String grupa;
     String podGrupa;
     BigDecimal cena;
+    Double rabat;
     double stanje;
 
 }

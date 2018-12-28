@@ -1,11 +1,10 @@
 @import "src/automaterijal-theme.scss";
 
 p {
-    text-align: center;
-}
-
-h1 {
-    text-align: center;
     color: $automaterijal-primary-50 !important;
     font-size: 17px !important;
+}
+
+.pomeri {
+    margin-top: 15px;
 }

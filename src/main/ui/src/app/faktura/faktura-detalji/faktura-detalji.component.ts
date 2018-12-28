@@ -23,7 +23,7 @@ export class FakturaDetaljiComponent implements OnInit {
   public pageIndex = 0;
 
   public displayedColumns: string[] = ['robaId', 'proizvodjac', 'kolicina', 'potvrdjenaKolicina'
-  , 'rabat', 'cena', 'status', 'vremePorucivanja'];
+  , 'rabat', 'cena', 'status'];
 
   constructor(
     private loginServis: LoginService,

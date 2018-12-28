@@ -74,7 +74,6 @@ export class PartnerComponent implements OnInit {
     const poruka = 'Adresa uspesno promenjena.';
     this.adresaSubmited = true;
     if (this.adresaForm.invalid) {
-      const a = this.a.grad.errors;
       return;
     }
     this.partner.adresa = ulica + ', ' + grad;

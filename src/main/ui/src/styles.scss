@@ -40,6 +40,18 @@ input:focus {
   outline:none;
 }
 
+th {
+  color: $automaterijal-grey-400 !important;
+  background-color: $automaterijal-primary-50 !important;
+  font-size: 13px!important;
+  font-weight: bold;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+tr {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif !important;
+}
+
 snack-bar-container {
   background-color: $automaterijal-primary-50 !important;
   color: $automaterijal-grey-400;
@@ -214,6 +226,21 @@ display:flex;
 
 // -----------------------------------------------------------------
 // Stilovi za uredjaje sa manjim ekranom
+
+@media only screen and (max-device-width :1025px) { 
+
+  .forms-input {
+    display: flex;
+    border-radius: 45px;
+    padding: 1px;
+    background: white;
+    border:2px solid grey;
+    width: 80%;
+    font-weight: bold;
+    text-align: center;
+  }
+
+}
 
 @media only screen and (max-device-width : 640px) { 
   body {

@@ -14,13 +14,13 @@ import java.sql.Timestamp;
 public class FakturaDetalji {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     Integer id;
     @Column(name = "ppid")
     Integer ppid;
     @Column(name = "robaid")
-    Integer robaId;
+    Long robaId;
     @Column(name = "magacinid")
     Integer magacinId;
     @Column(name = "kolicina")

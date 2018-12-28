@@ -5,7 +5,7 @@ import { timeoutWith, catchError, finalize } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { AppUtilsService } from '../utils/app-utils.service';
 import { Router } from '@angular/router';
-import { LocalStorageService } from './local-storage.service';
+import { LocalStorageService } from './data/local-storage.service';
 
 const TIMEOUT = 15000;
 const TIMEOUT_ERROR = 'Timeout error!';
@@ -82,14 +82,7 @@ export class LoginService {
         timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
         catchError((error: HttpErrorResponse) => {
           if (error.status === 404) {
-            this.partner = new Partner();
-            this.partner.email = 'AutoServisPerkins@gmail.com';
-            this.partner.naziv = 'PERKINS VP';
-            this.partner.ppid = 933;
-            this.partner.stanje = -13471317;
-            this.partner.adresa = 'Šabački put bb, 15300 LOZNICA';
             this.logovanjeSubjekat.next(false);
-             this.partnerSubjekat.next(this.partner);
             return EMPTY;
           }
           return throwError(error);

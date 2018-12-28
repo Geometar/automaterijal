@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { SESSION_STORAGE, StorageService } from 'angular-webstorage-service';
-import { Korpa, RobaKorpa } from '../model/porudzbenica';
-import { Partner } from '../model/dto';
+import { Korpa, RobaKorpa } from '../../model/porudzbenica';
+import { Partner } from '../../model/dto';
 
 const KORPA_KLJUC = 'korpa_roba';
 const PARTNER_KLJUC = 'partner_kljuc';
@@ -74,5 +74,9 @@ export class LocalStorageService {
       }
     });
     this.storage.set(KORPA_KLJUC, trenutnaKorpa);
+  }
+
+  public ocistiKorpuIzMemorije() {
+    this.storage.remove(KORPA_KLJUC);
   }
 }

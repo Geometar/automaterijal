@@ -97,11 +97,10 @@ public class ProizvodjacService {
                 .forEach(vrsta -> svePodGrupeUlja.addAll(podGrupaService.vratiSvePodGrupeIdPoNazivu(vrsta)));
     }
 
-    public String vrateNazivProizvodjacaPoId(final String id) {
-        String retVal = null;
-        final Optional<String> naziv = pronadjiSveProizvodjace().stream()
+    public Proizvodjac vrateNazivProizvodjacaPoId(final String id) {
+        Proizvodjac retVal = null;
+        final Optional<Proizvodjac> naziv = pronadjiSveProizvodjace().stream()
                 .filter(grupa -> grupa.getProid().equals(id))
-                .map(Proizvodjac::getNaziv)
                 .findFirst();
         if (naziv.isPresent()) {
             retVal = naziv.get();

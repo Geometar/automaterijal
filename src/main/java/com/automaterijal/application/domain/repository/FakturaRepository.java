@@ -13,4 +13,5 @@ public interface FakturaRepository extends JpaRepository<Faktura, Integer> {
 
     Page<Faktura> findByPpidOrderByDataSentDesc(Integer ppid, Pageable pageable);
     Optional<Faktura> findByPpidAndId(Integer ppid, Integer id);
+    Optional<Faktura> findFirstByPpidOrderByOrderIdDesc(Integer ppid);
 }

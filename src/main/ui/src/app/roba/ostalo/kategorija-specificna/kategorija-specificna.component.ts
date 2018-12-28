@@ -5,7 +5,7 @@ import { Roba, Proizvodjac, Partner } from 'src/app/model/dto';
 import { Korpa } from 'src/app/model/porudzbenica';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY } from 'rxjs';
-import { DataService } from 'src/app/service/data.service';
+import { DataService } from 'src/app/service/data/data.service';
 import { ProizvodjacService } from 'src/app/service/proizvodjac.service';
 import { AppUtilsService } from 'src/app/utils/app-utils.service';
 import { LoginService } from 'src/app/service/login.service';

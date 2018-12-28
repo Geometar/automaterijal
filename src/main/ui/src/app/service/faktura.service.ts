@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { timeoutWith, catchError, map } from 'rxjs/operators';
 import { AppUtilsService } from '../utils/app-utils.service';
+import { Fakutra } from '../model/dto';
 
 const DOMAIN_URL = 'http://localhost:8080/api';
 const FAKTURA_URL = '/fakture';
@@ -33,6 +34,15 @@ export class FakturaService {
     const fullUrl = DOMAIN_URL + FAKTURA_URL + '/' + ppid + '/' + id;
     return this.http
       .get(fullUrl)
+      .pipe(
+        timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
+        catchError((error: any) => throwError(error)));
+  }
+
+  public sacuvajFakturu(faktura: Fakutra) {
+    const fullUrl = DOMAIN_URL + FAKTURA_URL;
+    return this.http
+      .post(fullUrl, faktura)
       .pipe(
         timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
         catchError((error: any) => throwError(error)));

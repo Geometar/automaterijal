@@ -7,11 +7,11 @@
       <tbody>
         <tr>
           <td>Proizvodjac</td>
-          <td>{{data.proizvodjac}}</td>
+          <td>{{data.proizvodjac.naziv}}</td>
         </tr>
         <tr>
           <td>Cena</td>
-          <td>{{data.cenaKom}}</td>
+          <td>{{data.cenaKom | currency:" "}} RSD</td>
         <tr>
           <td>Kolicina</td>
           <td>
@@ -22,7 +22,7 @@
         </tr>
         <tr>
           <td>Ukupno za placanje</td>
-          <td><b>{{data.kolicina * data.cenaKom}} DIN</b></td>
+          <td><b>{{data.kolicina * data.cenaKom | currency:" "}} RSD</b></td>
         </tr>
       </tbody>
     </table>
