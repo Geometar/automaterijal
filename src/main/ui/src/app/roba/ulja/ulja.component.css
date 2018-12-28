@@ -8,11 +8,11 @@
 
 @media only screen and (max-device-width :1025px) { 
     .spusti {
-        margin-top: 70px;
+        margin-top: 30px;
     }
 }
 @media only screen and (max-device-width : 1000px) { 
     .spusti {
-        margin-top: 70px;
+        margin-top: 10px;
     }
 }
