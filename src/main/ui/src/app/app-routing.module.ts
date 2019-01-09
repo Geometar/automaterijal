@@ -1,17 +1,17 @@
 import { Routes, RouterModule } from '@angular/router';
-import { RobaComponent } from './roba/roba.component';
 import { NgModule } from '@angular/core';
-import { FilteriComponent } from './roba/filteri/filteri.component';
-import { AkumulatoriComponent } from './roba/akumulatori/akumulatori.component';
-import { UljaComponent } from './roba/ulja/ulja.component';
-import { DasboardComponent } from './dasboard/dasboard.component';
-import { KorpaComponent } from './korpa/korpa.component';
-import { LoginComponent } from './login/login.component';
-import { FakturaComponent } from './faktura/faktura.component';
-import { FakturaDetaljiComponent } from './faktura/faktura-detalji/faktura-detalji.component';
-import { OstaloComponent } from './roba/ostalo/ostalo.component';
-import { KategorijaSpecificnaComponent } from './roba/ostalo/kategorija-specificna/kategorija-specificna.component';
-import { PartnerComponent } from './partner/partner.component';
+import { FilteriComponent } from './e-shop/roba/filteri/filteri.component';
+import { AkumulatoriComponent } from './e-shop/roba/akumulatori/akumulatori.component';
+import { UljaComponent } from './e-shop/roba/ulja/ulja.component';
+import { KorpaComponent } from './e-shop/korpa/korpa.component';
+import { LoginComponent } from './e-shop/login/login.component';
+import { FakturaComponent } from './e-shop/faktura/faktura.component';
+import { FakturaDetaljiComponent } from './e-shop/faktura/faktura-detalji/faktura-detalji.component';
+import { OstaloComponent } from './e-shop/roba/ostalo/ostalo.component';
+import { KategorijaSpecificnaComponent } from './e-shop/roba/ostalo/kategorija-specificna/kategorija-specificna.component';
+import { PartnerComponent } from './e-shop/partner/partner.component';
+import { RobaComponent } from './e-shop/roba/roba.component';
+import { DasboardComponent } from './e-commerce/dasboard/dasboard.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/naslovna', pathMatch: 'full' },

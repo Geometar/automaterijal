@@ -34,19 +34,19 @@ webpackEmptyAsyncContext.id = "./src/$$_lazy_route_resource lazy recursive";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppRoutingModule", function() { return AppRoutingModule; });
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var _roba_roba_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./roba/roba.component */ "./src/app/roba/roba.component.ts");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _roba_filteri_filteri_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./roba/filteri/filteri.component */ "./src/app/roba/filteri/filteri.component.ts");
-/* harmony import */ var _roba_akumulatori_akumulatori_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./roba/akumulatori/akumulatori.component */ "./src/app/roba/akumulatori/akumulatori.component.ts");
-/* harmony import */ var _roba_ulja_ulja_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./roba/ulja/ulja.component */ "./src/app/roba/ulja/ulja.component.ts");
-/* harmony import */ var _dasboard_dasboard_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./dasboard/dasboard.component */ "./src/app/dasboard/dasboard.component.ts");
-/* harmony import */ var _korpa_korpa_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./korpa/korpa.component */ "./src/app/korpa/korpa.component.ts");
-/* harmony import */ var _login_login_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./login/login.component */ "./src/app/login/login.component.ts");
-/* harmony import */ var _faktura_faktura_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./faktura/faktura.component */ "./src/app/faktura/faktura.component.ts");
-/* harmony import */ var _faktura_faktura_detalji_faktura_detalji_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./faktura/faktura-detalji/faktura-detalji.component */ "./src/app/faktura/faktura-detalji/faktura-detalji.component.ts");
-/* harmony import */ var _roba_ostalo_ostalo_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./roba/ostalo/ostalo.component */ "./src/app/roba/ostalo/ostalo.component.ts");
-/* harmony import */ var _roba_ostalo_kategorija_specificna_kategorija_specificna_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./roba/ostalo/kategorija-specificna/kategorija-specificna.component */ "./src/app/roba/ostalo/kategorija-specificna/kategorija-specificna.component.ts");
-/* harmony import */ var _partner_partner_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./partner/partner.component */ "./src/app/partner/partner.component.ts");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _e_shop_roba_filteri_filteri_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./e-shop/roba/filteri/filteri.component */ "./src/app/e-shop/roba/filteri/filteri.component.ts");
+/* harmony import */ var _e_shop_roba_akumulatori_akumulatori_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./e-shop/roba/akumulatori/akumulatori.component */ "./src/app/e-shop/roba/akumulatori/akumulatori.component.ts");
+/* harmony import */ var _e_shop_roba_ulja_ulja_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./e-shop/roba/ulja/ulja.component */ "./src/app/e-shop/roba/ulja/ulja.component.ts");
+/* harmony import */ var _e_shop_korpa_korpa_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./e-shop/korpa/korpa.component */ "./src/app/e-shop/korpa/korpa.component.ts");
+/* harmony import */ var _e_shop_login_login_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./e-shop/login/login.component */ "./src/app/e-shop/login/login.component.ts");
+/* harmony import */ var _e_shop_faktura_faktura_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./e-shop/faktura/faktura.component */ "./src/app/e-shop/faktura/faktura.component.ts");
+/* harmony import */ var _e_shop_faktura_faktura_detalji_faktura_detalji_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./e-shop/faktura/faktura-detalji/faktura-detalji.component */ "./src/app/e-shop/faktura/faktura-detalji/faktura-detalji.component.ts");
+/* harmony import */ var _e_shop_roba_ostalo_ostalo_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./e-shop/roba/ostalo/ostalo.component */ "./src/app/e-shop/roba/ostalo/ostalo.component.ts");
+/* harmony import */ var _e_shop_roba_ostalo_kategorija_specificna_kategorija_specificna_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./e-shop/roba/ostalo/kategorija-specificna/kategorija-specificna.component */ "./src/app/e-shop/roba/ostalo/kategorija-specificna/kategorija-specificna.component.ts");
+/* harmony import */ var _e_shop_partner_partner_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./e-shop/partner/partner.component */ "./src/app/e-shop/partner/partner.component.ts");
+/* harmony import */ var _e_shop_roba_roba_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./e-shop/roba/roba.component */ "./src/app/e-shop/roba/roba.component.ts");
+/* harmony import */ var _e_commerce_dasboard_dasboard_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./e-commerce/dasboard/dasboard.component */ "./src/app/e-commerce/dasboard/dasboard.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -69,27 +69,27 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 
 var routes = [
     { path: '', redirectTo: '/naslovna', pathMatch: 'full' },
-    { path: 'naslovna', component: _dasboard_dasboard_component__WEBPACK_IMPORTED_MODULE_6__["DasboardComponent"] },
-    { path: 'o-nama', component: _dasboard_dasboard_component__WEBPACK_IMPORTED_MODULE_6__["DasboardComponent"] },
-    { path: 'kontakt', component: _dasboard_dasboard_component__WEBPACK_IMPORTED_MODULE_6__["DasboardComponent"] },
-    { path: 'roba', component: _roba_roba_component__WEBPACK_IMPORTED_MODULE_1__["RobaComponent"] },
-    { path: 'filteri', component: _roba_filteri_filteri_component__WEBPACK_IMPORTED_MODULE_3__["FilteriComponent"] },
-    { path: 'ulja', component: _roba_ulja_ulja_component__WEBPACK_IMPORTED_MODULE_5__["UljaComponent"] },
-    { path: 'akumulatori', component: _roba_akumulatori_akumulatori_component__WEBPACK_IMPORTED_MODULE_4__["AkumulatoriComponent"] },
-    { path: 'ostalo', component: _roba_ostalo_ostalo_component__WEBPACK_IMPORTED_MODULE_11__["OstaloComponent"] },
-    { path: 'ostalo/:id', component: _roba_ostalo_kategorija_specificna_kategorija_specificna_component__WEBPACK_IMPORTED_MODULE_12__["KategorijaSpecificnaComponent"] },
-    { path: 'login', component: _login_login_component__WEBPACK_IMPORTED_MODULE_8__["LoginComponent"] },
-    { path: 'kontakt', component: _dasboard_dasboard_component__WEBPACK_IMPORTED_MODULE_6__["DasboardComponent"] },
-    { path: 'licni-podaci', component: _partner_partner_component__WEBPACK_IMPORTED_MODULE_13__["PartnerComponent"] },
-    { path: 'porudzbenice', component: _faktura_faktura_component__WEBPACK_IMPORTED_MODULE_9__["FakturaComponent"] },
-    { path: 'porudzbenice/:id', component: _faktura_faktura_detalji_faktura_detalji_component__WEBPACK_IMPORTED_MODULE_10__["FakturaDetaljiComponent"] },
-    { path: 'korpa', component: _korpa_korpa_component__WEBPACK_IMPORTED_MODULE_7__["KorpaComponent"] }
+    { path: 'naslovna', component: _e_commerce_dasboard_dasboard_component__WEBPACK_IMPORTED_MODULE_13__["DasboardComponent"] },
+    { path: 'o-nama', component: _e_commerce_dasboard_dasboard_component__WEBPACK_IMPORTED_MODULE_13__["DasboardComponent"] },
+    { path: 'kontakt', component: _e_commerce_dasboard_dasboard_component__WEBPACK_IMPORTED_MODULE_13__["DasboardComponent"] },
+    { path: 'roba', component: _e_shop_roba_roba_component__WEBPACK_IMPORTED_MODULE_12__["RobaComponent"] },
+    { path: 'filteri', component: _e_shop_roba_filteri_filteri_component__WEBPACK_IMPORTED_MODULE_2__["FilteriComponent"] },
+    { path: 'ulja', component: _e_shop_roba_ulja_ulja_component__WEBPACK_IMPORTED_MODULE_4__["UljaComponent"] },
+    { path: 'akumulatori', component: _e_shop_roba_akumulatori_akumulatori_component__WEBPACK_IMPORTED_MODULE_3__["AkumulatoriComponent"] },
+    { path: 'ostalo', component: _e_shop_roba_ostalo_ostalo_component__WEBPACK_IMPORTED_MODULE_9__["OstaloComponent"] },
+    { path: 'ostalo/:id', component: _e_shop_roba_ostalo_kategorija_specificna_kategorija_specificna_component__WEBPACK_IMPORTED_MODULE_10__["KategorijaSpecificnaComponent"] },
+    { path: 'login', component: _e_shop_login_login_component__WEBPACK_IMPORTED_MODULE_6__["LoginComponent"] },
+    { path: 'kontakt', component: _e_commerce_dasboard_dasboard_component__WEBPACK_IMPORTED_MODULE_13__["DasboardComponent"] },
+    { path: 'licni-podaci', component: _e_shop_partner_partner_component__WEBPACK_IMPORTED_MODULE_11__["PartnerComponent"] },
+    { path: 'porudzbenice', component: _e_shop_faktura_faktura_component__WEBPACK_IMPORTED_MODULE_7__["FakturaComponent"] },
+    { path: 'porudzbenice/:id', component: _e_shop_faktura_faktura_detalji_faktura_detalji_component__WEBPACK_IMPORTED_MODULE_8__["FakturaDetaljiComponent"] },
+    { path: 'korpa', component: _e_shop_korpa_korpa_component__WEBPACK_IMPORTED_MODULE_5__["KorpaComponent"] }
 ];
 var AppRoutingModule = /** @class */ (function () {
     function AppRoutingModule() {
     }
     AppRoutingModule = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["NgModule"])({
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"])({
             imports: [_angular_router__WEBPACK_IMPORTED_MODULE_0__["RouterModule"].forRoot(routes)],
             exports: [_angular_router__WEBPACK_IMPORTED_MODULE_0__["RouterModule"]]
         })
@@ -176,33 +176,33 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/platform-browser/animations */ "./node_modules/@angular/platform-browser/fesm5/animations.js");
 /* harmony import */ var _shared_material_material_module__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./shared/material/material.module */ "./src/app/shared/material/material.module.ts");
 /* harmony import */ var _navigacija_navigacija_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./navigacija/navigacija.component */ "./src/app/navigacija/navigacija.component.ts");
-/* harmony import */ var _roba_roba_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./roba/roba.component */ "./src/app/roba/roba.component.ts");
-/* harmony import */ var _dasboard_dasboard_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./dasboard/dasboard.component */ "./src/app/dasboard/dasboard.component.ts");
-/* harmony import */ var _angular_http__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/http */ "./node_modules/@angular/http/fesm5/http.js");
-/* harmony import */ var _app_routing_module__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./app-routing.module */ "./src/app/app-routing.module.ts");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
-/* harmony import */ var _roba_filteri_filteri_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./roba/filteri/filteri.component */ "./src/app/roba/filteri/filteri.component.ts");
-/* harmony import */ var _roba_akumulatori_akumulatori_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./roba/akumulatori/akumulatori.component */ "./src/app/roba/akumulatori/akumulatori.component.ts");
-/* harmony import */ var _roba_ulja_ulja_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./roba/ulja/ulja.component */ "./src/app/roba/ulja/ulja.component.ts");
-/* harmony import */ var _roba_ulja_motorna_motorna_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./roba/ulja/motorna/motorna.component */ "./src/app/roba/ulja/motorna/motorna.component.ts");
-/* harmony import */ var _roba_ulja_menjacko_menjacko_component__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./roba/ulja/menjacko/menjacko.component */ "./src/app/roba/ulja/menjacko/menjacko.component.ts");
-/* harmony import */ var _roba_ulja_kociona_kociona_component__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./roba/ulja/kociona/kociona.component */ "./src/app/roba/ulja/kociona/kociona.component.ts");
-/* harmony import */ var _roba_ulja_antifriz_antifriz_component__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./roba/ulja/antifriz/antifriz.component */ "./src/app/roba/ulja/antifriz/antifriz.component.ts");
-/* harmony import */ var _roba_ulja_industrijska_industrijska_component__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./roba/ulja/industrijska/industrijska.component */ "./src/app/roba/ulja/industrijska/industrijska.component.ts");
-/* harmony import */ var _korpa_korpa_component__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./korpa/korpa.component */ "./src/app/korpa/korpa.component.ts");
-/* harmony import */ var _korpa_izmena_kolicine_modal_izmena_kolicine_modal_component__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./korpa/izmena-kolicine-modal/izmena-kolicine-modal.component */ "./src/app/korpa/izmena-kolicine-modal/izmena-kolicine-modal.component.ts");
-/* harmony import */ var _login_login_component__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./login/login.component */ "./src/app/login/login.component.ts");
-/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
-/* harmony import */ var _navigacija_logout_modal_logout_modal_component__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./navigacija/logout-modal/logout-modal.component */ "./src/app/navigacija/logout-modal/logout-modal.component.ts");
-/* harmony import */ var _faktura_faktura_component__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./faktura/faktura.component */ "./src/app/faktura/faktura.component.ts");
-/* harmony import */ var _pipes_PrevodilacPipe__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./pipes/PrevodilacPipe */ "./src/app/pipes/PrevodilacPipe.ts");
-/* harmony import */ var _pipes_EmptyPipe__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./pipes/EmptyPipe */ "./src/app/pipes/EmptyPipe.ts");
-/* harmony import */ var _faktura_faktura_detalji_faktura_detalji_component__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./faktura/faktura-detalji/faktura-detalji.component */ "./src/app/faktura/faktura-detalji/faktura-detalji.component.ts");
-/* harmony import */ var _pipes_DatePipe__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./pipes/DatePipe */ "./src/app/pipes/DatePipe.ts");
-/* harmony import */ var _roba_ostalo_ostalo_component__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./roba/ostalo/ostalo.component */ "./src/app/roba/ostalo/ostalo.component.ts");
-/* harmony import */ var _roba_ostalo_kategorija_specificna_kategorija_specificna_component__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./roba/ostalo/kategorija-specificna/kategorija-specificna.component */ "./src/app/roba/ostalo/kategorija-specificna/kategorija-specificna.component.ts");
-/* harmony import */ var _partner_partner_component__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./partner/partner.component */ "./src/app/partner/partner.component.ts");
-/* harmony import */ var _korpa_uspesno_porucivanje_modal_uspesno_porucivanje_modal_component__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./korpa/uspesno-porucivanje-modal/uspesno-porucivanje-modal.component */ "./src/app/korpa/uspesno-porucivanje-modal/uspesno-porucivanje-modal.component.ts");
+/* harmony import */ var _e_shop_roba_roba_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./e-shop/roba/roba.component */ "./src/app/e-shop/roba/roba.component.ts");
+/* harmony import */ var _angular_http__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/http */ "./node_modules/@angular/http/fesm5/http.js");
+/* harmony import */ var _app_routing_module__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./app-routing.module */ "./src/app/app-routing.module.ts");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _e_shop_roba_filteri_filteri_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./e-shop/roba/filteri/filteri.component */ "./src/app/e-shop/roba/filteri/filteri.component.ts");
+/* harmony import */ var _e_shop_roba_akumulatori_akumulatori_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./e-shop/roba/akumulatori/akumulatori.component */ "./src/app/e-shop/roba/akumulatori/akumulatori.component.ts");
+/* harmony import */ var _e_shop_roba_ulja_ulja_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./e-shop/roba/ulja/ulja.component */ "./src/app/e-shop/roba/ulja/ulja.component.ts");
+/* harmony import */ var _e_shop_roba_ulja_motorna_motorna_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./e-shop/roba/ulja/motorna/motorna.component */ "./src/app/e-shop/roba/ulja/motorna/motorna.component.ts");
+/* harmony import */ var _e_shop_roba_ulja_menjacko_menjacko_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./e-shop/roba/ulja/menjacko/menjacko.component */ "./src/app/e-shop/roba/ulja/menjacko/menjacko.component.ts");
+/* harmony import */ var _e_shop_roba_ulja_kociona_kociona_component__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./e-shop/roba/ulja/kociona/kociona.component */ "./src/app/e-shop/roba/ulja/kociona/kociona.component.ts");
+/* harmony import */ var _e_shop_roba_ulja_antifriz_antifriz_component__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./e-shop/roba/ulja/antifriz/antifriz.component */ "./src/app/e-shop/roba/ulja/antifriz/antifriz.component.ts");
+/* harmony import */ var _e_shop_roba_ulja_industrijska_industrijska_component__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./e-shop/roba/ulja/industrijska/industrijska.component */ "./src/app/e-shop/roba/ulja/industrijska/industrijska.component.ts");
+/* harmony import */ var _e_shop_korpa_korpa_component__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./e-shop/korpa/korpa.component */ "./src/app/e-shop/korpa/korpa.component.ts");
+/* harmony import */ var _e_shop_korpa_izmena_kolicine_modal_izmena_kolicine_modal_component__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./e-shop/korpa/izmena-kolicine-modal/izmena-kolicine-modal.component */ "./src/app/e-shop/korpa/izmena-kolicine-modal/izmena-kolicine-modal.component.ts");
+/* harmony import */ var _e_shop_login_login_component__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./e-shop/login/login.component */ "./src/app/e-shop/login/login.component.ts");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
+/* harmony import */ var _navigacija_logout_modal_logout_modal_component__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./navigacija/logout-modal/logout-modal.component */ "./src/app/navigacija/logout-modal/logout-modal.component.ts");
+/* harmony import */ var _e_shop_faktura_faktura_component__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./e-shop/faktura/faktura.component */ "./src/app/e-shop/faktura/faktura.component.ts");
+/* harmony import */ var _pipes_PrevodilacPipe__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./pipes/PrevodilacPipe */ "./src/app/pipes/PrevodilacPipe.ts");
+/* harmony import */ var _pipes_EmptyPipe__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./pipes/EmptyPipe */ "./src/app/pipes/EmptyPipe.ts");
+/* harmony import */ var _e_shop_faktura_faktura_detalji_faktura_detalji_component__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./e-shop/faktura/faktura-detalji/faktura-detalji.component */ "./src/app/e-shop/faktura/faktura-detalji/faktura-detalji.component.ts");
+/* harmony import */ var _pipes_DatePipe__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./pipes/DatePipe */ "./src/app/pipes/DatePipe.ts");
+/* harmony import */ var _e_shop_roba_ostalo_ostalo_component__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./e-shop/roba/ostalo/ostalo.component */ "./src/app/e-shop/roba/ostalo/ostalo.component.ts");
+/* harmony import */ var _e_shop_roba_ostalo_kategorija_specificna_kategorija_specificna_component__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./e-shop/roba/ostalo/kategorija-specificna/kategorija-specificna.component */ "./src/app/e-shop/roba/ostalo/kategorija-specificna/kategorija-specificna.component.ts");
+/* harmony import */ var _e_shop_partner_partner_component__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./e-shop/partner/partner.component */ "./src/app/e-shop/partner/partner.component.ts");
+/* harmony import */ var _e_shop_korpa_uspesno_porucivanje_modal_uspesno_porucivanje_modal_component__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./e-shop/korpa/uspesno-porucivanje-modal/uspesno-porucivanje-modal.component */ "./src/app/e-shop/korpa/uspesno-porucivanje-modal/uspesno-porucivanje-modal.component.ts");
+/* harmony import */ var _e_commerce_dasboard_dasboard_component__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./e-commerce/dasboard/dasboard.component */ "./src/app/e-commerce/dasboard/dasboard.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -251,44 +251,44 @@ var AppModule = /** @class */ (function () {
             declarations: [
                 _app_component__WEBPACK_IMPORTED_MODULE_3__["AppComponent"],
                 _navigacija_navigacija_component__WEBPACK_IMPORTED_MODULE_6__["NavigacijaComponent"],
-                _roba_roba_component__WEBPACK_IMPORTED_MODULE_7__["RobaComponent"],
-                _dasboard_dasboard_component__WEBPACK_IMPORTED_MODULE_8__["DasboardComponent"],
-                _roba_filteri_filteri_component__WEBPACK_IMPORTED_MODULE_12__["FilteriComponent"],
-                _roba_akumulatori_akumulatori_component__WEBPACK_IMPORTED_MODULE_13__["AkumulatoriComponent"],
-                _roba_ulja_ulja_component__WEBPACK_IMPORTED_MODULE_14__["UljaComponent"],
-                _roba_ulja_motorna_motorna_component__WEBPACK_IMPORTED_MODULE_15__["MotornaComponent"],
-                _roba_ulja_menjacko_menjacko_component__WEBPACK_IMPORTED_MODULE_16__["MenjackoComponent"],
-                _roba_ulja_kociona_kociona_component__WEBPACK_IMPORTED_MODULE_17__["KocionaComponent"],
-                _roba_ulja_antifriz_antifriz_component__WEBPACK_IMPORTED_MODULE_18__["AntifrizComponent"],
-                _roba_ulja_industrijska_industrijska_component__WEBPACK_IMPORTED_MODULE_19__["IndustrijskaComponent"],
-                _korpa_korpa_component__WEBPACK_IMPORTED_MODULE_20__["KorpaComponent"],
-                _korpa_izmena_kolicine_modal_izmena_kolicine_modal_component__WEBPACK_IMPORTED_MODULE_21__["IzmenaKolicineModalComponent"],
-                _login_login_component__WEBPACK_IMPORTED_MODULE_22__["LoginComponent"],
-                _navigacija_logout_modal_logout_modal_component__WEBPACK_IMPORTED_MODULE_24__["LogoutModalComponent"],
-                _faktura_faktura_component__WEBPACK_IMPORTED_MODULE_25__["FakturaComponent"],
-                _pipes_PrevodilacPipe__WEBPACK_IMPORTED_MODULE_26__["TranslatePipe"],
-                _pipes_EmptyPipe__WEBPACK_IMPORTED_MODULE_27__["EmptyPipe"],
-                _pipes_DatePipe__WEBPACK_IMPORTED_MODULE_29__["DatePipe"],
-                _faktura_faktura_detalji_faktura_detalji_component__WEBPACK_IMPORTED_MODULE_28__["FakturaDetaljiComponent"],
-                _roba_ostalo_ostalo_component__WEBPACK_IMPORTED_MODULE_30__["OstaloComponent"],
-                _roba_ostalo_kategorija_specificna_kategorija_specificna_component__WEBPACK_IMPORTED_MODULE_31__["KategorijaSpecificnaComponent"],
-                _partner_partner_component__WEBPACK_IMPORTED_MODULE_32__["PartnerComponent"],
-                _korpa_uspesno_porucivanje_modal_uspesno_porucivanje_modal_component__WEBPACK_IMPORTED_MODULE_33__["UspesnoPorucivanjeModalComponent"]
+                _e_shop_roba_roba_component__WEBPACK_IMPORTED_MODULE_7__["RobaComponent"],
+                _e_commerce_dasboard_dasboard_component__WEBPACK_IMPORTED_MODULE_33__["DasboardComponent"],
+                _e_shop_roba_filteri_filteri_component__WEBPACK_IMPORTED_MODULE_11__["FilteriComponent"],
+                _e_shop_roba_akumulatori_akumulatori_component__WEBPACK_IMPORTED_MODULE_12__["AkumulatoriComponent"],
+                _e_shop_roba_ulja_ulja_component__WEBPACK_IMPORTED_MODULE_13__["UljaComponent"],
+                _e_shop_roba_ulja_motorna_motorna_component__WEBPACK_IMPORTED_MODULE_14__["MotornaComponent"],
+                _e_shop_roba_ulja_menjacko_menjacko_component__WEBPACK_IMPORTED_MODULE_15__["MenjackoComponent"],
+                _e_shop_roba_ulja_kociona_kociona_component__WEBPACK_IMPORTED_MODULE_16__["KocionaComponent"],
+                _e_shop_roba_ulja_antifriz_antifriz_component__WEBPACK_IMPORTED_MODULE_17__["AntifrizComponent"],
+                _e_shop_roba_ulja_industrijska_industrijska_component__WEBPACK_IMPORTED_MODULE_18__["IndustrijskaComponent"],
+                _e_shop_korpa_korpa_component__WEBPACK_IMPORTED_MODULE_19__["KorpaComponent"],
+                _e_shop_korpa_izmena_kolicine_modal_izmena_kolicine_modal_component__WEBPACK_IMPORTED_MODULE_20__["IzmenaKolicineModalComponent"],
+                _e_shop_login_login_component__WEBPACK_IMPORTED_MODULE_21__["LoginComponent"],
+                _navigacija_logout_modal_logout_modal_component__WEBPACK_IMPORTED_MODULE_23__["LogoutModalComponent"],
+                _e_shop_faktura_faktura_component__WEBPACK_IMPORTED_MODULE_24__["FakturaComponent"],
+                _pipes_PrevodilacPipe__WEBPACK_IMPORTED_MODULE_25__["TranslatePipe"],
+                _pipes_EmptyPipe__WEBPACK_IMPORTED_MODULE_26__["EmptyPipe"],
+                _pipes_DatePipe__WEBPACK_IMPORTED_MODULE_28__["DatePipe"],
+                _e_shop_faktura_faktura_detalji_faktura_detalji_component__WEBPACK_IMPORTED_MODULE_27__["FakturaDetaljiComponent"],
+                _e_shop_roba_ostalo_ostalo_component__WEBPACK_IMPORTED_MODULE_29__["OstaloComponent"],
+                _e_shop_roba_ostalo_kategorija_specificna_kategorija_specificna_component__WEBPACK_IMPORTED_MODULE_30__["KategorijaSpecificnaComponent"],
+                _e_shop_partner_partner_component__WEBPACK_IMPORTED_MODULE_31__["PartnerComponent"],
+                _e_shop_korpa_uspesno_porucivanje_modal_uspesno_porucivanje_modal_component__WEBPACK_IMPORTED_MODULE_32__["UspesnoPorucivanjeModalComponent"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
-                _angular_http__WEBPACK_IMPORTED_MODULE_9__["HttpModule"],
-                _angular_common_http__WEBPACK_IMPORTED_MODULE_23__["HttpClientModule"],
-                _angular_forms__WEBPACK_IMPORTED_MODULE_11__["ReactiveFormsModule"],
+                _angular_http__WEBPACK_IMPORTED_MODULE_8__["HttpModule"],
+                _angular_common_http__WEBPACK_IMPORTED_MODULE_22__["HttpClientModule"],
+                _angular_forms__WEBPACK_IMPORTED_MODULE_10__["ReactiveFormsModule"],
                 angular_webstorage_service__WEBPACK_IMPORTED_MODULE_2__["StorageServiceModule"],
                 _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_4__["BrowserAnimationsModule"],
                 _shared_material_material_module__WEBPACK_IMPORTED_MODULE_5__["MaterialModule"],
-                _app_routing_module__WEBPACK_IMPORTED_MODULE_10__["AppRoutingModule"],
-                _angular_forms__WEBPACK_IMPORTED_MODULE_11__["FormsModule"]
+                _app_routing_module__WEBPACK_IMPORTED_MODULE_9__["AppRoutingModule"],
+                _angular_forms__WEBPACK_IMPORTED_MODULE_10__["FormsModule"]
             ],
             providers: [],
             bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_3__["AppComponent"]],
-            entryComponents: [_korpa_izmena_kolicine_modal_izmena_kolicine_modal_component__WEBPACK_IMPORTED_MODULE_21__["IzmenaKolicineModalComponent"], _navigacija_logout_modal_logout_modal_component__WEBPACK_IMPORTED_MODULE_24__["LogoutModalComponent"], _korpa_uspesno_porucivanje_modal_uspesno_porucivanje_modal_component__WEBPACK_IMPORTED_MODULE_33__["UspesnoPorucivanjeModalComponent"]]
+            entryComponents: [_e_shop_korpa_izmena_kolicine_modal_izmena_kolicine_modal_component__WEBPACK_IMPORTED_MODULE_20__["IzmenaKolicineModalComponent"], _navigacija_logout_modal_logout_modal_component__WEBPACK_IMPORTED_MODULE_23__["LogoutModalComponent"], _e_shop_korpa_uspesno_porucivanje_modal_uspesno_porucivanje_modal_component__WEBPACK_IMPORTED_MODULE_32__["UspesnoPorucivanjeModalComponent"]]
         })
     ], AppModule);
     return AppModule;
@@ -298,10 +298,10 @@ var AppModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/dasboard/dasboard.component.css":
-/*!*************************************************!*\
-  !*** ./src/app/dasboard/dasboard.component.css ***!
-  \*************************************************/
+/***/ "./src/app/e-commerce/dasboard/dasboard.component.css":
+/*!************************************************************!*\
+  !*** ./src/app/e-commerce/dasboard/dasboard.component.css ***!
+  \************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -309,10 +309,10 @@ module.exports = ".grid-container {\n  margin: 20px;\n}\n\n.dashboard-card {\n  
 
 /***/ }),
 
-/***/ "./src/app/dasboard/dasboard.component.html":
-/*!**************************************************!*\
-  !*** ./src/app/dasboard/dasboard.component.html ***!
-  \**************************************************/
+/***/ "./src/app/e-commerce/dasboard/dasboard.component.html":
+/*!*************************************************************!*\
+  !*** ./src/app/e-commerce/dasboard/dasboard.component.html ***!
+  \*************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -320,10 +320,10 @@ module.exports = "<div class=\"grid-container\">\n  <h1 class=\"mat-h1\">Dashboa
 
 /***/ }),
 
-/***/ "./src/app/dasboard/dasboard.component.ts":
-/*!************************************************!*\
-  !*** ./src/app/dasboard/dasboard.component.ts ***!
-  \************************************************/
+/***/ "./src/app/e-commerce/dasboard/dasboard.component.ts":
+/*!***********************************************************!*\
+  !*** ./src/app/e-commerce/dasboard/dasboard.component.ts ***!
+  \***********************************************************/
 /*! exports provided: DasboardComponent */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -370,8 +370,8 @@ var DasboardComponent = /** @class */ (function () {
     DasboardComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-dasboard',
-            template: __webpack_require__(/*! ./dasboard.component.html */ "./src/app/dasboard/dasboard.component.html"),
-            styles: [__webpack_require__(/*! ./dasboard.component.css */ "./src/app/dasboard/dasboard.component.css")]
+            template: __webpack_require__(/*! ./dasboard.component.html */ "./src/app/e-commerce/dasboard/dasboard.component.html"),
+            styles: [__webpack_require__(/*! ./dasboard.component.css */ "./src/app/e-commerce/dasboard/dasboard.component.css")]
         }),
         __metadata("design:paramtypes", [_angular_cdk_layout__WEBPACK_IMPORTED_MODULE_2__["BreakpointObserver"]])
     ], DasboardComponent);
@@ -382,10 +382,10 @@ var DasboardComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/faktura/faktura-detalji/faktura-detalji.component.html":
-/*!************************************************************************!*\
-  !*** ./src/app/faktura/faktura-detalji/faktura-detalji.component.html ***!
-  \************************************************************************/
+/***/ "./src/app/e-shop/faktura/faktura-detalji/faktura-detalji.component.html":
+/*!*******************************************************************************!*\
+  !*** ./src/app/e-shop/faktura/faktura-detalji/faktura-detalji.component.html ***!
+  \*******************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -393,10 +393,10 @@ module.exports = "<div class=\"container-fluid\">\r\n    <main>\r\n        <div 
 
 /***/ }),
 
-/***/ "./src/app/faktura/faktura-detalji/faktura-detalji.component.scss":
-/*!************************************************************************!*\
-  !*** ./src/app/faktura/faktura-detalji/faktura-detalji.component.scss ***!
-  \************************************************************************/
+/***/ "./src/app/e-shop/faktura/faktura-detalji/faktura-detalji.component.scss":
+/*!*******************************************************************************!*\
+  !*** ./src/app/e-shop/faktura/faktura-detalji/faktura-detalji.component.scss ***!
+  \*******************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -404,10 +404,10 @@ module.exports = "h1 {\n  color: #283b4e;\n  font-size: 32px;\n  font-weight: bo
 
 /***/ }),
 
-/***/ "./src/app/faktura/faktura-detalji/faktura-detalji.component.ts":
-/*!**********************************************************************!*\
-  !*** ./src/app/faktura/faktura-detalji/faktura-detalji.component.ts ***!
-  \**********************************************************************/
+/***/ "./src/app/e-shop/faktura/faktura-detalji/faktura-detalji.component.ts":
+/*!*****************************************************************************!*\
+  !*** ./src/app/e-shop/faktura/faktura-detalji/faktura-detalji.component.ts ***!
+  \*****************************************************************************/
 /*! exports provided: FakturaDetaljiComponent */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -416,9 +416,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FakturaDetaljiComponent", function() { return FakturaDetaljiComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var src_app_service_faktura_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/service/faktura.service */ "./src/app/service/faktura.service.ts");
-/* harmony import */ var src_app_model_dto__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/model/dto */ "./src/app/model/dto.ts");
-/* harmony import */ var src_app_service_login_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/service/login.service */ "./src/app/service/login.service.ts");
+/* harmony import */ var _model_dto__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../model/dto */ "./src/app/e-shop/model/dto.ts");
+/* harmony import */ var _service_login_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../service/login.service */ "./src/app/e-shop/service/login.service.ts");
+/* harmony import */ var _service_faktura_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../service/faktura.service */ "./src/app/e-shop/service/faktura.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -439,7 +439,7 @@ var FakturaDetaljiComponent = /** @class */ (function () {
         this.route = route;
         this.fakturaServis = fakturaServis;
         this.router = router;
-        this.faktura = new src_app_model_dto__WEBPACK_IMPORTED_MODULE_3__["Fakutra"]();
+        this.faktura = new _model_dto__WEBPACK_IMPORTED_MODULE_2__["Fakutra"]();
         this.error = false;
         // Paging and Sorting elements
         this.rowsPerPage = 10;
@@ -469,12 +469,12 @@ var FakturaDetaljiComponent = /** @class */ (function () {
     FakturaDetaljiComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-faktura-detalji',
-            template: __webpack_require__(/*! ./faktura-detalji.component.html */ "./src/app/faktura/faktura-detalji/faktura-detalji.component.html"),
-            styles: [__webpack_require__(/*! ./faktura-detalji.component.scss */ "./src/app/faktura/faktura-detalji/faktura-detalji.component.scss")]
+            template: __webpack_require__(/*! ./faktura-detalji.component.html */ "./src/app/e-shop/faktura/faktura-detalji/faktura-detalji.component.html"),
+            styles: [__webpack_require__(/*! ./faktura-detalji.component.scss */ "./src/app/e-shop/faktura/faktura-detalji/faktura-detalji.component.scss")]
         }),
-        __metadata("design:paramtypes", [src_app_service_login_service__WEBPACK_IMPORTED_MODULE_4__["LoginService"],
+        __metadata("design:paramtypes", [_service_login_service__WEBPACK_IMPORTED_MODULE_3__["LoginService"],
             _angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"],
-            src_app_service_faktura_service__WEBPACK_IMPORTED_MODULE_2__["FakturaService"],
+            _service_faktura_service__WEBPACK_IMPORTED_MODULE_4__["FakturaService"],
             _angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"]])
     ], FakturaDetaljiComponent);
     return FakturaDetaljiComponent;
@@ -484,10 +484,10 @@ var FakturaDetaljiComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/faktura/faktura.component.html":
-/*!************************************************!*\
-  !*** ./src/app/faktura/faktura.component.html ***!
-  \************************************************/
+/***/ "./src/app/e-shop/faktura/faktura.component.html":
+/*!*******************************************************!*\
+  !*** ./src/app/e-shop/faktura/faktura.component.html ***!
+  \*******************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -495,10 +495,10 @@ module.exports = "<div class=\"container-fluid\">\r\n    <main>\r\n        <div 
 
 /***/ }),
 
-/***/ "./src/app/faktura/faktura.component.scss":
-/*!************************************************!*\
-  !*** ./src/app/faktura/faktura.component.scss ***!
-  \************************************************/
+/***/ "./src/app/e-shop/faktura/faktura.component.scss":
+/*!*******************************************************!*\
+  !*** ./src/app/e-shop/faktura/faktura.component.scss ***!
+  \*******************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -506,10 +506,10 @@ module.exports = "h1 {\n  color: #283b4e;\n  font-size: 32px;\n  font-weight: bo
 
 /***/ }),
 
-/***/ "./src/app/faktura/faktura.component.ts":
-/*!**********************************************!*\
-  !*** ./src/app/faktura/faktura.component.ts ***!
-  \**********************************************/
+/***/ "./src/app/e-shop/faktura/faktura.component.ts":
+/*!*****************************************************!*\
+  !*** ./src/app/e-shop/faktura/faktura.component.ts ***!
+  \*****************************************************/
 /*! exports provided: FakturaComponent */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -517,8 +517,8 @@ module.exports = "h1 {\n  color: #283b4e;\n  font-size: 32px;\n  font-weight: bo
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FakturaComponent", function() { return FakturaComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _service_login_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../service/login.service */ "./src/app/service/login.service.ts");
-/* harmony import */ var _service_faktura_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../service/faktura.service */ "./src/app/service/faktura.service.ts");
+/* harmony import */ var _service_login_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../service/login.service */ "./src/app/e-shop/service/login.service.ts");
+/* harmony import */ var _service_faktura_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../service/faktura.service */ "./src/app/e-shop/service/faktura.service.ts");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -578,8 +578,8 @@ var FakturaComponent = /** @class */ (function () {
     FakturaComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-faktura',
-            template: __webpack_require__(/*! ./faktura.component.html */ "./src/app/faktura/faktura.component.html"),
-            styles: [__webpack_require__(/*! ./faktura.component.scss */ "./src/app/faktura/faktura.component.scss")]
+            template: __webpack_require__(/*! ./faktura.component.html */ "./src/app/e-shop/faktura/faktura.component.html"),
+            styles: [__webpack_require__(/*! ./faktura.component.scss */ "./src/app/e-shop/faktura/faktura.component.scss")]
         }),
         __metadata("design:paramtypes", [_service_login_service__WEBPACK_IMPORTED_MODULE_1__["LoginService"],
             _service_faktura_service__WEBPACK_IMPORTED_MODULE_2__["FakturaService"],
@@ -592,10 +592,10 @@ var FakturaComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/korpa/izmena-kolicine-modal/izmena-kolicine-modal.component.html":
-/*!**********************************************************************************!*\
-  !*** ./src/app/korpa/izmena-kolicine-modal/izmena-kolicine-modal.component.html ***!
-  \**********************************************************************************/
+/***/ "./src/app/e-shop/korpa/izmena-kolicine-modal/izmena-kolicine-modal.component.html":
+/*!*****************************************************************************************!*\
+  !*** ./src/app/e-shop/korpa/izmena-kolicine-modal/izmena-kolicine-modal.component.html ***!
+  \*****************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -603,10 +603,10 @@ module.exports = "<div class=\"container\">\r\n  <main>\r\n    <div class=\"poza
 
 /***/ }),
 
-/***/ "./src/app/korpa/izmena-kolicine-modal/izmena-kolicine-modal.component.scss":
-/*!**********************************************************************************!*\
-  !*** ./src/app/korpa/izmena-kolicine-modal/izmena-kolicine-modal.component.scss ***!
-  \**********************************************************************************/
+/***/ "./src/app/e-shop/korpa/izmena-kolicine-modal/izmena-kolicine-modal.component.scss":
+/*!*****************************************************************************************!*\
+  !*** ./src/app/e-shop/korpa/izmena-kolicine-modal/izmena-kolicine-modal.component.scss ***!
+  \*****************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -614,10 +614,10 @@ module.exports = "p {\n  text-align: center; }\n\nh1 {\n  text-align: center;\n 
 
 /***/ }),
 
-/***/ "./src/app/korpa/izmena-kolicine-modal/izmena-kolicine-modal.component.ts":
-/*!********************************************************************************!*\
-  !*** ./src/app/korpa/izmena-kolicine-modal/izmena-kolicine-modal.component.ts ***!
-  \********************************************************************************/
+/***/ "./src/app/e-shop/korpa/izmena-kolicine-modal/izmena-kolicine-modal.component.ts":
+/*!***************************************************************************************!*\
+  !*** ./src/app/e-shop/korpa/izmena-kolicine-modal/izmena-kolicine-modal.component.ts ***!
+  \***************************************************************************************/
 /*! exports provided: IzmenaKolicineModalComponent */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -626,9 +626,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "IzmenaKolicineModalComponent", function() { return IzmenaKolicineModalComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
-/* harmony import */ var src_app_model_porudzbenica__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/model/porudzbenica */ "./src/app/model/porudzbenica.ts");
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _model_porudzbenica__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../model/porudzbenica */ "./src/app/e-shop/model/porudzbenica.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -652,7 +652,7 @@ var IzmenaKolicineModalComponent = /** @class */ (function () {
         this.stanje = [];
     }
     IzmenaKolicineModalComponent.prototype.ngOnInit = function () {
-        this.data = lodash__WEBPACK_IMPORTED_MODULE_3__["clone"](this.roba);
+        this.data = lodash__WEBPACK_IMPORTED_MODULE_2__["clone"](this.roba);
         this.popuniSelectStanja();
     };
     IzmenaKolicineModalComponent.prototype.popuniSelectStanja = function () {
@@ -663,7 +663,7 @@ var IzmenaKolicineModalComponent = /** @class */ (function () {
         }
     };
     IzmenaKolicineModalComponent.prototype.sacuvajIzmene = function () {
-        this.data.kolicina = lodash__WEBPACK_IMPORTED_MODULE_3__["toNumber"](this.data.kolicina);
+        this.data.kolicina = lodash__WEBPACK_IMPORTED_MODULE_2__["toNumber"](this.data.kolicina);
         this.data.cenaUkupno = this.data.kolicina * this.data.cenaKom;
         this.dialogRef.close(this.data);
     };
@@ -673,12 +673,12 @@ var IzmenaKolicineModalComponent = /** @class */ (function () {
     IzmenaKolicineModalComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-izmena-kolicine-modal',
-            template: __webpack_require__(/*! ./izmena-kolicine-modal.component.html */ "./src/app/korpa/izmena-kolicine-modal/izmena-kolicine-modal.component.html"),
-            styles: [__webpack_require__(/*! ./izmena-kolicine-modal.component.scss */ "./src/app/korpa/izmena-kolicine-modal/izmena-kolicine-modal.component.scss")]
+            template: __webpack_require__(/*! ./izmena-kolicine-modal.component.html */ "./src/app/e-shop/korpa/izmena-kolicine-modal/izmena-kolicine-modal.component.html"),
+            styles: [__webpack_require__(/*! ./izmena-kolicine-modal.component.scss */ "./src/app/e-shop/korpa/izmena-kolicine-modal/izmena-kolicine-modal.component.scss")]
         }),
         __param(1, Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"])(_angular_material__WEBPACK_IMPORTED_MODULE_1__["MAT_DIALOG_DATA"])),
         __metadata("design:paramtypes", [_angular_material__WEBPACK_IMPORTED_MODULE_1__["MatDialogRef"],
-            src_app_model_porudzbenica__WEBPACK_IMPORTED_MODULE_2__["RobaKorpa"]])
+            _model_porudzbenica__WEBPACK_IMPORTED_MODULE_3__["RobaKorpa"]])
     ], IzmenaKolicineModalComponent);
     return IzmenaKolicineModalComponent;
 }());
@@ -687,10 +687,10 @@ var IzmenaKolicineModalComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/korpa/korpa.component.html":
-/*!********************************************!*\
-  !*** ./src/app/korpa/korpa.component.html ***!
-  \********************************************/
+/***/ "./src/app/e-shop/korpa/korpa.component.html":
+/*!***************************************************!*\
+  !*** ./src/app/e-shop/korpa/korpa.component.html ***!
+  \***************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -698,10 +698,10 @@ module.exports = "<div class=\"grid-container\">\r\n    <main>\r\n        <div c
 
 /***/ }),
 
-/***/ "./src/app/korpa/korpa.component.scss":
-/*!********************************************!*\
-  !*** ./src/app/korpa/korpa.component.scss ***!
-  \********************************************/
+/***/ "./src/app/e-shop/korpa/korpa.component.scss":
+/*!***************************************************!*\
+  !*** ./src/app/e-shop/korpa/korpa.component.scss ***!
+  \***************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -709,10 +709,10 @@ module.exports = "p {\n  text-align: left !important; }\n\nh3 {\n  font-size: 20
 
 /***/ }),
 
-/***/ "./src/app/korpa/korpa.component.ts":
-/*!******************************************!*\
-  !*** ./src/app/korpa/korpa.component.ts ***!
-  \******************************************/
+/***/ "./src/app/e-shop/korpa/korpa.component.ts":
+/*!*************************************************!*\
+  !*** ./src/app/e-shop/korpa/korpa.component.ts ***!
+  \*************************************************/
 /*! exports provided: KorpaComponent */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -720,17 +720,17 @@ module.exports = "p {\n  text-align: left !important; }\n\nh3 {\n  font-size: 20
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "KorpaComponent", function() { return KorpaComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _service_data_data_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../service/data/data.service */ "./src/app/service/data/data.service.ts");
-/* harmony import */ var _service_data_local_storage_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../service/data/local-storage.service */ "./src/app/service/data/local-storage.service.ts");
+/* harmony import */ var _service_data_data_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
+/* harmony import */ var _service_data_local_storage_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../service/data/local-storage.service */ "./src/app/e-shop/service/data/local-storage.service.ts");
 /* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
-/* harmony import */ var _izmena_kolicine_modal_izmena_kolicine_modal_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./izmena-kolicine-modal/izmena-kolicine-modal.component */ "./src/app/korpa/izmena-kolicine-modal/izmena-kolicine-modal.component.ts");
+/* harmony import */ var _izmena_kolicine_modal_izmena_kolicine_modal_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./izmena-kolicine-modal/izmena-kolicine-modal.component */ "./src/app/e-shop/korpa/izmena-kolicine-modal/izmena-kolicine-modal.component.ts");
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
-/* harmony import */ var _model_dto__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../model/dto */ "./src/app/model/dto.ts");
+/* harmony import */ var _model_dto__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../model/dto */ "./src/app/e-shop/model/dto.ts");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
-/* harmony import */ var _service_login_service__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../service/login.service */ "./src/app/service/login.service.ts");
-/* harmony import */ var _service_faktura_service__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../service/faktura.service */ "./src/app/service/faktura.service.ts");
-/* harmony import */ var _uspesno_porucivanje_modal_uspesno_porucivanje_modal_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./uspesno-porucivanje-modal/uspesno-porucivanje-modal.component */ "./src/app/korpa/uspesno-porucivanje-modal/uspesno-porucivanje-modal.component.ts");
+/* harmony import */ var _service_login_service__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../service/login.service */ "./src/app/e-shop/service/login.service.ts");
+/* harmony import */ var _service_faktura_service__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../service/faktura.service */ "./src/app/e-shop/service/faktura.service.ts");
+/* harmony import */ var _uspesno_porucivanje_modal_uspesno_porucivanje_modal_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./uspesno-porucivanje-modal/uspesno-porucivanje-modal.component */ "./src/app/e-shop/korpa/uspesno-porucivanje-modal/uspesno-porucivanje-modal.component.ts");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -963,8 +963,8 @@ var KorpaComponent = /** @class */ (function () {
     KorpaComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-korpa',
-            template: __webpack_require__(/*! ./korpa.component.html */ "./src/app/korpa/korpa.component.html"),
-            styles: [__webpack_require__(/*! ./korpa.component.scss */ "./src/app/korpa/korpa.component.scss")]
+            template: __webpack_require__(/*! ./korpa.component.html */ "./src/app/e-shop/korpa/korpa.component.html"),
+            styles: [__webpack_require__(/*! ./korpa.component.scss */ "./src/app/e-shop/korpa/korpa.component.scss")]
         }),
         __metadata("design:paramtypes", [_service_data_data_service__WEBPACK_IMPORTED_MODULE_1__["DataService"],
             _service_login_service__WEBPACK_IMPORTED_MODULE_9__["LoginService"],
@@ -981,10 +981,10 @@ var KorpaComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/korpa/uspesno-porucivanje-modal/uspesno-porucivanje-modal.component.html":
-/*!******************************************************************************************!*\
-  !*** ./src/app/korpa/uspesno-porucivanje-modal/uspesno-porucivanje-modal.component.html ***!
-  \******************************************************************************************/
+/***/ "./src/app/e-shop/korpa/uspesno-porucivanje-modal/uspesno-porucivanje-modal.component.html":
+/*!*************************************************************************************************!*\
+  !*** ./src/app/e-shop/korpa/uspesno-porucivanje-modal/uspesno-porucivanje-modal.component.html ***!
+  \*************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -992,10 +992,10 @@ module.exports = "<div class=\"container\">\r\n  <main class=\"text-center\">\r\
 
 /***/ }),
 
-/***/ "./src/app/korpa/uspesno-porucivanje-modal/uspesno-porucivanje-modal.component.scss":
-/*!******************************************************************************************!*\
-  !*** ./src/app/korpa/uspesno-porucivanje-modal/uspesno-porucivanje-modal.component.scss ***!
-  \******************************************************************************************/
+/***/ "./src/app/e-shop/korpa/uspesno-porucivanje-modal/uspesno-porucivanje-modal.component.scss":
+/*!*************************************************************************************************!*\
+  !*** ./src/app/e-shop/korpa/uspesno-porucivanje-modal/uspesno-porucivanje-modal.component.scss ***!
+  \*************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -1003,10 +1003,10 @@ module.exports = "p {\n  color: #283b4e !important;\n  font-size: 17px !importan
 
 /***/ }),
 
-/***/ "./src/app/korpa/uspesno-porucivanje-modal/uspesno-porucivanje-modal.component.ts":
-/*!****************************************************************************************!*\
-  !*** ./src/app/korpa/uspesno-porucivanje-modal/uspesno-porucivanje-modal.component.ts ***!
-  \****************************************************************************************/
+/***/ "./src/app/e-shop/korpa/uspesno-porucivanje-modal/uspesno-porucivanje-modal.component.ts":
+/*!***********************************************************************************************!*\
+  !*** ./src/app/e-shop/korpa/uspesno-porucivanje-modal/uspesno-porucivanje-modal.component.ts ***!
+  \***********************************************************************************************/
 /*! exports provided: UspesnoPorucivanjeModalComponent */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1014,8 +1014,8 @@ module.exports = "p {\n  color: #283b4e !important;\n  font-size: 17px !importan
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UspesnoPorucivanjeModalComponent", function() { return UspesnoPorucivanjeModalComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var src_app_model_dto__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/model/dto */ "./src/app/model/dto.ts");
-/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _model_dto__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../model/dto */ "./src/app/e-shop/model/dto.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1045,12 +1045,12 @@ var UspesnoPorucivanjeModalComponent = /** @class */ (function () {
     UspesnoPorucivanjeModalComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-uspesno-porucivanje-modal',
-            template: __webpack_require__(/*! ./uspesno-porucivanje-modal.component.html */ "./src/app/korpa/uspesno-porucivanje-modal/uspesno-porucivanje-modal.component.html"),
-            styles: [__webpack_require__(/*! ./uspesno-porucivanje-modal.component.scss */ "./src/app/korpa/uspesno-porucivanje-modal/uspesno-porucivanje-modal.component.scss")]
+            template: __webpack_require__(/*! ./uspesno-porucivanje-modal.component.html */ "./src/app/e-shop/korpa/uspesno-porucivanje-modal/uspesno-porucivanje-modal.component.html"),
+            styles: [__webpack_require__(/*! ./uspesno-porucivanje-modal.component.scss */ "./src/app/e-shop/korpa/uspesno-porucivanje-modal/uspesno-porucivanje-modal.component.scss")]
         }),
-        __param(1, Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"])(_angular_material__WEBPACK_IMPORTED_MODULE_2__["MAT_DIALOG_DATA"])),
-        __metadata("design:paramtypes", [_angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialogRef"],
-            src_app_model_dto__WEBPACK_IMPORTED_MODULE_1__["Fakutra"]])
+        __param(1, Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"])(_angular_material__WEBPACK_IMPORTED_MODULE_1__["MAT_DIALOG_DATA"])),
+        __metadata("design:paramtypes", [_angular_material__WEBPACK_IMPORTED_MODULE_1__["MatDialogRef"],
+            _model_dto__WEBPACK_IMPORTED_MODULE_2__["Fakutra"]])
     ], UspesnoPorucivanjeModalComponent);
     return UspesnoPorucivanjeModalComponent;
 }());
@@ -1059,10 +1059,10 @@ var UspesnoPorucivanjeModalComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/login/login.component.css":
-/*!*******************************************!*\
-  !*** ./src/app/login/login.component.css ***!
-  \*******************************************/
+/***/ "./src/app/e-shop/login/login.component.css":
+/*!**************************************************!*\
+  !*** ./src/app/e-shop/login/login.component.css ***!
+  \**************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -1070,10 +1070,10 @@ module.exports = ".flex-login {\r\n    margin-top: 10%;\r\n    display: flex;\r\
 
 /***/ }),
 
-/***/ "./src/app/login/login.component.html":
-/*!********************************************!*\
-  !*** ./src/app/login/login.component.html ***!
-  \********************************************/
+/***/ "./src/app/e-shop/login/login.component.html":
+/*!***************************************************!*\
+  !*** ./src/app/e-shop/login/login.component.html ***!
+  \***************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -1081,10 +1081,10 @@ module.exports = "<div class=\"container\">\r\n\t<div class=\"flex-login\">\r\n\
 
 /***/ }),
 
-/***/ "./src/app/login/login.component.ts":
-/*!******************************************!*\
-  !*** ./src/app/login/login.component.ts ***!
-  \******************************************/
+/***/ "./src/app/e-shop/login/login.component.ts":
+/*!*************************************************!*\
+  !*** ./src/app/e-shop/login/login.component.ts ***!
+  \*************************************************/
 /*! exports provided: LoginComponent */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1092,7 +1092,7 @@ module.exports = "<div class=\"container\">\r\n\t<div class=\"flex-login\">\r\n\
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LoginComponent", function() { return LoginComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _service_login_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../service/login.service */ "./src/app/service/login.service.ts");
+/* harmony import */ var _service_login_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../service/login.service */ "./src/app/e-shop/service/login.service.ts");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1140,8 +1140,8 @@ var LoginComponent = /** @class */ (function () {
     LoginComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-login',
-            template: __webpack_require__(/*! ./login.component.html */ "./src/app/login/login.component.html"),
-            styles: [__webpack_require__(/*! ./login.component.css */ "./src/app/login/login.component.css")]
+            template: __webpack_require__(/*! ./login.component.html */ "./src/app/e-shop/login/login.component.html"),
+            styles: [__webpack_require__(/*! ./login.component.css */ "./src/app/e-shop/login/login.component.css")]
         }),
         __metadata("design:paramtypes", [_service_login_service__WEBPACK_IMPORTED_MODULE_1__["LoginService"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormBuilder"]])
     ], LoginComponent);
@@ -1152,10 +1152,10 @@ var LoginComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/model/dto.ts":
-/*!******************************!*\
-  !*** ./src/app/model/dto.ts ***!
-  \******************************/
+/***/ "./src/app/e-shop/model/dto.ts":
+/*!*************************************!*\
+  !*** ./src/app/e-shop/model/dto.ts ***!
+  \*************************************/
 /*! exports provided: ValueHelp, Roba, RobaPage, Partner, Fakutra, FakturaPage, FakturaDetalji, Proizvodjac */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1169,7 +1169,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FakturaPage", function() { return FakturaPage; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FakturaDetalji", function() { return FakturaDetalji; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Proizvodjac", function() { return Proizvodjac; });
-/* harmony import */ var _page__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./page */ "./src/app/model/page.ts");
+/* harmony import */ var _page__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./page */ "./src/app/e-shop/model/page.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -1241,10 +1241,10 @@ var Proizvodjac = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/model/konstante.ts":
-/*!************************************!*\
-  !*** ./src/app/model/konstante.ts ***!
-  \************************************/
+/***/ "./src/app/e-shop/model/konstante.ts":
+/*!*******************************************!*\
+  !*** ./src/app/e-shop/model/konstante.ts ***!
+  \*******************************************/
 /*! exports provided: transformator, mesec */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1321,10 +1321,10 @@ var mesec = {
 
 /***/ }),
 
-/***/ "./src/app/model/page.ts":
-/*!*******************************!*\
-  !*** ./src/app/model/page.ts ***!
-  \*******************************/
+/***/ "./src/app/e-shop/model/page.ts":
+/*!**************************************!*\
+  !*** ./src/app/e-shop/model/page.ts ***!
+  \**************************************/
 /*! exports provided: Page */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1349,10 +1349,10 @@ var Page = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/model/porudzbenica.ts":
-/*!***************************************!*\
-  !*** ./src/app/model/porudzbenica.ts ***!
-  \***************************************/
+/***/ "./src/app/e-shop/model/porudzbenica.ts":
+/*!**********************************************!*\
+  !*** ./src/app/e-shop/model/porudzbenica.ts ***!
+  \**********************************************/
 /*! exports provided: Korpa, RobaKorpa */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1387,188 +1387,10 @@ var RobaKorpa = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/navigacija/logout-modal/logout-modal.component.html":
-/*!*********************************************************************!*\
-  !*** ./src/app/navigacija/logout-modal/logout-modal.component.html ***!
-  \*********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"container\">\n  <main>\n      <h1>Da li ste sigurni da zelite da se odjavite?</h1>\n    <div class=\"d-flex flex-row justify-content-center\">\n      <button mat-raised-button class=\"button-glavni\" (click)=\"logout()\">Odjava</button>\n      <span class=\"col-2\"></span>\n      <button mat-raised-button class=\"button-error\" (click)=\"ostaniUlogovan()\">Ponisti</button>\n    </div>\n  </main>\n</div>"
-
-/***/ }),
-
-/***/ "./src/app/navigacija/logout-modal/logout-modal.component.scss":
-/*!*********************************************************************!*\
-  !*** ./src/app/navigacija/logout-modal/logout-modal.component.scss ***!
-  \*********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "p {\n  text-align: center; }\n\nh1 {\n  text-align: center;\n  color: #283b4e !important;\n  font-size: 17px !important; }\n"
-
-/***/ }),
-
-/***/ "./src/app/navigacija/logout-modal/logout-modal.component.ts":
-/*!*******************************************************************!*\
-  !*** ./src/app/navigacija/logout-modal/logout-modal.component.ts ***!
-  \*******************************************************************/
-/*! exports provided: LogoutModalComponent */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LogoutModalComponent", function() { return LogoutModalComponent; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
-/* harmony import */ var src_app_service_login_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/service/login.service */ "./src/app/service/login.service.ts");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-var LogoutModalComponent = /** @class */ (function () {
-    function LogoutModalComponent(dialogRef, router, loginServis) {
-        this.dialogRef = dialogRef;
-        this.router = router;
-        this.loginServis = loginServis;
-    }
-    LogoutModalComponent.prototype.ngOnInit = function () {
-    };
-    LogoutModalComponent.prototype.logout = function () {
-        this.loginServis.logout();
-        this.router.navigateByUrl('naslovna');
-        this.dialogRef.close();
-    };
-    LogoutModalComponent.prototype.ostaniUlogovan = function () {
-        this.dialogRef.close();
-    };
-    LogoutModalComponent = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
-            selector: 'app-logout-modal',
-            template: __webpack_require__(/*! ./logout-modal.component.html */ "./src/app/navigacija/logout-modal/logout-modal.component.html"),
-            styles: [__webpack_require__(/*! ./logout-modal.component.scss */ "./src/app/navigacija/logout-modal/logout-modal.component.scss")]
-        }),
-        __metadata("design:paramtypes", [_angular_material__WEBPACK_IMPORTED_MODULE_1__["MatDialogRef"],
-            _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"],
-            src_app_service_login_service__WEBPACK_IMPORTED_MODULE_2__["LoginService"]])
-    ], LogoutModalComponent);
-    return LogoutModalComponent;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/navigacija/navigacija.component.html":
-/*!******************************************************!*\
-  !*** ./src/app/navigacija/navigacija.component.html ***!
-  \******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<mat-sidenav-container class=\"sidenav-container b-color\">\n  <mat-sidenav #drawer class=\"sidenav sidebar-color\" fixedInViewport=\"true\" [attr.role]=\"(isHandset$ | async) ? 'dialog' : 'navigation'\"\n    [mode]=\"(isHandset$ | async) ? 'over' : 'side'\" [opened]=\"!(isHandset$ | async)\">\n    <mat-toolbar *ngIf=\"partner.ppid\" class=\"side-toolbar sidebar-color header-pozicija\">\n      <div class=\"d-flex flex-column \">\n        <div class=\"d-flex justify-content-center header-sirina\">\n          <mat-icon class=\"icon-color\">person</mat-icon>\n        </div>\n        <p class=\"text-center header-navigacija\">{{partner.naziv}}</p>\n        <p class=\"text-center header-navigacija\">{{partner.email  | lowercase}}</p>\n      </div>\n    </mat-toolbar>\n    <mat-nav-list [class.margin-gore]=\"partner.ppid\">\n      <mat-divider *ngIf=\"partner.ppid\" class=\"icon-color\"></mat-divider>\n      <mat-list-item class=\"material-icons\" [routerLink]=\"['naslovna']\" [routerLinkActive]=\"['is-active']\">\n        <mat-icon class=\"icon-color\" mat-list-icon>home</mat-icon>\n        <p mat-line>Naslovna</p>\n      </mat-list-item>\n\n      <mat-list-item class=\"material-icons\" [routerLink]=\"['o-nama']\" [routerLinkActive]=\"['is-active']\">\n        <mat-icon class=\"icon-color\" mat-list-icon>book</mat-icon>\n        <p mat-line>O nama</p>\n      </mat-list-item>\n\n      <mat-list-item class=\"material-icons\" [routerLink]=\"['kontakt']\" [routerLinkActive]=\"['is-active']\">\n        <mat-icon class=\"icon-color\" mat-list-icon>contact_phone</mat-icon>\n        <p mat-line>Kontakt</p>\n      </mat-list-item>\n    </mat-nav-list>\n\n    <mat-divider></mat-divider>\n    <mat-nav-list>\n      <h3 class=\"icon-color\" mat-subheader>Internet prodavnica</h3>\n\n      <mat-list-item class=\"material-icons\" [routerLink]=\"['roba']\" [routerLinkActive]=\"['is-active']\" [routerLinkActive]=\"['is-active']\">\n        <mat-icon class=\"icon-color\" mat-list-icon>searche</mat-icon>\n        <p mat-line>Roba - pretraga</p>\n      </mat-list-item>\n\n\n      <mat-list-item class=\"material-icons\" [routerLink]=\"['ulja']\" [routerLinkActive]=\"['is-active']\">\n        <mat-icon class=\"icon-color\" mat-list-icon>invert_colors</mat-icon>\n        <p mat-line>Ulja</p>\n      </mat-list-item>\n\n      <mat-list-item class=\"material-icons\" [routerLink]=\"['filteri']\" [routerLinkActive]=\"['is-active']\">\n        <mat-icon class=\"icon-color\" mat-list-icon>layers</mat-icon>\n        <p mat-line>Filteri</p>\n      </mat-list-item>\n\n      <mat-list-item class=\"material-icons\" [routerLink]=\"['akumulatori']\" [routerLinkActive]=\"['is-active']\">\n        <mat-icon class=\"icon-color\" mat-list-icon>battery_charging_full</mat-icon>\n        <p mat-line>Akumulatori</p>\n      </mat-list-item>\n\n      <mat-list-item class=\"material-icons\" [routerLink]=\"['ostalo']\" [routerLinkActive]=\"['is-active']\">\n        <mat-icon class=\"icon-color\" mat-list-icon>category</mat-icon>\n        <p mat-line>Ostalo</p>\n      </mat-list-item>\n      <mat-list-item class=\"material-icons\" *ngIf=\"partner.ppid\" [routerLink]=\"['korpa']\" [routerLinkActive]=\"['is-active']\">\n        <mat-icon matBadgeColor=\"warn\" class=\"icon-color\" matBadge=\"{{korpaBadge}}\" mat-list-icon>shopping_cart</mat-icon>\n        <p mat-line>Korpa</p>\n      </mat-list-item>\n    </mat-nav-list>\n\n    <mat-divider></mat-divider>\n    <mat-nav-list *ngIf=\"partner.ppid\">\n      <h3 class=\"icon-color\" mat-subheader>Moj Profil</h3>\n      <mat-list-item class=\"material-icons\" [routerLink]=\"['licni-podaci']\" [routerLinkActive]=\"['is-active']\">\n        <mat-icon class=\"icon-color\" mat-list-icon>person</mat-icon>\n        <p mat-line>Licni Podaci</p>\n      </mat-list-item>\n      <mat-list-item class=\"material-icons\" [routerLink]=\"['porudzbenice']\" [routerLinkActive]=\"['is-active']\">\n        <mat-icon class=\"icon-color\" mat-list-icon>list</mat-icon>\n        <p mat-line>Porudzbine</p>\n      </mat-list-item>\n    </mat-nav-list>\n    <mat-divider></mat-divider>\n    <mat-nav-list>\n      <mat-list-item *ngIf=\"partner.ppid == null\" class=\"material-icons\" [routerLink]=\"['login']\" [routerLinkActive]=\"['is-active']\">\n        <mat-icon class=\"icon-color\" mat-list-icon>exit_to_app</mat-icon>\n        <p mat-line>Login</p>\n      </mat-list-item>\n      <mat-list-item *ngIf=\"partner.ppid\" class=\"material-icons\" (click)=\"otvoriDialog()\">\n        <mat-icon class=\"icon-color\" mat-list-icon>power_settings_new</mat-icon>\n        <p mat-line>Logout</p>\n      </mat-list-item>\n    </mat-nav-list>\n  </mat-sidenav>\n  <mat-sidenav-content>\n    <mat-toolbar *ngIf=\"isHandset$ | async\" class=\"header-pozicija sidebar-color\">\n      <button type=\"button\" aria-label=\"Toggle sidenav\" mat-icon-button (click)=\"drawer.toggle()\">\n        <mat-icon class=\"icon-color\" aria-label=\"Side nav toggle icon\">menu</mat-icon>\n      </button>\n    </mat-toolbar>\n    <router-outlet></router-outlet>\n  </mat-sidenav-content>\n</mat-sidenav-container>"
-
-/***/ }),
-
-/***/ "./src/app/navigacija/navigacija.component.scss":
-/*!******************************************************!*\
-  !*** ./src/app/navigacija/navigacija.component.scss ***!
-  \******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = ".sidenav-container {\n  height: 100%; }\n\n.sidenav {\n  width: 200px;\n  height: 100%; }\n\n.mat-toolbar.mat-primary {\n  position: -webkit-sticky;\n  position: sticky;\n  top: 0; }\n\n.header-navigacija {\n  font-size: 13px !important;\n  width: 160px; }\n\n.header-sirina {\n  width: 160px !important; }\n\np {\n  font-size: 14px;\n  padding: 0px;\n  margin: 0px;\n  color: #f8f8f8;\n  font-family: sans-serif;\n  display: block;\n  padding: 0px;\n  margin: 0px; }\n\n.is-active {\n  background-color: #547aa1 !important; }\n\nmat-divider {\n  border-width: 1px;\n  border-style: solid;\n  border-color: #cfd8dc; }\n\n.icon-color {\n  color: #cfd8dc; }\n\n.user-none {\n  font-size: 60px;\n  text-align: center; }\n\n.margin-gore {\n  margin-top: 120px; }\n\n.side-toolbar {\n  height: 120px;\n  width: 200px; }\n\n.sidebar-color {\n  background-color: #283b4e; }\n\n.header-pozicija {\n  top: 0px;\n  position: fixed;\n  z-index: 999; }\n"
-
-/***/ }),
-
-/***/ "./src/app/navigacija/navigacija.component.ts":
-/*!****************************************************!*\
-  !*** ./src/app/navigacija/navigacija.component.ts ***!
-  \****************************************************/
-/*! exports provided: NavigacijaComponent */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NavigacijaComponent", function() { return NavigacijaComponent; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _angular_cdk_layout__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/cdk/layout */ "./node_modules/@angular/cdk/esm5/layout.es5.js");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
-/* harmony import */ var _service_data_data_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../service/data/data.service */ "./src/app/service/data/data.service.ts");
-/* harmony import */ var _service_login_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../service/login.service */ "./src/app/service/login.service.ts");
-/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
-/* harmony import */ var _logout_modal_logout_modal_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./logout-modal/logout-modal.component */ "./src/app/navigacija/logout-modal/logout-modal.component.ts");
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-
-
-var NavigacijaComponent = /** @class */ (function () {
-    function NavigacijaComponent(breakpointObserver, korpaServis, loginServis, dialog) {
-        this.breakpointObserver = breakpointObserver;
-        this.korpaServis = korpaServis;
-        this.loginServis = loginServis;
-        this.dialog = dialog;
-        this.korpaBadge = 0;
-        this.isHandset$ = this.breakpointObserver.observe(_angular_cdk_layout__WEBPACK_IMPORTED_MODULE_1__["Breakpoints"].Handset)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])(function (result) { return result.matches; }));
-    }
-    NavigacijaComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this.korpaServis.trenutnaKorpa.subscribe(function (korpa) { return _this.korpaBadge = korpa.roba.length; });
-        this.loginServis.ulogovaniPartner.subscribe(function (partner) { return _this.partner = partner; });
-    };
-    NavigacijaComponent.prototype.otvoriDialog = function () {
-        var dialogRef = this.dialog.open(_logout_modal_logout_modal_component__WEBPACK_IMPORTED_MODULE_6__["LogoutModalComponent"], {
-            width: '400px'
-        });
-        dialogRef.afterClosed().subscribe(function (result) {
-            console.log('The dialog was closed');
-        });
-    };
-    NavigacijaComponent = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
-            selector: 'app-navigacija',
-            template: __webpack_require__(/*! ./navigacija.component.html */ "./src/app/navigacija/navigacija.component.html"),
-            styles: [__webpack_require__(/*! ./navigacija.component.scss */ "./src/app/navigacija/navigacija.component.scss")]
-        }),
-        __metadata("design:paramtypes", [_angular_cdk_layout__WEBPACK_IMPORTED_MODULE_1__["BreakpointObserver"],
-            _service_data_data_service__WEBPACK_IMPORTED_MODULE_3__["DataService"],
-            _service_login_service__WEBPACK_IMPORTED_MODULE_4__["LoginService"],
-            _angular_material__WEBPACK_IMPORTED_MODULE_5__["MatDialog"]])
-    ], NavigacijaComponent);
-    return NavigacijaComponent;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/partner/partner.component.html":
-/*!************************************************!*\
-  !*** ./src/app/partner/partner.component.html ***!
-  \************************************************/
+/***/ "./src/app/e-shop/partner/partner.component.html":
+/*!*******************************************************!*\
+  !*** ./src/app/e-shop/partner/partner.component.html ***!
+  \*******************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -1576,10 +1398,10 @@ module.exports = "<div class=\"container-fluid\">\r\n  <main class=\"licni-podac
 
 /***/ }),
 
-/***/ "./src/app/partner/partner.component.scss":
-/*!************************************************!*\
-  !*** ./src/app/partner/partner.component.scss ***!
-  \************************************************/
+/***/ "./src/app/e-shop/partner/partner.component.scss":
+/*!*******************************************************!*\
+  !*** ./src/app/e-shop/partner/partner.component.scss ***!
+  \*******************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -1587,10 +1409,10 @@ module.exports = "h1 {\n  font-size: 25px;\n  color: #283b4e;\n  font-weight: bo
 
 /***/ }),
 
-/***/ "./src/app/partner/partner.component.ts":
-/*!**********************************************!*\
-  !*** ./src/app/partner/partner.component.ts ***!
-  \**********************************************/
+/***/ "./src/app/e-shop/partner/partner.component.ts":
+/*!*****************************************************!*\
+  !*** ./src/app/e-shop/partner/partner.component.ts ***!
+  \*****************************************************/
 /*! exports provided: PartnerComponent */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1598,8 +1420,8 @@ module.exports = "h1 {\n  font-size: 25px;\n  color: #283b4e;\n  font-weight: bo
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PartnerComponent", function() { return PartnerComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _service_login_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../service/login.service */ "./src/app/service/login.service.ts");
-/* harmony import */ var _service_partner_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../service/partner.service */ "./src/app/service/partner.service.ts");
+/* harmony import */ var _service_login_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../service/login.service */ "./src/app/e-shop/service/login.service.ts");
+/* harmony import */ var _service_partner_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../service/partner.service */ "./src/app/e-shop/service/partner.service.ts");
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
@@ -1781,8 +1603,8 @@ var PartnerComponent = /** @class */ (function () {
     PartnerComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-partner',
-            template: __webpack_require__(/*! ./partner.component.html */ "./src/app/partner/partner.component.html"),
-            styles: [__webpack_require__(/*! ./partner.component.scss */ "./src/app/partner/partner.component.scss")]
+            template: __webpack_require__(/*! ./partner.component.html */ "./src/app/e-shop/partner/partner.component.html"),
+            styles: [__webpack_require__(/*! ./partner.component.scss */ "./src/app/e-shop/partner/partner.component.scss")]
         }),
         __metadata("design:paramtypes", [_service_login_service__WEBPACK_IMPORTED_MODULE_1__["LoginService"],
             _service_partner_service__WEBPACK_IMPORTED_MODULE_2__["PartnerService"],
@@ -1796,128 +1618,10 @@ var PartnerComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/pipes/DatePipe.ts":
-/*!***********************************!*\
-  !*** ./src/app/pipes/DatePipe.ts ***!
-  \***********************************/
-/*! exports provided: DatePipe */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DatePipe", function() { return DatePipe; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _model_konstante__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../model/konstante */ "./src/app/model/konstante.ts");
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-
-var DatePipe = /** @class */ (function () {
-    function DatePipe() {
-    }
-    DatePipe.prototype.transform = function (value) {
-        if (!value) {
-            value = 'N/A';
-        }
-        else {
-            var datumNVremeiz = value.split('T');
-            var datumNiz = datumNVremeiz[0].split('-');
-            datumNiz[1] = _model_konstante__WEBPACK_IMPORTED_MODULE_1__["mesec"]['mesec_' + datumNiz[1]];
-            value = datumNiz[0] + '-' + datumNiz[1] + '-' + datumNiz[2] + ' ' + datumNVremeiz[1].substr(0, 5);
-        }
-        return value;
-    };
-    DatePipe = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Pipe"])({ name: 'datum' })
-    ], DatePipe);
-    return DatePipe;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/pipes/EmptyPipe.ts":
-/*!************************************!*\
-  !*** ./src/app/pipes/EmptyPipe.ts ***!
-  \************************************/
-/*! exports provided: EmptyPipe */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EmptyPipe", function() { return EmptyPipe; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-var EmptyPipe = /** @class */ (function () {
-    function EmptyPipe() {
-    }
-    EmptyPipe.prototype.transform = function (value) {
-        if (!value) {
-            value = 'N/A';
-        }
-        return value;
-    };
-    EmptyPipe = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Pipe"])({ name: 'empty' })
-    ], EmptyPipe);
-    return EmptyPipe;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/pipes/PrevodilacPipe.ts":
-/*!*****************************************!*\
-  !*** ./src/app/pipes/PrevodilacPipe.ts ***!
-  \*****************************************/
-/*! exports provided: TranslatePipe */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TranslatePipe", function() { return TranslatePipe; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _model_konstante__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../model/konstante */ "./src/app/model/konstante.ts");
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-
-var TranslatePipe = /** @class */ (function () {
-    function TranslatePipe() {
-    }
-    TranslatePipe.prototype.transform = function (value) {
-        return _model_konstante__WEBPACK_IMPORTED_MODULE_1__["transformator"][value];
-    };
-    TranslatePipe = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Pipe"])({ name: 'translate' })
-    ], TranslatePipe);
-    return TranslatePipe;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/roba/akumulatori/akumulatori.component.css":
-/*!************************************************************!*\
-  !*** ./src/app/roba/akumulatori/akumulatori.component.css ***!
-  \************************************************************/
+/***/ "./src/app/e-shop/roba/akumulatori/akumulatori.component.css":
+/*!*******************************************************************!*\
+  !*** ./src/app/e-shop/roba/akumulatori/akumulatori.component.css ***!
+  \*******************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -1925,10 +1629,10 @@ module.exports = ""
 
 /***/ }),
 
-/***/ "./src/app/roba/akumulatori/akumulatori.component.html":
-/*!*************************************************************!*\
-  !*** ./src/app/roba/akumulatori/akumulatori.component.html ***!
-  \*************************************************************/
+/***/ "./src/app/e-shop/roba/akumulatori/akumulatori.component.html":
+/*!********************************************************************!*\
+  !*** ./src/app/e-shop/roba/akumulatori/akumulatori.component.html ***!
+  \********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -1936,10 +1640,10 @@ module.exports = "<div class=\"container-fluid\">\r\n\r\n    <div class=\"d-flex
 
 /***/ }),
 
-/***/ "./src/app/roba/akumulatori/akumulatori.component.ts":
-/*!***********************************************************!*\
-  !*** ./src/app/roba/akumulatori/akumulatori.component.ts ***!
-  \***********************************************************/
+/***/ "./src/app/e-shop/roba/akumulatori/akumulatori.component.ts":
+/*!******************************************************************!*\
+  !*** ./src/app/e-shop/roba/akumulatori/akumulatori.component.ts ***!
+  \******************************************************************/
 /*! exports provided: AkumulatoriComponent */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1947,14 +1651,14 @@ module.exports = "<div class=\"container-fluid\">\r\n\r\n    <div class=\"d-flex
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AkumulatoriComponent", function() { return AkumulatoriComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var src_app_service_roba_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/service/roba.service */ "./src/app/service/roba.service.ts");
-/* harmony import */ var src_app_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/service/proizvodjac.service */ "./src/app/service/proizvodjac.service.ts");
-/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
-/* harmony import */ var src_app_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/utils/app-utils.service */ "./src/app/utils/app-utils.service.ts");
-/* harmony import */ var src_app_service_data_data_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/service/data/data.service */ "./src/app/service/data/data.service.ts");
-/* harmony import */ var src_app_service_login_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/service/login.service */ "./src/app/service/login.service.ts");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var _service_roba_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
+/* harmony import */ var _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
+/* harmony import */ var _service_login_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../service/login.service */ "./src/app/e-shop/service/login.service.ts");
+/* harmony import */ var _service_data_data_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
+/* harmony import */ var _service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../service/proizvodjac.service */ "./src/app/e-shop/service/proizvodjac.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2028,13 +1732,13 @@ var AkumulatoriComponent = /** @class */ (function () {
         this.ucitavanje = true;
         this.pronadjenaRoba = true;
         this.robaService.pronadjiAkumulatore(this.sort, this.rowsPerPage, this.pageIndex, null, null, null)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(function (error) {
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(function (error) {
             if (error.status === 404) {
                 _this.pronadjenaRoba = false;
-                return rxjs__WEBPACK_IMPORTED_MODULE_5__["EMPTY"];
+                return rxjs__WEBPACK_IMPORTED_MODULE_3__["EMPTY"];
             }
-            return Object(rxjs__WEBPACK_IMPORTED_MODULE_5__["throwError"])(error);
-        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["finalize"])(function () { return _this.ucitavanje = false; }))
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["throwError"])(error);
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["finalize"])(function () { return _this.ucitavanje = false; }))
             .subscribe(function (res) {
             _this.pronadjenaRoba = true;
             _this.roba = res.content;
@@ -2059,13 +1763,13 @@ var AkumulatoriComponent = /** @class */ (function () {
         this.ucitavanje = true;
         this.pronadjenaRoba = true;
         this.robaService.pronadjiAkumulatore(this.sort, this.rowsPerPage, this.pageIndex, searchValue, naStanju, proizvodjacId)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(function (error) {
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(function (error) {
             if (error.status === 404) {
                 _this.pronadjenaRoba = false;
-                return rxjs__WEBPACK_IMPORTED_MODULE_5__["EMPTY"];
+                return rxjs__WEBPACK_IMPORTED_MODULE_3__["EMPTY"];
             }
-            return Object(rxjs__WEBPACK_IMPORTED_MODULE_5__["throwError"])(error);
-        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["finalize"])(function () { return _this.ucitavanje = false; }))
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["throwError"])(error);
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["finalize"])(function () { return _this.ucitavanje = false; }))
             .subscribe(function (res) {
             _this.pronadjenaRoba = true;
             _this.roba = res.content;
@@ -2081,7 +1785,7 @@ var AkumulatoriComponent = /** @class */ (function () {
     AkumulatoriComponent.prototype.pronadjiSveProizvodjace = function () {
         var _this = this;
         this.proizvodjacService.pronadjiSveProizvodjaceAkumulatora()
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["takeWhile"])(function () { return _this.alive; }))
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }))
             .subscribe(function (res) {
             _this.proizvodjaci = res;
             _this.izabraniProizvodjac = _this.proizvodjaci[0].naziv;
@@ -2142,15 +1846,15 @@ var AkumulatoriComponent = /** @class */ (function () {
     AkumulatoriComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-akumulatori',
-            template: __webpack_require__(/*! ./akumulatori.component.html */ "./src/app/roba/akumulatori/akumulatori.component.html"),
-            styles: [__webpack_require__(/*! ./akumulatori.component.css */ "./src/app/roba/akumulatori/akumulatori.component.css")]
+            template: __webpack_require__(/*! ./akumulatori.component.html */ "./src/app/e-shop/roba/akumulatori/akumulatori.component.html"),
+            styles: [__webpack_require__(/*! ./akumulatori.component.css */ "./src/app/e-shop/roba/akumulatori/akumulatori.component.css")]
         }),
-        __metadata("design:paramtypes", [src_app_service_roba_service__WEBPACK_IMPORTED_MODULE_1__["RobaService"],
-            src_app_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_6__["AppUtilsService"],
-            src_app_service_login_service__WEBPACK_IMPORTED_MODULE_8__["LoginService"],
-            src_app_service_data_data_service__WEBPACK_IMPORTED_MODULE_7__["DataService"],
-            src_app_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_2__["ProizvodjacService"],
-            _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatSnackBar"]])
+        __metadata("design:paramtypes", [_service_roba_service__WEBPACK_IMPORTED_MODULE_4__["RobaService"],
+            _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_5__["AppUtilsService"],
+            _service_login_service__WEBPACK_IMPORTED_MODULE_6__["LoginService"],
+            _service_data_data_service__WEBPACK_IMPORTED_MODULE_7__["DataService"],
+            _service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_8__["ProizvodjacService"],
+            _angular_material__WEBPACK_IMPORTED_MODULE_1__["MatSnackBar"]])
     ], AkumulatoriComponent);
     return AkumulatoriComponent;
 }());
@@ -2159,10 +1863,10 @@ var AkumulatoriComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/roba/filteri/filteri.component.css":
-/*!****************************************************!*\
-  !*** ./src/app/roba/filteri/filteri.component.css ***!
-  \****************************************************/
+/***/ "./src/app/e-shop/roba/filteri/filteri.component.css":
+/*!***********************************************************!*\
+  !*** ./src/app/e-shop/roba/filteri/filteri.component.css ***!
+  \***********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -2170,10 +1874,10 @@ module.exports = ".example-radio-group {\r\n    display: inline-flex;\r\n    fle
 
 /***/ }),
 
-/***/ "./src/app/roba/filteri/filteri.component.html":
-/*!*****************************************************!*\
-  !*** ./src/app/roba/filteri/filteri.component.html ***!
-  \*****************************************************/
+/***/ "./src/app/e-shop/roba/filteri/filteri.component.html":
+/*!************************************************************!*\
+  !*** ./src/app/e-shop/roba/filteri/filteri.component.html ***!
+  \************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -2181,10 +1885,10 @@ module.exports = "<div class=\"container-fluid\">\r\n    <main>\r\n        <div 
 
 /***/ }),
 
-/***/ "./src/app/roba/filteri/filteri.component.ts":
-/*!***************************************************!*\
-  !*** ./src/app/roba/filteri/filteri.component.ts ***!
-  \***************************************************/
+/***/ "./src/app/e-shop/roba/filteri/filteri.component.ts":
+/*!**********************************************************!*\
+  !*** ./src/app/e-shop/roba/filteri/filteri.component.ts ***!
+  \**********************************************************/
 /*! exports provided: FilteriComponent */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2192,14 +1896,14 @@ module.exports = "<div class=\"container-fluid\">\r\n    <main>\r\n        <div 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FilteriComponent", function() { return FilteriComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var src_app_service_roba_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/service/roba.service */ "./src/app/service/roba.service.ts");
-/* harmony import */ var src_app_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/service/proizvodjac.service */ "./src/app/service/proizvodjac.service.ts");
-/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
-/* harmony import */ var src_app_service_data_data_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/service/data/data.service */ "./src/app/service/data/data.service.ts");
-/* harmony import */ var src_app_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/utils/app-utils.service */ "./src/app/utils/app-utils.service.ts");
-/* harmony import */ var src_app_service_login_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/service/login.service */ "./src/app/service/login.service.ts");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var _service_roba_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
+/* harmony import */ var _service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../service/proizvodjac.service */ "./src/app/e-shop/service/proizvodjac.service.ts");
+/* harmony import */ var _service_login_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../service/login.service */ "./src/app/e-shop/service/login.service.ts");
+/* harmony import */ var _service_data_data_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
+/* harmony import */ var _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2273,13 +1977,13 @@ var FilteriComponent = /** @class */ (function () {
         this.ucitavanje = true;
         this.pronadjenaRoba = true;
         this.robaService.pronadjiFiltere(this.sort, this.rowsPerPage, this.pageIndex, null, null, null)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(function (error) {
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(function (error) {
             if (error.status === 404) {
                 _this.pronadjenaRoba = false;
-                return rxjs__WEBPACK_IMPORTED_MODULE_5__["EMPTY"];
+                return rxjs__WEBPACK_IMPORTED_MODULE_3__["EMPTY"];
             }
-            return Object(rxjs__WEBPACK_IMPORTED_MODULE_5__["throwError"])(error);
-        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["finalize"])(function () { return _this.ucitavanje = false; }))
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["throwError"])(error);
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["finalize"])(function () { return _this.ucitavanje = false; }))
             .subscribe(function (res) {
             _this.pronadjenaRoba = true;
             _this.roba = res.content;
@@ -2304,13 +2008,13 @@ var FilteriComponent = /** @class */ (function () {
         this.ucitavanje = true;
         this.pronadjenaRoba = true;
         this.robaService.pronadjiFiltere(this.sort, this.rowsPerPage, this.pageIndex, searchValue, naStanju, proizvodjacId)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(function (error) {
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(function (error) {
             if (error.status === 404) {
                 _this.pronadjenaRoba = false;
-                return rxjs__WEBPACK_IMPORTED_MODULE_5__["EMPTY"];
+                return rxjs__WEBPACK_IMPORTED_MODULE_3__["EMPTY"];
             }
-            return Object(rxjs__WEBPACK_IMPORTED_MODULE_5__["throwError"])(error);
-        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["finalize"])(function () { return _this.ucitavanje = false; }))
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["throwError"])(error);
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["finalize"])(function () { return _this.ucitavanje = false; }))
             .subscribe(function (res) {
             _this.pronadjenaRoba = true;
             _this.roba = res.content;
@@ -2327,7 +2031,7 @@ var FilteriComponent = /** @class */ (function () {
     FilteriComponent.prototype.pronadjiSveProizvodjace = function () {
         var _this = this;
         this.proizvodjacService.pronadjiSveProizvodjaceFiltera()
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["takeWhile"])(function () { return _this.alive; }))
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }))
             .subscribe(function (res) {
             _this.proizvodjaci = res;
             _this.izabraniProizvodjac = _this.proizvodjaci[0].naziv;
@@ -2388,15 +2092,15 @@ var FilteriComponent = /** @class */ (function () {
     FilteriComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-filteri',
-            template: __webpack_require__(/*! ./filteri.component.html */ "./src/app/roba/filteri/filteri.component.html"),
-            styles: [__webpack_require__(/*! ./filteri.component.css */ "./src/app/roba/filteri/filteri.component.css")]
+            template: __webpack_require__(/*! ./filteri.component.html */ "./src/app/e-shop/roba/filteri/filteri.component.html"),
+            styles: [__webpack_require__(/*! ./filteri.component.css */ "./src/app/e-shop/roba/filteri/filteri.component.css")]
         }),
-        __metadata("design:paramtypes", [src_app_service_roba_service__WEBPACK_IMPORTED_MODULE_1__["RobaService"],
-            src_app_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_2__["ProizvodjacService"],
-            src_app_service_login_service__WEBPACK_IMPORTED_MODULE_8__["LoginService"],
-            src_app_service_data_data_service__WEBPACK_IMPORTED_MODULE_6__["DataService"],
-            src_app_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_7__["AppUtilsService"],
-            _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatSnackBar"]])
+        __metadata("design:paramtypes", [_service_roba_service__WEBPACK_IMPORTED_MODULE_4__["RobaService"],
+            _service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_5__["ProizvodjacService"],
+            _service_login_service__WEBPACK_IMPORTED_MODULE_6__["LoginService"],
+            _service_data_data_service__WEBPACK_IMPORTED_MODULE_7__["DataService"],
+            _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_8__["AppUtilsService"],
+            _angular_material__WEBPACK_IMPORTED_MODULE_1__["MatSnackBar"]])
     ], FilteriComponent);
     return FilteriComponent;
 }());
@@ -2405,10 +2109,10 @@ var FilteriComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/roba/ostalo/kategorija-specificna/kategorija-specificna.component.html":
-/*!****************************************************************************************!*\
-  !*** ./src/app/roba/ostalo/kategorija-specificna/kategorija-specificna.component.html ***!
-  \****************************************************************************************/
+/***/ "./src/app/e-shop/roba/ostalo/kategorija-specificna/kategorija-specificna.component.html":
+/*!***********************************************************************************************!*\
+  !*** ./src/app/e-shop/roba/ostalo/kategorija-specificna/kategorija-specificna.component.html ***!
+  \***********************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -2416,10 +2120,10 @@ module.exports = "<div class=\"container-fluid\">\r\n    <main>\r\n        <div 
 
 /***/ }),
 
-/***/ "./src/app/roba/ostalo/kategorija-specificna/kategorija-specificna.component.scss":
-/*!****************************************************************************************!*\
-  !*** ./src/app/roba/ostalo/kategorija-specificna/kategorija-specificna.component.scss ***!
-  \****************************************************************************************/
+/***/ "./src/app/e-shop/roba/ostalo/kategorija-specificna/kategorija-specificna.component.scss":
+/*!***********************************************************************************************!*\
+  !*** ./src/app/e-shop/roba/ostalo/kategorija-specificna/kategorija-specificna.component.scss ***!
+  \***********************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -2427,10 +2131,10 @@ module.exports = ".forms-input {\n  margin-top: 0px !important; }\n\n.nazad-butt
 
 /***/ }),
 
-/***/ "./src/app/roba/ostalo/kategorija-specificna/kategorija-specificna.component.ts":
-/*!**************************************************************************************!*\
-  !*** ./src/app/roba/ostalo/kategorija-specificna/kategorija-specificna.component.ts ***!
-  \**************************************************************************************/
+/***/ "./src/app/e-shop/roba/ostalo/kategorija-specificna/kategorija-specificna.component.ts":
+/*!*********************************************************************************************!*\
+  !*** ./src/app/e-shop/roba/ostalo/kategorija-specificna/kategorija-specificna.component.ts ***!
+  \*********************************************************************************************/
 /*! exports provided: KategorijaSpecificnaComponent */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2439,14 +2143,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "KategorijaSpecificnaComponent", function() { return KategorijaSpecificnaComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var src_app_service_roba_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/service/roba.service */ "./src/app/service/roba.service.ts");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
-/* harmony import */ var src_app_service_data_data_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/service/data/data.service */ "./src/app/service/data/data.service.ts");
-/* harmony import */ var src_app_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/service/proizvodjac.service */ "./src/app/service/proizvodjac.service.ts");
-/* harmony import */ var src_app_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/utils/app-utils.service */ "./src/app/utils/app-utils.service.ts");
-/* harmony import */ var src_app_service_login_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/service/login.service */ "./src/app/service/login.service.ts");
-/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var src_app_e_shop_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/e-shop/service/proizvodjac.service */ "./src/app/e-shop/service/proizvodjac.service.ts");
+/* harmony import */ var src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/e-shop/service/login.service */ "./src/app/e-shop/service/login.service.ts");
+/* harmony import */ var src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/e-shop/utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
+/* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
+/* harmony import */ var src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! src/app/e-shop/service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2521,7 +2225,7 @@ var KategorijaSpecificnaComponent = /** @class */ (function () {
         var _this = this;
         this.route.params.subscribe(function (params) {
             _this.proizvodjacService.pronadjiSveProizvodjaceKategorije(params.id)
-                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["takeWhile"])(function () { return _this.alive; }))
+                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }))
                 .subscribe(function (res) {
                 _this.proizvodjaci = res;
                 _this.izabraniProizvodjac = _this.proizvodjaci[0].naziv;
@@ -2536,13 +2240,13 @@ var KategorijaSpecificnaComponent = /** @class */ (function () {
         var _this = this;
         this.route.params.subscribe(function (params) {
             _this.robaServis.pronadjiPoKategoriji(_this.sort, _this.rowsPerPage, _this.pageIndex, null, null, null, params.id)
-                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["catchError"])(function (error) {
+                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(function (error) {
                 if (error.status === 404) {
                     _this.pronadjenaRoba = false;
-                    return rxjs__WEBPACK_IMPORTED_MODULE_4__["EMPTY"];
+                    return rxjs__WEBPACK_IMPORTED_MODULE_3__["EMPTY"];
                 }
-                return Object(rxjs__WEBPACK_IMPORTED_MODULE_4__["throwError"])(error);
-            }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["finalize"])(function () { return _this.ucitavanje = false; }))
+                return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["throwError"])(error);
+            }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["finalize"])(function () { return _this.ucitavanje = false; }))
                 .subscribe(function (res) {
                 _this.pronadjenaRoba = true;
                 _this.roba = res.content;
@@ -2574,13 +2278,13 @@ var KategorijaSpecificnaComponent = /** @class */ (function () {
         this.pronadjenaRoba = true;
         this.route.params.subscribe(function (params) {
             _this.robaServis.pronadjiPoKategoriji(_this.sort, _this.rowsPerPage, _this.pageIndex, searchValue, naStanju, proizvodjacId, params.id)
-                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["catchError"])(function (error) {
+                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(function (error) {
                 if (error.status === 404) {
                     _this.pronadjenaRoba = false;
-                    return rxjs__WEBPACK_IMPORTED_MODULE_4__["EMPTY"];
+                    return rxjs__WEBPACK_IMPORTED_MODULE_3__["EMPTY"];
                 }
-                return Object(rxjs__WEBPACK_IMPORTED_MODULE_4__["throwError"])(error);
-            }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["finalize"])(function () { return _this.ucitavanje = false; }))
+                return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["throwError"])(error);
+            }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["finalize"])(function () { return _this.ucitavanje = false; }))
                 .subscribe(function (res) {
                 _this.pronadjenaRoba = true;
                 _this.roba = res.content;
@@ -2653,16 +2357,16 @@ var KategorijaSpecificnaComponent = /** @class */ (function () {
     KategorijaSpecificnaComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-kategorija-specificna',
-            template: __webpack_require__(/*! ./kategorija-specificna.component.html */ "./src/app/roba/ostalo/kategorija-specificna/kategorija-specificna.component.html"),
-            styles: [__webpack_require__(/*! ./kategorija-specificna.component.scss */ "./src/app/roba/ostalo/kategorija-specificna/kategorija-specificna.component.scss")]
+            template: __webpack_require__(/*! ./kategorija-specificna.component.html */ "./src/app/e-shop/roba/ostalo/kategorija-specificna/kategorija-specificna.component.html"),
+            styles: [__webpack_require__(/*! ./kategorija-specificna.component.scss */ "./src/app/e-shop/roba/ostalo/kategorija-specificna/kategorija-specificna.component.scss")]
         }),
         __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"],
-            src_app_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_6__["ProizvodjacService"],
-            src_app_service_login_service__WEBPACK_IMPORTED_MODULE_8__["LoginService"],
-            src_app_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_7__["AppUtilsService"],
-            src_app_service_data_data_service__WEBPACK_IMPORTED_MODULE_5__["DataService"],
-            src_app_service_roba_service__WEBPACK_IMPORTED_MODULE_2__["RobaService"],
-            _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatSnackBar"],
+            src_app_e_shop_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_5__["ProizvodjacService"],
+            src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_6__["LoginService"],
+            src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_7__["AppUtilsService"],
+            src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_8__["DataService"],
+            src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_9__["RobaService"],
+            _angular_material__WEBPACK_IMPORTED_MODULE_4__["MatSnackBar"],
             _angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"]])
     ], KategorijaSpecificnaComponent);
     return KategorijaSpecificnaComponent;
@@ -2672,10 +2376,10 @@ var KategorijaSpecificnaComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/roba/ostalo/ostalo.component.html":
-/*!***************************************************!*\
-  !*** ./src/app/roba/ostalo/ostalo.component.html ***!
-  \***************************************************/
+/***/ "./src/app/e-shop/roba/ostalo/ostalo.component.html":
+/*!**********************************************************!*\
+  !*** ./src/app/e-shop/roba/ostalo/ostalo.component.html ***!
+  \**********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -2683,10 +2387,10 @@ module.exports = "<div class=\"container-fluid\">\r\n  <main *ngIf=\"kategorije\
 
 /***/ }),
 
-/***/ "./src/app/roba/ostalo/ostalo.component.scss":
-/*!***************************************************!*\
-  !*** ./src/app/roba/ostalo/ostalo.component.scss ***!
-  \***************************************************/
+/***/ "./src/app/e-shop/roba/ostalo/ostalo.component.scss":
+/*!**********************************************************!*\
+  !*** ./src/app/e-shop/roba/ostalo/ostalo.component.scss ***!
+  \**********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -2694,10 +2398,10 @@ module.exports = "h1 {\n  margin-top: 20px;\n  margin-left: 20px;\n  margin-bott
 
 /***/ }),
 
-/***/ "./src/app/roba/ostalo/ostalo.component.ts":
-/*!*************************************************!*\
-  !*** ./src/app/roba/ostalo/ostalo.component.ts ***!
-  \*************************************************/
+/***/ "./src/app/e-shop/roba/ostalo/ostalo.component.ts":
+/*!********************************************************!*\
+  !*** ./src/app/e-shop/roba/ostalo/ostalo.component.ts ***!
+  \********************************************************/
 /*! exports provided: OstaloComponent */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2705,9 +2409,9 @@ module.exports = "h1 {\n  margin-top: 20px;\n  margin-left: 20px;\n  margin-bott
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OstaloComponent", function() { return OstaloComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var src_app_service_roba_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/service/roba.service */ "./src/app/service/roba.service.ts");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var _service_roba_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2730,7 +2434,7 @@ var OstaloComponent = /** @class */ (function () {
     }
     OstaloComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.robaServis.ostaleKategorije().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(function (error) { return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["throwError"])(error); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["finalize"])(function () { return _this.ucitavanje = false; }))
+        this.robaServis.ostaleKategorije().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(function (error) { return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["throwError"])(error); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["finalize"])(function () { return _this.ucitavanje = false; }))
             .subscribe(function (res) {
             _this.kategorije = res;
         }, function (error) {
@@ -2749,10 +2453,10 @@ var OstaloComponent = /** @class */ (function () {
     OstaloComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-ostalo',
-            template: __webpack_require__(/*! ./ostalo.component.html */ "./src/app/roba/ostalo/ostalo.component.html"),
-            styles: [__webpack_require__(/*! ./ostalo.component.scss */ "./src/app/roba/ostalo/ostalo.component.scss")]
+            template: __webpack_require__(/*! ./ostalo.component.html */ "./src/app/e-shop/roba/ostalo/ostalo.component.html"),
+            styles: [__webpack_require__(/*! ./ostalo.component.scss */ "./src/app/e-shop/roba/ostalo/ostalo.component.scss")]
         }),
-        __metadata("design:paramtypes", [src_app_service_roba_service__WEBPACK_IMPORTED_MODULE_1__["RobaService"]])
+        __metadata("design:paramtypes", [_service_roba_service__WEBPACK_IMPORTED_MODULE_3__["RobaService"]])
     ], OstaloComponent);
     return OstaloComponent;
 }());
@@ -2761,10 +2465,10 @@ var OstaloComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/roba/roba.component.css":
-/*!*****************************************!*\
-  !*** ./src/app/roba/roba.component.css ***!
-  \*****************************************/
+/***/ "./src/app/e-shop/roba/roba.component.css":
+/*!************************************************!*\
+  !*** ./src/app/e-shop/roba/roba.component.css ***!
+  \************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -2772,10 +2476,10 @@ module.exports = ""
 
 /***/ }),
 
-/***/ "./src/app/roba/roba.component.html":
-/*!******************************************!*\
-  !*** ./src/app/roba/roba.component.html ***!
-  \******************************************/
+/***/ "./src/app/e-shop/roba/roba.component.html":
+/*!*************************************************!*\
+  !*** ./src/app/e-shop/roba/roba.component.html ***!
+  \*************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -2783,10 +2487,10 @@ module.exports = "<div class=\"container-fluid\">\r\n\r\n    <div class=\"d-flex
 
 /***/ }),
 
-/***/ "./src/app/roba/roba.component.ts":
-/*!****************************************!*\
-  !*** ./src/app/roba/roba.component.ts ***!
-  \****************************************/
+/***/ "./src/app/e-shop/roba/roba.component.ts":
+/*!***********************************************!*\
+  !*** ./src/app/e-shop/roba/roba.component.ts ***!
+  \***********************************************/
 /*! exports provided: RobaComponent */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2794,14 +2498,14 @@ module.exports = "<div class=\"container-fluid\">\r\n\r\n    <div class=\"d-flex
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RobaComponent", function() { return RobaComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _service_roba_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../service/roba.service */ "./src/app/service/roba.service.ts");
+/* harmony import */ var _service_roba_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
 /* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
-/* harmony import */ var _service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../service/proizvodjac.service */ "./src/app/service/proizvodjac.service.ts");
-/* harmony import */ var _service_data_data_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../service/data/data.service */ "./src/app/service/data/data.service.ts");
-/* harmony import */ var _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../utils/app-utils.service */ "./src/app/utils/app-utils.service.ts");
-/* harmony import */ var _service_login_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../service/login.service */ "./src/app/service/login.service.ts");
+/* harmony import */ var _service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../service/proizvodjac.service */ "./src/app/e-shop/service/proizvodjac.service.ts");
+/* harmony import */ var _service_data_data_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
+/* harmony import */ var _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
+/* harmony import */ var _service_login_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../service/login.service */ "./src/app/e-shop/service/login.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2997,8 +2701,8 @@ var RobaComponent = /** @class */ (function () {
     RobaComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-roba',
-            template: __webpack_require__(/*! ./roba.component.html */ "./src/app/roba/roba.component.html"),
-            styles: [__webpack_require__(/*! ./roba.component.css */ "./src/app/roba/roba.component.css")]
+            template: __webpack_require__(/*! ./roba.component.html */ "./src/app/e-shop/roba/roba.component.html"),
+            styles: [__webpack_require__(/*! ./roba.component.css */ "./src/app/e-shop/roba/roba.component.css")]
         }),
         __metadata("design:paramtypes", [_service_roba_service__WEBPACK_IMPORTED_MODULE_1__["RobaService"],
             _service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_5__["ProizvodjacService"],
@@ -3014,10 +2718,10 @@ var RobaComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/roba/ulja/antifriz/antifriz.component.css":
-/*!***********************************************************!*\
-  !*** ./src/app/roba/ulja/antifriz/antifriz.component.css ***!
-  \***********************************************************/
+/***/ "./src/app/e-shop/roba/ulja/antifriz/antifriz.component.css":
+/*!******************************************************************!*\
+  !*** ./src/app/e-shop/roba/ulja/antifriz/antifriz.component.css ***!
+  \******************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -3025,10 +2729,10 @@ module.exports = ""
 
 /***/ }),
 
-/***/ "./src/app/roba/ulja/antifriz/antifriz.component.html":
-/*!************************************************************!*\
-  !*** ./src/app/roba/ulja/antifriz/antifriz.component.html ***!
-  \************************************************************/
+/***/ "./src/app/e-shop/roba/ulja/antifriz/antifriz.component.html":
+/*!*******************************************************************!*\
+  !*** ./src/app/e-shop/roba/ulja/antifriz/antifriz.component.html ***!
+  \*******************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -3036,10 +2740,10 @@ module.exports = "<div class=\"container-fluid\">\r\n\r\n    <div class=\"d-flex
 
 /***/ }),
 
-/***/ "./src/app/roba/ulja/antifriz/antifriz.component.ts":
-/*!**********************************************************!*\
-  !*** ./src/app/roba/ulja/antifriz/antifriz.component.ts ***!
-  \**********************************************************/
+/***/ "./src/app/e-shop/roba/ulja/antifriz/antifriz.component.ts":
+/*!*****************************************************************!*\
+  !*** ./src/app/e-shop/roba/ulja/antifriz/antifriz.component.ts ***!
+  \*****************************************************************/
 /*! exports provided: AntifrizComponent */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -3047,14 +2751,14 @@ module.exports = "<div class=\"container-fluid\">\r\n\r\n    <div class=\"d-flex
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AntifrizComponent", function() { return AntifrizComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var src_app_service_roba_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/service/roba.service */ "./src/app/service/roba.service.ts");
-/* harmony import */ var src_app_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/service/proizvodjac.service */ "./src/app/service/proizvodjac.service.ts");
-/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
-/* harmony import */ var src_app_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/utils/app-utils.service */ "./src/app/utils/app-utils.service.ts");
-/* harmony import */ var src_app_service_data_data_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/service/data/data.service */ "./src/app/service/data/data.service.ts");
-/* harmony import */ var src_app_service_login_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/service/login.service */ "./src/app/service/login.service.ts");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/e-shop/service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
+/* harmony import */ var src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/e-shop/utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
+/* harmony import */ var src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/e-shop/service/login.service */ "./src/app/e-shop/service/login.service.ts");
+/* harmony import */ var src_app_e_shop_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/e-shop/service/proizvodjac.service */ "./src/app/e-shop/service/proizvodjac.service.ts");
+/* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3129,13 +2833,13 @@ var AntifrizComponent = /** @class */ (function () {
         this.ucitavanje = true;
         this.pronadjenaRoba = true;
         this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, null, null, null, this.vrstaUlja)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(function (error) {
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(function (error) {
             if (error.status === 404) {
                 _this.pronadjenaRoba = false;
-                return rxjs__WEBPACK_IMPORTED_MODULE_5__["EMPTY"];
+                return rxjs__WEBPACK_IMPORTED_MODULE_3__["EMPTY"];
             }
-            return Object(rxjs__WEBPACK_IMPORTED_MODULE_5__["throwError"])(error);
-        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["finalize"])(function () { return _this.ucitavanje = false; }))
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["throwError"])(error);
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["finalize"])(function () { return _this.ucitavanje = false; }))
             .subscribe(function (res) {
             _this.pronadjenaRoba = true;
             _this.roba = res.content;
@@ -3160,13 +2864,13 @@ var AntifrizComponent = /** @class */ (function () {
         this.ucitavanje = true;
         this.pronadjenaRoba = true;
         this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, searchValue, naStanju, proizvodjacId, this.vrstaUlja)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(function (error) {
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(function (error) {
             if (error.status === 404) {
                 _this.pronadjenaRoba = false;
-                return rxjs__WEBPACK_IMPORTED_MODULE_5__["EMPTY"];
+                return rxjs__WEBPACK_IMPORTED_MODULE_3__["EMPTY"];
             }
-            return Object(rxjs__WEBPACK_IMPORTED_MODULE_5__["throwError"])(error);
-        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["finalize"])(function () { return _this.ucitavanje = false; }))
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["throwError"])(error);
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["finalize"])(function () { return _this.ucitavanje = false; }))
             .subscribe(function (res) {
             _this.pronadjenaRoba = true;
             _this.roba = res.content;
@@ -3182,7 +2886,7 @@ var AntifrizComponent = /** @class */ (function () {
     AntifrizComponent.prototype.pronadjiSveProizvodjace = function () {
         var _this = this;
         this.proizvodjacService.pronadjiSveProizvodjaceUljaPoVrsti(this.vrstaUlja)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["takeWhile"])(function () { return _this.alive; }))
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }))
             .subscribe(function (res) {
             _this.proizvodjaci = res;
             _this.izabraniProizvodjac = _this.proizvodjaci[0].naziv;
@@ -3243,15 +2947,15 @@ var AntifrizComponent = /** @class */ (function () {
     AntifrizComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-antifriz',
-            template: __webpack_require__(/*! ./antifriz.component.html */ "./src/app/roba/ulja/antifriz/antifriz.component.html"),
-            styles: [__webpack_require__(/*! ./antifriz.component.css */ "./src/app/roba/ulja/antifriz/antifriz.component.css")]
+            template: __webpack_require__(/*! ./antifriz.component.html */ "./src/app/e-shop/roba/ulja/antifriz/antifriz.component.html"),
+            styles: [__webpack_require__(/*! ./antifriz.component.css */ "./src/app/e-shop/roba/ulja/antifriz/antifriz.component.css")]
         }),
-        __metadata("design:paramtypes", [src_app_service_roba_service__WEBPACK_IMPORTED_MODULE_1__["RobaService"],
-            src_app_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_6__["AppUtilsService"],
-            src_app_service_login_service__WEBPACK_IMPORTED_MODULE_8__["LoginService"],
-            src_app_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_2__["ProizvodjacService"],
-            src_app_service_data_data_service__WEBPACK_IMPORTED_MODULE_7__["DataService"],
-            _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatSnackBar"]])
+        __metadata("design:paramtypes", [src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_4__["RobaService"],
+            src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_5__["AppUtilsService"],
+            src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_6__["LoginService"],
+            src_app_e_shop_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_7__["ProizvodjacService"],
+            src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_8__["DataService"],
+            _angular_material__WEBPACK_IMPORTED_MODULE_1__["MatSnackBar"]])
     ], AntifrizComponent);
     return AntifrizComponent;
 }());
@@ -3260,10 +2964,10 @@ var AntifrizComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/roba/ulja/industrijska/industrijska.component.css":
-/*!*******************************************************************!*\
-  !*** ./src/app/roba/ulja/industrijska/industrijska.component.css ***!
-  \*******************************************************************/
+/***/ "./src/app/e-shop/roba/ulja/industrijska/industrijska.component.css":
+/*!**************************************************************************!*\
+  !*** ./src/app/e-shop/roba/ulja/industrijska/industrijska.component.css ***!
+  \**************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -3271,10 +2975,10 @@ module.exports = ".smanji {\r\n    width: 450px;\r\n    float: right;\r\n}\r\n.f
 
 /***/ }),
 
-/***/ "./src/app/roba/ulja/industrijska/industrijska.component.html":
-/*!********************************************************************!*\
-  !*** ./src/app/roba/ulja/industrijska/industrijska.component.html ***!
-  \********************************************************************/
+/***/ "./src/app/e-shop/roba/ulja/industrijska/industrijska.component.html":
+/*!***************************************************************************!*\
+  !*** ./src/app/e-shop/roba/ulja/industrijska/industrijska.component.html ***!
+  \***************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -3282,10 +2986,10 @@ module.exports = "<div class=\"container-fluid\">\r\n    <div class=\"d-flex col
 
 /***/ }),
 
-/***/ "./src/app/roba/ulja/industrijska/industrijska.component.ts":
-/*!******************************************************************!*\
-  !*** ./src/app/roba/ulja/industrijska/industrijska.component.ts ***!
-  \******************************************************************/
+/***/ "./src/app/e-shop/roba/ulja/industrijska/industrijska.component.ts":
+/*!*************************************************************************!*\
+  !*** ./src/app/e-shop/roba/ulja/industrijska/industrijska.component.ts ***!
+  \*************************************************************************/
 /*! exports provided: IndustrijskaComponent */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -3293,14 +2997,14 @@ module.exports = "<div class=\"container-fluid\">\r\n    <div class=\"d-flex col
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "IndustrijskaComponent", function() { return IndustrijskaComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var src_app_service_roba_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/service/roba.service */ "./src/app/service/roba.service.ts");
-/* harmony import */ var src_app_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/service/proizvodjac.service */ "./src/app/service/proizvodjac.service.ts");
-/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
-/* harmony import */ var src_app_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/utils/app-utils.service */ "./src/app/utils/app-utils.service.ts");
-/* harmony import */ var src_app_service_data_data_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/service/data/data.service */ "./src/app/service/data/data.service.ts");
-/* harmony import */ var src_app_service_login_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/service/login.service */ "./src/app/service/login.service.ts");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/e-shop/service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
+/* harmony import */ var src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/e-shop/utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
+/* harmony import */ var src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/e-shop/service/login.service */ "./src/app/e-shop/service/login.service.ts");
+/* harmony import */ var src_app_e_shop_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/e-shop/service/proizvodjac.service */ "./src/app/e-shop/service/proizvodjac.service.ts");
+/* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3389,13 +3093,13 @@ var IndustrijskaComponent = /** @class */ (function () {
         this.ucitavanje = true;
         this.pronadjenaRoba = true;
         this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, null, null, null, this.vrstaUlja)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(function (error) {
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(function (error) {
             if (error.status === 404) {
                 _this.pronadjenaRoba = false;
-                return rxjs__WEBPACK_IMPORTED_MODULE_5__["EMPTY"];
+                return rxjs__WEBPACK_IMPORTED_MODULE_3__["EMPTY"];
             }
-            return Object(rxjs__WEBPACK_IMPORTED_MODULE_5__["throwError"])(error);
-        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["finalize"])(function () { return _this.ucitavanje = false; }))
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["throwError"])(error);
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["finalize"])(function () { return _this.ucitavanje = false; }))
             .subscribe(function (res) {
             _this.pronadjenaRoba = true;
             _this.roba = res.content;
@@ -3418,13 +3122,13 @@ var IndustrijskaComponent = /** @class */ (function () {
         this.ucitavanje = true;
         this.pronadjenaRoba = true;
         this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, searchValue, naStanju, proizvodjacId, this.vrstaUlja)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(function (error) {
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(function (error) {
             if (error.status === 404) {
                 _this.pronadjenaRoba = false;
-                return rxjs__WEBPACK_IMPORTED_MODULE_5__["EMPTY"];
+                return rxjs__WEBPACK_IMPORTED_MODULE_3__["EMPTY"];
             }
-            return Object(rxjs__WEBPACK_IMPORTED_MODULE_5__["throwError"])(error);
-        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["finalize"])(function () { return _this.ucitavanje = false; }))
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["throwError"])(error);
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["finalize"])(function () { return _this.ucitavanje = false; }))
             .subscribe(function (res) {
             _this.pronadjenaRoba = true;
             _this.roba = res.content;
@@ -3440,7 +3144,7 @@ var IndustrijskaComponent = /** @class */ (function () {
     IndustrijskaComponent.prototype.pronadjiSveProizvodjace = function () {
         var _this = this;
         this.proizvodjacService.pronadjiSveProizvodjaceUljaPoVrsti(this.vrstaUlja)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["takeWhile"])(function () { return _this.alive; }))
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }))
             .subscribe(function (res) {
             _this.proizvodjaci = res;
             _this.izabraniProizvodjac = _this.proizvodjaci[0].naziv;
@@ -3510,15 +3214,15 @@ var IndustrijskaComponent = /** @class */ (function () {
     IndustrijskaComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-industrijska',
-            template: __webpack_require__(/*! ./industrijska.component.html */ "./src/app/roba/ulja/industrijska/industrijska.component.html"),
-            styles: [__webpack_require__(/*! ./industrijska.component.css */ "./src/app/roba/ulja/industrijska/industrijska.component.css")]
+            template: __webpack_require__(/*! ./industrijska.component.html */ "./src/app/e-shop/roba/ulja/industrijska/industrijska.component.html"),
+            styles: [__webpack_require__(/*! ./industrijska.component.css */ "./src/app/e-shop/roba/ulja/industrijska/industrijska.component.css")]
         }),
-        __metadata("design:paramtypes", [src_app_service_roba_service__WEBPACK_IMPORTED_MODULE_1__["RobaService"],
-            src_app_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_6__["AppUtilsService"],
-            src_app_service_login_service__WEBPACK_IMPORTED_MODULE_8__["LoginService"],
-            src_app_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_2__["ProizvodjacService"],
-            src_app_service_data_data_service__WEBPACK_IMPORTED_MODULE_7__["DataService"],
-            _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatSnackBar"]])
+        __metadata("design:paramtypes", [src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_4__["RobaService"],
+            src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_5__["AppUtilsService"],
+            src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_6__["LoginService"],
+            src_app_e_shop_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_7__["ProizvodjacService"],
+            src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_8__["DataService"],
+            _angular_material__WEBPACK_IMPORTED_MODULE_1__["MatSnackBar"]])
     ], IndustrijskaComponent);
     return IndustrijskaComponent;
 }());
@@ -3527,10 +3231,10 @@ var IndustrijskaComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/roba/ulja/kociona/kociona.component.css":
-/*!*********************************************************!*\
-  !*** ./src/app/roba/ulja/kociona/kociona.component.css ***!
-  \*********************************************************/
+/***/ "./src/app/e-shop/roba/ulja/kociona/kociona.component.css":
+/*!****************************************************************!*\
+  !*** ./src/app/e-shop/roba/ulja/kociona/kociona.component.css ***!
+  \****************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -3538,10 +3242,10 @@ module.exports = ""
 
 /***/ }),
 
-/***/ "./src/app/roba/ulja/kociona/kociona.component.html":
-/*!**********************************************************!*\
-  !*** ./src/app/roba/ulja/kociona/kociona.component.html ***!
-  \**********************************************************/
+/***/ "./src/app/e-shop/roba/ulja/kociona/kociona.component.html":
+/*!*****************************************************************!*\
+  !*** ./src/app/e-shop/roba/ulja/kociona/kociona.component.html ***!
+  \*****************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -3549,10 +3253,10 @@ module.exports = "<div class=\"container-fluid\">\r\n\r\n    <div class=\"d-flex
 
 /***/ }),
 
-/***/ "./src/app/roba/ulja/kociona/kociona.component.ts":
-/*!********************************************************!*\
-  !*** ./src/app/roba/ulja/kociona/kociona.component.ts ***!
-  \********************************************************/
+/***/ "./src/app/e-shop/roba/ulja/kociona/kociona.component.ts":
+/*!***************************************************************!*\
+  !*** ./src/app/e-shop/roba/ulja/kociona/kociona.component.ts ***!
+  \***************************************************************/
 /*! exports provided: KocionaComponent */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -3560,14 +3264,14 @@ module.exports = "<div class=\"container-fluid\">\r\n\r\n    <div class=\"d-flex
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "KocionaComponent", function() { return KocionaComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var src_app_service_roba_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/service/roba.service */ "./src/app/service/roba.service.ts");
-/* harmony import */ var src_app_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/service/proizvodjac.service */ "./src/app/service/proizvodjac.service.ts");
-/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
-/* harmony import */ var src_app_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/utils/app-utils.service */ "./src/app/utils/app-utils.service.ts");
-/* harmony import */ var src_app_service_data_data_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/service/data/data.service */ "./src/app/service/data/data.service.ts");
-/* harmony import */ var src_app_service_login_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/service/login.service */ "./src/app/service/login.service.ts");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/e-shop/utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
+/* harmony import */ var src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/e-shop/service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
+/* harmony import */ var src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/e-shop/service/login.service */ "./src/app/e-shop/service/login.service.ts");
+/* harmony import */ var src_app_e_shop_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/e-shop/service/proizvodjac.service */ "./src/app/e-shop/service/proizvodjac.service.ts");
+/* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3642,13 +3346,13 @@ var KocionaComponent = /** @class */ (function () {
         this.ucitavanje = true;
         this.pronadjenaRoba = true;
         this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, null, null, null, this.vrstaUlja)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(function (error) {
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(function (error) {
             if (error.status === 404) {
                 _this.pronadjenaRoba = false;
-                return rxjs__WEBPACK_IMPORTED_MODULE_5__["EMPTY"];
+                return rxjs__WEBPACK_IMPORTED_MODULE_3__["EMPTY"];
             }
-            return Object(rxjs__WEBPACK_IMPORTED_MODULE_5__["throwError"])(error);
-        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["finalize"])(function () { return _this.ucitavanje = false; }))
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["throwError"])(error);
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["finalize"])(function () { return _this.ucitavanje = false; }))
             .subscribe(function (res) {
             _this.pronadjenaRoba = true;
             _this.roba = res.content;
@@ -3671,13 +3375,13 @@ var KocionaComponent = /** @class */ (function () {
         this.ucitavanje = true;
         this.pronadjenaRoba = true;
         this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, searchValue, naStanju, proizvodjacId, this.vrstaUlja)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(function (error) {
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(function (error) {
             if (error.status === 404) {
                 _this.pronadjenaRoba = false;
-                return rxjs__WEBPACK_IMPORTED_MODULE_5__["EMPTY"];
+                return rxjs__WEBPACK_IMPORTED_MODULE_3__["EMPTY"];
             }
-            return Object(rxjs__WEBPACK_IMPORTED_MODULE_5__["throwError"])(error);
-        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["finalize"])(function () { return _this.ucitavanje = false; }))
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["throwError"])(error);
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["finalize"])(function () { return _this.ucitavanje = false; }))
             .subscribe(function (res) {
             _this.pronadjenaRoba = true;
             _this.roba = res.content;
@@ -3693,7 +3397,7 @@ var KocionaComponent = /** @class */ (function () {
     KocionaComponent.prototype.pronadjiSveProizvodjace = function () {
         var _this = this;
         this.proizvodjacService.pronadjiSveProizvodjaceUljaPoVrsti(this.vrstaUlja)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["takeWhile"])(function () { return _this.alive; }))
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }))
             .subscribe(function (res) {
             _this.proizvodjaci = res;
             _this.izabraniProizvodjac = _this.proizvodjaci[0].naziv;
@@ -3754,15 +3458,15 @@ var KocionaComponent = /** @class */ (function () {
     KocionaComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-kociona',
-            template: __webpack_require__(/*! ./kociona.component.html */ "./src/app/roba/ulja/kociona/kociona.component.html"),
-            styles: [__webpack_require__(/*! ./kociona.component.css */ "./src/app/roba/ulja/kociona/kociona.component.css")]
+            template: __webpack_require__(/*! ./kociona.component.html */ "./src/app/e-shop/roba/ulja/kociona/kociona.component.html"),
+            styles: [__webpack_require__(/*! ./kociona.component.css */ "./src/app/e-shop/roba/ulja/kociona/kociona.component.css")]
         }),
-        __metadata("design:paramtypes", [src_app_service_roba_service__WEBPACK_IMPORTED_MODULE_1__["RobaService"],
-            src_app_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_6__["AppUtilsService"],
-            src_app_service_login_service__WEBPACK_IMPORTED_MODULE_8__["LoginService"],
-            src_app_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_2__["ProizvodjacService"],
-            src_app_service_data_data_service__WEBPACK_IMPORTED_MODULE_7__["DataService"],
-            _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatSnackBar"]])
+        __metadata("design:paramtypes", [src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_5__["RobaService"],
+            src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__["AppUtilsService"],
+            src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_6__["LoginService"],
+            src_app_e_shop_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_7__["ProizvodjacService"],
+            src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_8__["DataService"],
+            _angular_material__WEBPACK_IMPORTED_MODULE_1__["MatSnackBar"]])
     ], KocionaComponent);
     return KocionaComponent;
 }());
@@ -3771,10 +3475,10 @@ var KocionaComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/roba/ulja/menjacko/menjacko.component.css":
-/*!***********************************************************!*\
-  !*** ./src/app/roba/ulja/menjacko/menjacko.component.css ***!
-  \***********************************************************/
+/***/ "./src/app/e-shop/roba/ulja/menjacko/menjacko.component.css":
+/*!******************************************************************!*\
+  !*** ./src/app/e-shop/roba/ulja/menjacko/menjacko.component.css ***!
+  \******************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -3782,10 +3486,10 @@ module.exports = ""
 
 /***/ }),
 
-/***/ "./src/app/roba/ulja/menjacko/menjacko.component.html":
-/*!************************************************************!*\
-  !*** ./src/app/roba/ulja/menjacko/menjacko.component.html ***!
-  \************************************************************/
+/***/ "./src/app/e-shop/roba/ulja/menjacko/menjacko.component.html":
+/*!*******************************************************************!*\
+  !*** ./src/app/e-shop/roba/ulja/menjacko/menjacko.component.html ***!
+  \*******************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -3793,10 +3497,10 @@ module.exports = "<div class=\"container-fluid\">\r\n\r\n    <div class=\"d-flex
 
 /***/ }),
 
-/***/ "./src/app/roba/ulja/menjacko/menjacko.component.ts":
-/*!**********************************************************!*\
-  !*** ./src/app/roba/ulja/menjacko/menjacko.component.ts ***!
-  \**********************************************************/
+/***/ "./src/app/e-shop/roba/ulja/menjacko/menjacko.component.ts":
+/*!*****************************************************************!*\
+  !*** ./src/app/e-shop/roba/ulja/menjacko/menjacko.component.ts ***!
+  \*****************************************************************/
 /*! exports provided: MenjackoComponent */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -3804,14 +3508,14 @@ module.exports = "<div class=\"container-fluid\">\r\n\r\n    <div class=\"d-flex
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MenjackoComponent", function() { return MenjackoComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var src_app_service_roba_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/service/roba.service */ "./src/app/service/roba.service.ts");
-/* harmony import */ var src_app_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/service/proizvodjac.service */ "./src/app/service/proizvodjac.service.ts");
-/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
-/* harmony import */ var src_app_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/utils/app-utils.service */ "./src/app/utils/app-utils.service.ts");
-/* harmony import */ var src_app_service_data_data_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/service/data/data.service */ "./src/app/service/data/data.service.ts");
-/* harmony import */ var src_app_service_login_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/service/login.service */ "./src/app/service/login.service.ts");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/e-shop/service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
+/* harmony import */ var src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/e-shop/utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
+/* harmony import */ var src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/e-shop/service/login.service */ "./src/app/e-shop/service/login.service.ts");
+/* harmony import */ var src_app_e_shop_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/e-shop/service/proizvodjac.service */ "./src/app/e-shop/service/proizvodjac.service.ts");
+/* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3886,13 +3590,13 @@ var MenjackoComponent = /** @class */ (function () {
         this.ucitavanje = true;
         this.pronadjenaRoba = true;
         this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, null, null, null, this.vrstaUlja)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(function (error) {
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(function (error) {
             if (error.status === 404) {
                 _this.pronadjenaRoba = false;
-                return rxjs__WEBPACK_IMPORTED_MODULE_5__["EMPTY"];
+                return rxjs__WEBPACK_IMPORTED_MODULE_3__["EMPTY"];
             }
-            return Object(rxjs__WEBPACK_IMPORTED_MODULE_5__["throwError"])(error);
-        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["finalize"])(function () { return _this.ucitavanje = false; }))
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["throwError"])(error);
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["finalize"])(function () { return _this.ucitavanje = false; }))
             .subscribe(function (res) {
             _this.pronadjenaRoba = true;
             _this.roba = res.content;
@@ -3917,13 +3621,13 @@ var MenjackoComponent = /** @class */ (function () {
         this.ucitavanje = true;
         this.pronadjenaRoba = true;
         this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, searchValue, naStanju, proizvodjacId, this.vrstaUlja)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(function (error) {
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(function (error) {
             if (error.status === 404) {
                 _this.pronadjenaRoba = false;
-                return rxjs__WEBPACK_IMPORTED_MODULE_5__["EMPTY"];
+                return rxjs__WEBPACK_IMPORTED_MODULE_3__["EMPTY"];
             }
-            return Object(rxjs__WEBPACK_IMPORTED_MODULE_5__["throwError"])(error);
-        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["finalize"])(function () { return _this.ucitavanje = false; }))
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["throwError"])(error);
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["finalize"])(function () { return _this.ucitavanje = false; }))
             .subscribe(function (res) {
             _this.pronadjenaRoba = true;
             _this.roba = res.content;
@@ -3939,7 +3643,7 @@ var MenjackoComponent = /** @class */ (function () {
     MenjackoComponent.prototype.pronadjiSveProizvodjace = function () {
         var _this = this;
         this.proizvodjacService.pronadjiSveProizvodjaceUljaPoVrsti(this.vrstaUlja)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["takeWhile"])(function () { return _this.alive; }))
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }))
             .subscribe(function (res) {
             _this.proizvodjaci = res;
             _this.izabraniProizvodjac = _this.proizvodjaci[0].naziv;
@@ -4000,15 +3704,15 @@ var MenjackoComponent = /** @class */ (function () {
     MenjackoComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-menjacko',
-            template: __webpack_require__(/*! ./menjacko.component.html */ "./src/app/roba/ulja/menjacko/menjacko.component.html"),
-            styles: [__webpack_require__(/*! ./menjacko.component.css */ "./src/app/roba/ulja/menjacko/menjacko.component.css")]
+            template: __webpack_require__(/*! ./menjacko.component.html */ "./src/app/e-shop/roba/ulja/menjacko/menjacko.component.html"),
+            styles: [__webpack_require__(/*! ./menjacko.component.css */ "./src/app/e-shop/roba/ulja/menjacko/menjacko.component.css")]
         }),
-        __metadata("design:paramtypes", [src_app_service_roba_service__WEBPACK_IMPORTED_MODULE_1__["RobaService"],
-            src_app_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_6__["AppUtilsService"],
-            src_app_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_2__["ProizvodjacService"],
-            src_app_service_login_service__WEBPACK_IMPORTED_MODULE_8__["LoginService"],
-            src_app_service_data_data_service__WEBPACK_IMPORTED_MODULE_7__["DataService"],
-            _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatSnackBar"]])
+        __metadata("design:paramtypes", [src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_4__["RobaService"],
+            src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_5__["AppUtilsService"],
+            src_app_e_shop_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_7__["ProizvodjacService"],
+            src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_6__["LoginService"],
+            src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_8__["DataService"],
+            _angular_material__WEBPACK_IMPORTED_MODULE_1__["MatSnackBar"]])
     ], MenjackoComponent);
     return MenjackoComponent;
 }());
@@ -4017,10 +3721,10 @@ var MenjackoComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/roba/ulja/motorna/motorna.component.css":
-/*!*********************************************************!*\
-  !*** ./src/app/roba/ulja/motorna/motorna.component.css ***!
-  \*********************************************************/
+/***/ "./src/app/e-shop/roba/ulja/motorna/motorna.component.css":
+/*!****************************************************************!*\
+  !*** ./src/app/e-shop/roba/ulja/motorna/motorna.component.css ***!
+  \****************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -4028,10 +3732,10 @@ module.exports = ""
 
 /***/ }),
 
-/***/ "./src/app/roba/ulja/motorna/motorna.component.html":
-/*!**********************************************************!*\
-  !*** ./src/app/roba/ulja/motorna/motorna.component.html ***!
-  \**********************************************************/
+/***/ "./src/app/e-shop/roba/ulja/motorna/motorna.component.html":
+/*!*****************************************************************!*\
+  !*** ./src/app/e-shop/roba/ulja/motorna/motorna.component.html ***!
+  \*****************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -4039,10 +3743,10 @@ module.exports = "<div class=\"container-fluid\">\r\n\r\n    <div class=\"d-flex
 
 /***/ }),
 
-/***/ "./src/app/roba/ulja/motorna/motorna.component.ts":
-/*!********************************************************!*\
-  !*** ./src/app/roba/ulja/motorna/motorna.component.ts ***!
-  \********************************************************/
+/***/ "./src/app/e-shop/roba/ulja/motorna/motorna.component.ts":
+/*!***************************************************************!*\
+  !*** ./src/app/e-shop/roba/ulja/motorna/motorna.component.ts ***!
+  \***************************************************************/
 /*! exports provided: MotornaComponent */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -4050,14 +3754,14 @@ module.exports = "<div class=\"container-fluid\">\r\n\r\n    <div class=\"d-flex
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MotornaComponent", function() { return MotornaComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var src_app_service_roba_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/service/roba.service */ "./src/app/service/roba.service.ts");
-/* harmony import */ var src_app_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/service/proizvodjac.service */ "./src/app/service/proizvodjac.service.ts");
-/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
-/* harmony import */ var src_app_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/utils/app-utils.service */ "./src/app/utils/app-utils.service.ts");
-/* harmony import */ var src_app_service_data_data_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/service/data/data.service */ "./src/app/service/data/data.service.ts");
-/* harmony import */ var src_app_service_login_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/service/login.service */ "./src/app/service/login.service.ts");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/e-shop/service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
+/* harmony import */ var src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/e-shop/utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
+/* harmony import */ var src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/e-shop/service/login.service */ "./src/app/e-shop/service/login.service.ts");
+/* harmony import */ var src_app_e_shop_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/e-shop/service/proizvodjac.service */ "./src/app/e-shop/service/proizvodjac.service.ts");
+/* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -4132,13 +3836,13 @@ var MotornaComponent = /** @class */ (function () {
         this.ucitavanje = true;
         this.pronadjenaRoba = true;
         this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, null, null, null, this.vrstaUlja)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(function (error) {
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(function (error) {
             if (error.status === 404) {
                 _this.pronadjenaRoba = false;
-                return rxjs__WEBPACK_IMPORTED_MODULE_5__["EMPTY"];
+                return rxjs__WEBPACK_IMPORTED_MODULE_3__["EMPTY"];
             }
-            return Object(rxjs__WEBPACK_IMPORTED_MODULE_5__["throwError"])(error);
-        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["finalize"])(function () { return _this.ucitavanje = false; }))
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["throwError"])(error);
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["finalize"])(function () { return _this.ucitavanje = false; }))
             .subscribe(function (res) {
             _this.pronadjenaRoba = true;
             _this.roba = res.content;
@@ -4163,13 +3867,13 @@ var MotornaComponent = /** @class */ (function () {
         this.ucitavanje = true;
         this.pronadjenaRoba = true;
         this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, searchValue, naStanju, proizvodjacId, this.vrstaUlja)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(function (error) {
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(function (error) {
             if (error.status === 404) {
                 _this.pronadjenaRoba = false;
-                return rxjs__WEBPACK_IMPORTED_MODULE_5__["EMPTY"];
+                return rxjs__WEBPACK_IMPORTED_MODULE_3__["EMPTY"];
             }
-            return Object(rxjs__WEBPACK_IMPORTED_MODULE_5__["throwError"])(error);
-        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["finalize"])(function () { return _this.ucitavanje = false; }))
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["throwError"])(error);
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["finalize"])(function () { return _this.ucitavanje = false; }))
             .subscribe(function (res) {
             _this.pronadjenaRoba = true;
             _this.roba = res.content;
@@ -4185,7 +3889,7 @@ var MotornaComponent = /** @class */ (function () {
     MotornaComponent.prototype.pronadjiSveProizvodjace = function () {
         var _this = this;
         this.proizvodjacService.pronadjiSveProizvodjaceUljaPoVrsti(this.vrstaUlja)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["takeWhile"])(function () { return _this.alive; }))
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }))
             .subscribe(function (res) {
             _this.proizvodjaci = res;
             _this.izabraniProizvodjac = _this.proizvodjaci[0].naziv;
@@ -4246,15 +3950,15 @@ var MotornaComponent = /** @class */ (function () {
     MotornaComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-motorna',
-            template: __webpack_require__(/*! ./motorna.component.html */ "./src/app/roba/ulja/motorna/motorna.component.html"),
-            styles: [__webpack_require__(/*! ./motorna.component.css */ "./src/app/roba/ulja/motorna/motorna.component.css")]
+            template: __webpack_require__(/*! ./motorna.component.html */ "./src/app/e-shop/roba/ulja/motorna/motorna.component.html"),
+            styles: [__webpack_require__(/*! ./motorna.component.css */ "./src/app/e-shop/roba/ulja/motorna/motorna.component.css")]
         }),
-        __metadata("design:paramtypes", [src_app_service_roba_service__WEBPACK_IMPORTED_MODULE_1__["RobaService"],
-            src_app_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_6__["AppUtilsService"],
-            src_app_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_2__["ProizvodjacService"],
-            src_app_service_login_service__WEBPACK_IMPORTED_MODULE_8__["LoginService"],
-            src_app_service_data_data_service__WEBPACK_IMPORTED_MODULE_7__["DataService"],
-            _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatSnackBar"]])
+        __metadata("design:paramtypes", [src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_4__["RobaService"],
+            src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_5__["AppUtilsService"],
+            src_app_e_shop_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_7__["ProizvodjacService"],
+            src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_6__["LoginService"],
+            src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_8__["DataService"],
+            _angular_material__WEBPACK_IMPORTED_MODULE_1__["MatSnackBar"]])
     ], MotornaComponent);
     return MotornaComponent;
 }());
@@ -4263,10 +3967,10 @@ var MotornaComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/roba/ulja/ulja.component.css":
-/*!**********************************************!*\
-  !*** ./src/app/roba/ulja/ulja.component.css ***!
-  \**********************************************/
+/***/ "./src/app/e-shop/roba/ulja/ulja.component.css":
+/*!*****************************************************!*\
+  !*** ./src/app/e-shop/roba/ulja/ulja.component.css ***!
+  \*****************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -4274,10 +3978,10 @@ module.exports = ".industrijski-stil {\r\n    width: 100%;\r\n    height: 100%;\
 
 /***/ }),
 
-/***/ "./src/app/roba/ulja/ulja.component.html":
-/*!***********************************************!*\
-  !*** ./src/app/roba/ulja/ulja.component.html ***!
-  \***********************************************/
+/***/ "./src/app/e-shop/roba/ulja/ulja.component.html":
+/*!******************************************************!*\
+  !*** ./src/app/e-shop/roba/ulja/ulja.component.html ***!
+  \******************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -4285,10 +3989,10 @@ module.exports = "<main class=\"grid-container spusti\">\r\n    <mat-tab-group m
 
 /***/ }),
 
-/***/ "./src/app/roba/ulja/ulja.component.ts":
-/*!*********************************************!*\
-  !*** ./src/app/roba/ulja/ulja.component.ts ***!
-  \*********************************************/
+/***/ "./src/app/e-shop/roba/ulja/ulja.component.ts":
+/*!****************************************************!*\
+  !*** ./src/app/e-shop/roba/ulja/ulja.component.ts ***!
+  \****************************************************/
 /*! exports provided: UljaComponent */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -4313,8 +4017,8 @@ var UljaComponent = /** @class */ (function () {
     UljaComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-ulja',
-            template: __webpack_require__(/*! ./ulja.component.html */ "./src/app/roba/ulja/ulja.component.html"),
-            styles: [__webpack_require__(/*! ./ulja.component.css */ "./src/app/roba/ulja/ulja.component.css")]
+            template: __webpack_require__(/*! ./ulja.component.html */ "./src/app/e-shop/roba/ulja/ulja.component.html"),
+            styles: [__webpack_require__(/*! ./ulja.component.css */ "./src/app/e-shop/roba/ulja/ulja.component.css")]
         })
     ], UljaComponent);
     return UljaComponent;
@@ -4324,10 +4028,10 @@ var UljaComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/service/data/data.service.ts":
-/*!**********************************************!*\
-  !*** ./src/app/service/data/data.service.ts ***!
-  \**********************************************/
+/***/ "./src/app/e-shop/service/data/data.service.ts":
+/*!*****************************************************!*\
+  !*** ./src/app/e-shop/service/data/data.service.ts ***!
+  \*****************************************************/
 /*! exports provided: DataService */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -4337,8 +4041,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
-/* harmony import */ var _model_porudzbenica__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../model/porudzbenica */ "./src/app/model/porudzbenica.ts");
-/* harmony import */ var _local_storage_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./local-storage.service */ "./src/app/service/data/local-storage.service.ts");
+/* harmony import */ var _model_porudzbenica__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../model/porudzbenica */ "./src/app/e-shop/model/porudzbenica.ts");
+/* harmony import */ var _local_storage_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./local-storage.service */ "./src/app/e-shop/service/data/local-storage.service.ts");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -4427,10 +4131,10 @@ var DataService = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/service/data/local-storage.service.ts":
-/*!*******************************************************!*\
-  !*** ./src/app/service/data/local-storage.service.ts ***!
-  \*******************************************************/
+/***/ "./src/app/e-shop/service/data/local-storage.service.ts":
+/*!**************************************************************!*\
+  !*** ./src/app/e-shop/service/data/local-storage.service.ts ***!
+  \**************************************************************/
 /*! exports provided: LocalStorageService */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -4439,7 +4143,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LocalStorageService", function() { return LocalStorageService; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var angular_webstorage_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! angular-webstorage-service */ "./node_modules/angular-webstorage-service/bundles/angular-webstorage-service.es5.js");
-/* harmony import */ var _model_porudzbenica__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../model/porudzbenica */ "./src/app/model/porudzbenica.ts");
+/* harmony import */ var _model_porudzbenica__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../model/porudzbenica */ "./src/app/e-shop/model/porudzbenica.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -4533,10 +4237,10 @@ var LocalStorageService = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/service/faktura.service.ts":
-/*!********************************************!*\
-  !*** ./src/app/service/faktura.service.ts ***!
-  \********************************************/
+/***/ "./src/app/e-shop/service/faktura.service.ts":
+/*!***************************************************!*\
+  !*** ./src/app/e-shop/service/faktura.service.ts ***!
+  \***************************************************/
 /*! exports provided: FakturaService */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -4547,7 +4251,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
-/* harmony import */ var _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/app-utils.service */ "./src/app/utils/app-utils.service.ts");
+/* harmony import */ var _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -4606,10 +4310,10 @@ var FakturaService = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/service/login.service.ts":
-/*!******************************************!*\
-  !*** ./src/app/service/login.service.ts ***!
-  \******************************************/
+/***/ "./src/app/e-shop/service/login.service.ts":
+/*!*************************************************!*\
+  !*** ./src/app/e-shop/service/login.service.ts ***!
+  \*************************************************/
 /*! exports provided: LoginService */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -4618,13 +4322,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LoginService", function() { return LoginService; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
-/* harmony import */ var _model_dto__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../model/dto */ "./src/app/model/dto.ts");
+/* harmony import */ var _model_dto__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../model/dto */ "./src/app/e-shop/model/dto.ts");
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
-/* harmony import */ var _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/app-utils.service */ "./src/app/utils/app-utils.service.ts");
+/* harmony import */ var _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var _data_local_storage_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./data/local-storage.service */ "./src/app/service/data/local-storage.service.ts");
-/* harmony import */ var _data_data_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./data/data.service */ "./src/app/service/data/data.service.ts");
+/* harmony import */ var _data_local_storage_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./data/local-storage.service */ "./src/app/e-shop/service/data/local-storage.service.ts");
+/* harmony import */ var _data_data_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -4733,10 +4437,10 @@ var LoginService = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/service/partner.service.ts":
-/*!********************************************!*\
-  !*** ./src/app/service/partner.service.ts ***!
-  \********************************************/
+/***/ "./src/app/e-shop/service/partner.service.ts":
+/*!***************************************************!*\
+  !*** ./src/app/e-shop/service/partner.service.ts ***!
+  \***************************************************/
 /*! exports provided: PartnerService */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -4787,10 +4491,10 @@ var PartnerService = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/service/proizvodjac.service.ts":
-/*!************************************************!*\
-  !*** ./src/app/service/proizvodjac.service.ts ***!
-  \************************************************/
+/***/ "./src/app/e-shop/service/proizvodjac.service.ts":
+/*!*******************************************************!*\
+  !*** ./src/app/e-shop/service/proizvodjac.service.ts ***!
+  \*******************************************************/
 /*! exports provided: ProizvodjacService */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -4800,7 +4504,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
-/* harmony import */ var _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/app-utils.service */ "./src/app/utils/app-utils.service.ts");
+/* harmony import */ var _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -4872,10 +4576,10 @@ var ProizvodjacService = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/service/roba.service.ts":
-/*!*****************************************!*\
-  !*** ./src/app/service/roba.service.ts ***!
-  \*****************************************/
+/***/ "./src/app/e-shop/service/roba.service.ts":
+/*!************************************************!*\
+  !*** ./src/app/e-shop/service/roba.service.ts ***!
+  \************************************************/
 /*! exports provided: RobaService */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -4886,7 +4590,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
-/* harmony import */ var _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/app-utils.service */ "./src/app/utils/app-utils.service.ts");
+/* harmony import */ var _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5018,115 +4722,10 @@ var RobaService = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/shared/material/material.module.ts":
-/*!****************************************************!*\
-  !*** ./src/app/shared/material/material.module.ts ***!
-  \****************************************************/
-/*! exports provided: MaterialModule */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MaterialModule", function() { return MaterialModule; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
-/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
-/* harmony import */ var _angular_cdk_layout__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/cdk/layout */ "./node_modules/@angular/cdk/esm5/layout.es5.js");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-
-
-
-
-var MaterialModule = /** @class */ (function () {
-    function MaterialModule() {
-    }
-    MaterialModule = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"])({
-            imports: [
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatButtonModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatCheckboxModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatExpansionModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatFormFieldModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatInputModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialogModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatFormFieldModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatSnackBarModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatChipsModule"],
-                _angular_forms__WEBPACK_IMPORTED_MODULE_4__["ReactiveFormsModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatProgressSpinnerModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatBadgeModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatRadioModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatSelectModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatAutocompleteModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatCheckboxModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatTableModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatTabsModule"],
-                _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"],
-                _angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormsModule"],
-                _angular_cdk_layout__WEBPACK_IMPORTED_MODULE_3__["LayoutModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatToolbarModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatSidenavModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatIconModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatListModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatGridListModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatCardModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatMenuModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatPaginatorModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatSortModule"]
-            ],
-            exports: [
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatButtonModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatCheckboxModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatProgressSpinnerModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatExpansionModule"],
-                _angular_forms__WEBPACK_IMPORTED_MODULE_4__["ReactiveFormsModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatInputModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialogModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatBadgeModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatRadioModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatFormFieldModule"],
-                _angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormsModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialogModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatChipsModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatSnackBarModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatSelectModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatAutocompleteModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatCheckboxModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatTableModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatTabsModule"],
-                _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"],
-                _angular_cdk_layout__WEBPACK_IMPORTED_MODULE_3__["LayoutModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatToolbarModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatButtonModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatSidenavModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatIconModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatListModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatGridListModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatCardModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatMenuModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatPaginatorModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatSortModule"]
-            ]
-        })
-    ], MaterialModule);
-    return MaterialModule;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/utils/app-utils.service.ts":
-/*!********************************************!*\
-  !*** ./src/app/utils/app-utils.service.ts ***!
-  \********************************************/
+/***/ "./src/app/e-shop/utils/app-utils.service.ts":
+/*!***************************************************!*\
+  !*** ./src/app/e-shop/utils/app-utils.service.ts ***!
+  \***************************************************/
 /*! exports provided: AppUtilsService */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -5134,8 +4733,8 @@ var MaterialModule = /** @class */ (function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppUtilsService", function() { return AppUtilsService; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _model_porudzbenica__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../model/porudzbenica */ "./src/app/model/porudzbenica.ts");
-/* harmony import */ var _service_data_data_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../service/data/data.service */ "./src/app/service/data/data.service.ts");
+/* harmony import */ var _model_porudzbenica__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../model/porudzbenica */ "./src/app/e-shop/model/porudzbenica.ts");
+/* harmony import */ var _service_data_data_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5266,6 +4865,407 @@ var AppUtilsService = /** @class */ (function () {
         __metadata("design:paramtypes", [_service_data_data_service__WEBPACK_IMPORTED_MODULE_2__["DataService"]])
     ], AppUtilsService);
     return AppUtilsService;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/navigacija/logout-modal/logout-modal.component.html":
+/*!*********************************************************************!*\
+  !*** ./src/app/navigacija/logout-modal/logout-modal.component.html ***!
+  \*********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"container\">\n  <main>\n      <h1>Da li ste sigurni da zelite da se odjavite?</h1>\n    <div class=\"d-flex flex-row justify-content-center\">\n      <button mat-raised-button class=\"button-glavni\" (click)=\"logout()\">Odjava</button>\n      <span class=\"col-2\"></span>\n      <button mat-raised-button class=\"button-error\" (click)=\"ostaniUlogovan()\">Ponisti</button>\n    </div>\n  </main>\n</div>"
+
+/***/ }),
+
+/***/ "./src/app/navigacija/logout-modal/logout-modal.component.scss":
+/*!*********************************************************************!*\
+  !*** ./src/app/navigacija/logout-modal/logout-modal.component.scss ***!
+  \*********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "p {\n  text-align: center; }\n\nh1 {\n  text-align: center;\n  color: #283b4e !important;\n  font-size: 17px !important; }\n"
+
+/***/ }),
+
+/***/ "./src/app/navigacija/logout-modal/logout-modal.component.ts":
+/*!*******************************************************************!*\
+  !*** ./src/app/navigacija/logout-modal/logout-modal.component.ts ***!
+  \*******************************************************************/
+/*! exports provided: LogoutModalComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LogoutModalComponent", function() { return LogoutModalComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/e-shop/service/login.service */ "./src/app/e-shop/service/login.service.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var LogoutModalComponent = /** @class */ (function () {
+    function LogoutModalComponent(dialogRef, router, loginServis) {
+        this.dialogRef = dialogRef;
+        this.router = router;
+        this.loginServis = loginServis;
+    }
+    LogoutModalComponent.prototype.ngOnInit = function () {
+    };
+    LogoutModalComponent.prototype.logout = function () {
+        this.loginServis.logout();
+        this.router.navigateByUrl('naslovna');
+        this.dialogRef.close();
+    };
+    LogoutModalComponent.prototype.ostaniUlogovan = function () {
+        this.dialogRef.close();
+    };
+    LogoutModalComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-logout-modal',
+            template: __webpack_require__(/*! ./logout-modal.component.html */ "./src/app/navigacija/logout-modal/logout-modal.component.html"),
+            styles: [__webpack_require__(/*! ./logout-modal.component.scss */ "./src/app/navigacija/logout-modal/logout-modal.component.scss")]
+        }),
+        __metadata("design:paramtypes", [_angular_material__WEBPACK_IMPORTED_MODULE_1__["MatDialogRef"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"],
+            src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_3__["LoginService"]])
+    ], LogoutModalComponent);
+    return LogoutModalComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/navigacija/navigacija.component.html":
+/*!******************************************************!*\
+  !*** ./src/app/navigacija/navigacija.component.html ***!
+  \******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<mat-sidenav-container class=\"sidenav-container b-color\">\n  <mat-sidenav #drawer class=\"sidenav sidebar-color\" fixedInViewport=\"true\" [attr.role]=\"(isHandset$ | async) ? 'dialog' : 'navigation'\"\n    [mode]=\"(isHandset$ | async) ? 'over' : 'side'\" [opened]=\"!(isHandset$ | async)\">\n    <mat-toolbar *ngIf=\"partner.ppid\" class=\"side-toolbar sidebar-color header-pozicija\">\n      <div class=\"d-flex flex-column \">\n        <div class=\"d-flex justify-content-center header-sirina\">\n          <mat-icon class=\"icon-color\">person</mat-icon>\n        </div>\n        <p class=\"text-center header-navigacija\">{{partner.naziv}}</p>\n        <p class=\"text-center header-navigacija\">{{partner.email  | lowercase}}</p>\n      </div>\n    </mat-toolbar>\n    <mat-nav-list [class.margin-gore]=\"partner.ppid\">\n      <mat-divider *ngIf=\"partner.ppid\" class=\"icon-color\"></mat-divider>\n      <mat-list-item class=\"material-icons\" [routerLink]=\"['naslovna']\" [routerLinkActive]=\"['is-active']\">\n        <mat-icon class=\"icon-color\" mat-list-icon>home</mat-icon>\n        <p mat-line>Naslovna</p>\n      </mat-list-item>\n\n      <mat-list-item class=\"material-icons\" [routerLink]=\"['o-nama']\" [routerLinkActive]=\"['is-active']\">\n        <mat-icon class=\"icon-color\" mat-list-icon>book</mat-icon>\n        <p mat-line>O nama</p>\n      </mat-list-item>\n\n      <mat-list-item class=\"material-icons\" [routerLink]=\"['kontakt']\" [routerLinkActive]=\"['is-active']\">\n        <mat-icon class=\"icon-color\" mat-list-icon>contact_phone</mat-icon>\n        <p mat-line>Kontakt</p>\n      </mat-list-item>\n    </mat-nav-list>\n\n    <mat-divider></mat-divider>\n    <mat-nav-list>\n      <h3 class=\"icon-color\" mat-subheader>Internet prodavnica</h3>\n\n      <mat-list-item class=\"material-icons\" [routerLink]=\"['roba']\" [routerLinkActive]=\"['is-active']\" [routerLinkActive]=\"['is-active']\">\n        <mat-icon class=\"icon-color\" mat-list-icon>searche</mat-icon>\n        <p mat-line>Roba - pretraga</p>\n      </mat-list-item>\n\n\n      <mat-list-item class=\"material-icons\" [routerLink]=\"['ulja']\" [routerLinkActive]=\"['is-active']\">\n        <mat-icon class=\"icon-color\" mat-list-icon>invert_colors</mat-icon>\n        <p mat-line>Ulja</p>\n      </mat-list-item>\n\n      <mat-list-item class=\"material-icons\" [routerLink]=\"['filteri']\" [routerLinkActive]=\"['is-active']\">\n        <mat-icon class=\"icon-color\" mat-list-icon>layers</mat-icon>\n        <p mat-line>Filteri</p>\n      </mat-list-item>\n\n      <mat-list-item class=\"material-icons\" [routerLink]=\"['akumulatori']\" [routerLinkActive]=\"['is-active']\">\n        <mat-icon class=\"icon-color\" mat-list-icon>battery_charging_full</mat-icon>\n        <p mat-line>Akumulatori</p>\n      </mat-list-item>\n\n      <mat-list-item class=\"material-icons\" [routerLink]=\"['ostalo']\" [routerLinkActive]=\"['is-active']\">\n        <mat-icon class=\"icon-color\" mat-list-icon>category</mat-icon>\n        <p mat-line>Ostalo</p>\n      </mat-list-item>\n      <mat-list-item class=\"material-icons\" *ngIf=\"partner.ppid\" [routerLink]=\"['korpa']\" [routerLinkActive]=\"['is-active']\">\n        <mat-icon matBadgeColor=\"warn\" class=\"icon-color\" matBadge=\"{{korpaBadge}}\" mat-list-icon>shopping_cart</mat-icon>\n        <p mat-line>Korpa</p>\n      </mat-list-item>\n    </mat-nav-list>\n\n    <mat-divider></mat-divider>\n    <mat-nav-list *ngIf=\"partner.ppid\">\n      <h3 class=\"icon-color\" mat-subheader>Moj Profil</h3>\n      <mat-list-item class=\"material-icons\" [routerLink]=\"['licni-podaci']\" [routerLinkActive]=\"['is-active']\">\n        <mat-icon class=\"icon-color\" mat-list-icon>person</mat-icon>\n        <p mat-line>Licni Podaci</p>\n      </mat-list-item>\n      <mat-list-item class=\"material-icons\" [routerLink]=\"['porudzbenice']\" [routerLinkActive]=\"['is-active']\">\n        <mat-icon class=\"icon-color\" mat-list-icon>list</mat-icon>\n        <p mat-line>Porudzbine</p>\n      </mat-list-item>\n    </mat-nav-list>\n    <mat-divider></mat-divider>\n    <mat-nav-list>\n      <mat-list-item *ngIf=\"partner.ppid == null\" class=\"material-icons\" [routerLink]=\"['login']\" [routerLinkActive]=\"['is-active']\">\n        <mat-icon class=\"icon-color\" mat-list-icon>exit_to_app</mat-icon>\n        <p mat-line>Login</p>\n      </mat-list-item>\n      <mat-list-item *ngIf=\"partner.ppid\" class=\"material-icons\" (click)=\"otvoriDialog()\">\n        <mat-icon class=\"icon-color\" mat-list-icon>power_settings_new</mat-icon>\n        <p mat-line>Logout</p>\n      </mat-list-item>\n    </mat-nav-list>\n  </mat-sidenav>\n  <mat-sidenav-content>\n    <mat-toolbar *ngIf=\"isHandset$ | async\" class=\"header-pozicija sidebar-color\">\n      <button type=\"button\" aria-label=\"Toggle sidenav\" mat-icon-button (click)=\"drawer.toggle()\">\n        <mat-icon class=\"icon-color\" aria-label=\"Side nav toggle icon\">menu</mat-icon>\n      </button>\n    </mat-toolbar>\n    <router-outlet></router-outlet>\n  </mat-sidenav-content>\n</mat-sidenav-container>"
+
+/***/ }),
+
+/***/ "./src/app/navigacija/navigacija.component.scss":
+/*!******************************************************!*\
+  !*** ./src/app/navigacija/navigacija.component.scss ***!
+  \******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ".sidenav-container {\n  height: 100%; }\n\n.sidenav {\n  width: 200px;\n  height: 100%; }\n\n.mat-toolbar.mat-primary {\n  position: -webkit-sticky;\n  position: sticky;\n  top: 0; }\n\n.header-navigacija {\n  font-size: 13px !important;\n  width: 160px; }\n\n.header-sirina {\n  width: 160px !important; }\n\np {\n  font-size: 14px;\n  padding: 0px;\n  margin: 0px;\n  color: #f8f8f8;\n  font-family: sans-serif;\n  display: block;\n  padding: 0px;\n  margin: 0px; }\n\n.is-active {\n  background-color: #547aa1 !important; }\n\nmat-divider {\n  border-width: 1px;\n  border-style: solid;\n  border-color: #cfd8dc; }\n\n.icon-color {\n  color: #cfd8dc; }\n\n.user-none {\n  font-size: 60px;\n  text-align: center; }\n\n.margin-gore {\n  margin-top: 120px; }\n\n.side-toolbar {\n  height: 120px;\n  width: 200px; }\n\n.sidebar-color {\n  background-color: #283b4e; }\n\n.header-pozicija {\n  top: 0px;\n  position: fixed;\n  z-index: 999; }\n"
+
+/***/ }),
+
+/***/ "./src/app/navigacija/navigacija.component.ts":
+/*!****************************************************!*\
+  !*** ./src/app/navigacija/navigacija.component.ts ***!
+  \****************************************************/
+/*! exports provided: NavigacijaComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NavigacijaComponent", function() { return NavigacijaComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_cdk_layout__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/cdk/layout */ "./node_modules/@angular/cdk/esm5/layout.es5.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _logout_modal_logout_modal_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./logout-modal/logout-modal.component */ "./src/app/navigacija/logout-modal/logout-modal.component.ts");
+/* harmony import */ var _e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../e-shop/service/login.service */ "./src/app/e-shop/service/login.service.ts");
+/* harmony import */ var _e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+var NavigacijaComponent = /** @class */ (function () {
+    function NavigacijaComponent(breakpointObserver, korpaServis, loginServis, dialog) {
+        this.breakpointObserver = breakpointObserver;
+        this.korpaServis = korpaServis;
+        this.loginServis = loginServis;
+        this.dialog = dialog;
+        this.korpaBadge = 0;
+        this.isHandset$ = this.breakpointObserver.observe(_angular_cdk_layout__WEBPACK_IMPORTED_MODULE_1__["Breakpoints"].Handset)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])(function (result) { return result.matches; }));
+    }
+    NavigacijaComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.korpaServis.trenutnaKorpa.subscribe(function (korpa) { return _this.korpaBadge = korpa.roba.length; });
+        this.loginServis.ulogovaniPartner.subscribe(function (partner) { return _this.partner = partner; });
+    };
+    NavigacijaComponent.prototype.otvoriDialog = function () {
+        var dialogRef = this.dialog.open(_logout_modal_logout_modal_component__WEBPACK_IMPORTED_MODULE_4__["LogoutModalComponent"], {
+            width: '400px'
+        });
+        dialogRef.afterClosed().subscribe(function (result) {
+            console.log('The dialog was closed');
+        });
+    };
+    NavigacijaComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-navigacija',
+            template: __webpack_require__(/*! ./navigacija.component.html */ "./src/app/navigacija/navigacija.component.html"),
+            styles: [__webpack_require__(/*! ./navigacija.component.scss */ "./src/app/navigacija/navigacija.component.scss")]
+        }),
+        __metadata("design:paramtypes", [_angular_cdk_layout__WEBPACK_IMPORTED_MODULE_1__["BreakpointObserver"],
+            _e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_6__["DataService"],
+            _e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_5__["LoginService"],
+            _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatDialog"]])
+    ], NavigacijaComponent);
+    return NavigacijaComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/pipes/DatePipe.ts":
+/*!***********************************!*\
+  !*** ./src/app/pipes/DatePipe.ts ***!
+  \***********************************/
+/*! exports provided: DatePipe */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DatePipe", function() { return DatePipe; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _e_shop_model_konstante__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../e-shop/model/konstante */ "./src/app/e-shop/model/konstante.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+var DatePipe = /** @class */ (function () {
+    function DatePipe() {
+    }
+    DatePipe.prototype.transform = function (value) {
+        if (!value) {
+            value = 'N/A';
+        }
+        else {
+            var datumNVremeiz = value.split('T');
+            var datumNiz = datumNVremeiz[0].split('-');
+            datumNiz[1] = _e_shop_model_konstante__WEBPACK_IMPORTED_MODULE_1__["mesec"]['mesec_' + datumNiz[1]];
+            value = datumNiz[0] + '-' + datumNiz[1] + '-' + datumNiz[2] + ' ' + datumNVremeiz[1].substr(0, 5);
+        }
+        return value;
+    };
+    DatePipe = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Pipe"])({ name: 'datum' })
+    ], DatePipe);
+    return DatePipe;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/pipes/EmptyPipe.ts":
+/*!************************************!*\
+  !*** ./src/app/pipes/EmptyPipe.ts ***!
+  \************************************/
+/*! exports provided: EmptyPipe */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EmptyPipe", function() { return EmptyPipe; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+var EmptyPipe = /** @class */ (function () {
+    function EmptyPipe() {
+    }
+    EmptyPipe.prototype.transform = function (value) {
+        if (!value) {
+            value = 'N/A';
+        }
+        return value;
+    };
+    EmptyPipe = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Pipe"])({ name: 'empty' })
+    ], EmptyPipe);
+    return EmptyPipe;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/pipes/PrevodilacPipe.ts":
+/*!*****************************************!*\
+  !*** ./src/app/pipes/PrevodilacPipe.ts ***!
+  \*****************************************/
+/*! exports provided: TranslatePipe */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TranslatePipe", function() { return TranslatePipe; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _e_shop_model_konstante__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../e-shop/model/konstante */ "./src/app/e-shop/model/konstante.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+var TranslatePipe = /** @class */ (function () {
+    function TranslatePipe() {
+    }
+    TranslatePipe.prototype.transform = function (value) {
+        return _e_shop_model_konstante__WEBPACK_IMPORTED_MODULE_1__["transformator"][value];
+    };
+    TranslatePipe = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Pipe"])({ name: 'translate' })
+    ], TranslatePipe);
+    return TranslatePipe;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/shared/material/material.module.ts":
+/*!****************************************************!*\
+  !*** ./src/app/shared/material/material.module.ts ***!
+  \****************************************************/
+/*! exports provided: MaterialModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MaterialModule", function() { return MaterialModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _angular_cdk_layout__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/cdk/layout */ "./node_modules/@angular/cdk/esm5/layout.es5.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+
+
+var MaterialModule = /** @class */ (function () {
+    function MaterialModule() {
+    }
+    MaterialModule = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"])({
+            imports: [
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatButtonModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatCheckboxModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatExpansionModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatFormFieldModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatInputModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialogModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatFormFieldModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatSnackBarModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatChipsModule"],
+                _angular_forms__WEBPACK_IMPORTED_MODULE_4__["ReactiveFormsModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatProgressSpinnerModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatBadgeModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatRadioModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatSelectModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatAutocompleteModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatCheckboxModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatTableModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatTabsModule"],
+                _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"],
+                _angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormsModule"],
+                _angular_cdk_layout__WEBPACK_IMPORTED_MODULE_3__["LayoutModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatToolbarModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatSidenavModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatIconModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatListModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatGridListModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatCardModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatMenuModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatPaginatorModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatSortModule"]
+            ],
+            exports: [
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatButtonModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatCheckboxModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatProgressSpinnerModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatExpansionModule"],
+                _angular_forms__WEBPACK_IMPORTED_MODULE_4__["ReactiveFormsModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatInputModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialogModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatBadgeModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatRadioModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatFormFieldModule"],
+                _angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormsModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialogModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatChipsModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatSnackBarModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatSelectModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatAutocompleteModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatCheckboxModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatTableModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatTabsModule"],
+                _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"],
+                _angular_cdk_layout__WEBPACK_IMPORTED_MODULE_3__["LayoutModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatToolbarModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatButtonModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatSidenavModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatIconModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatListModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatGridListModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatCardModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatMenuModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatPaginatorModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatSortModule"]
+            ]
+        })
+    ], MaterialModule);
+    return MaterialModule;
 }());
 
 

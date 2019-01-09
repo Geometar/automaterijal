@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { DataService } from '../service/data/data.service';
-import { LoginService } from '../service/login.service';
-import { Partner } from '../model/dto';
 import { MatDialog } from '@angular/material';
 import { LogoutModalComponent } from './logout-modal/logout-modal.component';
+import { Partner } from '../e-shop/model/dto';
+import { LoginService } from '../e-shop/service/login.service';
+import { DataService } from '../e-shop/service/data/data.service';
 
 @Component({
   selector: 'app-navigacija',

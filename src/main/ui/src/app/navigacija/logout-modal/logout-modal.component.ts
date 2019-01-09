@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
-import { LoginService } from 'src/app/service/login.service';
 import { Router } from '@angular/router';
+import { LoginService } from 'src/app/e-shop/service/login.service';
 
 @Component({
   selector: 'app-logout-modal',
