@@ -90,12 +90,15 @@ export class PartnerComponent implements OnInit {
     this.updejtPartnera(this.partner, poruka);
   }
 
-  promeniUsername(username: string) {
+  promeniUsername() {
+    let username = '';
     this.usernameSubmited = true;
     if (this.korisnickoImeMetod === 'email') {
       username = this.partner.email;
     } else if (this.usernameForm.invalid) {
       return;
+    } else if (this.usernameForm.controls.username.value) {
+      username = this.usernameForm.controls.username.value;
     }
     const poruka = 'Vaše novo korisničko ime je: ' + username;
     this.partner.webKorisnik = username;

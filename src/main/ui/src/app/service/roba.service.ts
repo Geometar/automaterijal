@@ -108,7 +108,7 @@ export class RobaService {
       );
   }
 
-  public pronadjiPoKategoriji(sort: Sort, pageSize, page, searchValue, naStanju, proizvodjacId, kategorija): Observable<any> {
+  public pronadjiPoKategoriji(sort: Sort, pageSize, page, searchValue, naStanju, proizvodjacId, kategorija: string): Observable<any> {
     const parameterObject = {};
     parameterObject['pageSize'] = pageSize;
     parameterObject['page'] = page;
@@ -120,7 +120,7 @@ export class RobaService {
     parameterObject['proizvodjac'] = proizvodjacId;
     parameterObject['naStanju'] = naStanju;
     const parametersString = this.utils.vratiKveriParametre(parameterObject);
-    const fullUrl = DOMAIN_URL + OSTALE_KATEGORIJE_URL + '/' + kategorija + parametersString;
+    const fullUrl = DOMAIN_URL + OSTALE_KATEGORIJE_URL + '/' + kategorija.toUpperCase() + parametersString;
     return this.http
       .get(fullUrl)
       .pipe(

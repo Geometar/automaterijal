@@ -107,8 +107,8 @@
             </mat-expansion-panel-header>
             <div>
               <mat-radio-group class="radio-group" [(ngModel)]="korisnickoImeMetod">
-                <mat-radio-button value="email">Koristi trenutni email</mat-radio-button>
-                <mat-radio-button value="novo">
+                <mat-radio-button color="primary" value="email">Koristi trenutni email</mat-radio-button>
+                <mat-radio-button color="primary" value="novo">
                   <p>Kreirajte nov</p>
                 </mat-radio-button>
               </mat-radio-group>
@@ -116,7 +116,7 @@
 
             <form role="form" [formGroup]="usernameForm">
               <div>
-                <mat-form-field>
+                <mat-form-field *ngIf="korisnickoImeMetod != 'email'">
                   <input type="text" #username formControlName="username" [ngClass]="{ 'email-selected': korisnickoImeMetod === 'email'}"
                     [attr.disabled]="daLiKorisnickoImeTrebaDaBudeEmail() ? '' : null" matInput placeholder="Novo korisničko ime">
                 </mat-form-field>
@@ -135,7 +135,7 @@
                 <p class="upozorenje">Korisničko ime je vec zazueto</p>
               </div>
               <div class="button-div">
-                <button class="button-glavni" (click)="promeniUsername(username.value)" mat-raised-button>Sacuvaj</button>
+                <button class="button-glavni" (click)="promeniUsername()" mat-raised-button>Sacuvaj</button>
                 <button *ngIf="korisnickoImeMetod != 'email'" class="button-error float-right" (click)="username.value = ''; usernameSubmited=false"
                   mat-raised-button>Poništi</button>
               </div>

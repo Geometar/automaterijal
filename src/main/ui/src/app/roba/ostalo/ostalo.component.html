@@ -7,7 +7,7 @@
           <h2>{{slovo}}</h2>
         </div>
         <div *ngFor="let kategorija of vratiKategorijuNaSlovo(slovo)">
-          <a [routerLink]="[kategorija]" mat-button color="primary">{{"kategorija_" + kategorija | translate}}</a>
+          <a [routerLink]="[kategorija  | lowercase]" mat-button color="primary">{{"kategorija_" + kategorija | translate}}</a>
         </div>
       </div>
       <hr>

@@ -6,6 +6,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { AppUtilsService } from '../utils/app-utils.service';
 import { Router } from '@angular/router';
 import { LocalStorageService } from './data/local-storage.service';
+import { DataService } from './data/data.service';
 
 const TIMEOUT = 15000;
 const TIMEOUT_ERROR = 'Timeout error!';
@@ -31,6 +32,7 @@ export class LoginService {
     private http: HttpClient,
     private router: Router,
     private utils: AppUtilsService,
+    private korpaServis: DataService,
     private storageServis: LocalStorageService) { }
 
   public ulogujSe(credentials: Credentials) {
@@ -55,26 +57,6 @@ export class LoginService {
         });
   }
 
-  public logout() {
-    const fullUrl = DOMAIN_URL + LOGOUT_URL;
-    this.http.post(fullUrl, {}, { responseType: 'text' })
-      .pipe(
-        timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
-        catchError((error: any) => throwError(error))
-      )
-      .subscribe(() => {
-        this.partner = new Partner();
-        this.logovanjeSubjekat.next(true);
-        this.partnerSubjekat.next(this.partner);
-        this.storageServis.logout();
-        this.router.navigateByUrl('naslovna');
-      },
-        error => {
-          this.logovanjeSubjekat.next(false);
-          console.log('Greska kod logout-a');
-        });
-  }
-
   private vratiUlogovanogKorisnika() {
     const fullUrl = DOMAIN_URL + PARTNER_URL;
     this.http.get(fullUrl)
@@ -95,6 +77,27 @@ export class LoginService {
       },
         error => {
           console.log('Logovanje nije uspelo.');
+        });
+  }
+
+  public logout() {
+    const fullUrl = DOMAIN_URL + LOGOUT_URL;
+    this.http.post(fullUrl, {}, { responseType: 'text' })
+      .pipe(
+        timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
+        catchError((error: any) => throwError(error))
+      )
+      .subscribe(() => {
+        this.partner = new Partner();
+        this.logovanjeSubjekat.next(true);
+        this.partnerSubjekat.next(this.partner);
+        this.korpaServis.ocistiKorpu();
+        this.storageServis.logout();
+        this.router.navigateByUrl('naslovna');
+      },
+        error => {
+          this.logovanjeSubjekat.next(false);
+          console.log('Greska kod logout-a');
         });
   }
 }

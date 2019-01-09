@@ -43,8 +43,8 @@ export class ProizvodjacService {
         );
   }
 
-  public pronadjiSveProizvodjaceKategorije(kategorija): Observable<any> {
-    const fullUrl = DOMAIN_URL + ROBA_URL + KATEGORIJA_URL + '/' + kategorija;
+  public pronadjiSveProizvodjaceKategorije(kategorija: string): Observable<any> {
+    const fullUrl = DOMAIN_URL + ROBA_URL + KATEGORIJA_URL + '/' + kategorija.toUpperCase();
 
     return this.http
         .get(fullUrl)
