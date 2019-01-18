@@ -56,4 +56,8 @@ public class PartnerService {
         }
         return retVal;
     }
+
+    public Optional<Partner> pronadjiPartneraPoMejlu(final String email) {
+        return partnerRepository.findByEmail(email);
+    }
 }

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!--<link rel="stylesheet" type="text/css"-->
+    <!--href="css/registracija.css" th:href="@{css/registracija.css}"/>-->
+    <style>
+body {
+	margin-left: 30%;
+	font-family: 'Roboto', sans-serif;
+}
+
+h2 {
+	color: rgba(40, 59, 78, 1);
+}
+
+th {
+	text-align: 	left;
+	color: rgba(62, 94, 158, 1);
+}
+
+td {
+	font-weight: 	bold;
+	font-family: serif;
+	font-size: 	17px;
+}
+
+.vreme {
+	margin-top: 30px;
+	font-size: 	17px;
+}
+
+.vreme span {
+	font-weight: 	bold;
+}
+
+table {
+	margin-left: 10%;
+	margin-top: 40px;
+	width: 	300px;
+}
+
+    </style>
+</head>
+<body>
+<h2 th:if="${daLiJePravnoLice == true}">Registracija pravnog lica preko web aplikacije</h2>
+<h2 th:if="${daLiJePravnoLice == false}">Registracija privatnog lica preko web aplikacije</h2>
+<div th:if="${daLiJePravnoLice == true}">
+    <table>
+        <tr>
+            <th>Naziv Firme:</th>
+            <td th:text="${naziv}"> Naziv Firme</td>
+        </tr>
+        <tr>
+            <th>PIB:</th>
+            <td th:text="${pib}"> Pib Firme</td>
+        </tr>
+        <tr>
+            <th>Adresa:</th>
+            <td th:text="${adresa}"> Adresa Firme</td>
+        </tr>
+        <tr>
+            <th>Grad:</th>
+            <td th:text="${grad}"> Grad Firme</td>
+        </tr>
+        <tr>
+            <th>Email Firme:</th>
+            <td th:text="${email}"> email</td>
+        </tr>
+        <tr>
+            <th>Telefon:</th>
+            <td th:text="${telefon}"> broj Telefona</td>
+        </tr>
+    </table>
+</div>
+<div th:if="${daLiJePravnoLice == false}">
+    <table>
+        <tr>
+            <th>Ime i Prezime:</th>
+            <td th:text="${imeIPrezime}"> Ime i prezime</td>
+        </tr>
+        <tr>
+            <th>Adresa:</th>
+            <td th:text="${adresa}"> Adresa Firme</td>
+        </tr>
+        <tr>
+            <th>Grad:</th>
+            <td th:text="${grad}"> Grad Firme</td>
+        </tr>
+        <tr>
+            <th>Email Firme:</th>
+            <td th:text="${email}"> email</td>
+        </tr>
+        <tr>
+            <th>Telefon:</th>
+            <td th:text="${telefon}"> broj Telefona</td>
+        </tr>
+    </table>
+</div>
+<div class="vreme">
+    Zahtev poslat:
+    <span th:text="${vreme}">13 May 2011</span>
+</div>
+</body>
+</html>

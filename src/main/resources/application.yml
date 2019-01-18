@@ -12,3 +12,16 @@ spring:
   liquibase:
    change-log: classpath:/db/changelog/db.changelog-master.xml
    enabled: false
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: radespasoje@gmail.com
+    password: eogoliufyhgfrtyi
+    protocol: smtp
+    defaultEncoding: UTF-8 # Default message encoding
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true

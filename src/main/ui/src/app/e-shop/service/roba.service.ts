@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { map, timeoutWith, catchError } from 'rxjs/operators';
+import { timeoutWith, catchError } from 'rxjs/operators';
 import { Sort } from '@angular/material';
 import { AppUtilsService } from '../utils/app-utils.service';
 

@@ -118,6 +118,10 @@ snack-bar-container {
 //  -----------------------------------------------------------------
 //  Stilovi za klase
 
+.my-snack-bar {
+  background-color: $automaterijal-accent-red-50 !important;
+}
+
 .forms-input {
   display: flex;
   border-radius: 45px;

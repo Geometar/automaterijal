@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!--<link rel="stylesheet" type="text/css"-->
+    <!--href="css/zaboravljenaSifra.css" th:href="@{css/zaboravljenaSifra.css}"/>-->
+    <style>
+
+h1 {
+	color: rgba(10, 19, 78, 1);
+}
+
+p {
+	padding: 	0px;
+	margin:		0px;
+	color: rgba(40, 59, 78, 1);
+}
+
+.sekcija {
+	margin-top: 30px;
+}
+
+    </style>
+</head>
+<body>
+<h1>Promena šifre je tražena</h1>
+<div class="sekcija">
+    <p>Ako vi niste tražili promeni šifre možete ignorisati ovaj mail. Promenu šifre može svako da zahteva, to ne dovodi
+        u opasnost vaš nalog.</p>
+</div>
+<div class="sekcija">
+    <p>Ukoliko ste zapravo vi tražili promenu šifre, posetite ovaj link:</p>
+    <a th:href="@{${url}}">LINK ZA MENJANJE ŠIFRE</a>
+</div>
+
+<div class="sekcija">
+    <p>Hvala na ukazanom poverenju!</p>
+    <p>Vaš Automaterijal</p>
+</div>
+</body>
+</html>

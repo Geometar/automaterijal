@@ -1,0 +1,31 @@
+@import "src/automaterijal-theme.scss";
+
+h1 {
+    color: $automaterijal-primary-50 !important;
+    font-size: 19px;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+p {
+    font-size: 17px;
+    margin-bottom: 10px;
+    font-family: inherit;
+}
+
+.email-input {
+    width: 80%;
+}
+
+.upozorenje {
+   text-align: left;
+   font-family: sans-serif;
+   font-size: 12px;
+   color: red;
+   margin-top: -15px;
+   margin-bottom: 0px;
+}
+
+.pomeri-dole {
+    margin-top: 10px;
+}

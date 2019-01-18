@@ -203,12 +203,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _e_shop_partner_partner_component__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./e-shop/partner/partner.component */ "./src/app/e-shop/partner/partner.component.ts");
 /* harmony import */ var _e_shop_korpa_uspesno_porucivanje_modal_uspesno_porucivanje_modal_component__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./e-shop/korpa/uspesno-porucivanje-modal/uspesno-porucivanje-modal.component */ "./src/app/e-shop/korpa/uspesno-porucivanje-modal/uspesno-porucivanje-modal.component.ts");
 /* harmony import */ var _e_commerce_dasboard_dasboard_component__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./e-commerce/dasboard/dasboard.component */ "./src/app/e-commerce/dasboard/dasboard.component.ts");
+/* harmony import */ var _e_shop_login_registracija_modal_registracija_modal_component__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./e-shop/login/registracija-modal/registracija-modal.component */ "./src/app/e-shop/login/registracija-modal/registracija-modal.component.ts");
+/* harmony import */ var _e_shop_login_zaboravljena_sifra_modal_zaboravljena_sifra_modal_component__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./e-shop/login/zaboravljena-sifra-modal/zaboravljena-sifra-modal.component */ "./src/app/e-shop/login/zaboravljena-sifra-modal/zaboravljena-sifra-modal.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
 
 
 
@@ -273,7 +277,9 @@ var AppModule = /** @class */ (function () {
                 _e_shop_roba_ostalo_ostalo_component__WEBPACK_IMPORTED_MODULE_29__["OstaloComponent"],
                 _e_shop_roba_ostalo_kategorija_specificna_kategorija_specificna_component__WEBPACK_IMPORTED_MODULE_30__["KategorijaSpecificnaComponent"],
                 _e_shop_partner_partner_component__WEBPACK_IMPORTED_MODULE_31__["PartnerComponent"],
-                _e_shop_korpa_uspesno_porucivanje_modal_uspesno_porucivanje_modal_component__WEBPACK_IMPORTED_MODULE_32__["UspesnoPorucivanjeModalComponent"]
+                _e_shop_korpa_uspesno_porucivanje_modal_uspesno_porucivanje_modal_component__WEBPACK_IMPORTED_MODULE_32__["UspesnoPorucivanjeModalComponent"],
+                _e_shop_login_registracija_modal_registracija_modal_component__WEBPACK_IMPORTED_MODULE_34__["RegistracijaModalComponent"],
+                _e_shop_login_zaboravljena_sifra_modal_zaboravljena_sifra_modal_component__WEBPACK_IMPORTED_MODULE_35__["ZaboravljenaSifraModalComponent"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
@@ -288,7 +294,13 @@ var AppModule = /** @class */ (function () {
             ],
             providers: [],
             bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_3__["AppComponent"]],
-            entryComponents: [_e_shop_korpa_izmena_kolicine_modal_izmena_kolicine_modal_component__WEBPACK_IMPORTED_MODULE_20__["IzmenaKolicineModalComponent"], _navigacija_logout_modal_logout_modal_component__WEBPACK_IMPORTED_MODULE_23__["LogoutModalComponent"], _e_shop_korpa_uspesno_porucivanje_modal_uspesno_porucivanje_modal_component__WEBPACK_IMPORTED_MODULE_32__["UspesnoPorucivanjeModalComponent"]]
+            entryComponents: [
+                _e_shop_login_zaboravljena_sifra_modal_zaboravljena_sifra_modal_component__WEBPACK_IMPORTED_MODULE_35__["ZaboravljenaSifraModalComponent"],
+                _e_shop_login_registracija_modal_registracija_modal_component__WEBPACK_IMPORTED_MODULE_34__["RegistracijaModalComponent"],
+                _e_shop_korpa_izmena_kolicine_modal_izmena_kolicine_modal_component__WEBPACK_IMPORTED_MODULE_20__["IzmenaKolicineModalComponent"],
+                _navigacija_logout_modal_logout_modal_component__WEBPACK_IMPORTED_MODULE_23__["LogoutModalComponent"],
+                _e_shop_korpa_uspesno_porucivanje_modal_uspesno_porucivanje_modal_component__WEBPACK_IMPORTED_MODULE_32__["UspesnoPorucivanjeModalComponent"]
+            ]
         })
     ], AppModule);
     return AppModule;
@@ -1077,7 +1089,7 @@ module.exports = ".flex-login {\r\n    margin-top: 10%;\r\n    display: flex;\r\
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\r\n\t<div class=\"flex-login\">\r\n\t\t<div class=\"login-form\">\r\n\t\t\t<h1>Prijavi se</h1>\r\n\t\t\t<div class=\"alert alert-danger\" role=\"alert\" *ngIf=\"!uspesnoLogovanje\">\r\n\t\t\t\t<p>Username ili password je pogresan.</p>\r\n\t\t\t</div>\r\n\t\t\t<form role=\"form\" [formGroup]=\"registerForm\" (submit)=\"login()\">\r\n\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t<input type=\"text\" formControlName=\"username\" class=\"form-control rounded\" placeholder=\"Vaše korisničko ime\" id=\"username\"\r\n\t\t\t\t\t name=\"username\" [ngClass]=\"{ 'is-invalid': submitted && registerForm.controls.username.errors }\" [(ngModel)]=\"credentials.username\" />\r\n\t\t\t\t\t<div *ngIf=\"submitted && registerForm.controls.username.errors\">\r\n\t\t\t\t\t\t<div *ngIf=\"registerForm.controls.username.errors.required\">\r\n\t\t\t\t\t\t\t<p class=\"upozorenje\">\r\n\t\t\t\t\t\t\t\t<p class=\"upozorenje\">Korisnicko ime je obavezno</p>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div *ngIf=\"registerForm.controls.username.errors.minlength\">\r\n\t\t\t\t\t\t\t<p class=\"upozorenje\">\r\n\t\t\t\t\t\t\t\t<p class=\"upozorenje\">Korisnicko ime mora imati minimalno 3 karaktera</p>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t<input type=\"password\" formControlName=\"password\" class=\"form-control rounded\" placeholder=\"Šifra\" id=\"password\"\r\n\t\t\t\t\t name=\"password\" [(ngModel)]=\"credentials.password\" [ngClass]=\"{ 'is-invalid': submitted && registerForm.controls.password.errors }\" />\r\n\t\t\t\t\t<div *ngIf=\"submitted && registerForm.controls.password.errors\">\r\n\t\t\t\t\t\t<div *ngIf=\"registerForm.controls.password.errors.required\">\r\n\t\t\t\t\t\t\t<p class=\"upozorenje\">\r\n\t\t\t\t\t\t\t\t<p class=\"upozorenje\">Šifra je obavezna</p>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div *ngIf=\"registerForm.controls.password.errors.minlength\">\r\n\t\t\t\t\t\t\t<p class=\"upozorenje\">\r\n\t\t\t\t\t\t\t\t<p class=\"upozorenje\">Šifra mora imati minimalno 3 karaktera</p>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"d-flex\">\r\n\t\t\t\t\t\t<button mat-button color=\"primary\">Nemate nalog?</button>\r\n\t\t\t\t\t<button mat-raised-button type=\"submit\" class=\"rounded\" color=\"primary\">Prijava</button>\r\n\t\t\t\t\t<button mat-button color=\"primary\">Zaboravili ste šifru?</button>\r\n\t\t\t\t</div>\r\n\t\t\t</form>\r\n\t\t</div>\r\n\t</div>\r\n</div>"
+module.exports = "<div class=\"container\">\r\n\t<div class=\"flex-login\">\r\n\t\t<div class=\"login-form\">\r\n\t\t\t<h1>Prijavi se</h1>\r\n\t\t\t<div class=\"alert alert-danger\" role=\"alert\" *ngIf=\"!uspesnoLogovanje\">\r\n\t\t\t\t<p>Username ili password je pogresan.</p>\r\n\t\t\t</div>\r\n\t\t\t<form role=\"form\" [formGroup]=\"registerForm\">\r\n\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t<input type=\"text\" formControlName=\"username\" class=\"form-control rounded\" placeholder=\"Vaše korisničko ime\" id=\"username\"\r\n\t\t\t\t\t name=\"username\" [ngClass]=\"{ 'is-invalid': submitted && registerForm.controls.username.errors }\" [(ngModel)]=\"credentials.username\" />\r\n\t\t\t\t\t<div *ngIf=\"submitted && registerForm.controls.username.errors\">\r\n\t\t\t\t\t\t<div *ngIf=\"registerForm.controls.username.errors.required\">\r\n\t\t\t\t\t\t\t<p class=\"upozorenje\">\r\n\t\t\t\t\t\t\t\t<p class=\"upozorenje\">Korisnicko ime je obavezno</p>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div *ngIf=\"registerForm.controls.username.errors.minlength\">\r\n\t\t\t\t\t\t\t<p class=\"upozorenje\">\r\n\t\t\t\t\t\t\t\t<p class=\"upozorenje\">Korisnicko ime mora imati minimalno 3 karaktera</p>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t<input type=\"password\" formControlName=\"password\" class=\"form-control rounded\" placeholder=\"Šifra\" id=\"password\"\r\n\t\t\t\t\t name=\"password\" [(ngModel)]=\"credentials.password\" [ngClass]=\"{ 'is-invalid': submitted && registerForm.controls.password.errors }\" />\r\n\t\t\t\t\t<div *ngIf=\"submitted && registerForm.controls.password.errors\">\r\n\t\t\t\t\t\t<div *ngIf=\"registerForm.controls.password.errors.required\">\r\n\t\t\t\t\t\t\t<p class=\"upozorenje\">\r\n\t\t\t\t\t\t\t\t<p class=\"upozorenje\">Šifra je obavezna</p>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div *ngIf=\"registerForm.controls.password.errors.minlength\">\r\n\t\t\t\t\t\t\t<p class=\"upozorenje\">\r\n\t\t\t\t\t\t\t\t<p class=\"upozorenje\">Šifra mora imati minimalno 3 karaktera</p>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"d-flex\">\r\n\t\t\t\t\t<button mat-button (click)=\"otvoriResgracijaDialog()\" color=\"primary\">Nemate nalog?</button>\r\n\t\t\t\t\t<button mat-raised-button (click)=\"login()\" class=\"rounded\" color=\"primary\">Prijava</button>\r\n\t\t\t\t\t<button mat-button (click)=\"otvoriZaboravljenuSifruDialog()\" color=\"primary\">Zaboravili ste šifru?</button>\r\n\t\t\t\t</div>\r\n\t\t\t</form>\r\n\t\t</div>\r\n\t</div>\r\n</div>"
 
 /***/ }),
 
@@ -1094,6 +1106,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _service_login_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../service/login.service */ "./src/app/e-shop/service/login.service.ts");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _registracija_modal_registracija_modal_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./registracija-modal/registracija-modal.component */ "./src/app/e-shop/login/registracija-modal/registracija-modal.component.ts");
+/* harmony import */ var _zaboravljena_sifra_modal_zaboravljena_sifra_modal_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./zaboravljena-sifra-modal/zaboravljena-sifra-modal.component */ "./src/app/e-shop/login/zaboravljena-sifra-modal/zaboravljena-sifra-modal.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1106,10 +1121,14 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
+
+
 var LoginComponent = /** @class */ (function () {
-    function LoginComponent(loginServis, formBuilder) {
+    function LoginComponent(loginServis, formBuilder, dialog) {
         this.loginServis = loginServis;
         this.formBuilder = formBuilder;
+        this.dialog = dialog;
         this.submitted = false;
         this.credentials = {};
         this.uspesnoLogovanje = true;
@@ -1137,15 +1156,328 @@ var LoginComponent = /** @class */ (function () {
         this.loginServis.ulogovaniPartner.subscribe(function (partner) { return _this.partner = partner; });
         this.loginServis.daLiJeLogovanjeUspesno.subscribe(function (b) { return _this.uspesnoLogovanje = b; });
     };
+    LoginComponent.prototype.otvoriResgracijaDialog = function () {
+        var dialogRef = this.dialog.open(_registracija_modal_registracija_modal_component__WEBPACK_IMPORTED_MODULE_4__["RegistracijaModalComponent"], {
+            width: '400px'
+        });
+    };
+    LoginComponent.prototype.otvoriZaboravljenuSifruDialog = function () {
+        var dialogRef = this.dialog.open(_zaboravljena_sifra_modal_zaboravljena_sifra_modal_component__WEBPACK_IMPORTED_MODULE_5__["ZaboravljenaSifraModalComponent"], {
+            width: '400px'
+        });
+    };
     LoginComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-login',
             template: __webpack_require__(/*! ./login.component.html */ "./src/app/e-shop/login/login.component.html"),
             styles: [__webpack_require__(/*! ./login.component.css */ "./src/app/e-shop/login/login.component.css")]
         }),
-        __metadata("design:paramtypes", [_service_login_service__WEBPACK_IMPORTED_MODULE_1__["LoginService"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormBuilder"]])
+        __metadata("design:paramtypes", [_service_login_service__WEBPACK_IMPORTED_MODULE_1__["LoginService"],
+            _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormBuilder"],
+            _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatDialog"]])
     ], LoginComponent);
     return LoginComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/e-shop/login/registracija-modal/registracija-modal.component.html":
+/*!***********************************************************************************!*\
+  !*** ./src/app/e-shop/login/registracija-modal/registracija-modal.component.html ***!
+  \***********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<main>\n  <mat-horizontal-stepper [linear]=\"true\" #stepper>\n    <mat-step>\n      <ng-template matStepLabel>Vrsta</ng-template>\n      <mat-radio-group class=\"radio-group\" [(ngModel)]=\"vrstaRegistracije\">\n        <mat-radio-button color=\"primary\" *ngFor=\"let registracija of registracije\" [value]=\"registracija\">\n          {{registracija}}\n        </mat-radio-button>\n      </mat-radio-group>\n      <div>\n        <button mat-button color=\"primary\" (click)=\"odrediFormu()\" matStepperNext>Dalje</button>\n      </div>\n    </mat-step>\n    <mat-step [stepControl]=\"odredjenaForma\">\n      <ng-template matStepLabel>Forma</ng-template>\n      <form role=\"form\" [formGroup]=\"privatnoLiceForm\" *ngIf=\"vrstaRegistracije == registracije[0]\">\n        <mat-form-field class=\"example-full-width\">\n          <input #imeIPrezime formControlName=\"imeIPrezime\" matInput placeholder=\"Ime i prezime\">\n        </mat-form-field>\n        <div *ngIf=\"formaSubmited && privatno.imeIPrezime.errors\">\n          <div *ngIf=\"privatno.imeIPrezime.errors.required\">\n            <p class=\"upozorenje\">Ime i prezime je obavezno</p>\n          </div>\n          <div *ngIf=\"privatno.imeIPrezime.errors.minlength\">\n            <p class=\"upozorenje\">Ime i prezime mora imati minimalno 3 karaktera</p>\n          </div>\n        </div>\n\n        <mat-form-field class=\"example-full-width\">\n          <input #grad formControlName=\"grad\" matInput placeholder=\"Grad\">\n        </mat-form-field>\n        <div *ngIf=\"formaSubmited && privatno.grad.errors\">\n          <div *ngIf=\"privatno.grad.errors.required\">\n            <p class=\"upozorenje\">Naziv grada je obavezan</p>\n          </div>\n          <div *ngIf=\"privatno.grad.errors.minlength\">\n            <p class=\"upozorenje\">Grad mora imati minimalno 2 karaktera</p>\n          </div>\n        </div>\n\n        <mat-form-field class=\"example-full-width\">\n          <input #adresa formControlName=\"adresa\" matInput placeholder=\"Adresa\">\n        </mat-form-field>\n        <div *ngIf=\"formaSubmited && privatno.adresa.errors\">\n          <div *ngIf=\"privatno.adresa.errors.required\">\n            <p class=\"upozorenje\">Adresa je obavezna</p>\n          </div>\n          <div *ngIf=\"privatno.adresa.errors.minlength\">\n            <p class=\"upozorenje\">Adresa mora imati minimalno 3 karaktera</p>\n          </div>\n        </div>\n\n        <mat-form-field class=\"example-full-width\">\n          <input #email formControlName=\"email\" matInput type=\"email\" placeholder=\"Email\">\n        </mat-form-field>\n        <div *ngIf=\"formaSubmited && privatno.email.errors\">\n          <div *ngIf=\"privatno.email.errors.required\">\n            <p class=\"upozorenje\">Email je obavezan</p>\n          </div>\n          <div *ngIf=\"privatno.email.errors.email\">\n            <p class=\"upozorenje\">Email nije validan</p>\n          </div>\n        </div>\n\n        <mat-form-field class=\"example-full-width\">\n          <input #kontaktTelefon formControlName=\"kontaktTelefon\" matInput type=\"tel\" placeholder=\"Broj telefona\">\n        </mat-form-field>\n        <div *ngIf=\"formaSubmited && privatno.kontaktTelefon.errors\">\n          <div *ngIf=\"privatno.kontaktTelefon.errors.required\">\n            <p class=\"upozorenje\">Broj telefona je obavezan</p>\n          </div>\n          <div *ngIf=\"privatno.kontaktTelefon.errors.minlength\">\n            <p class=\"upozorenje\">Broj telefona mora imati vise od 5 karakera</p>\n          </div>\n        </div>\n\n      </form>\n      <form role=\"form\" [formGroup]=\"parvnoLiceForm\" *ngIf=\"vrstaRegistracije == registracije[1]\">\n        <mat-form-field class=\"example-full-width\">\n          <input #grad formControlName=\"nazivFirme\" matInput placeholder=\"Naziv firme\">\n        </mat-form-field>\n        <div *ngIf=\"formaSubmited && pravno.nazivFirme.errors\">\n          <div *ngIf=\"pravno.nazivFirme.errors.required\">\n            <p class=\"upozorenje\">Naziv firme je obavezan</p>\n          </div>\n          <div *ngIf=\"pravno.nazivFirme.errors.minlength\">\n            <p class=\"upozorenje\">Ime i prezime mora imati minimalno 3 karaktera</p>\n          </div>\n        </div>\n        <mat-form-field class=\"example-full-width\">\n          <input #pib formControlName=\"pib\" matInput placeholder=\"Pib\">\n        </mat-form-field>\n        <div *ngIf=\"formaSubmited && pravno.pib.errors\">\n          <div *ngIf=\"pravno.pib.errors.required\">\n            <p class=\"upozorenje\">Pib je obavezan</p>\n          </div>\n          <div *ngIf=\"pravno.pib.errors.minlength\">\n            <p class=\"upozorenje\">Pib mora imati minimalno 3 karaktera</p>\n          </div>\n        </div>\n\n        <mat-form-field class=\"example-full-width\">\n          <input #grad formControlName=\"grad\" matInput placeholder=\"Grad\">\n        </mat-form-field>\n        <div *ngIf=\"formaSubmited && pravno.grad.errors\">\n          <div *ngIf=\"pravno.grad.errors.required\">\n            <p class=\"upozorenje\">Naziv grada je obavezan</p>\n          </div>\n          <div *ngIf=\"pravno.grad.errors.minlength\">\n            <p class=\"upozorenje\">Grad mora imati minimalno 2 karaktera</p>\n          </div>\n        </div>\n\n        <mat-form-field class=\"example-full-width\">\n          <input #adresa formControlName=\"adresa\" matInput placeholder=\"Adresa\">\n        </mat-form-field>\n        <div *ngIf=\"formaSubmited && pravno.adresa.errors\">\n          <div *ngIf=\"pravno.adresa.errors.required\">\n            <p class=\"upozorenje\">Adresa je obavezna</p>\n          </div>\n          <div *ngIf=\"pravno.adresa.errors.minlength\">\n            <p class=\"upozorenje\">Adresa mora imati minimalno 3 karaktera</p>\n          </div>\n        </div>\n\n        <mat-form-field class=\"example-full-width\">\n          <input #email formControlName=\"email\" matInput type=\"email\" placeholder=\"Email\">\n        </mat-form-field>\n        <div *ngIf=\"formaSubmited && pravno.email.errors\">\n          <div *ngIf=\"pravno.email.errors.required\">\n            <p class=\"upozorenje\">Email je obavezan</p>\n          </div>\n          <div *ngIf=\"pravno.email.errors.email\">\n            <p class=\"upozorenje\">Email nije validan</p>\n          </div>\n        </div>\n        <mat-form-field class=\"example-full-width\">\n          <input #kontaktTelefon formControlName=\"kontaktTelefon\" matInput type=\"tel\" placeholder=\"Broj telefona\">\n        </mat-form-field>\n        <div *ngIf=\"formaSubmited && pravno.kontaktTelefon.errors\">\n          <div *ngIf=\"pravno.kontaktTelefon.errors.required\">\n            <p class=\"upozorenje\">Telefon je obavezan</p>\n          </div>\n          <div *ngIf=\"pravno.kontaktTelefon.errors.minlength\">\n            <p class=\"upozorenje\">>Telefon mora imati minimalno 5 karaktera</p>\n          </div>\n        </div>\n      </form>\n      <div>\n        <button mat-button matStepperPrevious>Nazad</button>\n        <button mat-button color=\"primary\" (click)=\"registracijaKorisnika()\" matStepperNext>Registruj se</button>\n      </div>\n    </mat-step>\n    <mat-step>\n      <ng-template matStepLabel>Done</ng-template>\n      <h2>Registracija je uspešno poslata</h2>\n      <p> U narednih 24h vaš zahtev će biti obradjen i dobićete mail sa detaljima vašeg naloga.</p>\n      <div>\n        <button mat-button color=\"primary\" (click)=\"zatvoriDialog()\">Zatvori</button>\n      </div>\n    </mat-step>\n  </mat-horizontal-stepper>\n</main>"
+
+/***/ }),
+
+/***/ "./src/app/e-shop/login/registracija-modal/registracija-modal.component.scss":
+/*!***********************************************************************************!*\
+  !*** ./src/app/e-shop/login/registracija-modal/registracija-modal.component.scss ***!
+  \***********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "h2 {\n  color: #283b4e !important;\n  font-size: 18px;\n  padding-bottom: 10px; }\n\np {\n  font-size: 16px;\n  text-align: left;\n  font-family: inherit; }\n\n.radio-group {\n  display: inline-flex;\n  flex-direction: column; }\n\n.example-full-width {\n  width: 100%; }\n\n.upozorenje {\n  text-align: left;\n  font-family: sans-serif;\n  font-size: 12px;\n  color: red;\n  margin-top: -15px;\n  margin-bottom: 0px; }\n"
+
+/***/ }),
+
+/***/ "./src/app/e-shop/login/registracija-modal/registracija-modal.component.ts":
+/*!*********************************************************************************!*\
+  !*** ./src/app/e-shop/login/registracija-modal/registracija-modal.component.ts ***!
+  \*********************************************************************************/
+/*! exports provided: RegistracijaModalComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RegistracijaModalComponent", function() { return RegistracijaModalComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _model_dto__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../model/dto */ "./src/app/e-shop/model/dto.ts");
+/* harmony import */ var _service_email_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../service/email.service */ "./src/app/e-shop/service/email.service.ts");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+var RegistracijaModalComponent = /** @class */ (function () {
+    function RegistracijaModalComponent(dialogRef, formBuilder, emailService) {
+        this.dialogRef = dialogRef;
+        this.formBuilder = formBuilder;
+        this.emailService = emailService;
+        this.registracije = ['Fizičko lice', 'Pravno lice'];
+        this.formaSubmited = false;
+        this.registracija = new _model_dto__WEBPACK_IMPORTED_MODULE_3__["Registracija"]();
+        this.alive = true;
+        this.ucitavanje = false;
+    }
+    RegistracijaModalComponent.prototype.ngOnInit = function () {
+        this.vrstaRegistracije = this.registracije[0];
+        this.inicijalizujSveRegistracioneForme();
+    };
+    RegistracijaModalComponent.prototype.inicijalizujSveRegistracioneForme = function () {
+        this.privatnoLiceForm = this.formBuilder.group({
+            imeIPrezime: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].minLength(3)]],
+            grad: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].minLength(2)]],
+            adresa: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].minLength(3)]],
+            email: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].email]],
+            kontaktTelefon: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].minLength(5)]]
+        });
+        this.parvnoLiceForm = this.formBuilder.group({
+            nazivFirme: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].minLength(3)]],
+            pib: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].minLength(3)]],
+            grad: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].minLength(2)]],
+            adresa: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].minLength(3)]],
+            email: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].email]],
+            kontaktTelefon: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].minLength(5)]]
+        });
+    };
+    RegistracijaModalComponent.prototype.registracijaKorisnika = function () {
+        var _this = this;
+        this.formaSubmited = true;
+        if (this.vrstaRegistracije === this.registracije[0]) {
+            if (this.privatnoLiceForm.invalid) {
+                return;
+            }
+            else {
+                this.registracija = new _model_dto__WEBPACK_IMPORTED_MODULE_3__["Registracija"]();
+                this.popuniRegistracijuZaPrivatnaLica();
+            }
+        }
+        else {
+            if (this.parvnoLiceForm.invalid) {
+                return;
+            }
+            else {
+                this.registracija = new _model_dto__WEBPACK_IMPORTED_MODULE_3__["Registracija"]();
+                this.popuniRegistracijuZaPravnaLica();
+            }
+        }
+        this.emailService.posaljiMailZaRegistraciju(this.registracija).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["catchError"])(function (error) { return Object(rxjs__WEBPACK_IMPORTED_MODULE_6__["throwError"])(error); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["finalize"])(function () { return _this.ucitavanje = false; })).subscribe(function (res) {
+            console.log('Mail uspesno poslat');
+        }, function (error) {
+            console.log('Error pri slanju registracionog maila', error);
+        });
+    };
+    RegistracijaModalComponent.prototype.odrediFormu = function () {
+        if (this.vrstaRegistracije === this.registracije[0]) {
+            this.odredjenaForma = this.privatnoLiceForm;
+        }
+        else {
+            this.odredjenaForma = this.parvnoLiceForm;
+        }
+    };
+    RegistracijaModalComponent.prototype.popuniRegistracijuZaPrivatnaLica = function () {
+        this.registracija.imeIPrezime = this.privatno.imeIPrezime.value;
+        this.registracija.grad = this.privatno.grad.value;
+        this.registracija.adresa = this.privatno.adresa.value;
+        this.registracija.email = this.privatno.email.value;
+        this.registracija.kontaktTelefon = this.privatno.kontaktTelefon.value;
+        this.registracija.daLiJePravnoLice = false;
+    };
+    RegistracijaModalComponent.prototype.popuniRegistracijuZaPravnaLica = function () {
+        this.registracija.nazivFirme = this.pravno.nazivFirme.value;
+        this.registracija.pib = this.pravno.pib.value;
+        this.registracija.grad = this.pravno.grad.value;
+        this.registracija.adresa = this.pravno.adresa.value;
+        this.registracija.email = this.pravno.email.value;
+        this.registracija.kontaktTelefon = this.pravno.kontaktTelefon.value;
+        this.registracija.daLiJePravnoLice = true;
+    };
+    RegistracijaModalComponent.prototype.zatvoriDialog = function () {
+        this.dialogRef.close();
+    };
+    Object.defineProperty(RegistracijaModalComponent.prototype, "privatno", {
+        // convenience getter for easy access to form fields
+        get: function () { return this.privatnoLiceForm.controls; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(RegistracijaModalComponent.prototype, "pravno", {
+        get: function () { return this.parvnoLiceForm.controls; },
+        enumerable: true,
+        configurable: true
+    });
+    RegistracijaModalComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-registracija-modal',
+            template: __webpack_require__(/*! ./registracija-modal.component.html */ "./src/app/e-shop/login/registracija-modal/registracija-modal.component.html"),
+            styles: [__webpack_require__(/*! ./registracija-modal.component.scss */ "./src/app/e-shop/login/registracija-modal/registracija-modal.component.scss")]
+        }),
+        __metadata("design:paramtypes", [_angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialogRef"],
+            _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormBuilder"],
+            _service_email_service__WEBPACK_IMPORTED_MODULE_4__["EmailService"]])
+    ], RegistracijaModalComponent);
+    return RegistracijaModalComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/e-shop/login/zaboravljena-sifra-modal/zaboravljena-sifra-modal.component.html":
+/*!***********************************************************************************************!*\
+  !*** ./src/app/e-shop/login/zaboravljena-sifra-modal/zaboravljena-sifra-modal.component.html ***!
+  \***********************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<main>\n  <section *ngIf=\"!mailUspesnoPoslat\">\n    <h1>Pronađi svoj Automaterijal nalog</h1>\n    <p>Unesi svoju e-postu</p>\n    <form role=\"form\" [formGroup]=\"zaboravljeSifraForma\">\n      <mat-form-field class=\"email-input\">\n        <input #email formControlName=\"email\" matInput type=\"email\" placeholder=\"Vaša e-pošta\">\n      </mat-form-field>\n      <div *ngIf=\"formaSubmited && zaboravljeno.email.errors\">\n        <div *ngIf=\"zaboravljeno.email.errors.required\">\n          <p class=\"upozorenje\">Email je obavezan</p>\n        </div>\n        <div *ngIf=\"zaboravljeno.email.errors.email\">\n          <p class=\"upozorenje\">Email nije validan</p>\n        </div>\n      </div>\n      <div class=\"pomeri-dole\">\n        <button mat-raised-button (click)=\"posaljiMailZaboravljenaSifra()\" class=\"button-glavni\">Potvrdi</button>\n      </div>\n    </form>\n  </section>\n  <section *ngIf=\"mailUspesnoPoslat\">\n    <h1>Mail uspešno poslat</h1>\n    <p>Uskoro će vam stići mail sa linkom gde možete promeniti vašu šifru.</p>\n    <div class=\"pomeri-dole\">\n        <button mat-raised-button (click)=\"zatvoriDialog()\" class=\"button-glavni\">Zatvori</button>\n      </div>\n  </section>\n</main>"
+
+/***/ }),
+
+/***/ "./src/app/e-shop/login/zaboravljena-sifra-modal/zaboravljena-sifra-modal.component.scss":
+/*!***********************************************************************************************!*\
+  !*** ./src/app/e-shop/login/zaboravljena-sifra-modal/zaboravljena-sifra-modal.component.scss ***!
+  \***********************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "h1 {\n  color: #283b4e !important;\n  font-size: 19px;\n  font-weight: bold;\n  margin-bottom: 25px; }\n\np {\n  font-size: 17px;\n  margin-bottom: 10px;\n  font-family: inherit; }\n\n.email-input {\n  width: 80%; }\n\n.upozorenje {\n  text-align: left;\n  font-family: sans-serif;\n  font-size: 12px;\n  color: red;\n  margin-top: -15px;\n  margin-bottom: 0px; }\n\n.pomeri-dole {\n  margin-top: 10px; }\n"
+
+/***/ }),
+
+/***/ "./src/app/e-shop/login/zaboravljena-sifra-modal/zaboravljena-sifra-modal.component.ts":
+/*!*********************************************************************************************!*\
+  !*** ./src/app/e-shop/login/zaboravljena-sifra-modal/zaboravljena-sifra-modal.component.ts ***!
+  \*********************************************************************************************/
+/*! exports provided: ZaboravljenaSifraModalComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ZaboravljenaSifraModalComponent", function() { return ZaboravljenaSifraModalComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _service_email_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../service/email.service */ "./src/app/e-shop/service/email.service.ts");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var _model_dto__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../model/dto */ "./src/app/e-shop/model/dto.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+var ZaboravljenaSifraModalComponent = /** @class */ (function () {
+    function ZaboravljenaSifraModalComponent(dialogRef, formBuilder, emailService, snackBar) {
+        this.dialogRef = dialogRef;
+        this.formBuilder = formBuilder;
+        this.emailService = emailService;
+        this.snackBar = snackBar;
+        this.resetSifre = new _model_dto__WEBPACK_IMPORTED_MODULE_6__["ResetSifre"]();
+        this.mailUspesnoPoslat = false;
+        this.formaSubmited = false;
+        this.alive = true;
+        this.ucitavanje = false;
+    }
+    ZaboravljenaSifraModalComponent.prototype.ngOnInit = function () {
+        this.inicijalizujSveRegistracioneForme();
+    };
+    ZaboravljenaSifraModalComponent.prototype.inicijalizujSveRegistracioneForme = function () {
+        this.zaboravljeSifraForma = this.formBuilder.group({
+            email: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].email]],
+        });
+    };
+    ZaboravljenaSifraModalComponent.prototype.posaljiMailZaboravljenaSifra = function () {
+        var _this = this;
+        this.formaSubmited = true;
+        if (this.zaboravljeSifraForma.invalid) {
+            return;
+        }
+        this.resetSifre.email = this.zaboravljeno.email.value;
+        this.emailService
+            .posaljiMailZaResetovanjeSifre(this.resetSifre)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(function (error) {
+            if (error.status === 400) {
+                var snackPoruka = 'Mail ne postoji u našoj bazi.';
+                _this.otvoriSnackBar(snackPoruka);
+                return rxjs__WEBPACK_IMPORTED_MODULE_5__["EMPTY"];
+            }
+            Object(rxjs__WEBPACK_IMPORTED_MODULE_5__["throwError"])(error);
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["finalize"])(function () { return _this.ucitavanje = false; })).subscribe(function (res) {
+            _this.mailUspesnoPoslat = true;
+            console.log('Mail za resetovanje sifre uspesno poslat');
+        }, function (error) {
+            console.log('Error pri slanju za resetovanje sifre', error);
+        });
+    };
+    ZaboravljenaSifraModalComponent.prototype.zatvoriDialog = function () {
+        this.dialogRef.close();
+    };
+    Object.defineProperty(ZaboravljenaSifraModalComponent.prototype, "zaboravljeno", {
+        // convenience getter for easy access to form fields
+        get: function () { return this.zaboravljeSifraForma.controls; },
+        enumerable: true,
+        configurable: true
+    });
+    ZaboravljenaSifraModalComponent.prototype.otvoriSnackBar = function (poruka) {
+        this.snackBar.open(poruka, '', {
+            duration: 2000,
+            panelClass: ['my-snack-bar']
+        });
+    };
+    ZaboravljenaSifraModalComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-zaboravljena-sifra-modal',
+            template: __webpack_require__(/*! ./zaboravljena-sifra-modal.component.html */ "./src/app/e-shop/login/zaboravljena-sifra-modal/zaboravljena-sifra-modal.component.html"),
+            styles: [__webpack_require__(/*! ./zaboravljena-sifra-modal.component.scss */ "./src/app/e-shop/login/zaboravljena-sifra-modal/zaboravljena-sifra-modal.component.scss")]
+        }),
+        __metadata("design:paramtypes", [_angular_material__WEBPACK_IMPORTED_MODULE_1__["MatDialogRef"],
+            _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormBuilder"],
+            _service_email_service__WEBPACK_IMPORTED_MODULE_3__["EmailService"],
+            _angular_material__WEBPACK_IMPORTED_MODULE_1__["MatSnackBar"]])
+    ], ZaboravljenaSifraModalComponent);
+    return ZaboravljenaSifraModalComponent;
 }());
 
 
@@ -1156,7 +1488,7 @@ var LoginComponent = /** @class */ (function () {
 /*!*************************************!*\
   !*** ./src/app/e-shop/model/dto.ts ***!
   \*************************************/
-/*! exports provided: ValueHelp, Roba, RobaPage, Partner, Fakutra, FakturaPage, FakturaDetalji, Proizvodjac */
+/*! exports provided: ValueHelp, Roba, RobaPage, Partner, Fakutra, FakturaPage, FakturaDetalji, Proizvodjac, Registracija, ResetSifre */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1169,6 +1501,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FakturaPage", function() { return FakturaPage; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FakturaDetalji", function() { return FakturaDetalji; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Proizvodjac", function() { return Proizvodjac; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Registracija", function() { return Registracija; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ResetSifre", function() { return ResetSifre; });
 /* harmony import */ var _page__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./page */ "./src/app/e-shop/model/page.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -1235,6 +1569,18 @@ var Proizvodjac = /** @class */ (function () {
     function Proizvodjac() {
     }
     return Proizvodjac;
+}());
+
+var Registracija = /** @class */ (function () {
+    function Registracija() {
+    }
+    return Registracija;
+}());
+
+var ResetSifre = /** @class */ (function () {
+    function ResetSifre() {
+    }
+    return ResetSifre;
 }());
 
 
@@ -1994,7 +2340,7 @@ var FilteriComponent = /** @class */ (function () {
             _this.tableLength = res.totalElements;
         }, function (error) {
             _this.roba = null;
-            console.log('Podnaci robu izbacilo je gresko');
+            console.log('Podnaci robu izbacilo je gresko', error);
         });
     };
     FilteriComponent.prototype.pronadjiFilterePoPretrazi = function (searchValue) {
@@ -4237,6 +4583,65 @@ var LocalStorageService = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/e-shop/service/email.service.ts":
+/*!*************************************************!*\
+  !*** ./src/app/e-shop/service/email.service.ts ***!
+  \*************************************************/
+/*! exports provided: EmailService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EmailService", function() { return EmailService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var DOMAIN_URL = 'http://localhost:8080/api/email';
+var REGISTRACIJA_URL = '/registracija';
+var RESETOVANJE_SIFRE_URL = '/zaboravljena-sifra';
+var TIMEOUT = 15000;
+var TIMEOUT_ERROR = 'Timeout error!';
+var EmailService = /** @class */ (function () {
+    function EmailService(http) {
+        this.http = http;
+    }
+    EmailService.prototype.posaljiMailZaRegistraciju = function (registracija) {
+        var fullUrl = DOMAIN_URL + REGISTRACIJA_URL;
+        return this.http.post(fullUrl, registracija)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["timeoutWith"])(TIMEOUT, Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["throwError"])(TIMEOUT_ERROR)), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(function (error) { return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["throwError"])(error); }));
+    };
+    EmailService.prototype.posaljiMailZaResetovanjeSifre = function (email) {
+        var fullUrl = DOMAIN_URL + RESETOVANJE_SIFRE_URL;
+        return this.http.post(fullUrl, email)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["timeoutWith"])(TIMEOUT, Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["throwError"])(TIMEOUT_ERROR)), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(function (error) { return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["throwError"])(error); }));
+    };
+    EmailService = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
+            providedIn: 'root'
+        }),
+        __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"]])
+    ], EmailService);
+    return EmailService;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/e-shop/service/faktura.service.ts":
 /*!***************************************************!*\
   !*** ./src/app/e-shop/service/faktura.service.ts ***!
@@ -5202,6 +5607,7 @@ var MaterialModule = /** @class */ (function () {
                 _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatButtonModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatCheckboxModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatExpansionModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatStepperModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatFormFieldModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatInputModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialogModule"],
@@ -5236,6 +5642,7 @@ var MaterialModule = /** @class */ (function () {
                 _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatProgressSpinnerModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatExpansionModule"],
                 _angular_forms__WEBPACK_IMPORTED_MODULE_4__["ReactiveFormsModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatStepperModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatInputModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialogModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatBadgeModule"],

@@ -1,0 +1,29 @@
+<main>
+  <section *ngIf="!mailUspesnoPoslat">
+    <h1>Pronađi svoj Automaterijal nalog</h1>
+    <p>Unesi svoju e-postu</p>
+    <form role="form" [formGroup]="zaboravljeSifraForma">
+      <mat-form-field class="email-input">
+        <input #email formControlName="email" matInput type="email" placeholder="Vaša e-pošta">
+      </mat-form-field>
+      <div *ngIf="formaSubmited && zaboravljeno.email.errors">
+        <div *ngIf="zaboravljeno.email.errors.required">
+          <p class="upozorenje">Email je obavezan</p>
+        </div>
+        <div *ngIf="zaboravljeno.email.errors.email">
+          <p class="upozorenje">Email nije validan</p>
+        </div>
+      </div>
+      <div class="pomeri-dole">
+        <button mat-raised-button (click)="posaljiMailZaboravljenaSifra()" class="button-glavni">Potvrdi</button>
+      </div>
+    </form>
+  </section>
+  <section *ngIf="mailUspesnoPoslat">
+    <h1>Mail uspešno poslat</h1>
+    <p>Uskoro će vam stići mail sa linkom gde možete promeniti vašu šifru.</p>
+    <div class="pomeri-dole">
+        <button mat-raised-button (click)="zatvoriDialog()" class="button-glavni">Zatvori</button>
+      </div>
+  </section>
+</main>

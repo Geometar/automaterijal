@@ -32,6 +32,8 @@ import { KategorijaSpecificnaComponent } from './e-shop/roba/ostalo/kategorija-s
 import { PartnerComponent } from './e-shop/partner/partner.component';
 import { UspesnoPorucivanjeModalComponent } from './e-shop/korpa/uspesno-porucivanje-modal/uspesno-porucivanje-modal.component';
 import { DasboardComponent } from './e-commerce/dasboard/dasboard.component';
+import { RegistracijaModalComponent } from './e-shop/login/registracija-modal/registracija-modal.component';
+import { ZaboravljenaSifraModalComponent } from './e-shop/login/zaboravljena-sifra-modal/zaboravljena-sifra-modal.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +61,9 @@ import { DasboardComponent } from './e-commerce/dasboard/dasboard.component';
     OstaloComponent,
     KategorijaSpecificnaComponent,
     PartnerComponent,
-    UspesnoPorucivanjeModalComponent
+    UspesnoPorucivanjeModalComponent,
+    RegistracijaModalComponent,
+    ZaboravljenaSifraModalComponent
   ],
   imports: [
     BrowserModule,
@@ -74,6 +78,11 @@ import { DasboardComponent } from './e-commerce/dasboard/dasboard.component';
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [IzmenaKolicineModalComponent, LogoutModalComponent, UspesnoPorucivanjeModalComponent]
+  entryComponents: [
+    ZaboravljenaSifraModalComponent,
+    RegistracijaModalComponent,
+    IzmenaKolicineModalComponent,
+    LogoutModalComponent,
+    UspesnoPorucivanjeModalComponent]
 })
 export class AppModule { }

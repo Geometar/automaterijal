@@ -107,7 +107,7 @@ export class FilteriComponent implements OnInit {
         },
         error => {
           this.roba = null;
-          console.log('Podnaci robu izbacilo je gresko');
+          console.log('Podnaci robu izbacilo je gresko', error);
         });
   }
 

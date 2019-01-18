@@ -74,3 +74,21 @@ export declare class Credentials {
     username?: string;
     password?: boolean;
 }
+
+export class Registracija {
+    // Pravno Lice
+    nazivFirme?: string;
+    pib?: string;
+    // Fizicko Lice
+    imeIPrezime?: string;
+    // zajednicki sadrzilac
+    grad?: string;
+    adresa?: string;
+    email?: string;
+    kontaktTelefon?: string;
+    daLiJePravnoLice?: boolean;
+}
+
+export class ResetSifre {
+    email?: string;
+}
