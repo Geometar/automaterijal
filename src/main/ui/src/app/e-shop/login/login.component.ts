@@ -56,4 +56,10 @@ export class LoginComponent implements OnInit {
       width: '400px'
     });
   }
+
+  enterNaFormi(event) {
+    if (event.keyCode === 13) {
+      this.login();
+    }
+  }
 }

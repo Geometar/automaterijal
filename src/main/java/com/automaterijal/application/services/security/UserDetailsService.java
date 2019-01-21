@@ -14,6 +14,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -29,11 +31,11 @@ public class UserDetailsService implements org.springframework.security.core.use
 
     @Override
     public CurrentUser loadUserByUsername(final String username) throws UsernameNotFoundException {
-        final Partner partner = partnerRepository.findByWebKorisnik(username);
-        if (partner == null) {
+        final Optional<Partner> partner = partnerRepository.findByWebKorisnik(username);
+        if (!partner.isPresent()) {
             throw new UsernameNotFoundException("Partner not found with username " + username);
         }
-        return new CurrentUser(partner);
+        return new CurrentUser(partner.get());
     }
 
     public PartnerDto vratiUlogovanogKorisnika(final Authentication authentication) {

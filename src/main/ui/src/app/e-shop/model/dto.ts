@@ -92,3 +92,10 @@ export class Registracija {
 export class ResetSifre {
     email?: string;
 }
+
+export class PromenaSifre {
+    ppid?: number;
+    staraSifra?: string;
+    sifra?: string;
+    ponovljenjaSifra?: string;
+}

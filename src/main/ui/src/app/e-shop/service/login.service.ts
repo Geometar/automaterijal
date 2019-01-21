@@ -76,6 +76,7 @@ export class LoginService {
         this.router.navigateByUrl('naslovna');
       },
         error => {
+          this.logovanjeSubjekat.next(false);
           console.log('Logovanje nije uspelo.');
         });
   }

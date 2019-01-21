@@ -52,6 +52,7 @@ export class RegistracijaModalComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       kontaktTelefon: ['', [Validators.required, Validators.minLength(5)]]
     });
+    this.odredjenaForma = this.parvnoLiceForm;
   }
 
   registracijaKorisnika() {
@@ -82,7 +83,7 @@ export class RegistracijaModalComponent implements OnInit {
     });
   }
 
-  private odrediFormu() {
+  public odrediFormu() {
     if (this.vrstaRegistracije === this.registracije[0]) {
       this.odredjenaForma = this.privatnoLiceForm;
     } else {

@@ -47,12 +47,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _e_shop_partner_partner_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./e-shop/partner/partner.component */ "./src/app/e-shop/partner/partner.component.ts");
 /* harmony import */ var _e_shop_roba_roba_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./e-shop/roba/roba.component */ "./src/app/e-shop/roba/roba.component.ts");
 /* harmony import */ var _e_commerce_dasboard_dasboard_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./e-commerce/dasboard/dasboard.component */ "./src/app/e-commerce/dasboard/dasboard.component.ts");
+/* harmony import */ var _e_shop_resetovanje_sfire_resetovanje_sfire_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./e-shop/resetovanje-sfire/resetovanje-sfire.component */ "./src/app/e-shop/resetovanje-sfire/resetovanje-sfire.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -83,7 +85,8 @@ var routes = [
     { path: 'licni-podaci', component: _e_shop_partner_partner_component__WEBPACK_IMPORTED_MODULE_11__["PartnerComponent"] },
     { path: 'porudzbenice', component: _e_shop_faktura_faktura_component__WEBPACK_IMPORTED_MODULE_7__["FakturaComponent"] },
     { path: 'porudzbenice/:id', component: _e_shop_faktura_faktura_detalji_faktura_detalji_component__WEBPACK_IMPORTED_MODULE_8__["FakturaDetaljiComponent"] },
-    { path: 'korpa', component: _e_shop_korpa_korpa_component__WEBPACK_IMPORTED_MODULE_5__["KorpaComponent"] }
+    { path: 'korpa', component: _e_shop_korpa_korpa_component__WEBPACK_IMPORTED_MODULE_5__["KorpaComponent"] },
+    { path: 'reset-sifre/:id', component: _e_shop_resetovanje_sfire_resetovanje_sfire_component__WEBPACK_IMPORTED_MODULE_14__["ResetovanjeSfireComponent"] },
 ];
 var AppRoutingModule = /** @class */ (function () {
     function AppRoutingModule() {
@@ -205,12 +208,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _e_commerce_dasboard_dasboard_component__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./e-commerce/dasboard/dasboard.component */ "./src/app/e-commerce/dasboard/dasboard.component.ts");
 /* harmony import */ var _e_shop_login_registracija_modal_registracija_modal_component__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./e-shop/login/registracija-modal/registracija-modal.component */ "./src/app/e-shop/login/registracija-modal/registracija-modal.component.ts");
 /* harmony import */ var _e_shop_login_zaboravljena_sifra_modal_zaboravljena_sifra_modal_component__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./e-shop/login/zaboravljena-sifra-modal/zaboravljena-sifra-modal.component */ "./src/app/e-shop/login/zaboravljena-sifra-modal/zaboravljena-sifra-modal.component.ts");
+/* harmony import */ var _e_shop_resetovanje_sfire_resetovanje_sfire_component__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./e-shop/resetovanje-sfire/resetovanje-sfire.component */ "./src/app/e-shop/resetovanje-sfire/resetovanje-sfire.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -279,7 +284,8 @@ var AppModule = /** @class */ (function () {
                 _e_shop_partner_partner_component__WEBPACK_IMPORTED_MODULE_31__["PartnerComponent"],
                 _e_shop_korpa_uspesno_porucivanje_modal_uspesno_porucivanje_modal_component__WEBPACK_IMPORTED_MODULE_32__["UspesnoPorucivanjeModalComponent"],
                 _e_shop_login_registracija_modal_registracija_modal_component__WEBPACK_IMPORTED_MODULE_34__["RegistracijaModalComponent"],
-                _e_shop_login_zaboravljena_sifra_modal_zaboravljena_sifra_modal_component__WEBPACK_IMPORTED_MODULE_35__["ZaboravljenaSifraModalComponent"]
+                _e_shop_login_zaboravljena_sifra_modal_zaboravljena_sifra_modal_component__WEBPACK_IMPORTED_MODULE_35__["ZaboravljenaSifraModalComponent"],
+                _e_shop_resetovanje_sfire_resetovanje_sfire_component__WEBPACK_IMPORTED_MODULE_36__["ResetovanjeSfireComponent"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
@@ -1089,7 +1095,7 @@ module.exports = ".flex-login {\r\n    margin-top: 10%;\r\n    display: flex;\r\
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\r\n\t<div class=\"flex-login\">\r\n\t\t<div class=\"login-form\">\r\n\t\t\t<h1>Prijavi se</h1>\r\n\t\t\t<div class=\"alert alert-danger\" role=\"alert\" *ngIf=\"!uspesnoLogovanje\">\r\n\t\t\t\t<p>Username ili password je pogresan.</p>\r\n\t\t\t</div>\r\n\t\t\t<form role=\"form\" [formGroup]=\"registerForm\">\r\n\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t<input type=\"text\" formControlName=\"username\" class=\"form-control rounded\" placeholder=\"Vaše korisničko ime\" id=\"username\"\r\n\t\t\t\t\t name=\"username\" [ngClass]=\"{ 'is-invalid': submitted && registerForm.controls.username.errors }\" [(ngModel)]=\"credentials.username\" />\r\n\t\t\t\t\t<div *ngIf=\"submitted && registerForm.controls.username.errors\">\r\n\t\t\t\t\t\t<div *ngIf=\"registerForm.controls.username.errors.required\">\r\n\t\t\t\t\t\t\t<p class=\"upozorenje\">\r\n\t\t\t\t\t\t\t\t<p class=\"upozorenje\">Korisnicko ime je obavezno</p>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div *ngIf=\"registerForm.controls.username.errors.minlength\">\r\n\t\t\t\t\t\t\t<p class=\"upozorenje\">\r\n\t\t\t\t\t\t\t\t<p class=\"upozorenje\">Korisnicko ime mora imati minimalno 3 karaktera</p>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t<input type=\"password\" formControlName=\"password\" class=\"form-control rounded\" placeholder=\"Šifra\" id=\"password\"\r\n\t\t\t\t\t name=\"password\" [(ngModel)]=\"credentials.password\" [ngClass]=\"{ 'is-invalid': submitted && registerForm.controls.password.errors }\" />\r\n\t\t\t\t\t<div *ngIf=\"submitted && registerForm.controls.password.errors\">\r\n\t\t\t\t\t\t<div *ngIf=\"registerForm.controls.password.errors.required\">\r\n\t\t\t\t\t\t\t<p class=\"upozorenje\">\r\n\t\t\t\t\t\t\t\t<p class=\"upozorenje\">Šifra je obavezna</p>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div *ngIf=\"registerForm.controls.password.errors.minlength\">\r\n\t\t\t\t\t\t\t<p class=\"upozorenje\">\r\n\t\t\t\t\t\t\t\t<p class=\"upozorenje\">Šifra mora imati minimalno 3 karaktera</p>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"d-flex\">\r\n\t\t\t\t\t<button mat-button (click)=\"otvoriResgracijaDialog()\" color=\"primary\">Nemate nalog?</button>\r\n\t\t\t\t\t<button mat-raised-button (click)=\"login()\" class=\"rounded\" color=\"primary\">Prijava</button>\r\n\t\t\t\t\t<button mat-button (click)=\"otvoriZaboravljenuSifruDialog()\" color=\"primary\">Zaboravili ste šifru?</button>\r\n\t\t\t\t</div>\r\n\t\t\t</form>\r\n\t\t</div>\r\n\t</div>\r\n</div>"
+module.exports = "<div class=\"container\">\r\n\t<div class=\"flex-login\">\r\n\t\t<div class=\"login-form\">\r\n\t\t\t<h1>Prijavi se</h1>\r\n\t\t\t<div class=\"alert alert-danger\" role=\"alert\" *ngIf=\"!uspesnoLogovanje\">\r\n\t\t\t\t<p>Korisničko ime ili šifra je pogrešna.</p>\r\n\t\t\t</div>\r\n\t\t\t<form role=\"form\" (keydown)=\"enterNaFormi($event)\" [formGroup]=\"registerForm\">\r\n\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t<input type=\"text\" formControlName=\"username\" class=\"form-control rounded\" placeholder=\"Korisničko ime\" id=\"username\"\r\n\t\t\t\t\t name=\"username\" [(ngModel)]=\"credentials.username\" />\r\n\t\t\t\t\t<div *ngIf=\"submitted && registerForm.controls.username.errors\">\r\n\t\t\t\t\t\t<div *ngIf=\"registerForm.controls.username.errors.required\">\r\n\t\t\t\t\t\t\t\t<p class=\"upozorenje\">Korisničko ime je obavezno</p>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div *ngIf=\"registerForm.controls.username.errors.minlength\">\r\n\t\t\t\t\t\t\t\t<p class=\"upozorenje\">Korisničko ime mora imati minimalno 3 karaktera</p>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t<input type=\"password\" formControlName=\"password\" class=\"form-control rounded\" placeholder=\"Šifra\" id=\"password\"\r\n\t\t\t\t\t name=\"password\" [(ngModel)]=\"credentials.password\" [ngClass]=\"{ 'is-invalid': submitted && registerForm.controls.password.errors }\" />\r\n\t\t\t\t\t<div *ngIf=\"submitted && registerForm.controls.password.errors\">\r\n\t\t\t\t\t\t<div *ngIf=\"registerForm.controls.password.errors.required\">\r\n\t\t\t\t\t\t\t\t<p class=\"upozorenje\">Šifra je obavezna</p>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div *ngIf=\"registerForm.controls.password.errors.minlength\">\r\n\t\t\t\t\t\t\t\t<p class=\"upozorenje\">Šifra mora imati minimalno 3 karaktera</p>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"d-flex\">\r\n\t\t\t\t\t<button mat-button type=\"button\" (click)=\"otvoriResgracijaDialog()\" color=\"primary\">Nemate nalog?</button>\r\n\t\t\t\t\t<button mat-raised-button (click)=\"login()\" class=\"rounded\" color=\"primary\">Prijava</button>\r\n\t\t\t\t\t<button mat-button type=\"button\" (click)=\"otvoriZaboravljenuSifruDialog()\" color=\"primary\">Zaboravili ste šifru?</button>\r\n\t\t\t\t</div>\r\n\t\t\t</form>\r\n\t\t</div>\r\n\t</div>\r\n</div>"
 
 /***/ }),
 
@@ -1165,6 +1171,11 @@ var LoginComponent = /** @class */ (function () {
         var dialogRef = this.dialog.open(_zaboravljena_sifra_modal_zaboravljena_sifra_modal_component__WEBPACK_IMPORTED_MODULE_5__["ZaboravljenaSifraModalComponent"], {
             width: '400px'
         });
+    };
+    LoginComponent.prototype.enterNaFormi = function (event) {
+        if (event.keyCode === 13) {
+            this.login();
+        }
     };
     LoginComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -1269,6 +1280,7 @@ var RegistracijaModalComponent = /** @class */ (function () {
             email: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].email]],
             kontaktTelefon: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].minLength(5)]]
         });
+        this.odredjenaForma = this.parvnoLiceForm;
     };
     RegistracijaModalComponent.prototype.registracijaKorisnika = function () {
         var _this = this;
@@ -1360,7 +1372,7 @@ var RegistracijaModalComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<main>\n  <section *ngIf=\"!mailUspesnoPoslat\">\n    <h1>Pronađi svoj Automaterijal nalog</h1>\n    <p>Unesi svoju e-postu</p>\n    <form role=\"form\" [formGroup]=\"zaboravljeSifraForma\">\n      <mat-form-field class=\"email-input\">\n        <input #email formControlName=\"email\" matInput type=\"email\" placeholder=\"Vaša e-pošta\">\n      </mat-form-field>\n      <div *ngIf=\"formaSubmited && zaboravljeno.email.errors\">\n        <div *ngIf=\"zaboravljeno.email.errors.required\">\n          <p class=\"upozorenje\">Email je obavezan</p>\n        </div>\n        <div *ngIf=\"zaboravljeno.email.errors.email\">\n          <p class=\"upozorenje\">Email nije validan</p>\n        </div>\n      </div>\n      <div class=\"pomeri-dole\">\n        <button mat-raised-button (click)=\"posaljiMailZaboravljenaSifra()\" class=\"button-glavni\">Potvrdi</button>\n      </div>\n    </form>\n  </section>\n  <section *ngIf=\"mailUspesnoPoslat\">\n    <h1>Mail uspešno poslat</h1>\n    <p>Uskoro će vam stići mail sa linkom gde možete promeniti vašu šifru.</p>\n    <div class=\"pomeri-dole\">\n        <button mat-raised-button (click)=\"zatvoriDialog()\" class=\"button-glavni\">Zatvori</button>\n      </div>\n  </section>\n</main>"
+module.exports = "<main>\n  <section *ngIf=\"!mailUspesnoPoslat\">\n    <h1>Pronađi svoj Automaterijal nalog</h1>\n    <p>Unesi svoju e-poštu</p>\n    <form role=\"form\" [formGroup]=\"zaboravljeSifraForma\">\n      <mat-form-field class=\"email-input\">\n        <input #email formControlName=\"email\" matInput type=\"email\" placeholder=\"Vaša e-pošta\">\n      </mat-form-field>\n      <div *ngIf=\"formaSubmited && zaboravljeno.email.errors\">\n        <div *ngIf=\"zaboravljeno.email.errors.required\">\n          <p class=\"upozorenje\">Email je obavezan</p>\n        </div>\n        <div *ngIf=\"zaboravljeno.email.errors.email\">\n          <p class=\"upozorenje\">Email nije validan</p>\n        </div>\n      </div>\n      <div class=\"pomeri-dole\">\n        <button mat-raised-button (click)=\"posaljiMailZaboravljenaSifra()\" class=\"button-glavni\">Potvrdi</button>\n      </div>\n    </form>\n  </section>\n  <section *ngIf=\"mailUspesnoPoslat\">\n    <h1>Mail uspešno poslat</h1>\n    <p>Uskoro će vam stići mail sa linkom gde možete promeniti vašu šifru.</p>\n    <div class=\"pomeri-dole\">\n        <button mat-raised-button (click)=\"zatvoriDialog()\" class=\"button-glavni\">Zatvori</button>\n      </div>\n  </section>\n</main>"
 
 /***/ }),
 
@@ -1488,7 +1500,7 @@ var ZaboravljenaSifraModalComponent = /** @class */ (function () {
 /*!*************************************!*\
   !*** ./src/app/e-shop/model/dto.ts ***!
   \*************************************/
-/*! exports provided: ValueHelp, Roba, RobaPage, Partner, Fakutra, FakturaPage, FakturaDetalji, Proizvodjac, Registracija, ResetSifre */
+/*! exports provided: ValueHelp, Roba, RobaPage, Partner, Fakutra, FakturaPage, FakturaDetalji, Proizvodjac, Registracija, ResetSifre, PromenaSifre */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1503,6 +1515,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Proizvodjac", function() { return Proizvodjac; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Registracija", function() { return Registracija; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ResetSifre", function() { return ResetSifre; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PromenaSifre", function() { return PromenaSifre; });
 /* harmony import */ var _page__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./page */ "./src/app/e-shop/model/page.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -1581,6 +1594,12 @@ var ResetSifre = /** @class */ (function () {
     function ResetSifre() {
     }
     return ResetSifre;
+}());
+
+var PromenaSifre = /** @class */ (function () {
+    function PromenaSifre() {
+    }
+    return PromenaSifre;
 }());
 
 
@@ -1958,6 +1977,151 @@ var PartnerComponent = /** @class */ (function () {
             _angular_material__WEBPACK_IMPORTED_MODULE_6__["MatSnackBar"]])
     ], PartnerComponent);
     return PartnerComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/e-shop/resetovanje-sfire/resetovanje-sfire.component.html":
+/*!***************************************************************************!*\
+  !*** ./src/app/e-shop/resetovanje-sfire/resetovanje-sfire.component.html ***!
+  \***************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"container\">\n  <div class=\"flex-login\">\n    <div class=\"login-form\">\n      <h1>Promeni šifru</h1>\n      <div class=\"alert alert-danger\" role=\"alert\" *ngIf=\"submitted == true && uspesnaPromena == false\">\n        <p>Promena šifre nije uspela, zahtevajte ponovo poštu za resetovanje šifre.</p>\n      </div>\n      <form role=\"form\" [formGroup]=\"promenaSifreForm\">\n        <div class=\"form-group\">\n          <input type=\"password\" #pass1 formControlName=\"pass1\" class=\"form-control rounded\" placeholder=\"Šifra\" id=\"pass1\"\n            name=\"pass1\" />\n          <div *ngIf=\"submitted && r.pass1.errors\">\n            <div *ngIf=\"r.pass1.errors.required\">\n              <p class=\"upozorenje\">Šifra je obavezna</p>\n            </div>\n            <div *ngIf=\"r.pass1.errors.minlength\">\n              <p class=\"upozorenje\">Šifra mora imati minimalno 3 karaktera</p>\n            </div>\n          </div>\n        </div>\n        <div class=\"form-group\">\n          <input type=\"password\" #pass2 formControlName=\"pass2\" class=\"form-control rounded\" placeholder=\"Ponovite šifru\"\n            id=\"password\" name=\"password\" />\n          <div *ngIf=\"submitted && r.pass2.errors\">\n            <div *ngIf=\"r.pass2.errors.required\">\n              <p class=\"upozorenje\">Šifra je obavezna</p>\n            </div>\n            <div *ngIf=\"r.pass2.errors.minlength\">\n              <p class=\"upozorenje\">Šifra mora imati minimalno 3 karaktera</p>\n            </div>\n          </div>\n          <div *ngIf=\"submitted && !r.pass2.errors && pass1.value != pass2.value\">\n            <p class=\"upozorenje\">Šifre nisu iste</p>\n          </div>\n        </div>\n        <div class=\"d-flex\">\n          <button mat-raised-button (click)=\"promeniSifru()\" class=\"rounded\" color=\"primary\">Promeni</button>\n        </div>\n      </form>\n    </div>\n  </div>\n</div>"
+
+/***/ }),
+
+/***/ "./src/app/e-shop/resetovanje-sfire/resetovanje-sfire.component.scss":
+/*!***************************************************************************!*\
+  !*** ./src/app/e-shop/resetovanje-sfire/resetovanje-sfire.component.scss ***!
+  \***************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ".flex-login {\n  margin-top: 10%;\n  display: flex;\n  justify-content: center; }\n\n.login-form {\n  width: 400px;\n  justify-content: center; }\n\nh1 {\n  text-align: center;\n  font-family: serif;\n  font-weight: normal;\n  text-transform: uppercase; }\n\nbutton {\n  margin: auto;\n  display: block; }\n\np {\n  text-align: center;\n  font-family: sans-serif;\n  padding: 0;\n  margin: 0; }\n\n.is-invalid {\n  border: 1px solid red; }\n\n.upozorenje {\n  text-align: left;\n  font-family: sans-serif;\n  font-size: 14px;\n  color: red; }\n"
+
+/***/ }),
+
+/***/ "./src/app/e-shop/resetovanje-sfire/resetovanje-sfire.component.ts":
+/*!*************************************************************************!*\
+  !*** ./src/app/e-shop/resetovanje-sfire/resetovanje-sfire.component.ts ***!
+  \*************************************************************************/
+/*! exports provided: ResetovanjeSfireComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ResetovanjeSfireComponent", function() { return ResetovanjeSfireComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _model_dto__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../model/dto */ "./src/app/e-shop/model/dto.ts");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _service_partner_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../service/partner.service */ "./src/app/e-shop/service/partner.service.ts");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+
+var ResetovanjeSfireComponent = /** @class */ (function () {
+    function ResetovanjeSfireComponent(formBuilder, route, partnerServis, snackBar, router) {
+        this.formBuilder = formBuilder;
+        this.route = route;
+        this.partnerServis = partnerServis;
+        this.snackBar = snackBar;
+        this.router = router;
+        this.submitted = false;
+        this.uspesnoLogovanje = true;
+        this.ucitavanje = false;
+        this.alive = true;
+        this.uspesnaPromena = true;
+    }
+    ResetovanjeSfireComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.promenaSifreForm = this.formBuilder.group({
+            pass1: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].minLength(3)]],
+            pass2: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].minLength(3)]]
+        });
+        this.route.params.subscribe(function (params) {
+            _this.staraSifra = params.id;
+        });
+        this.route.queryParams.subscribe(function (params) {
+            _this.ppid = params.id;
+        });
+    };
+    Object.defineProperty(ResetovanjeSfireComponent.prototype, "r", {
+        // convenience getter for easy access to form fields
+        get: function () { return this.promenaSifreForm.controls; },
+        enumerable: true,
+        configurable: true
+    });
+    ResetovanjeSfireComponent.prototype.promeniSifru = function () {
+        var _this = this;
+        this.submitted = true;
+        // stop here if form is invalid
+        if (this.promenaSifreForm.invalid || this.r.pass1.value !== this.r.pass2.value) {
+            return;
+        }
+        var dto = this.napraviDto();
+        this.partnerServis.promeniSifru(dto).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["catchError"])(function (error) {
+            if (error.status === 400) {
+                _this.uspesnaPromena = false;
+                return rxjs__WEBPACK_IMPORTED_MODULE_4__["EMPTY"];
+            }
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_4__["throwError"])(error);
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["finalize"])(function () { return _this.ucitavanje = false; }))
+            .subscribe(function (res) {
+            _this.uspesnaPromena = true;
+            _this.otvoriSnackBar('Šifra uspešno promenjena');
+            _this.router.navigate(['/login']);
+        }, function (error) {
+            _this.uspesnaPromena = false;
+            console.log('Updejtovanje partnera nije uspelo');
+        });
+    };
+    ResetovanjeSfireComponent.prototype.otvoriSnackBar = function (poruka) {
+        this.snackBar.open(poruka, '', {
+            duration: 2000,
+        });
+    };
+    ResetovanjeSfireComponent.prototype.napraviDto = function () {
+        var dto = new _model_dto__WEBPACK_IMPORTED_MODULE_2__["PromenaSifre"]();
+        dto.sifra = this.r.pass1.value;
+        dto.ponovljenjaSifra = this.r.pass2.value;
+        dto.ppid = this.ppid;
+        dto.staraSifra = this.staraSifra;
+        return dto;
+    };
+    ResetovanjeSfireComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-resetovanje-sfire',
+            template: __webpack_require__(/*! ./resetovanje-sfire.component.html */ "./src/app/e-shop/resetovanje-sfire/resetovanje-sfire.component.html"),
+            styles: [__webpack_require__(/*! ./resetovanje-sfire.component.scss */ "./src/app/e-shop/resetovanje-sfire/resetovanje-sfire.component.scss")]
+        }),
+        __metadata("design:paramtypes", [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormBuilder"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_5__["ActivatedRoute"],
+            _service_partner_service__WEBPACK_IMPORTED_MODULE_6__["PartnerService"],
+            _angular_material__WEBPACK_IMPORTED_MODULE_7__["MatSnackBar"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"]])
+    ], ResetovanjeSfireComponent);
+    return ResetovanjeSfireComponent;
 }());
 
 
@@ -4805,6 +4969,7 @@ var LoginService = /** @class */ (function () {
             _this.partnerSubjekat.next(_this.partner);
             _this.router.navigateByUrl('naslovna');
         }, function (error) {
+            _this.logovanjeSubjekat.next(false);
             console.log('Logovanje nije uspelo.');
         });
     };
@@ -4869,8 +5034,8 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
-var DOMAIN_URL = 'http://localhost:8080/api';
-var PARTNER_URL = '/partner';
+var PARTNER_URL = 'http://localhost:8080/api/partner';
+var RESETOVANJE_SIFRE_URL = '/promena-sifre';
 var TIMEOUT = 15000;
 var TIMEOUT_ERROR = 'Timeout error!';
 var PartnerService = /** @class */ (function () {
@@ -4878,9 +5043,15 @@ var PartnerService = /** @class */ (function () {
         this.http = http;
     }
     PartnerService.prototype.updejtujPartnera = function (partner) {
-        var fullUrl = DOMAIN_URL + PARTNER_URL;
+        var fullUrl = PARTNER_URL;
         return this.http
             .put(fullUrl, partner)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["timeoutWith"])(TIMEOUT, Object(rxjs__WEBPACK_IMPORTED_MODULE_1__["throwError"])(TIMEOUT_ERROR)), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(function (error) { return Object(rxjs__WEBPACK_IMPORTED_MODULE_1__["throwError"])(error); }));
+    };
+    PartnerService.prototype.promeniSifru = function (reset) {
+        var fullUrl = PARTNER_URL + RESETOVANJE_SIFRE_URL;
+        return this.http
+            .put(fullUrl, reset)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["timeoutWith"])(TIMEOUT, Object(rxjs__WEBPACK_IMPORTED_MODULE_1__["throwError"])(TIMEOUT_ERROR)), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(function (error) { return Object(rxjs__WEBPACK_IMPORTED_MODULE_1__["throwError"])(error); }));
     };
     PartnerService = __decorate([

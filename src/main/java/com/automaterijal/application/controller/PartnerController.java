@@ -1,6 +1,7 @@
 package com.automaterijal.application.controller;
 
 import com.automaterijal.application.domain.dto.PartnerDto;
+import com.automaterijal.application.domain.dto.ResetovanjeSifreDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.services.PartnerService;
 import com.automaterijal.application.services.security.UserDetailsService;
@@ -45,7 +46,6 @@ public class PartnerController {
             usersService.logovanomUseruPovecajKolikoSePutaLogovao(dto.getPpid());
             return ResponseEntity.ok(dto);
         }
-
         return ResponseEntity.notFound().build();
     }
 
@@ -66,5 +66,19 @@ public class PartnerController {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(response);
+    }
+
+    @PutMapping(value = "/promena-sifre")
+    public ResponseEntity promeniSifruPartnera(@RequestBody final ResetovanjeSifreDto dto) {
+        if (!dto.getSifra().equals(dto.getPonovljenjaSifra())) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        final boolean uspesnaPromena = partnerService.promeniSifruPartnera(dto);
+        if(uspesnaPromena) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }

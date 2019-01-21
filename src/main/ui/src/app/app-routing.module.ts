@@ -12,6 +12,7 @@ import { KategorijaSpecificnaComponent } from './e-shop/roba/ostalo/kategorija-s
 import { PartnerComponent } from './e-shop/partner/partner.component';
 import { RobaComponent } from './e-shop/roba/roba.component';
 import { DasboardComponent } from './e-commerce/dasboard/dasboard.component';
+import { ResetovanjeSfireComponent } from './e-shop/resetovanje-sfire/resetovanje-sfire.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/naslovna', pathMatch: 'full' },
@@ -29,7 +30,8 @@ const routes: Routes = [
   {path: 'licni-podaci' , component: PartnerComponent},
   {path: 'porudzbenice', component: FakturaComponent},
   {path: 'porudzbenice/:id', component: FakturaDetaljiComponent},
-  {path: 'korpa', component: KorpaComponent}
+  {path: 'korpa', component: KorpaComponent},
+  {path: 'reset-sifre/:id', component: ResetovanjeSfireComponent},
 ];
 
 @NgModule({

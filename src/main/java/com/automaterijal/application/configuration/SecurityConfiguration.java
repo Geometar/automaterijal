@@ -42,7 +42,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.authorizeRequests()
                 .antMatchers("/static/**", "/").permitAll()
-                .antMatchers("/api/roba/**", "/api/proizvodjaci/**", "/api/kategorije", "/api/kategorije/**", "/api/email/**").permitAll()
+                .antMatchers(
+                        "/api/roba/**", "/api/proizvodjaci/**", "/api/kategorije", "/api/kategorije/**", "/api/email/**",
+                        "/api/partner/promena-sifre").permitAll()
+                .antMatchers("/naslovna","/o-nama","/kontakt","/roba","/filteri","/ulja","/akumulatori","/ostalo","/ostalo/**").permitAll()
+                .antMatchers("/login","/reset-sifre/**").permitAll()
                 .antMatchers("/resources/**").permitAll()
                 .antMatchers("/*.js").permitAll()
                 .anyRequest().authenticated()
