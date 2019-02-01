@@ -22,12 +22,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class FakturaService {
 
@@ -68,6 +70,7 @@ public class FakturaService {
         });
     }
 
+    @Transactional(readOnly = true)
     public Page<FakturaDto> vratiSveFaktureUlogovanogKorisnika(
             final Partner partner,
             final Integer page,
@@ -103,6 +106,7 @@ public class FakturaService {
         });
     }
 
+    @Transactional(readOnly = true)
     public FakturaDto vratiFakuturuPojedinacno(final Partner partner, final Integer id) {
         FakturaDto fakturaDto = null;
         final Optional<Faktura> faktura = fakturaRepository.findByPpidAndId(partner.getPpid(), id);
@@ -113,6 +117,7 @@ public class FakturaService {
         return fakturaDto;
     }
 
+    @Transactional(readOnly = true)
     public Integer vratiPoslednjiIdFakturuKorisnikaPovecan(final Integer ppid) {
         Integer orderId = 1;
         final Optional<Faktura> faktura = fakturaRepository.findFirstByPpidOrderByOrderIdDesc(ppid);

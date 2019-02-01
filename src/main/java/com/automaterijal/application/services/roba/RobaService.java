@@ -10,14 +10,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.TransactionScoped;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 @Service
-@TransactionScoped
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Slf4j
@@ -166,6 +166,7 @@ public class RobaService {
         }
     }
 
+    @Transactional
     public void skiniNarucenuRobuSaStanja(final Long robaId, final Double kolicina) {
        final Optional<Roba> robaOptional = robaRepository.findById(robaId);
        if(robaOptional.isPresent()) {

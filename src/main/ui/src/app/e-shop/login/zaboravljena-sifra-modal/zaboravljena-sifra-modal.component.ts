@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef, MatSnackBar } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { EmailService } from '../../service/email.service';
+import { EmailService } from '../../../shared/service/email.service';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY } from 'rxjs';
 import { ResetSifre } from '../../model/dto';
@@ -33,7 +33,7 @@ export class ZaboravljenaSifraModalComponent implements OnInit {
   }
   inicijalizujSveRegistracioneForme() {
     this.zaboravljeSifraForma = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required, Validators.minLength(3)]],
     });
   }
 
@@ -49,7 +49,7 @@ export class ZaboravljenaSifraModalComponent implements OnInit {
       takeWhile(() => this.alive),
       catchError((error: Response) => {
         if (error.status === 400) {
-          const snackPoruka = 'Mail ne postoji u našoj bazi.';
+          const snackPoruka = 'E-mail ili korisničko ime ne postoji u našoj bazi.';
           this.otvoriSnackBar(snackPoruka);
           return EMPTY;
         }

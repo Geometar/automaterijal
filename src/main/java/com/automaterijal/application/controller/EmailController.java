@@ -1,5 +1,6 @@
 package com.automaterijal.application.controller;
 
+import com.automaterijal.application.domain.dto.email.PorukaDto;
 import com.automaterijal.application.domain.dto.email.RegistracijaDto;
 import com.automaterijal.application.domain.dto.email.ZaboravljenaSifraDto;
 import com.automaterijal.application.services.email.EmailService;
@@ -34,5 +35,11 @@ public class EmailController {
         } catch (final MailSendException ex) {
             return ResponseEntity.badRequest().build();
         }
+    }
+
+    @PostMapping(value = "/poruka")
+    public ResponseEntity posaljiPorukuMail(@RequestBody final PorukaDto porukaDto) {
+        emailService.posaljiPoruku(porukaDto);
+        return ResponseEntity.ok().build();
     }
 }

@@ -12,13 +12,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
+@Transactional
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PartnerService {
 
@@ -58,10 +58,16 @@ public class PartnerService {
         return uspesnaPromenaSifre;
     }
 
+    @Transactional(readOnly = true)
     public boolean daLiPostojiVecZauzetaRegistracije(final PartnerDto partnerDto) {
         return partnerRepository.findByWebKorisnik(partnerDto.getWebKorisnik()).isPresent();
     }
 
+    public Optional<Partner> vratiPartneraPomocuKorisnickogImena(String korisnickoIme) {
+        return partnerRepository.findByWebKorisnik(korisnickoIme);
+    }
+
+    @Transactional(readOnly = true)
     public Partner pronadjiPartneraPoId(final Integer id) {
         Partner retVal = null;
         final Optional<Partner> optionalPartner = partnerRepository.findById(id);
@@ -71,6 +77,7 @@ public class PartnerService {
         return retVal;
     }
 
+    @Transactional(readOnly = true)
     public Optional<Partner> pronadjiPartneraPoMejlu(final String email) {
         return partnerRepository.findByEmail(email);
     }

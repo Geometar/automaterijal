@@ -32,14 +32,17 @@ li {
     color: $automaterijal-primary-100;
     font-weight: bold;
 }
+
 .desna-strana {
     font-weight: bold;
 }
+
 .licni-podaci {
     margin-top: 6%;
     width: 80%;
     margin-left: 10%;
 }
+
 .radio-group {
     display: inline-flex;
     flex-direction: column;
@@ -53,8 +56,6 @@ li {
 .email-selected {
     color: $automaterijal-grey-200 !important;
 }
-
-
 
 .dugovanje {
     color: $automaterijal-accent-red-50;
@@ -74,15 +75,6 @@ li {
     padding: 10px;
     border-bottom: 0.5px solid $automaterijal-primary-50;
     background-color: white;
-}
-
-.upozorenje {
-    text-align: left;
-    font-family: sans-serif;
-    font-size: 12px;
-    color: red;
-    margin-top: -15px;
-    margin-bottom: 0px;
 }
 
 

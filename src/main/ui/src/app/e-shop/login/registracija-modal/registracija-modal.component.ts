@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
 import { Registracija } from '../../model/dto';
-import { EmailService } from '../../service/email.service';
+import { EmailService } from '../../../shared/service/email.service';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY } from 'rxjs';
 

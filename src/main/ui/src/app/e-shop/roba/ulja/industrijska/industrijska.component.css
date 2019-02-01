@@ -1,4 +1,4 @@
-.smanji {
+.sirina-odabira-vrste {
     width: 450px;
     float: right;
 }
@@ -30,7 +30,7 @@
   }
 
 @media only screen and (max-device-width : 640px) { 
-    .smanji {
+    .sirina-odabira-vrste {
         width: 100%;
     }
     .forms-input-industrija {

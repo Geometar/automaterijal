@@ -37,11 +37,9 @@
               </div>
               <div *ngIf="adresaSubmited && a.ulica.errors">
                 <div *ngIf="a.ulica.errors.required">
-                  <p class="upozorenje">
                     <p class="upozorenje">Naziv ulice je obavezan</p>
                 </div>
                 <div *ngIf="a.ulica.errors.minlength">
-                  <p class="upozorenje">
                     <p class="upozorenje">Naziv ulice mora imati minimalno 3 karaktera</p>
                 </div>
               </div>
@@ -52,18 +50,16 @@
                 </mat-form-field>
                 <div *ngIf="adresaSubmited && a.grad.errors">
                   <div *ngIf="a.grad.errors.required">
-                    <p class="upozorenje">
                       <p class="upozorenje">Naziv grada je obavezan</p>
                   </div>
                   <div *ngIf="a.grad.errors.minlength">
-                    <p class="upozorenje">
                       <p class="upozorenje">Naziv grada mora imati minimalno 2 karaktera</p>
                   </div>
                 </div>
               </div>
               <div class="button-div">
-                <button class="button-glavni" (click)="promeniAdresu(ulica.value, grad.value)" mat-raised-button>Sacuvaj</button>
-                <button class="button-error float-right" (click)="ulica.value = ''; grad.value = ''; adresaSubmited=false"
+                <button class="button-glavni-100" (click)="promeniAdresu(ulica.value, grad.value)" mat-raised-button>Sacuvaj</button>
+                <button class="button-crveni-50 float-right" (click)="ulica.value = ''; grad.value = ''; adresaSubmited=false"
                   mat-raised-button>Poništi</button>
               </div>
             </form>
@@ -84,17 +80,15 @@
               </div>
               <div *ngIf="emailSubmited && e.email.errors">
                 <div *ngIf="e.email.errors.required">
-                  <p class="upozorenje">
                     <p class="upozorenje">Email je obavezan</p>
                 </div>
                 <div *ngIf="e.email.errors.email">
-                  <p class="upozorenje">
                     <p class="upozorenje">Email nije validan</p>
                 </div>
               </div>
               <div class="button-div">
-                <button class="button-glavni" (click)="promeniLEmail(email.value)" mat-raised-button>Sacuvaj</button>
-                <button class="button-error float-right" (click)="email.value = ''; emailSubmited=false"
+                <button class="button-glavni-100" (click)="promeniLEmail(email.value)" mat-raised-button>Sacuvaj</button>
+                <button class="button-crveni-50 float-right" (click)="email.value = ''; emailSubmited=false"
                   mat-raised-button>Poništi</button>
               </div>
             </form>
@@ -124,7 +118,6 @@
 
               <div *ngIf="usernameSubmited && u.username.errors">
                 <div *ngIf="u.username.errors.required && korisnickoImeMetod != 'email'">
-                  <p class="upozorenje">
                     <p class="upozorenje">Korisničko ime je obavezno</p>
                 </div>
                 <div *ngIf="u.username.errors.minlength && korisnickoImeMetod != 'email'">
@@ -135,8 +128,8 @@
                 <p class="upozorenje">Korisničko ime je vec zazueto</p>
               </div>
               <div class="button-div">
-                <button class="button-glavni" (click)="promeniUsername()" mat-raised-button>Sacuvaj</button>
-                <button *ngIf="korisnickoImeMetod != 'email'" class="button-error float-right" (click)="username.value = ''; usernameSubmited=false"
+                <button class="button-glavni-100" (click)="promeniUsername()" mat-raised-button>Sacuvaj</button>
+                <button *ngIf="korisnickoImeMetod != 'email'" class="button-crveni-50 float-right" (click)="username.value = ''; usernameSubmited=false"
                   mat-raised-button>Poništi</button>
               </div>
             </form>
@@ -193,9 +186,9 @@
                   <p class="upozorenje">Nova sifra nije ista</p>
                 </div>
                 <div class="button-div">
-                  <button class="button-glavni" (click)="promeniSifru(staraSifra.value, novaSifra.value, novaSifra2.value)"
+                  <button class="button-glavni-100" (click)="promeniSifru(staraSifra.value, novaSifra.value, novaSifra2.value)"
                     mat-raised-button>Sacuvaj</button>
-                  <button *ngIf="korisnickoImeMetod != 'email'" class="button-error float-right" (click)="username.value = ''; passwordSubmited=false"
+                  <button *ngIf="korisnickoImeMetod != 'email'" class="button-crveni-50 float-right" (click)="username.value = ''; passwordSubmited=false"
                     mat-raised-button>Poništi</button>
                 </div>
               </div>

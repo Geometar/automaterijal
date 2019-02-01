@@ -3,7 +3,7 @@
         <div *ngIf="faktura && fakturaDetalji && dataSource != null && dataSource.length > 0">
             <h1>Detalji fakture: {{faktura.orderId}}</h1>
             <div class="d-flex flex-row-reverse bd-highlight">
-                <button class="button-glavni nazad-button" mat-raised-button (click)="idiNazad()">
+                <button class="button-glavni-100 nazad-button" mat-raised-button (click)="idiNazad()">
                     <mat-icon>keyboard_arrow_left</mat-icon> Nazad
                 </button>
             </div>
@@ -11,29 +11,29 @@
             <div class="d-flex bd-highlight flex-sm-row flex-column detalji-div">
                 <div class="p-1 flex-fill bd-highlight">
                     <label class="input-group-text button-glavni-50" for="inputGroupSelect01">
-                        <p *ngIf="faktura.status" class="boja-kontra-bela">Status: {{faktura.status.naziv}}</p>
+                        <p *ngIf="faktura.status" class="boja-siva-400">Status: {{faktura.status.naziv}}</p>
                     </label>
                 </div>
                 <div class="p-1 flex-fill bd-highlight">
                     <label class="input-group-text button-glavni-50" for="inputGroupSelect01">
-                        <p class="boja-kontra-bela">Datum: {{faktura.vremePorucivanja | datum}}</p>
+                        <p class="boja-siva-400">Datum: {{faktura.vremePorucivanja | datum}}</p>
                     </label>
                 </div>
                 <div class="p-1 flex-fill bd-highlight">
                     <label class="input-group-text button-glavni-50" for="inputGroupSelect01">
-                        <p *ngIf="faktura.nacinPlacanja" class="boja-kontra-bela">Nacin placanja:
+                        <p *ngIf="faktura.nacinPlacanja" class="boja-siva-400">Nacin placanja:
                             {{faktura.nacinPlacanja.naziv}}</p>
                     </label>
                 </div>
                 <div class="p-1 flex-fill bd-highlight">
                     <label class="input-group-text button-glavni-50" for="inputGroupSelect01">
-                        <p *ngIf="faktura.nacinPrevoza" class="boja-kontra-bela">Nacin prevoza: {{"prevoz_" +
+                        <p *ngIf="faktura.nacinPrevoza" class="boja-siva-400">Nacin prevoza: {{"prevoz_" +
                             faktura.nacinPrevoza.id | translate}}</p>
                     </label>
                 </div>
                 <div class="p-1 flex-fill bd-highlight">
                     <label class="input-group-text button-glavni-50" for="inputGroupSelect01">
-                        <p *ngIf="faktura.adresa" class="boja-kontra-bela">Adresa: {{faktura.adresa.naziv}}</p>
+                        <p *ngIf="faktura.adresa" class="boja-siva-400">Adresa: {{faktura.adresa.naziv}}</p>
                     </label>
                 </div>
             </div>
@@ -120,7 +120,7 @@
                         <table class="table sirina-cena">
                             <tbody>
                                 <tr>
-                                    <td class="pozadina-glavna-50 boja-kontra-bela">Ukupno za iznos: </td>
+                                    <td class="pozadina-glavna-50 boja-siva-400">Ukupno za iznos: </td>
                                     <td class="text-right"><b>{{faktura.iznos | currency:" "}} RSD</b></td>
                                 </tr>
                             </tbody>
@@ -131,7 +131,7 @@
         </div>
         <div *ngIf="dataSource == null || dataSource.length == 0">
             <div class="d-flex flex-row-reverse bd-highlight">
-                <button class="button-glavni nazad-button nazad-button-dole" mat-raised-button (click)="idiNazad()">
+                <button class="button-glavni-100 nazad-button nazad-dugme-dole" mat-raised-button (click)="idiNazad()">
                     <mat-icon>keyboard_arrow_left</mat-icon> Nazad
                 </button>
             </div>
@@ -139,12 +139,12 @@
                 <i class="material-icons icon-size">
                     error_outline
                 </i>
-                <h1 class="h1-upozorenje">Porudzbenica je prazna</h1>
+                <h1 class="h1-faktura-upozorenje">Porudzbenica je prazna</h1>
             </div>
         </div>
         <div *ngIf="error">
             <div class="d-flex flex-row-reverse bd-highlight">
-                <button class="button-glavni nazad-button greska-button" mat-raised-button (click)="idiNazad()">
+                <button class="button-glavni-100 nazad-button greska-dugme-pozicija" mat-raised-button (click)="idiNazad()">
                     <mat-icon>keyboard_arrow_left</mat-icon> Nazad
                 </button>
             </div>
@@ -152,7 +152,7 @@
                 <i class="material-icons icon-size">
                     error_outline
                 </i>
-                <h1 class="h1-upozorenje">Porudzbenica ne postoji</h1>
+                <h1 class="h1-faktura-upozorenje">Porudzbenica ne postoji</h1>
             </div>
         </div>
     </main>

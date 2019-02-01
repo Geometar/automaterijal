@@ -1,0 +1,218 @@
+@import "src/automaterijal-theme.scss";
+
+// Element css 
+h1 {
+    text-align: center;
+    color:  $automaterijal-primary-50;
+    font-size: 35px;
+    margin-top: 30px;
+}
+
+h2 {
+    text-align: left;
+    color: #345cac !important;
+    margin-top: 15px;
+    padding-left: 25px;
+}
+
+h3 {
+    color:  $automaterijal-primary-100;
+}
+
+ul {
+    list-style-type: none;
+    display: inline;
+    text-align: left;
+    margin: 0px;
+    padding: 0px;
+}
+
+li {
+    color: $automaterijal-grey-50;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+p {
+    color: $automaterijal-grey-50;
+    font-size: 18px;
+}
+
+td {
+    margin: 0px !important;
+    padding: 0px !important;
+}
+
+iframe {
+    width: 80%;
+    height: 450px;
+}
+
+// Custome stilovi
+
+.informacije {
+    width: 80%;
+    margin-left: 10%;
+    margin-top: 50px;
+}
+
+.informacije-deo {
+    padding: 10px;
+    width: 33%;
+    text-align: center;
+    font-weight: 500;
+}
+
+.poruka-div {
+    text-align: left;
+    margin-top: 40px;
+}
+.poruka {
+    color:  $automaterijal-primary-100 !important;
+    font-size: 25px;
+    position: relative;
+    top: 5px;
+}
+
+.poruke-deo {
+    padding-left: 9%;
+}
+
+.poruka-informacije {
+    display: inline;
+    font-size: 16px;
+}
+
+.poruka-objasnjenje {
+    font-size: 17px;
+    color:  $automaterijal-primary-100 !important;
+}
+
+#drustvena-mreza {
+    width: 45px;
+    height: 45px;
+    font-size: 30px;
+}
+
+#drustvena-mreza:hover {
+    background-color: $automaterijal-primary-200;
+}
+
+.razmak-drus {
+    margin-left: 10px;
+}
+
+.instagram {
+    top: -4px;
+    position: relative;
+}
+
+.mat-fab .mat-button-wrapper {
+    padding: 0px !important;
+    display: inline-block;
+    line-height: 24px;
+    border-radius: 50%;
+}
+
+.granica-informacije {
+    border-right: 1px solid $automaterijal-grey-300;
+    border-left: 1px solid $automaterijal-grey-300;
+    margin-top: 30px;
+    height: 150px;
+}
+
+.telefoni {
+    color: $automaterijal-grey-50;
+    font-family: inherit;
+    text-align: left;
+    font-size: 17px;
+}
+
+.sirina-telefona {
+    width: 125px;
+    margin-left: 5%;
+    text-align: left;
+}
+
+.veleprodaja-dole {
+    margin-top: 15px;
+}
+
+.adresa {
+    margin-top: 10px;
+}
+
+.google-mapa {
+    margin-top: 5px;
+    margin-left: 15%;
+    height: 405px;
+}
+
+.forma-poruke {
+    box-shadow: 0 0px 15px 2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    width: 500px;
+    padding: 10px;
+    margin-top: 20px;
+    margin-left: 10%;
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+.duzina-input {
+    width: 350px;
+}
+
+.upozorenje {
+    text-align: left;
+    font-family: sans-serif;
+    font-size: 12px !important;
+    color: red;
+    margin-top: -20px;
+    margin-bottom: 0px;
+    padding-left: 65px;
+ }
+@media only screen and (max-width: 1000px) {
+
+    iframe {
+        width: 100%;
+        height: 350px;
+    }
+
+    .google-mapa {
+        height: 305px;
+        margin-top: 5px;
+        margin-left: 0px;
+    }
+
+    .granica-informacije {
+        border-right: 0px solid $automaterijal-grey-300 !important;
+        border-left: 0px solid $automaterijal-grey-300 !important;
+        height: 60%;
+    }
+
+    .informacije[_ngcontent-c9] {
+        width: 100%;
+        margin-left: 0%;
+        margin-top: 50px;
+    }
+
+    .informacije-deo {
+        width: 100%;
+        text-align: center;
+        font-weight: 500;
+    }
+
+    .forma-poruke {
+        box-shadow: 0 0px 0px 0px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12); 
+        width: 99%;
+        padding: 0px;
+        margin-left: 2px;
+        margin-right: 2px;
+        margin-top: 20px;
+        margin-bottom: 50px;
+        text-align: center;
+    }
+    .my-snack-bar {
+        background-color: $automaterijal-accent-red-50 !important;
+      }
+  }

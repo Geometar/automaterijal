@@ -35,6 +35,7 @@ import { DasboardComponent } from './e-commerce/dasboard/dasboard.component';
 import { RegistracijaModalComponent } from './e-shop/login/registracija-modal/registracija-modal.component';
 import { ZaboravljenaSifraModalComponent } from './e-shop/login/zaboravljena-sifra-modal/zaboravljena-sifra-modal.component';
 import { ResetovanjeSfireComponent } from './e-shop/resetovanje-sfire/resetovanje-sfire.component';
+import { KontaktComponent } from './e-commerce/kontakt/kontakt.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { ResetovanjeSfireComponent } from './e-shop/resetovanje-sfire/resetovanj
     UspesnoPorucivanjeModalComponent,
     RegistracijaModalComponent,
     ZaboravljenaSifraModalComponent,
-    ResetovanjeSfireComponent
+    ResetovanjeSfireComponent,
+    KontaktComponent
   ],
   imports: [
     BrowserModule,

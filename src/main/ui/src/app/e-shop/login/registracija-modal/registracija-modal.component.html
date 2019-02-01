@@ -1,4 +1,10 @@
 <main>
+  <div class="modal-naslov">
+    <h1 class="h1-modal-naslov">Registracija</h1>
+    <button type="button" class="close" (click)="zatvoriDialog()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
   <mat-horizontal-stepper [linear]="true" #stepper>
     <mat-step>
       <ng-template matStepLabel>Vrsta</ng-template>
@@ -8,13 +14,13 @@
         </mat-radio-button>
       </mat-radio-group>
       <div>
-        <button mat-button color="primary" (click)="odrediFormu()" matStepperNext>Dalje</button>
+        <button mat-button class="boja-glavna-100" (click)="odrediFormu()" matStepperNext>Dalje</button>
       </div>
     </mat-step>
     <mat-step [stepControl]="odredjenaForma">
       <ng-template matStepLabel>Forma</ng-template>
       <form role="form" [formGroup]="privatnoLiceForm" *ngIf="vrstaRegistracije == registracije[0]">
-        <mat-form-field class="example-full-width">
+        <mat-form-field class="puna-duzina">
           <input #imeIPrezime formControlName="imeIPrezime" matInput placeholder="Ime i prezime">
         </mat-form-field>
         <div *ngIf="formaSubmited && privatno.imeIPrezime.errors">
@@ -26,7 +32,7 @@
           </div>
         </div>
 
-        <mat-form-field class="example-full-width">
+        <mat-form-field class="puna-duzina">
           <input #grad formControlName="grad" matInput placeholder="Grad">
         </mat-form-field>
         <div *ngIf="formaSubmited && privatno.grad.errors">
@@ -38,7 +44,7 @@
           </div>
         </div>
 
-        <mat-form-field class="example-full-width">
+        <mat-form-field class="puna-duzina">
           <input #adresa formControlName="adresa" matInput placeholder="Adresa">
         </mat-form-field>
         <div *ngIf="formaSubmited && privatno.adresa.errors">
@@ -50,7 +56,7 @@
           </div>
         </div>
 
-        <mat-form-field class="example-full-width">
+        <mat-form-field class="puna-duzina">
           <input #email formControlName="email" matInput type="email" placeholder="Email">
         </mat-form-field>
         <div *ngIf="formaSubmited && privatno.email.errors">
@@ -62,7 +68,7 @@
           </div>
         </div>
 
-        <mat-form-field class="example-full-width">
+        <mat-form-field class="puna-duzina">
           <input #kontaktTelefon formControlName="kontaktTelefon" matInput type="tel" placeholder="Broj telefona">
         </mat-form-field>
         <div *ngIf="formaSubmited && privatno.kontaktTelefon.errors">
@@ -76,7 +82,7 @@
 
       </form>
       <form role="form" [formGroup]="parvnoLiceForm" *ngIf="vrstaRegistracije == registracije[1]">
-        <mat-form-field class="example-full-width">
+        <mat-form-field class="puna-duzina">
           <input #grad formControlName="nazivFirme" matInput placeholder="Naziv firme">
         </mat-form-field>
         <div *ngIf="formaSubmited && pravno.nazivFirme.errors">
@@ -87,7 +93,7 @@
             <p class="upozorenje">Ime i prezime mora imati minimalno 3 karaktera</p>
           </div>
         </div>
-        <mat-form-field class="example-full-width">
+        <mat-form-field class="puna-duzina">
           <input #pib formControlName="pib" matInput placeholder="Pib">
         </mat-form-field>
         <div *ngIf="formaSubmited && pravno.pib.errors">
@@ -99,7 +105,7 @@
           </div>
         </div>
 
-        <mat-form-field class="example-full-width">
+        <mat-form-field class="puna-duzina">
           <input #grad formControlName="grad" matInput placeholder="Grad">
         </mat-form-field>
         <div *ngIf="formaSubmited && pravno.grad.errors">
@@ -111,7 +117,7 @@
           </div>
         </div>
 
-        <mat-form-field class="example-full-width">
+        <mat-form-field class="puna-duzina">
           <input #adresa formControlName="adresa" matInput placeholder="Adresa">
         </mat-form-field>
         <div *ngIf="formaSubmited && pravno.adresa.errors">
@@ -123,7 +129,7 @@
           </div>
         </div>
 
-        <mat-form-field class="example-full-width">
+        <mat-form-field class="puna-duzina">
           <input #email formControlName="email" matInput type="email" placeholder="Email">
         </mat-form-field>
         <div *ngIf="formaSubmited && pravno.email.errors">
@@ -134,7 +140,7 @@
             <p class="upozorenje">Email nije validan</p>
           </div>
         </div>
-        <mat-form-field class="example-full-width">
+        <mat-form-field class="puna-duzina">
           <input #kontaktTelefon formControlName="kontaktTelefon" matInput type="tel" placeholder="Broj telefona">
         </mat-form-field>
         <div *ngIf="formaSubmited && pravno.kontaktTelefon.errors">
@@ -148,15 +154,15 @@
       </form>
       <div>
         <button mat-button matStepperPrevious>Nazad</button>
-        <button mat-button color="primary" (click)="registracijaKorisnika()" matStepperNext>Registruj se</button>
+        <button mat-button class="boja-glavna-100" (click)="registracijaKorisnika()" matStepperNext>Registruj se</button>
       </div>
     </mat-step>
     <mat-step>
-      <ng-template matStepLabel>Done</ng-template>
+      <ng-template matStepLabel>Uspešno</ng-template>
       <h2>Registracija je uspešno poslata</h2>
       <p> U narednih 24h vaš zahtev će biti obradjen i dobićete mail sa detaljima vašeg naloga.</p>
       <div>
-        <button mat-button color="primary" (click)="zatvoriDialog()">Zatvori</button>
+        <button mat-button class="boja-glavna-100" (click)="zatvoriDialog()">Zatvori</button>
       </div>
     </mat-step>
   </mat-horizontal-stepper>

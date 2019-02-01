@@ -1,0 +1,56 @@
+@import "src/automaterijal-theme.scss";
+
+html, body { 
+    height: 100%; 
+  }
+  body { margin: 0; font-family: 'Roboto', sans-serif; }
+  p {
+    font-size: 14px;
+    padding: 0px;
+    margin: 0px;
+    color: $automaterijal-grey-50;
+    font-family: sans-serif;
+    display: block;
+    padding: 0px;
+    margin: 0px;
+  }
+  
+  h2{
+    font-size: 28px;
+    color: $automaterijal-grey-50 !important;
+  }
+  
+  button {
+    outline: none !important;
+  }
+  
+  table {
+    width: 100%;
+    margin-top: 2%;
+  }
+  
+  input {
+    font-size:18px;
+  }
+  
+  input:focus {
+    outline:none;
+  }
+  th {
+    color: $automaterijal-grey-400 !important;
+    background-color: $automaterijal-primary-50 !important;
+    font-size: 13px!important;
+    font-weight: bold;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+  }
+  
+  tr {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif !important;
+  }
+
+  @media only screen and (max-device-width : 640px) { 
+    body {
+      width: 100%;
+      margin-top: 70px;
+    }
+  }

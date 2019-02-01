@@ -35,18 +35,14 @@ label {
   font-weight: bold;
 }
 
-.example-radio-group {
+.radio-grupa {
   display: inline-flex;
   flex-direction: column;
 }
 
-.example-radio-button {
+.radio-dugme {
   margin: 2px;
   font-size: 14px !important;
-}
-
-.example-selected-value {
-  margin: 15px 0;
 }
 
 .sirina-cena {
@@ -70,19 +66,6 @@ label {
   margin-top: 5px;
 }
 
-.pomeri-dole {
-  margin-top: 0px;
-}
-
-.upozorenje {
-    text-align: left;
-    font-family: sans-serif;
-    font-size: 12px;
-    color: red;
-    margin-top: -15px;
-    margin-bottom: 0px;
-}
-
 .visina {
   height: 180px;
 }
@@ -91,6 +74,11 @@ label {
 }
 .napomena {
   height: 80px;
+}
+
+.google-mapa {
+  margin-left: 10%;
+  width: 80%;
 }
 
 @media only screen and (max-device-width : 640px) { 

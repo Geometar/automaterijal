@@ -34,18 +34,10 @@ p {
   margin: 0px;
 }
 
-.is-active {
-  background-color: $automaterijal-primary-200 !important;
-}
-
 mat-divider {
   border-width: 1px;
   border-style: solid;
   border-color: $automaterijal-grey-300;
-}
-
-.icon-color {
-  color: $automaterijal-grey-300;
 }
 
 .user-none {
@@ -60,10 +52,6 @@ mat-divider {
 .side-toolbar {
   height: 120px;
   width: 200px;
-}
-
-.sidebar-color {
-  background-color: $automaterijal-primary-50;
 }
 
 .header-pozicija {

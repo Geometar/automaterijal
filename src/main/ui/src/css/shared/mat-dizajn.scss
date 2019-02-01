@@ -1,0 +1,19 @@
+@import "src/automaterijal-theme.scss";
+
+.mat-icon-button {
+    padding: 0;
+    min-width: 0;
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+    line-height: 40px;
+    border-radius: 50%;
+}
+  
+.mat-form-field-underline {
+    border-bottom-color: $automaterijal-grey-100 !important;
+}
+
+.mat-form-field.ng-invalid .mat-form-field-label {
+    color: $automaterijal-grey-100;
+}
