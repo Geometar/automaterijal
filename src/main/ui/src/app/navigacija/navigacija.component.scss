@@ -15,7 +15,7 @@
 }
 
 .header-navigacija {
-  font-size: 13px !important;
+  font-size: 0.7em !important;
   width: 160px;
 }
 
@@ -24,25 +24,13 @@
 }
 
 p {
-  font-size: 14px;
-  padding: 0px;
-  margin: 0px;
-  color: $automaterijal-grey-400;
-  font-family: sans-serif;
-  display: block;
-  padding: 0px;
-  margin: 0px;
+  color: $automaterijal-grey-400 !important;
 }
 
 mat-divider {
   border-width: 1px;
   border-style: solid;
   border-color: $automaterijal-grey-300;
-}
-
-.user-none {
-  font-size: 60px;
-  text-align: center;
 }
 
 .margin-gore {

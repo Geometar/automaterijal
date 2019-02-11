@@ -1,6 +1,7 @@
 <mat-sidenav-container class="sidenav-container pozadina-siva-400">
-  <mat-sidenav #drawer class="sidenav pozadina-glavna-50" fixedInViewport="true" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-    [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="!(isHandset$ | async)">
+  <mat-sidenav #drawer class="sidenav pozadina-glavna-50" fixedInViewport="true"
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="!(isHandset$ | async)">
     <mat-toolbar *ngIf="partner.ppid" class="side-toolbar pozadina-glavna-50 header-pozicija">
       <div class="d-flex flex-column ">
         <div class="d-flex justify-content-center header-sirina">
@@ -32,7 +33,15 @@
     <mat-nav-list>
       <h3 class="pozadina-glavna-50 boja-siva-300" mat-subheader>Internet prodavnica</h3>
 
-      <mat-list-item class="material-icons" [routerLink]="['roba']" [routerLinkActive]="['pozadina-glavna-200']" [routerLinkActive]="['pozadina-glavna-200']">
+      <mat-list-item class="material-icons" *ngIf="partner.ppid" [routerLink]="['korpa']"
+        [routerLinkActive]="['pozadina-glavna-200']">
+        <mat-icon matBadgeColor="warn" class="boja-siva-300" matBadge="{{korpaBadge}}" mat-list-icon>shopping_cart
+        </mat-icon>
+        <p mat-line>Korpa</p>
+      </mat-list-item>
+
+      <mat-list-item class="material-icons" [routerLink]="['roba']" [routerLinkActive]="['pozadina-glavna-200']"
+        [routerLinkActive]="['pozadina-glavna-200']">
         <mat-icon class="boja-siva-300" mat-list-icon>searche</mat-icon>
         <p mat-line>Roba - pretraga</p>
       </mat-list-item>
@@ -57,27 +66,26 @@
         <mat-icon class="boja-siva-300" mat-list-icon>category</mat-icon>
         <p mat-line>Ostalo</p>
       </mat-list-item>
-      <mat-list-item class="material-icons" *ngIf="partner.ppid" [routerLink]="['korpa']" [routerLinkActive]="['pozadina-glavna-200']">
-        <mat-icon matBadgeColor="warn" class="boja-siva-300" matBadge="{{korpaBadge}}" mat-list-icon>shopping_cart</mat-icon>
-        <p mat-line>Korpa</p>
-      </mat-list-item>
     </mat-nav-list>
 
     <mat-divider></mat-divider>
     <mat-nav-list *ngIf="partner.ppid">
       <h3 class="pozadina-glavna-50 boja-siva-300" mat-subheader>Moj Profil</h3>
-      <mat-list-item class="material-icons" [routerLink]="['licni-podaci']" [routerLinkActive]="['pozadina-glavna-200']">
+      <mat-list-item class="material-icons" [routerLink]="['licni-podaci']"
+        [routerLinkActive]="['pozadina-glavna-200']">
         <mat-icon class="boja-siva-300" mat-list-icon>person</mat-icon>
         <p mat-line>Licni Podaci</p>
       </mat-list-item>
-      <mat-list-item class="material-icons" [routerLink]="['porudzbenice']" [routerLinkActive]="['pozadina-glavna-200']">
+      <mat-list-item class="material-icons" [routerLink]="['porudzbenice']"
+        [routerLinkActive]="['pozadina-glavna-200']">
         <mat-icon class="boja-siva-300" mat-list-icon>list</mat-icon>
         <p mat-line>Porudzbine</p>
       </mat-list-item>
     </mat-nav-list>
     <mat-divider></mat-divider>
     <mat-nav-list>
-      <mat-list-item *ngIf="partner.ppid == null" class="material-icons" [routerLink]="['login']" [routerLinkActive]="['pozadina-glavna-200']">
+      <mat-list-item *ngIf="partner.ppid == null" class="material-icons" [routerLink]="['login']"
+        [routerLinkActive]="['pozadina-glavna-200']">
         <mat-icon class="boja-siva-300" mat-list-icon>exit_to_app</mat-icon>
         <p mat-line>Login</p>
       </mat-list-item>

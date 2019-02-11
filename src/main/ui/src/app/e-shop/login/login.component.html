@@ -8,7 +8,7 @@
 			<form role="form" (keydown)="enterNaFormi($event)" [formGroup]="registerForm">
 				<div class="form-group">
 					<input type="text" formControlName="username" class="form-control rounded" placeholder="Korisničko ime" id="username"
-					 name="username" [(ngModel)]="credentials.username" />
+					 name="username" [(ngModel)]="credentials.username" [ngClass]="{ 'is-invalid': submitted && registerForm.controls.username.errors }" />
 					<div *ngIf="submitted && registerForm.controls.username.errors">
 						<div *ngIf="registerForm.controls.username.errors.required">
 								<p class="upozorenje">Korisničko ime je obavezno</p>

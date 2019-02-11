@@ -3,16 +3,13 @@
 // Element css 
 h1 {
     text-align: center;
-    color:  $automaterijal-primary-50;
-    font-size: 35px;
-    margin-top: 30px;
+    margin-top: 1em;
 }
 
 h2 {
-    text-align: left;
-    color: #345cac !important;
-    margin-top: 15px;
-    padding-left: 25px;
+    color: $automaterijal-primary-100 !important;
+    margin-top: 1em;
+    padding-left: 1.5em;
 }
 
 h3 {
@@ -29,13 +26,6 @@ ul {
 
 li {
     color: $automaterijal-grey-50;
-    font-size: 16px;
-    font-weight: 400;
-}
-
-p {
-    color: $automaterijal-grey-50;
-    font-size: 18px;
 }
 
 td {
@@ -51,47 +41,43 @@ iframe {
 // Custome stilovi
 
 .informacije {
-    width: 80%;
-    margin-left: 10%;
+    width: 100%;
     margin-top: 50px;
 }
 
 .informacije-deo {
     padding: 10px;
-    width: 33%;
     text-align: center;
-    font-weight: 500;
 }
 
 .poruka-div {
-    text-align: left;
     margin-top: 40px;
 }
 .poruka {
     color:  $automaterijal-primary-100 !important;
-    font-size: 25px;
+    font-size: 1.5em;
     position: relative;
     top: 5px;
 }
 
-.poruke-deo {
-    padding-left: 9%;
+.poruke-deo {    
+    position: relative;
+    left: 16%;
 }
 
 .poruka-informacije {
     display: inline;
-    font-size: 16px;
+    font-size: 1.1em;
 }
 
 .poruka-objasnjenje {
-    font-size: 17px;
     color:  $automaterijal-primary-100 !important;
 }
 
 #drustvena-mreza {
     width: 45px;
     height: 45px;
-    font-size: 30px;
+    font-size: 1.8em;
 }
 
 #drustvena-mreza:hover {
@@ -123,9 +109,6 @@ iframe {
 
 .telefoni {
     color: $automaterijal-grey-50;
-    font-family: inherit;
-    text-align: left;
-    font-size: 17px;
 }
 
 .sirina-telefona {
@@ -164,8 +147,7 @@ iframe {
 
 .upozorenje {
     text-align: left;
-    font-family: sans-serif;
-    font-size: 12px !important;
+    font-size: 0.8em !important;
     color: red;
     margin-top: -20px;
     margin-bottom: 0px;
@@ -173,9 +155,19 @@ iframe {
  }
 @media only screen and (max-width: 1000px) {
 
+    h2 {
+        padding-left: 0em;
+    }
+
     iframe {
         width: 100%;
         height: 350px;
+    }
+    
+
+    .poruke-deo {    
+        position: relative;
+        left: 1em;
     }
 
     .google-mapa {

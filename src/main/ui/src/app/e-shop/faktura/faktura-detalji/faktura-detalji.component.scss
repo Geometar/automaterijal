@@ -1,12 +1,7 @@
 @import "src/automaterijal-theme.scss";
 
 h1 {
-    margin-top: 30px;
     margin-left: 5%;
-}
-
-p {
-    font-size: 15px;
 }
 
 table {
@@ -31,7 +26,6 @@ table {
 @media only screen and (max-device-width : 640px) {
     h1 {
         margin-top: 0px;
-        font-size: 30px;
     }
 
     .nazad-dugme-dole {
