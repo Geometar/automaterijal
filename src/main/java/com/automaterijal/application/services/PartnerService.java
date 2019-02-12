@@ -3,6 +3,7 @@ package com.automaterijal.application.services;
 import com.automaterijal.application.domain.dto.PartnerDto;
 import com.automaterijal.application.domain.dto.ResetovanjeSifreDto;
 import com.automaterijal.application.domain.entity.Partner;
+import com.automaterijal.application.domain.entity.Users;
 import com.automaterijal.application.domain.mapper.PartnerMapper;
 import com.automaterijal.application.domain.repository.PartnerRepository;
 import com.automaterijal.application.utils.LoginStaticUtils;
@@ -63,7 +64,7 @@ public class PartnerService {
         return partnerRepository.findByWebKorisnik(partnerDto.getWebKorisnik()).isPresent();
     }
 
-    public Optional<Partner> vratiPartneraPomocuKorisnickogImena(String korisnickoIme) {
+    public Optional<Partner> vratiPartneraPomocuKorisnickogImena(final String korisnickoIme) {
         return partnerRepository.findByWebKorisnik(korisnickoIme);
     }
 
@@ -80,5 +81,13 @@ public class PartnerService {
     @Transactional(readOnly = true)
     public Optional<Partner> pronadjiPartneraPoMejlu(final String email) {
         return partnerRepository.findByEmail(email);
+    }
+
+    public void povecanPartnerovOrderCount(final Partner partner) {
+        final Optional<Partner> partnerHibernate = partnerRepository.findById(partner.getPpid());
+        partnerHibernate.ifPresent(partner1 -> {
+           final Users users = partner.getUsers();
+           users.setOrderCount(users.getOrderCount() + 1);
+        });
     }
 }

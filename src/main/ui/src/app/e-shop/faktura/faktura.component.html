@@ -19,7 +19,7 @@
                     <ng-container matColumnDef="nacinPlacanja">
                         <th mat-header-cell *matHeaderCellDef> Nacin Placanja</th>
                         <td mat-cell *matCellDef="let faktura">
-                            <p class="mat-body-1">
+                            <p >
                                 {{faktura.nacinPlacanja.naziv}}
                             </p>
                         </td>
@@ -29,7 +29,7 @@
                     <ng-container matColumnDef="nacinPrevoza">
                         <th mat-header-cell *matHeaderCellDef> Nacin Prevoza </th>
                         <td mat-cell *matCellDef="let faktura">
-                            <p class="mat-body-1">
+                            <p >
                                 {{"prevoz_" + faktura.nacinPrevoza.id | translate}}
                             </p>
                         </td>
@@ -39,7 +39,7 @@
                     <ng-container matColumnDef="adresa">
                         <th mat-header-cell *matHeaderCellDef> Adresa </th>
                         <td mat-cell *matCellDef="let faktura">
-                            <p class="mat-body-1">
+                            <p >
                                 {{faktura.adresa.naziv}}
                             </p>
                         </td>
@@ -59,7 +59,7 @@
                     <ng-container matColumnDef="brojStavki">
                         <th mat-header-cell *matHeaderCellDef>Broj stavki</th>
                         <td mat-cell *matCellDef="let faktura">
-                            <p class="mat-body-1">
+                            <p >
                                 {{faktura.brojStavki}}
                             </p>
                         </td>
@@ -79,7 +79,7 @@
                     <ng-container matColumnDef="vremePorucivanja">
                         <th mat-header-cell *matHeaderCellDef class="text-center"> Datum </th>
                         <td mat-cell *matCellDef="let faktura">
-                            <p class="mat-body-1" class="text-center">
+                            <p  class="text-center">
                                 {{faktura.vremePorucivanja | datum}}
                             </p>
                         </td>

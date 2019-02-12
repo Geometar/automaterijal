@@ -3,13 +3,11 @@
 html, body { 
     height: 100%; 
   }
-  body { margin: 0; font-family: 'Roboto', sans-serif; }
+  body { margin: 0; font-family: 'Open Sans', sans-serif; }
 
   h1 {
-    font-size: 2em;
+    font: bold 2em 'Work Sans', sans-serif;
     color: $automaterijal-grey-50;
-    font-weight: bold;
-    font-family: 'Work Sans', sans-serif;
   }
   p {
     color: $automaterijal-grey-50;
@@ -19,14 +17,12 @@ html, body {
   }
   
   h2{
-    font-size: 1.8em;
-    font-family: 'Work Sans', sans-serif;
+    font: 1.8em 'Work Sans', sans-serif;
     color: $automaterijal-grey-50;
   }
   
   h3{
-    font-size: 1.5em;
-    font-family: 'Work Sans', sans-serif;
+    font: 1.5em 'Work Sans', sans-serif;
     color: $automaterijal-grey-50;
   }
   
@@ -44,14 +40,13 @@ html, body {
   }
 
   label {
-    font-size: 15px;
-    font-family: 'Open Sans', sans-serif;
+    font: 15px 'Open Sans', sans-serif;
   }
 
   th {
     color: $automaterijal-grey-400 !important;
     background-color: $automaterijal-primary-50 !important;
-    font-family: 'Open Sans', sans-serif;
+    font: 13px 'Open Sans', sans-serif !important;
   }
   
   tr {
@@ -59,11 +54,10 @@ html, body {
   }
 
   td {
-    font-size: 1em;
     font-family: 'Open Sans', sans-serif;
   }
 
-  @media only screen and (max-device-width : 640px) { 
+  @media only screen and (max-width : 960px) { 
     body {
       width: 100%;
       margin-top: 56px;

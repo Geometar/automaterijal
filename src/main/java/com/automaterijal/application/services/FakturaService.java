@@ -51,6 +51,8 @@ public class FakturaService {
     final RobaCeneService robaCeneService;
     @NonNull
     final ProizvodjacService proizvodjacService;
+    @NonNull
+    final PartnerService partnerService;
 
     @NonNull
     final FakturaMapper mapper;
@@ -60,6 +62,7 @@ public class FakturaService {
         mapper.popuniFakuturu(faktura, partner, vratiPoslednjiIdFakturuKorisnikaPovecan(partner.getPpid()));
         faktura.getDetalji().forEach(fakturaDetalji -> fakturaDetaljiRepository.save(fakturaDetalji));
         final Faktura fakturaDatabase = fakturaRepository.save(faktura);
+        partnerService.povecanPartnerovOrderCount(partner);
         skiniRobuSaSastanja(faktura.getDetalji());
         return obogatiDto(mapper.map(fakturaDatabase), partner);
     }
