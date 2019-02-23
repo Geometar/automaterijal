@@ -9,7 +9,6 @@ h1 {
 h2 {
     color: $automaterijal-primary-100 !important;
     margin-top: 1em;
-    padding-left: 1.5em;
 }
 
 h3 {
@@ -17,7 +16,6 @@ h3 {
 }
 
 ul {
-    list-style-type: none;
     display: inline;
     text-align: left;
     margin: 0px;
@@ -26,6 +24,7 @@ ul {
 
 li {
     color: $automaterijal-grey-50;
+    margin-top: 2px;
 }
 
 td {
@@ -104,7 +103,7 @@ iframe {
     border-right: 1px solid $automaterijal-grey-300;
     border-left: 1px solid $automaterijal-grey-300;
     margin-top: 30px;
-    height: 150px;
+    height: 130px;
 }
 
 .telefoni {
@@ -136,13 +135,14 @@ iframe {
     width: 500px;
     padding: 10px;
     margin-top: 20px;
-    margin-left: 10%;
+    margin-left: 15%;
     margin-bottom: 50px;
     text-align: center;
 }
 
 .duzina-input {
     width: 350px;
+    margin-bottom: 1rem;
 }
 
 .upozorenje {
@@ -195,7 +195,6 @@ iframe {
     }
 
     .forma-poruke {
-        box-shadow: 0 0px 0px 0px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12); 
         width: 99%;
         padding: 0px;
         margin-left: 2px;

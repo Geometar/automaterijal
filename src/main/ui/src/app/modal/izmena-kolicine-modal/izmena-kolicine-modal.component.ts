@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import * as _ from 'lodash';
-import { RobaKorpa } from '../../model/porudzbenica';
+import { RobaKorpa } from 'src/app/e-shop/model/porudzbenica';
 
 @Component({
   selector: 'app-izmena-kolicine-modal',

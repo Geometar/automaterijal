@@ -3,7 +3,10 @@
 .sidenav-container {
   height: 100%;
 }
-
+.pozicija {
+  margin: 0 auto;
+  padding-bottom: 220px;
+}
 .sidenav {
   width: 200px;
   height: 100%;
@@ -46,4 +49,15 @@ mat-divider {
   top: 0px;
   position: fixed;
   z-index:999;
+}
+@media screen and (max-device-width :1000px) { 
+  .pozicija {
+    padding-bottom: 490px;
+  }
+}
+
+@media screen and (max-width: 990px) {
+  .pozicija {
+    padding-bottom: 500px;
+  }
 }

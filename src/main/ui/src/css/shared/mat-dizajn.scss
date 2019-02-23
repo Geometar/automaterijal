@@ -21,3 +21,7 @@
 .mat-list-item-content:hover {
     background-color: $automaterijal-primary-200 !important;
 }
+
+.mat-drawer-content {
+    min-height: 100vh;
+}

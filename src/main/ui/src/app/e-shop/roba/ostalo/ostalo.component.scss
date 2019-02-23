@@ -1,7 +1,12 @@
+@import "src/automaterijal-theme.scss";
 h1 {
     margin-top: 20px;
     margin-left: 20px;
     margin-bottom: 50px;
+}
+
+a {
+    color: $automaterijal-primary-100;
 }
 
 .slovo {

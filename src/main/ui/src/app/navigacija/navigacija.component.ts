@@ -3,10 +3,10 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { MatDialog } from '@angular/material';
-import { LogoutModalComponent } from './logout-modal/logout-modal.component';
 import { Partner } from '../e-shop/model/dto';
 import { LoginService } from '../e-shop/service/login.service';
 import { DataService } from '../e-shop/service/data/data.service';
+import { LogoutModalComponent } from '../modal/logout-modal/logout-modal.component';
 
 @Component({
   selector: 'app-navigacija',

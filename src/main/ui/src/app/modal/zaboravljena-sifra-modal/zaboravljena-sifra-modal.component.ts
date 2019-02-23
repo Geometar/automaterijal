@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef, MatSnackBar } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { EmailService } from '../../../shared/service/email.service';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY } from 'rxjs';
-import { ResetSifre } from '../../model/dto';
+import { EmailService } from 'src/app/shared/service/email.service';
+import { ResetSifre } from 'src/app/e-shop/model/dto';
 
 @Component({
   selector: 'app-zaboravljena-sifra-modal',

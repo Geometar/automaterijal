@@ -14,7 +14,15 @@
     text-align: center;
 }
 
+.col-lg {
+  padding: 0px !important;
+}
+
 @media only screen and (max-device-width :1025px) { 
+
+    .mobilna-visina {
+      margin-top: 10px;
+    }
 
     .forms-input-industrija {
       display: flex;
@@ -30,6 +38,11 @@
   }
 
 @media only screen and (max-device-width : 640px) { 
+
+    .mobilna-visina {
+      margin-top: 10px;
+    }
+    
     .sirina-odabira-vrste {
         width: 100%;
     }

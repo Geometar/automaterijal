@@ -4,7 +4,7 @@
             <label class="pozadina-glavna-100 boja-siva-400 input-group-text " for="inputGroupSelect01">Izaberite vrstu
                 maziva:</label>
         </div>
-        <select class="custom-select" (change)="onChange()" id="inputGroupSelect01" [(ngModel)]="izabranaVrsta">
+        <select class="custom-select mobilna-visina" (change)="onChange()" id="inputGroupSelect01" [(ngModel)]="izabranaVrsta">
             <option *ngFor="let izabranaVrsta of vrste" [value]="izabranaVrsta">{{izabranaVrsta}}</option>
         </select>
     </div>
@@ -39,24 +39,24 @@
                     Filter
                 </h2>
             </div>
-            <div class="input-group mb-3">
+            <div class="d-flex flex-column flex-xl-row input-group mb-3">
                 <div class="input-group-prepend">
-                    <label class="input-group-text button-glavni-50" for="inputGroupSelect01">
+                    <label class="input-group-text mobilna-duzina button-glavni-50" for="inputGroupSelect01">
                         <p class="boja-siva-400">Proizvodjac: </p>
                     </label>
                 </div>
-                <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="izabraniProizvodjac">
+                <select class="custom-select mobilna-duzina" id="inputGroupSelect01" [(ngModel)]="izabraniProizvodjac">
                     <option *ngFor="let proizvodjac of proizvodjaci" [value]="proizvodjac.naziv">
                         {{proizvodjac.naziv}}
                     </option>
                 </select>
 
                 <div class="input-group-prepend razmak">
-                    <label class="input-group-text button-glavni-50" for="inputGroupSelect01">
-                        <p class="boja-siva-400">Raspolozivost: </p>
+                    <label class="input-group-text mobilna-duzina button-glavni-50" for="inputGroupSelect01">
+                        Raspolozivost:
                     </label>
                 </div>
-                <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="izabranaRaspolozivost">
+                <select class="custom-select mobilna-duzina" id="inputGroupSelect01" [(ngModel)]="izabranaRaspolozivost">
                     <option *ngFor="let raspoloziv of raspolozivost" [value]="raspoloziv">{{raspoloziv}}</option>
                 </select>
             </div>

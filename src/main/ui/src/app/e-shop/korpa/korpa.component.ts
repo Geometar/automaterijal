@@ -3,15 +3,15 @@ import { DataService } from '../service/data/data.service';
 import { Korpa, RobaKorpa } from '../model/porudzbenica';
 import { LocalStorageService } from '../service/data/local-storage.service';
 import { MatTable, MatDialog } from '@angular/material';
-import { IzmenaKolicineModalComponent } from './izmena-kolicine-modal/izmena-kolicine-modal.component';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY } from 'rxjs';
 import { ValueHelp, Partner, Fakutra, FakturaDetalji, Proizvodjac } from '../model/dto';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { LoginService } from '../service/login.service';
 import { FakturaService } from '../service/faktura.service';
-import { UspesnoPorucivanjeModalComponent } from './uspesno-porucivanje-modal/uspesno-porucivanje-modal.component';
 import { Router } from '@angular/router';
+import { IzmenaKolicineModalComponent } from 'src/app/modal/izmena-kolicine-modal/izmena-kolicine-modal.component';
+import { UspesnoPorucivanjeModalComponent } from 'src/app/modal/uspesno-porucivanje-modal/uspesno-porucivanje-modal.component';
 
 @Component({
   selector: 'app-korpa',

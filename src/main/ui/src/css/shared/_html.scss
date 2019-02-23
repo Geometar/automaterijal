@@ -1,9 +1,10 @@
 @import "src/automaterijal-theme.scss";
 
-html, body { 
-    height: 100%; 
-  }
-  body { margin: 0; font-family: 'Open Sans', sans-serif; }
+body, html { 
+  min-height: 100% !important; 
+}
+body {
+  font-family: 'Open Sans', sans-serif; }
 
   h1 {
     font: bold 2em 'Work Sans', sans-serif;
@@ -55,6 +56,12 @@ html, body {
 
   td {
     font-family: 'Open Sans', sans-serif;
+  }
+
+  ul {
+    list-style-type: none;
+    color: $automaterijal-primary-50;
+    font: 1em 'Work Sans', sans-serif;
   }
 
   @media only screen and (max-width : 960px) { 

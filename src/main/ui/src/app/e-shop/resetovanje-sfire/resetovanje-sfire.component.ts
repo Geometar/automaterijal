@@ -18,7 +18,7 @@ export class ResetovanjeSfireComponent implements OnInit {
   public uspesnoLogovanje = true;
   private staraSifra: string;
   private ppid: number;
-  
+
   public ucitavanje = false;
   private alive = true;
   public uspesnaPromena = true;

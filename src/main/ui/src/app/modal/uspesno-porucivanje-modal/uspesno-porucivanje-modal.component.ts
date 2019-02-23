@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import * as _ from 'lodash';
-import { Fakutra } from '../../model/dto';
+import { Fakutra } from 'src/app/e-shop/model/dto';
 
 @Component({
   selector: 'app-uspesno-porucivanje-modal',

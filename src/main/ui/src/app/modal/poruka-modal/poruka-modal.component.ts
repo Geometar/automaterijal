@@ -1,32 +1,33 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { EmailService } from 'src/app/shared/service/email.service';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { Poruka } from 'src/app/e-commerce/model/dto';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY } from 'rxjs';
-import { MatSnackBar } from '@angular/material';
-import { Poruka } from '../model/dto';
+import { EmailService } from 'src/app/shared/service/email.service';
+import { MatSnackBar, MatDialogRef } from '@angular/material';
 
 @Component({
-  selector: 'app-kontakt',
-  templateUrl: './kontakt.component.html',
-  styleUrls: ['./kontakt.component.scss']
+  selector: 'app-poruka-modal',
+  templateUrl: './poruka-modal.component.html',
+  styleUrls: ['./poruka-modal.component.scss']
 })
-export class KontaktComponent implements OnInit {
+export class PorukaModalComponent implements OnInit {
   public porukaForm: FormGroup;
   public porukaSubmited = false;
 
   private alive = true;
   public ucitavanje = false;
 
-  ngOnInit() {
-    this.inicijalizujForme();
-    }
-
   constructor(
+    public dialogRef: MatDialogRef<PorukaModalComponent>,
     private formBuilder: FormBuilder,
     private emailServis: EmailService,
     public snackBar: MatSnackBar
-  ) {}
+    ) { }
+
+  ngOnInit() {
+    this.inicijalizujForme();
+  }
 
   inicijalizujForme() {
     this.porukaForm = this.formBuilder.group({
@@ -38,7 +39,6 @@ export class KontaktComponent implements OnInit {
       poruka: ['', [Validators.required, Validators.minLength(3)]]
     });
   }
-
   posaljiPoruku() {
     this.porukaSubmited = true;
     if (this.porukaForm.invalid) {
@@ -52,12 +52,14 @@ export class KontaktComponent implements OnInit {
       finalize(() => this.ucitavanje = false)
     ).subscribe(res => {
       console.log('Poruka uspesno poslat');
-      this.otvoriSnackBar('Poruka uspešno poslatata');
       this.porukaForm.reset();
       this.porukaSubmited = false;
+      this.otvoriSnackBar('Poruka je uspešno poslata');
+      this.dialogRef.close();
     }, error => {
       console.log('Error pri slanju poruke', error);
-      this.otvoriSnackBar('Poruka nije poslata, pokusajte kasnije.');
+      this.otvoriSnackBar('Došlo je do greške, poruka nije poslata');
+      this.dialogRef.close();
     });
   }
 
@@ -74,16 +76,14 @@ export class KontaktComponent implements OnInit {
   // convenience getter for easy access to form fields
   get p() { return this.porukaForm.controls; }
 
-
   otvoriSnackBar(poruka: string) {
     this.snackBar.open(poruka, '', {
       duration: 2000
     });
   }
-  otvoriErrorSnackBar(poruka: string) {
-    this.snackBar.open(poruka, '', {
-      duration: 2000,
-      panelClass: ['my-snack-bar']
-    });
+
+  zatvoriDialog() {
+    this.dialogRef.close();
   }
+
 }
