@@ -38,6 +38,9 @@ import { UspesnoPorucivanjeModalComponent } from './modal/uspesno-porucivanje-mo
 import { RegistracijaModalComponent } from './modal/registracija-modal/registracija-modal.component';
 import { ZaboravljenaSifraModalComponent } from './modal/zaboravljena-sifra-modal/zaboravljena-sifra-modal.component';
 import { PorukaModalComponent } from './modal/poruka-modal/poruka-modal.component';
+import { ONamaComponent } from './e-commerce/o-nama/o-nama.component';
+import { OwlModule } from 'ngx-owl-carousel';
+import { BrendoviModalComponent } from './modal/brendovi-modal/brendovi-modal.component';
 
 @NgModule({
   declarations: [
@@ -71,12 +74,15 @@ import { PorukaModalComponent } from './modal/poruka-modal/poruka-modal.componen
     ResetovanjeSfireComponent,
     KontaktComponent,
     FooterComponent,
-    PorukaModalComponent
+    PorukaModalComponent,
+    ONamaComponent,
+    BrendoviModalComponent
   ],
   imports: [
     BrowserModule,
     HttpModule,
     HttpClientModule,
+    OwlModule,
     ReactiveFormsModule,
     StorageServiceModule,
     BrowserAnimationsModule,
@@ -92,6 +98,7 @@ import { PorukaModalComponent } from './modal/poruka-modal/poruka-modal.componen
     IzmenaKolicineModalComponent,
     LogoutModalComponent,
     UspesnoPorucivanjeModalComponent,
-    PorukaModalComponent]
+    PorukaModalComponent,
+    BrendoviModalComponent]
 })
 export class AppModule { }

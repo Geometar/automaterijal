@@ -1,0 +1,87 @@
+@import "src/automaterijal-theme.scss";
+
+h1 {
+    text-align: center;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+h2 {
+    color: $automaterijal-primary-100;
+}
+
+p {
+    text-align: justify;
+}
+
+.parcele {
+    width: 50%;
+    padding: 3%;
+}
+
+.parcela-ikona {
+    text-align: center;
+    position: relative;
+    bottom: -30%;
+}
+
+.drugi-stih {
+    margin-top: 1rem;
+}
+
+.ikona {
+    font-size: 3rem;
+    color: $automaterijal-primary-100;
+    text-align: center;
+}
+
+.dobavljaci-logo {
+    width: 65px;
+    height: 65px;
+}
+
+.logoi {
+    width: 80%;
+    margin-left: 10%;
+}
+
+.owl-carousel-moj{
+    width: 930px !important;
+}
+
+.dugme {
+    padding: 0 11px;
+}
+
+
+@media only screen and (max-device-width :1025px) { 
+    .owl-carousel-moj{
+        width: 500px !important;
+    }
+
+    .parcele {
+        width: 100%;
+        padding: 3%;
+    }
+    .logoi {
+        width: 100%;
+        margin-left: 0%;
+    }
+    .owl-carousel-moj{
+        width: 360px !important;
+    }
+}
+@media only screen and (max-width :1025px) { 
+    .owl-carousel-moj{
+        width: 700px !important;
+    }
+
+    .parcele {
+        width: 100%;
+        padding: 3%;
+    }
+    .logoi {
+        width: 100%;
+        margin-left: 0%;
+    }
+}

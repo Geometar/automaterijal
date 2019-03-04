@@ -14,11 +14,12 @@ import { RobaComponent } from './e-shop/roba/roba.component';
 import { DasboardComponent } from './e-commerce/dasboard/dasboard.component';
 import { ResetovanjeSfireComponent } from './e-shop/resetovanje-sfire/resetovanje-sfire.component';
 import { KontaktComponent } from './e-commerce/kontakt/kontakt.component';
+import { ONamaComponent } from './e-commerce/o-nama/o-nama.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/naslovna', pathMatch: 'full' },
   {path: 'naslovna' , component: DasboardComponent},
-  {path: 'o-nama' , component: DasboardComponent},
+  {path: 'o-nama' , component: ONamaComponent},
   {path: 'kontakt' , component: KontaktComponent},
   {path: 'roba' , component: RobaComponent},
   {path: 'filteri' , component: FilteriComponent},
