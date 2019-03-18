@@ -15,6 +15,10 @@ p {
     text-align: center;
 }
 
+.mat-dialog-content {
+    max-height: 75vh;
+}
+
 /* :host /deep/ mySelector { */
 :host ::ng-deep p { 
    margin-top: 20px;

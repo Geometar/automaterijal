@@ -1,0 +1,49 @@
+<main>
+  <section class="d-flex flex-xl-row-reverse flex-column centar skecija-mala">
+    <div class="pomeri-levo">
+      <i class="material-icons velicina-ikone">
+        place
+      </i>
+      <p class="header">Prvomajska 61, Šabac</p>
+    </div>
+    <div class="pomeri-levo">
+      <i class="material-icons velicina-ikone">
+        email
+      </i>
+      <p class="header">office@automaterijal.com</p>
+    </div>
+    <div class="pomeri-levo">
+      <i class="material-icons velicina-ikone">
+        phone
+      </i>
+      <p class="header"> <a class="header" href="tel:015334630">015/334-630</a></p>
+    </div>
+  </section>
+  <section>
+    <carousel>
+      <slide class="animated fadeIn" *ngFor="let brand of mySlidePagePapers;let i = index">
+        <img src="{{brand.urlSlikePozadina}}" alt="first slide" style="display: block; width: 100%;">
+      </slide>
+    </carousel>
+  </section>
+  <section class="d-flex flex-xl-row flex-column centar pozadina-bela skecija-srednja">
+    <div class="flex-fill mobilni">
+      <p class="inline-content paragraph text-center">Posetite našu online prodavnicu i webshop katalog</p>
+      <button color="primary" class="inline-content inline-button" (click)="goToShoping()" mat-mini-fab>
+        <mat-icon aria-label="Example icon-button with a heart icon">shopping_cart</mat-icon>
+      </button>
+    </div>
+    <div class="flex-fill">
+      <p class="inline-content paragraph text-center">Pošaljite nam upit za deo koji trižite</p>
+      <button color="primary" (click)="otvoriUpitModal()" class="inline-content inline-button" mat-mini-fab>
+        <mat-icon aria-label="Example icon-button with a heart icon">question_answer</mat-icon>
+      </button>
+    </div>
+  </section>
+  <section class="sekcija">
+    <app-ponuda></app-ponuda>
+  </section>
+  <section class="pozadina-bela sekcija">
+    <app-kampanja></app-kampanja>
+  </section>
+</main>

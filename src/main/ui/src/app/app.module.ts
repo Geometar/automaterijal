@@ -41,6 +41,11 @@ import { PorukaModalComponent } from './modal/poruka-modal/poruka-modal.componen
 import { ONamaComponent } from './e-commerce/o-nama/o-nama.component';
 import { OwlModule } from 'ngx-owl-carousel';
 import { BrendoviModalComponent } from './modal/brendovi-modal/brendovi-modal.component';
+import { CarouselModule } from 'ngx-bootstrap/carousel';
+import { VestiComponent } from './e-commerce/dasboard/vesti/vesti.component';
+import { PonudaComponent } from './e-commerce/dasboard/ponuda/ponuda.component';
+import { KampanjaComponent } from './e-commerce/dasboard/kampanja/kampanja.component';
+import { UpitModalComponent } from './modal/upit-modal/upit-modal.component';
 
 @NgModule({
   declarations: [
@@ -76,12 +81,17 @@ import { BrendoviModalComponent } from './modal/brendovi-modal/brendovi-modal.co
     FooterComponent,
     PorukaModalComponent,
     ONamaComponent,
-    BrendoviModalComponent
+    BrendoviModalComponent,
+    VestiComponent,
+    PonudaComponent,
+    KampanjaComponent,
+    UpitModalComponent
   ],
   imports: [
     BrowserModule,
     HttpModule,
     HttpClientModule,
+    CarouselModule,
     OwlModule,
     ReactiveFormsModule,
     StorageServiceModule,
@@ -99,6 +109,7 @@ import { BrendoviModalComponent } from './modal/brendovi-modal/brendovi-modal.co
     LogoutModalComponent,
     UspesnoPorucivanjeModalComponent,
     PorukaModalComponent,
-    BrendoviModalComponent]
+    BrendoviModalComponent,
+    UpitModalComponent]
 })
 export class AppModule { }

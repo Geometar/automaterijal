@@ -15,6 +15,7 @@ import { DasboardComponent } from './e-commerce/dasboard/dasboard.component';
 import { ResetovanjeSfireComponent } from './e-shop/resetovanje-sfire/resetovanje-sfire.component';
 import { KontaktComponent } from './e-commerce/kontakt/kontakt.component';
 import { ONamaComponent } from './e-commerce/o-nama/o-nama.component';
+import { VestiComponent } from './e-commerce/dasboard/vesti/vesti.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/naslovna', pathMatch: 'full' },
@@ -32,12 +33,13 @@ const routes: Routes = [
   {path: 'licni-podaci' , component: PartnerComponent},
   {path: 'porudzbenice', component: FakturaComponent},
   {path: 'porudzbenice/:id', component: FakturaDetaljiComponent},
+  {path: 'naslovna/:id', component: VestiComponent},
   {path: 'korpa', component: KorpaComponent},
   {path: 'reset-sifre/:id', component: ResetovanjeSfireComponent},
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {scrollPositionRestoration: 'enabled'})],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}

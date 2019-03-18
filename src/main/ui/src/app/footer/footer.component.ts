@@ -3,6 +3,7 @@ import { MatDialog, MatSnackBar } from '@angular/material';
 import { RegistracijaModalComponent } from '../modal/registracija-modal/registracija-modal.component';
 import { ZaboravljenaSifraModalComponent } from '../modal/zaboravljena-sifra-modal/zaboravljena-sifra-modal.component';
 import { PorukaModalComponent } from '../modal/poruka-modal/poruka-modal.component';
+import { UpitModalComponent } from '../modal/upit-modal/upit-modal.component';
 
 @Component({
   selector: 'app-footer',
@@ -39,6 +40,12 @@ export class FooterComponent implements OnInit {
   otvoriSnackBar(poruka: string) {
     this.snackBar.open(poruka, '', {
       duration: 2000
+    });
+  }
+
+  otvoriUpitDialog() {
+    const dialogRef = this.dialog.open(UpitModalComponent, {
+      width: '400px'
     });
   }
 }

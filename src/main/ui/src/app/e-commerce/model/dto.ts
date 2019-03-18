@@ -7,9 +7,38 @@ export class Poruka {
     poruka?: string;
 }
 
+export class Upit {
+    emailTelefon?: string;
+    markaModel?: string;
+    godiste?: string;
+    kubikaza?: string;
+    kilovati?: string;
+    gorivo?: any;
+    pogon?: any;
+    interesujeMe?: any;
+    drugo?: string;
+}
+
 export class Brend {
     ime?: string;
     urlSlikeLogo?: string;
     urlSlikePozadina?: string;
     opis?: string;
+}
+
+
+export class VestiNaslovna {
+    id?: string;
+    naslov?: string;
+    opis?: string;
+    opisSlika?: string;
+    slika?: string;
+    vest?: string;
+}
+
+export class Vest {
+    id?: string;
+    naslov?: string;
+    slika?: string;
+    tekst?: string;
 }

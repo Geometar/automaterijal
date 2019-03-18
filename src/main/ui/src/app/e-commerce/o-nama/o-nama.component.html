@@ -71,7 +71,7 @@
   <div class="pozadina-bela">
     <div class="d-flex justify-content-center logoi">
       <div class="owl-carousel-moj">
-        <owl-carousel [options]="mySlideOptions" [items]="images" [carouselClasses]="['owl-theme']">
+        <owl-carousel [options]="mySlideOptions"[carouselClasses]="['owl-theme']">
           <div class="item" *ngFor="let brand of mySlideBrands;let i = index">
             <div class="dobavljaci-logo">
                 <button mat-button class="dugme" (click)="otvoriDialog(brand)">

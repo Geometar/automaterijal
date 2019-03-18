@@ -3,12 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Registracija, ResetSifre} from '../../e-shop/model/dto';
 import { timeoutWith, catchError } from 'rxjs/operators';
 import { throwError, Observable } from 'rxjs';
-import { Poruka } from 'src/app/e-commerce/model/dto';
+import { Poruka, Upit } from 'src/app/e-commerce/model/dto';
 
 const DOMAIN_URL = 'http://localhost:8080/api/email';
 const REGISTRACIJA_URL = '/registracija';
 const RESETOVANJE_SIFRE_URL = '/zaboravljena-sifra';
 const PORUKA_URL = '/poruka';
+const UPIT_URL = '/upit';
 
 const TIMEOUT = 15000;
 const TIMEOUT_ERROR = 'Timeout error!';
@@ -41,6 +42,15 @@ export class EmailService {
   public posaljiPoruku(poruka: Poruka): Observable<any> {
     const fullUrl = DOMAIN_URL + PORUKA_URL;
    return this.http.post(fullUrl, poruka)
+    .pipe(
+      timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
+      catchError((error: any) => throwError(error))
+    );
+  }
+
+  public posaljiUpit(upit: Upit): Observable<any> {
+    const fullUrl = DOMAIN_URL + UPIT_URL;
+   return this.http.post(fullUrl, upit)
     .pipe(
       timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
       catchError((error: any) => throwError(error))

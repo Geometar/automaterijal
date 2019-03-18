@@ -8,31 +8,31 @@
                 </button>
             </div>
 
-            <div class="d-flex bd-highlight flex-sm-row flex-column detalji-div">
+            <div class="d-flex flex-wrap bd-highlight flex-sm-row flex-column detalji-div">
                 <div class="p-1 flex-fill bd-highlight">
-                    <label class="input-group-text button-glavni-50" for="inputGroupSelect01">
+                    <label class="input-group-text button-glavni-100" for="inputGroupSelect01">
                         <p *ngIf="faktura.status" class="boja-siva-400">Status: {{faktura.status.naziv}}</p>
                     </label>
                 </div>
                 <div class="p-1 flex-fill bd-highlight">
-                    <label class="input-group-text button-glavni-50" for="inputGroupSelect01">
+                    <label class="input-group-text button-glavni-100" for="inputGroupSelect01">
                         <p class="boja-siva-400">Datum: {{faktura.vremePorucivanja | datum}}</p>
                     </label>
                 </div>
                 <div class="p-1 flex-fill bd-highlight">
-                    <label class="input-group-text button-glavni-50" for="inputGroupSelect01">
+                    <label class="input-group-text button-glavni-100" for="inputGroupSelect01">
                         <p *ngIf="faktura.nacinPlacanja" class="boja-siva-400">Nacin placanja:
                             {{faktura.nacinPlacanja.naziv}}</p>
                     </label>
                 </div>
                 <div class="p-1 flex-fill bd-highlight">
-                    <label class="input-group-text button-glavni-50" for="inputGroupSelect01">
+                    <label class="input-group-text button-glavni-100" for="inputGroupSelect01">
                         <p *ngIf="faktura.nacinPrevoza" class="boja-siva-400">Nacin prevoza: {{"prevoz_" +
                             faktura.nacinPrevoza.id | translate}}</p>
                     </label>
                 </div>
                 <div class="p-1 flex-fill bd-highlight">
-                    <label class="input-group-text button-glavni-50" for="inputGroupSelect01">
+                    <label class="input-group-text button-glavni-100" for="inputGroupSelect01">
                         <p *ngIf="faktura.adresa" class="boja-siva-400">Adresa: {{faktura.adresa.naziv}}</p>
                     </label>
                 </div>

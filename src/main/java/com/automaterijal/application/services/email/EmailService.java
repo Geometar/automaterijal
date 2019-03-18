@@ -1,9 +1,6 @@
 package com.automaterijal.application.services.email;
 
-import com.automaterijal.application.domain.dto.email.Email;
-import com.automaterijal.application.domain.dto.email.PorukaDto;
-import com.automaterijal.application.domain.dto.email.RegistracijaDto;
-import com.automaterijal.application.domain.dto.email.ZaboravljenaSifraDto;
+import com.automaterijal.application.domain.dto.email.*;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.services.PartnerService;
 import lombok.AccessLevel;
@@ -15,7 +12,6 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
 
 import java.time.LocalDate;
@@ -62,7 +58,6 @@ public class EmailService {
         return context;
     }
 
-    @Transactional(readOnly = true)
     public void posaljiZaboravljenaSifraMail(final ZaboravljenaSifraDto dto, final String host) {
         Optional<Partner> optionalPartner = partnerService.pronadjiPartneraPoMejlu(dto.getEmail());
 
@@ -109,6 +104,30 @@ public class EmailService {
         return context;
     }
 
+    private String vratiVremeSlanja() {
+        return LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MMMM-yyyy")) + " " + LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm"));
+    }
+
+    public void posaljiUpitMail(final UpitDto upitDto) {
+        final Context context = popuniKontekstUpitEmail(upitDto);
+        pripremiIPosaljiEmail(Email.AUTOMATERIJAL_EMAIL, Email.AUTOMATERIJAL_EMAIL, upitDto.NASLOV, upitDto.TEMPLATE, context);
+    }
+
+    private Context popuniKontekstUpitEmail(final UpitDto dto) {
+        final Context context = new Context();
+        context.setVariable("emailTelefon", dto.getEmailTelefon());
+        context.setVariable("markaModel", dto.getMarkaModel());
+        context.setVariable("kilovati", dto.getKilovati());
+        context.setVariable("kubikaza", dto.getKubikaza());
+        context.setVariable("godiste", dto.getGodiste());
+        context.setVariable("pogon", dto.getPogon());
+        context.setVariable("gorivo", dto.getGorivo());
+        context.setVariable("interesujeMe", dto.getInteresujeMe());
+        context.setVariable("drugo", dto.getDrugo());
+        context.setVariable("vreme", vratiVremeSlanja());
+        return context;
+    }
+
     private void pripremiIPosaljiEmail(final String emailPosaljioca, final String emailprimaoca, final String naslov, final String template, final Context context) {
         final MimeMessagePreparator preparator = mimeMessage -> {
             final MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
@@ -120,9 +139,5 @@ public class EmailService {
         };
 
         emailSender.send(preparator);
-    }
-
-    private String vratiVremeSlanja() {
-        return LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MMMM-yyyy")) + " " + LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm"));
     }
 }
