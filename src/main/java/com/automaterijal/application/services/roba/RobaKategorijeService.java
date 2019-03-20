@@ -39,7 +39,7 @@ public class RobaKategorijeService {
             final Partner ulogovaniPartner) {
         final Page<Roba> roba;
         final List<Integer> sveFilterPodGrupeId = podGrupaService.vratiSvePodGrupePoNazivima(podGrupe);
-        final Pageable pageable = PageRequest.of(parametri.getPage(), parametri.getPageSize(), new Sort(parametri.getDirection(), parametri.getSortiranjePolja().getFieldName()));
+        final var pageable = PageRequest.of(parametri.getPage(), parametri.getPageSize(), new Sort(parametri.getDirection(), parametri.getSortiranjePolja().getFieldName()));
         if (parametri.getTrazenKatBroj() == null && parametri.getProizvodjac() == null) {
             roba = vratiSvuRobuUZavisnostiOdTrazenogStanja(parametri.getNaStanju(), sveFilterPodGrupeId, pageable);
         } else {

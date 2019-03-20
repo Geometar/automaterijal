@@ -45,7 +45,7 @@ public class AkumulatoriService {
     public Page<RobaDto> pronadjiSveAkumulatore(final UniverzalniParametri parametri, final Partner ulogovaniPartner) {
         final Page<Roba> roba;
         final List<String> sveAkumulatorGrupeId = grupaService.vratiSveIdGrupePoNazivu(GrupeKonstante.AKUMULATOR);
-        final Pageable pageable = PageRequest.of(
+        final var pageable = PageRequest.of(
                 parametri.getPage(), parametri.getPageSize(), new Sort(parametri.getDirection(), parametri.getSortiranjePolja().getFieldName())
         );
 

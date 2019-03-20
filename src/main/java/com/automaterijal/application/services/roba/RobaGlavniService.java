@@ -40,7 +40,7 @@ public class RobaGlavniService {
 
     public Page<RobaDto> pronadjiRobuPoPretrazi(final UniverzalniParametri parametri, final Partner ulogovaniPartner) {
 
-        final Pageable pageable = PageRequest.of(
+        final var pageable = PageRequest.of(
                 parametri.getPage(), parametri.getPageSize(), new Sort(parametri.getDirection(), parametri.getSortiranjePolja().getFieldName())
         );
         final Page<Roba> roba;

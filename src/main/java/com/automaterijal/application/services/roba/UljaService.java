@@ -42,7 +42,7 @@ public class UljaService {
         final Page<Roba> roba;
         final List<Integer> svePodGrupeUlja = new ArrayList<>();
         pronadjiSvePodGrupeUZavisnostiOdVrste(svePodGrupeUlja, vrstaUlja);
-        final Pageable pageable = PageRequest.of(
+        final var pageable = PageRequest.of(
                 parametri.getPage(), parametri.getPageSize(), new Sort(parametri.getDirection(), parametri.getSortiranjePolja().getFieldName())
         );
         if (parametri.getTrazenKatBroj() == null && parametri.getProizvodjac() == null) {

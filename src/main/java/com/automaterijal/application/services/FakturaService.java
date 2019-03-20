@@ -78,7 +78,7 @@ public class FakturaService {
             final Partner partner,
             final Integer page,
             final Integer pageSize) {
-        final PageRequest pageRequest = PageRequest.of(page, pageSize, new Sort(Sort.Direction.ASC, "orderId"));
+        final var pageRequest = PageRequest.of(page, pageSize, new Sort(Sort.Direction.ASC, "orderId"));
         return fakturaRepository.findByPpidOrderByDataSentDesc(partner.getPpid(), pageRequest)
                 .map(mapper::map)
                 .map(fakturaDto -> obogatiDto(fakturaDto, partner));
