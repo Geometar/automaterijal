@@ -114,6 +114,13 @@
             <version>3.23.1-GA</version>
         </dependency>
 
+        <!-- Heroku dependecies-->
+        <!-- H2 Database -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
