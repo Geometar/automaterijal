@@ -4,7 +4,7 @@ import { timeoutWith, catchError } from 'rxjs/operators';
 import { AppUtilsService } from '../utils/app-utils.service';
 import { HttpClient } from '@angular/common/http';
 
-const DOMAIN_URL = 'http://localhost:8080/api';
+const DOMAIN_URL = '/api';
 const ROBA_URL = '/proizvodjaci';
 const FILTERI_URL = '/filteri';
 const AKUMULATORI_URL = '/akumulatori';

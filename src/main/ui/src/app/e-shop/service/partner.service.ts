@@ -4,7 +4,7 @@ import { timeoutWith, catchError } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Partner, ResetSifre, PromenaSifre } from '../model/dto';
 
-const PARTNER_URL = 'http://localhost:8080/api/partner';
+const PARTNER_URL = '/api/partner';
 const RESETOVANJE_SIFRE_URL = '/promena-sifre';
 
 const TIMEOUT = 15000;

@@ -5,7 +5,7 @@ import { timeoutWith, catchError } from 'rxjs/operators';
 import { Sort } from '@angular/material';
 import { AppUtilsService } from '../utils/app-utils.service';
 
-const DOMAIN_URL = 'http://localhost:8080/api';
+const DOMAIN_URL = '/api';
 const ROBA_URL = '/roba';
 const FILTERI_URL = '/filteri';
 const AKUMULATORI_URL = '/akumulatori';

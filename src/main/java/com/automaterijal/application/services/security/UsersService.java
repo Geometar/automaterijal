@@ -10,8 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -31,11 +29,10 @@ public class UsersService {
     @Transactional
     public void logovanomUseruPovecajKolikoSePutaLogovao(final Integer id) {
        final Optional<Users> users = pronadjiUseraPoIdu(id);
-       if(users.isPresent()) {
-           final Users user = users.get();
-           user.setLoginCount(user.getLoginCount() + 1);
-           user.setLastLogin(Timestamp.valueOf(LocalDateTime.now()));
-           usersRepository.save(user);
-       }
+//       if(users.isPresent()) {
+//           final Users user = users.get();
+//           user.setLoginCount(user.getLoginCount() + 1);
+//           user.setLastLogin(Timestamp.valueOf(LocalDateTime.now()));
+//       }
     }
 }

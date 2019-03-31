@@ -3,12 +3,12 @@
     [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
     [opened]="!(isHandset$ | async)">
     <mat-toolbar *ngIf="partner.ppid" class="side-toolbar pozadina-glavna-50 header-pozicija">
-      <div class="d-flex flex-column ">
+      <div class="d-flex flex-column justify-content-center">
         <div class="d-flex justify-content-center header-sirina">
           <mat-icon class="boja-siva-300">person</mat-icon>
         </div>
-        <p class="text-center header-navigacija">{{partner.naziv}}</p>
-        <p class="text-center header-navigacija">{{partner.email  | lowercase}}</p>
+        <div><p class="text-center header-navigacija">{{partner.naziv}}</p></div>
+        <div><p class="text-center header-navigacija">{{partner.email  | lowercase}}</p></div>
       </div>
     </mat-toolbar>
     <mat-nav-list [class.margin-gore]="partner.ppid">

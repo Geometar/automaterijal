@@ -11,7 +11,6 @@ import { DataService } from './data/data.service';
 const TIMEOUT = 15000;
 const TIMEOUT_ERROR = 'Timeout error!';
 
-const DOMAIN_URL = 'http://localhost:8080';
 const LOGIN_URL = '/login';
 const LOGOUT_URL = '/logout';
 const PARTNER_URL = '/api/partner';
@@ -41,7 +40,7 @@ export class LoginService {
     parameterObject['password'] = credentials.password;
     parameterObject['submit'] = 'Login';
     const parametersString = this.utils.vratiKveriParametre(parameterObject);
-    const fullUrl = DOMAIN_URL + LOGIN_URL + parametersString;
+    const fullUrl = LOGIN_URL + parametersString;
 
     this.http.post(fullUrl, {}, { responseType: 'text' })
       .pipe(
@@ -58,7 +57,7 @@ export class LoginService {
   }
 
   private vratiUlogovanogKorisnika() {
-    const fullUrl = DOMAIN_URL + PARTNER_URL;
+    const fullUrl = PARTNER_URL;
     this.http.get(fullUrl)
       .pipe(
         timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
@@ -82,7 +81,7 @@ export class LoginService {
   }
 
   public logout() {
-    const fullUrl = DOMAIN_URL + LOGOUT_URL;
+    const fullUrl = LOGOUT_URL;
     this.http.post(fullUrl, {}, { responseType: 'text' })
       .pipe(
         timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),

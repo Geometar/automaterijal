@@ -1,0 +1,14 @@
+spring:
+  profiles:
+    active: heroku
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration
+  datasource:
+    url: jdbc:mysql://eu-cdbr-west-02.cleardb.net/heroku_2cfab89ae15d9b0?reconnect=true
+    username: b9da90be7021c5
+    password: f8532a32
+  jpa:
+    database: h2
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+    ddl-auto: none

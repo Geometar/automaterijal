@@ -5,7 +5,7 @@ import { timeoutWith, catchError, map } from 'rxjs/operators';
 import { AppUtilsService } from '../utils/app-utils.service';
 import { Fakutra } from '../model/dto';
 
-const DOMAIN_URL = 'http://localhost:8080/api';
+const DOMAIN_URL = '/api';
 const FAKTURA_URL = '/fakture';
 
 const TIMEOUT = 15000;

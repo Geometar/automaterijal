@@ -6,7 +6,7 @@ import { LocalStorageService } from './local-storage.service';
 import { Roba } from '../../model/dto';
 import { HttpClient } from '@angular/common/http';
 
-const DOMAIN_URL = 'http://localhost:8080/api/informacije/';
+const DOMAIN_URL = '/api/informacije/';
 const TIMEOUT = 15000;
 const TIMEOUT_ERROR = 'Timeout error!';
 
