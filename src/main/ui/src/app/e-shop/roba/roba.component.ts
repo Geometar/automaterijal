@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { RobaService } from '../service/roba.service';
-import { Roba, Proizvodjac, Partner } from '../model/dto';
+import { Roba, Partner } from '../model/dto';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY } from 'rxjs';
 import { Sort, MatSnackBar } from '@angular/material';
-import { ProizvodjacService } from '../service/proizvodjac.service';
 import { DataService } from '../service/data/data.service';
 import { Korpa } from '../model/porudzbenica';
 import { AppUtilsService } from '../utils/app-utils.service';
 import { LoginService } from '../service/login.service';
+import { VrstaRobe } from '../model/roba.enum';
+import { Filter } from '../model/filter';
 
 @Component({
   selector: 'app-roba',
@@ -18,7 +19,7 @@ import { LoginService } from '../service/login.service';
 export class RobaComponent implements OnInit {
 
   public roba: Roba[];
-  public proizvodjaci: Proizvodjac[];
+  public vrstaRobe = VrstaRobe.SVE;
 
   // Paging and Sorting elements
   public rowsPerPage = 10;
@@ -26,10 +27,7 @@ export class RobaComponent implements OnInit {
   public sort = null;
   public tableLength;
 
-  // Filteri
-  public izabraniProizvodjac = '';
-  public raspolozivost: string[] = ['Svi artikli', 'Ima na stanju'];
-  public izabranaRaspolozivost: string = this.raspolozivost[1];
+  public filter: Filter = new Filter();
 
   public searchValue = '';
   public lastSearchValue = '';
@@ -37,7 +35,7 @@ export class RobaComponent implements OnInit {
 
   public ucitavanje = false;
   public pronadjenaRoba = true;
-  public otvoriFilterDiv = false;
+  public otvoriFilter = false;
 
   // Tabela
   private columnDefinitions = [
@@ -59,7 +57,6 @@ export class RobaComponent implements OnInit {
   public partner: Partner;
 
   constructor(private robaService: RobaService,
-    private proizvodjacService: ProizvodjacService,
     private loginServis: LoginService,
     private dataService: DataService,
     private utilsService: AppUtilsService,
@@ -70,7 +67,7 @@ export class RobaComponent implements OnInit {
     this.pocetnoPretrazivanje = true;
     this.dataService.trenutnaKorpa.subscribe(korpa => this.korpa = korpa);
     this.loginServis.ulogovaniPartner.subscribe(partner => this.partner = partner);
-    this.pronadjiSveProizvodjace();
+    this.pronadjiSvuRobu();
   }
 
   getDisplayedColumns(): string[] {
@@ -122,11 +119,10 @@ export class RobaComponent implements OnInit {
     this.pocetnoPretrazivanje = false;
     this.lastSearchValue = searchValue;
     this.dataSource = null;
-    const naStanju = this.utilsService.daLiRobaTrebaDaBudeNaStanju(this.raspolozivost, this.izabranaRaspolozivost);
-    const proizvodjacId = this.utilsService.vratiIdProizvodjacaAkoPostoji(this.izabraniProizvodjac, this.proizvodjaci);
     this.ucitavanje = true;
     this.pronadjenaRoba = true;
-    this.robaService.pronadjiSvuRobu(this.sort, this.rowsPerPage, this.pageIndex, searchValue, naStanju, proizvodjacId)
+    this.robaService.pronadjiSvuRobu(
+      this.sort, this.rowsPerPage, this.pageIndex, searchValue, this.filter.naStanju, this.filter.proizvodjacId)
       .pipe(
         takeWhile(() => this.alive),
         catchError((error: Response) => {
@@ -153,20 +149,6 @@ export class RobaComponent implements OnInit {
         });
   }
 
-  pronadjiSveProizvodjace() {
-    this.proizvodjacService.pronadjiSveProizvodjace()
-      .pipe(takeWhile(() => this.alive))
-      .subscribe(res => {
-        this.proizvodjaci = res;
-        this.izabraniProizvodjac = this.proizvodjaci[0].naziv;
-        this.pronadjiSvuRobu();
-      },
-        error => {
-          this.proizvodjaci = null;
-          console.log('Pronaci svu robu je bacilo gresku', error);
-        });
-  }
-
   paginatorEvent(pageEvent) {
     this.dataSource = [];
     this.rowsPerPage = pageEvent.pageSize;
@@ -188,25 +170,15 @@ export class RobaComponent implements OnInit {
   }
 
   toogleFilterDiv() {
-    this.otvoriFilterDiv = !this.otvoriFilterDiv;
+    this.otvoriFilter = !this.otvoriFilter;
   }
 
-  resetujFilter() {
+  filtriraj(filter: Filter) {
     if (this.dataSource) {
       this.pageIndex = 0;
     }
-    this.izabranaRaspolozivost = this.raspolozivost[1];
-    this.izabraniProizvodjac = this.proizvodjaci[0].naziv;
-    this.filtriraj();
-  }
-
-  filtriraj() {
-    if (this.dataSource) {
-      this.pageIndex = 0;
-    }
-    let recZaPretragu: string;
-    recZaPretragu = this.searchValue;
-    this.pronadjiSvuRobuPoPretrazi(recZaPretragu);
+    this.filter = filter;
+    this.pronadjiSvuRobuPoPretrazi(this.searchValue);
   }
 
   dodajUKorpu(roba: Roba) {

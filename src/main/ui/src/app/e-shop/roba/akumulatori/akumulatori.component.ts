@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { Sort, MatSnackBar } from '@angular/material';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY } from 'rxjs';
-import { Roba, Proizvodjac, Partner } from '../../model/dto';
+import { Roba, Partner } from '../../model/dto';
 import { Korpa } from '../../model/porudzbenica';
 import { RobaService } from '../../service/roba.service';
 import { AppUtilsService } from '../../utils/app-utils.service';
 import { LoginService } from '../../service/login.service';
 import { DataService } from '../../service/data/data.service';
-import { ProizvodjacService } from '../../service/proizvodjac.service';
+import { VrstaRobe } from '../../model/roba.enum';
+import { Filter } from '../../model/filter';
 @Component({
   selector: 'app-akumulatori',
   templateUrl: './akumulatori.component.html',
@@ -17,7 +18,7 @@ import { ProizvodjacService } from '../../service/proizvodjac.service';
 export class AkumulatoriComponent implements OnInit {
 
   public roba: Roba[];
-  public proizvodjaci: Proizvodjac[];
+  public vrstaRobe = VrstaRobe.AKUMULATORI;
 
   // Paging and Sorting elements
   public rowsPerPage = 10;
@@ -25,17 +26,14 @@ export class AkumulatoriComponent implements OnInit {
   public sort = null;
   public tableLength;
 
-  // Filteri
-  public izabraniProizvodjac = '';
-  public raspolozivost: string[] = ['Svi artikli', 'Ima na stanju'];
-  public izabranaRaspolozivost: string = this.raspolozivost[1];
+  public filter: Filter = new Filter();
 
   public searchValue = '';
   public lastSearchValue = '';
   public pocetnoPretrazivanje: boolean;
   public ucitavanje = false;
   public pronadjenaRoba = true;
-  public otvoriFilterDiv = false;
+  public otvoriFilter = false;
 
   // Tabela
   private columnDefinitions = [
@@ -61,14 +59,13 @@ export class AkumulatoriComponent implements OnInit {
     private utilsService: AppUtilsService,
     private loginServis: LoginService,
     private dataService: DataService,
-    private proizvodjacService: ProizvodjacService,
     public korpaSnackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.pocetnoPretrazivanje = true;
     this.dataService.trenutnaKorpa.subscribe(korpa => this.korpa = korpa);
     this.loginServis.ulogovaniPartner.subscribe(partner => this.partner = partner);
-    this.pronadjiSveProizvodjace();
+    this.pronandjiSveAkumulatore();
   }
 
   getDisplayedColumns(): string[] {
@@ -99,7 +96,6 @@ export class AkumulatoriComponent implements OnInit {
           this.pronadjenaRoba = true;
           this.roba = res.content;
           this.dataSource = this.roba;
-          this.dataSource = this.roba;
           this.rowsPerPage = res.size;
           this.pageIndex = res.number;
           this.tableLength = res.totalElements;
@@ -115,11 +111,10 @@ export class AkumulatoriComponent implements OnInit {
     this.lastSearchValue = searchValue;
     this.ucitavanje = true;
     this.dataSource = null;
-    const naStanju = this.utilsService.daLiRobaTrebaDaBudeNaStanju(this.raspolozivost, this.izabranaRaspolozivost);
-    const proizvodjacId = this.utilsService.vratiIdProizvodjacaAkoPostoji(this.izabraniProizvodjac, this.proizvodjaci);
-    this.ucitavanje = true;
     this.pronadjenaRoba = true;
-    this.robaService.pronadjiAkumulatore(this.sort, this.rowsPerPage, this.pageIndex, searchValue, naStanju, proizvodjacId)
+    this.robaService.pronadjiAkumulatore(
+      this.sort, this.rowsPerPage, this.pageIndex, searchValue, this.filter.naStanju, this.filter.proizvodjacId
+      )
       .pipe(
         takeWhile(() => this.alive),
         catchError((error: Response) => {
@@ -146,20 +141,6 @@ export class AkumulatoriComponent implements OnInit {
         });
   }
 
-  pronadjiSveProizvodjace() {
-    this.proizvodjacService.pronadjiSveProizvodjaceAkumulatora()
-      .pipe(takeWhile(() => this.alive))
-      .subscribe(res => {
-        this.proizvodjaci = res;
-        this.izabraniProizvodjac = this.proizvodjaci[0].naziv;
-        this.pronandjiSveAkumulatore();
-      },
-        error => {
-          this.proizvodjaci = null;
-          console.log('Pronaci svu robu je bacilo gresku', error);
-        });
-  }
-
   pronaciPoTrazenojReci(searchValue) {
     if (this.dataSource) {
       this.pageIndex = 0;
@@ -180,26 +161,18 @@ export class AkumulatoriComponent implements OnInit {
   }
 
   toogleFilterDiv() {
-    this.otvoriFilterDiv = !this.otvoriFilterDiv;
+    this.otvoriFilter = !this.otvoriFilter;
   }
 
-  resetujFilter() {
+  filtriraj(filter: Filter) {
     if (this.dataSource) {
       this.pageIndex = 0;
     }
-    this.izabranaRaspolozivost = this.raspolozivost[1];
-    this.izabraniProizvodjac = this.proizvodjaci[0].naziv;
-    this.filtriraj();
+    this.filter = filter;
+
+    this.pronadjiAkumulatorePoPretrazi(this.searchValue);
   }
 
-  filtriraj() {
-    if (this.dataSource) {
-      this.pageIndex = 0;
-    }
-    let recZaPretragu: string;
-    recZaPretragu = this.searchValue;
-    this.pronadjiAkumulatorePoPretrazi(recZaPretragu);
-  }
   dodajUKorpu(roba: Roba) {
     const snackBarPoruka = this.utilsService.dodajUKorpu(roba);
     this.openKorpaSnackBar(snackBarPoruka);

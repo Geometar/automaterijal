@@ -2,13 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { Sort, MatSnackBar } from '@angular/material';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY } from 'rxjs';
-import { Roba, Proizvodjac, Partner } from 'src/app/e-shop/model/dto';
+import { Roba, Proizvodjač, Partner } from 'src/app/e-shop/model/dto';
 import { Korpa } from 'src/app/e-shop/model/porudzbenica';
 import { RobaService } from 'src/app/e-shop/service/roba.service';
 import { AppUtilsService } from 'src/app/e-shop/utils/app-utils.service';
 import { LoginService } from 'src/app/e-shop/service/login.service';
 import { ProizvodjacService } from 'src/app/e-shop/service/proizvodjac.service';
 import { DataService } from 'src/app/e-shop/service/data/data.service';
+import { VrstaRobe } from 'src/app/e-shop/model/roba.enum';
+import { Filter } from 'src/app/e-shop/model/filter';
 
 @Component({
   selector: 'app-menjacko',
@@ -18,7 +20,7 @@ import { DataService } from 'src/app/e-shop/service/data/data.service';
 export class MenjackoComponent implements OnInit {
 
   public roba: Roba[];
-  public proizvodjaci: Proizvodjac[];
+  public vrstaRobe = VrstaRobe.ULJA;
 
   // Paging and Sorting elements
   public rowsPerPage = 10;
@@ -26,18 +28,15 @@ export class MenjackoComponent implements OnInit {
   public sort = null;
   public tableLength;
 
-  // Filteri
-  public izabraniProizvodjac = '';
-  public raspolozivost: string[] = ['Svi artikli', 'Ima na stanju'];
-  public izabranaRaspolozivost: string = this.raspolozivost[1];
-
   public searchValue = '';
   public lastSearchValue = '';
   public pocetnoPretrazivanje: boolean;
 
+  public filter: Filter = new Filter();
+
   public ucitavanje = false;
   public pronadjenaRoba = true;
-  public otvoriFilterDiv = false;
+  public otvoriFilter = false;
 
   // Tabela
   private columnDefinitions = [
@@ -58,12 +57,11 @@ export class MenjackoComponent implements OnInit {
   private korpa: Korpa;
   public partner: Partner;
 
-  private vrstaUlja = 'menjacka';
+  public vrstaUlja = 'menjacka';
 
   constructor(
     private robaService: RobaService,
     private utilsService: AppUtilsService,
-    private proizvodjacService: ProizvodjacService,
     private loginServis: LoginService,
     private dataService: DataService,
     public korpaSnackBar: MatSnackBar) { }
@@ -72,7 +70,7 @@ export class MenjackoComponent implements OnInit {
     this.pocetnoPretrazivanje = true;
     this.dataService.trenutnaKorpa.subscribe(korpa => this.korpa = korpa);
     this.loginServis.ulogovaniPartner.subscribe(partner => this.partner = partner);
-    this.pronadjiSveProizvodjace();
+    this.pronandjiSvaMenjackaUlja();
   }
 
   getDisplayedColumns(): string[] {
@@ -119,11 +117,11 @@ export class MenjackoComponent implements OnInit {
     this.lastSearchValue = searchValue;
     this.ucitavanje = true;
     this.dataSource = null;
-    const naStanju = this.utilsService.daLiRobaTrebaDaBudeNaStanju(this.raspolozivost, this.izabranaRaspolozivost);
-    const proizvodjacId = this.utilsService.vratiIdProizvodjacaAkoPostoji(this.izabraniProizvodjac, this.proizvodjaci);
     this.ucitavanje = true;
     this.pronadjenaRoba = true;
-    this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, searchValue, naStanju, proizvodjacId, this.vrstaUlja)
+    this.robaService.pronadjiUlje(
+      this.sort, this.rowsPerPage, this.pageIndex, searchValue, this.filter.naStanju, this.filter.proizvodjacId, this.vrstaUlja
+      )
       .pipe(
         takeWhile(() => this.alive),
         catchError((error: Response) => {
@@ -150,20 +148,6 @@ export class MenjackoComponent implements OnInit {
         });
   }
 
-  pronadjiSveProizvodjace() {
-    this.proizvodjacService.pronadjiSveProizvodjaceUljaPoVrsti(this.vrstaUlja)
-      .pipe(takeWhile(() => this.alive))
-      .subscribe(res => {
-        this.proizvodjaci = res;
-        this.izabraniProizvodjac = this.proizvodjaci[0].naziv;
-        this.pronandjiSvaMenjackaUlja();
-      },
-        error => {
-          this.proizvodjaci = null;
-          console.log('Pronaci svu robu je bacilo gresku', error);
-        });
-  }
-
   pronaciPoTrazenojReci(searchValue) {
     if (this.dataSource) {
       this.pageIndex = 0;
@@ -184,25 +168,15 @@ export class MenjackoComponent implements OnInit {
   }
 
   toogleFilterDiv() {
-    this.otvoriFilterDiv = !this.otvoriFilterDiv;
+    this.otvoriFilter = !this.otvoriFilter;
   }
 
-  resetujFilter() {
+  filtriraj(filter: Filter) {
     if (this.dataSource) {
       this.pageIndex = 0;
     }
-    this.izabranaRaspolozivost = this.raspolozivost[1];
-    this.izabraniProizvodjac = this.proizvodjaci[0].naziv;
-    this.filtriraj();
-  }
-
-  filtriraj() {
-    if (this.dataSource) {
-      this.pageIndex = 0;
-    }
-    let recZaPretragu: string;
-    recZaPretragu = this.searchValue;
-    this.pronadjiEntitetePoPretrazi(recZaPretragu);
+    this.filter = filter;
+    this.pronadjiEntitetePoPretrazi(this.searchValue);
   }
 
   dodajUKorpu(roba: Roba) {

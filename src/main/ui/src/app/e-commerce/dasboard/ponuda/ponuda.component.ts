@@ -21,20 +21,47 @@ export class PonudaComponent implements OnInit {
   }
 
   vratiSvePonude() {
-    const ponuda1 = this.ponuda1();
-    const ponuda2 = this.ponuda1();
-    const ponuda3 = this.ponuda1();
-    const ponuda4 = this.ponuda1();
-    this.ponuda.push(ponuda1, ponuda2, ponuda3, ponuda4);
+    const shell = this.shell();
+    const febi = this.febi();
+    const mahle = this.mahle();
+    const ks = this.ks();
+    this.ponuda.push(shell, febi, mahle, ks);
   }
 
-  ponuda1(): VestiNaslovna {
-    const prva = new VestiNaslovna();
-    prva.id = 'ponuda-generic';
-    prva.naslov = 'Ponuda generic';
-    prva.opis = 'Opis Vesti ide ovde.';
-    prva.opisSlika = 'https://material.angular.io/assets/img/examples/shiba2.jpg';
-    return prva;
+  shell(): VestiNaslovna {
+    const shell = new VestiNaslovna();
+    shell.id = 'shell-u-ponudi';
+    shell.naslov = 'Shell';
+    shell.opis = 'Opis Shell-a ide ovde. SINOVAC SE CEKA';
+    shell.opisSlika = 'assets/slike/novouponudi/mala/shell.png';
+    return shell;
+  }
+
+  febi(): VestiNaslovna {
+    const febi = new VestiNaslovna();
+    febi.id = 'febi-u-ponudi';
+    febi.naslov = 'Febi';
+    febi.opis = 'Opis Febi-a ide ovde. SINOVAC SE CEKA';
+    febi.opisSlika = 'assets/slike/novouponudi/mala/febi.png';
+    return febi;
+  }
+
+  mahle(): VestiNaslovna {
+    const mahle = new VestiNaslovna();
+    mahle.id = 'mahle-u-ponudi';
+    mahle.naslov = 'Mahle';
+    mahle.opis = 'Opis Mahle-a ide ovde. SINOVAC SE CEKA';
+    mahle.opisSlika = 'assets/slike/novouponudi/mala/mahle.png';
+    return mahle;
+  }
+
+  ks(): VestiNaslovna {
+    const ks = new VestiNaslovna();
+    ks.id = 'ks-u-ponudi';
+    ks.naslov = 'Ks';
+    ks.opis = 'Opis Ks-a ide ovde. SINOVAC SE CEKA';
+    ks.opisSlika = 'assets/slike/novouponudi/mala/ks.png';
+    return ks;
   }
 
 }

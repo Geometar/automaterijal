@@ -3,13 +3,15 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY } from 'rxjs';
 import { MatSnackBar, Sort } from '@angular/material';
-import { Roba, Proizvodjac, Partner } from 'src/app/e-shop/model/dto';
+import { Roba, Proizvodjač, Partner } from 'src/app/e-shop/model/dto';
 import { Korpa } from 'src/app/e-shop/model/porudzbenica';
 import { ProizvodjacService } from 'src/app/e-shop/service/proizvodjac.service';
 import { LoginService } from 'src/app/e-shop/service/login.service';
 import { AppUtilsService } from 'src/app/e-shop/utils/app-utils.service';
 import { DataService } from 'src/app/e-shop/service/data/data.service';
 import { RobaService } from 'src/app/e-shop/service/roba.service';
+import { VrstaRobe } from 'src/app/e-shop/model/roba.enum';
+import { Filter } from 'src/app/e-shop/model/filter';
 
 @Component({
   selector: 'app-kategorija-specificna',
@@ -19,7 +21,7 @@ import { RobaService } from 'src/app/e-shop/service/roba.service';
 export class KategorijaSpecificnaComponent implements OnInit {
 
   public roba: Roba[];
-  public proizvodjaci: Proizvodjac[];
+  public vrstaRobe = VrstaRobe.OSTALO;
 
   // Paging and Sorting elements
   public rowsPerPage = 10;
@@ -27,10 +29,7 @@ export class KategorijaSpecificnaComponent implements OnInit {
   public sort = null;
   public tableLength;
 
-  // Filteri
-  public izabraniProizvodjac = '';
-  public raspolozivost: string[] = ['Svi artikli', 'Ima na stanju'];
-  public izabranaRaspolozivost: string = this.raspolozivost[1];
+  public filter: Filter = new Filter();
 
   public searchValue = '';
   public lastSearchValue = '';
@@ -38,7 +37,8 @@ export class KategorijaSpecificnaComponent implements OnInit {
 
   public ucitavanje = false;
   public pronadjenaRoba = true;
-  public otvoriFilterDiv = false;
+
+  public otvoriFilter = false;
 
   // Tabela
   private columnDefinitions = [
@@ -59,7 +59,6 @@ export class KategorijaSpecificnaComponent implements OnInit {
   public partner: Partner;
   constructor(
     private route: ActivatedRoute,
-    private proizvodjacService: ProizvodjacService,
     private loginServis: LoginService,
     private utilsService: AppUtilsService,
     private dataService: DataService,
@@ -80,23 +79,7 @@ export class KategorijaSpecificnaComponent implements OnInit {
     this.pocetnoPretrazivanje = true;
     this.dataService.trenutnaKorpa.subscribe(korpa => this.korpa = korpa);
     this.loginServis.ulogovaniPartner.subscribe(partner => this.partner = partner);
-    this.pronadjiSveProizvodjace();
-  }
-
-  pronadjiSveProizvodjace() {
-    this.route.params.subscribe((params: Params) => {
-    this.proizvodjacService.pronadjiSveProizvodjaceKategorije(params.id)
-      .pipe(takeWhile(() => this.alive))
-      .subscribe(res => {
-        this.proizvodjaci = res;
-        this.izabraniProizvodjac = this.proizvodjaci[0].naziv;
-        this.pronandjiRobu();
-      },
-        error => {
-          this.proizvodjaci = null;
-          console.log('Pronaci svu robu je bacilo gresku', error);
-        });
-      });
+    this.pronandjiRobu();
   }
 
   pronandjiRobu() {
@@ -141,12 +124,11 @@ export class KategorijaSpecificnaComponent implements OnInit {
     this.pocetnoPretrazivanje = false;
     this.lastSearchValue = searchValue;
     this.dataSource = null;
-    const naStanju = this.utilsService.daLiRobaTrebaDaBudeNaStanju(this.raspolozivost, this.izabranaRaspolozivost);
-    const proizvodjacId = this.utilsService.vratiIdProizvodjacaAkoPostoji(this.izabraniProizvodjac, this.proizvodjaci);
     this.ucitavanje = true;
     this.pronadjenaRoba = true;
     this.route.params.subscribe((params: Params) => {
-      this.robaServis.pronadjiPoKategoriji(this.sort, this.rowsPerPage, this.pageIndex, searchValue, naStanju, proizvodjacId, params.id)
+      this.robaServis.pronadjiPoKategoriji(
+        this.sort, this.rowsPerPage, this.pageIndex, searchValue, this.filter.naStanju, this.filter.proizvodjacId, params.id)
         .pipe(
           takeWhile(() => this.alive),
           catchError((error: Response) => {
@@ -195,25 +177,15 @@ export class KategorijaSpecificnaComponent implements OnInit {
   }
 
   toogleFilterDiv() {
-    this.otvoriFilterDiv = !this.otvoriFilterDiv;
+    this.otvoriFilter = !this.otvoriFilter;
   }
 
-  resetujFilter() {
+  filtriraj(filter: Filter) {
     if (this.dataSource) {
       this.pageIndex = 0;
     }
-    this.izabranaRaspolozivost = this.raspolozivost[1];
-    this.izabraniProizvodjac = this.proizvodjaci[0].naziv;
-    this.filtriraj();
-  }
-
-  filtriraj() {
-    if (this.dataSource) {
-      this.pageIndex = 0;
-    }
-    let recZaPretragu: string;
-    recZaPretragu = this.searchValue;
-    this.pronadjiSvuRobuPoPretrazi(recZaPretragu);
+    this.filter = filter;
+    this.pronadjiSvuRobuPoPretrazi(this.searchValue);
   }
 
   dodajUKorpu(roba: Roba) {

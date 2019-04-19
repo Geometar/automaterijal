@@ -9,10 +9,10 @@
                 </button>
             </div>
             <div class="p-1" (click)='toogleFilterDiv()'>
-                <button *ngIf="!otvoriFilterDiv" class=pozadina-glavna-100 mat-mini-fab>
+                <button *ngIf="!otvoriFilter" class=pozadina-glavna-100 mat-mini-fab>
                     <mat-icon>view_headline</mat-icon>
                 </button>
-                <button *ngIf="otvoriFilterDiv" mat-mini-fab class="button-glavni-200">
+                <button *ngIf="otvoriFilter" mat-mini-fab class="button-glavni-200">
                     <mat-icon>view_headline</mat-icon>
                 </button>
             </div>
@@ -23,48 +23,10 @@
             <font color="#424242"> Ukucajte kataloski broj</font>
         </label>
     </div>
-
-    <div class="d-flex justify-content-center" *ngIf="otvoriFilterDiv">
-        <div class="filter-div-test d-flex flex-column">
-            <div class="d-flex justify-content-center">
-                <h2>
-                    Filter
-                </h2>
-            </div>
-            <div class="d-flex flex-column flex-xl-row input-group mb-3">
-                <div class="input-group-prepend">
-                    <label class="input-group-text mobilna-duzina button-glavni-50" for="inputGroupSelect01">
-                        <p class="boja-siva-400">Proizvodjac: </p>
-                    </label>
-                </div>
-                <select class="custom-select mobilna-duzina" id="inputGroupSelect01" [(ngModel)]="izabraniProizvodjac">
-                    <option *ngFor="let proizvodjac of proizvodjaci" [value]="proizvodjac.naziv">
-                        {{proizvodjac.naziv}}
-                    </option>
-                </select>
-
-                <div class="input-group-prepend razmak">
-                    <label class="input-group-text mobilna-duzina button-glavni-50" for="inputGroupSelect01">
-                        Raspolozivost:
-                    </label>
-                </div>
-                <select class="custom-select mobilna-duzina" id="inputGroupSelect01" [(ngModel)]="izabranaRaspolozivost">
-                    <option *ngFor="let raspoloziv of raspolozivost" [value]="raspoloziv">{{raspoloziv}}</option>
-                </select>
-            </div>
-            <div class="d-flex justify-content-center">
-                <div>
-                    <button mat-stroked-button class=pozadina-glavna-100 (click)='filtriraj()'>
-                        <p class="boja-siva-400">Filtriraj</p>
-                    </button>
-                    <span class="col-2"></span>
-                    <button mat-stroked-button class=button-crveni-50 (click)='resetujFilter()'>
-                        <p class="boja-siva-400">Ponisti</p>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
+        
+    <!-- Filter komponenta izdvojena -->
+    <app-filter [vrstaRobe]="vrstaRobe" [vrstaUlja]="vrstaUlja" [otvoriFilter]="otvoriFilter" (filterEvent)="filtriraj($event)">
+    </app-filter>
 
     <div class="d-flex flex-column prazna-tabela" *ngIf="!pronadjenaRoba">
         <i class="material-icons icon-size">
@@ -109,9 +71,9 @@
                 </td>
             </ng-container>
 
-            <!-- Proizvodjac Column -->
+            <!-- Proizvodjač Column -->
             <ng-container matColumnDef="proizvodjac">
-                <th mat-header-cell *matHeaderCellDef> Proizvodjac </th>
+                <th mat-header-cell *matHeaderCellDef> Proizvodjač </th>
                 <td mat-cell *matCellDef="let roba">
                     <p class="mat-body-2">
                         {{roba.proizvodjac.naziv}}

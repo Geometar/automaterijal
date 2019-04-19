@@ -228,12 +228,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _e_commerce_dasboard_ponuda_ponuda_component__WEBPACK_IMPORTED_MODULE_45__ = __webpack_require__(/*! ./e-commerce/dasboard/ponuda/ponuda.component */ "./src/app/e-commerce/dasboard/ponuda/ponuda.component.ts");
 /* harmony import */ var _e_commerce_dasboard_kampanja_kampanja_component__WEBPACK_IMPORTED_MODULE_46__ = __webpack_require__(/*! ./e-commerce/dasboard/kampanja/kampanja.component */ "./src/app/e-commerce/dasboard/kampanja/kampanja.component.ts");
 /* harmony import */ var _modal_upit_modal_upit_modal_component__WEBPACK_IMPORTED_MODULE_47__ = __webpack_require__(/*! ./modal/upit-modal/upit-modal.component */ "./src/app/modal/upit-modal/upit-modal.component.ts");
+/* harmony import */ var _e_shop_roba_shared_components_filter_filter_component__WEBPACK_IMPORTED_MODULE_48__ = __webpack_require__(/*! ./e-shop/roba/shared-components/filter/filter.component */ "./src/app/e-shop/roba/shared-components/filter/filter.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -324,7 +326,8 @@ var AppModule = /** @class */ (function () {
                 _e_commerce_dasboard_vesti_vesti_component__WEBPACK_IMPORTED_MODULE_44__["VestiComponent"],
                 _e_commerce_dasboard_ponuda_ponuda_component__WEBPACK_IMPORTED_MODULE_45__["PonudaComponent"],
                 _e_commerce_dasboard_kampanja_kampanja_component__WEBPACK_IMPORTED_MODULE_46__["KampanjaComponent"],
-                _modal_upit_modal_upit_modal_component__WEBPACK_IMPORTED_MODULE_47__["UpitModalComponent"]
+                _modal_upit_modal_upit_modal_component__WEBPACK_IMPORTED_MODULE_47__["UpitModalComponent"],
+                _e_shop_roba_shared_components_filter_filter_component__WEBPACK_IMPORTED_MODULE_48__["FilterComponent"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
@@ -611,19 +614,43 @@ var PonudaComponent = /** @class */ (function () {
         this.router.navigate(['/naslovna/' + id]);
     };
     PonudaComponent.prototype.vratiSvePonude = function () {
-        var ponuda1 = this.ponuda1();
-        var ponuda2 = this.ponuda1();
-        var ponuda3 = this.ponuda1();
-        var ponuda4 = this.ponuda1();
-        this.ponuda.push(ponuda1, ponuda2, ponuda3, ponuda4);
+        var shell = this.shell();
+        var febi = this.febi();
+        var mahle = this.mahle();
+        var ks = this.ks();
+        this.ponuda.push(shell, febi, mahle, ks);
     };
-    PonudaComponent.prototype.ponuda1 = function () {
-        var prva = new _model_dto__WEBPACK_IMPORTED_MODULE_1__["VestiNaslovna"]();
-        prva.id = 'ponuda-generic';
-        prva.naslov = 'Ponuda generic';
-        prva.opis = 'Opis Vesti ide ovde.';
-        prva.opisSlika = 'https://material.angular.io/assets/img/examples/shiba2.jpg';
-        return prva;
+    PonudaComponent.prototype.shell = function () {
+        var shell = new _model_dto__WEBPACK_IMPORTED_MODULE_1__["VestiNaslovna"]();
+        shell.id = 'shell-u-ponudi';
+        shell.naslov = 'Shell';
+        shell.opis = 'Opis Shell-a ide ovde. SINOVAC SE CEKA';
+        shell.opisSlika = 'assets/slike/novouponudi/mala/shell.png';
+        return shell;
+    };
+    PonudaComponent.prototype.febi = function () {
+        var febi = new _model_dto__WEBPACK_IMPORTED_MODULE_1__["VestiNaslovna"]();
+        febi.id = 'febi-u-ponudi';
+        febi.naslov = 'Febi';
+        febi.opis = 'Opis Febi-a ide ovde. SINOVAC SE CEKA';
+        febi.opisSlika = 'assets/slike/novouponudi/mala/febi.png';
+        return febi;
+    };
+    PonudaComponent.prototype.mahle = function () {
+        var mahle = new _model_dto__WEBPACK_IMPORTED_MODULE_1__["VestiNaslovna"]();
+        mahle.id = 'mahle-u-ponudi';
+        mahle.naslov = 'Mahle';
+        mahle.opis = 'Opis Mahle-a ide ovde. SINOVAC SE CEKA';
+        mahle.opisSlika = 'assets/slike/novouponudi/mala/mahle.png';
+        return mahle;
+    };
+    PonudaComponent.prototype.ks = function () {
+        var ks = new _model_dto__WEBPACK_IMPORTED_MODULE_1__["VestiNaslovna"]();
+        ks.id = 'ks-u-ponudi';
+        ks.naslov = 'Ks';
+        ks.opis = 'Opis Ks-a ide ovde. SINOVAC SE CEKA';
+        ks.opisSlika = 'assets/slike/novouponudi/mala/ks.png';
+        return ks;
     };
     PonudaComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -706,24 +733,40 @@ var VestiComponent = /** @class */ (function () {
     };
     VestiComponent.prototype.objediniSveVesti = function () {
         var sveVesti = [];
-        sveVesti.push(this.vestiPonuda1(), this.vestiPonuda2());
+        sveVesti.push(this.shell_u_ponudi(), this.febi_u_ponudi(), this.mahle_u_ponudi(), this.ks_u_ponudi());
         return sveVesti;
     };
-    VestiComponent.prototype.vestiPonuda1 = function () {
-        var prva = new _model_dto__WEBPACK_IMPORTED_MODULE_2__["Vest"]();
-        prva.id = 'ponuda-generic';
-        prva.naslov = '<h1>Ponuda generic</h1>';
-        prva.slika = 'https://material.angular.io/assets/img/examples/shiba2.jpg';
-        prva.tekst = '<p>Febi bilstein je  osnovan davne 1844 godine. Danas je jedan od vodećih svetskih proizvođača i dobavljača rezervnih delova za putnička i komercijalna vozila na nezavisnom tržištu rezervnih delova.  Više od 170 godina održava kontinuitet, kvalitet, uslugu, pouzdanost i inovacije. Asortiman cini 30.000 razlicitih rezervnih delova. Osim toga, febi ima svoja predstavništva ili iskusnog partnera u preko 69 zemalja. </p> <p>Od upravljačke, motorne i kočne tehnike, tehnike šasija i učvršćivanja točkova do autoelektrike i pneumatike i programa febi plus – kod firme febi bilstein ćete naći sve za profesionalno servisiranje - putničkih vozila, kamiona, autobusa, prikolica, poluprikolica i malih transportera svih aktuelnih marki i modela.</p> <p class="proba">Febi bilstein stoji za proizvode koji ispunjavaju najviše zahteve kvaliteta izrade i bezbednosti ugradnje. Kvalitetom, brzinom i postavljanjem trendova febi bilstein vam daje odlučujući podsticaj na globalnom tržištu. Zato što kao premium marka ima obavezu da ispuni zahteve svojih kupaca – svakodnevno.</p> <p>AUTOMATERIJAL d.o.o - je zastupnik koncerna Febi Bilstein i Blue Printa za zapadnu Srbiju.</p>';
-        return prva;
+    VestiComponent.prototype.shell_u_ponudi = function () {
+        var shell_u_ponudi = new _model_dto__WEBPACK_IMPORTED_MODULE_2__["Vest"]();
+        shell_u_ponudi.id = 'shell-u-ponudi';
+        shell_u_ponudi.naslov = '<h1>Sinovac se trazi</h1>';
+        shell_u_ponudi.slika = 'assets/slike/novouponudi/velika/shell.png';
+        shell_u_ponudi.tekst = '<p>Febi bilstein je  osnovan davne 1844 godine. Danas je jedan od vodećih svetskih proizvođača i dobavljača rezervnih delova za putnička i komercijalna vozila na nezavisnom tržištu rezervnih delova.  Više od 170 godina održava kontinuitet, kvalitet, uslugu, pouzdanost i inovacije. Asortiman cini 30.000 razlicitih rezervnih delova. Osim toga, febi ima svoja predstavništva ili iskusnog partnera u preko 69 zemalja. </p> <p>Od upravljačke, motorne i kočne tehnike, tehnike šasija i učvršćivanja točkova do autoelektrike i pneumatike i programa febi plus – kod firme febi bilstein ćete naći sve za profesionalno servisiranje - putničkih vozila, kamiona, autobusa, prikolica, poluprikolica i malih transportera svih aktuelnih marki i modela.</p> <p class="proba">Febi bilstein stoji za proizvode koji ispunjavaju najviše zahteve kvaliteta izrade i bezbednosti ugradnje. Kvalitetom, brzinom i postavljanjem trendova febi bilstein vam daje odlučujući podsticaj na globalnom tržištu. Zato što kao premium marka ima obavezu da ispuni zahteve svojih kupaca – svakodnevno.</p> <p>AUTOMATERIJAL d.o.o - je zastupnik koncerna Febi Bilstein i Blue Printa za zapadnu Srbiju.</p>';
+        return shell_u_ponudi;
     };
-    VestiComponent.prototype.vestiPonuda2 = function () {
-        var prva = new _model_dto__WEBPACK_IMPORTED_MODULE_2__["Vest"]();
-        prva.id = 'ponuda-generic 2';
-        prva.naslov = 'Ponuda generic 2';
-        prva.tekst = 'Opis Vesti ide ovde. 2';
-        prva.slika = 'https://material.angular.io/assets/img/examples/shiba2.jpg';
-        return prva;
+    VestiComponent.prototype.febi_u_ponudi = function () {
+        var shell_u_ponudi = new _model_dto__WEBPACK_IMPORTED_MODULE_2__["Vest"]();
+        shell_u_ponudi.id = 'febi-u-ponudi';
+        shell_u_ponudi.naslov = '<h1>Sinovac se trazi</h1>';
+        shell_u_ponudi.slika = 'assets/slike/novouponudi/velika/febi.png';
+        shell_u_ponudi.tekst = '<p>Febi bilstein je  osnovan davne 1844 godine. Danas je jedan od vodećih svetskih proizvođača i dobavljača rezervnih delova za putnička i komercijalna vozila na nezavisnom tržištu rezervnih delova.  Više od 170 godina održava kontinuitet, kvalitet, uslugu, pouzdanost i inovacije. Asortiman cini 30.000 razlicitih rezervnih delova. Osim toga, febi ima svoja predstavništva ili iskusnog partnera u preko 69 zemalja. </p> <p>Od upravljačke, motorne i kočne tehnike, tehnike šasija i učvršćivanja točkova do autoelektrike i pneumatike i programa febi plus – kod firme febi bilstein ćete naći sve za profesionalno servisiranje - putničkih vozila, kamiona, autobusa, prikolica, poluprikolica i malih transportera svih aktuelnih marki i modela.</p> <p class="proba">Febi bilstein stoji za proizvode koji ispunjavaju najviše zahteve kvaliteta izrade i bezbednosti ugradnje. Kvalitetom, brzinom i postavljanjem trendova febi bilstein vam daje odlučujući podsticaj na globalnom tržištu. Zato što kao premium marka ima obavezu da ispuni zahteve svojih kupaca – svakodnevno.</p> <p>AUTOMATERIJAL d.o.o - je zastupnik koncerna Febi Bilstein i Blue Printa za zapadnu Srbiju.</p>';
+        return shell_u_ponudi;
+    };
+    VestiComponent.prototype.mahle_u_ponudi = function () {
+        var shell_u_ponudi = new _model_dto__WEBPACK_IMPORTED_MODULE_2__["Vest"]();
+        shell_u_ponudi.id = 'mahle-u-ponudi';
+        shell_u_ponudi.naslov = '<h1>Sinovac se trazi</h1>';
+        shell_u_ponudi.slika = 'assets/slike/novouponudi/velika/mahle.png';
+        shell_u_ponudi.tekst = '<p>Febi bilstein je  osnovan davne 1844 godine. Danas je jedan od vodećih svetskih proizvođača i dobavljača rezervnih delova za putnička i komercijalna vozila na nezavisnom tržištu rezervnih delova.  Više od 170 godina održava kontinuitet, kvalitet, uslugu, pouzdanost i inovacije. Asortiman cini 30.000 razlicitih rezervnih delova. Osim toga, febi ima svoja predstavništva ili iskusnog partnera u preko 69 zemalja. </p> <p>Od upravljačke, motorne i kočne tehnike, tehnike šasija i učvršćivanja točkova do autoelektrike i pneumatike i programa febi plus – kod firme febi bilstein ćete naći sve za profesionalno servisiranje - putničkih vozila, kamiona, autobusa, prikolica, poluprikolica i malih transportera svih aktuelnih marki i modela.</p> <p class="proba">Febi bilstein stoji za proizvode koji ispunjavaju najviše zahteve kvaliteta izrade i bezbednosti ugradnje. Kvalitetom, brzinom i postavljanjem trendova febi bilstein vam daje odlučujući podsticaj na globalnom tržištu. Zato što kao premium marka ima obavezu da ispuni zahteve svojih kupaca – svakodnevno.</p> <p>AUTOMATERIJAL d.o.o - je zastupnik koncerna Febi Bilstein i Blue Printa za zapadnu Srbiju.</p>';
+        return shell_u_ponudi;
+    };
+    VestiComponent.prototype.ks_u_ponudi = function () {
+        var shell_u_ponudi = new _model_dto__WEBPACK_IMPORTED_MODULE_2__["Vest"]();
+        shell_u_ponudi.id = 'ks-u-ponudi';
+        shell_u_ponudi.naslov = '<h1>Sinovac se trazi</h1>';
+        shell_u_ponudi.slika = 'assets/slike/novouponudi/velika/ks.png';
+        shell_u_ponudi.tekst = '<p>Febi bilstein je  osnovan davne 1844 godine. Danas je jedan od vodećih svetskih proizvođača i dobavljača rezervnih delova za putnička i komercijalna vozila na nezavisnom tržištu rezervnih delova.  Više od 170 godina održava kontinuitet, kvalitet, uslugu, pouzdanost i inovacije. Asortiman cini 30.000 razlicitih rezervnih delova. Osim toga, febi ima svoja predstavništva ili iskusnog partnera u preko 69 zemalja. </p> <p>Od upravljačke, motorne i kočne tehnike, tehnike šasija i učvršćivanja točkova do autoelektrike i pneumatike i programa febi plus – kod firme febi bilstein ćete naći sve za profesionalno servisiranje - putničkih vozila, kamiona, autobusa, prikolica, poluprikolica i malih transportera svih aktuelnih marki i modela.</p> <p class="proba">Febi bilstein stoji za proizvode koji ispunjavaju najviše zahteve kvaliteta izrade i bezbednosti ugradnje. Kvalitetom, brzinom i postavljanjem trendova febi bilstein vam daje odlučujući podsticaj na globalnom tržištu. Zato što kao premium marka ima obavezu da ispuni zahteve svojih kupaca – svakodnevno.</p> <p>AUTOMATERIJAL d.o.o - je zastupnik koncerna Febi Bilstein i Blue Printa za zapadnu Srbiju.</p>';
+        return shell_u_ponudi;
     };
     VestiComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -1118,7 +1161,7 @@ var ONamaComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container-fluid\">\r\n    <main>\r\n        <div *ngIf=\"faktura && fakturaDetalji && dataSource != null && dataSource.length > 0\">\r\n            <h1>Detalji fakture: {{faktura.orderId}}</h1>\r\n            <div class=\"d-flex flex-row-reverse bd-highlight\">\r\n                <button class=\"button-glavni-100 nazad-button\" mat-raised-button (click)=\"idiNazad()\">\r\n                    <mat-icon>keyboard_arrow_left</mat-icon> Nazad\r\n                </button>\r\n            </div>\r\n\r\n            <div class=\"d-flex flex-wrap bd-highlight flex-sm-row flex-column detalji-div\">\r\n                <div class=\"p-1 flex-fill bd-highlight\">\r\n                    <label class=\"input-group-text button-glavni-100\" for=\"inputGroupSelect01\">\r\n                        <p *ngIf=\"faktura.status\" class=\"boja-siva-400\">Status: {{faktura.status.naziv}}</p>\r\n                    </label>\r\n                </div>\r\n                <div class=\"p-1 flex-fill bd-highlight\">\r\n                    <label class=\"input-group-text button-glavni-100\" for=\"inputGroupSelect01\">\r\n                        <p class=\"boja-siva-400\">Datum: {{faktura.vremePorucivanja | datum}}</p>\r\n                    </label>\r\n                </div>\r\n                <div class=\"p-1 flex-fill bd-highlight\">\r\n                    <label class=\"input-group-text button-glavni-100\" for=\"inputGroupSelect01\">\r\n                        <p *ngIf=\"faktura.nacinPlacanja\" class=\"boja-siva-400\">Nacin placanja:\r\n                            {{faktura.nacinPlacanja.naziv}}</p>\r\n                    </label>\r\n                </div>\r\n                <div class=\"p-1 flex-fill bd-highlight\">\r\n                    <label class=\"input-group-text button-glavni-100\" for=\"inputGroupSelect01\">\r\n                        <p *ngIf=\"faktura.nacinPrevoza\" class=\"boja-siva-400\">Nacin prevoza: {{\"prevoz_\" +\r\n                            faktura.nacinPrevoza.id | translate}}</p>\r\n                    </label>\r\n                </div>\r\n                <div class=\"p-1 flex-fill bd-highlight\">\r\n                    <label class=\"input-group-text button-glavni-100\" for=\"inputGroupSelect01\">\r\n                        <p *ngIf=\"faktura.adresa\" class=\"boja-siva-400\">Adresa: {{faktura.adresa.naziv}}</p>\r\n                    </label>\r\n                </div>\r\n            </div>\r\n            <div class=\"tabela-div\" *ngIf=\"dataSource != null && dataSource.length > 0\">\r\n                <table mat-table [dataSource]=\"dataSource\">\r\n\r\n                    <!-- Kataloski broj Column -->\r\n                    <ng-container matColumnDef=\"robaId\">\r\n                        <th mat-header-cell *matHeaderCellDef> Kataloski Broj </th>\r\n                        <td mat-cell *matCellDef=\"let faktura\">\r\n                            <p class=\"mat-body-2\">\r\n                                {{faktura.kataloskiBroj}}\r\n                            </p>\r\n                        </td>\r\n                    </ng-container>\r\n\r\n                    <!-- Kataloski broj Column -->\r\n                    <ng-container matColumnDef=\"proizvodjac\">\r\n                        <th mat-header-cell *matHeaderCellDef> Proizvodjac </th>\r\n                        <td mat-cell *matCellDef=\"let faktura\">\r\n                            <p >\r\n                                {{faktura.proizvodjac.naziv}}\r\n                            </p>\r\n                        </td>\r\n                    </ng-container>\r\n\r\n                    <!-- Narucena Kolicina Column -->\r\n                    <ng-container matColumnDef=\"kolicina\">\r\n                        <th mat-header-cell *matHeaderCellDef> Narucena Kolicina</th>\r\n                        <td mat-cell *matCellDef=\"let faktura\">\r\n                            <p >\r\n                                {{faktura.kolicina}}\r\n                            </p>\r\n                        </td>\r\n                    </ng-container>\r\n\r\n                    <!-- Potvrdjena Kolicina Column -->\r\n                    <ng-container matColumnDef=\"potvrdjenaKolicina\">\r\n                        <th mat-header-cell *matHeaderCellDef> Potvrdjena Kolicina </th>\r\n                        <td mat-cell *matCellDef=\"let faktura\">\r\n                            <p >\r\n                                {{faktura.potvrdjenaKolicina}}\r\n                            </p>\r\n                        </td>\r\n                    </ng-container>\r\n\r\n                    <!-- Rabat Column -->\r\n                    <ng-container matColumnDef=\"rabat\">\r\n                        <th mat-header-cell *matHeaderCellDef> Rabat </th>\r\n                        <td mat-cell *matCellDef=\"let faktura\">\r\n                            <p >\r\n                                {{faktura.rabat}}%\r\n                            </p>\r\n                        </td>\r\n                    </ng-container>\r\n\r\n                    <!-- Cena Column -->\r\n                    <ng-container matColumnDef=\"cena\">\r\n                        <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Cena </th>\r\n                        <td mat-cell *matCellDef=\"let faktura\">\r\n                            <p class=\"mat-body-1 text-right iznos-margin\">\r\n                                {{faktura.cena | currency:\" \"}} RSD\r\n                            </p>\r\n                        </td>\r\n                    </ng-container>\r\n\r\n                    <!-- tatus Column -->\r\n                    <ng-container matColumnDef=\"status\">\r\n                        <th mat-header-cell *matHeaderCellDef class=\"text-center\">Status</th>\r\n                        <td mat-cell *matCellDef=\"let faktura\">\r\n                            <p class=\"text-center mat-body-1\">\r\n                                {{faktura.status.naziv}}\r\n                            </p>\r\n                        </td>\r\n                    </ng-container>\r\n\r\n                    <tr mat-header-row *matHeaderRowDef=\"displayedColumns\"></tr>\r\n                    <tr mat-row *matRowDef=\"let row; columns: displayedColumns;\"></tr>\r\n                </table>\r\n                <div class=\"d-flex flex-column flex-sm-row\">\r\n                    <div class=\"d-flex flex-fill justify-content-end\">\r\n                    </div>\r\n                    <div class=\"d-flex flex-fill justify-content-end\">\r\n                        <table class=\"table sirina-cena\">\r\n                            <tbody>\r\n                                <tr>\r\n                                    <td class=\"pozadina-glavna-50 boja-siva-400\">Ukupno za iznos: </td>\r\n                                    <td class=\"text-right\"><b>{{faktura.iznos | currency:\" \"}} RSD</b></td>\r\n                                </tr>\r\n                            </tbody>\r\n                        </table>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n        <div *ngIf=\"dataSource == null || dataSource.length == 0\">\r\n            <div class=\"d-flex flex-row-reverse bd-highlight\">\r\n                <button class=\"button-glavni-100 nazad-button nazad-dugme-dole\" mat-raised-button (click)=\"idiNazad()\">\r\n                    <mat-icon>keyboard_arrow_left</mat-icon> Nazad\r\n                </button>\r\n            </div>\r\n            <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"!pronadjenaRoba\">\r\n                <i class=\"material-icons icon-size\">\r\n                    error_outline\r\n                </i>\r\n                <h1 class=\"h1-faktura-upozorenje\">Porudzbenica je prazna</h1>\r\n            </div>\r\n        </div>\r\n        <div *ngIf=\"error\">\r\n            <div class=\"d-flex flex-row-reverse bd-highlight\">\r\n                <button class=\"button-glavni-100 nazad-button greska-dugme-pozicija\" mat-raised-button (click)=\"idiNazad()\">\r\n                    <mat-icon>keyboard_arrow_left</mat-icon> Nazad\r\n                </button>\r\n            </div>\r\n            <div class=\"d-flex flex-column prazna-tabela\">\r\n                <i class=\"material-icons icon-size\">\r\n                    error_outline\r\n                </i>\r\n                <h1 class=\"h1-faktura-upozorenje\">Porudzbenica ne postoji</h1>\r\n            </div>\r\n        </div>\r\n    </main>\r\n</div>"
+module.exports = "<div class=\"container-fluid\">\r\n    <main>\r\n        <div *ngIf=\"faktura && fakturaDetalji && dataSource != null && dataSource.length > 0\">\r\n            <h1>Detalji fakture: {{faktura.orderId}}</h1>\r\n            <div class=\"d-flex flex-row-reverse bd-highlight\">\r\n                <button class=\"button-glavni-100 nazad-button\" mat-raised-button (click)=\"idiNazad()\">\r\n                    <mat-icon>keyboard_arrow_left</mat-icon> Nazad\r\n                </button>\r\n            </div>\r\n\r\n            <div class=\"d-flex flex-wrap bd-highlight flex-sm-row flex-column detalji-div\">\r\n                <div class=\"p-1 flex-fill bd-highlight\">\r\n                    <label class=\"input-group-text button-glavni-100\" for=\"inputGroupSelect01\">\r\n                        <p *ngIf=\"faktura.status\" class=\"boja-siva-400\">Status: {{faktura.status.naziv}}</p>\r\n                    </label>\r\n                </div>\r\n                <div class=\"p-1 flex-fill bd-highlight\">\r\n                    <label class=\"input-group-text button-glavni-100\" for=\"inputGroupSelect01\">\r\n                        <p class=\"boja-siva-400\">Datum: {{faktura.vremePorucivanja | datum}}</p>\r\n                    </label>\r\n                </div>\r\n                <div class=\"p-1 flex-fill bd-highlight\">\r\n                    <label class=\"input-group-text button-glavni-100\" for=\"inputGroupSelect01\">\r\n                        <p *ngIf=\"faktura.nacinPlacanja\" class=\"boja-siva-400\">Nacin placanja:\r\n                            {{faktura.nacinPlacanja.naziv}}</p>\r\n                    </label>\r\n                </div>\r\n                <div class=\"p-1 flex-fill bd-highlight\">\r\n                    <label class=\"input-group-text button-glavni-100\" for=\"inputGroupSelect01\">\r\n                        <p *ngIf=\"faktura.nacinPrevoza\" class=\"boja-siva-400\">Nacin prevoza: {{\"prevoz_\" +\r\n                            faktura.nacinPrevoza.id | translate}}</p>\r\n                    </label>\r\n                </div>\r\n                <div class=\"p-1 flex-fill bd-highlight\">\r\n                    <label class=\"input-group-text button-glavni-100\" for=\"inputGroupSelect01\">\r\n                        <p *ngIf=\"faktura.adresa\" class=\"boja-siva-400\">Adresa: {{faktura.adresa.naziv}}</p>\r\n                    </label>\r\n                </div>\r\n            </div>\r\n            <div class=\"tabela-div\" *ngIf=\"dataSource != null && dataSource.length > 0\">\r\n                <table mat-table [dataSource]=\"dataSource\">\r\n\r\n                    <!-- Kataloski broj Column -->\r\n                    <ng-container matColumnDef=\"robaId\">\r\n                        <th mat-header-cell *matHeaderCellDef> Kataloski Broj </th>\r\n                        <td mat-cell *matCellDef=\"let faktura\">\r\n                            <p class=\"mat-body-2\">\r\n                                {{faktura.kataloskiBroj}}\r\n                            </p>\r\n                        </td>\r\n                    </ng-container>\r\n\r\n                    <!-- Kataloski broj Column -->\r\n                    <ng-container matColumnDef=\"proizvodjac\">\r\n                        <th mat-header-cell *matHeaderCellDef> Proizvodjač </th>\r\n                        <td mat-cell *matCellDef=\"let faktura\">\r\n                            <p >\r\n                                {{faktura.proizvodjac.naziv}}\r\n                            </p>\r\n                        </td>\r\n                    </ng-container>\r\n\r\n                    <!-- Narucena Kolicina Column -->\r\n                    <ng-container matColumnDef=\"kolicina\">\r\n                        <th mat-header-cell *matHeaderCellDef> Narucena Kolicina</th>\r\n                        <td mat-cell *matCellDef=\"let faktura\">\r\n                            <p >\r\n                                {{faktura.kolicina}}\r\n                            </p>\r\n                        </td>\r\n                    </ng-container>\r\n\r\n                    <!-- Potvrdjena Kolicina Column -->\r\n                    <ng-container matColumnDef=\"potvrdjenaKolicina\">\r\n                        <th mat-header-cell *matHeaderCellDef> Potvrdjena Kolicina </th>\r\n                        <td mat-cell *matCellDef=\"let faktura\">\r\n                            <p >\r\n                                {{faktura.potvrdjenaKolicina}}\r\n                            </p>\r\n                        </td>\r\n                    </ng-container>\r\n\r\n                    <!-- Rabat Column -->\r\n                    <ng-container matColumnDef=\"rabat\">\r\n                        <th mat-header-cell *matHeaderCellDef> Rabat </th>\r\n                        <td mat-cell *matCellDef=\"let faktura\">\r\n                            <p >\r\n                                {{faktura.rabat}}%\r\n                            </p>\r\n                        </td>\r\n                    </ng-container>\r\n\r\n                    <!-- Cena Column -->\r\n                    <ng-container matColumnDef=\"cena\">\r\n                        <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Cena </th>\r\n                        <td mat-cell *matCellDef=\"let faktura\">\r\n                            <p class=\"mat-body-1 text-right iznos-margin\">\r\n                                {{faktura.cena | currency:\" \"}} RSD\r\n                            </p>\r\n                        </td>\r\n                    </ng-container>\r\n\r\n                    <!-- tatus Column -->\r\n                    <ng-container matColumnDef=\"status\">\r\n                        <th mat-header-cell *matHeaderCellDef class=\"text-center\">Status</th>\r\n                        <td mat-cell *matCellDef=\"let faktura\">\r\n                            <p class=\"text-center mat-body-1\">\r\n                                {{faktura.status.naziv}}\r\n                            </p>\r\n                        </td>\r\n                    </ng-container>\r\n\r\n                    <tr mat-header-row *matHeaderRowDef=\"displayedColumns\"></tr>\r\n                    <tr mat-row *matRowDef=\"let row; columns: displayedColumns;\"></tr>\r\n                </table>\r\n                <div class=\"d-flex flex-column flex-sm-row\">\r\n                    <div class=\"d-flex flex-fill justify-content-end\">\r\n                    </div>\r\n                    <div class=\"d-flex flex-fill justify-content-end\">\r\n                        <table class=\"table sirina-cena\">\r\n                            <tbody>\r\n                                <tr>\r\n                                    <td class=\"pozadina-glavna-50 boja-siva-400\">Ukupno za iznos: </td>\r\n                                    <td class=\"text-right\"><b>{{faktura.iznos | currency:\" \"}} RSD</b></td>\r\n                                </tr>\r\n                            </tbody>\r\n                        </table>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n        <div *ngIf=\"dataSource == null || dataSource.length == 0\">\r\n            <div class=\"d-flex flex-row-reverse bd-highlight\">\r\n                <button class=\"button-glavni-100 nazad-button nazad-dugme-dole\" mat-raised-button (click)=\"idiNazad()\">\r\n                    <mat-icon>keyboard_arrow_left</mat-icon> Nazad\r\n                </button>\r\n            </div>\r\n            <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"!pronadjenaRoba\">\r\n                <i class=\"material-icons icon-size\">\r\n                    error_outline\r\n                </i>\r\n                <h1 class=\"h1-faktura-upozorenje\">Porudzbenica je prazna</h1>\r\n            </div>\r\n        </div>\r\n        <div *ngIf=\"error\">\r\n            <div class=\"d-flex flex-row-reverse bd-highlight\">\r\n                <button class=\"button-glavni-100 nazad-button greska-dugme-pozicija\" mat-raised-button (click)=\"idiNazad()\">\r\n                    <mat-icon>keyboard_arrow_left</mat-icon> Nazad\r\n                </button>\r\n            </div>\r\n            <div class=\"d-flex flex-column prazna-tabela\">\r\n                <i class=\"material-icons icon-size\">\r\n                    error_outline\r\n                </i>\r\n                <h1 class=\"h1-faktura-upozorenje\">Porudzbenica ne postoji</h1>\r\n            </div>\r\n        </div>\r\n    </main>\r\n</div>"
 
 /***/ }),
 
@@ -1220,7 +1263,7 @@ var FakturaDetaljiComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container-fluid\">\r\n    <main>\r\n        <div *ngIf=\"dataSource != null && dataSource.length > 0\">\r\n            <h1>Moje porudzbenice</h1>\r\n            <div class=\"tabela-div\">\r\n                <table mat-table [dataSource]=\"dataSource\">\r\n\r\n                    <!-- Kataloski broj Column -->\r\n                    <ng-container matColumnDef=\"orderId\">\r\n                        <th mat-header-cell *matHeaderCellDef> Broj Fakture </th>\r\n                        <td mat-cell *matCellDef=\"let faktura\">\r\n                            <p class=\"mat-body-2\">\r\n                                {{faktura.orderId}}\r\n                            </p>\r\n                        </td>\r\n                    </ng-container>\r\n\r\n                    <!-- Kataloski broj proizvodjaca Column -->\r\n                    <ng-container matColumnDef=\"nacinPlacanja\">\r\n                        <th mat-header-cell *matHeaderCellDef> Nacin Placanja</th>\r\n                        <td mat-cell *matCellDef=\"let faktura\">\r\n                            <p >\r\n                                {{faktura.nacinPlacanja.naziv}}\r\n                            </p>\r\n                        </td>\r\n                    </ng-container>\r\n\r\n                    <!-- Naziv Column -->\r\n                    <ng-container matColumnDef=\"nacinPrevoza\">\r\n                        <th mat-header-cell *matHeaderCellDef> Nacin Prevoza </th>\r\n                        <td mat-cell *matCellDef=\"let faktura\">\r\n                            <p >\r\n                                {{\"prevoz_\" + faktura.nacinPrevoza.id | translate}}\r\n                            </p>\r\n                        </td>\r\n                    </ng-container>\r\n\r\n                    <!-- Proizvodjac Column -->\r\n                    <ng-container matColumnDef=\"adresa\">\r\n                        <th mat-header-cell *matHeaderCellDef> Adresa </th>\r\n                        <td mat-cell *matCellDef=\"let faktura\">\r\n                            <p >\r\n                                {{faktura.adresa.naziv}}\r\n                            </p>\r\n                        </td>\r\n                    </ng-container>\r\n\r\n                    <!-- Cena Column -->\r\n                    <ng-container matColumnDef=\"napomena\">\r\n                        <th mat-header-cell *matHeaderCellDef> Napomena </th>\r\n                        <td mat-cell *matCellDef=\"let faktura\">\r\n                            <p class=\"mat-body-1 napomena\">\r\n                                {{faktura.napomena | empty}}\r\n                            </p>\r\n                        </td>\r\n                    </ng-container>\r\n\r\n                    <!-- Broj stavki Column -->\r\n                    <ng-container matColumnDef=\"brojStavki\">\r\n                        <th mat-header-cell *matHeaderCellDef>Broj stavki</th>\r\n                        <td mat-cell *matCellDef=\"let faktura\">\r\n                            <p >\r\n                                {{faktura.brojStavki}}\r\n                            </p>\r\n                        </td>\r\n                    </ng-container>\r\n\r\n                    <!-- Cena Column -->\r\n                    <ng-container matColumnDef=\"iznos\">\r\n                        <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Ukupan iznos </th>\r\n                        <td mat-cell *matCellDef=\"let faktura\">\r\n                            <p class=\"mat-body-2 text-right iznos-margin\">\r\n                                {{faktura.iznos | currency:\" \"}} RSD\r\n                            </p>\r\n                        </td>\r\n                    </ng-container>\r\n\r\n                    <!-- Vreme porucivanja Column -->\r\n                    <ng-container matColumnDef=\"vremePorucivanja\">\r\n                        <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Datum </th>\r\n                        <td mat-cell *matCellDef=\"let faktura\">\r\n                            <p  class=\"text-center\">\r\n                                {{faktura.vremePorucivanja | datum}}\r\n                            </p>\r\n                        </td>\r\n                    </ng-container>\r\n\r\n                    <!-- Status Column -->\r\n                    <ng-container matColumnDef=\"status\">\r\n                        <th mat-header-cell *matHeaderCellDef> Status </th>\r\n                        <td mat-cell *matCellDef=\"let faktura\">\r\n                            <p class=\"mat-body-2\">\r\n                                {{faktura.status.naziv}}\r\n                            </p>\r\n                        </td>\r\n                    </ng-container>\r\n\r\n                    <!-- Akcije Column -->\r\n                    <ng-container matColumnDef=\"ackije\">\r\n                        <th mat-header-cell *matHeaderCellDef> </th>\r\n                        <td mat-cell *matCellDef=\"let faktura\">\r\n                            <button class=\"button-glavni-100\" mat-raised-button (click)=\"detaljiFakture(faktura.id)\">Detalji</button>\r\n                        </td>\r\n                    </ng-container>\r\n\r\n                    <tr mat-header-row *matHeaderRowDef=\"displayedColumns\"></tr>\r\n                    <tr mat-row *matRowDef=\"let row; columns: displayedColumns;\"></tr>\r\n                </table>\r\n                <mat-paginator #paginator [length]=\"tableLength\" [pageSize]=\"rowsPerPage\" [pageSizeOptions]=\"[5, 10, 25]\"\r\n                    [pageIndex]=\"pageIndex\" [length]=\"tableLength\" [showFirstLastButtons]=\"true\" (page)=\"paginatorEvent($event)\">\r\n                </mat-paginator>\r\n            </div>\r\n        </div>\r\n\r\n        <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"error\">\r\n            <i class=\"material-icons icon-size\">\r\n                error_outline\r\n            </i>\r\n            <h1 class=\"h1-faktura-upozorenje\">Istorija porucivanja je prazna</h1>\r\n        </div>\r\n    </main>\r\n</div>"
+module.exports = "<div class=\"container-fluid\">\r\n    <main>\r\n        <div *ngIf=\"dataSource != null && dataSource.length > 0\">\r\n            <h1>Moje porudzbenice</h1>\r\n            <div class=\"tabela-div\">\r\n                <table mat-table [dataSource]=\"dataSource\">\r\n\r\n                    <!-- Kataloski broj Column -->\r\n                    <ng-container matColumnDef=\"orderId\">\r\n                        <th mat-header-cell *matHeaderCellDef> Broj Fakture </th>\r\n                        <td mat-cell *matCellDef=\"let faktura\">\r\n                            <p class=\"mat-body-2\">\r\n                                {{faktura.orderId}}\r\n                            </p>\r\n                        </td>\r\n                    </ng-container>\r\n\r\n                    <!-- Kataloski broj proizvodjaca Column -->\r\n                    <ng-container matColumnDef=\"nacinPlacanja\">\r\n                        <th mat-header-cell *matHeaderCellDef> Nacin Placanja</th>\r\n                        <td mat-cell *matCellDef=\"let faktura\">\r\n                            <p >\r\n                                {{faktura.nacinPlacanja.naziv}}\r\n                            </p>\r\n                        </td>\r\n                    </ng-container>\r\n\r\n                    <!-- Naziv Column -->\r\n                    <ng-container matColumnDef=\"nacinPrevoza\">\r\n                        <th mat-header-cell *matHeaderCellDef> Nacin Prevoza </th>\r\n                        <td mat-cell *matCellDef=\"let faktura\">\r\n                            <p >\r\n                                {{\"prevoz_\" + faktura.nacinPrevoza.id | translate}}\r\n                            </p>\r\n                        </td>\r\n                    </ng-container>\r\n\r\n                    <!-- Proizvodjač Column -->\r\n                    <ng-container matColumnDef=\"adresa\">\r\n                        <th mat-header-cell *matHeaderCellDef> Adresa </th>\r\n                        <td mat-cell *matCellDef=\"let faktura\">\r\n                            <p >\r\n                                {{faktura.adresa.naziv}}\r\n                            </p>\r\n                        </td>\r\n                    </ng-container>\r\n\r\n                    <!-- Cena Column -->\r\n                    <ng-container matColumnDef=\"napomena\">\r\n                        <th mat-header-cell *matHeaderCellDef> Napomena </th>\r\n                        <td mat-cell *matCellDef=\"let faktura\">\r\n                            <p class=\"mat-body-1 napomena\">\r\n                                {{faktura.napomena | empty}}\r\n                            </p>\r\n                        </td>\r\n                    </ng-container>\r\n\r\n                    <!-- Broj stavki Column -->\r\n                    <ng-container matColumnDef=\"brojStavki\">\r\n                        <th mat-header-cell *matHeaderCellDef>Broj stavki</th>\r\n                        <td mat-cell *matCellDef=\"let faktura\">\r\n                            <p >\r\n                                {{faktura.brojStavki}}\r\n                            </p>\r\n                        </td>\r\n                    </ng-container>\r\n\r\n                    <!-- Cena Column -->\r\n                    <ng-container matColumnDef=\"iznos\">\r\n                        <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Ukupan iznos </th>\r\n                        <td mat-cell *matCellDef=\"let faktura\">\r\n                            <p class=\"mat-body-2 text-right iznos-margin\">\r\n                                {{faktura.iznos | currency:\" \"}} RSD\r\n                            </p>\r\n                        </td>\r\n                    </ng-container>\r\n\r\n                    <!-- Vreme porucivanja Column -->\r\n                    <ng-container matColumnDef=\"vremePorucivanja\">\r\n                        <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Datum </th>\r\n                        <td mat-cell *matCellDef=\"let faktura\">\r\n                            <p  class=\"text-center\">\r\n                                {{faktura.vremePorucivanja | datum}}\r\n                            </p>\r\n                        </td>\r\n                    </ng-container>\r\n\r\n                    <!-- Status Column -->\r\n                    <ng-container matColumnDef=\"status\">\r\n                        <th mat-header-cell *matHeaderCellDef> Status </th>\r\n                        <td mat-cell *matCellDef=\"let faktura\">\r\n                            <p class=\"mat-body-2\">\r\n                                {{faktura.status.naziv}}\r\n                            </p>\r\n                        </td>\r\n                    </ng-container>\r\n\r\n                    <!-- Akcije Column -->\r\n                    <ng-container matColumnDef=\"ackije\">\r\n                        <th mat-header-cell *matHeaderCellDef> </th>\r\n                        <td mat-cell *matCellDef=\"let faktura\">\r\n                            <button class=\"button-glavni-100\" mat-raised-button (click)=\"detaljiFakture(faktura.id)\">Detalji</button>\r\n                        </td>\r\n                    </ng-container>\r\n\r\n                    <tr mat-header-row *matHeaderRowDef=\"displayedColumns\"></tr>\r\n                    <tr mat-row *matRowDef=\"let row; columns: displayedColumns;\"></tr>\r\n                </table>\r\n                <mat-paginator #paginator [length]=\"tableLength\" [pageSize]=\"rowsPerPage\" [pageSizeOptions]=\"[5, 10, 25]\"\r\n                    [pageIndex]=\"pageIndex\" [length]=\"tableLength\" [showFirstLastButtons]=\"true\" (page)=\"paginatorEvent($event)\">\r\n                </mat-paginator>\r\n            </div>\r\n        </div>\r\n\r\n        <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"error\">\r\n            <i class=\"material-icons icon-size\">\r\n                error_outline\r\n            </i>\r\n            <h1 class=\"h1-faktura-upozorenje\">Istorija porucivanja je prazna</h1>\r\n        </div>\r\n    </main>\r\n</div>"
 
 /***/ }),
 
@@ -1328,7 +1371,7 @@ var FakturaComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<main>\r\n    <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"dataSource.length == 0\">\r\n        <i class=\"material-icons icon-size\">\r\n            shopping_cart\r\n        </i>\r\n        <h1 class=\"h1-upozorenje\">Korpa je trenutno prazna</h1>\r\n    </div>\r\n    <div class=\"tabela-div\" *ngIf=\"dataSource.length > 0\">\r\n        <i class=\"material-icons korpa-h1\">\r\n            shopping_cart\r\n        </i>\r\n        <div class=\"margin-bottom--10\" style=\"overflow-x:auto;\">\r\n            <p class=\"pdv\"><i>Sve cene su prikazane sa pdv-om.</i></p>\r\n            <table mat-table [dataSource]=\"dataSource\" class=\"mat-elevation-z8\">\r\n                <!-- Kataloski broj Column -->\r\n                <ng-container matColumnDef=\"katbr\">\r\n                    <th mat-header-cell *matHeaderCellDef> Kataloski broj </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p class=\"mat-body-2\">\r\n                            {{roba.katbr}}\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Kataloski broj proizvodjaca Column -->\r\n                <ng-container matColumnDef=\"katbrpro\">\r\n                    <th mat-header-cell *matHeaderCellDef> Kataloski broj proizvodjaca </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p>\r\n                            {{roba.katbrpro}}\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Naziv Column -->\r\n                <ng-container matColumnDef=\"naziv\">\r\n                    <th mat-header-cell *matHeaderCellDef> Naziv </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p>\r\n                            {{roba.naziv}}\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Proizvodjac Column -->\r\n                <ng-container matColumnDef=\"proizvodjac\">\r\n                    <th mat-header-cell *matHeaderCellDef> Proizvodjac </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p class=\"mat-body-2\">\r\n                            {{roba.proizvodjac.naziv}}\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Cena Column -->\r\n                <ng-container matColumnDef=\"kolicina\">\r\n                    <th mat-header-cell *matHeaderCellDef> Kolicina </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p class=\"mat-body-2\">\r\n                            {{roba.kolicina}}\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Cena Column -->\r\n                <ng-container matColumnDef=\"cena\">\r\n                    <th mat-header-cell *matHeaderCellDef> Ukupno </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p class=\"mat-body-2\">\r\n                            {{roba.cenaUkupno | currency:\" \"}} DIN\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Kolicina Column -->\r\n                <ng-container matColumnDef=\"izbaciDugme\">\r\n                    <th mat-header-cell *matHeaderCellDef> </th>\r\n                    <td mat-cell *matCellDef=\"let roba; let i = index;\">\r\n                        <div class=\"d-flex flex-column flex-lg-row bd-highlight\">\r\n                            <div class=\"p-1 bd-highlight\">\r\n                                <button class=\"button-glavni-100\" mat-raised-button\r\n                                    (click)=\"otvoriDialog(roba)\">Izmeni</button>\r\n                            </div>\r\n                            <div class=\"p-1 bd-highlight\">\r\n                                <button class=\"button-crveni-50\" mat-raised-button\r\n                                    (click)='izbaciIzKorpe(i)'>Izbaci</button>\r\n                            </div>\r\n                        </div>\r\n\r\n                </ng-container>\r\n\r\n                <tr mat-header-row *matHeaderRowDef=\"displayedColumns\"></tr>\r\n                <tr mat-row *matRowDef=\"let row; columns: displayedColumns;\"></tr>\r\n            </table>\r\n        </div>\r\n        <div class=\"d-flex flex-column flex-xl-row\">\r\n            <div class=\"d-flex flex-column flex-xl-row flex-fill \">\r\n                <div class=\"flex-fill\">\r\n                    <div class=\"d-flex flex-fill flex-column pomeri-dole\">\r\n                        <div *ngIf=\"nacinPlacanja && nacinPlacanja.length > 0\" class=\"granice\">\r\n                            <h3>Način plaćanja</h3>\r\n                            <hr>\r\n                            <mat-radio-group class=\"radio-grupa\" [(ngModel)]=\"izabranNacinPlacanja\">\r\n                                <mat-radio-button color=\"primary\" class=\"radio-dugme\"\r\n                                    *ngFor=\"let placanje of nacinPlacanja\" [value]=\"placanje\">\r\n                                    {{placanje.naziv}}\r\n                                </mat-radio-button>\r\n                            </mat-radio-group>\r\n                        </div>\r\n                    </div>\r\n                    <div *ngIf=\"nacinPrevoza && nacinPrevoza.length > 0\"\r\n                        class=\"d-flex flex-fill flex-column pomeri-dole\">\r\n                        <div class=\"granice visina-prevoza\">\r\n                            <h3>Način prevoza</h3>\r\n                            <hr>\r\n                            <mat-radio-group class=\"radio-grupa\" [(ngModel)]=\"izabranNacinPrevoza\">\r\n                                <mat-radio-button color=\"primary\" class=\"radio-dugme\"\r\n                                    *ngFor=\"let prevoz of nacinPrevoza\" [value]=\"prevoz\">\r\n                                    {{\"prevoz_\" + prevoz.id | translate}}\r\n                                </mat-radio-button>\r\n                            </mat-radio-group>\r\n                        </div>\r\n                        <div *ngIf=\"izabranNacinPrevoza.id === 2\" class=\"granice pomeri-dole\">\r\n                            <h4>Izaberite način dostave</h4>\r\n                            <mat-radio-group class=\"radio-grupa\" [(ngModel)]=\"izabranaTrecaLiceOpcija\">\r\n                                <mat-radio-button color=\"primary\" class=\"radio-dugme\"\r\n                                    *ngFor=\"let opcije of treceLiceOpcije\" [value]=\"opcije\">\r\n                                    {{opcije}}\r\n                                </mat-radio-button>\r\n                            </mat-radio-group>\r\n                            <div>\r\n                                <div *ngIf=\"izabranaTrecaLiceOpcija === treceLiceOpcije[0]\">\r\n                                    <mat-form-field>\r\n                                        <mat-select placeholder=\"Kurirske sluzbe\" [(ngModel)]=\"izabraneKurirskeSluzbe\">\r\n                                            <mat-option *ngFor=\"let sluzbe of kurirskeSluzbe\" [value]=\"sluzbe\">\r\n                                                {{sluzbe}}\r\n                                            </mat-option>\r\n                                        </mat-select>\r\n                                    </mat-form-field>\r\n                                </div>\r\n                                <div *ngIf=\"izabranaTrecaLiceOpcija === treceLiceOpcije[1]\">\r\n                                    <mat-form-field role=\"form\" [formGroup]=\"drugiNacinPrevoza\">\r\n                                        <textarea matInput #prevoz formControlName=\"prevoz\"\r\n                                            placeholder=\"Upišite drugi način prevoza...\"></textarea>\r\n                                    </mat-form-field>\r\n                                    <div *ngIf=\"dugmeZaPorucivanjeStisnuto && d.prevoz.errors\">\r\n                                        <div *ngIf=\"d.prevoz.errors.required\">\r\n                                            <p class=\"upozorenje\">Ovo polje je obavezno</p>\r\n                                        </div>\r\n                                        <div *ngIf=\"d.prevoz.errors.minlength\">\r\n                                            <p class=\"upozorenje\">Minimalno 3 karaktera</p>\r\n                                        </div>\r\n                                    </div>\r\n                                </div>\r\n                            </div>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n                <div class=\"flex-fill\">\r\n                    <div class=\"d-flex flex-fill flex-column pomeri-dole\">\r\n                        <div *ngIf=\"nacinPlacanja && nacinPlacanja.length > 0\" class=\"granice visina\">\r\n                            <h3>Napomena</h3>\r\n                            <hr>\r\n                            <mat-form-field class=\"sirina-cena\">\r\n                                <textarea matInput class=\"napomena\" [(ngModel)]=\"napomena\"\r\n                                    placeholder=\"Unesite napomenu...\"></textarea>\r\n                            </mat-form-field>\r\n                        </div>\r\n                    </div>\r\n                    <div class=\"d-flex flex-fill flex-column pomeri-dole\">\r\n                        <div *ngIf=\"nacinPlacanja && nacinPlacanja.length > 0\" class=\"granice\">\r\n                            <h3>Izaberite adresu dostave</h3>\r\n                            <hr>\r\n                            <mat-radio-group class=\"radio-grupa\" [(ngModel)]=\"izabraneAdresaDostave\">\r\n                                <mat-radio-button color=\"primary\" class=\"radio-dugme\"\r\n                                    *ngFor=\"let adresa of adresaDostave\" [value]=\"adresa\">\r\n                                    {{adresa}}\r\n                                </mat-radio-button>\r\n                            </mat-radio-group>\r\n                        </div>\r\n                        <div class=\"granice pomeri-dole\">\r\n                            <div *ngIf=\"izabraneAdresaDostave === adresaDostave[0]\" class=\"pomeri-dole\">\r\n                                <h4>Adresa</h4>\r\n                                <label> {{partner.adresa}}</label>\r\n                            </div>\r\n                            <div *ngIf=\"izabraneAdresaDostave === adresaDostave[1]\" class=\"pomeri-dole\">\r\n                                <h4>Druga adresa dostave</h4>\r\n                                <form role=\"form\" [formGroup]=\"adresaForm\">\r\n                                    <div>\r\n                                        <mat-form-field role=\"form\">\r\n                                            <input type=\"text\" #ulica formControlName=\"ulica\" matInput\r\n                                                placeholder=\"Ulica i broj\">\r\n                                        </mat-form-field>\r\n                                    </div>\r\n                                    <div *ngIf=\"dugmeZaPorucivanjeStisnuto && a.ulica.errors\">\r\n                                        <div *ngIf=\"a.ulica.errors.required\">\r\n                                            <p class=\"upozorenje\">Naziv ulice je obavezan</p>\r\n                                        </div>\r\n                                        <div *ngIf=\"a.ulica.errors.minlength\">\r\n                                            <p class=\"upozorenje\">Naziv ulice mora imati minimalno 3 karaktera</p>\r\n                                        </div>\r\n                                    </div>\r\n                                    <div>\r\n                                        <mat-form-field role=\"form\">\r\n                                            <input type=\"text\" #grad formControlName=\"grad\" matInput placeholder=\"Grad\">\r\n                                        </mat-form-field>\r\n                                    </div>\r\n                                    <div *ngIf=\"dugmeZaPorucivanjeStisnuto && a.grad.errors\">\r\n                                        <div *ngIf=\"a.grad.errors.required\">\r\n                                            <p class=\"upozorenje\">Naziv grada je obavezan</p>\r\n                                        </div>\r\n                                        <div *ngIf=\"a.grad.errors.minlength\">\r\n                                            <p class=\"upozorenje\">Naziv grada mora imati minimalno 2 karaktera</p>\r\n                                        </div>\r\n                                    </div>\r\n                                </form>\r\n                            </div>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n            <div class=\"d-flex flex-fill flex-column\">\r\n                <table class=\"table sirina-cena\">\r\n                    <tbody>\r\n                        <tr>\r\n                            <td class=\"pozadina-glavna-50 boja-siva-400\">Bez pdv-a: </td>\r\n                            <td class=\"text-right\">{{bezPdv | currency:\" \"}} RSD</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td class=\"pozadina-glavna-50 boja-siva-400\">Pdv: </td>\r\n                            <td class=\"text-right\">{{pdv | currency:\" \"}} RSD</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td class=\"pozadina-glavna-50 boja-siva-400\">Ukupno za uplatu: </td>\r\n                            <td class=\"text-right\"><b>{{ukupno | currency:\" \"}} RSD</b></td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n                <div>\r\n                    <button class=\"button-glavni-100 dugme-sirina float-right\" mat-raised-button\r\n                        (click)=\"posaljiPorudzbinu(roba)\">Potvrdi</button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</main>"
+module.exports = "<main>\r\n    <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"dataSource.length == 0\">\r\n        <i class=\"material-icons icon-size\">\r\n            shopping_cart\r\n        </i>\r\n        <h1 class=\"h1-upozorenje\">Korpa je trenutno prazna</h1>\r\n    </div>\r\n    <div class=\"tabela-div\" *ngIf=\"dataSource.length > 0\">\r\n        <i class=\"material-icons korpa-h1\">\r\n            shopping_cart\r\n        </i>\r\n        <div class=\"margin-bottom--10\" style=\"overflow-x:auto;\">\r\n            <p class=\"pdv\"><i>Sve cene su prikazane sa pdv-om.</i></p>\r\n            <table mat-table [dataSource]=\"dataSource\" class=\"mat-elevation-z8\">\r\n                <!-- Kataloski broj Column -->\r\n                <ng-container matColumnDef=\"katbr\">\r\n                    <th mat-header-cell *matHeaderCellDef> Kataloski broj </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p class=\"mat-body-2\">\r\n                            {{roba.katbr}}\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Kataloski broj proizvodjaca Column -->\r\n                <ng-container matColumnDef=\"katbrpro\">\r\n                    <th mat-header-cell *matHeaderCellDef> Kataloski broj proizvodjaca </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p>\r\n                            {{roba.katbrpro}}\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Naziv Column -->\r\n                <ng-container matColumnDef=\"naziv\">\r\n                    <th mat-header-cell *matHeaderCellDef> Naziv </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p>\r\n                            {{roba.naziv}}\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Proizvodjač Column -->\r\n                <ng-container matColumnDef=\"proizvodjac\">\r\n                    <th mat-header-cell *matHeaderCellDef> Proizvodjač </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p class=\"mat-body-2\">\r\n                            {{roba.proizvodjac.naziv}}\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Cena Column -->\r\n                <ng-container matColumnDef=\"kolicina\">\r\n                    <th mat-header-cell *matHeaderCellDef> Kolicina </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p class=\"mat-body-2\">\r\n                            {{roba.kolicina}}\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Cena Column -->\r\n                <ng-container matColumnDef=\"cena\">\r\n                    <th mat-header-cell *matHeaderCellDef> Ukupno </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p class=\"mat-body-2\">\r\n                            {{roba.cenaUkupno | currency:\" \"}} DIN\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Kolicina Column -->\r\n                <ng-container matColumnDef=\"izbaciDugme\">\r\n                    <th mat-header-cell *matHeaderCellDef> </th>\r\n                    <td mat-cell *matCellDef=\"let roba; let i = index;\">\r\n                        <div class=\"d-flex flex-column flex-lg-row bd-highlight\">\r\n                            <div class=\"p-1 bd-highlight\">\r\n                                <button class=\"button-glavni-100\" mat-raised-button\r\n                                    (click)=\"otvoriDialog(roba)\">Izmeni</button>\r\n                            </div>\r\n                            <div class=\"p-1 bd-highlight\">\r\n                                <button class=\"button-crveni-50\" mat-raised-button\r\n                                    (click)='izbaciIzKorpe(i)'>Izbaci</button>\r\n                            </div>\r\n                        </div>\r\n\r\n                </ng-container>\r\n\r\n                <tr mat-header-row *matHeaderRowDef=\"displayedColumns\"></tr>\r\n                <tr mat-row *matRowDef=\"let row; columns: displayedColumns;\"></tr>\r\n            </table>\r\n        </div>\r\n        <div class=\"d-flex flex-column flex-xl-row\">\r\n            <div class=\"d-flex flex-column flex-xl-row flex-fill \">\r\n                <div class=\"flex-fill\">\r\n                    <div class=\"d-flex flex-fill flex-column pomeri-dole\">\r\n                        <div *ngIf=\"nacinPlacanja && nacinPlacanja.length > 0\" class=\"granice\">\r\n                            <h3>Način plaćanja</h3>\r\n                            <hr>\r\n                            <mat-radio-group class=\"radio-grupa\" [(ngModel)]=\"izabranNacinPlacanja\">\r\n                                <mat-radio-button color=\"primary\" class=\"radio-dugme\"\r\n                                    *ngFor=\"let placanje of nacinPlacanja\" [value]=\"placanje\">\r\n                                    {{placanje.naziv}}\r\n                                </mat-radio-button>\r\n                            </mat-radio-group>\r\n                        </div>\r\n                    </div>\r\n                    <div *ngIf=\"nacinPrevoza && nacinPrevoza.length > 0\"\r\n                        class=\"d-flex flex-fill flex-column pomeri-dole\">\r\n                        <div class=\"granice visina-prevoza\">\r\n                            <h3>Način prevoza</h3>\r\n                            <hr>\r\n                            <mat-radio-group class=\"radio-grupa\" [(ngModel)]=\"izabranNacinPrevoza\">\r\n                                <mat-radio-button color=\"primary\" class=\"radio-dugme\"\r\n                                    *ngFor=\"let prevoz of nacinPrevoza\" [value]=\"prevoz\">\r\n                                    {{\"prevoz_\" + prevoz.id | translate}}\r\n                                </mat-radio-button>\r\n                            </mat-radio-group>\r\n                        </div>\r\n                        <div *ngIf=\"izabranNacinPrevoza.id === 2\" class=\"granice pomeri-dole\">\r\n                            <h4>Izaberite način dostave</h4>\r\n                            <mat-radio-group class=\"radio-grupa\" [(ngModel)]=\"izabranaTrecaLiceOpcija\">\r\n                                <mat-radio-button color=\"primary\" class=\"radio-dugme\"\r\n                                    *ngFor=\"let opcije of treceLiceOpcije\" [value]=\"opcije\">\r\n                                    {{opcije}}\r\n                                </mat-radio-button>\r\n                            </mat-radio-group>\r\n                            <div>\r\n                                <div *ngIf=\"izabranaTrecaLiceOpcija === treceLiceOpcije[0]\">\r\n                                    <mat-form-field>\r\n                                        <mat-select placeholder=\"Kurirske sluzbe\" [(ngModel)]=\"izabraneKurirskeSluzbe\">\r\n                                            <mat-option *ngFor=\"let sluzbe of kurirskeSluzbe\" [value]=\"sluzbe\">\r\n                                                {{sluzbe}}\r\n                                            </mat-option>\r\n                                        </mat-select>\r\n                                    </mat-form-field>\r\n                                </div>\r\n                                <div *ngIf=\"izabranaTrecaLiceOpcija === treceLiceOpcije[1]\">\r\n                                    <mat-form-field role=\"form\" [formGroup]=\"drugiNacinPrevoza\">\r\n                                        <textarea matInput #prevoz formControlName=\"prevoz\"\r\n                                            placeholder=\"Upišite drugi način prevoza...\"></textarea>\r\n                                    </mat-form-field>\r\n                                    <div *ngIf=\"dugmeZaPorucivanjeStisnuto && d.prevoz.errors\">\r\n                                        <div *ngIf=\"d.prevoz.errors.required\">\r\n                                            <p class=\"upozorenje\">Ovo polje je obavezno</p>\r\n                                        </div>\r\n                                        <div *ngIf=\"d.prevoz.errors.minlength\">\r\n                                            <p class=\"upozorenje\">Minimalno 3 karaktera</p>\r\n                                        </div>\r\n                                    </div>\r\n                                </div>\r\n                            </div>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n                <div class=\"flex-fill\">\r\n                    <div class=\"d-flex flex-fill flex-column pomeri-dole\">\r\n                        <div *ngIf=\"nacinPlacanja && nacinPlacanja.length > 0\" class=\"granice visina\">\r\n                            <h3>Napomena</h3>\r\n                            <hr>\r\n                            <mat-form-field class=\"sirina-cena\">\r\n                                <textarea matInput class=\"napomena\" [(ngModel)]=\"napomena\"\r\n                                    placeholder=\"Unesite napomenu...\"></textarea>\r\n                            </mat-form-field>\r\n                        </div>\r\n                    </div>\r\n                    <div class=\"d-flex flex-fill flex-column pomeri-dole\">\r\n                        <div *ngIf=\"nacinPlacanja && nacinPlacanja.length > 0\" class=\"granice\">\r\n                            <h3>Izaberite adresu dostave</h3>\r\n                            <hr>\r\n                            <mat-radio-group class=\"radio-grupa\" [(ngModel)]=\"izabraneAdresaDostave\">\r\n                                <mat-radio-button color=\"primary\" class=\"radio-dugme\"\r\n                                    *ngFor=\"let adresa of adresaDostave\" [value]=\"adresa\">\r\n                                    {{adresa}}\r\n                                </mat-radio-button>\r\n                            </mat-radio-group>\r\n                        </div>\r\n                        <div class=\"granice pomeri-dole\">\r\n                            <div *ngIf=\"izabraneAdresaDostave === adresaDostave[0]\" class=\"pomeri-dole\">\r\n                                <h4>Adresa</h4>\r\n                                <label> {{partner.adresa}}</label>\r\n                            </div>\r\n                            <div *ngIf=\"izabraneAdresaDostave === adresaDostave[1]\" class=\"pomeri-dole\">\r\n                                <h4>Druga adresa dostave</h4>\r\n                                <form role=\"form\" [formGroup]=\"adresaForm\">\r\n                                    <div>\r\n                                        <mat-form-field role=\"form\">\r\n                                            <input type=\"text\" #ulica formControlName=\"ulica\" matInput\r\n                                                placeholder=\"Ulica i broj\">\r\n                                        </mat-form-field>\r\n                                    </div>\r\n                                    <div *ngIf=\"dugmeZaPorucivanjeStisnuto && a.ulica.errors\">\r\n                                        <div *ngIf=\"a.ulica.errors.required\">\r\n                                            <p class=\"upozorenje\">Naziv ulice je obavezan</p>\r\n                                        </div>\r\n                                        <div *ngIf=\"a.ulica.errors.minlength\">\r\n                                            <p class=\"upozorenje\">Naziv ulice mora imati minimalno 3 karaktera</p>\r\n                                        </div>\r\n                                    </div>\r\n                                    <div>\r\n                                        <mat-form-field role=\"form\">\r\n                                            <input type=\"text\" #grad formControlName=\"grad\" matInput placeholder=\"Grad\">\r\n                                        </mat-form-field>\r\n                                    </div>\r\n                                    <div *ngIf=\"dugmeZaPorucivanjeStisnuto && a.grad.errors\">\r\n                                        <div *ngIf=\"a.grad.errors.required\">\r\n                                            <p class=\"upozorenje\">Naziv grada je obavezan</p>\r\n                                        </div>\r\n                                        <div *ngIf=\"a.grad.errors.minlength\">\r\n                                            <p class=\"upozorenje\">Naziv grada mora imati minimalno 2 karaktera</p>\r\n                                        </div>\r\n                                    </div>\r\n                                </form>\r\n                            </div>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n            <div class=\"d-flex flex-fill flex-column\">\r\n                <table class=\"table sirina-cena\">\r\n                    <tbody>\r\n                        <tr>\r\n                            <td class=\"pozadina-glavna-50 boja-siva-400\">Bez pdv-a: </td>\r\n                            <td class=\"text-right\">{{bezPdv | currency:\" \"}} RSD</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td class=\"pozadina-glavna-50 boja-siva-400\">Pdv: </td>\r\n                            <td class=\"text-right\">{{pdv | currency:\" \"}} RSD</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td class=\"pozadina-glavna-50 boja-siva-400\">Ukupno za uplatu: </td>\r\n                            <td class=\"text-right\"><b>{{ukupno | currency:\" \"}} RSD</b></td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n                <div>\r\n                    <button class=\"button-glavni-100 dugme-sirina float-right\" mat-raised-button\r\n                        (click)=\"posaljiPorudzbinu(roba)\">Potvrdi</button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</main>"
 
 /***/ }),
 
@@ -1736,7 +1779,7 @@ var LoginComponent = /** @class */ (function () {
 /*!*************************************!*\
   !*** ./src/app/e-shop/model/dto.ts ***!
   \*************************************/
-/*! exports provided: ValueHelp, Roba, RobaPage, Partner, Fakutra, FakturaPage, FakturaDetalji, Proizvodjac, Registracija, ResetSifre, PromenaSifre */
+/*! exports provided: ValueHelp, Roba, RobaPage, Partner, Fakutra, FakturaPage, FakturaDetalji, Proizvodjač, Registracija, ResetSifre, PromenaSifre */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1748,7 +1791,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Fakutra", function() { return Fakutra; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FakturaPage", function() { return FakturaPage; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FakturaDetalji", function() { return FakturaDetalji; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Proizvodjac", function() { return Proizvodjac; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Proizvodjač", function() { return Proizvodjač; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Registracija", function() { return Registracija; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ResetSifre", function() { return ResetSifre; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PromenaSifre", function() { return PromenaSifre; });
@@ -1814,10 +1857,10 @@ var FakturaDetalji = /** @class */ (function () {
     return FakturaDetalji;
 }());
 
-var Proizvodjac = /** @class */ (function () {
-    function Proizvodjac() {
+var Proizvodjač = /** @class */ (function () {
+    function Proizvodjač() {
     }
-    return Proizvodjac;
+    return Proizvodjač;
 }());
 
 var Registracija = /** @class */ (function () {
@@ -1836,6 +1879,30 @@ var PromenaSifre = /** @class */ (function () {
     function PromenaSifre() {
     }
     return PromenaSifre;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/e-shop/model/filter.ts":
+/*!****************************************!*\
+  !*** ./src/app/e-shop/model/filter.ts ***!
+  \****************************************/
+/*! exports provided: Filter */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Filter", function() { return Filter; });
+var Filter = /** @class */ (function () {
+    function Filter() {
+    }
+    Filter.prototype.Filter = function () {
+        this.proizvodjac = '';
+        this.raspolozivost = 'Svi artikli';
+    };
+    return Filter;
 }());
 
 
@@ -1984,6 +2051,28 @@ var RobaKorpa = /** @class */ (function () {
     return RobaKorpa;
 }());
 
+
+
+/***/ }),
+
+/***/ "./src/app/e-shop/model/roba.enum.ts":
+/*!*******************************************!*\
+  !*** ./src/app/e-shop/model/roba.enum.ts ***!
+  \*******************************************/
+/*! exports provided: VrstaRobe */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VrstaRobe", function() { return VrstaRobe; });
+var VrstaRobe;
+(function (VrstaRobe) {
+    VrstaRobe[VrstaRobe["SVE"] = 0] = "SVE";
+    VrstaRobe[VrstaRobe["FILTERI"] = 1] = "FILTERI";
+    VrstaRobe[VrstaRobe["AKUMULATORI"] = 2] = "AKUMULATORI";
+    VrstaRobe[VrstaRobe["ULJA"] = 3] = "ULJA";
+    VrstaRobe[VrstaRobe["OSTALO"] = 4] = "OSTALO";
+})(VrstaRobe || (VrstaRobe = {}));
 
 
 /***/ }),
@@ -2382,7 +2471,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container-fluid\">\r\n\r\n    <div class=\"d-flex align-items-center justify-content-center\">\r\n        <div class=\"forms-input\">\r\n            <input class=\"p-1 flex-grow-1 search__input\" type=\"search\" [(ngModel)]=\"searchValue\" (keyup.enter)=\"pronaciPoTrazenojReci(searchValue)\" />\r\n            <div class=\"p-1\" (click)='pronaciPoTrazenojReci(searchValue)'>\r\n                <button mat-mini-fab class=pozadina-glavna-100>\r\n                    <mat-icon>search</mat-icon>\r\n                </button>\r\n            </div>\r\n            <div class=\"p-1\" (click)='toogleFilterDiv()'>\r\n                <button *ngIf=\"!otvoriFilterDiv\" class=pozadina-glavna-100 mat-mini-fab>\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n                <button *ngIf=\"otvoriFilterDiv\" mat-mini-fab class=\"button-glavni-200\">\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"d-flex justify-content-center\">\r\n        <label *ngIf=\"pocetnoPretrazivanje\">\r\n            <font color=\"#424242\"> Ukucajte kataloski broj</font>\r\n        </label>\r\n    </div>\r\n\r\n    <div class=\"d-flex justify-content-center\" *ngIf=\"otvoriFilterDiv\">\r\n        <div class=\"filter-div-test d-flex flex-column\">\r\n            <div class=\"d-flex justify-content-center\">\r\n                <h2>\r\n                    Filter\r\n                </h2>\r\n            </div>\r\n            <div class=\"d-flex flex-column flex-xl-row input-group mb-3\">\r\n                <div class=\"input-group-prepend\">\r\n                    <label class=\"input-group-text mobilna-duzina button-glavni-50\" for=\"inputGroupSelect01\">\r\n                        <p class=\"boja-siva-400\">Proizvodjac: </p>\r\n                    </label>\r\n                </div>\r\n                <select class=\"custom-select mobilna-duzina\" id=\"inputGroupSelect01\" [(ngModel)]=\"izabraniProizvodjac\">\r\n                    <option *ngFor=\"let proizvodjac of proizvodjaci\" [value]=\"proizvodjac.naziv\">\r\n                        {{proizvodjac.naziv}}\r\n                    </option>\r\n                </select>\r\n\r\n                <div class=\"input-group-prepend razmak\">\r\n                    <label class=\"input-group-text mobilna-duzina button-glavni-50\" for=\"inputGroupSelect01\">\r\n                        Raspolozivost:\r\n                    </label>\r\n                </div>\r\n                <select class=\"custom-select mobilna-duzina\" id=\"inputGroupSelect01\" [(ngModel)]=\"izabranaRaspolozivost\">\r\n                    <option *ngFor=\"let raspoloziv of raspolozivost\" [value]=\"raspoloziv\">{{raspoloziv}}</option>\r\n                </select>\r\n            </div>\r\n            <div class=\"d-flex justify-content-center\">\r\n                <div>\r\n                    <button mat-stroked-button class=pozadina-glavna-100 (click)='filtriraj()'>\r\n                        <p class=\"boja-siva-400\">Filtriraj</p>\r\n                    </button>\r\n                    <span class=\"col-2\"></span>\r\n                    <button mat-stroked-button class=button-crveni-50 (click)='resetujFilter()'>\r\n                        <p class=\"boja-siva-400\">Ponisti</p>\r\n                    </button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"!pronadjenaRoba\">\r\n        <i class=\"material-icons icon-size\">\r\n            error_outline\r\n        </i>\r\n        <h1 class=\"h1-upozorenje\">Artikal ne postoji</h1>\r\n    </div>\r\n\r\n    <div class=\"d-flex justify-content-center prazna-tabela\" *ngIf=\"ucitavanje\">\r\n        <mat-spinner></mat-spinner>\r\n    </div>\r\n    <div class=\"tabela-div\" *ngIf=\"dataSource != null && dataSource.length > 0\">\r\n        <p class=\"pdv\"><i>Sve cene su prikazane sa pdv-om.</i></p>\r\n        <table mat-table [dataSource]=\"dataSource\">\r\n            <!-- Kataloski broj Column -->\r\n            <ng-container matColumnDef=\"katbr\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.katbr}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Kataloski broj proizvodjaca Column -->\r\n            <ng-container matColumnDef=\"katbrpro\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj proizvodjaca </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p >\r\n                        {{roba.katbrpro}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Naziv Column -->\r\n            <ng-container matColumnDef=\"naziv\">\r\n                <th mat-header-cell *matHeaderCellDef> Naziv </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p >\r\n                        {{roba.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Proizvodjac Column -->\r\n            <ng-container matColumnDef=\"proizvodjac\">\r\n                <th mat-header-cell *matHeaderCellDef> Proizvodjac </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.proizvodjac.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"rabat\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Rabat </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.rabat | currency:\" \"}}%\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"cena\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Cena </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.cena | currency:\" \"}} RSD\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Stanje Column -->\r\n            <ng-container matColumnDef=\"stanje\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Stanje </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-zelena-50\">check_circle_outline</mat-icon>\r\n                    </div>\r\n                    <div *ngIf=\"roba.stanje == 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-crvena-50\">remove_circle_outline</mat-icon>\r\n                    </div>\r\n                </td>\r\n            </ng-container>\r\n\r\n\r\n            <!-- Kolicina Column -->\r\n            <ng-container matColumnDef=\"kolicina\">\r\n                <th mat-header-cell *matHeaderCellDef>Kolicina </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <input type=\"number\" min=\"0\" placeholder=\"0\" max=\"{{roba.stanje}}\" class=\"kolicina-labela\"\r\n                            placeholder=\"0\" [(ngModel)]=\"roba.kolicina\" />\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Kropa dugme Column -->\r\n            <ng-container matColumnDef=\"korpa\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <button mat-raised-button class=\"button-glavni-100\" (click)='dodajUKorpu(roba)'>Dodaj u korpu</button>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Da li ima na stanju ikona -->\r\n            <ng-container matColumnDef=\"u-korpi\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"uKorpi(roba.katbr)\">\r\n                        <mat-icon class=\"boja-crvena-50\">add_shopping_cart</mat-icon>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <tr mat-header-row *matHeaderRowDef=\"getDisplayedColumns()\"></tr>\r\n            <tr mat-row *matRowDef=\"let row; columns: getDisplayedColumns();\"></tr>\r\n        </table>\r\n        <mat-paginator #paginator [length]=\"tableLength\" [pageSize]=\"rowsPerPage\" [pageSizeOptions]=\"[5, 10, 25]\"\r\n            [pageIndex]=\"pageIndex\" [length]=\"tableLength\" [showFirstLastButtons]=\"true\" (page)=\"paginatorEvent($event)\">\r\n        </mat-paginator>\r\n    </div>\r\n\r\n</div>"
+module.exports = "<div class=\"container-fluid\">\r\n\r\n    <div class=\"d-flex align-items-center justify-content-center\">\r\n        <div class=\"forms-input\">\r\n            <input class=\"p-1 flex-grow-1 search__input\" type=\"search\" [(ngModel)]=\"searchValue\"\r\n                (keyup.enter)=\"pronaciPoTrazenojReci(searchValue)\" />\r\n            <div class=\"p-1\" (click)='pronaciPoTrazenojReci(searchValue)'>\r\n                <button mat-mini-fab class=pozadina-glavna-100>\r\n                    <mat-icon>search</mat-icon>\r\n                </button>\r\n            </div>\r\n            <div class=\"p-1\" (click)='toogleFilterDiv()'>\r\n                <button *ngIf=\"!otvoriFilter\" class=pozadina-glavna-100 mat-mini-fab>\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n                <button *ngIf=\"otvoriFilter\" mat-mini-fab class=\"button-glavni-200\">\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"d-flex justify-content-center\">\r\n        <label *ngIf=\"pocetnoPretrazivanje\">\r\n            <font color=\"#424242\"> Ukucajte kataloski broj</font>\r\n        </label>\r\n    </div>\r\n\r\n    <app-filter [vrstaRobe]=\"vrstaRobe\" [otvoriFilter]=\"otvoriFilter\" (filterEvent)=\"filtriraj($event)\"></app-filter>\r\n\r\n    <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"!pronadjenaRoba\">\r\n        <i class=\"material-icons icon-size\">\r\n            error_outline\r\n        </i>\r\n        <h1 class=\"h1-upozorenje\">Artikal ne postoji</h1>\r\n    </div>\r\n\r\n    <div class=\"d-flex justify-content-center prazna-tabela\" *ngIf=\"ucitavanje\">\r\n        <mat-spinner></mat-spinner>\r\n    </div>\r\n    <div class=\"tabela-div\" *ngIf=\"dataSource != null && dataSource.length > 0\">\r\n        <p class=\"pdv\"><i>Sve cene su prikazane sa pdv-om.</i></p>\r\n        <table mat-table [dataSource]=\"dataSource\">\r\n            <!-- Kataloski broj Column -->\r\n            <ng-container matColumnDef=\"katbr\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.katbr}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Kataloski broj proizvodjaca Column -->\r\n            <ng-container matColumnDef=\"katbrpro\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj proizvodjaca </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p>\r\n                        {{roba.katbrpro}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Naziv Column -->\r\n            <ng-container matColumnDef=\"naziv\">\r\n                <th mat-header-cell *matHeaderCellDef> Naziv </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p>\r\n                        {{roba.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Proizvodjač Column -->\r\n            <ng-container matColumnDef=\"proizvodjac\">\r\n                <th mat-header-cell *matHeaderCellDef> Proizvodjač </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.proizvodjac.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"rabat\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Rabat </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.rabat | currency:\" \"}}%\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"cena\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Cena </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.cena | currency:\" \"}} RSD\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Stanje Column -->\r\n            <ng-container matColumnDef=\"stanje\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Stanje </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-zelena-50\">check_circle_outline</mat-icon>\r\n                    </div>\r\n                    <div *ngIf=\"roba.stanje == 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-crvena-50\">remove_circle_outline</mat-icon>\r\n                    </div>\r\n                </td>\r\n            </ng-container>\r\n\r\n\r\n            <!-- Kolicina Column -->\r\n            <ng-container matColumnDef=\"kolicina\">\r\n                <th mat-header-cell *matHeaderCellDef>Kolicina </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <input type=\"number\" min=\"0\" placeholder=\"0\" max=\"{{roba.stanje}}\" class=\"kolicina-labela\"\r\n                            placeholder=\"0\" [(ngModel)]=\"roba.kolicina\" />\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Kropa dugme Column -->\r\n            <ng-container matColumnDef=\"korpa\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <button mat-raised-button class=\"button-glavni-100\" (click)='dodajUKorpu(roba)'>Dodaj u\r\n                            korpu</button>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Da li ima na stanju ikona -->\r\n            <ng-container matColumnDef=\"u-korpi\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"uKorpi(roba.katbr)\">\r\n                        <mat-icon class=\"boja-crvena-50\">add_shopping_cart</mat-icon>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <tr mat-header-row *matHeaderRowDef=\"getDisplayedColumns()\"></tr>\r\n            <tr mat-row *matRowDef=\"let row; columns: getDisplayedColumns();\"></tr>\r\n        </table>\r\n        <mat-paginator #paginator [length]=\"tableLength\" [pageSize]=\"rowsPerPage\" [pageSizeOptions]=\"[5, 10, 25]\"\r\n            [pageIndex]=\"pageIndex\" [length]=\"tableLength\" [showFirstLastButtons]=\"true\"\r\n            (page)=\"paginatorEvent($event)\">\r\n        </mat-paginator>\r\n    </div>\r\n\r\n</div>"
 
 /***/ }),
 
@@ -2404,7 +2493,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
 /* harmony import */ var _service_login_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../service/login.service */ "./src/app/e-shop/service/login.service.ts");
 /* harmony import */ var _service_data_data_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
-/* harmony import */ var _service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../service/proizvodjac.service */ "./src/app/e-shop/service/proizvodjac.service.ts");
+/* harmony import */ var _model_roba_enum__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
+/* harmony import */ var _model_filter__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../model/filter */ "./src/app/e-shop/model/filter.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2423,27 +2513,25 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var AkumulatoriComponent = /** @class */ (function () {
-    function AkumulatoriComponent(robaService, utilsService, loginServis, dataService, proizvodjacService, korpaSnackBar) {
+    function AkumulatoriComponent(robaService, utilsService, loginServis, dataService, korpaSnackBar) {
         this.robaService = robaService;
         this.utilsService = utilsService;
         this.loginServis = loginServis;
         this.dataService = dataService;
-        this.proizvodjacService = proizvodjacService;
         this.korpaSnackBar = korpaSnackBar;
+        this.vrstaRobe = _model_roba_enum__WEBPACK_IMPORTED_MODULE_8__["VrstaRobe"].AKUMULATORI;
         // Paging and Sorting elements
         this.rowsPerPage = 10;
         this.pageIndex = 0;
         this.sort = null;
-        // Filteri
-        this.izabraniProizvodjac = '';
-        this.raspolozivost = ['Svi artikli', 'Ima na stanju'];
-        this.izabranaRaspolozivost = this.raspolozivost[1];
+        this.filter = new _model_filter__WEBPACK_IMPORTED_MODULE_9__["Filter"]();
         this.searchValue = '';
         this.lastSearchValue = '';
         this.ucitavanje = false;
         this.pronadjenaRoba = true;
-        this.otvoriFilterDiv = false;
+        this.otvoriFilter = false;
         // Tabela
         this.columnDefinitions = [
             { def: 'katbr', ifNotAuth: true },
@@ -2464,7 +2552,7 @@ var AkumulatoriComponent = /** @class */ (function () {
         this.pocetnoPretrazivanje = true;
         this.dataService.trenutnaKorpa.subscribe(function (korpa) { return _this.korpa = korpa; });
         this.loginServis.ulogovaniPartner.subscribe(function (partner) { return _this.partner = partner; });
-        this.pronadjiSveProizvodjace();
+        this.pronandjiSveAkumulatore();
     };
     AkumulatoriComponent.prototype.getDisplayedColumns = function () {
         var isPartner = this.partner.ppid != null;
@@ -2489,7 +2577,6 @@ var AkumulatoriComponent = /** @class */ (function () {
             _this.pronadjenaRoba = true;
             _this.roba = res.content;
             _this.dataSource = _this.roba;
-            _this.dataSource = _this.roba;
             _this.rowsPerPage = res.size;
             _this.pageIndex = res.number;
             _this.tableLength = res.totalElements;
@@ -2504,11 +2591,8 @@ var AkumulatoriComponent = /** @class */ (function () {
         this.lastSearchValue = searchValue;
         this.ucitavanje = true;
         this.dataSource = null;
-        var naStanju = this.utilsService.daLiRobaTrebaDaBudeNaStanju(this.raspolozivost, this.izabranaRaspolozivost);
-        var proizvodjacId = this.utilsService.vratiIdProizvodjacaAkoPostoji(this.izabraniProizvodjac, this.proizvodjaci);
-        this.ucitavanje = true;
         this.pronadjenaRoba = true;
-        this.robaService.pronadjiAkumulatore(this.sort, this.rowsPerPage, this.pageIndex, searchValue, naStanju, proizvodjacId)
+        this.robaService.pronadjiAkumulatore(this.sort, this.rowsPerPage, this.pageIndex, searchValue, this.filter.naStanju, this.filter.proizvodjacId)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(function (error) {
             if (error.status === 404) {
                 _this.pronadjenaRoba = false;
@@ -2528,19 +2612,6 @@ var AkumulatoriComponent = /** @class */ (function () {
             console.log('Podnaci robu izbacilo je gresko');
         });
     };
-    AkumulatoriComponent.prototype.pronadjiSveProizvodjace = function () {
-        var _this = this;
-        this.proizvodjacService.pronadjiSveProizvodjaceAkumulatora()
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }))
-            .subscribe(function (res) {
-            _this.proizvodjaci = res;
-            _this.izabraniProizvodjac = _this.proizvodjaci[0].naziv;
-            _this.pronandjiSveAkumulatore();
-        }, function (error) {
-            _this.proizvodjaci = null;
-            console.log('Pronaci svu robu je bacilo gresku', error);
-        });
-    };
     AkumulatoriComponent.prototype.pronaciPoTrazenojReci = function (searchValue) {
         if (this.dataSource) {
             this.pageIndex = 0;
@@ -2558,23 +2629,14 @@ var AkumulatoriComponent = /** @class */ (function () {
         this.pronadjiAkumulatorePoPretrazi(this.searchValue);
     };
     AkumulatoriComponent.prototype.toogleFilterDiv = function () {
-        this.otvoriFilterDiv = !this.otvoriFilterDiv;
+        this.otvoriFilter = !this.otvoriFilter;
     };
-    AkumulatoriComponent.prototype.resetujFilter = function () {
+    AkumulatoriComponent.prototype.filtriraj = function (filter) {
         if (this.dataSource) {
             this.pageIndex = 0;
         }
-        this.izabranaRaspolozivost = this.raspolozivost[1];
-        this.izabraniProizvodjac = this.proizvodjaci[0].naziv;
-        this.filtriraj();
-    };
-    AkumulatoriComponent.prototype.filtriraj = function () {
-        if (this.dataSource) {
-            this.pageIndex = 0;
-        }
-        var recZaPretragu;
-        recZaPretragu = this.searchValue;
-        this.pronadjiAkumulatorePoPretrazi(recZaPretragu);
+        this.filter = filter;
+        this.pronadjiAkumulatorePoPretrazi(this.searchValue);
     };
     AkumulatoriComponent.prototype.dodajUKorpu = function (roba) {
         var snackBarPoruka = this.utilsService.dodajUKorpu(roba);
@@ -2599,7 +2661,6 @@ var AkumulatoriComponent = /** @class */ (function () {
             _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_5__["AppUtilsService"],
             _service_login_service__WEBPACK_IMPORTED_MODULE_6__["LoginService"],
             _service_data_data_service__WEBPACK_IMPORTED_MODULE_7__["DataService"],
-            _service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_8__["ProizvodjacService"],
             _angular_material__WEBPACK_IMPORTED_MODULE_1__["MatSnackBar"]])
     ], AkumulatoriComponent);
     return AkumulatoriComponent;
@@ -2627,7 +2688,7 @@ module.exports = "\r\n\r\n@media only screen and (max-device-width :1025px) { \r
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container-fluid\">\r\n    <main>\r\n        <div class=\"d-flex align-items-center justify-content-center\">\r\n            <div class=\"forms-input\">\r\n                <input class=\"p-1 flex-grow-1 search__input\" type=\"search\" [(ngModel)]=\"searchValue\" (keyup.enter)=\"pronaciPoTrazenojReci(searchValue)\" />\r\n                <div class=\"p-1\" (click)='pronaciPoTrazenojReci(searchValue)'>\r\n                    <button mat-mini-fab class=pozadina-glavna-100>\r\n                        <mat-icon>search</mat-icon>\r\n                    </button>\r\n                </div>\r\n                <div class=\"p-1\" (click)='toogleFilterDiv()'>\r\n                    <button *ngIf=\"!otvoriFilterDiv\" class=pozadina-glavna-100 mat-mini-fab>\r\n                        <mat-icon>view_headline</mat-icon>\r\n                    </button>\r\n                    <button *ngIf=\"otvoriFilterDiv\" mat-mini-fab class=\"button-glavni-200\">\r\n                        <mat-icon>view_headline</mat-icon>\r\n                    </button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n        <div class=\"d-flex justify-content-center\">\r\n            <label *ngIf=\"pocetnoPretrazivanje\">\r\n                <font color=\"#424242\"> Ukucajte kataloski broj</font>\r\n            </label>\r\n        </div>\r\n\r\n        <div class=\"d-flex justify-content-center\" *ngIf=\"otvoriFilterDiv\">\r\n            <div class=\"filter-div-test d-flex flex-column\">\r\n                <div class=\"d-flex justify-content-center\">\r\n                    <h2>\r\n                        Filter\r\n                    </h2>\r\n                </div>\r\n                <div class=\"d-flex flex-column flex-xl-row input-group mb-3\">\r\n                    <div class=\"input-group-prepend\">\r\n                        <label class=\"input-group-text mobilna-duzina button-glavni-50\" for=\"inputGroupSelect01\">\r\n                            <p class=\"boja-siva-400\">Proizvodjac: </p>\r\n                        </label>\r\n                    </div>\r\n                    <select class=\"custom-select mobilna-duzina\" id=\"inputGroupSelect01\" [(ngModel)]=\"izabraniProizvodjac\">\r\n                        <option *ngFor=\"let proizvodjac of proizvodjaci\" [value]=\"proizvodjac.naziv\">\r\n                            {{proizvodjac.naziv}}\r\n                        </option>\r\n                    </select>\r\n\r\n                    <div class=\"input-group-prepend razmak\">\r\n                        <label class=\"input-group-text mobilna-duzina button-glavni-50\" for=\"inputGroupSelect01\">\r\n                            Raspolozivost:\r\n                        </label>\r\n                    </div>\r\n                    <select class=\"custom-select mobilna-duzina\" id=\"inputGroupSelect01\" [(ngModel)]=\"izabranaRaspolozivost\">\r\n                        <option *ngFor=\"let raspoloziv of raspolozivost\" [value]=\"raspoloziv\">{{raspoloziv}}</option>\r\n                    </select>\r\n                </div>\r\n                <div class=\"d-flex justify-content-center\">\r\n                    <div>\r\n                        <button mat-stroked-button class=pozadina-glavna-100 (click)='filtriraj()'>\r\n                            <p class=\"boja-siva-400\">Filtriraj</p>\r\n                        </button>\r\n                        <span class=\"col-2\"></span>\r\n                        <button mat-stroked-button class=button-crveni-50 (click)='resetujFilter()'>\r\n                            <p class=\"boja-siva-400\">Ponisti</p>\r\n                        </button>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n        <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"!pronadjenaRoba\">\r\n            <i class=\"material-icons icon-size\">\r\n                error_outline\r\n            </i>\r\n            <h1 class=\"h1-upozorenje\">Artikal ne postoji</h1>\r\n        </div>\r\n\r\n        <div class=\"d-flex justify-content-center prazna-tabela\" *ngIf=\"ucitavanje\">\r\n            <mat-spinner></mat-spinner>\r\n        </div>\r\n        <div class=\"tabela-div\" *ngIf=\"dataSource != null && dataSource.length > 0\">\r\n            <p class=\"pdv\"><i>Sve cene su prikazane sa pdv-om.</i></p>\r\n            <table mat-table [dataSource]=\"dataSource\">\r\n                <!-- Kataloski broj Column -->\r\n                <ng-container matColumnDef=\"katbr\">\r\n                    <th mat-header-cell *matHeaderCellDef> Kataloski broj </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p class=\"mat-body-2\">\r\n                            {{roba.katbr}}\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Kataloski broj proizvodjaca Column -->\r\n                <ng-container matColumnDef=\"katbrpro\">\r\n                    <th mat-header-cell *matHeaderCellDef> Kataloski broj proizvodjaca </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p >\r\n                            {{roba.katbrpro}}\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Naziv Column -->\r\n                <ng-container matColumnDef=\"naziv\">\r\n                    <th mat-header-cell *matHeaderCellDef> Naziv </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p >\r\n                            {{roba.naziv}}\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Proizvodjac Column -->\r\n                <ng-container matColumnDef=\"proizvodjac\">\r\n                    <th mat-header-cell *matHeaderCellDef> Proizvodjac </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p class=\"mat-body-2\">\r\n                            {{roba.proizvodjac.naziv}}\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Cena Column -->\r\n                <ng-container matColumnDef=\"rabat\">\r\n                    <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Rabat </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p class=\"mat-body-2 text-right iznos-margin\">\r\n                            {{roba.rabat | currency:\" \"}}%\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Cena Column -->\r\n                <ng-container matColumnDef=\"cena\">\r\n                    <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Cena </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p class=\"mat-body-2 text-right iznos-margin\">\r\n                            {{roba.cena | currency:\" \"}} RSD\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Stanje Column -->\r\n                <ng-container matColumnDef=\"stanje\">\r\n                    <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Stanje </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <div *ngIf=\"roba.stanje > 0\" class=\"text-center\">\r\n                            <mat-icon class=\"boja-zelena-50\">check_circle_outline</mat-icon>\r\n                        </div>\r\n                        <div *ngIf=\"roba.stanje == 0\" class=\"text-center\">\r\n                            <mat-icon class=\"boja-crvena-50\">remove_circle_outline</mat-icon>\r\n                        </div>\r\n                    </td>\r\n                </ng-container>\r\n\r\n\r\n                <!-- Kolicina Column -->\r\n                <ng-container matColumnDef=\"kolicina\">\r\n                    <th mat-header-cell *matHeaderCellDef>Kolicina </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <div *ngIf=\"roba.stanje > 0\">\r\n                            <input type=\"number\" min=\"0\" placeholder=\"0\" max=\"{{roba.stanje}}\" class=\"kolicina-labela\"\r\n                                [(ngModel)]=\"roba.kolicina\" />\r\n                        </div>\r\n                </ng-container>\r\n\r\n                <!-- Kropa dugme Column -->\r\n                <ng-container matColumnDef=\"korpa\">\r\n                    <th mat-header-cell *matHeaderCellDef> </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <div *ngIf=\"roba.stanje > 0\">\r\n                            <button mat-raised-button class=\"button-glavni-100\" (click)='dodajUKorpu(roba)'>Dodaj u\r\n                                korpu</button>\r\n                        </div>\r\n                </ng-container>\r\n\r\n                <!-- Da li ima na stanju ikona -->\r\n                <ng-container matColumnDef=\"u-korpi\">\r\n                    <th mat-header-cell *matHeaderCellDef> </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <div *ngIf=\"uKorpi(roba.katbr)\">\r\n                            <mat-icon class=\"boja-crvena-50\">add_shopping_cart</mat-icon>\r\n                        </div>\r\n                </ng-container>\r\n\r\n                <tr mat-header-row *matHeaderRowDef=\"getDisplayedColumns()\"></tr>\r\n                <tr mat-row *matRowDef=\"let row; columns: getDisplayedColumns();\"></tr>\r\n            </table>\r\n            <mat-paginator #paginator [length]=\"tableLength\" [pageSize]=\"rowsPerPage\" [pageSizeOptions]=\"[5, 10, 25]\"\r\n                [pageIndex]=\"pageIndex\" [length]=\"tableLength\" [showFirstLastButtons]=\"true\" (page)=\"paginatorEvent($event)\">\r\n            </mat-paginator>\r\n        </div>\r\n    </main>\r\n</div>"
+module.exports = "<div class=\"container-fluid\">\r\n    <main>\r\n        <div class=\"d-flex align-items-center justify-content-center\">\r\n            <div class=\"forms-input\">\r\n                <input class=\"p-1 flex-grow-1 search__input\" type=\"search\" [(ngModel)]=\"searchValue\"\r\n                    (keyup.enter)=\"pronaciPoTrazenojReci(searchValue)\" />\r\n                <div class=\"p-1\" (click)='pronaciPoTrazenojReci(searchValue)'>\r\n                    <button mat-mini-fab class=pozadina-glavna-100>\r\n                        <mat-icon>search</mat-icon>\r\n                    </button>\r\n                </div>\r\n                <div class=\"p-1\" (click)='toogleFilterDiv()'>\r\n                    <button *ngIf=\"!otvoriFilter\" class=pozadina-glavna-100 mat-mini-fab>\r\n                        <mat-icon>view_headline</mat-icon>\r\n                    </button>\r\n                    <button *ngIf=\"otvoriFilter\" mat-mini-fab class=\"button-glavni-200\">\r\n                        <mat-icon>view_headline</mat-icon>\r\n                    </button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n        <div class=\"d-flex justify-content-center\">\r\n            <label *ngIf=\"pocetnoPretrazivanje\">\r\n                <font color=\"#424242\"> Ukucajte kataloski broj</font>\r\n            </label>\r\n        </div>\r\n        \r\n        <!-- Filter komponenta izdvojena -->\r\n        <app-filter [vrstaRobe]=\"vrstaRobe\" [otvoriFilter]=\"otvoriFilter\" (filterEvent)=\"filtriraj($event)\">\r\n        </app-filter>\r\n\r\n        <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"!pronadjenaRoba\">\r\n            <i class=\"material-icons icon-size\">\r\n                error_outline\r\n            </i>\r\n            <h1 class=\"h1-upozorenje\">Artikal ne postoji</h1>\r\n        </div>\r\n\r\n        <div class=\"d-flex justify-content-center prazna-tabela\" *ngIf=\"ucitavanje\">\r\n            <mat-spinner></mat-spinner>\r\n        </div>\r\n        <div class=\"tabela-div\" *ngIf=\"dataSource != null && dataSource.length > 0\">\r\n            <p class=\"pdv\"><i>Sve cene su prikazane sa pdv-om.</i></p>\r\n            <table mat-table [dataSource]=\"dataSource\">\r\n                <!-- Kataloski broj Column -->\r\n                <ng-container matColumnDef=\"katbr\">\r\n                    <th mat-header-cell *matHeaderCellDef> Kataloski broj </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p class=\"mat-body-2\">\r\n                            {{roba.katbr}}\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Kataloski broj proizvodjaca Column -->\r\n                <ng-container matColumnDef=\"katbrpro\">\r\n                    <th mat-header-cell *matHeaderCellDef> Kataloski broj proizvodjaca </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p>\r\n                            {{roba.katbrpro}}\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Naziv Column -->\r\n                <ng-container matColumnDef=\"naziv\">\r\n                    <th mat-header-cell *matHeaderCellDef> Naziv </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p>\r\n                            {{roba.naziv}}\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Proizvodjač Column -->\r\n                <ng-container matColumnDef=\"proizvodjac\">\r\n                    <th mat-header-cell *matHeaderCellDef> Proizvodjač </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p class=\"mat-body-2\">\r\n                            {{roba.proizvodjac.naziv}}\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Cena Column -->\r\n                <ng-container matColumnDef=\"rabat\">\r\n                    <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Rabat </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p class=\"mat-body-2 text-right iznos-margin\">\r\n                            {{roba.rabat | currency:\" \"}}%\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Cena Column -->\r\n                <ng-container matColumnDef=\"cena\">\r\n                    <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Cena </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p class=\"mat-body-2 text-right iznos-margin\">\r\n                            {{roba.cena | currency:\" \"}} RSD\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Stanje Column -->\r\n                <ng-container matColumnDef=\"stanje\">\r\n                    <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Stanje </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <div *ngIf=\"roba.stanje > 0\" class=\"text-center\">\r\n                            <mat-icon class=\"boja-zelena-50\">check_circle_outline</mat-icon>\r\n                        </div>\r\n                        <div *ngIf=\"roba.stanje == 0\" class=\"text-center\">\r\n                            <mat-icon class=\"boja-crvena-50\">remove_circle_outline</mat-icon>\r\n                        </div>\r\n                    </td>\r\n                </ng-container>\r\n\r\n\r\n                <!-- Kolicina Column -->\r\n                <ng-container matColumnDef=\"kolicina\">\r\n                    <th mat-header-cell *matHeaderCellDef>Kolicina </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <div *ngIf=\"roba.stanje > 0\">\r\n                            <input type=\"number\" min=\"0\" placeholder=\"0\" max=\"{{roba.stanje}}\" class=\"kolicina-labela\"\r\n                                [(ngModel)]=\"roba.kolicina\" />\r\n                        </div>\r\n                </ng-container>\r\n\r\n                <!-- Kropa dugme Column -->\r\n                <ng-container matColumnDef=\"korpa\">\r\n                    <th mat-header-cell *matHeaderCellDef> </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <div *ngIf=\"roba.stanje > 0\">\r\n                            <button mat-raised-button class=\"button-glavni-100\" (click)='dodajUKorpu(roba)'>Dodaj u\r\n                                korpu</button>\r\n                        </div>\r\n                </ng-container>\r\n\r\n                <!-- Da li ima na stanju ikona -->\r\n                <ng-container matColumnDef=\"u-korpi\">\r\n                    <th mat-header-cell *matHeaderCellDef> </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <div *ngIf=\"uKorpi(roba.katbr)\">\r\n                            <mat-icon class=\"boja-crvena-50\">add_shopping_cart</mat-icon>\r\n                        </div>\r\n                </ng-container>\r\n\r\n                <tr mat-header-row *matHeaderRowDef=\"getDisplayedColumns()\"></tr>\r\n                <tr mat-row *matRowDef=\"let row; columns: getDisplayedColumns();\"></tr>\r\n            </table>\r\n            <mat-paginator #paginator [length]=\"tableLength\" [pageSize]=\"rowsPerPage\" [pageSizeOptions]=\"[5, 10, 25]\"\r\n                [pageIndex]=\"pageIndex\" [length]=\"tableLength\" [showFirstLastButtons]=\"true\"\r\n                (page)=\"paginatorEvent($event)\">\r\n            </mat-paginator>\r\n        </div>\r\n    </main>\r\n</div>"
 
 /***/ }),
 
@@ -2646,10 +2707,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
 /* harmony import */ var _service_roba_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
-/* harmony import */ var _service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../service/proizvodjac.service */ "./src/app/e-shop/service/proizvodjac.service.ts");
-/* harmony import */ var _service_login_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../service/login.service */ "./src/app/e-shop/service/login.service.ts");
-/* harmony import */ var _service_data_data_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
-/* harmony import */ var _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
+/* harmony import */ var _service_login_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../service/login.service */ "./src/app/e-shop/service/login.service.ts");
+/* harmony import */ var _service_data_data_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
+/* harmony import */ var _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
+/* harmony import */ var _model_roba_enum__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
+/* harmony import */ var _model_filter__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../model/filter */ "./src/app/e-shop/model/filter.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2668,27 +2730,25 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var FilteriComponent = /** @class */ (function () {
-    function FilteriComponent(robaService, proizvodjacService, loginServis, dataService, utilsService, korpaSnackBar) {
+    function FilteriComponent(robaService, loginServis, dataService, utilsService, korpaSnackBar) {
         this.robaService = robaService;
-        this.proizvodjacService = proizvodjacService;
         this.loginServis = loginServis;
         this.dataService = dataService;
         this.utilsService = utilsService;
         this.korpaSnackBar = korpaSnackBar;
+        this.vrstaRobe = _model_roba_enum__WEBPACK_IMPORTED_MODULE_8__["VrstaRobe"].FILTERI;
         // Paging and Sorting elements
         this.rowsPerPage = 10;
         this.pageIndex = 0;
         this.sort = null;
-        // Filteri
-        this.izabraniProizvodjac = '';
-        this.raspolozivost = ['Svi artikli', 'Ima na stanju'];
-        this.izabranaRaspolozivost = this.raspolozivost[1];
+        this.filter = new _model_filter__WEBPACK_IMPORTED_MODULE_9__["Filter"]();
         this.searchValue = '';
         this.lastSearchValue = '';
         this.ucitavanje = false;
         this.pronadjenaRoba = true;
-        this.otvoriFilterDiv = false;
+        this.otvoriFilter = false;
         // Tabela
         this.columnDefinitions = [
             { def: 'katbr', ifNotAuth: true },
@@ -2709,7 +2769,7 @@ var FilteriComponent = /** @class */ (function () {
         this.pocetnoPretrazivanje = true;
         this.dataService.trenutnaKorpa.subscribe(function (korpa) { return _this.korpa = korpa; });
         this.loginServis.ulogovaniPartner.subscribe(function (partner) { return _this.partner = partner; });
-        this.pronadjiSveProizvodjace();
+        this.pronandjiSveFiltere();
     };
     FilteriComponent.prototype.getDisplayedColumns = function () {
         var isPartner = this.partner.ppid != null;
@@ -2749,11 +2809,9 @@ var FilteriComponent = /** @class */ (function () {
         this.lastSearchValue = searchValue;
         this.ucitavanje = true;
         this.dataSource = null;
-        var naStanju = this.utilsService.daLiRobaTrebaDaBudeNaStanju(this.raspolozivost, this.izabranaRaspolozivost);
-        var proizvodjacId = this.utilsService.vratiIdProizvodjacaAkoPostoji(this.izabraniProizvodjac, this.proizvodjaci);
         this.ucitavanje = true;
         this.pronadjenaRoba = true;
-        this.robaService.pronadjiFiltere(this.sort, this.rowsPerPage, this.pageIndex, searchValue, naStanju, proizvodjacId)
+        this.robaService.pronadjiFiltere(this.sort, this.rowsPerPage, this.pageIndex, searchValue, this.filter.naStanju, this.filter.proizvodjacId)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(function (error) {
             if (error.status === 404) {
                 _this.pronadjenaRoba = false;
@@ -2774,19 +2832,6 @@ var FilteriComponent = /** @class */ (function () {
             console.log('Podnaci robu izbacilo je gresko');
         });
     };
-    FilteriComponent.prototype.pronadjiSveProizvodjace = function () {
-        var _this = this;
-        this.proizvodjacService.pronadjiSveProizvodjaceFiltera()
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }))
-            .subscribe(function (res) {
-            _this.proizvodjaci = res;
-            _this.izabraniProizvodjac = _this.proizvodjaci[0].naziv;
-            _this.pronandjiSveFiltere();
-        }, function (error) {
-            _this.proizvodjaci = null;
-            console.log('Pronaci svu robu je bacilo gresku', error);
-        });
-    };
     FilteriComponent.prototype.pronaciPoTrazenojReci = function (searchValue) {
         if (this.dataSource) {
             this.pageIndex = 0;
@@ -2804,23 +2849,14 @@ var FilteriComponent = /** @class */ (function () {
         this.pronadjiFilterePoPretrazi(this.searchValue);
     };
     FilteriComponent.prototype.toogleFilterDiv = function () {
-        this.otvoriFilterDiv = !this.otvoriFilterDiv;
+        this.otvoriFilter = !this.otvoriFilter;
     };
-    FilteriComponent.prototype.resetujFilter = function () {
+    FilteriComponent.prototype.filtriraj = function (filter) {
         if (this.dataSource) {
             this.pageIndex = 0;
         }
-        this.izabranaRaspolozivost = this.raspolozivost[1];
-        this.izabraniProizvodjac = this.proizvodjaci[0].naziv;
-        this.filtriraj();
-    };
-    FilteriComponent.prototype.filtriraj = function () {
-        if (this.dataSource) {
-            this.pageIndex = 0;
-        }
-        var recZaPretragu;
-        recZaPretragu = this.searchValue;
-        this.pronadjiFilterePoPretrazi(recZaPretragu);
+        this.filter = filter;
+        this.pronadjiFilterePoPretrazi(this.searchValue);
     };
     FilteriComponent.prototype.dodajUKorpu = function (roba) {
         var snackBarPoruka = this.utilsService.dodajUKorpu(roba);
@@ -2842,10 +2878,9 @@ var FilteriComponent = /** @class */ (function () {
             styles: [__webpack_require__(/*! ./filteri.component.css */ "./src/app/e-shop/roba/filteri/filteri.component.css")]
         }),
         __metadata("design:paramtypes", [_service_roba_service__WEBPACK_IMPORTED_MODULE_4__["RobaService"],
-            _service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_5__["ProizvodjacService"],
-            _service_login_service__WEBPACK_IMPORTED_MODULE_6__["LoginService"],
-            _service_data_data_service__WEBPACK_IMPORTED_MODULE_7__["DataService"],
-            _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_8__["AppUtilsService"],
+            _service_login_service__WEBPACK_IMPORTED_MODULE_5__["LoginService"],
+            _service_data_data_service__WEBPACK_IMPORTED_MODULE_6__["DataService"],
+            _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_7__["AppUtilsService"],
             _angular_material__WEBPACK_IMPORTED_MODULE_1__["MatSnackBar"]])
     ], FilteriComponent);
     return FilteriComponent;
@@ -2862,7 +2897,7 @@ var FilteriComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container-fluid\">\r\n    <main>\r\n        <div class=\"d-flex flex-row-reverse bd-highlight\">\r\n            <button class=\"button-glavni-100 nazad-button\" mat-raised-button (click)=\"idiNazad()\">\r\n                <mat-icon>keyboard_arrow_left</mat-icon> Nazad\r\n            </button>\r\n        </div>\r\n        <div class=\"d-flex align-items-center justify-content-center\">\r\n            <div class=\"forms-input\">\r\n                <input class=\"p-1 flex-grow-1 search__input\" type=\"search\" [(ngModel)]=\"searchValue\" (keyup.enter)=\"pronaciPoTrazenojReci(searchValue)\" />\r\n                <div class=\"p-1\" (click)='pronaciPoTrazenojReci(searchValue)'>\r\n                    <button mat-mini-fab class=pozadina-glavna-100>\r\n                        <mat-icon>search</mat-icon>\r\n                    </button>\r\n                </div>\r\n                <div class=\"p-1\" (click)='toogleFilterDiv()'>\r\n                    <button *ngIf=\"!otvoriFilterDiv\" class=pozadina-glavna-100 mat-mini-fab>\r\n                        <mat-icon>view_headline</mat-icon>\r\n                    </button>\r\n                    <button *ngIf=\"otvoriFilterDiv\" mat-mini-fab class=\"button-glavni-200\">\r\n                        <mat-icon>view_headline</mat-icon>\r\n                    </button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n        <div class=\"d-flex justify-content-center\">\r\n            <label *ngIf=\"pocetnoPretrazivanje\">\r\n                <font color=\"#424242\"> Ukucajte kataloski broj</font>\r\n            </label>\r\n        </div>\r\n\r\n        <div class=\"d-flex justify-content-center\" *ngIf=\"otvoriFilterDiv\">\r\n            <div class=\"filter-div-test d-flex flex-column\">\r\n                <div class=\"d-flex justify-content-center\">\r\n                    <h2>\r\n                        Filter\r\n                    </h2>\r\n                </div>\r\n                <div class=\"d-flex flex-column flex-xl-row input-group mb-3\">\r\n                    <div class=\"input-group-prepend\">\r\n                        <label class=\"input-group-text mobilna-duzina button-glavni-50\" for=\"inputGroupSelect01\">\r\n                            <p class=\"boja-siva-400\">Proizvodjac: </p>\r\n                        </label>\r\n                    </div>\r\n                    <select class=\"custom-select mobilna-duzina\" id=\"inputGroupSelect01\" [(ngModel)]=\"izabraniProizvodjac\">\r\n                        <option *ngFor=\"let proizvodjac of proizvodjaci\" [value]=\"proizvodjac.naziv\">\r\n                            {{proizvodjac.naziv}}\r\n                        </option>\r\n                    </select>\r\n\r\n                    <div class=\"input-group-prepend razmak\">\r\n                        <label class=\"input-group-text mobilna-duzina button-glavni-50\" for=\"inputGroupSelect01\">\r\n                            Raspolozivost:\r\n                        </label>\r\n                    </div>\r\n                    <select class=\"custom-select mobilna-duzina\" id=\"inputGroupSelect01\" [(ngModel)]=\"izabranaRaspolozivost\">\r\n                        <option *ngFor=\"let raspoloziv of raspolozivost\" [value]=\"raspoloziv\">{{raspoloziv}}</option>\r\n                    </select>\r\n                </div>\r\n                <div class=\"d-flex justify-content-center\">\r\n                    <div>\r\n                        <button mat-stroked-button class=pozadina-glavna-100 (click)='filtriraj()'>\r\n                            <p class=\"boja-siva-400\">Filtriraj</p>\r\n                        </button>\r\n                        <span class=\"col-2\"></span>\r\n                        <button mat-stroked-button class=button-crveni-50 (click)='resetujFilter()'>\r\n                            <p class=\"boja-siva-400\">Ponisti</p>\r\n                        </button>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n        <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"!pronadjenaRoba\">\r\n            <i class=\"material-icons icon-size\">\r\n                error_outline\r\n            </i>\r\n            <h1 class=\"h1-upozorenje\">Artikal ne postoji</h1>\r\n        </div>\r\n\r\n        <div class=\"d-flex justify-content-center prazna-tabela\" *ngIf=\"ucitavanje\">\r\n            <mat-spinner></mat-spinner>\r\n        </div>\r\n        <div class=\"tabela-div\" *ngIf=\"dataSource != null && dataSource.length > 0\">\r\n            <table mat-table [dataSource]=\"dataSource\">\r\n                <!-- Kataloski broj Column -->\r\n                <ng-container matColumnDef=\"katbr\">\r\n                    <th mat-header-cell *matHeaderCellDef> Kataloski broj </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p class=\"mat-body-2\">\r\n                            {{roba.katbr}}\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Kataloski broj proizvodjaca Column -->\r\n                <ng-container matColumnDef=\"katbrpro\">\r\n                    <th mat-header-cell *matHeaderCellDef> Kataloski broj proizvodjaca </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p >\r\n                            {{roba.katbrpro}}\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Naziv Column -->\r\n                <ng-container matColumnDef=\"naziv\">\r\n                    <th mat-header-cell *matHeaderCellDef> Naziv </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p >\r\n                            {{roba.naziv}}\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Proizvodjac Column -->\r\n                <ng-container matColumnDef=\"proizvodjac\">\r\n                    <th mat-header-cell *matHeaderCellDef> Proizvodjac </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p class=\"mat-body-2\">\r\n                            {{roba.proizvodjac.naziv}}\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Cena Column -->\r\n                <ng-container matColumnDef=\"cena\">\r\n                    <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Cena </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p class=\"mat-body-2 text-right iznos-margin\">\r\n                            {{roba.cena | currency:\" \"}} RSD\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Stanje Column -->\r\n                <ng-container matColumnDef=\"stanje\">\r\n                    <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Stanje </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <div *ngIf=\"roba.stanje > 0\" class=\"text-center\">\r\n                            <mat-icon class=\"boja-zelena-50\">check_circle_outline</mat-icon>\r\n                        </div>\r\n                        <div *ngIf=\"roba.stanje == 0\" class=\"text-center\">\r\n                            <mat-icon class=\"boja-crvena-50\">remove_circle_outline</mat-icon>\r\n                        </div>\r\n                    </td>\r\n                </ng-container>\r\n\r\n\r\n                <!-- Kolicina Column -->\r\n                <ng-container matColumnDef=\"kolicina\">\r\n                    <th mat-header-cell *matHeaderCellDef>Kolicina </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <div *ngIf=\"roba.stanje > 0\">\r\n                            <input type=\"number\" min=\"0\" placeholder=\"0\" max=\"{{roba.stanje}}\" class=\"kolicina-labela\"\r\n                                [(ngModel)]=\"roba.kolicina\" />\r\n                        </div>\r\n                </ng-container>\r\n\r\n                <!-- Kropa dugme Column -->\r\n                <ng-container matColumnDef=\"korpa\">\r\n                    <th mat-header-cell *matHeaderCellDef> </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <div *ngIf=\"roba.stanje > 0\">\r\n                            <button mat-raised-button class=\"button-glavni-100\" (click)='dodajUKorpu(roba)'>Dodaj u\r\n                                korpu</button>\r\n                        </div>\r\n                </ng-container>\r\n\r\n                <!-- Da li ima na stanju ikona -->\r\n                <ng-container matColumnDef=\"u-korpi\">\r\n                    <th mat-header-cell *matHeaderCellDef> </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <div *ngIf=\"uKorpi(roba.katbr)\">\r\n                            <mat-icon class=\"boja-crvena-50\">add_shopping_cart</mat-icon>\r\n                        </div>\r\n                </ng-container>\r\n\r\n                <tr mat-header-row *matHeaderRowDef=\"getDisplayedColumns()\"></tr>\r\n                <tr mat-row *matRowDef=\"let row; columns: getDisplayedColumns();\"></tr>\r\n            </table>\r\n            <mat-paginator #paginator [length]=\"tableLength\" [pageSize]=\"rowsPerPage\" [pageSizeOptions]=\"[5, 10, 25]\"\r\n                [pageIndex]=\"pageIndex\" [length]=\"tableLength\" [showFirstLastButtons]=\"true\" (page)=\"paginatorEvent($event)\">\r\n            </mat-paginator>\r\n        </div>\r\n    </main>\r\n</div>"
+module.exports = "<div class=\"container-fluid\">\r\n    <main>\r\n        <div class=\"d-flex flex-row-reverse bd-highlight\">\r\n            <button class=\"button-glavni-100 nazad-button\" mat-raised-button (click)=\"idiNazad()\">\r\n                <mat-icon>keyboard_arrow_left</mat-icon> Nazad\r\n            </button>\r\n        </div>\r\n        <div class=\"d-flex align-items-center justify-content-center\">\r\n            <div class=\"forms-input\">\r\n                <input class=\"p-1 flex-grow-1 search__input\" type=\"search\" [(ngModel)]=\"searchValue\" (keyup.enter)=\"pronaciPoTrazenojReci(searchValue)\" />\r\n                <div class=\"p-1\" (click)='pronaciPoTrazenojReci(searchValue)'>\r\n                    <button mat-mini-fab class=pozadina-glavna-100>\r\n                        <mat-icon>search</mat-icon>\r\n                    </button>\r\n                </div>\r\n                <div class=\"p-1\" (click)='toogleFilterDiv()'>\r\n                    <button *ngIf=\"!otvoriFilter\" class=pozadina-glavna-100 mat-mini-fab>\r\n                        <mat-icon>view_headline</mat-icon>\r\n                    </button>\r\n                    <button *ngIf=\"otvoriFilter\" mat-mini-fab class=\"button-glavni-200\">\r\n                        <mat-icon>view_headline</mat-icon>\r\n                    </button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n        <div class=\"d-flex justify-content-center\">\r\n            <label *ngIf=\"pocetnoPretrazivanje\">\r\n                <font color=\"#424242\"> Ukucajte kataloski broj</font>\r\n            </label>\r\n        </div>\r\n        \r\n        <!-- Filter komponenta izdvojena -->\r\n        <app-filter [vrstaRobe]=\"vrstaRobe\" [otvoriFilter]=\"otvoriFilter\" (filterEvent)=\"filtriraj($event)\">\r\n        </app-filter>\r\n\r\n        <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"!pronadjenaRoba\">\r\n            <i class=\"material-icons icon-size\">\r\n                error_outline\r\n            </i>\r\n            <h1 class=\"h1-upozorenje\">Artikal ne postoji</h1>\r\n        </div>\r\n\r\n        <div class=\"d-flex justify-content-center prazna-tabela\" *ngIf=\"ucitavanje\">\r\n            <mat-spinner></mat-spinner>\r\n        </div>\r\n        <div class=\"tabela-div\" *ngIf=\"dataSource != null && dataSource.length > 0\">\r\n            <table mat-table [dataSource]=\"dataSource\">\r\n                <!-- Kataloski broj Column -->\r\n                <ng-container matColumnDef=\"katbr\">\r\n                    <th mat-header-cell *matHeaderCellDef> Kataloski broj </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p class=\"mat-body-2\">\r\n                            {{roba.katbr}}\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Kataloski broj proizvodjaca Column -->\r\n                <ng-container matColumnDef=\"katbrpro\">\r\n                    <th mat-header-cell *matHeaderCellDef> Kataloski broj proizvodjaca </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p >\r\n                            {{roba.katbrpro}}\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Naziv Column -->\r\n                <ng-container matColumnDef=\"naziv\">\r\n                    <th mat-header-cell *matHeaderCellDef> Naziv </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p >\r\n                            {{roba.naziv}}\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Proizvodjač Column -->\r\n                <ng-container matColumnDef=\"proizvodjac\">\r\n                    <th mat-header-cell *matHeaderCellDef> Proizvodjač </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p class=\"mat-body-2\">\r\n                            {{roba.proizvodjac.naziv}}\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Cena Column -->\r\n                <ng-container matColumnDef=\"cena\">\r\n                    <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Cena </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p class=\"mat-body-2 text-right iznos-margin\">\r\n                            {{roba.cena | currency:\" \"}} RSD\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Stanje Column -->\r\n                <ng-container matColumnDef=\"stanje\">\r\n                    <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Stanje </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <div *ngIf=\"roba.stanje > 0\" class=\"text-center\">\r\n                            <mat-icon class=\"boja-zelena-50\">check_circle_outline</mat-icon>\r\n                        </div>\r\n                        <div *ngIf=\"roba.stanje == 0\" class=\"text-center\">\r\n                            <mat-icon class=\"boja-crvena-50\">remove_circle_outline</mat-icon>\r\n                        </div>\r\n                    </td>\r\n                </ng-container>\r\n\r\n\r\n                <!-- Kolicina Column -->\r\n                <ng-container matColumnDef=\"kolicina\">\r\n                    <th mat-header-cell *matHeaderCellDef>Kolicina </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <div *ngIf=\"roba.stanje > 0\">\r\n                            <input type=\"number\" min=\"0\" placeholder=\"0\" max=\"{{roba.stanje}}\" class=\"kolicina-labela\"\r\n                                [(ngModel)]=\"roba.kolicina\" />\r\n                        </div>\r\n                </ng-container>\r\n\r\n                <!-- Kropa dugme Column -->\r\n                <ng-container matColumnDef=\"korpa\">\r\n                    <th mat-header-cell *matHeaderCellDef> </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <div *ngIf=\"roba.stanje > 0\">\r\n                            <button mat-raised-button class=\"button-glavni-100\" (click)='dodajUKorpu(roba)'>Dodaj u\r\n                                korpu</button>\r\n                        </div>\r\n                </ng-container>\r\n\r\n                <!-- Da li ima na stanju ikona -->\r\n                <ng-container matColumnDef=\"u-korpi\">\r\n                    <th mat-header-cell *matHeaderCellDef> </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <div *ngIf=\"uKorpi(roba.katbr)\">\r\n                            <mat-icon class=\"boja-crvena-50\">add_shopping_cart</mat-icon>\r\n                        </div>\r\n                </ng-container>\r\n\r\n                <tr mat-header-row *matHeaderRowDef=\"getDisplayedColumns()\"></tr>\r\n                <tr mat-row *matRowDef=\"let row; columns: getDisplayedColumns();\"></tr>\r\n            </table>\r\n            <mat-paginator #paginator [length]=\"tableLength\" [pageSize]=\"rowsPerPage\" [pageSizeOptions]=\"[5, 10, 25]\"\r\n                [pageIndex]=\"pageIndex\" [length]=\"tableLength\" [showFirstLastButtons]=\"true\" (page)=\"paginatorEvent($event)\">\r\n            </mat-paginator>\r\n        </div>\r\n    </main>\r\n</div>"
 
 /***/ }),
 
@@ -2892,11 +2927,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
 /* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
-/* harmony import */ var src_app_e_shop_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/e-shop/service/proizvodjac.service */ "./src/app/e-shop/service/proizvodjac.service.ts");
-/* harmony import */ var src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/e-shop/service/login.service */ "./src/app/e-shop/service/login.service.ts");
-/* harmony import */ var src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/e-shop/utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
-/* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
-/* harmony import */ var src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! src/app/e-shop/service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
+/* harmony import */ var src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/e-shop/service/login.service */ "./src/app/e-shop/service/login.service.ts");
+/* harmony import */ var src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/e-shop/utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
+/* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
+/* harmony import */ var src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/e-shop/service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
+/* harmony import */ var src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! src/app/e-shop/model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
+/* harmony import */ var src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! src/app/e-shop/model/filter */ "./src/app/e-shop/model/filter.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2916,29 +2952,27 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var KategorijaSpecificnaComponent = /** @class */ (function () {
-    function KategorijaSpecificnaComponent(route, proizvodjacService, loginServis, utilsService, dataService, robaServis, korpaSnackBar, router) {
+    function KategorijaSpecificnaComponent(route, loginServis, utilsService, dataService, robaServis, korpaSnackBar, router) {
         this.route = route;
-        this.proizvodjacService = proizvodjacService;
         this.loginServis = loginServis;
         this.utilsService = utilsService;
         this.dataService = dataService;
         this.robaServis = robaServis;
         this.korpaSnackBar = korpaSnackBar;
         this.router = router;
+        this.vrstaRobe = src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_9__["VrstaRobe"].OSTALO;
         // Paging and Sorting elements
         this.rowsPerPage = 10;
         this.pageIndex = 0;
         this.sort = null;
-        // Filteri
-        this.izabraniProizvodjac = '';
-        this.raspolozivost = ['Svi artikli', 'Ima na stanju'];
-        this.izabranaRaspolozivost = this.raspolozivost[1];
+        this.filter = new src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_10__["Filter"]();
         this.searchValue = '';
         this.lastSearchValue = '';
         this.ucitavanje = false;
         this.pronadjenaRoba = true;
-        this.otvoriFilterDiv = false;
+        this.otvoriFilter = false;
         // Tabela
         this.columnDefinitions = [
             { def: 'katbr', ifNotAuth: true },
@@ -2965,22 +2999,7 @@ var KategorijaSpecificnaComponent = /** @class */ (function () {
         this.pocetnoPretrazivanje = true;
         this.dataService.trenutnaKorpa.subscribe(function (korpa) { return _this.korpa = korpa; });
         this.loginServis.ulogovaniPartner.subscribe(function (partner) { return _this.partner = partner; });
-        this.pronadjiSveProizvodjace();
-    };
-    KategorijaSpecificnaComponent.prototype.pronadjiSveProizvodjace = function () {
-        var _this = this;
-        this.route.params.subscribe(function (params) {
-            _this.proizvodjacService.pronadjiSveProizvodjaceKategorije(params.id)
-                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }))
-                .subscribe(function (res) {
-                _this.proizvodjaci = res;
-                _this.izabraniProizvodjac = _this.proizvodjaci[0].naziv;
-                _this.pronandjiRobu();
-            }, function (error) {
-                _this.proizvodjaci = null;
-                console.log('Pronaci svu robu je bacilo gresku', error);
-            });
-        });
+        this.pronandjiRobu();
     };
     KategorijaSpecificnaComponent.prototype.pronandjiRobu = function () {
         var _this = this;
@@ -3018,12 +3037,10 @@ var KategorijaSpecificnaComponent = /** @class */ (function () {
         this.pocetnoPretrazivanje = false;
         this.lastSearchValue = searchValue;
         this.dataSource = null;
-        var naStanju = this.utilsService.daLiRobaTrebaDaBudeNaStanju(this.raspolozivost, this.izabranaRaspolozivost);
-        var proizvodjacId = this.utilsService.vratiIdProizvodjacaAkoPostoji(this.izabraniProizvodjac, this.proizvodjaci);
         this.ucitavanje = true;
         this.pronadjenaRoba = true;
         this.route.params.subscribe(function (params) {
-            _this.robaServis.pronadjiPoKategoriji(_this.sort, _this.rowsPerPage, _this.pageIndex, searchValue, naStanju, proizvodjacId, params.id)
+            _this.robaServis.pronadjiPoKategoriji(_this.sort, _this.rowsPerPage, _this.pageIndex, searchValue, _this.filter.naStanju, _this.filter.proizvodjacId, params.id)
                 .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(function (error) {
                 if (error.status === 404) {
                     _this.pronadjenaRoba = false;
@@ -3066,23 +3083,14 @@ var KategorijaSpecificnaComponent = /** @class */ (function () {
         this.pronadjiSvuRobuPoPretrazi(this.searchValue);
     };
     KategorijaSpecificnaComponent.prototype.toogleFilterDiv = function () {
-        this.otvoriFilterDiv = !this.otvoriFilterDiv;
+        this.otvoriFilter = !this.otvoriFilter;
     };
-    KategorijaSpecificnaComponent.prototype.resetujFilter = function () {
+    KategorijaSpecificnaComponent.prototype.filtriraj = function (filter) {
         if (this.dataSource) {
             this.pageIndex = 0;
         }
-        this.izabranaRaspolozivost = this.raspolozivost[1];
-        this.izabraniProizvodjac = this.proizvodjaci[0].naziv;
-        this.filtriraj();
-    };
-    KategorijaSpecificnaComponent.prototype.filtriraj = function () {
-        if (this.dataSource) {
-            this.pageIndex = 0;
-        }
-        var recZaPretragu;
-        recZaPretragu = this.searchValue;
-        this.pronadjiSvuRobuPoPretrazi(recZaPretragu);
+        this.filter = filter;
+        this.pronadjiSvuRobuPoPretrazi(this.searchValue);
     };
     KategorijaSpecificnaComponent.prototype.dodajUKorpu = function (roba) {
         var snackBarPoruka = this.utilsService.dodajUKorpu(roba);
@@ -3107,11 +3115,10 @@ var KategorijaSpecificnaComponent = /** @class */ (function () {
             styles: [__webpack_require__(/*! ./kategorija-specificna.component.scss */ "./src/app/e-shop/roba/ostalo/kategorija-specificna/kategorija-specificna.component.scss")]
         }),
         __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"],
-            src_app_e_shop_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_5__["ProizvodjacService"],
-            src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_6__["LoginService"],
-            src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_7__["AppUtilsService"],
-            src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_8__["DataService"],
-            src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_9__["RobaService"],
+            src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_5__["LoginService"],
+            src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_6__["AppUtilsService"],
+            src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_7__["DataService"],
+            src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_8__["RobaService"],
             _angular_material__WEBPACK_IMPORTED_MODULE_4__["MatSnackBar"],
             _angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"]])
     ], KategorijaSpecificnaComponent);
@@ -3229,7 +3236,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container-fluid\">\r\n\r\n    <div class=\"d-flex align-items-center justify-content-center\">\r\n        <div class=\"forms-input\">\r\n            <input class=\"p-1 flex-grow-1 search__input\" type=\"search\" [(ngModel)]=\"searchValue\" (keyup.enter)=\"pronaciPoTrazenojReci(searchValue)\" />\r\n            <div class=\"p-1\" (click)='pronaciPoTrazenojReci(searchValue)'>\r\n                <button mat-mini-fab class=pozadina-glavna-100>\r\n                    <mat-icon>search</mat-icon>\r\n                </button>\r\n            </div>\r\n            <div class=\"p-1\" (click)='toogleFilterDiv()'>\r\n                <button *ngIf=\"!otvoriFilterDiv\" class=pozadina-glavna-100 mat-mini-fab>\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n                <button *ngIf=\"otvoriFilterDiv\" mat-mini-fab class=\"button-glavni-200\">\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"d-flex justify-content-center\">\r\n        <label *ngIf=\"pocetnoPretrazivanje\">\r\n            <font color=\"#424242\"> Ukucajte kataloski broj</font>\r\n        </label>\r\n    </div>\r\n\r\n    <div class=\"d-flex justify-content-center\" *ngIf=\"otvoriFilterDiv\">\r\n        <div class=\"filter-div-test d-flex flex-column\">\r\n            <div class=\"d-flex justify-content-center\">\r\n                <h2>\r\n                    Filter\r\n                </h2>\r\n            </div>\r\n            <div class=\"d-flex flex-column flex-xl-row input-group mb-3\">\r\n                <div class=\"input-group-prepend\">\r\n                    <label class=\"input-group-text mobilna-duzina button-glavni-50\" for=\"inputGroupSelect01\">\r\n                        <p class=\"boja-siva-400\">Proizvodjac: </p>\r\n                    </label>\r\n                </div>\r\n                <select class=\"custom-select mobilna-duzina\" id=\"inputGroupSelect01\" [(ngModel)]=\"izabraniProizvodjac\">\r\n                    <option *ngFor=\"let proizvodjac of proizvodjaci\" [value]=\"proizvodjac.naziv\">\r\n                        {{proizvodjac.naziv}}\r\n                    </option>\r\n                </select>\r\n\r\n                <div class=\"input-group-prepend razmak\">\r\n                    <label class=\"input-group-text mobilna-duzina button-glavni-50\" for=\"inputGroupSelect01\">\r\n                        Raspolozivost:\r\n                    </label>\r\n                </div>\r\n                <select class=\"custom-select mobilna-duzina\" id=\"inputGroupSelect01\" [(ngModel)]=\"izabranaRaspolozivost\">\r\n                    <option *ngFor=\"let raspoloziv of raspolozivost\" [value]=\"raspoloziv\">{{raspoloziv}}</option>\r\n                </select>\r\n            </div>\r\n            <div class=\"d-flex justify-content-center\">\r\n                <div>\r\n                    <button mat-stroked-button class=pozadina-glavna-100 (click)='filtriraj()'>\r\n                        <p class=\"boja-siva-400\">Filtriraj</p>\r\n                    </button>\r\n                    <span class=\"col-2\"></span>\r\n                    <button mat-stroked-button class=button-crveni-50 (click)='resetujFilter()'>\r\n                        <p class=\"boja-siva-400\">Ponisti</p>\r\n                    </button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"!pronadjenaRoba\">\r\n        <i class=\"material-icons icon-size\">\r\n            error_outline\r\n        </i>\r\n        <h1 class=\"h1-upozorenje\">Artikal ne postoji</h1>\r\n    </div>\r\n\r\n    <div class=\"d-flex justify-content-center prazna-tabela\" *ngIf=\"ucitavanje\">\r\n        <mat-spinner></mat-spinner>\r\n    </div>\r\n    <div class=\"tabela-div\" *ngIf=\"dataSource != null && dataSource.length > 0\">\r\n        <p class=\"pdv\"><i>Sve cene su prikazane sa pdv-om.</i></p>\r\n        <table mat-table [dataSource]=\"dataSource\">\r\n\r\n            <!-- Kataloski broj Column -->\r\n            <ng-container matColumnDef=\"katbr\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.katbr}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Kataloski broj proizvodjaca Column -->\r\n            <ng-container matColumnDef=\"katbrpro\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj proizvodjaca </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p >\r\n                        {{roba.katbrpro}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Naziv Column -->\r\n            <ng-container matColumnDef=\"naziv\">\r\n                <th mat-header-cell *matHeaderCellDef> Naziv </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p >\r\n                        {{roba.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Proizvodjac Column -->\r\n            <ng-container matColumnDef=\"proizvodjac\">\r\n                <th mat-header-cell *matHeaderCellDef> Proizvodjac </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.proizvodjac.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"rabat\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Rabat </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.rabat | currency:\" \"}}%\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"cena\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Cena </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.cena | currency:\" \"}} RSD\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Stanje Column -->\r\n            <ng-container matColumnDef=\"stanje\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Stanje </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-zelena-50\">check_circle_outline</mat-icon>\r\n                    </div>\r\n                    <div *ngIf=\"roba.stanje == 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-crvena-50\">remove_circle_outline</mat-icon>\r\n                    </div>\r\n                </td>\r\n            </ng-container>\r\n\r\n\r\n            <!-- Kolicina Column -->\r\n            <ng-container matColumnDef=\"kolicina\">\r\n                <th mat-header-cell *matHeaderCellDef>Kolicina </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <input type=\"number\" min=\"0\" placeholder=\"0\" max=\"{{roba.stanje}}\" class=\"kolicina-labela\"\r\n                            [(ngModel)]=\"roba.kolicina\" />\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Kropa dugme Column -->\r\n            <ng-container matColumnDef=\"korpa\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <button mat-raised-button class=\"button-glavni-100\" (click)='dodajUKorpu(roba)'>Dodaj u korpu</button>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Da li ima na stanju ikona -->\r\n            <ng-container matColumnDef=\"u-korpi\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"uKorpi(roba.katbr)\">\r\n                        <mat-icon class=\"boja-crvena-50\">add_shopping_cart</mat-icon>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <tr mat-header-row *matHeaderRowDef=\"getDisplayedColumns()\"></tr>\r\n            <tr mat-row *matRowDef=\"let row; columns: getDisplayedColumns();\"></tr>\r\n        </table>\r\n        <mat-paginator #paginator [length]=\"tableLength\" [pageSize]=\"rowsPerPage\" [pageSizeOptions]=\"[5, 10, 25]\"\r\n            [pageIndex]=\"pageIndex\" [length]=\"tableLength\" [showFirstLastButtons]=\"true\" (page)=\"paginatorEvent($event)\">\r\n        </mat-paginator>\r\n    </div>\r\n</div>"
+module.exports = "<div class=\"container-fluid\">\r\n\r\n    <div class=\"d-flex align-items-center justify-content-center\">\r\n        <div class=\"forms-input\">\r\n            <input class=\"p-1 flex-grow-1 search__input\" type=\"search\" [(ngModel)]=\"searchValue\" (keyup.enter)=\"pronaciPoTrazenojReci(searchValue)\" />\r\n            <div class=\"p-1\" (click)='pronaciPoTrazenojReci(searchValue)'>\r\n                <button mat-mini-fab class=pozadina-glavna-100>\r\n                    <mat-icon>search</mat-icon>\r\n                </button>\r\n            </div>\r\n            <div class=\"p-1\" (click)='toogleFilterDiv()'>\r\n                <button *ngIf=\"!otvoriFilter\" class=pozadina-glavna-100 mat-mini-fab>\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n                <button *ngIf=\"otvoriFilter\" mat-mini-fab class=\"button-glavni-200\">\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"d-flex justify-content-center\">\r\n        <label *ngIf=\"pocetnoPretrazivanje\">\r\n            <font color=\"#424242\"> Ukucajte kataloski broj</font>\r\n        </label>\r\n    </div>\r\n        \r\n    <!-- Filter komponenta izdvojena -->\r\n    <app-filter [vrstaRobe]=\"vrstaRobe\" [otvoriFilter]=\"otvoriFilter\" (filterEvent)=\"filtriraj($event)\">\r\n    </app-filter>\r\n\r\n    <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"!pronadjenaRoba\">\r\n        <i class=\"material-icons icon-size\">\r\n            error_outline\r\n        </i>\r\n        <h1 class=\"h1-upozorenje\">Artikal ne postoji</h1>\r\n    </div>\r\n\r\n    <div class=\"d-flex justify-content-center prazna-tabela\" *ngIf=\"ucitavanje\">\r\n        <mat-spinner></mat-spinner>\r\n    </div>\r\n    <div class=\"tabela-div\" *ngIf=\"dataSource != null && dataSource.length > 0\">\r\n        <p class=\"pdv\"><i>Sve cene su prikazane sa pdv-om.</i></p>\r\n        <table mat-table [dataSource]=\"dataSource\">\r\n\r\n            <!-- Kataloski broj Column -->\r\n            <ng-container matColumnDef=\"katbr\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.katbr}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Kataloski broj proizvodjaca Column -->\r\n            <ng-container matColumnDef=\"katbrpro\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj proizvodjaca </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p >\r\n                        {{roba.katbrpro}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Naziv Column -->\r\n            <ng-container matColumnDef=\"naziv\">\r\n                <th mat-header-cell *matHeaderCellDef> Naziv </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p >\r\n                        {{roba.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Proizvodjač Column -->\r\n            <ng-container matColumnDef=\"proizvodjac\">\r\n                <th mat-header-cell *matHeaderCellDef> Proizvodjač </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.proizvodjac.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"rabat\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Rabat </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.rabat | currency:\" \"}}%\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"cena\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Cena </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.cena | currency:\" \"}} RSD\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Stanje Column -->\r\n            <ng-container matColumnDef=\"stanje\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Stanje </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-zelena-50\">check_circle_outline</mat-icon>\r\n                    </div>\r\n                    <div *ngIf=\"roba.stanje == 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-crvena-50\">remove_circle_outline</mat-icon>\r\n                    </div>\r\n                </td>\r\n            </ng-container>\r\n\r\n\r\n            <!-- Kolicina Column -->\r\n            <ng-container matColumnDef=\"kolicina\">\r\n                <th mat-header-cell *matHeaderCellDef>Kolicina </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <input type=\"number\" min=\"0\" placeholder=\"0\" max=\"{{roba.stanje}}\" class=\"kolicina-labela\"\r\n                            [(ngModel)]=\"roba.kolicina\" />\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Kropa dugme Column -->\r\n            <ng-container matColumnDef=\"korpa\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <button mat-raised-button class=\"button-glavni-100\" (click)='dodajUKorpu(roba)'>Dodaj u korpu</button>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Da li ima na stanju ikona -->\r\n            <ng-container matColumnDef=\"u-korpi\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"uKorpi(roba.katbr)\">\r\n                        <mat-icon class=\"boja-crvena-50\">add_shopping_cart</mat-icon>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <tr mat-header-row *matHeaderRowDef=\"getDisplayedColumns()\"></tr>\r\n            <tr mat-row *matRowDef=\"let row; columns: getDisplayedColumns();\"></tr>\r\n        </table>\r\n        <mat-paginator #paginator [length]=\"tableLength\" [pageSize]=\"rowsPerPage\" [pageSizeOptions]=\"[5, 10, 25]\"\r\n            [pageIndex]=\"pageIndex\" [length]=\"tableLength\" [showFirstLastButtons]=\"true\" (page)=\"paginatorEvent($event)\">\r\n        </mat-paginator>\r\n    </div>\r\n</div>"
 
 /***/ }),
 
@@ -3248,10 +3255,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
 /* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
-/* harmony import */ var _service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../service/proizvodjac.service */ "./src/app/e-shop/service/proizvodjac.service.ts");
-/* harmony import */ var _service_data_data_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
-/* harmony import */ var _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
-/* harmony import */ var _service_login_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../service/login.service */ "./src/app/e-shop/service/login.service.ts");
+/* harmony import */ var _service_data_data_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
+/* harmony import */ var _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
+/* harmony import */ var _service_login_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../service/login.service */ "./src/app/e-shop/service/login.service.ts");
+/* harmony import */ var _model_roba_enum__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
+/* harmony import */ var _model_filter__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../model/filter */ "./src/app/e-shop/model/filter.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3270,27 +3278,25 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var RobaComponent = /** @class */ (function () {
-    function RobaComponent(robaService, proizvodjacService, loginServis, dataService, utilsService, korpaSnackBar) {
+    function RobaComponent(robaService, loginServis, dataService, utilsService, korpaSnackBar) {
         this.robaService = robaService;
-        this.proizvodjacService = proizvodjacService;
         this.loginServis = loginServis;
         this.dataService = dataService;
         this.utilsService = utilsService;
         this.korpaSnackBar = korpaSnackBar;
+        this.vrstaRobe = _model_roba_enum__WEBPACK_IMPORTED_MODULE_8__["VrstaRobe"].SVE;
         // Paging and Sorting elements
         this.rowsPerPage = 10;
         this.pageIndex = 0;
         this.sort = null;
-        // Filteri
-        this.izabraniProizvodjac = '';
-        this.raspolozivost = ['Svi artikli', 'Ima na stanju'];
-        this.izabranaRaspolozivost = this.raspolozivost[1];
+        this.filter = new _model_filter__WEBPACK_IMPORTED_MODULE_9__["Filter"]();
         this.searchValue = '';
         this.lastSearchValue = '';
         this.ucitavanje = false;
         this.pronadjenaRoba = true;
-        this.otvoriFilterDiv = false;
+        this.otvoriFilter = false;
         // Tabela
         this.columnDefinitions = [
             { def: 'katbr', ifNotAuth: true },
@@ -3311,7 +3317,7 @@ var RobaComponent = /** @class */ (function () {
         this.pocetnoPretrazivanje = true;
         this.dataService.trenutnaKorpa.subscribe(function (korpa) { return _this.korpa = korpa; });
         this.loginServis.ulogovaniPartner.subscribe(function (partner) { return _this.partner = partner; });
-        this.pronadjiSveProizvodjace();
+        this.pronadjiSvuRobu();
     };
     RobaComponent.prototype.getDisplayedColumns = function () {
         var isPartner = this.partner.ppid != null;
@@ -3355,11 +3361,9 @@ var RobaComponent = /** @class */ (function () {
         this.pocetnoPretrazivanje = false;
         this.lastSearchValue = searchValue;
         this.dataSource = null;
-        var naStanju = this.utilsService.daLiRobaTrebaDaBudeNaStanju(this.raspolozivost, this.izabranaRaspolozivost);
-        var proizvodjacId = this.utilsService.vratiIdProizvodjacaAkoPostoji(this.izabraniProizvodjac, this.proizvodjaci);
         this.ucitavanje = true;
         this.pronadjenaRoba = true;
-        this.robaService.pronadjiSvuRobu(this.sort, this.rowsPerPage, this.pageIndex, searchValue, naStanju, proizvodjacId)
+        this.robaService.pronadjiSvuRobu(this.sort, this.rowsPerPage, this.pageIndex, searchValue, this.filter.naStanju, this.filter.proizvodjacId)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(function (error) {
             if (error.status === 404) {
                 _this.pronadjenaRoba = false;
@@ -3377,19 +3381,6 @@ var RobaComponent = /** @class */ (function () {
         }, function (error) {
             _this.roba = null;
             console.log('Podnaci robu izbacilo je gresko');
-        });
-    };
-    RobaComponent.prototype.pronadjiSveProizvodjace = function () {
-        var _this = this;
-        this.proizvodjacService.pronadjiSveProizvodjace()
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }))
-            .subscribe(function (res) {
-            _this.proizvodjaci = res;
-            _this.izabraniProizvodjac = _this.proizvodjaci[0].naziv;
-            _this.pronadjiSvuRobu();
-        }, function (error) {
-            _this.proizvodjaci = null;
-            console.log('Pronaci svu robu je bacilo gresku', error);
         });
     };
     RobaComponent.prototype.paginatorEvent = function (pageEvent) {
@@ -3413,23 +3404,14 @@ var RobaComponent = /** @class */ (function () {
         this.pronadjiSvuRobuPoPretrazi(this.searchValue);
     };
     RobaComponent.prototype.toogleFilterDiv = function () {
-        this.otvoriFilterDiv = !this.otvoriFilterDiv;
+        this.otvoriFilter = !this.otvoriFilter;
     };
-    RobaComponent.prototype.resetujFilter = function () {
+    RobaComponent.prototype.filtriraj = function (filter) {
         if (this.dataSource) {
             this.pageIndex = 0;
         }
-        this.izabranaRaspolozivost = this.raspolozivost[1];
-        this.izabraniProizvodjac = this.proizvodjaci[0].naziv;
-        this.filtriraj();
-    };
-    RobaComponent.prototype.filtriraj = function () {
-        if (this.dataSource) {
-            this.pageIndex = 0;
-        }
-        var recZaPretragu;
-        recZaPretragu = this.searchValue;
-        this.pronadjiSvuRobuPoPretrazi(recZaPretragu);
+        this.filter = filter;
+        this.pronadjiSvuRobuPoPretrazi(this.searchValue);
     };
     RobaComponent.prototype.dodajUKorpu = function (roba) {
         var snackBarPoruka = this.utilsService.dodajUKorpu(roba);
@@ -3451,13 +3433,200 @@ var RobaComponent = /** @class */ (function () {
             styles: [__webpack_require__(/*! ./roba.component.css */ "./src/app/e-shop/roba/roba.component.css")]
         }),
         __metadata("design:paramtypes", [_service_roba_service__WEBPACK_IMPORTED_MODULE_1__["RobaService"],
-            _service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_5__["ProizvodjacService"],
-            _service_login_service__WEBPACK_IMPORTED_MODULE_8__["LoginService"],
-            _service_data_data_service__WEBPACK_IMPORTED_MODULE_6__["DataService"],
-            _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_7__["AppUtilsService"],
+            _service_login_service__WEBPACK_IMPORTED_MODULE_7__["LoginService"],
+            _service_data_data_service__WEBPACK_IMPORTED_MODULE_5__["DataService"],
+            _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_6__["AppUtilsService"],
             _angular_material__WEBPACK_IMPORTED_MODULE_4__["MatSnackBar"]])
     ], RobaComponent);
     return RobaComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/e-shop/roba/shared-components/filter/filter.component.html":
+/*!****************************************************************************!*\
+  !*** ./src/app/e-shop/roba/shared-components/filter/filter.component.html ***!
+  \****************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"d-flex justify-content-center\" *ngIf=\"otvoriFilter\">\n  <div class=\"filter-div-test d-flex flex-column\">\n      <div class=\"d-flex justify-content-center\">\n          <h2>\n              Filter\n          </h2>\n      </div>\n      <div class=\"d-flex flex-column flex-xl-row input-group mb-3\">\n          <div class=\"input-group-prepend\">\n              <label class=\"input-group-text mobilna-duzina button-glavni-50\" for=\"inputGroupSelect01\">\n                  <p class=\"boja-siva-400\">Proizvodjač: </p>\n              </label>\n          </div>\n          <select class=\"custom-select mobilna-duzina\" id=\"inputGroupSelect01\" [(ngModel)]=\"filter.proizvodjac\">\n              <option *ngFor=\"let proizvodjac of proizvodjaci\" [value]=\"proizvodjac.naziv\">\n                  {{proizvodjac.naziv}}\n              </option>\n          </select>\n\n          <div class=\"input-group-prepend razmak\">\n              <label class=\"input-group-text mobilna-duzina button-glavni-50\" for=\"inputGroupSelect01\">\n                  Raspoloživost:\n              </label>\n          </div>\n          <select class=\"custom-select mobilna-duzina\" id=\"inputGroupSelect01\" [(ngModel)]=\"filter.raspolozivost\">\n              <option *ngFor=\"let raspoloziv of raspolozivost\" [value]=\"raspoloziv\">{{raspoloziv}}</option>\n          </select>\n      </div>\n      <div class=\"d-flex justify-content-center\">\n          <div>\n              <button mat-stroked-button class=pozadina-glavna-100 (click)='filtriraj()'>\n                  <p class=\"boja-siva-400\">Filtriraj</p>\n              </button>\n              <span class=\"col-2\"></span>\n              <button mat-stroked-button class=button-crveni-50 (click)='resetujFilter()'>\n                  <p class=\"boja-siva-400\">Poništi</p>\n              </button>\n          </div>\n      </div>\n  </div>\n</div>"
+
+/***/ }),
+
+/***/ "./src/app/e-shop/roba/shared-components/filter/filter.component.scss":
+/*!****************************************************************************!*\
+  !*** ./src/app/e-shop/roba/shared-components/filter/filter.component.scss ***!
+  \****************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ""
+
+/***/ }),
+
+/***/ "./src/app/e-shop/roba/shared-components/filter/filter.component.ts":
+/*!**************************************************************************!*\
+  !*** ./src/app/e-shop/roba/shared-components/filter/filter.component.ts ***!
+  \**************************************************************************/
+/*! exports provided: FilterComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FilterComponent", function() { return FilterComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var src_app_e_shop_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/e-shop/service/proizvodjac.service */ "./src/app/e-shop/service/proizvodjac.service.ts");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/e-shop/model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
+/* harmony import */ var src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/e-shop/model/filter */ "./src/app/e-shop/model/filter.ts");
+/* harmony import */ var src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/e-shop/utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+
+var FilterComponent = /** @class */ (function () {
+    function FilterComponent(route, proizvodjacService, utilsService) {
+        this.route = route;
+        this.proizvodjacService = proizvodjacService;
+        this.utilsService = utilsService;
+        this.filterEvent = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.filter = new src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_4__["Filter"]();
+        this.raspolozivost = ['Svi artikli', 'Ima na stanju'];
+        this.alive = true;
+    }
+    FilterComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        if (this.industrijkoUljeEvent) {
+            this.industrijkoUljeEvent.subscribe(function (vrstaUlja) {
+                _this.vrstaUlja = vrstaUlja;
+                _this.filter.raspolozivost = _this.raspolozivost[1];
+                _this.pronadjiProizvodjace();
+            });
+        }
+        this.filter.raspolozivost = this.raspolozivost[1];
+        this.pronadjiProizvodjace();
+    };
+    FilterComponent.prototype.pronadjiProizvodjace = function () {
+        var _this = this;
+        if (this.vrstaRobe === src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_3__["VrstaRobe"].AKUMULATORI) {
+            this.proizvodjacService.pronadjiSveProizvodjaceAkumulatora()
+                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }))
+                .subscribe(function (res) {
+                _this.proizvodjaci = res;
+                _this.filter.proizvodjac = _this.proizvodjaci[0].naziv;
+            }, function (error) {
+                _this.proizvodjaci = null;
+                console.log('Pronaci svu robu je bacilo gresku', error);
+            });
+        }
+        else if (this.vrstaRobe === src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_3__["VrstaRobe"].FILTERI) {
+            this.proizvodjacService.pronadjiSveProizvodjaceFiltera()
+                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }))
+                .subscribe(function (res) {
+                _this.proizvodjaci = res;
+                _this.filter.proizvodjac = _this.proizvodjaci[0].naziv;
+            }, function (error) {
+                _this.proizvodjaci = null;
+                console.log('Pronaci svu robu je bacilo gresku', error);
+            });
+        }
+        else if (this.vrstaRobe === src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_3__["VrstaRobe"].SVE) {
+            this.proizvodjacService.pronadjiSveProizvodjace()
+                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }))
+                .subscribe(function (res) {
+                _this.proizvodjaci = res;
+                _this.filter.proizvodjac = _this.proizvodjaci[0].naziv;
+            }, function (error) {
+                _this.proizvodjaci = null;
+                console.log('Pronaci svu robu je bacilo gresku', error);
+            });
+        }
+        else if (this.vrstaRobe === src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_3__["VrstaRobe"].ULJA) {
+            this.proizvodjacService.pronadjiSveProizvodjaceUljaPoVrsti(this.vrstaUlja)
+                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }))
+                .subscribe(function (res) {
+                _this.proizvodjaci = res;
+                _this.filter.proizvodjac = _this.proizvodjaci[0].naziv;
+            }, function (error) {
+                _this.proizvodjaci = null;
+                console.log('Pronaci svu robu je bacilo gresku', error);
+            });
+        }
+        else if (this.vrstaRobe === src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_3__["VrstaRobe"].OSTALO) {
+            this.route.params.subscribe(function (params) {
+                _this.proizvodjacService.pronadjiSveProizvodjaceKategorije(params.id)
+                    .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }))
+                    .subscribe(function (res) {
+                    _this.proizvodjaci = res;
+                    _this.filter.proizvodjac = _this.proizvodjaci[0].naziv;
+                }, function (error) {
+                    _this.proizvodjaci = null;
+                    console.log('Pronaci svu robu je bacilo gresku', error);
+                });
+            });
+        }
+    };
+    FilterComponent.prototype.filtriraj = function () {
+        this.filter.naStanju = this.utilsService.daLiRobaTrebaDaBudeNaStanju(this.raspolozivost, this.filter.raspolozivost);
+        this.filter.proizvodjacId = this.utilsService.vratiIdProizvodjacaAkoPostoji(this.filter.proizvodjac, this.proizvodjaci);
+        this.filterEvent.emit(this.filter);
+    };
+    FilterComponent.prototype.resetujFilter = function () {
+        this.filter.raspolozivost = this.raspolozivost[1];
+        this.filter.proizvodjac = this.proizvodjaci[0].naziv;
+        this.filter.naStanju = this.utilsService.daLiRobaTrebaDaBudeNaStanju(this.raspolozivost, this.filter.raspolozivost);
+        this.filter.proizvodjacId = this.utilsService.vratiIdProizvodjacaAkoPostoji(this.filter.proizvodjac, this.proizvodjaci);
+        this.filterEvent.emit(this.filter);
+    };
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", Object)
+    ], FilterComponent.prototype, "otvoriFilter", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", Object)
+    ], FilterComponent.prototype, "vrstaRobe", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", Object)
+    ], FilterComponent.prototype, "vrstaUlja", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", rxjs__WEBPACK_IMPORTED_MODULE_6__["Observable"])
+    ], FilterComponent.prototype, "industrijkoUljeEvent", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"])(),
+        __metadata("design:type", Object)
+    ], FilterComponent.prototype, "filterEvent", void 0);
+    FilterComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-filter',
+            template: __webpack_require__(/*! ./filter.component.html */ "./src/app/e-shop/roba/shared-components/filter/filter.component.html"),
+            styles: [__webpack_require__(/*! ./filter.component.scss */ "./src/app/e-shop/roba/shared-components/filter/filter.component.scss")]
+        }),
+        __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_7__["ActivatedRoute"],
+            src_app_e_shop_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_1__["ProizvodjacService"],
+            src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_5__["AppUtilsService"]])
+    ], FilterComponent);
+    return FilterComponent;
 }());
 
 
@@ -3482,7 +3651,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container-fluid\">\r\n\r\n    <div class=\"d-flex align-items-center justify-content-center\">\r\n        <div class=\"forms-input\">\r\n            <input class=\"p-1 flex-grow-1 search__input\" type=\"search\" [(ngModel)]=\"searchValue\" (keyup.enter)=\"pronaciPoTrazenojReci(searchValue)\" />\r\n            <div class=\"p-1\" (click)='pronaciPoTrazenojReci(searchValue)'>\r\n                <button mat-mini-fab class=pozadina-glavna-100>\r\n                    <mat-icon>search</mat-icon>\r\n                </button>\r\n            </div>\r\n            <div class=\"p-1\" (click)='toogleFilterDiv()'>\r\n                <button *ngIf=\"!otvoriFilterDiv\" class=pozadina-glavna-100 mat-mini-fab>\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n                <button *ngIf=\"otvoriFilterDiv\" mat-mini-fab class=\"button-glavni-200\">\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"d-flex justify-content-center\">\r\n        <label *ngIf=\"pocetnoPretrazivanje\">\r\n            <font color=\"#424242\"> Ukucajte kataloski broj</font>\r\n        </label>\r\n    </div>\r\n\r\n    <div class=\"d-flex justify-content-center\" *ngIf=\"otvoriFilterDiv\">\r\n        <div class=\"filter-div-test d-flex flex-column\">\r\n            <div class=\"d-flex justify-content-center\">\r\n                <h2>\r\n                    Filter\r\n                </h2>\r\n            </div>\r\n            <div class=\"d-flex flex-column flex-xl-row input-group mb-3\">\r\n                <div class=\"input-group-prepend\">\r\n                    <label class=\"input-group-text mobilna-duzina button-glavni-50\" for=\"inputGroupSelect01\">\r\n                        <p class=\"boja-siva-400\">Proizvodjac: </p>\r\n                    </label>\r\n                </div>\r\n                <select class=\"custom-select mobilna-duzina\" id=\"inputGroupSelect01\" [(ngModel)]=\"izabraniProizvodjac\">\r\n                    <option *ngFor=\"let proizvodjac of proizvodjaci\" [value]=\"proizvodjac.naziv\">\r\n                        {{proizvodjac.naziv}}\r\n                    </option>\r\n                </select>\r\n\r\n                <div class=\"input-group-prepend razmak\">\r\n                    <label class=\"input-group-text mobilna-duzina button-glavni-50\" for=\"inputGroupSelect01\">\r\n                        Raspolozivost:\r\n                    </label>\r\n                </div>\r\n                <select class=\"custom-select mobilna-duzina\" id=\"inputGroupSelect01\" [(ngModel)]=\"izabranaRaspolozivost\">\r\n                    <option *ngFor=\"let raspoloziv of raspolozivost\" [value]=\"raspoloziv\">{{raspoloziv}}</option>\r\n                </select>\r\n            </div>\r\n            <div class=\"d-flex justify-content-center\">\r\n                <div>\r\n                    <button mat-stroked-button class=pozadina-glavna-100 (click)='filtriraj()'>\r\n                        <p class=\"boja-siva-400\">Filtriraj</p>\r\n                    </button>\r\n                    <span class=\"col-2\"></span>\r\n                    <button mat-stroked-button class=button-crveni-50 (click)='resetujFilter()'>\r\n                        <p class=\"boja-siva-400\">Ponisti</p>\r\n                    </button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"!pronadjenaRoba\">\r\n        <i class=\"material-icons icon-size\">\r\n            error_outline\r\n        </i>\r\n        <h1 class=\"h1-upozorenje\">Artikal ne postoji</h1>\r\n    </div>\r\n\r\n    <div class=\"d-flex justify-content-center prazna-tabela\" *ngIf=\"ucitavanje\">\r\n        <mat-spinner></mat-spinner>\r\n    </div>\r\n    <div class=\"tabela-div\" *ngIf=\"dataSource != null && dataSource.length > 0\">\r\n        <p class=\"pdv\"><i>Sve cene su prikazane sa pdv-om.</i></p>\r\n        <table mat-table [dataSource]=\"dataSource\">\r\n            <!-- Kataloski broj Column -->\r\n            <ng-container matColumnDef=\"katbr\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.katbr}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Kataloski broj proizvodjaca Column -->\r\n            <ng-container matColumnDef=\"katbrpro\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj proizvodjaca </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p >\r\n                        {{roba.katbrpro}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Naziv Column -->\r\n            <ng-container matColumnDef=\"naziv\">\r\n                <th mat-header-cell *matHeaderCellDef> Naziv </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p >\r\n                        {{roba.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Proizvodjac Column -->\r\n            <ng-container matColumnDef=\"proizvodjac\">\r\n                <th mat-header-cell *matHeaderCellDef> Proizvodjac </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.proizvodjac.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"rabat\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Rabat </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.rabat | currency:\" \"}}%\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"cena\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Cena </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.cena | currency:\" \"}} RSD\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Stanje Column -->\r\n            <ng-container matColumnDef=\"stanje\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Stanje </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-zelena-50\">check_circle_outline</mat-icon>\r\n                    </div>\r\n                    <div *ngIf=\"roba.stanje == 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-crvena-50\">remove_circle_outline</mat-icon>\r\n                    </div>\r\n                </td>\r\n            </ng-container>\r\n\r\n\r\n            <!-- Kolicina Column -->\r\n            <ng-container matColumnDef=\"kolicina\">\r\n                <th mat-header-cell *matHeaderCellDef>Kolicina </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <input type=\"number\" min=\"0\" placeholder=\"0\" max=\"{{roba.stanje}}\" class=\"kolicina-labela\"\r\n                            [(ngModel)]=\"roba.kolicina\" />\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Kropa dugme Column -->\r\n            <ng-container matColumnDef=\"korpa\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <button mat-raised-button class=\"button-glavni-100\" (click)='dodajUKorpu(roba)'>Dodaj u korpu</button>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Da li ima na stanju ikona -->\r\n            <ng-container matColumnDef=\"u-korpi\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"uKorpi(roba.katbr)\">\r\n                        <mat-icon class=\"boja-crvena-50\">add_shopping_cart</mat-icon>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <tr mat-header-row *matHeaderRowDef=\"getDisplayedColumns()\"></tr>\r\n            <tr mat-row *matRowDef=\"let row; columns: getDisplayedColumns();\"></tr>\r\n        </table>\r\n        <mat-paginator #paginator [length]=\"tableLength\" [pageSize]=\"rowsPerPage\" [pageSizeOptions]=\"[5, 10, 25]\"\r\n            [pageIndex]=\"pageIndex\" [length]=\"tableLength\" [showFirstLastButtons]=\"true\" (page)=\"paginatorEvent($event)\">\r\n        </mat-paginator>\r\n    </div>\r\n</div>"
+module.exports = "<div class=\"container-fluid\">\r\n\r\n    <div class=\"d-flex align-items-center justify-content-center\">\r\n        <div class=\"forms-input\">\r\n            <input class=\"p-1 flex-grow-1 search__input\" type=\"search\" [(ngModel)]=\"searchValue\" (keyup.enter)=\"pronaciPoTrazenojReci(searchValue)\" />\r\n            <div class=\"p-1\" (click)='pronaciPoTrazenojReci(searchValue)'>\r\n                <button mat-mini-fab class=pozadina-glavna-100>\r\n                    <mat-icon>search</mat-icon>\r\n                </button>\r\n            </div>\r\n            <div class=\"p-1\" (click)='toogleFilterDiv()'>\r\n                <button *ngIf=\"!otvoriFilter\" class=pozadina-glavna-100 mat-mini-fab>\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n                <button *ngIf=\"otvoriFilter\" mat-mini-fab class=\"button-glavni-200\">\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"d-flex justify-content-center\">\r\n        <label *ngIf=\"pocetnoPretrazivanje\">\r\n            <font color=\"#424242\"> Ukucajte kataloski broj</font>\r\n        </label>\r\n    </div>\r\n        \r\n    <!-- Filter komponenta izdvojena -->\r\n    <app-filter [vrstaRobe]=\"vrstaRobe\" [vrstaUlja]=\"vrstaUlja\" [otvoriFilter]=\"otvoriFilter\" (filterEvent)=\"filtriraj($event)\">\r\n    </app-filter>\r\n\r\n    <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"!pronadjenaRoba\">\r\n        <i class=\"material-icons icon-size\">\r\n            error_outline\r\n        </i>\r\n        <h1 class=\"h1-upozorenje\">Artikal ne postoji</h1>\r\n    </div>\r\n\r\n    <div class=\"d-flex justify-content-center prazna-tabela\" *ngIf=\"ucitavanje\">\r\n        <mat-spinner></mat-spinner>\r\n    </div>\r\n    <div class=\"tabela-div\" *ngIf=\"dataSource != null && dataSource.length > 0\">\r\n        <p class=\"pdv\"><i>Sve cene su prikazane sa pdv-om.</i></p>\r\n        <table mat-table [dataSource]=\"dataSource\">\r\n            <!-- Kataloski broj Column -->\r\n            <ng-container matColumnDef=\"katbr\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.katbr}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Kataloski broj proizvodjaca Column -->\r\n            <ng-container matColumnDef=\"katbrpro\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj proizvodjaca </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p >\r\n                        {{roba.katbrpro}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Naziv Column -->\r\n            <ng-container matColumnDef=\"naziv\">\r\n                <th mat-header-cell *matHeaderCellDef> Naziv </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p >\r\n                        {{roba.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Proizvodjač Column -->\r\n            <ng-container matColumnDef=\"proizvodjac\">\r\n                <th mat-header-cell *matHeaderCellDef> Proizvodjač </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.proizvodjac.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"rabat\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Rabat </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.rabat | currency:\" \"}}%\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"cena\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Cena </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.cena | currency:\" \"}} RSD\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Stanje Column -->\r\n            <ng-container matColumnDef=\"stanje\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Stanje </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-zelena-50\">check_circle_outline</mat-icon>\r\n                    </div>\r\n                    <div *ngIf=\"roba.stanje == 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-crvena-50\">remove_circle_outline</mat-icon>\r\n                    </div>\r\n                </td>\r\n            </ng-container>\r\n\r\n\r\n            <!-- Kolicina Column -->\r\n            <ng-container matColumnDef=\"kolicina\">\r\n                <th mat-header-cell *matHeaderCellDef>Kolicina </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <input type=\"number\" min=\"0\" placeholder=\"0\" max=\"{{roba.stanje}}\" class=\"kolicina-labela\"\r\n                            [(ngModel)]=\"roba.kolicina\" />\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Kropa dugme Column -->\r\n            <ng-container matColumnDef=\"korpa\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <button mat-raised-button class=\"button-glavni-100\" (click)='dodajUKorpu(roba)'>Dodaj u korpu</button>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Da li ima na stanju ikona -->\r\n            <ng-container matColumnDef=\"u-korpi\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"uKorpi(roba.katbr)\">\r\n                        <mat-icon class=\"boja-crvena-50\">add_shopping_cart</mat-icon>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <tr mat-header-row *matHeaderRowDef=\"getDisplayedColumns()\"></tr>\r\n            <tr mat-row *matRowDef=\"let row; columns: getDisplayedColumns();\"></tr>\r\n        </table>\r\n        <mat-paginator #paginator [length]=\"tableLength\" [pageSize]=\"rowsPerPage\" [pageSizeOptions]=\"[5, 10, 25]\"\r\n            [pageIndex]=\"pageIndex\" [length]=\"tableLength\" [showFirstLastButtons]=\"true\" (page)=\"paginatorEvent($event)\">\r\n        </mat-paginator>\r\n    </div>\r\n</div>"
 
 /***/ }),
 
@@ -3503,8 +3672,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/e-shop/service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
 /* harmony import */ var src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/e-shop/utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
 /* harmony import */ var src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/e-shop/service/login.service */ "./src/app/e-shop/service/login.service.ts");
-/* harmony import */ var src_app_e_shop_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/e-shop/service/proizvodjac.service */ "./src/app/e-shop/service/proizvodjac.service.ts");
-/* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
+/* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
+/* harmony import */ var src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/e-shop/model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
+/* harmony import */ var src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! src/app/e-shop/model/filter */ "./src/app/e-shop/model/filter.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3523,27 +3693,25 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var AntifrizComponent = /** @class */ (function () {
-    function AntifrizComponent(robaService, utilsService, loginServis, proizvodjacService, dataService, korpaSnackBar) {
+    function AntifrizComponent(robaService, utilsService, loginServis, dataService, korpaSnackBar) {
         this.robaService = robaService;
         this.utilsService = utilsService;
         this.loginServis = loginServis;
-        this.proizvodjacService = proizvodjacService;
         this.dataService = dataService;
         this.korpaSnackBar = korpaSnackBar;
+        this.vrstaRobe = src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_8__["VrstaRobe"].ULJA;
         // Paging and Sorting elements
         this.rowsPerPage = 10;
         this.pageIndex = 0;
         this.sort = null;
-        // Filteri
-        this.izabraniProizvodjac = '';
-        this.raspolozivost = ['Svi artikli', 'Ima na stanju'];
-        this.izabranaRaspolozivost = this.raspolozivost[1];
+        this.filter = new src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_9__["Filter"]();
         this.searchValue = '';
         this.lastSearchValue = '';
         this.ucitavanje = false;
         this.pronadjenaRoba = true;
-        this.otvoriFilterDiv = false;
+        this.otvoriFilter = false;
         // Tabela
         this.columnDefinitions = [
             { def: 'katbr', ifNotAuth: true },
@@ -3565,7 +3733,7 @@ var AntifrizComponent = /** @class */ (function () {
         this.pocetnoPretrazivanje = true;
         this.dataService.trenutnaKorpa.subscribe(function (korpa) { return _this.korpa = korpa; });
         this.loginServis.ulogovaniPartner.subscribe(function (partner) { return _this.partner = partner; });
-        this.pronadjiSveProizvodjace();
+        this.pronandjiSavAntifriz();
     };
     AntifrizComponent.prototype.getDisplayedColumns = function () {
         var isPartner = this.partner.ppid != null;
@@ -3605,11 +3773,9 @@ var AntifrizComponent = /** @class */ (function () {
         this.lastSearchValue = searchValue;
         this.ucitavanje = true;
         this.dataSource = null;
-        var naStanju = this.utilsService.daLiRobaTrebaDaBudeNaStanju(this.raspolozivost, this.izabranaRaspolozivost);
-        var proizvodjacId = this.utilsService.vratiIdProizvodjacaAkoPostoji(this.izabraniProizvodjac, this.proizvodjaci);
         this.ucitavanje = true;
         this.pronadjenaRoba = true;
-        this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, searchValue, naStanju, proizvodjacId, this.vrstaUlja)
+        this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, searchValue, this.filter.naStanju, this.filter.proizvodjacId, this.vrstaUlja)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(function (error) {
             if (error.status === 404) {
                 _this.pronadjenaRoba = false;
@@ -3626,20 +3792,7 @@ var AntifrizComponent = /** @class */ (function () {
             _this.tableLength = res.totalElements;
         }, function (error) {
             _this.roba = null;
-            console.log('Podnaci robu izbacilo je gresko');
-        });
-    };
-    AntifrizComponent.prototype.pronadjiSveProizvodjace = function () {
-        var _this = this;
-        this.proizvodjacService.pronadjiSveProizvodjaceUljaPoVrsti(this.vrstaUlja)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }))
-            .subscribe(function (res) {
-            _this.proizvodjaci = res;
-            _this.izabraniProizvodjac = _this.proizvodjaci[0].naziv;
-            _this.pronandjiSavAntifriz();
-        }, function (error) {
-            _this.proizvodjaci = null;
-            console.log('Pronaci svu robu je bacilo gresku', error);
+            console.log('Podnaci robu izbacilo je gresku: ' + error);
         });
     };
     AntifrizComponent.prototype.pronaciPoTrazenojReci = function (searchValue) {
@@ -3659,23 +3812,14 @@ var AntifrizComponent = /** @class */ (function () {
         this.pronadjiEntitetePoPretrazi(this.searchValue);
     };
     AntifrizComponent.prototype.toogleFilterDiv = function () {
-        this.otvoriFilterDiv = !this.otvoriFilterDiv;
+        this.otvoriFilter = !this.otvoriFilter;
     };
-    AntifrizComponent.prototype.resetujFilter = function () {
+    AntifrizComponent.prototype.filtriraj = function (filter) {
         if (this.dataSource) {
             this.pageIndex = 0;
         }
-        this.izabranaRaspolozivost = this.raspolozivost[1];
-        this.izabraniProizvodjac = this.proizvodjaci[0].naziv;
-        this.filtriraj();
-    };
-    AntifrizComponent.prototype.filtriraj = function () {
-        if (this.dataSource) {
-            this.pageIndex = 0;
-        }
-        var recZaPretragu;
-        recZaPretragu = this.searchValue;
-        this.pronadjiEntitetePoPretrazi(recZaPretragu);
+        this.filter = filter;
+        this.pronadjiEntitetePoPretrazi(this.searchValue);
     };
     AntifrizComponent.prototype.dodajUKorpu = function (roba) {
         var snackBarPoruka = this.utilsService.dodajUKorpu(roba);
@@ -3699,8 +3843,7 @@ var AntifrizComponent = /** @class */ (function () {
         __metadata("design:paramtypes", [src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_4__["RobaService"],
             src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_5__["AppUtilsService"],
             src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_6__["LoginService"],
-            src_app_e_shop_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_7__["ProizvodjacService"],
-            src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_8__["DataService"],
+            src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_7__["DataService"],
             _angular_material__WEBPACK_IMPORTED_MODULE_1__["MatSnackBar"]])
     ], AntifrizComponent);
     return AntifrizComponent;
@@ -3728,7 +3871,7 @@ module.exports = ".sirina-odabira-vrste {\r\n    width: 450px;\r\n    float: rig
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container-fluid\">\r\n    <div class=\"d-flex col-lg p-2 justify-content-center sirina-odabira-vrste\">\r\n        <div class=\"input-group-prepend\">\r\n            <label class=\"pozadina-glavna-100 boja-siva-400 input-group-text \" for=\"inputGroupSelect01\">Izaberite vrstu\r\n                maziva:</label>\r\n        </div>\r\n        <select class=\"custom-select mobilna-visina\" (change)=\"onChange()\" id=\"inputGroupSelect01\" [(ngModel)]=\"izabranaVrsta\">\r\n            <option *ngFor=\"let izabranaVrsta of vrste\" [value]=\"izabranaVrsta\">{{izabranaVrsta}}</option>\r\n        </select>\r\n    </div>\r\n    <div class=\"d-flex align-items-center col-lg justify-content-center\">\r\n        <div class=\"forms-input-industrija\">\r\n            <input class=\"flex-grow-1 search__input\" type=\"search\" [(ngModel)]=\"searchValue\" (keyup.enter)=\"pronaciPoTrazenojReci(searchValue)\" />\r\n            <div class=\"p-1\" (click)='pronaciPoTrazenojReci(searchValue)'>\r\n                <button mat-mini-fab class=pozadina-glavna-100>\r\n                    <mat-icon>search</mat-icon>\r\n                </button>\r\n            </div>\r\n            <div class=\"p-1\" (click)='toogleFilterDiv()'>\r\n                <button *ngIf=\"!otvoriFilterDiv\" class=pozadina-glavna-100 mat-mini-fab>\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n                <button *ngIf=\"otvoriFilterDiv\" mat-mini-fab class=\"button-glavni-200\">\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"d-flex justify-content-center\">\r\n        <label *ngIf=\"pocetnoPretrazivanje\">\r\n            <font color=\"#424242\"> Ukucajte kataloski broj</font>\r\n        </label>\r\n    </div>\r\n\r\n    <div class=\"d-flex justify-content-center\" *ngIf=\"otvoriFilterDiv\">\r\n        <div class=\"filter-div-test d-flex flex-column\">\r\n            <div class=\"d-flex justify-content-center\">\r\n                <h2>\r\n                    Filter\r\n                </h2>\r\n            </div>\r\n            <div class=\"d-flex flex-column flex-xl-row input-group mb-3\">\r\n                <div class=\"input-group-prepend\">\r\n                    <label class=\"input-group-text mobilna-duzina button-glavni-50\" for=\"inputGroupSelect01\">\r\n                        <p class=\"boja-siva-400\">Proizvodjac: </p>\r\n                    </label>\r\n                </div>\r\n                <select class=\"custom-select mobilna-duzina\" id=\"inputGroupSelect01\" [(ngModel)]=\"izabraniProizvodjac\">\r\n                    <option *ngFor=\"let proizvodjac of proizvodjaci\" [value]=\"proizvodjac.naziv\">\r\n                        {{proizvodjac.naziv}}\r\n                    </option>\r\n                </select>\r\n\r\n                <div class=\"input-group-prepend razmak\">\r\n                    <label class=\"input-group-text mobilna-duzina button-glavni-50\" for=\"inputGroupSelect01\">\r\n                        Raspolozivost:\r\n                    </label>\r\n                </div>\r\n                <select class=\"custom-select mobilna-duzina\" id=\"inputGroupSelect01\" [(ngModel)]=\"izabranaRaspolozivost\">\r\n                    <option *ngFor=\"let raspoloziv of raspolozivost\" [value]=\"raspoloziv\">{{raspoloziv}}</option>\r\n                </select>\r\n            </div>\r\n            <div class=\"d-flex justify-content-center\">\r\n                <div>\r\n                    <button mat-stroked-button class=pozadina-glavna-100 (click)='filtriraj()'>\r\n                        <p class=\"boja-siva-400\">Filtriraj</p>\r\n                    </button>\r\n                    <span class=\"col-2\"></span>\r\n                    <button mat-stroked-button class=button-crveni-50 (click)='resetujFilter()'>\r\n                        <p class=\"boja-siva-400\">Ponisti</p>\r\n                    </button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"!pronadjenaRoba\">\r\n        <i class=\"material-icons icon-size\">\r\n            error_outline\r\n        </i>\r\n        <h1 class=\"h1-upozorenje\">Artikal ne postoji</h1>\r\n    </div>\r\n\r\n    <div class=\"d-flex justify-content-center prazna-tabela\" *ngIf=\"ucitavanje\">\r\n        <mat-spinner></mat-spinner>\r\n    </div>\r\n    <div class=\"tabela-div\" *ngIf=\"dataSource != null && dataSource.length > 0\">\r\n        <p class=\"pdv\"><i>Sve cene su prikazane sa pdv-om.</i></p>\r\n        <table mat-table [dataSource]=\"dataSource\">\r\n            <!-- Kataloski broj Column -->\r\n            <ng-container matColumnDef=\"katbr\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.katbr}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Kataloski broj proizvodjaca Column -->\r\n            <ng-container matColumnDef=\"katbrpro\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj proizvodjaca </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p >\r\n                        {{roba.katbrpro}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Naziv Column -->\r\n            <ng-container matColumnDef=\"naziv\">\r\n                <th mat-header-cell *matHeaderCellDef> Naziv </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p >\r\n                        {{roba.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Proizvodjac Column -->\r\n            <ng-container matColumnDef=\"proizvodjac\">\r\n                <th mat-header-cell *matHeaderCellDef> Proizvodjac </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.proizvodjac.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"rabat\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Rabat </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.rabat | currency:\" \"}}%\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"cena\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Cena </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.cena | currency:\" \"}} RSD\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Stanje Column -->\r\n            <ng-container matColumnDef=\"stanje\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Stanje </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-zelena-50\">check_circle_outline</mat-icon>\r\n                    </div>\r\n                    <div *ngIf=\"roba.stanje == 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-crvena-50\">remove_circle_outline</mat-icon>\r\n                    </div>\r\n                </td>\r\n            </ng-container>\r\n\r\n\r\n            <!-- Kolicina Column -->\r\n            <ng-container matColumnDef=\"kolicina\">\r\n                <th mat-header-cell *matHeaderCellDef>Kolicina </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <input type=\"number\" min=\"0\" placeholder=\"0\" max=\"{{roba.stanje}}\" class=\"kolicina-labela\"\r\n                            [(ngModel)]=\"roba.kolicina\" />\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Kropa dugme Column -->\r\n            <ng-container matColumnDef=\"korpa\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <button mat-raised-button class=\"button-glavni-100\" (click)='dodajUKorpu(roba)'>Dodaj u korpu</button>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Da li ima na stanju ikona -->\r\n            <ng-container matColumnDef=\"u-korpi\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"uKorpi(roba.katbr)\">\r\n                        <mat-icon class=\"boja-crvena-50\">add_shopping_cart</mat-icon>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <tr mat-header-row *matHeaderRowDef=\"getDisplayedColumns()\"></tr>\r\n            <tr mat-row *matRowDef=\"let row; columns: getDisplayedColumns();\"></tr>\r\n        </table>\r\n        <mat-paginator #paginator [length]=\"tableLength\" [pageSize]=\"rowsPerPage\" [pageSizeOptions]=\"[5, 10, 25]\"\r\n            [pageIndex]=\"pageIndex\" [length]=\"tableLength\" [showFirstLastButtons]=\"true\" (page)=\"paginatorEvent($event)\">\r\n        </mat-paginator>\r\n    </div>\r\n</div>"
+module.exports = "<div class=\"container-fluid\">\r\n    <div class=\"d-flex col-lg p-2 justify-content-center sirina-odabira-vrste\">\r\n        <div class=\"input-group-prepend\">\r\n            <label class=\"pozadina-glavna-100 boja-siva-400 input-group-text \" for=\"inputGroupSelect01\">Izaberite vrstu\r\n                maziva:</label>\r\n        </div>\r\n        <select class=\"custom-select mobilna-visina\" (change)=\"onChange()\" id=\"inputGroupSelect01\" [(ngModel)]=\"izabranaVrsta\">\r\n            <option *ngFor=\"let izabranaVrsta of vrste\" [value]=\"izabranaVrsta\">{{izabranaVrsta}}</option>\r\n        </select>\r\n    </div>\r\n    <div class=\"d-flex align-items-center col-lg justify-content-center\">\r\n        <div class=\"forms-input-industrija\">\r\n            <input class=\"flex-grow-1 search__input\" type=\"search\" [(ngModel)]=\"searchValue\" (keyup.enter)=\"pronaciPoTrazenojReci(searchValue)\" />\r\n            <div class=\"p-1\" (click)='pronaciPoTrazenojReci(searchValue)'>\r\n                <button mat-mini-fab class=pozadina-glavna-100>\r\n                    <mat-icon>search</mat-icon>\r\n                </button>\r\n            </div>\r\n            <div class=\"p-1\" (click)='toogleFilterDiv()'>\r\n                <button *ngIf=\"!otvoriFilter\" class=pozadina-glavna-100 mat-mini-fab>\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n                <button *ngIf=\"otvoriFilter\" mat-mini-fab class=\"button-glavni-200\">\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"d-flex justify-content-center\">\r\n        <label *ngIf=\"pocetnoPretrazivanje\">\r\n            <font color=\"#424242\"> Ukucajte kataloski broj</font>\r\n        </label>\r\n    </div>\r\n        \r\n    <!-- Filter komponenta izdvojena -->\r\n    <app-filter [industrijkoUljeEvent]=\"vrstaIndustijskihUlja.asObservable()\" [vrstaRobe]=\"vrstaRobe\" [vrstaUlja]=\"vrstaUlja\" [otvoriFilter]=\"otvoriFilter\" (filterEvent)=\"filtriraj($event)\">\r\n    </app-filter>\r\n\r\n    <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"!pronadjenaRoba\">\r\n        <i class=\"material-icons icon-size\">\r\n            error_outline\r\n        </i>\r\n        <h1 class=\"h1-upozorenje\">Artikal ne postoji</h1>\r\n    </div>\r\n\r\n    <div class=\"d-flex justify-content-center prazna-tabela\" *ngIf=\"ucitavanje\">\r\n        <mat-spinner></mat-spinner>\r\n    </div>\r\n    <div class=\"tabela-div\" *ngIf=\"dataSource != null && dataSource.length > 0\">\r\n        <p class=\"pdv\"><i>Sve cene su prikazane sa pdv-om.</i></p>\r\n        <table mat-table [dataSource]=\"dataSource\">\r\n            <!-- Kataloski broj Column -->\r\n            <ng-container matColumnDef=\"katbr\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.katbr}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Kataloski broj proizvodjaca Column -->\r\n            <ng-container matColumnDef=\"katbrpro\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj proizvodjaca </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p >\r\n                        {{roba.katbrpro}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Naziv Column -->\r\n            <ng-container matColumnDef=\"naziv\">\r\n                <th mat-header-cell *matHeaderCellDef> Naziv </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p >\r\n                        {{roba.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Proizvodjač Column -->\r\n            <ng-container matColumnDef=\"proizvodjac\">\r\n                <th mat-header-cell *matHeaderCellDef> Proizvodjač </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.proizvodjac.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"rabat\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Rabat </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.rabat | currency:\" \"}}%\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"cena\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Cena </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.cena | currency:\" \"}} RSD\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Stanje Column -->\r\n            <ng-container matColumnDef=\"stanje\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Stanje </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-zelena-50\">check_circle_outline</mat-icon>\r\n                    </div>\r\n                    <div *ngIf=\"roba.stanje == 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-crvena-50\">remove_circle_outline</mat-icon>\r\n                    </div>\r\n                </td>\r\n            </ng-container>\r\n\r\n\r\n            <!-- Kolicina Column -->\r\n            <ng-container matColumnDef=\"kolicina\">\r\n                <th mat-header-cell *matHeaderCellDef>Kolicina </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <input type=\"number\" min=\"0\" placeholder=\"0\" max=\"{{roba.stanje}}\" class=\"kolicina-labela\"\r\n                            [(ngModel)]=\"roba.kolicina\" />\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Kropa dugme Column -->\r\n            <ng-container matColumnDef=\"korpa\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <button mat-raised-button class=\"button-glavni-100\" (click)='dodajUKorpu(roba)'>Dodaj u korpu</button>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Da li ima na stanju ikona -->\r\n            <ng-container matColumnDef=\"u-korpi\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"uKorpi(roba.katbr)\">\r\n                        <mat-icon class=\"boja-crvena-50\">add_shopping_cart</mat-icon>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <tr mat-header-row *matHeaderRowDef=\"getDisplayedColumns()\"></tr>\r\n            <tr mat-row *matRowDef=\"let row; columns: getDisplayedColumns();\"></tr>\r\n        </table>\r\n        <mat-paginator #paginator [length]=\"tableLength\" [pageSize]=\"rowsPerPage\" [pageSizeOptions]=\"[5, 10, 25]\"\r\n            [pageIndex]=\"pageIndex\" [length]=\"tableLength\" [showFirstLastButtons]=\"true\" (page)=\"paginatorEvent($event)\">\r\n        </mat-paginator>\r\n    </div>\r\n</div>"
 
 /***/ }),
 
@@ -3749,8 +3892,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/e-shop/service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
 /* harmony import */ var src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/e-shop/utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
 /* harmony import */ var src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/e-shop/service/login.service */ "./src/app/e-shop/service/login.service.ts");
-/* harmony import */ var src_app_e_shop_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/e-shop/service/proizvodjac.service */ "./src/app/e-shop/service/proizvodjac.service.ts");
-/* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
+/* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
+/* harmony import */ var src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/e-shop/model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
+/* harmony import */ var src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! src/app/e-shop/model/filter */ "./src/app/e-shop/model/filter.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3769,27 +3913,26 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var IndustrijskaComponent = /** @class */ (function () {
-    function IndustrijskaComponent(robaService, utilsService, loginServis, proizvodjacService, dataService, korpaSnackBar) {
+    function IndustrijskaComponent(robaService, utilsService, loginServis, dataService, korpaSnackBar) {
         this.robaService = robaService;
         this.utilsService = utilsService;
         this.loginServis = loginServis;
-        this.proizvodjacService = proizvodjacService;
         this.dataService = dataService;
         this.korpaSnackBar = korpaSnackBar;
+        this.vrstaRobe = src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_8__["VrstaRobe"].ULJA;
         // Paging and Sorting elements
         this.rowsPerPage = 10;
         this.pageIndex = 0;
         this.sort = null;
-        // Filteri
-        this.izabraniProizvodjac = '';
-        this.raspolozivost = ['Svi artikli', 'Ima na stanju'];
-        this.izabranaRaspolozivost = this.raspolozivost[1];
+        this.filter = new src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_9__["Filter"]();
+        this.vrstaIndustijskihUlja = new rxjs__WEBPACK_IMPORTED_MODULE_3__["Subject"]();
         this.searchValue = '';
         this.lastSearchValue = '';
         this.ucitavanje = false;
         this.pronadjenaRoba = true;
-        this.otvoriFilterDiv = false;
+        this.otvoriFilter = false;
         // Tabela
         this.columnDefinitions = [
             { def: 'katbr', ifNotAuth: true },
@@ -3824,7 +3967,7 @@ var IndustrijskaComponent = /** @class */ (function () {
         this.pocetnoPretrazivanje = true;
         this.dataService.trenutnaKorpa.subscribe(function (korpa) { return _this.korpa = korpa; });
         this.loginServis.ulogovaniPartner.subscribe(function (partner) { return _this.partner = partner; });
-        this.pronadjiSveProizvodjace();
+        this.pronandjiUlja();
     };
     IndustrijskaComponent.prototype.getDisplayedColumns = function () {
         var isPartner = this.partner.ppid != null;
@@ -3863,11 +4006,9 @@ var IndustrijskaComponent = /** @class */ (function () {
         this.pocetnoPretrazivanje = false;
         this.lastSearchValue = searchValue;
         this.dataSource = null;
-        var naStanju = this.utilsService.daLiRobaTrebaDaBudeNaStanju(this.raspolozivost, this.izabranaRaspolozivost);
-        var proizvodjacId = this.utilsService.vratiIdProizvodjacaAkoPostoji(this.izabraniProizvodjac, this.proizvodjaci);
         this.ucitavanje = true;
         this.pronadjenaRoba = true;
-        this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, searchValue, naStanju, proizvodjacId, this.vrstaUlja)
+        this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, searchValue, this.filter.naStanju, this.filter.proizvodjacId, this.vrstaUlja)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(function (error) {
             if (error.status === 404) {
                 _this.pronadjenaRoba = false;
@@ -3887,19 +4028,6 @@ var IndustrijskaComponent = /** @class */ (function () {
             console.log('Podnaci robu izbacilo je gresko');
         });
     };
-    IndustrijskaComponent.prototype.pronadjiSveProizvodjace = function () {
-        var _this = this;
-        this.proizvodjacService.pronadjiSveProizvodjaceUljaPoVrsti(this.vrstaUlja)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }))
-            .subscribe(function (res) {
-            _this.proizvodjaci = res;
-            _this.izabraniProizvodjac = _this.proizvodjaci[0].naziv;
-            _this.pronandjiUlja();
-        }, function (error) {
-            _this.proizvodjaci = null;
-            console.log('Pronaci svu robu je bacilo gresku', error);
-        });
-    };
     IndustrijskaComponent.prototype.pronaciPoTrazenojReci = function (searchValue) {
         if (this.dataSource) {
             this.pageIndex = 0;
@@ -3917,32 +4045,24 @@ var IndustrijskaComponent = /** @class */ (function () {
         this.pronadjiEntitetePoPretrazi(this.searchValue);
     };
     IndustrijskaComponent.prototype.toogleFilterDiv = function () {
-        this.otvoriFilterDiv = !this.otvoriFilterDiv;
+        this.otvoriFilter = !this.otvoriFilter;
     };
-    IndustrijskaComponent.prototype.resetujFilter = function () {
+    IndustrijskaComponent.prototype.filtriraj = function (filter) {
         if (this.dataSource) {
             this.pageIndex = 0;
         }
-        this.izabranaRaspolozivost = this.raspolozivost[1];
-        this.izabraniProizvodjac = this.proizvodjaci[0].naziv;
-        this.filtriraj();
-    };
-    IndustrijskaComponent.prototype.filtriraj = function () {
-        if (this.dataSource) {
-            this.pageIndex = 0;
-        }
-        var recZaPretragu;
-        recZaPretragu = this.searchValue;
-        this.pronadjiEntitetePoPretrazi(recZaPretragu);
+        this.filter = filter;
+        this.pronadjiEntitetePoPretrazi(this.searchValue);
     };
     IndustrijskaComponent.prototype.onChange = function () {
         var _this = this;
         this.vrsteUlja.forEach(function (vrsta) {
             if (vrsta.naziv === _this.izabranaVrsta) {
                 _this.vrstaUlja = vrsta.url;
+                _this.vrstaIndustijskihUlja.next(_this.vrstaUlja);
             }
         });
-        this.pronadjiSveProizvodjace();
+        this.pronandjiUlja();
     };
     IndustrijskaComponent.prototype.dodajUKorpu = function (roba) {
         var snackBarPoruka = this.utilsService.dodajUKorpu(roba);
@@ -3966,8 +4086,7 @@ var IndustrijskaComponent = /** @class */ (function () {
         __metadata("design:paramtypes", [src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_4__["RobaService"],
             src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_5__["AppUtilsService"],
             src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_6__["LoginService"],
-            src_app_e_shop_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_7__["ProizvodjacService"],
-            src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_8__["DataService"],
+            src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_7__["DataService"],
             _angular_material__WEBPACK_IMPORTED_MODULE_1__["MatSnackBar"]])
     ], IndustrijskaComponent);
     return IndustrijskaComponent;
@@ -3995,7 +4114,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container-fluid\">\r\n\r\n    <div class=\"d-flex align-items-center justify-content-center\">\r\n        <div class=\"forms-input\">\r\n            <input class=\"p-1 flex-grow-1 search__input\" type=\"search\" [(ngModel)]=\"searchValue\" (keyup.enter)=\"pronaciPoTrazenojReci(searchValue)\" />\r\n            <div class=\"p-1\" (click)='pronaciPoTrazenojReci(searchValue)'>\r\n                <button mat-mini-fab class=pozadina-glavna-100>\r\n                    <mat-icon>search</mat-icon>\r\n                </button>\r\n            </div>\r\n            <div class=\"p-1\" (click)='toogleFilterDiv()'>\r\n                <button *ngIf=\"!otvoriFilterDiv\" class=pozadina-glavna-100 mat-mini-fab>\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n                <button *ngIf=\"otvoriFilterDiv\" mat-mini-fab class=\"button-glavni-200\">\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"d-flex justify-content-center\">\r\n        <label *ngIf=\"pocetnoPretrazivanje\">\r\n            <font color=\"#424242\"> Ukucajte kataloski broj</font>\r\n        </label>\r\n    </div>\r\n\r\n    <div class=\"d-flex justify-content-center\" *ngIf=\"otvoriFilterDiv\">\r\n        <div class=\"filter-div-test d-flex flex-column\">\r\n            <div class=\"d-flex justify-content-center\">\r\n                <h2>\r\n                    Filter\r\n                </h2>\r\n            </div>\r\n            <div class=\"d-flex flex-column flex-xl-row input-group mb-3\">\r\n                <div class=\"input-group-prepend\">\r\n                    <label class=\"input-group-text mobilna-duzina button-glavni-50\" for=\"inputGroupSelect01\">\r\n                        <p class=\"boja-siva-400\">Proizvodjac: </p>\r\n                    </label>\r\n                </div>\r\n                <select class=\"custom-select mobilna-duzina\" id=\"inputGroupSelect01\" [(ngModel)]=\"izabraniProizvodjac\">\r\n                    <option *ngFor=\"let proizvodjac of proizvodjaci\" [value]=\"proizvodjac.naziv\">\r\n                        {{proizvodjac.naziv}}\r\n                    </option>\r\n                </select>\r\n\r\n                <div class=\"input-group-prepend razmak\">\r\n                    <label class=\"input-group-text mobilna-duzina button-glavni-50\" for=\"inputGroupSelect01\">\r\n                        Raspolozivost:\r\n                    </label>\r\n                </div>\r\n                <select class=\"custom-select mobilna-duzina\" id=\"inputGroupSelect01\" [(ngModel)]=\"izabranaRaspolozivost\">\r\n                    <option *ngFor=\"let raspoloziv of raspolozivost\" [value]=\"raspoloziv\">{{raspoloziv}}</option>\r\n                </select>\r\n            </div>\r\n            <div class=\"d-flex justify-content-center\">\r\n                <div>\r\n                    <button mat-stroked-button class=pozadina-glavna-100 (click)='filtriraj()'>\r\n                        <p class=\"boja-siva-400\">Filtriraj</p>\r\n                    </button>\r\n                    <span class=\"col-2\"></span>\r\n                    <button mat-stroked-button class=button-crveni-50 (click)='resetujFilter()'>\r\n                        <p class=\"boja-siva-400\">Ponisti</p>\r\n                    </button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"!pronadjenaRoba\">\r\n        <i class=\"material-icons icon-size\">\r\n            error_outline\r\n        </i>\r\n        <h1 class=\"h1-upozorenje\">Artikal ne postoji</h1>\r\n    </div>\r\n\r\n    <div class=\"d-flex justify-content-center prazna-tabela\" *ngIf=\"ucitavanje\">\r\n        <mat-spinner></mat-spinner>\r\n    </div>\r\n    <div class=\"tabela-div\" *ngIf=\"dataSource != null && dataSource.length > 0\">\r\n        <p class=\"pdv\"><i>Sve cene su prikazane sa pdv-om.</i></p>\r\n        <table mat-table [dataSource]=\"dataSource\">\r\n            <!-- Kataloski broj Column -->\r\n            <ng-container matColumnDef=\"katbr\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.katbr}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Kataloski broj proizvodjaca Column -->\r\n            <ng-container matColumnDef=\"katbrpro\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj proizvodjaca </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p >\r\n                        {{roba.katbrpro}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Naziv Column -->\r\n            <ng-container matColumnDef=\"naziv\">\r\n                <th mat-header-cell *matHeaderCellDef> Naziv </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p >\r\n                        {{roba.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Proizvodjac Column -->\r\n            <ng-container matColumnDef=\"proizvodjac\">\r\n                <th mat-header-cell *matHeaderCellDef> Proizvodjac </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.proizvodjac.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"rabat\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Rabat </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.rabat | currency:\" \"}}%\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"cena\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Cena </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.cena | currency:\" \"}} RSD\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Stanje Column -->\r\n            <ng-container matColumnDef=\"stanje\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Stanje </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-zelena-50\">check_circle_outline</mat-icon>\r\n                    </div>\r\n                    <div *ngIf=\"roba.stanje == 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-crvena-50\">remove_circle_outline</mat-icon>\r\n                    </div>\r\n                </td>\r\n            </ng-container>\r\n\r\n\r\n            <!-- Kolicina Column -->\r\n            <ng-container matColumnDef=\"kolicina\">\r\n                <th mat-header-cell *matHeaderCellDef>Kolicina </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <input type=\"number\" min=\"0\" placeholder=\"0\" max=\"{{roba.stanje}}\" class=\"kolicina-labela\"\r\n                            [(ngModel)]=\"roba.kolicina\" />\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Kropa dugme Column -->\r\n            <ng-container matColumnDef=\"korpa\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <button mat-raised-button class=\"button-glavni-100\" (click)='dodajUKorpu(roba)'>Dodaj u korpu</button>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Da li ima na stanju ikona -->\r\n            <ng-container matColumnDef=\"u-korpi\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"uKorpi(roba.katbr)\">\r\n                        <mat-icon class=\"boja-crvena-50\">add_shopping_cart</mat-icon>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <tr mat-header-row *matHeaderRowDef=\"getDisplayedColumns()\"></tr>\r\n            <tr mat-row *matRowDef=\"let row; columns: getDisplayedColumns();\"></tr>\r\n        </table>\r\n        <mat-paginator #paginator [length]=\"tableLength\" [pageSize]=\"rowsPerPage\" [pageSizeOptions]=\"[5, 10, 25]\"\r\n            [pageIndex]=\"pageIndex\" [length]=\"tableLength\" [showFirstLastButtons]=\"true\" (page)=\"paginatorEvent($event)\">\r\n        </mat-paginator>\r\n    </div>\r\n</div>"
+module.exports = "<div class=\"container-fluid\">\r\n\r\n    <div class=\"d-flex align-items-center justify-content-center\">\r\n        <div class=\"forms-input\">\r\n            <input class=\"p-1 flex-grow-1 search__input\" type=\"search\" [(ngModel)]=\"searchValue\" (keyup.enter)=\"pronaciPoTrazenojReci(searchValue)\" />\r\n            <div class=\"p-1\" (click)='pronaciPoTrazenojReci(searchValue)'>\r\n                <button mat-mini-fab class=pozadina-glavna-100>\r\n                    <mat-icon>search</mat-icon>\r\n                </button>\r\n            </div>\r\n            <div class=\"p-1\" (click)='toogleFilterDiv()'>\r\n                <button *ngIf=\"!otvoriFilter\" class=pozadina-glavna-100 mat-mini-fab>\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n                <button *ngIf=\"otvoriFilter\" mat-mini-fab class=\"button-glavni-200\">\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"d-flex justify-content-center\">\r\n        <label *ngIf=\"pocetnoPretrazivanje\">\r\n            <font color=\"#424242\"> Ukucajte kataloski broj</font>\r\n        </label>\r\n    </div>\r\n        \r\n    <!-- Filter komponenta izdvojena -->\r\n    <app-filter [vrstaRobe]=\"vrstaRobe\" [vrstaUlja]=\"vrstaUlja\" [otvoriFilter]=\"otvoriFilter\" (filterEvent)=\"filtriraj($event)\">\r\n    </app-filter>\r\n\r\n    <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"!pronadjenaRoba\">\r\n        <i class=\"material-icons icon-size\">\r\n            error_outline\r\n        </i>\r\n        <h1 class=\"h1-upozorenje\">Artikal ne postoji</h1>\r\n    </div>\r\n\r\n    <div class=\"d-flex justify-content-center prazna-tabela\" *ngIf=\"ucitavanje\">\r\n        <mat-spinner></mat-spinner>\r\n    </div>\r\n    <div class=\"tabela-div\" *ngIf=\"dataSource != null && dataSource.length > 0\">\r\n        <p class=\"pdv\"><i>Sve cene su prikazane sa pdv-om.</i></p>\r\n        <table mat-table [dataSource]=\"dataSource\">\r\n            <!-- Kataloski broj Column -->\r\n            <ng-container matColumnDef=\"katbr\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.katbr}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Kataloski broj proizvodjaca Column -->\r\n            <ng-container matColumnDef=\"katbrpro\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj proizvodjaca </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p >\r\n                        {{roba.katbrpro}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Naziv Column -->\r\n            <ng-container matColumnDef=\"naziv\">\r\n                <th mat-header-cell *matHeaderCellDef> Naziv </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p >\r\n                        {{roba.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Proizvodjač Column -->\r\n            <ng-container matColumnDef=\"proizvodjac\">\r\n                <th mat-header-cell *matHeaderCellDef> Proizvodjač </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.proizvodjac.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"rabat\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Rabat </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.rabat | currency:\" \"}}%\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"cena\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Cena </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.cena | currency:\" \"}} RSD\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Stanje Column -->\r\n            <ng-container matColumnDef=\"stanje\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Stanje </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-zelena-50\">check_circle_outline</mat-icon>\r\n                    </div>\r\n                    <div *ngIf=\"roba.stanje == 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-crvena-50\">remove_circle_outline</mat-icon>\r\n                    </div>\r\n                </td>\r\n            </ng-container>\r\n\r\n\r\n            <!-- Kolicina Column -->\r\n            <ng-container matColumnDef=\"kolicina\">\r\n                <th mat-header-cell *matHeaderCellDef>Kolicina </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <input type=\"number\" min=\"0\" placeholder=\"0\" max=\"{{roba.stanje}}\" class=\"kolicina-labela\"\r\n                            [(ngModel)]=\"roba.kolicina\" />\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Kropa dugme Column -->\r\n            <ng-container matColumnDef=\"korpa\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <button mat-raised-button class=\"button-glavni-100\" (click)='dodajUKorpu(roba)'>Dodaj u korpu</button>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Da li ima na stanju ikona -->\r\n            <ng-container matColumnDef=\"u-korpi\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"uKorpi(roba.katbr)\">\r\n                        <mat-icon class=\"boja-crvena-50\">add_shopping_cart</mat-icon>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <tr mat-header-row *matHeaderRowDef=\"getDisplayedColumns()\"></tr>\r\n            <tr mat-row *matRowDef=\"let row; columns: getDisplayedColumns();\"></tr>\r\n        </table>\r\n        <mat-paginator #paginator [length]=\"tableLength\" [pageSize]=\"rowsPerPage\" [pageSizeOptions]=\"[5, 10, 25]\"\r\n            [pageIndex]=\"pageIndex\" [length]=\"tableLength\" [showFirstLastButtons]=\"true\" (page)=\"paginatorEvent($event)\">\r\n        </mat-paginator>\r\n    </div>\r\n</div>"
 
 /***/ }),
 
@@ -4018,6 +4137,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/e-shop/service/login.service */ "./src/app/e-shop/service/login.service.ts");
 /* harmony import */ var src_app_e_shop_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/e-shop/service/proizvodjac.service */ "./src/app/e-shop/service/proizvodjac.service.ts");
 /* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
+/* harmony import */ var src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! src/app/e-shop/model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
+/* harmony import */ var src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! src/app/e-shop/model/filter */ "./src/app/e-shop/model/filter.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -4036,6 +4157,8 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
+
 var KocionaComponent = /** @class */ (function () {
     function KocionaComponent(robaService, utilsService, loginServis, proizvodjacService, dataService, korpaSnackBar) {
         this.robaService = robaService;
@@ -4044,19 +4167,17 @@ var KocionaComponent = /** @class */ (function () {
         this.proizvodjacService = proizvodjacService;
         this.dataService = dataService;
         this.korpaSnackBar = korpaSnackBar;
+        this.vrstaRobe = src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_9__["VrstaRobe"].ULJA;
         // Paging and Sorting elements
         this.rowsPerPage = 10;
         this.pageIndex = 0;
         this.sort = null;
-        // Filteri
-        this.izabraniProizvodjac = '';
-        this.raspolozivost = ['Svi artikli', 'Ima na stanju'];
-        this.izabranaRaspolozivost = this.raspolozivost[1];
+        this.filter = new src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_10__["Filter"]();
         this.searchValue = '';
         this.lastSearchValue = '';
         this.ucitavanje = false;
         this.pronadjenaRoba = true;
-        this.otvoriFilterDiv = false;
+        this.otvoriFilter = false;
         // Tabela
         this.columnDefinitions = [
             { def: 'katbr', ifNotAuth: true },
@@ -4078,7 +4199,7 @@ var KocionaComponent = /** @class */ (function () {
         this.pocetnoPretrazivanje = true;
         this.dataService.trenutnaKorpa.subscribe(function (korpa) { return _this.korpa = korpa; });
         this.loginServis.ulogovaniPartner.subscribe(function (partner) { return _this.partner = partner; });
-        this.pronadjiSveProizvodjace();
+        this.pronandjiSvaKocionaUlja();
     };
     KocionaComponent.prototype.getDisplayedColumns = function () {
         var isPartner = this.partner.ppid != null;
@@ -4116,11 +4237,9 @@ var KocionaComponent = /** @class */ (function () {
         this.pocetnoPretrazivanje = false;
         this.lastSearchValue = searchValue;
         this.dataSource = null;
-        var naStanju = this.utilsService.daLiRobaTrebaDaBudeNaStanju(this.raspolozivost, this.izabranaRaspolozivost);
-        var proizvodjacId = this.utilsService.vratiIdProizvodjacaAkoPostoji(this.izabraniProizvodjac, this.proizvodjaci);
         this.ucitavanje = true;
         this.pronadjenaRoba = true;
-        this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, searchValue, naStanju, proizvodjacId, this.vrstaUlja)
+        this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, searchValue, this.filter.naStanju, this.filter.proizvodjacId, this.vrstaUlja)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(function (error) {
             if (error.status === 404) {
                 _this.pronadjenaRoba = false;
@@ -4140,19 +4259,6 @@ var KocionaComponent = /** @class */ (function () {
             console.log('Podnaci robu izbacilo je gresko');
         });
     };
-    KocionaComponent.prototype.pronadjiSveProizvodjace = function () {
-        var _this = this;
-        this.proizvodjacService.pronadjiSveProizvodjaceUljaPoVrsti(this.vrstaUlja)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }))
-            .subscribe(function (res) {
-            _this.proizvodjaci = res;
-            _this.izabraniProizvodjac = _this.proizvodjaci[0].naziv;
-            _this.pronandjiSvaKocionaUlja();
-        }, function (error) {
-            _this.proizvodjaci = null;
-            console.log('Pronaci svu robu je bacilo gresku', error);
-        });
-    };
     KocionaComponent.prototype.pronaciPoTrazenojReci = function (searchValue) {
         if (this.dataSource) {
             this.pageIndex = 0;
@@ -4170,23 +4276,14 @@ var KocionaComponent = /** @class */ (function () {
         this.pronadjiEntitetePoPretrazi(this.searchValue);
     };
     KocionaComponent.prototype.toogleFilterDiv = function () {
-        this.otvoriFilterDiv = !this.otvoriFilterDiv;
+        this.otvoriFilter = !this.otvoriFilter;
     };
-    KocionaComponent.prototype.resetujFilter = function () {
+    KocionaComponent.prototype.filtriraj = function (filter) {
         if (this.dataSource) {
             this.pageIndex = 0;
         }
-        this.izabranaRaspolozivost = this.raspolozivost[1];
-        this.izabraniProizvodjac = this.proizvodjaci[0].naziv;
-        this.filtriraj();
-    };
-    KocionaComponent.prototype.filtriraj = function () {
-        if (this.dataSource) {
-            this.pageIndex = 0;
-        }
-        var recZaPretragu;
-        recZaPretragu = this.searchValue;
-        this.pronadjiEntitetePoPretrazi(recZaPretragu);
+        this.filter = filter;
+        this.pronadjiEntitetePoPretrazi(this.searchValue);
     };
     KocionaComponent.prototype.dodajUKorpu = function (roba) {
         var snackBarPoruka = this.utilsService.dodajUKorpu(roba);
@@ -4239,7 +4336,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container-fluid\">\r\n\r\n    <div class=\"d-flex align-items-center justify-content-center\">\r\n        <div class=\"forms-input\">\r\n            <input class=\"p-1 flex-grow-1 search__input\" type=\"search\" [(ngModel)]=\"searchValue\" (keyup.enter)=\"pronaciPoTrazenojReci(searchValue)\" />\r\n            <div class=\"p-1\" (click)='pronaciPoTrazenojReci(searchValue)'>\r\n                <button mat-mini-fab class=pozadina-glavna-100>\r\n                    <mat-icon>search</mat-icon>\r\n                </button>\r\n            </div>\r\n            <div class=\"p-1\" (click)='toogleFilterDiv()'>\r\n                <button *ngIf=\"!otvoriFilterDiv\" class=pozadina-glavna-100 mat-mini-fab>\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n                <button *ngIf=\"otvoriFilterDiv\" mat-mini-fab class=\"button-glavni-200\">\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"d-flex justify-content-center\">\r\n        <label *ngIf=\"pocetnoPretrazivanje\">\r\n            <font color=\"#424242\"> Ukucajte kataloski broj</font>\r\n        </label>\r\n    </div>\r\n\r\n    <div class=\"d-flex justify-content-center\" *ngIf=\"otvoriFilterDiv\">\r\n        <div class=\"filter-div-test d-flex flex-column\">\r\n            <div class=\"d-flex justify-content-center\">\r\n                <h2>\r\n                    Filter\r\n                </h2>\r\n            </div>\r\n            <div class=\"d-flex flex-column flex-xl-row input-group mb-3\">\r\n                <div class=\"input-group-prepend\">\r\n                    <label class=\"input-group-text mobilna-duzina button-glavni-50\" for=\"inputGroupSelect01\">\r\n                        <p class=\"boja-siva-400\">Proizvodjac: </p>\r\n                    </label>\r\n                </div>\r\n                <select class=\"custom-select mobilna-duzina\" id=\"inputGroupSelect01\" [(ngModel)]=\"izabraniProizvodjac\">\r\n                    <option *ngFor=\"let proizvodjac of proizvodjaci\" [value]=\"proizvodjac.naziv\">\r\n                        {{proizvodjac.naziv}}\r\n                    </option>\r\n                </select>\r\n\r\n                <div class=\"input-group-prepend razmak\">\r\n                    <label class=\"input-group-text mobilna-duzina button-glavni-50\" for=\"inputGroupSelect01\">\r\n                        Raspolozivost:\r\n                    </label>\r\n                </div>\r\n                <select class=\"custom-select mobilna-duzina\" id=\"inputGroupSelect01\" [(ngModel)]=\"izabranaRaspolozivost\">\r\n                    <option *ngFor=\"let raspoloziv of raspolozivost\" [value]=\"raspoloziv\">{{raspoloziv}}</option>\r\n                </select>\r\n            </div>\r\n            <div class=\"d-flex justify-content-center\">\r\n                <div>\r\n                    <button mat-stroked-button class=pozadina-glavna-100 (click)='filtriraj()'>\r\n                        <p class=\"boja-siva-400\">Filtriraj</p>\r\n                    </button>\r\n                    <span class=\"col-2\"></span>\r\n                    <button mat-stroked-button class=button-crveni-50 (click)='resetujFilter()'>\r\n                        <p class=\"boja-siva-400\">Ponisti</p>\r\n                    </button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"!pronadjenaRoba\">\r\n        <i class=\"material-icons icon-size\">\r\n            error_outline\r\n        </i>\r\n        <h1 class=\"h1-upozorenje\">Artikal ne postoji</h1>\r\n    </div>\r\n\r\n    <div class=\"d-flex justify-content-center prazna-tabela\" *ngIf=\"ucitavanje\">\r\n        <mat-spinner></mat-spinner>\r\n    </div>\r\n    <div class=\"tabela-div\" *ngIf=\"dataSource != null && dataSource.length > 0\">\r\n        <p class=\"pdv\"><i>Sve cene su prikazane sa pdv-om.</i></p>\r\n        <table mat-table [dataSource]=\"dataSource\">\r\n            <!-- Kataloski broj Column -->\r\n            <ng-container matColumnDef=\"katbr\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.katbr}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Kataloski broj proizvodjaca Column -->\r\n            <ng-container matColumnDef=\"katbrpro\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj proizvodjaca </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p >\r\n                        {{roba.katbrpro}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Naziv Column -->\r\n            <ng-container matColumnDef=\"naziv\">\r\n                <th mat-header-cell *matHeaderCellDef> Naziv </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p >\r\n                        {{roba.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Proizvodjac Column -->\r\n            <ng-container matColumnDef=\"proizvodjac\">\r\n                <th mat-header-cell *matHeaderCellDef> Proizvodjac </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.proizvodjac.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"rabat\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Rabat </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.rabat | currency:\" \"}}%\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"cena\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Cena </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.cena | currency:\" \"}} RSD\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Stanje Column -->\r\n            <ng-container matColumnDef=\"stanje\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Stanje </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-zelena-50\">check_circle_outline</mat-icon>\r\n                    </div>\r\n                    <div *ngIf=\"roba.stanje == 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-crvena-50\">remove_circle_outline</mat-icon>\r\n                    </div>\r\n                </td>\r\n            </ng-container>\r\n\r\n\r\n            <!-- Kolicina Column -->\r\n            <ng-container matColumnDef=\"kolicina\">\r\n                <th mat-header-cell *matHeaderCellDef>Kolicina </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <input type=\"number\" min=\"0\" placeholder=\"0\" placeholder=\"0\" max=\"{{roba.stanje}}\" class=\"kolicina-labela\"\r\n                            [(ngModel)]=\"roba.kolicina\" />\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Kropa dugme Column -->\r\n            <ng-container matColumnDef=\"korpa\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <button mat-raised-button class=\"button-glavni-100\" (click)='dodajUKorpu(roba)'>Dodaj u korpu</button>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Da li ima na stanju ikona -->\r\n            <ng-container matColumnDef=\"u-korpi\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"uKorpi(roba.katbr)\">\r\n                        <mat-icon class=\"boja-crvena-50\">add_shopping_cart</mat-icon>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <tr mat-header-row *matHeaderRowDef=\"getDisplayedColumns()\"></tr>\r\n            <tr mat-row *matRowDef=\"let row; columns: getDisplayedColumns();\"></tr>\r\n        </table>\r\n        <mat-paginator #paginator [length]=\"tableLength\" [pageSize]=\"rowsPerPage\" [pageSizeOptions]=\"[5, 10, 25]\"\r\n            [pageIndex]=\"pageIndex\" [length]=\"tableLength\" [showFirstLastButtons]=\"true\" (page)=\"paginatorEvent($event)\">\r\n        </mat-paginator>\r\n    </div>\r\n</div>"
+module.exports = "<div class=\"container-fluid\">\r\n\r\n    <div class=\"d-flex align-items-center justify-content-center\">\r\n        <div class=\"forms-input\">\r\n            <input class=\"p-1 flex-grow-1 search__input\" type=\"search\" [(ngModel)]=\"searchValue\" (keyup.enter)=\"pronaciPoTrazenojReci(searchValue)\" />\r\n            <div class=\"p-1\" (click)='pronaciPoTrazenojReci(searchValue)'>\r\n                <button mat-mini-fab class=pozadina-glavna-100>\r\n                    <mat-icon>search</mat-icon>\r\n                </button>\r\n            </div>\r\n            <div class=\"p-1\" (click)='toogleFilterDiv()'>\r\n                <button *ngIf=\"!otvoriFilter\" class=pozadina-glavna-100 mat-mini-fab>\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n                <button *ngIf=\"otvoriFilter\" mat-mini-fab class=\"button-glavni-200\">\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"d-flex justify-content-center\">\r\n        <label *ngIf=\"pocetnoPretrazivanje\">\r\n            <font color=\"#424242\"> Ukucajte kataloski broj</font>\r\n        </label>\r\n    </div>\r\n        \r\n    <!-- Filter komponenta izdvojena -->\r\n    <app-filter [vrstaRobe]=\"vrstaRobe\" [vrstaUlja]=\"vrstaUlja\" [otvoriFilter]=\"otvoriFilter\" (filterEvent)=\"filtriraj($event)\">\r\n    </app-filter>\r\n\r\n    <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"!pronadjenaRoba\">\r\n        <i class=\"material-icons icon-size\">\r\n            error_outline\r\n        </i>\r\n        <h1 class=\"h1-upozorenje\">Artikal ne postoji</h1>\r\n    </div>\r\n\r\n    <div class=\"d-flex justify-content-center prazna-tabela\" *ngIf=\"ucitavanje\">\r\n        <mat-spinner></mat-spinner>\r\n    </div>\r\n    <div class=\"tabela-div\" *ngIf=\"dataSource != null && dataSource.length > 0\">\r\n        <p class=\"pdv\"><i>Sve cene su prikazane sa pdv-om.</i></p>\r\n        <table mat-table [dataSource]=\"dataSource\">\r\n            <!-- Kataloski broj Column -->\r\n            <ng-container matColumnDef=\"katbr\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.katbr}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Kataloski broj proizvodjaca Column -->\r\n            <ng-container matColumnDef=\"katbrpro\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj proizvodjaca </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p >\r\n                        {{roba.katbrpro}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Naziv Column -->\r\n            <ng-container matColumnDef=\"naziv\">\r\n                <th mat-header-cell *matHeaderCellDef> Naziv </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p >\r\n                        {{roba.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Proizvodjač Column -->\r\n            <ng-container matColumnDef=\"proizvodjac\">\r\n                <th mat-header-cell *matHeaderCellDef> Proizvodjač </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.proizvodjac.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"rabat\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Rabat </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.rabat | currency:\" \"}}%\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"cena\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Cena </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.cena | currency:\" \"}} RSD\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Stanje Column -->\r\n            <ng-container matColumnDef=\"stanje\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Stanje </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-zelena-50\">check_circle_outline</mat-icon>\r\n                    </div>\r\n                    <div *ngIf=\"roba.stanje == 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-crvena-50\">remove_circle_outline</mat-icon>\r\n                    </div>\r\n                </td>\r\n            </ng-container>\r\n\r\n\r\n            <!-- Kolicina Column -->\r\n            <ng-container matColumnDef=\"kolicina\">\r\n                <th mat-header-cell *matHeaderCellDef>Kolicina </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <input type=\"number\" min=\"0\" placeholder=\"0\" placeholder=\"0\" max=\"{{roba.stanje}}\" class=\"kolicina-labela\"\r\n                            [(ngModel)]=\"roba.kolicina\" />\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Kropa dugme Column -->\r\n            <ng-container matColumnDef=\"korpa\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <button mat-raised-button class=\"button-glavni-100\" (click)='dodajUKorpu(roba)'>Dodaj u korpu</button>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Da li ima na stanju ikona -->\r\n            <ng-container matColumnDef=\"u-korpi\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"uKorpi(roba.katbr)\">\r\n                        <mat-icon class=\"boja-crvena-50\">add_shopping_cart</mat-icon>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <tr mat-header-row *matHeaderRowDef=\"getDisplayedColumns()\"></tr>\r\n            <tr mat-row *matRowDef=\"let row; columns: getDisplayedColumns();\"></tr>\r\n        </table>\r\n        <mat-paginator #paginator [length]=\"tableLength\" [pageSize]=\"rowsPerPage\" [pageSizeOptions]=\"[5, 10, 25]\"\r\n            [pageIndex]=\"pageIndex\" [length]=\"tableLength\" [showFirstLastButtons]=\"true\" (page)=\"paginatorEvent($event)\">\r\n        </mat-paginator>\r\n    </div>\r\n</div>"
 
 /***/ }),
 
@@ -4260,8 +4357,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/e-shop/service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
 /* harmony import */ var src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/e-shop/utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
 /* harmony import */ var src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/e-shop/service/login.service */ "./src/app/e-shop/service/login.service.ts");
-/* harmony import */ var src_app_e_shop_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/e-shop/service/proizvodjac.service */ "./src/app/e-shop/service/proizvodjac.service.ts");
-/* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
+/* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
+/* harmony import */ var src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/e-shop/model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
+/* harmony import */ var src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! src/app/e-shop/model/filter */ "./src/app/e-shop/model/filter.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -4280,27 +4378,25 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var MenjackoComponent = /** @class */ (function () {
-    function MenjackoComponent(robaService, utilsService, proizvodjacService, loginServis, dataService, korpaSnackBar) {
+    function MenjackoComponent(robaService, utilsService, loginServis, dataService, korpaSnackBar) {
         this.robaService = robaService;
         this.utilsService = utilsService;
-        this.proizvodjacService = proizvodjacService;
         this.loginServis = loginServis;
         this.dataService = dataService;
         this.korpaSnackBar = korpaSnackBar;
+        this.vrstaRobe = src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_8__["VrstaRobe"].ULJA;
         // Paging and Sorting elements
         this.rowsPerPage = 10;
         this.pageIndex = 0;
         this.sort = null;
-        // Filteri
-        this.izabraniProizvodjac = '';
-        this.raspolozivost = ['Svi artikli', 'Ima na stanju'];
-        this.izabranaRaspolozivost = this.raspolozivost[1];
         this.searchValue = '';
         this.lastSearchValue = '';
+        this.filter = new src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_9__["Filter"]();
         this.ucitavanje = false;
         this.pronadjenaRoba = true;
-        this.otvoriFilterDiv = false;
+        this.otvoriFilter = false;
         // Tabela
         this.columnDefinitions = [
             { def: 'katbr', ifNotAuth: true },
@@ -4322,7 +4418,7 @@ var MenjackoComponent = /** @class */ (function () {
         this.pocetnoPretrazivanje = true;
         this.dataService.trenutnaKorpa.subscribe(function (korpa) { return _this.korpa = korpa; });
         this.loginServis.ulogovaniPartner.subscribe(function (partner) { return _this.partner = partner; });
-        this.pronadjiSveProizvodjace();
+        this.pronandjiSvaMenjackaUlja();
     };
     MenjackoComponent.prototype.getDisplayedColumns = function () {
         var isPartner = this.partner.ppid != null;
@@ -4362,11 +4458,9 @@ var MenjackoComponent = /** @class */ (function () {
         this.lastSearchValue = searchValue;
         this.ucitavanje = true;
         this.dataSource = null;
-        var naStanju = this.utilsService.daLiRobaTrebaDaBudeNaStanju(this.raspolozivost, this.izabranaRaspolozivost);
-        var proizvodjacId = this.utilsService.vratiIdProizvodjacaAkoPostoji(this.izabraniProizvodjac, this.proizvodjaci);
         this.ucitavanje = true;
         this.pronadjenaRoba = true;
-        this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, searchValue, naStanju, proizvodjacId, this.vrstaUlja)
+        this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, searchValue, this.filter.naStanju, this.filter.proizvodjacId, this.vrstaUlja)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(function (error) {
             if (error.status === 404) {
                 _this.pronadjenaRoba = false;
@@ -4386,19 +4480,6 @@ var MenjackoComponent = /** @class */ (function () {
             console.log('Podnaci robu izbacilo je gresko');
         });
     };
-    MenjackoComponent.prototype.pronadjiSveProizvodjace = function () {
-        var _this = this;
-        this.proizvodjacService.pronadjiSveProizvodjaceUljaPoVrsti(this.vrstaUlja)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }))
-            .subscribe(function (res) {
-            _this.proizvodjaci = res;
-            _this.izabraniProizvodjac = _this.proizvodjaci[0].naziv;
-            _this.pronandjiSvaMenjackaUlja();
-        }, function (error) {
-            _this.proizvodjaci = null;
-            console.log('Pronaci svu robu je bacilo gresku', error);
-        });
-    };
     MenjackoComponent.prototype.pronaciPoTrazenojReci = function (searchValue) {
         if (this.dataSource) {
             this.pageIndex = 0;
@@ -4416,23 +4497,14 @@ var MenjackoComponent = /** @class */ (function () {
         this.pronadjiEntitetePoPretrazi(this.searchValue);
     };
     MenjackoComponent.prototype.toogleFilterDiv = function () {
-        this.otvoriFilterDiv = !this.otvoriFilterDiv;
+        this.otvoriFilter = !this.otvoriFilter;
     };
-    MenjackoComponent.prototype.resetujFilter = function () {
+    MenjackoComponent.prototype.filtriraj = function (filter) {
         if (this.dataSource) {
             this.pageIndex = 0;
         }
-        this.izabranaRaspolozivost = this.raspolozivost[1];
-        this.izabraniProizvodjac = this.proizvodjaci[0].naziv;
-        this.filtriraj();
-    };
-    MenjackoComponent.prototype.filtriraj = function () {
-        if (this.dataSource) {
-            this.pageIndex = 0;
-        }
-        var recZaPretragu;
-        recZaPretragu = this.searchValue;
-        this.pronadjiEntitetePoPretrazi(recZaPretragu);
+        this.filter = filter;
+        this.pronadjiEntitetePoPretrazi(this.searchValue);
     };
     MenjackoComponent.prototype.dodajUKorpu = function (roba) {
         var snackBarPoruka = this.utilsService.dodajUKorpu(roba);
@@ -4455,9 +4527,8 @@ var MenjackoComponent = /** @class */ (function () {
         }),
         __metadata("design:paramtypes", [src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_4__["RobaService"],
             src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_5__["AppUtilsService"],
-            src_app_e_shop_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_7__["ProizvodjacService"],
             src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_6__["LoginService"],
-            src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_8__["DataService"],
+            src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_7__["DataService"],
             _angular_material__WEBPACK_IMPORTED_MODULE_1__["MatSnackBar"]])
     ], MenjackoComponent);
     return MenjackoComponent;
@@ -4485,7 +4556,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container-fluid\">\r\n\r\n    <div class=\"d-flex align-items-center justify-content-center\">\r\n        <div class=\"forms-input\">\r\n            <input class=\"p-1 flex-grow-1 search__input\" type=\"search\" [(ngModel)]=\"searchValue\" (keyup.enter)=\"pronaciPoTrazenojReci(searchValue)\" />\r\n            <div class=\"p-1\" (click)='pronaciPoTrazenojReci(searchValue)'>\r\n                <button mat-mini-fab class=pozadina-glavna-100>\r\n                    <mat-icon>search</mat-icon>\r\n                </button>\r\n            </div>\r\n            <div class=\"p-1\" (click)='toogleFilterDiv()'>\r\n                <button *ngIf=\"!otvoriFilterDiv\" class=pozadina-glavna-100 mat-mini-fab>\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n                <button *ngIf=\"otvoriFilterDiv\" mat-mini-fab class=\"button-glavni-200\">\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"d-flex justify-content-center\">\r\n        <label *ngIf=\"pocetnoPretrazivanje\">\r\n            <font color=\"#424242\"> Ukucajte kataloski broj</font>\r\n        </label>\r\n    </div>\r\n\r\n    <div class=\"d-flex justify-content-center\" *ngIf=\"otvoriFilterDiv\">\r\n        <div class=\"filter-div-test d-flex flex-column\">\r\n            <div class=\"d-flex justify-content-center\">\r\n                <h2>\r\n                    Filter\r\n                </h2>\r\n            </div>\r\n            <div class=\"d-flex flex-column flex-xl-row input-group mb-3\">\r\n                <div class=\"input-group-prepend\">\r\n                    <label class=\"input-group-text mobilna-duzina button-glavni-50\" for=\"inputGroupSelect01\">\r\n                        <p class=\"boja-siva-400\">Proizvodjac: </p>\r\n                    </label>\r\n                </div>\r\n                <select class=\"custom-select mobilna-duzina\" id=\"inputGroupSelect01\" [(ngModel)]=\"izabraniProizvodjac\">\r\n                    <option *ngFor=\"let proizvodjac of proizvodjaci\" [value]=\"proizvodjac.naziv\">\r\n                        {{proizvodjac.naziv}}\r\n                    </option>\r\n                </select>\r\n\r\n                <div class=\"input-group-prepend razmak\">\r\n                    <label class=\"input-group-text mobilna-duzina button-glavni-50\" for=\"inputGroupSelect01\">\r\n                        Raspolozivost:\r\n                    </label>\r\n                </div>\r\n                <select class=\"custom-select mobilna-duzina\" id=\"inputGroupSelect01\" [(ngModel)]=\"izabranaRaspolozivost\">\r\n                    <option *ngFor=\"let raspoloziv of raspolozivost\" [value]=\"raspoloziv\">{{raspoloziv}}</option>\r\n                </select>\r\n            </div>\r\n            <div class=\"d-flex justify-content-center\">\r\n                <div>\r\n                    <button mat-stroked-button class=pozadina-glavna-100 (click)='filtriraj()'>\r\n                        <p class=\"boja-siva-400\">Filtriraj</p>\r\n                    </button>\r\n                    <span class=\"col-2\"></span>\r\n                    <button mat-stroked-button class=button-crveni-50 (click)='resetujFilter()'>\r\n                        <p class=\"boja-siva-400\">Ponisti</p>\r\n                    </button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"!pronadjenaRoba\">\r\n        <i class=\"material-icons icon-size\">\r\n            error_outline\r\n        </i>\r\n        <h1 class=\"h1-upozorenje\">Artikal ne postoji</h1>\r\n    </div>\r\n\r\n    <div class=\"d-flex justify-content-center prazna-tabela\" *ngIf=\"ucitavanje\">\r\n        <mat-spinner></mat-spinner>\r\n    </div>\r\n    <div class=\"tabela-div\" *ngIf=\"dataSource != null && dataSource.length > 0\">\r\n        <p class=\"pdv\"><i>Sve cene su prikazane sa pdv-om.</i></p>\r\n        <table mat-table [dataSource]=\"dataSource\">\r\n            <!-- Kataloski broj Column -->\r\n            <ng-container matColumnDef=\"katbr\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.katbr}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Kataloski broj proizvodjaca Column -->\r\n            <ng-container matColumnDef=\"katbrpro\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj proizvodjaca </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p >\r\n                        {{roba.katbrpro}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Naziv Column -->\r\n            <ng-container matColumnDef=\"naziv\">\r\n                <th mat-header-cell *matHeaderCellDef> Naziv </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p >\r\n                        {{roba.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Proizvodjac Column -->\r\n            <ng-container matColumnDef=\"proizvodjac\">\r\n                <th mat-header-cell *matHeaderCellDef> Proizvodjac </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.proizvodjac.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"rabat\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Rabat </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.rabat | currency:\" \"}}%\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"cena\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Cena </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.cena | currency:\" \"}} RSD\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Stanje Column -->\r\n            <ng-container matColumnDef=\"stanje\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Stanje </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-zelena-50\">check_circle_outline</mat-icon>\r\n                    </div>\r\n                    <div *ngIf=\"roba.stanje == 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-crvena-50\">remove_circle_outline</mat-icon>\r\n                    </div>\r\n                </td>\r\n            </ng-container>\r\n\r\n\r\n            <!-- Kolicina Column -->\r\n            <ng-container matColumnDef=\"kolicina\">\r\n                <th mat-header-cell *matHeaderCellDef>Kolicina </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <input type=\"number\" min=\"0\" placeholder=\"0\" max=\"{{roba.stanje}}\" class=\"kolicina-labela\"\r\n                            [(ngModel)]=\"roba.kolicina\" />\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Kropa dugme Column -->\r\n            <ng-container matColumnDef=\"korpa\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <button mat-raised-button class=\"button-glavni-100\" (click)='dodajUKorpu(roba)'>Dodaj u korpu</button>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Da li ima na stanju ikona -->\r\n            <ng-container matColumnDef=\"u-korpi\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"uKorpi(roba.katbr)\">\r\n                        <mat-icon class=\"boja-crvena-50\">add_shopping_cart</mat-icon>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <tr mat-header-row *matHeaderRowDef=\"getDisplayedColumns()\"></tr>\r\n            <tr mat-row *matRowDef=\"let row; columns: getDisplayedColumns();\"></tr>\r\n        </table>\r\n        <mat-paginator #paginator [length]=\"tableLength\" [pageSize]=\"rowsPerPage\" [pageSizeOptions]=\"[5, 10, 25]\"\r\n            [pageIndex]=\"pageIndex\" [length]=\"tableLength\" [showFirstLastButtons]=\"true\" (page)=\"paginatorEvent($event)\">\r\n        </mat-paginator>\r\n    </div>\r\n</div>"
+module.exports = "<div class=\"container-fluid\">\r\n\r\n    <div class=\"d-flex align-items-center justify-content-center\">\r\n        <div class=\"forms-input\">\r\n            <input class=\"p-1 flex-grow-1 search__input\" type=\"search\" [(ngModel)]=\"searchValue\" (keyup.enter)=\"pronaciPoTrazenojReci(searchValue)\" />\r\n            <div class=\"p-1\" (click)='pronaciPoTrazenojReci(searchValue)'>\r\n                <button mat-mini-fab class=pozadina-glavna-100>\r\n                    <mat-icon>search</mat-icon>\r\n                </button>\r\n            </div>\r\n            <div class=\"p-1\" (click)='toogleFilterDiv()'>\r\n                <button *ngIf=\"!otvoriFilter\" class=pozadina-glavna-100 mat-mini-fab>\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n                <button *ngIf=\"otvoriFilter\" mat-mini-fab class=\"button-glavni-200\">\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"d-flex justify-content-center\">\r\n        <label *ngIf=\"pocetnoPretrazivanje\">\r\n            <font color=\"#424242\"> Ukucajte kataloski broj</font>\r\n        </label>\r\n    </div>\r\n        \r\n    <!-- Filter komponenta izdvojena -->\r\n    <app-filter [vrstaRobe]=\"vrstaRobe\" [vrstaUlja]=\"vrstaUlja\" [otvoriFilter]=\"otvoriFilter\" (filterEvent)=\"filtriraj($event)\">\r\n    </app-filter>\r\n\r\n    <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"!pronadjenaRoba\">\r\n        <i class=\"material-icons icon-size\">\r\n            error_outline\r\n        </i>\r\n        <h1 class=\"h1-upozorenje\">Artikal ne postoji</h1>\r\n    </div>\r\n\r\n    <div class=\"d-flex justify-content-center prazna-tabela\" *ngIf=\"ucitavanje\">\r\n        <mat-spinner></mat-spinner>\r\n    </div>\r\n    <div class=\"tabela-div\" *ngIf=\"dataSource != null && dataSource.length > 0\">\r\n        <p class=\"pdv\"><i>Sve cene su prikazane sa pdv-om.</i></p>\r\n        <table mat-table [dataSource]=\"dataSource\">\r\n            <!-- Kataloski broj Column -->\r\n            <ng-container matColumnDef=\"katbr\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.katbr}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Kataloski broj proizvodjaca Column -->\r\n            <ng-container matColumnDef=\"katbrpro\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj proizvodjaca </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p >\r\n                        {{roba.katbrpro}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Naziv Column -->\r\n            <ng-container matColumnDef=\"naziv\">\r\n                <th mat-header-cell *matHeaderCellDef> Naziv </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p >\r\n                        {{roba.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Proizvodjač Column -->\r\n            <ng-container matColumnDef=\"proizvodjac\">\r\n                <th mat-header-cell *matHeaderCellDef> Proizvodjač </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.proizvodjac.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"rabat\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Rabat </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.rabat | currency:\" \"}}%\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"cena\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Cena </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.cena | currency:\" \"}} RSD\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Stanje Column -->\r\n            <ng-container matColumnDef=\"stanje\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Stanje </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-zelena-50\">check_circle_outline</mat-icon>\r\n                    </div>\r\n                    <div *ngIf=\"roba.stanje == 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-crvena-50\">remove_circle_outline</mat-icon>\r\n                    </div>\r\n                </td>\r\n            </ng-container>\r\n\r\n\r\n            <!-- Kolicina Column -->\r\n            <ng-container matColumnDef=\"kolicina\">\r\n                <th mat-header-cell *matHeaderCellDef>Kolicina </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <input type=\"number\" min=\"0\" placeholder=\"0\" max=\"{{roba.stanje}}\" class=\"kolicina-labela\"\r\n                            [(ngModel)]=\"roba.kolicina\" />\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Kropa dugme Column -->\r\n            <ng-container matColumnDef=\"korpa\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <button mat-raised-button class=\"button-glavni-100\" (click)='dodajUKorpu(roba)'>Dodaj u korpu</button>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Da li ima na stanju ikona -->\r\n            <ng-container matColumnDef=\"u-korpi\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"uKorpi(roba.katbr)\">\r\n                        <mat-icon class=\"boja-crvena-50\">add_shopping_cart</mat-icon>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <tr mat-header-row *matHeaderRowDef=\"getDisplayedColumns()\"></tr>\r\n            <tr mat-row *matRowDef=\"let row; columns: getDisplayedColumns();\"></tr>\r\n        </table>\r\n        <mat-paginator #paginator [length]=\"tableLength\" [pageSize]=\"rowsPerPage\" [pageSizeOptions]=\"[5, 10, 25]\"\r\n            [pageIndex]=\"pageIndex\" [length]=\"tableLength\" [showFirstLastButtons]=\"true\" (page)=\"paginatorEvent($event)\">\r\n        </mat-paginator>\r\n    </div>\r\n</div>"
 
 /***/ }),
 
@@ -4506,8 +4577,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/e-shop/service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
 /* harmony import */ var src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/e-shop/utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
 /* harmony import */ var src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/e-shop/service/login.service */ "./src/app/e-shop/service/login.service.ts");
-/* harmony import */ var src_app_e_shop_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/e-shop/service/proizvodjac.service */ "./src/app/e-shop/service/proizvodjac.service.ts");
-/* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
+/* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
+/* harmony import */ var src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/e-shop/model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
+/* harmony import */ var src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! src/app/e-shop/model/filter */ "./src/app/e-shop/model/filter.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -4526,27 +4598,25 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var MotornaComponent = /** @class */ (function () {
-    function MotornaComponent(robaService, utilsService, proizvodjacService, loginServis, dataService, korpaSnackBar) {
+    function MotornaComponent(robaService, utilsService, loginServis, dataService, korpaSnackBar) {
         this.robaService = robaService;
         this.utilsService = utilsService;
-        this.proizvodjacService = proizvodjacService;
         this.loginServis = loginServis;
         this.dataService = dataService;
         this.korpaSnackBar = korpaSnackBar;
+        this.vrstaRobe = src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_8__["VrstaRobe"].ULJA;
         // Paging and Sorting elements
         this.rowsPerPage = 10;
         this.pageIndex = 0;
         this.sort = null;
-        // Filteri
-        this.izabraniProizvodjac = '';
-        this.raspolozivost = ['Svi artikli', 'Ima na stanju'];
-        this.izabranaRaspolozivost = this.raspolozivost[1];
+        this.filter = new src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_9__["Filter"]();
         this.searchValue = '';
         this.lastSearchValue = '';
         this.ucitavanje = false;
         this.pronadjenaRoba = true;
-        this.otvoriFilterDiv = false;
+        this.otvoriFilter = false;
         // Tabela
         this.columnDefinitions = [
             { def: 'katbr', ifNotAuth: true },
@@ -4568,7 +4638,7 @@ var MotornaComponent = /** @class */ (function () {
         this.pocetnoPretrazivanje = true;
         this.dataService.trenutnaKorpa.subscribe(function (korpa) { return _this.korpa = korpa; });
         this.loginServis.ulogovaniPartner.subscribe(function (partner) { return _this.partner = partner; });
-        this.pronadjiSveProizvodjace();
+        this.pronandjiSvoMotornoUlje();
     };
     MotornaComponent.prototype.getDisplayedColumns = function () {
         var isPartner = this.partner.ppid != null;
@@ -4608,11 +4678,9 @@ var MotornaComponent = /** @class */ (function () {
         this.lastSearchValue = searchValue;
         this.ucitavanje = true;
         this.dataSource = null;
-        var naStanju = this.utilsService.daLiRobaTrebaDaBudeNaStanju(this.raspolozivost, this.izabranaRaspolozivost);
-        var proizvodjacId = this.utilsService.vratiIdProizvodjacaAkoPostoji(this.izabraniProizvodjac, this.proizvodjaci);
         this.ucitavanje = true;
         this.pronadjenaRoba = true;
-        this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, searchValue, naStanju, proizvodjacId, this.vrstaUlja)
+        this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, searchValue, this.filter.naStanju, this.filter.proizvodjacId, this.vrstaUlja)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(function (error) {
             if (error.status === 404) {
                 _this.pronadjenaRoba = false;
@@ -4632,19 +4700,6 @@ var MotornaComponent = /** @class */ (function () {
             console.log('Podnaci robu izbacilo je gresko');
         });
     };
-    MotornaComponent.prototype.pronadjiSveProizvodjace = function () {
-        var _this = this;
-        this.proizvodjacService.pronadjiSveProizvodjaceUljaPoVrsti(this.vrstaUlja)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }))
-            .subscribe(function (res) {
-            _this.proizvodjaci = res;
-            _this.izabraniProizvodjac = _this.proizvodjaci[0].naziv;
-            _this.pronandjiSvoMotornoUlje();
-        }, function (error) {
-            _this.proizvodjaci = null;
-            console.log('Pronaci svu robu je bacilo gresku', error);
-        });
-    };
     MotornaComponent.prototype.pronaciPoTrazenojReci = function (searchValue) {
         if (this.dataSource) {
             this.pageIndex = 0;
@@ -4662,23 +4717,14 @@ var MotornaComponent = /** @class */ (function () {
         this.pronadjiEntitetePoPretrazi(this.searchValue);
     };
     MotornaComponent.prototype.toogleFilterDiv = function () {
-        this.otvoriFilterDiv = !this.otvoriFilterDiv;
+        this.otvoriFilter = !this.otvoriFilter;
     };
-    MotornaComponent.prototype.resetujFilter = function () {
+    MotornaComponent.prototype.filtriraj = function (filter) {
         if (this.dataSource) {
             this.pageIndex = 0;
         }
-        this.izabranaRaspolozivost = this.raspolozivost[1];
-        this.izabraniProizvodjac = this.proizvodjaci[0].naziv;
-        this.filtriraj();
-    };
-    MotornaComponent.prototype.filtriraj = function () {
-        if (this.dataSource) {
-            this.pageIndex = 0;
-        }
-        var recZaPretragu;
-        recZaPretragu = this.searchValue;
-        this.pronadjiEntitetePoPretrazi(recZaPretragu);
+        this.filter = filter;
+        this.pronadjiEntitetePoPretrazi(this.searchValue);
     };
     MotornaComponent.prototype.dodajUKorpu = function (roba) {
         var snackBarPoruka = this.utilsService.dodajUKorpu(roba);
@@ -4701,9 +4747,8 @@ var MotornaComponent = /** @class */ (function () {
         }),
         __metadata("design:paramtypes", [src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_4__["RobaService"],
             src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_5__["AppUtilsService"],
-            src_app_e_shop_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_7__["ProizvodjacService"],
             src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_6__["LoginService"],
-            src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_8__["DataService"],
+            src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_7__["DataService"],
             _angular_material__WEBPACK_IMPORTED_MODULE_1__["MatSnackBar"]])
     ], MotornaComponent);
     return MotornaComponent;
@@ -4731,7 +4776,7 @@ module.exports = ".industrijski-stil {\r\n    width: 100%;\r\n    height: 100%;\
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<main class=\"spusti\">\r\n    <mat-tab-group mat-stretch-tabs>\r\n        <mat-tab label=\"Motorna ulja\">\r\n            <app-motorna></app-motorna>\r\n        </mat-tab>\r\n        <mat-tab label=\"Menjacka ulja\">\r\n            <app-menjacko></app-menjacko>\r\n        </mat-tab>\r\n        <mat-tab label=\"Kociona ulja\">\r\n            <app-kociona></app-kociona>\r\n        </mat-tab>\r\n        <mat-tab label=\"Antifiriz\">\r\n            <app-antifriz></app-antifriz>\r\n        </mat-tab>\r\n        <mat-tab label=\"Industrijska ulja\">\r\n            <app-industrijska></app-industrijska>\r\n        </mat-tab>\r\n    </mat-tab-group>\r\n</main>"
+module.exports = "<main class=\"spusti\">\r\n    <mat-tab-group mat-stretch-tabs>\r\n        <mat-tab label=\"Motorna ulja\">\r\n            <app-motorna></app-motorna>\r\n        </mat-tab>\r\n        <mat-tab label=\"Menjačka ulja\">\r\n            <app-menjacko></app-menjacko>\r\n        </mat-tab>\r\n        <mat-tab label=\"Kočiona ulja\">\r\n            <app-kociona></app-kociona>\r\n        </mat-tab>\r\n        <mat-tab label=\"Antifiriz\">\r\n            <app-antifriz></app-antifriz>\r\n        </mat-tab>\r\n        <mat-tab label=\"Industrijska ulja\">\r\n            <app-industrijska></app-industrijska>\r\n        </mat-tab>\r\n    </mat-tab-group>\r\n</main>"
 
 /***/ }),
 
@@ -5809,7 +5854,7 @@ var BrendoviModalComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\r\n  <main>\r\n    <div class=\"pozadina-glavna-50 boja-siva-400\">\r\n      <h1>Artikal broj: {{data.katbr}}</h1>\r\n    </div>\r\n    <table class=\"table\">\r\n      <tbody>\r\n        <tr>\r\n          <td>Proizvodjac</td>\r\n          <td>{{data.proizvodjac.naziv}}</td>\r\n        </tr>\r\n        <tr>\r\n          <td>Cena</td>\r\n          <td>{{data.cenaKom | currency:\" \"}} RSD</td>\r\n        <tr>\r\n          <td>Kolicina</td>\r\n          <td>\r\n            <select class=\"custom-select custom-select-md\" [(ngModel)]=\"data.kolicina\">\r\n              <option *ngFor=\"let kolicina of stanje\" [value]=\"kolicina\">{{kolicina}}</option>\r\n            </select>\r\n          </td>\r\n        </tr>\r\n        <tr>\r\n          <td>Ukupno za placanje</td>\r\n          <td><b>{{data.kolicina * data.cenaKom | currency:\" \"}} RSD</b></td>\r\n        </tr>\r\n      </tbody>\r\n    </table>\r\n    <div class=\"d-flex flex-row justify-content-center\">\r\n      <button class=\"button-glavni-100\" mat-raised-button (click)=\"sacuvajIzmene()\">Sacuvaj</button>\r\n      <span class=\"col-2\"></span>\r\n      <button class=\"button-crveni-50\" mat-raised-button (click)=\"bezIzmena()\">Ponisti</button>\r\n    </div>\r\n  </main>\r\n</div>"
+module.exports = "<div class=\"container\">\r\n  <main>\r\n    <div class=\"pozadina-glavna-50 boja-siva-400\">\r\n      <h1>Artikal broj: {{data.katbr}}</h1>\r\n    </div>\r\n    <table class=\"table\">\r\n      <tbody>\r\n        <tr>\r\n          <td>Proizvodjač</td>\r\n          <td>{{data.proizvodjac.naziv}}</td>\r\n        </tr>\r\n        <tr>\r\n          <td>Cena</td>\r\n          <td>{{data.cenaKom | currency:\" \"}} RSD</td>\r\n        <tr>\r\n          <td>Kolicina</td>\r\n          <td>\r\n            <select class=\"custom-select custom-select-md\" [(ngModel)]=\"data.kolicina\">\r\n              <option *ngFor=\"let kolicina of stanje\" [value]=\"kolicina\">{{kolicina}}</option>\r\n            </select>\r\n          </td>\r\n        </tr>\r\n        <tr>\r\n          <td>Ukupno za placanje</td>\r\n          <td><b>{{data.kolicina * data.cenaKom | currency:\" \"}} RSD</b></td>\r\n        </tr>\r\n      </tbody>\r\n    </table>\r\n    <div class=\"d-flex flex-row justify-content-center\">\r\n      <button class=\"button-glavni-100\" mat-raised-button (click)=\"sacuvajIzmene()\">Sacuvaj</button>\r\n      <span class=\"col-2\"></span>\r\n      <button class=\"button-crveni-50\" mat-raised-button (click)=\"bezIzmena()\">Poništi</button>\r\n    </div>\r\n  </main>\r\n</div>"
 
 /***/ }),
 
@@ -5904,7 +5949,7 @@ var IzmenaKolicineModalComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n  <main>\n      <p>Da li ste sigurni da zelite da se odjavite?</p>\n    <div class=\"d-flex flex-row justify-content-center\">\n      <button mat-raised-button class=\"button-glavni-100\" (click)=\"logout()\">Odjava</button>\n      <span class=\"col-2\"></span>\n      <button mat-raised-button class=\"button-crveni-50\" (click)=\"ostaniUlogovan()\">Ponisti</button>\n    </div>\n  </main>\n</div>"
+module.exports = "<div class=\"container\">\n  <main>\n      <p>Da li ste sigurni da zelite da se odjavite?</p>\n    <div class=\"d-flex flex-row justify-content-center\">\n      <button mat-raised-button class=\"button-glavni-100\" (click)=\"logout()\">Odjava</button>\n      <span class=\"col-2\"></span>\n      <button mat-raised-button class=\"button-crveni-50\" (click)=\"ostaniUlogovan()\">Poništi</button>\n    </div>\n  </main>\n</div>"
 
 /***/ }),
 

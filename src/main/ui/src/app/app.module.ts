@@ -46,6 +46,7 @@ import { VestiComponent } from './e-commerce/dasboard/vesti/vesti.component';
 import { PonudaComponent } from './e-commerce/dasboard/ponuda/ponuda.component';
 import { KampanjaComponent } from './e-commerce/dasboard/kampanja/kampanja.component';
 import { UpitModalComponent } from './modal/upit-modal/upit-modal.component';
+import { FilterComponent } from './e-shop/roba/shared-components/filter/filter.component';
 
 @NgModule({
   declarations: [
@@ -85,7 +86,8 @@ import { UpitModalComponent } from './modal/upit-modal/upit-modal.component';
     VestiComponent,
     PonudaComponent,
     KampanjaComponent,
-    UpitModalComponent
+    UpitModalComponent,
+    FilterComponent
   ],
   imports: [
     BrowserModule,

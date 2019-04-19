@@ -1,4 +1,4 @@
-import { ValueHelp, Proizvodjac } from "./dto";
+import { ValueHelp, Proizvodjač } from "./dto";
 
 export class Korpa {
     public roba: RobaKorpa[] = [];
@@ -14,14 +14,14 @@ export class RobaKorpa {
     public katbr: string;
     public katbrpro: string;
     public naziv: string;
-    public proizvodjac: Proizvodjac;
+    public proizvodjac: Proizvodjač;
     public kolicina: number;
     public rabat: number;
     public cenaKom: number;
     public stanje: number;
     public cenaUkupno: number;
 
-    constructor(robaid: number, katbr: string, katbrpro: string, naziv: string, proizvodjac: Proizvodjac,
+    constructor(robaid: number, katbr: string, katbrpro: string, naziv: string, proizvodjac: Proizvodjač,
          kolicina: number, rabat: number, cena: number, stanje: number) {
         this.robaid = robaid;
         this.katbr = katbr;

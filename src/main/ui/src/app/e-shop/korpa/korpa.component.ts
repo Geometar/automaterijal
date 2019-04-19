@@ -5,7 +5,7 @@ import { LocalStorageService } from '../service/data/local-storage.service';
 import { MatTable, MatDialog } from '@angular/material';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY } from 'rxjs';
-import { ValueHelp, Partner, Fakutra, FakturaDetalji, Proizvodjac } from '../model/dto';
+import { ValueHelp, Partner, Fakutra, FakturaDetalji, Proizvodjač } from '../model/dto';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { LoginService } from '../service/login.service';
 import { FakturaService } from '../service/faktura.service';
