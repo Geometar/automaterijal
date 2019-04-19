@@ -3,8 +3,8 @@ import { Credentials, Partner } from '../model/dto';
 import { LoginService } from '../service/login.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material';
-import { RegistracijaModalComponent } from 'src/app/modal/registracija-modal/registracija-modal.component';
-import { ZaboravljenaSifraModalComponent } from 'src/app/modal/zaboravljena-sifra-modal/zaboravljena-sifra-modal.component';
+import { RegistracijaModalComponent } from 'src/app/shared/modal/registracija-modal/registracija-modal.component';
+import { ZaboravljenaSifraModalComponent } from 'src/app/shared/modal/zaboravljena-sifra-modal/zaboravljena-sifra-modal.component';
 
 @Component({
   selector: 'app-login',

@@ -1,16 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { Sort, MatSnackBar } from '@angular/material';
+import { Sort } from '@angular/material';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY } from 'rxjs';
-import { Roba, Proizvodjač, Partner } from 'src/app/e-shop/model/dto';
+import { Roba, Partner } from 'src/app/e-shop/model/dto';
 import { Korpa } from 'src/app/e-shop/model/porudzbenica';
 import { RobaService } from 'src/app/e-shop/service/roba.service';
 import { AppUtilsService } from 'src/app/e-shop/utils/app-utils.service';
 import { LoginService } from 'src/app/e-shop/service/login.service';
-import { ProizvodjacService } from 'src/app/e-shop/service/proizvodjac.service';
 import { DataService } from 'src/app/e-shop/service/data/data.service';
 import { VrstaRobe } from 'src/app/e-shop/model/roba.enum';
 import { Filter } from 'src/app/e-shop/model/filter';
+import { MatSnackBarKlase } from 'src/app/shared/model/konstante';
+import { NotifikacijaService } from 'src/app/shared/service/notifikacija.service';
 @Component({
   selector: 'app-motorna',
   templateUrl: './motorna.component.html',
@@ -64,7 +65,7 @@ export class MotornaComponent implements OnInit {
     private utilsService: AppUtilsService,
     private loginServis: LoginService,
     private dataService: DataService,
-    public korpaSnackBar: MatSnackBar) { }
+    private notifikacijaServis: NotifikacijaService) { }
 
   ngOnInit() {
     this.pocetnoPretrazivanje = true;
@@ -181,14 +182,8 @@ export class MotornaComponent implements OnInit {
 
   dodajUKorpu(roba: Roba) {
     const snackBarPoruka = this.utilsService.dodajUKorpu(roba);
-    this.openKorpaSnackBar(snackBarPoruka);
+    this.notifikacijaServis.notify(snackBarPoruka, MatSnackBarKlase.Zelena);
     this.utilsService.izbrisiRobuSaStanja(this.roba, roba);
-  }
-
-  openKorpaSnackBar(poruka: string) {
-    this.korpaSnackBar.open(poruka, '', {
-      duration: 2000,
-    });
   }
 
   uKorpi(katBr: string): boolean {

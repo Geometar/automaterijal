@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { mesec } from '../e-shop/model/konstante';
+import { mesec } from '../../e-shop/model/konstante';
 
 @Pipe({ name: 'datum' })
 export class DatePipe implements PipeTransform {

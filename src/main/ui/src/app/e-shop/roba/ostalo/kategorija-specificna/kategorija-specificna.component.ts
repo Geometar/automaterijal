@@ -2,16 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY } from 'rxjs';
-import { MatSnackBar, Sort } from '@angular/material';
-import { Roba, Proizvodjač, Partner } from 'src/app/e-shop/model/dto';
+import { Sort } from '@angular/material';
+import { Roba, Partner } from 'src/app/e-shop/model/dto';
 import { Korpa } from 'src/app/e-shop/model/porudzbenica';
-import { ProizvodjacService } from 'src/app/e-shop/service/proizvodjac.service';
 import { LoginService } from 'src/app/e-shop/service/login.service';
 import { AppUtilsService } from 'src/app/e-shop/utils/app-utils.service';
 import { DataService } from 'src/app/e-shop/service/data/data.service';
 import { RobaService } from 'src/app/e-shop/service/roba.service';
 import { VrstaRobe } from 'src/app/e-shop/model/roba.enum';
 import { Filter } from 'src/app/e-shop/model/filter';
+import { NotifikacijaService } from 'src/app/shared/service/notifikacija.service';
+import { MatSnackBarKlase } from 'src/app/shared/model/konstante';
 
 @Component({
   selector: 'app-kategorija-specificna',
@@ -63,7 +64,7 @@ export class KategorijaSpecificnaComponent implements OnInit {
     private utilsService: AppUtilsService,
     private dataService: DataService,
     private robaServis: RobaService,
-    public korpaSnackBar: MatSnackBar,
+    private notifikacijaServis: NotifikacijaService,
     private router: Router
   ) { }
 
@@ -190,14 +191,8 @@ export class KategorijaSpecificnaComponent implements OnInit {
 
   dodajUKorpu(roba: Roba) {
     const snackBarPoruka = this.utilsService.dodajUKorpu(roba);
-    this.openKorpaSnackBar(snackBarPoruka);
+    this.notifikacijaServis.notify(snackBarPoruka, MatSnackBarKlase.Zelena);
     this.utilsService.izbrisiRobuSaStanja(this.roba, roba);
-  }
-
-  openKorpaSnackBar(poruka: string) {
-    this.korpaSnackBar.open(poruka, '', {
-      duration: 2000,
-    });
   }
 
   uKorpi(katBr: string) {

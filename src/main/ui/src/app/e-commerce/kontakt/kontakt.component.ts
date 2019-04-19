@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmailService } from 'src/app/shared/service/email.service';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
-import { throwError, EMPTY } from 'rxjs';
-import { MatSnackBar } from '@angular/material';
+import { throwError } from 'rxjs';
 import { Poruka } from '../model/dto';
+import { NotifikacijaService } from 'src/app/shared/service/notifikacija.service';
+import { MatSnackBarKlase } from 'src/app/shared/model/konstante';
 
 @Component({
   selector: 'app-kontakt',
@@ -25,7 +26,7 @@ export class KontaktComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private emailServis: EmailService,
-    public snackBar: MatSnackBar
+    private notifikacijaServis: NotifikacijaService
   ) {}
 
   inicijalizujForme() {
@@ -52,12 +53,12 @@ export class KontaktComponent implements OnInit {
       finalize(() => this.ucitavanje = false)
     ).subscribe(res => {
       console.log('Poruka uspesno poslat');
-      this.otvoriSnackBar('Poruka uspešno poslatata');
+      this.notifikacijaServis.notify('Poruka uspešno poslatata', MatSnackBarKlase.Plava);
       this.porukaForm.reset();
       this.porukaSubmited = false;
     }, error => {
       console.log('Error pri slanju poruke', error);
-      this.otvoriSnackBar('Poruka nije poslata, pokusajte kasnije.');
+      this.notifikacijaServis.notify('Poruka nije poslata, pokusajte kasnije.', MatSnackBarKlase.Crvena);
     });
   }
 
@@ -74,16 +75,4 @@ export class KontaktComponent implements OnInit {
   // convenience getter for easy access to form fields
   get p() { return this.porukaForm.controls; }
 
-
-  otvoriSnackBar(poruka: string) {
-    this.snackBar.open(poruka, '', {
-      duration: 2000
-    });
-  }
-  otvoriErrorSnackBar(poruka: string) {
-    this.snackBar.open(poruka, '', {
-      duration: 2000,
-      panelClass: ['my-snack-bar']
-    });
-  }
 }

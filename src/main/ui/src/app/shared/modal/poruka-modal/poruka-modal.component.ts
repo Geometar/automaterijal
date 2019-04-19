@@ -4,7 +4,9 @@ import { Poruka } from 'src/app/e-commerce/model/dto';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY } from 'rxjs';
 import { EmailService } from 'src/app/shared/service/email.service';
-import { MatSnackBar, MatDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material';
+import { NotifikacijaService } from '../../service/notifikacija.service';
+import { MatSnackBarKlase } from '../../model/konstante';
 
 @Component({
   selector: 'app-poruka-modal',
@@ -22,8 +24,8 @@ export class PorukaModalComponent implements OnInit {
     public dialogRef: MatDialogRef<PorukaModalComponent>,
     private formBuilder: FormBuilder,
     private emailServis: EmailService,
-    public snackBar: MatSnackBar
-    ) { }
+    private notifikacijaServis: NotifikacijaService
+  ) { }
 
   ngOnInit() {
     this.inicijalizujForme();
@@ -46,21 +48,21 @@ export class PorukaModalComponent implements OnInit {
     }
     const poruka = this.popuniPoruku();
     this.emailServis.posaljiPoruku(poruka)
-    .pipe(
-      takeWhile(() => this.alive),
-      catchError((error: Response) =>  throwError(error)),
-      finalize(() => this.ucitavanje = false)
-    ).subscribe(res => {
-      console.log('Poruka uspesno poslat');
-      this.porukaForm.reset();
-      this.porukaSubmited = false;
-      this.otvoriSnackBar('Poruka je uspešno poslata');
-      this.dialogRef.close();
-    }, error => {
-      console.log('Error pri slanju poruke', error);
-      this.otvoriSnackBar('Došlo je do greške, poruka nije poslata');
-      this.dialogRef.close();
-    });
+      .pipe(
+        takeWhile(() => this.alive),
+        catchError((error: Response) => throwError(error)),
+        finalize(() => this.ucitavanje = false)
+      ).subscribe(res => {
+        console.log('Poruka uspesno poslat');
+        this.porukaForm.reset();
+        this.porukaSubmited = false;
+        this.notifikacijaServis.notify('Poruka je uspešno poslata', MatSnackBarKlase.Zelena);
+        this.dialogRef.close();
+      }, error => {
+        console.log('Error pri slanju poruke', error);
+        this.notifikacijaServis.notify('Došlo je do greške, poruka nije poslata', MatSnackBarKlase.Crvena);
+        this.dialogRef.close();
+      });
   }
 
   popuniPoruku(): Poruka {
@@ -75,12 +77,6 @@ export class PorukaModalComponent implements OnInit {
   }
   // convenience getter for easy access to form fields
   get p() { return this.porukaForm.controls; }
-
-  otvoriSnackBar(poruka: string) {
-    this.snackBar.open(poruka, '', {
-      duration: 2000
-    });
-  }
 
   zatvoriDialog() {
     this.dialogRef.close();

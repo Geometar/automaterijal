@@ -6,6 +6,8 @@ import { throwError, EMPTY } from 'rxjs';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { PartnerService } from '../service/partner.service';
 import { MatSnackBar } from '@angular/material';
+import { NotifikacijaService } from 'src/app/shared/service/notifikacija.service';
+import { MatSnackBarKlase } from 'src/app/shared/model/konstante';
 
 @Component({
   selector: 'app-resetovanje-sfire',
@@ -27,7 +29,7 @@ export class ResetovanjeSfireComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private partnerServis: PartnerService,
-    public snackBar: MatSnackBar,
+    private notifikacijaServis: NotifikacijaService,
     private router: Router
   ) { }
 
@@ -68,19 +70,13 @@ export class ResetovanjeSfireComponent implements OnInit {
     .subscribe(
       res => {
         this.uspesnaPromena = true;
-        this.otvoriSnackBar('Šifra uspešno promenjena');
+        this.notifikacijaServis.notify('Šifra uspešno promenjena', MatSnackBarKlase.Zelena);
         this.router.navigate(['/login']);
       },
       error => {
         this.uspesnaPromena = false;
         console.log('Updejtovanje partnera nije uspelo');
       });
-  }
-
-  otvoriSnackBar(poruka: string) {
-    this.snackBar.open(poruka, '', {
-      duration: 2000,
-    });
   }
 
   private napraviDto(): PromenaSifre {

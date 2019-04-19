@@ -5,7 +5,8 @@ import { PartnerService } from '../service/partner.service';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material';
+import { NotifikacijaService } from 'src/app/shared/service/notifikacija.service';
+import { MatSnackBarKlase } from 'src/app/shared/model/konstante';
 
 @Component({
   selector: 'app-partner',
@@ -37,7 +38,7 @@ export class PartnerComponent implements OnInit {
     private loginServis: LoginService,
     private partnerServis: PartnerService,
     private formBuilder: FormBuilder,
-    public snackBar: MatSnackBar) { }
+    private notifikacijaServis: NotifikacijaService) { }
 
   ngOnInit() {
     this.loginServis.ulogovaniPartner.subscribe(partner => this.partner = partner);
@@ -117,7 +118,7 @@ export class PartnerComponent implements OnInit {
         res => {
           this.korisnickoImeJeZauzeto = false;
           this.partner = res;
-          this.otvoriSnackBar(poruka);
+          this.notifikacijaServis.notify(poruka, MatSnackBarKlase.Zelena);
         },
         error => {
           console.log('Updejtovanje partnera nije uspelo');
@@ -150,7 +151,7 @@ export class PartnerComponent implements OnInit {
         res => {
           this.partner = res;
           this.losaSifra = false;
-          this.otvoriSnackBar(poruka);
+          this.notifikacijaServis.notify(poruka, MatSnackBarKlase.Zelena);
         },
         error => {
           console.log('Updejtovanje partnera nije uspelo');
@@ -167,17 +168,11 @@ export class PartnerComponent implements OnInit {
       .subscribe(
         res => {
           this.partner = res;
-          this.otvoriSnackBar(poruka);
+          this.notifikacijaServis.notify(poruka, MatSnackBarKlase.Zelena);
         },
         error => {
           console.log('Updejtovanje partnera nije uspelo');
         });
-  }
-
-  otvoriSnackBar(poruka: string) {
-    this.snackBar.open(poruka, '', {
-      duration: 2000,
-    });
   }
 
   // convenience getter for easy access to form fields

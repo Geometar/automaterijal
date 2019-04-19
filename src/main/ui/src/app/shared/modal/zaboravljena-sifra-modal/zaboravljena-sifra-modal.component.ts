@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef, MatSnackBar } from '@angular/material';
+import { MatDialogRef } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY } from 'rxjs';
 import { EmailService } from 'src/app/shared/service/email.service';
 import { ResetSifre } from 'src/app/e-shop/model/dto';
+import { NotifikacijaService } from '../../service/notifikacija.service';
+import { MatSnackBarKlase } from '../../model/konstante';
 
 @Component({
   selector: 'app-zaboravljena-sifra-modal',
@@ -26,7 +28,7 @@ export class ZaboravljenaSifraModalComponent implements OnInit {
     public dialogRef: MatDialogRef<ZaboravljenaSifraModalComponent>,
     private formBuilder: FormBuilder,
     private emailService: EmailService,
-    public snackBar: MatSnackBar) { }
+    private notifikacijaServis: NotifikacijaService) { }
 
   ngOnInit() {
     this.inicijalizujSveRegistracioneForme();
@@ -50,7 +52,7 @@ export class ZaboravljenaSifraModalComponent implements OnInit {
       catchError((error: Response) => {
         if (error.status === 400) {
           const snackPoruka = 'E-mail ili korisničko ime ne postoji u našoj bazi.';
-          this.otvoriSnackBar(snackPoruka);
+          this.notifikacijaServis.notify(snackPoruka, MatSnackBarKlase.Crvena);
           return EMPTY;
         }
         throwError(error);
@@ -70,11 +72,4 @@ export class ZaboravljenaSifraModalComponent implements OnInit {
 
   // convenience getter for easy access to form fields
   get zaboravljeno() { return this.zaboravljeSifraForma.controls; }
-
-  otvoriSnackBar(poruka: string) {
-    this.snackBar.open(poruka, '', {
-      duration: 2000,
-      panelClass: ['my-snack-bar']
-    });
-  }
 }

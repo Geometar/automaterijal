@@ -5,6 +5,14 @@ snack-bar-container {
     color: $automaterijal-grey-400;
   }
 
-.my-snack-bar {
+.red-snackbar {
     background-color: $automaterijal-accent-red-50 !important;
-  }
+}
+
+.green-snackbar {
+    background-color: $automaterijal-accent-green-50 !important;
+}
+
+.primary-snackbar {
+    background-color: $automaterijal-primary-100 !important;
+}

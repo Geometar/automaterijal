@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Poruka, Upit } from 'src/app/e-commerce/model/dto';
+import { Upit } from 'src/app/e-commerce/model/dto';
 import { Validators, FormBuilder, FormGroup, RequiredValidator } from '@angular/forms';
-import { MatDialogRef, MatSnackBar } from '@angular/material';
+import { MatDialogRef } from '@angular/material';
 import { EmailService } from 'src/app/shared/service/email.service';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
-import { throwError, EMPTY } from 'rxjs';
+import { throwError } from 'rxjs';
+import { NotifikacijaService } from '../../service/notifikacija.service';
+import { MatSnackBarKlase } from '../../model/konstante';
 
 @Component({
   selector: 'app-upit-modal',
@@ -36,7 +38,7 @@ export class UpitModalComponent implements OnInit {
     public dialogRef: MatDialogRef<UpitModalComponent>,
     private formBuilder: FormBuilder,
     private emailServis: EmailService,
-    public snackBar: MatSnackBar
+    private notifikacijaServis: NotifikacijaService
   ) { }
 
   ngOnInit() {
@@ -72,11 +74,11 @@ export class UpitModalComponent implements OnInit {
         this.upitForm.reset();
         this.upitSubmited = false;
         this.porukaJePoslata = true;
-        this.otvoriSnackBar('Upit je uspešno poslat');
+        this.notifikacijaServis.notify('Upit je uspešno poslat', MatSnackBarKlase.Plava);
 
       }, error => {
         console.log('Error pri slanju poruke', error);
-        this.otvoriSnackBar('Došlo je do greške, upit nije poslat');
+        this.notifikacijaServis.notify('Došlo je do greške, upit nije poslat', MatSnackBarKlase.Crvena);
         this.dialogRef.close();
       });
   }
@@ -95,12 +97,6 @@ export class UpitModalComponent implements OnInit {
       upit.drugo = this.u.drugo.value;
     }
     return upit;
-  }
-
-  otvoriSnackBar(poruka: string) {
-    this.snackBar.open(poruka, '', {
-      duration: 2000
-    });
   }
   // convenience getter for easy access to form fields
   get u() { return this.upitForm.controls; }

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatSnackBar } from '@angular/material';
-import { RegistracijaModalComponent } from '../modal/registracija-modal/registracija-modal.component';
-import { ZaboravljenaSifraModalComponent } from '../modal/zaboravljena-sifra-modal/zaboravljena-sifra-modal.component';
-import { PorukaModalComponent } from '../modal/poruka-modal/poruka-modal.component';
-import { UpitModalComponent } from '../modal/upit-modal/upit-modal.component';
+import { MatDialog } from '@angular/material';
+import { RegistracijaModalComponent } from '../shared/modal/registracija-modal/registracija-modal.component';
+import { ZaboravljenaSifraModalComponent } from '../shared/modal/zaboravljena-sifra-modal/zaboravljena-sifra-modal.component';
+import { PorukaModalComponent } from '../shared/modal/poruka-modal/poruka-modal.component';
+import { UpitModalComponent } from '../shared/modal/upit-modal/upit-modal.component';
 
 @Component({
   selector: 'app-footer',
@@ -14,37 +14,31 @@ export class FooterComponent implements OnInit {
 
   public img_logo = '/assets/slike/logo/automaterijal.png';
   constructor(
-    public dialog: MatDialog,
-    public snackBar: MatSnackBar
-    ) { }
+    public dialog: MatDialog
+  ) { }
 
   ngOnInit() {
   }
 
   otvoriPorukuDialog() {
-    const dialogRef = this.dialog.open(PorukaModalComponent, {
+    this.dialog.open(PorukaModalComponent, {
       width: '400px'
     });
   }
 
   otvoriResgracijaDialog() {
-    const dialogRef = this.dialog.open(RegistracijaModalComponent, {
+    this.dialog.open(RegistracijaModalComponent, {
       width: '400px'
     });
   }
   otvoriZaboravljenuSifruDialog() {
-    const dialogRef = this.dialog.open(ZaboravljenaSifraModalComponent, {
+    this.dialog.open(ZaboravljenaSifraModalComponent, {
       width: '400px'
-    });
-  }
-  otvoriSnackBar(poruka: string) {
-    this.snackBar.open(poruka, '', {
-      duration: 2000
     });
   }
 
   otvoriUpitDialog() {
-    const dialogRef = this.dialog.open(UpitModalComponent, {
+    this.dialog.open(UpitModalComponent, {
       width: '400px'
     });
   }

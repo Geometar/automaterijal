@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Brend } from '../model/dto';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material';
-import { UpitModalComponent } from 'src/app/modal/upit-modal/upit-modal.component';
+import { UpitModalComponent } from 'src/app/shared/modal/upit-modal/upit-modal.component';
 
 @Component({
   selector: 'app-dasboard',

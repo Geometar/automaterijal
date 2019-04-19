@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Sort, MatSnackBar } from '@angular/material';
+import { Sort } from '@angular/material';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY } from 'rxjs';
 import { Roba, Partner } from '../../model/dto';
@@ -10,6 +10,8 @@ import { DataService } from '../../service/data/data.service';
 import { AppUtilsService } from '../../utils/app-utils.service';
 import { VrstaRobe } from '../../model/roba.enum';
 import { Filter } from '../../model/filter';
+import { NotifikacijaService } from 'src/app/shared/service/notifikacija.service';
+import { MatSnackBarKlase } from 'src/app/shared/model/konstante';
 
 @Component({
   selector: 'app-filteri',
@@ -60,7 +62,7 @@ export class FilteriComponent implements OnInit {
     private loginServis: LoginService,
     private dataService: DataService,
     private utilsService: AppUtilsService,
-    public korpaSnackBar: MatSnackBar) { }
+    private notifikacijaServis: NotifikacijaService) { }
 
   ngOnInit() {
     this.pocetnoPretrazivanje = true;
@@ -179,14 +181,8 @@ export class FilteriComponent implements OnInit {
 
   dodajUKorpu(roba: Roba) {
     const snackBarPoruka = this.utilsService.dodajUKorpu(roba);
-    this.openKorpaSnackBar(snackBarPoruka);
+    this.notifikacijaServis.notify(snackBarPoruka, MatSnackBarKlase.Zelena);
     this.utilsService.izbrisiRobuSaStanja(this.roba, roba);
-  }
-
-  openKorpaSnackBar(poruka: string) {
-    this.korpaSnackBar.open(poruka, '', {
-      duration: 2000,
-    });
   }
 
   uKorpi(katBr: string): boolean {

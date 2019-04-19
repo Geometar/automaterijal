@@ -6,7 +6,7 @@ import { MatDialog } from '@angular/material';
 import { Partner } from '../e-shop/model/dto';
 import { LoginService } from '../e-shop/service/login.service';
 import { DataService } from '../e-shop/service/data/data.service';
-import { LogoutModalComponent } from '../modal/logout-modal/logout-modal.component';
+import { LogoutModalComponent } from '../shared/modal/logout-modal/logout-modal.component';
 
 @Component({
   selector: 'app-navigacija',
