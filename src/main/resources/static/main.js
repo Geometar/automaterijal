@@ -35,17 +35,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppRoutingModule", function() { return AppRoutingModule; });
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _e_shop_roba_filteri_filteri_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./e-shop/roba/filteri/filteri.component */ "./src/app/e-shop/roba/filteri/filteri.component.ts");
-/* harmony import */ var _e_shop_roba_akumulatori_akumulatori_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./e-shop/roba/akumulatori/akumulatori.component */ "./src/app/e-shop/roba/akumulatori/akumulatori.component.ts");
-/* harmony import */ var _e_shop_roba_ulja_ulja_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./e-shop/roba/ulja/ulja.component */ "./src/app/e-shop/roba/ulja/ulja.component.ts");
+/* harmony import */ var _e_shop_magacin_filteri_filteri_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./e-shop/magacin/filteri/filteri.component */ "./src/app/e-shop/magacin/filteri/filteri.component.ts");
+/* harmony import */ var _e_shop_magacin_akumulatori_akumulatori_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./e-shop/magacin/akumulatori/akumulatori.component */ "./src/app/e-shop/magacin/akumulatori/akumulatori.component.ts");
+/* harmony import */ var _e_shop_magacin_ulja_ulja_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./e-shop/magacin/ulja/ulja.component */ "./src/app/e-shop/magacin/ulja/ulja.component.ts");
 /* harmony import */ var _e_shop_korpa_korpa_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./e-shop/korpa/korpa.component */ "./src/app/e-shop/korpa/korpa.component.ts");
 /* harmony import */ var _e_shop_login_login_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./e-shop/login/login.component */ "./src/app/e-shop/login/login.component.ts");
 /* harmony import */ var _e_shop_faktura_faktura_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./e-shop/faktura/faktura.component */ "./src/app/e-shop/faktura/faktura.component.ts");
 /* harmony import */ var _e_shop_faktura_faktura_detalji_faktura_detalji_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./e-shop/faktura/faktura-detalji/faktura-detalji.component */ "./src/app/e-shop/faktura/faktura-detalji/faktura-detalji.component.ts");
-/* harmony import */ var _e_shop_roba_ostalo_ostalo_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./e-shop/roba/ostalo/ostalo.component */ "./src/app/e-shop/roba/ostalo/ostalo.component.ts");
-/* harmony import */ var _e_shop_roba_ostalo_kategorija_specificna_kategorija_specificna_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./e-shop/roba/ostalo/kategorija-specificna/kategorija-specificna.component */ "./src/app/e-shop/roba/ostalo/kategorija-specificna/kategorija-specificna.component.ts");
+/* harmony import */ var _e_shop_magacin_ostalo_ostalo_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./e-shop/magacin/ostalo/ostalo.component */ "./src/app/e-shop/magacin/ostalo/ostalo.component.ts");
+/* harmony import */ var _e_shop_magacin_ostalo_kategorija_specificna_kategorija_specificna_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./e-shop/magacin/ostalo/kategorija-specificna/kategorija-specificna.component */ "./src/app/e-shop/magacin/ostalo/kategorija-specificna/kategorija-specificna.component.ts");
 /* harmony import */ var _e_shop_partner_partner_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./e-shop/partner/partner.component */ "./src/app/e-shop/partner/partner.component.ts");
-/* harmony import */ var _e_shop_roba_roba_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./e-shop/roba/roba.component */ "./src/app/e-shop/roba/roba.component.ts");
+/* harmony import */ var _e_shop_magacin_roba_roba_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./e-shop/magacin/roba/roba.component */ "./src/app/e-shop/magacin/roba/roba.component.ts");
 /* harmony import */ var _e_commerce_dasboard_dasboard_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./e-commerce/dasboard/dasboard.component */ "./src/app/e-commerce/dasboard/dasboard.component.ts");
 /* harmony import */ var _e_shop_resetovanje_sfire_resetovanje_sfire_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./e-shop/resetovanje-sfire/resetovanje-sfire.component */ "./src/app/e-shop/resetovanje-sfire/resetovanje-sfire.component.ts");
 /* harmony import */ var _e_commerce_kontakt_kontakt_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./e-commerce/kontakt/kontakt.component */ "./src/app/e-commerce/kontakt/kontakt.component.ts");
@@ -80,12 +80,12 @@ var routes = [
     { path: 'naslovna', component: _e_commerce_dasboard_dasboard_component__WEBPACK_IMPORTED_MODULE_13__["DasboardComponent"] },
     { path: 'o-nama', component: _e_commerce_o_nama_o_nama_component__WEBPACK_IMPORTED_MODULE_16__["ONamaComponent"] },
     { path: 'kontakt', component: _e_commerce_kontakt_kontakt_component__WEBPACK_IMPORTED_MODULE_15__["KontaktComponent"] },
-    { path: 'roba', component: _e_shop_roba_roba_component__WEBPACK_IMPORTED_MODULE_12__["RobaComponent"] },
-    { path: 'filteri', component: _e_shop_roba_filteri_filteri_component__WEBPACK_IMPORTED_MODULE_2__["FilteriComponent"] },
-    { path: 'ulja', component: _e_shop_roba_ulja_ulja_component__WEBPACK_IMPORTED_MODULE_4__["UljaComponent"] },
-    { path: 'akumulatori', component: _e_shop_roba_akumulatori_akumulatori_component__WEBPACK_IMPORTED_MODULE_3__["AkumulatoriComponent"] },
-    { path: 'ostalo', component: _e_shop_roba_ostalo_ostalo_component__WEBPACK_IMPORTED_MODULE_9__["OstaloComponent"] },
-    { path: 'ostalo/:id', component: _e_shop_roba_ostalo_kategorija_specificna_kategorija_specificna_component__WEBPACK_IMPORTED_MODULE_10__["KategorijaSpecificnaComponent"] },
+    { path: 'roba', component: _e_shop_magacin_roba_roba_component__WEBPACK_IMPORTED_MODULE_12__["RobaComponent"] },
+    { path: 'filteri', component: _e_shop_magacin_filteri_filteri_component__WEBPACK_IMPORTED_MODULE_2__["FilteriComponent"] },
+    { path: 'ulja', component: _e_shop_magacin_ulja_ulja_component__WEBPACK_IMPORTED_MODULE_4__["UljaComponent"] },
+    { path: 'akumulatori', component: _e_shop_magacin_akumulatori_akumulatori_component__WEBPACK_IMPORTED_MODULE_3__["AkumulatoriComponent"] },
+    { path: 'ostalo', component: _e_shop_magacin_ostalo_ostalo_component__WEBPACK_IMPORTED_MODULE_9__["OstaloComponent"] },
+    { path: 'ostalo/:id', component: _e_shop_magacin_ostalo_kategorija_specificna_kategorija_specificna_component__WEBPACK_IMPORTED_MODULE_10__["KategorijaSpecificnaComponent"] },
     { path: 'login', component: _e_shop_login_login_component__WEBPACK_IMPORTED_MODULE_6__["LoginComponent"] },
     { path: 'kontakt', component: _e_commerce_dasboard_dasboard_component__WEBPACK_IMPORTED_MODULE_13__["DasboardComponent"] },
     { path: 'licni-podaci', component: _e_shop_partner_partner_component__WEBPACK_IMPORTED_MODULE_11__["PartnerComponent"] },
@@ -186,18 +186,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/platform-browser/animations */ "./node_modules/@angular/platform-browser/fesm5/animations.js");
 /* harmony import */ var _shared_material_material_module__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./shared/material/material.module */ "./src/app/shared/material/material.module.ts");
 /* harmony import */ var _navigacija_navigacija_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./navigacija/navigacija.component */ "./src/app/navigacija/navigacija.component.ts");
-/* harmony import */ var _e_shop_roba_roba_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./e-shop/roba/roba.component */ "./src/app/e-shop/roba/roba.component.ts");
+/* harmony import */ var _e_shop_magacin_roba_roba_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./e-shop/magacin/roba/roba.component */ "./src/app/e-shop/magacin/roba/roba.component.ts");
 /* harmony import */ var _angular_http__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/http */ "./node_modules/@angular/http/fesm5/http.js");
 /* harmony import */ var _app_routing_module__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./app-routing.module */ "./src/app/app-routing.module.ts");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
-/* harmony import */ var _e_shop_roba_filteri_filteri_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./e-shop/roba/filteri/filteri.component */ "./src/app/e-shop/roba/filteri/filteri.component.ts");
-/* harmony import */ var _e_shop_roba_akumulatori_akumulatori_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./e-shop/roba/akumulatori/akumulatori.component */ "./src/app/e-shop/roba/akumulatori/akumulatori.component.ts");
-/* harmony import */ var _e_shop_roba_ulja_ulja_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./e-shop/roba/ulja/ulja.component */ "./src/app/e-shop/roba/ulja/ulja.component.ts");
-/* harmony import */ var _e_shop_roba_ulja_motorna_motorna_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./e-shop/roba/ulja/motorna/motorna.component */ "./src/app/e-shop/roba/ulja/motorna/motorna.component.ts");
-/* harmony import */ var _e_shop_roba_ulja_menjacko_menjacko_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./e-shop/roba/ulja/menjacko/menjacko.component */ "./src/app/e-shop/roba/ulja/menjacko/menjacko.component.ts");
-/* harmony import */ var _e_shop_roba_ulja_kociona_kociona_component__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./e-shop/roba/ulja/kociona/kociona.component */ "./src/app/e-shop/roba/ulja/kociona/kociona.component.ts");
-/* harmony import */ var _e_shop_roba_ulja_antifriz_antifriz_component__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./e-shop/roba/ulja/antifriz/antifriz.component */ "./src/app/e-shop/roba/ulja/antifriz/antifriz.component.ts");
-/* harmony import */ var _e_shop_roba_ulja_industrijska_industrijska_component__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./e-shop/roba/ulja/industrijska/industrijska.component */ "./src/app/e-shop/roba/ulja/industrijska/industrijska.component.ts");
+/* harmony import */ var _e_shop_magacin_filteri_filteri_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./e-shop/magacin/filteri/filteri.component */ "./src/app/e-shop/magacin/filteri/filteri.component.ts");
+/* harmony import */ var _e_shop_magacin_akumulatori_akumulatori_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./e-shop/magacin/akumulatori/akumulatori.component */ "./src/app/e-shop/magacin/akumulatori/akumulatori.component.ts");
+/* harmony import */ var _e_shop_magacin_ulja_ulja_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./e-shop/magacin/ulja/ulja.component */ "./src/app/e-shop/magacin/ulja/ulja.component.ts");
+/* harmony import */ var _e_shop_magacin_ulja_motorna_motorna_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./e-shop/magacin/ulja/motorna/motorna.component */ "./src/app/e-shop/magacin/ulja/motorna/motorna.component.ts");
+/* harmony import */ var _e_shop_magacin_ulja_menjacko_menjacko_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./e-shop/magacin/ulja/menjacko/menjacko.component */ "./src/app/e-shop/magacin/ulja/menjacko/menjacko.component.ts");
+/* harmony import */ var _e_shop_magacin_ulja_kociona_kociona_component__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./e-shop/magacin/ulja/kociona/kociona.component */ "./src/app/e-shop/magacin/ulja/kociona/kociona.component.ts");
+/* harmony import */ var _e_shop_magacin_ulja_antifriz_antifriz_component__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./e-shop/magacin/ulja/antifriz/antifriz.component */ "./src/app/e-shop/magacin/ulja/antifriz/antifriz.component.ts");
+/* harmony import */ var _e_shop_magacin_ulja_industrijska_industrijska_component__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./e-shop/magacin/ulja/industrijska/industrijska.component */ "./src/app/e-shop/magacin/ulja/industrijska/industrijska.component.ts");
 /* harmony import */ var _e_shop_korpa_korpa_component__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./e-shop/korpa/korpa.component */ "./src/app/e-shop/korpa/korpa.component.ts");
 /* harmony import */ var _e_shop_login_login_component__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./e-shop/login/login.component */ "./src/app/e-shop/login/login.component.ts");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
@@ -206,8 +206,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _shared_pipes_EmptyPipe__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./shared/pipes/EmptyPipe */ "./src/app/shared/pipes/EmptyPipe.ts");
 /* harmony import */ var _e_shop_faktura_faktura_detalji_faktura_detalji_component__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./e-shop/faktura/faktura-detalji/faktura-detalji.component */ "./src/app/e-shop/faktura/faktura-detalji/faktura-detalji.component.ts");
 /* harmony import */ var _shared_pipes_DatePipe__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./shared/pipes/DatePipe */ "./src/app/shared/pipes/DatePipe.ts");
-/* harmony import */ var _e_shop_roba_ostalo_ostalo_component__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./e-shop/roba/ostalo/ostalo.component */ "./src/app/e-shop/roba/ostalo/ostalo.component.ts");
-/* harmony import */ var _e_shop_roba_ostalo_kategorija_specificna_kategorija_specificna_component__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./e-shop/roba/ostalo/kategorija-specificna/kategorija-specificna.component */ "./src/app/e-shop/roba/ostalo/kategorija-specificna/kategorija-specificna.component.ts");
+/* harmony import */ var _e_shop_magacin_ostalo_ostalo_component__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./e-shop/magacin/ostalo/ostalo.component */ "./src/app/e-shop/magacin/ostalo/ostalo.component.ts");
+/* harmony import */ var _e_shop_magacin_ostalo_kategorija_specificna_kategorija_specificna_component__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./e-shop/magacin/ostalo/kategorija-specificna/kategorija-specificna.component */ "./src/app/e-shop/magacin/ostalo/kategorija-specificna/kategorija-specificna.component.ts");
 /* harmony import */ var _e_shop_partner_partner_component__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./e-shop/partner/partner.component */ "./src/app/e-shop/partner/partner.component.ts");
 /* harmony import */ var _e_commerce_dasboard_dasboard_component__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./e-commerce/dasboard/dasboard.component */ "./src/app/e-commerce/dasboard/dasboard.component.ts");
 /* harmony import */ var _e_shop_resetovanje_sfire_resetovanje_sfire_component__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./e-shop/resetovanje-sfire/resetovanje-sfire.component */ "./src/app/e-shop/resetovanje-sfire/resetovanje-sfire.component.ts");
@@ -228,13 +228,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _e_commerce_dasboard_ponuda_ponuda_component__WEBPACK_IMPORTED_MODULE_45__ = __webpack_require__(/*! ./e-commerce/dasboard/ponuda/ponuda.component */ "./src/app/e-commerce/dasboard/ponuda/ponuda.component.ts");
 /* harmony import */ var _e_commerce_dasboard_kampanja_kampanja_component__WEBPACK_IMPORTED_MODULE_46__ = __webpack_require__(/*! ./e-commerce/dasboard/kampanja/kampanja.component */ "./src/app/e-commerce/dasboard/kampanja/kampanja.component.ts");
 /* harmony import */ var _shared_modal_upit_modal_upit_modal_component__WEBPACK_IMPORTED_MODULE_47__ = __webpack_require__(/*! ./shared/modal/upit-modal/upit-modal.component */ "./src/app/shared/modal/upit-modal/upit-modal.component.ts");
-/* harmony import */ var _e_shop_roba_shared_components_filter_filter_component__WEBPACK_IMPORTED_MODULE_48__ = __webpack_require__(/*! ./e-shop/roba/shared-components/filter/filter.component */ "./src/app/e-shop/roba/shared-components/filter/filter.component.ts");
+/* harmony import */ var _e_shop_magacin_shared_components_filter_filter_component__WEBPACK_IMPORTED_MODULE_48__ = __webpack_require__(/*! ./e-shop/magacin/shared-components/filter/filter.component */ "./src/app/e-shop/magacin/shared-components/filter/filter.component.ts");
+/* harmony import */ var _e_shop_magacin_shared_components_tabela_tabela_component__WEBPACK_IMPORTED_MODULE_49__ = __webpack_require__(/*! ./e-shop/magacin/shared-components/tabela/tabela.component */ "./src/app/e-shop/magacin/shared-components/tabela/tabela.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -292,16 +294,16 @@ var AppModule = /** @class */ (function () {
             declarations: [
                 _app_component__WEBPACK_IMPORTED_MODULE_3__["AppComponent"],
                 _navigacija_navigacija_component__WEBPACK_IMPORTED_MODULE_6__["NavigacijaComponent"],
-                _e_shop_roba_roba_component__WEBPACK_IMPORTED_MODULE_7__["RobaComponent"],
+                _e_shop_magacin_roba_roba_component__WEBPACK_IMPORTED_MODULE_7__["RobaComponent"],
                 _e_commerce_dasboard_dasboard_component__WEBPACK_IMPORTED_MODULE_30__["DasboardComponent"],
-                _e_shop_roba_filteri_filteri_component__WEBPACK_IMPORTED_MODULE_11__["FilteriComponent"],
-                _e_shop_roba_akumulatori_akumulatori_component__WEBPACK_IMPORTED_MODULE_12__["AkumulatoriComponent"],
-                _e_shop_roba_ulja_ulja_component__WEBPACK_IMPORTED_MODULE_13__["UljaComponent"],
-                _e_shop_roba_ulja_motorna_motorna_component__WEBPACK_IMPORTED_MODULE_14__["MotornaComponent"],
-                _e_shop_roba_ulja_menjacko_menjacko_component__WEBPACK_IMPORTED_MODULE_15__["MenjackoComponent"],
-                _e_shop_roba_ulja_kociona_kociona_component__WEBPACK_IMPORTED_MODULE_16__["KocionaComponent"],
-                _e_shop_roba_ulja_antifriz_antifriz_component__WEBPACK_IMPORTED_MODULE_17__["AntifrizComponent"],
-                _e_shop_roba_ulja_industrijska_industrijska_component__WEBPACK_IMPORTED_MODULE_18__["IndustrijskaComponent"],
+                _e_shop_magacin_filteri_filteri_component__WEBPACK_IMPORTED_MODULE_11__["FilteriComponent"],
+                _e_shop_magacin_akumulatori_akumulatori_component__WEBPACK_IMPORTED_MODULE_12__["AkumulatoriComponent"],
+                _e_shop_magacin_ulja_ulja_component__WEBPACK_IMPORTED_MODULE_13__["UljaComponent"],
+                _e_shop_magacin_ulja_motorna_motorna_component__WEBPACK_IMPORTED_MODULE_14__["MotornaComponent"],
+                _e_shop_magacin_ulja_menjacko_menjacko_component__WEBPACK_IMPORTED_MODULE_15__["MenjackoComponent"],
+                _e_shop_magacin_ulja_kociona_kociona_component__WEBPACK_IMPORTED_MODULE_16__["KocionaComponent"],
+                _e_shop_magacin_ulja_antifriz_antifriz_component__WEBPACK_IMPORTED_MODULE_17__["AntifrizComponent"],
+                _e_shop_magacin_ulja_industrijska_industrijska_component__WEBPACK_IMPORTED_MODULE_18__["IndustrijskaComponent"],
                 _e_shop_korpa_korpa_component__WEBPACK_IMPORTED_MODULE_19__["KorpaComponent"],
                 _shared_modal_izmena_kolicine_modal_izmena_kolicine_modal_component__WEBPACK_IMPORTED_MODULE_34__["IzmenaKolicineModalComponent"],
                 _e_shop_login_login_component__WEBPACK_IMPORTED_MODULE_20__["LoginComponent"],
@@ -311,8 +313,8 @@ var AppModule = /** @class */ (function () {
                 _shared_pipes_EmptyPipe__WEBPACK_IMPORTED_MODULE_24__["EmptyPipe"],
                 _shared_pipes_DatePipe__WEBPACK_IMPORTED_MODULE_26__["DatePipe"],
                 _e_shop_faktura_faktura_detalji_faktura_detalji_component__WEBPACK_IMPORTED_MODULE_25__["FakturaDetaljiComponent"],
-                _e_shop_roba_ostalo_ostalo_component__WEBPACK_IMPORTED_MODULE_27__["OstaloComponent"],
-                _e_shop_roba_ostalo_kategorija_specificna_kategorija_specificna_component__WEBPACK_IMPORTED_MODULE_28__["KategorijaSpecificnaComponent"],
+                _e_shop_magacin_ostalo_ostalo_component__WEBPACK_IMPORTED_MODULE_27__["OstaloComponent"],
+                _e_shop_magacin_ostalo_kategorija_specificna_kategorija_specificna_component__WEBPACK_IMPORTED_MODULE_28__["KategorijaSpecificnaComponent"],
                 _e_shop_partner_partner_component__WEBPACK_IMPORTED_MODULE_29__["PartnerComponent"],
                 _shared_modal_uspesno_porucivanje_modal_uspesno_porucivanje_modal_component__WEBPACK_IMPORTED_MODULE_36__["UspesnoPorucivanjeModalComponent"],
                 _shared_modal_registracija_modal_registracija_modal_component__WEBPACK_IMPORTED_MODULE_37__["RegistracijaModalComponent"],
@@ -327,7 +329,8 @@ var AppModule = /** @class */ (function () {
                 _e_commerce_dasboard_ponuda_ponuda_component__WEBPACK_IMPORTED_MODULE_45__["PonudaComponent"],
                 _e_commerce_dasboard_kampanja_kampanja_component__WEBPACK_IMPORTED_MODULE_46__["KampanjaComponent"],
                 _shared_modal_upit_modal_upit_modal_component__WEBPACK_IMPORTED_MODULE_47__["UpitModalComponent"],
-                _e_shop_roba_shared_components_filter_filter_component__WEBPACK_IMPORTED_MODULE_48__["FilterComponent"]
+                _e_shop_magacin_shared_components_filter_filter_component__WEBPACK_IMPORTED_MODULE_48__["FilterComponent"],
+                _e_shop_magacin_shared_components_tabela_tabela_component__WEBPACK_IMPORTED_MODULE_49__["TabelaComponent"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
@@ -1766,6 +1769,2100 @@ var LoginComponent = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/e-shop/magacin/akumulatori/akumulatori.component.css":
+/*!**********************************************************************!*\
+  !*** ./src/app/e-shop/magacin/akumulatori/akumulatori.component.css ***!
+  \**********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ""
+
+/***/ }),
+
+/***/ "./src/app/e-shop/magacin/akumulatori/akumulatori.component.html":
+/*!***********************************************************************!*\
+  !*** ./src/app/e-shop/magacin/akumulatori/akumulatori.component.html ***!
+  \***********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"container-fluid\">\r\n\r\n    <div class=\"d-flex align-items-center justify-content-center\">\r\n        <div class=\"forms-input\">\r\n            <input class=\"p-1 flex-grow-1 search__input\" type=\"search\" [(ngModel)]=\"searchValue\"\r\n                (keyup.enter)=\"pronaciPoTrazenojReci(searchValue)\" />\r\n            <div class=\"p-1\" (click)='pronaciPoTrazenojReci(searchValue)'>\r\n                <button mat-mini-fab class=pozadina-glavna-100>\r\n                    <mat-icon>search</mat-icon>\r\n                </button>\r\n            </div>\r\n            <div class=\"p-1\" (click)='toogleFilterDiv()'>\r\n                <button *ngIf=\"!otvoriFilter\" class=pozadina-glavna-100 mat-mini-fab>\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n                <button *ngIf=\"otvoriFilter\" mat-mini-fab class=\"button-glavni-200\">\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"d-flex justify-content-center\">\r\n        <label *ngIf=\"pocetnoPretrazivanje\">\r\n            <font color=\"#424242\"> Ukucajte kataloski broj</font>\r\n        </label>\r\n    </div>\r\n\r\n    <app-filter [vrstaRobe]=\"vrstaRobe\" [otvoriFilter]=\"otvoriFilter\" (filterEvent)=\"filtriraj($event)\"></app-filter>\r\n\r\n    <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"!pronadjenaRoba\">\r\n        <i class=\"material-icons icon-size\">\r\n            error_outline\r\n        </i>\r\n        <h1 class=\"h1-upozorenje\">Artikal ne postoji</h1>\r\n    </div>\r\n\r\n    <div class=\"d-flex justify-content-center prazna-tabela\" *ngIf=\"ucitavanje\">\r\n        <mat-spinner></mat-spinner>\r\n    </div>\r\n\r\n    <app-tabela [rowsPerPage]=\"rowsPerPage\" [pageIndex]=\"pageIndex\" [tableLength]=\"tableLength\"\r\n        [dataSource]=\"dataSource\" [roba]=\"roba\" (magacinEvent)=\"paginatorEvent($event)\"></app-tabela>\r\n\r\n</div>"
+
+/***/ }),
+
+/***/ "./src/app/e-shop/magacin/akumulatori/akumulatori.component.ts":
+/*!*********************************************************************!*\
+  !*** ./src/app/e-shop/magacin/akumulatori/akumulatori.component.ts ***!
+  \*********************************************************************/
+/*! exports provided: AkumulatoriComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AkumulatoriComponent", function() { return AkumulatoriComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var _service_roba_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
+/* harmony import */ var _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
+/* harmony import */ var _service_data_data_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
+/* harmony import */ var _model_roba_enum__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
+/* harmony import */ var _model_filter__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../model/filter */ "./src/app/e-shop/model/filter.ts");
+/* harmony import */ var src_app_shared_service_notifikacija_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/shared/service/notifikacija.service */ "./src/app/shared/service/notifikacija.service.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+
+
+var AkumulatoriComponent = /** @class */ (function () {
+    function AkumulatoriComponent(robaService, utilsService, dataService, notifikacijaServis) {
+        this.robaService = robaService;
+        this.utilsService = utilsService;
+        this.dataService = dataService;
+        this.notifikacijaServis = notifikacijaServis;
+        this.vrstaRobe = _model_roba_enum__WEBPACK_IMPORTED_MODULE_6__["VrstaRobe"].AKUMULATORI;
+        // Paging and Sorting elements
+        this.rowsPerPage = 10;
+        this.pageIndex = 0;
+        this.sort = null;
+        this.filter = new _model_filter__WEBPACK_IMPORTED_MODULE_7__["Filter"]();
+        this.searchValue = '';
+        this.lastSearchValue = '';
+        this.ucitavanje = false;
+        this.pronadjenaRoba = true;
+        this.otvoriFilter = false;
+        this.alive = true;
+    }
+    AkumulatoriComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.pocetnoPretrazivanje = true;
+        this.dataService.trenutnaKorpa.subscribe(function (korpa) { return _this.korpa = korpa; });
+        this.pronandjiSveAkumulatore();
+    };
+    AkumulatoriComponent.prototype.pronandjiSveAkumulatore = function () {
+        var _this = this;
+        this.ucitavanje = true;
+        this.pronadjenaRoba = true;
+        this.robaService.pronadjiAkumulatore(this.sort, this.rowsPerPage, this.pageIndex, null, null, null)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(function (error) {
+            if (error.status === 404) {
+                _this.pronadjenaRoba = false;
+                return rxjs__WEBPACK_IMPORTED_MODULE_2__["EMPTY"];
+            }
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["throwError"])(error);
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["finalize"])(function () { return _this.ucitavanje = false; }))
+            .subscribe(function (res) {
+            _this.pronadjenaRoba = true;
+            _this.roba = res.content;
+            _this.dataSource = _this.roba;
+            _this.rowsPerPage = res.size;
+            _this.pageIndex = res.number;
+            _this.tableLength = res.totalElements;
+        }, function (error) {
+            _this.roba = null;
+            console.log('Podnaci robu izbacilo je gresko');
+        });
+    };
+    AkumulatoriComponent.prototype.pronadjiAkumulatorePoPretrazi = function (searchValue) {
+        var _this = this;
+        this.pocetnoPretrazivanje = false;
+        this.lastSearchValue = searchValue;
+        this.ucitavanje = true;
+        this.dataSource = null;
+        this.pronadjenaRoba = true;
+        this.robaService.pronadjiAkumulatore(this.sort, this.rowsPerPage, this.pageIndex, searchValue, this.filter.naStanju, this.filter.proizvodjacId)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(function (error) {
+            if (error.status === 404) {
+                _this.pronadjenaRoba = false;
+                return rxjs__WEBPACK_IMPORTED_MODULE_2__["EMPTY"];
+            }
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["throwError"])(error);
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["finalize"])(function () { return _this.ucitavanje = false; }))
+            .subscribe(function (res) {
+            _this.pronadjenaRoba = true;
+            _this.roba = res.content;
+            _this.dataSource = _this.roba;
+            _this.rowsPerPage = res.size;
+            _this.pageIndex = res.number;
+            _this.tableLength = res.totalElements;
+        }, function (error) {
+            _this.roba = null;
+            console.log('Podnaci robu izbacilo je gresko');
+        });
+    };
+    AkumulatoriComponent.prototype.pronaciPoTrazenojReci = function (searchValue) {
+        if (this.dataSource) {
+            this.pageIndex = 0;
+        }
+        this.pronadjiAkumulatorePoPretrazi(searchValue);
+    };
+    AkumulatoriComponent.prototype.paginatorEvent = function (pageEvent) {
+        this.dataSource = [];
+        this.rowsPerPage = pageEvent.pageSize;
+        this.pageIndex = pageEvent.pageIndex;
+        this.pronadjiAkumulatorePoPretrazi(this.searchValue);
+    };
+    AkumulatoriComponent.prototype.toogleFilterDiv = function () {
+        this.otvoriFilter = !this.otvoriFilter;
+    };
+    AkumulatoriComponent.prototype.filtriraj = function (filter) {
+        if (this.dataSource) {
+            this.pageIndex = 0;
+        }
+        this.filter = filter;
+        this.pronadjiAkumulatorePoPretrazi(this.searchValue);
+    };
+    AkumulatoriComponent.prototype.uKorpi = function (katBr) {
+        return this.utilsService.daLiJeRobaUKorpi(this.korpa, katBr);
+    };
+    AkumulatoriComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-akumulatori',
+            template: __webpack_require__(/*! ./akumulatori.component.html */ "./src/app/e-shop/magacin/akumulatori/akumulatori.component.html"),
+            styles: [__webpack_require__(/*! ./akumulatori.component.css */ "./src/app/e-shop/magacin/akumulatori/akumulatori.component.css")]
+        }),
+        __metadata("design:paramtypes", [_service_roba_service__WEBPACK_IMPORTED_MODULE_3__["RobaService"],
+            _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__["AppUtilsService"],
+            _service_data_data_service__WEBPACK_IMPORTED_MODULE_5__["DataService"],
+            src_app_shared_service_notifikacija_service__WEBPACK_IMPORTED_MODULE_8__["NotifikacijaService"]])
+    ], AkumulatoriComponent);
+    return AkumulatoriComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/e-shop/magacin/filteri/filteri.component.css":
+/*!**************************************************************!*\
+  !*** ./src/app/e-shop/magacin/filteri/filteri.component.css ***!
+  \**************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\r\n\r\n@media only screen and (max-device-width :1025px) { \r\n    .mobilna-duzina {\r\n        width: 100%;\r\n    }\r\n    .input-group-prepend {\r\n        margin-top: 10px;\r\n        margin-left: 0px;\r\n    }\r\n}"
+
+/***/ }),
+
+/***/ "./src/app/e-shop/magacin/filteri/filteri.component.html":
+/*!***************************************************************!*\
+  !*** ./src/app/e-shop/magacin/filteri/filteri.component.html ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"container-fluid\">\r\n    <main>\r\n        <div class=\"d-flex align-items-center justify-content-center\">\r\n            <div class=\"forms-input\">\r\n                <input class=\"p-1 flex-grow-1 search__input\" type=\"search\" [(ngModel)]=\"searchValue\"\r\n                    (keyup.enter)=\"pronaciPoTrazenojReci(searchValue)\" />\r\n                <div class=\"p-1\" (click)='pronaciPoTrazenojReci(searchValue)'>\r\n                    <button mat-mini-fab class=pozadina-glavna-100>\r\n                        <mat-icon>search</mat-icon>\r\n                    </button>\r\n                </div>\r\n                <div class=\"p-1\" (click)='toogleFilterDiv()'>\r\n                    <button *ngIf=\"!otvoriFilter\" class=pozadina-glavna-100 mat-mini-fab>\r\n                        <mat-icon>view_headline</mat-icon>\r\n                    </button>\r\n                    <button *ngIf=\"otvoriFilter\" mat-mini-fab class=\"button-glavni-200\">\r\n                        <mat-icon>view_headline</mat-icon>\r\n                    </button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n        <div class=\"d-flex justify-content-center\">\r\n            <label *ngIf=\"pocetnoPretrazivanje\">\r\n                <font color=\"#424242\"> Ukucajte kataloski broj</font>\r\n            </label>\r\n        </div>\r\n        \r\n        <!-- Filter komponenta izdvojena -->\r\n        <app-filter [vrstaRobe]=\"vrstaRobe\" [otvoriFilter]=\"otvoriFilter\" (filterEvent)=\"filtriraj($event)\">\r\n        </app-filter>\r\n\r\n        <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"!pronadjenaRoba\">\r\n            <i class=\"material-icons icon-size\">\r\n                error_outline\r\n            </i>\r\n            <h1 class=\"h1-upozorenje\">Artikal ne postoji</h1>\r\n        </div>\r\n\r\n        <div class=\"d-flex justify-content-center prazna-tabela\" *ngIf=\"ucitavanje\">\r\n            <mat-spinner></mat-spinner>\r\n        </div>\r\n        \r\n        <app-tabela \r\n        [rowsPerPage]=\"rowsPerPage\"\r\n        [pageIndex]=\"pageIndex\"\r\n        [tableLength]=\"tableLength\"\r\n        [dataSource]=\"dataSource\"\r\n        [roba]=\"roba\"\r\n        (magacinEvent)=\"paginatorEvent($event)\"\r\n        ></app-tabela>\r\n    </main>\r\n</div>"
+
+/***/ }),
+
+/***/ "./src/app/e-shop/magacin/filteri/filteri.component.ts":
+/*!*************************************************************!*\
+  !*** ./src/app/e-shop/magacin/filteri/filteri.component.ts ***!
+  \*************************************************************/
+/*! exports provided: FilteriComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FilteriComponent", function() { return FilteriComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var _service_roba_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
+/* harmony import */ var _service_data_data_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
+/* harmony import */ var _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
+/* harmony import */ var _model_roba_enum__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
+/* harmony import */ var _model_filter__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../model/filter */ "./src/app/e-shop/model/filter.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+
+var FilteriComponent = /** @class */ (function () {
+    function FilteriComponent(robaService, dataService, utilsService) {
+        this.robaService = robaService;
+        this.dataService = dataService;
+        this.utilsService = utilsService;
+        this.vrstaRobe = _model_roba_enum__WEBPACK_IMPORTED_MODULE_6__["VrstaRobe"].FILTERI;
+        // Paging and Sorting elements
+        this.rowsPerPage = 10;
+        this.pageIndex = 0;
+        this.sort = null;
+        this.filter = new _model_filter__WEBPACK_IMPORTED_MODULE_7__["Filter"]();
+        this.searchValue = '';
+        this.lastSearchValue = '';
+        this.ucitavanje = false;
+        this.pronadjenaRoba = true;
+        this.otvoriFilter = false;
+        this.alive = true;
+    }
+    FilteriComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.pocetnoPretrazivanje = true;
+        this.dataService.trenutnaKorpa.subscribe(function (korpa) { return _this.korpa = korpa; });
+        this.pronandjiSveFiltere();
+    };
+    FilteriComponent.prototype.pronandjiSveFiltere = function () {
+        var _this = this;
+        this.ucitavanje = true;
+        this.pronadjenaRoba = true;
+        this.robaService.pronadjiFiltere(this.sort, this.rowsPerPage, this.pageIndex, null, null, null)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(function (error) {
+            if (error.status === 404) {
+                _this.pronadjenaRoba = false;
+                return rxjs__WEBPACK_IMPORTED_MODULE_2__["EMPTY"];
+            }
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["throwError"])(error);
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["finalize"])(function () { return _this.ucitavanje = false; }))
+            .subscribe(function (res) {
+            _this.pronadjenaRoba = true;
+            _this.roba = res.content;
+            _this.dataService.skiniSaStanjaUkolikoJeUKorpi(_this.roba);
+            _this.dataSource = _this.roba;
+            _this.rowsPerPage = res.size;
+            _this.pageIndex = res.number;
+            _this.tableLength = res.totalElements;
+        }, function (error) {
+            _this.roba = null;
+            console.log('Podnaci robu izbacilo je gresko', error);
+        });
+    };
+    FilteriComponent.prototype.pronadjiFilterePoPretrazi = function (searchValue) {
+        var _this = this;
+        this.pocetnoPretrazivanje = false;
+        this.lastSearchValue = searchValue;
+        this.ucitavanje = true;
+        this.dataSource = null;
+        this.ucitavanje = true;
+        this.pronadjenaRoba = true;
+        this.robaService.pronadjiFiltere(this.sort, this.rowsPerPage, this.pageIndex, searchValue, this.filter.naStanju, this.filter.proizvodjacId)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(function (error) {
+            if (error.status === 404) {
+                _this.pronadjenaRoba = false;
+                return rxjs__WEBPACK_IMPORTED_MODULE_2__["EMPTY"];
+            }
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["throwError"])(error);
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["finalize"])(function () { return _this.ucitavanje = false; }))
+            .subscribe(function (res) {
+            _this.pronadjenaRoba = true;
+            _this.roba = res.content;
+            _this.dataService.skiniSaStanjaUkolikoJeUKorpi(_this.roba);
+            _this.dataSource = _this.roba;
+            _this.rowsPerPage = res.size;
+            _this.pageIndex = res.number;
+            _this.tableLength = res.totalElements;
+        }, function (error) {
+            _this.roba = null;
+            console.log('Podnaci robu izbacilo je gresko');
+        });
+    };
+    FilteriComponent.prototype.pronaciPoTrazenojReci = function (searchValue) {
+        if (this.dataSource) {
+            this.pageIndex = 0;
+        }
+        this.pronadjiFilterePoPretrazi(searchValue);
+    };
+    FilteriComponent.prototype.paginatorEvent = function (pageEvent) {
+        this.dataSource = [];
+        this.rowsPerPage = pageEvent.pageSize;
+        this.pageIndex = pageEvent.pageIndex;
+        this.pronadjiFilterePoPretrazi(this.searchValue);
+    };
+    FilteriComponent.prototype.toogleFilterDiv = function () {
+        this.otvoriFilter = !this.otvoriFilter;
+    };
+    FilteriComponent.prototype.filtriraj = function (filter) {
+        if (this.dataSource) {
+            this.pageIndex = 0;
+        }
+        this.filter = filter;
+        this.pronadjiFilterePoPretrazi(this.searchValue);
+    };
+    FilteriComponent.prototype.uKorpi = function (katBr) {
+        return this.utilsService.daLiJeRobaUKorpi(this.korpa, katBr);
+    };
+    FilteriComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-filteri',
+            template: __webpack_require__(/*! ./filteri.component.html */ "./src/app/e-shop/magacin/filteri/filteri.component.html"),
+            styles: [__webpack_require__(/*! ./filteri.component.css */ "./src/app/e-shop/magacin/filteri/filteri.component.css")]
+        }),
+        __metadata("design:paramtypes", [_service_roba_service__WEBPACK_IMPORTED_MODULE_3__["RobaService"],
+            _service_data_data_service__WEBPACK_IMPORTED_MODULE_4__["DataService"],
+            _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_5__["AppUtilsService"]])
+    ], FilteriComponent);
+    return FilteriComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/e-shop/magacin/ostalo/kategorija-specificna/kategorija-specificna.component.html":
+/*!**************************************************************************************************!*\
+  !*** ./src/app/e-shop/magacin/ostalo/kategorija-specificna/kategorija-specificna.component.html ***!
+  \**************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"container-fluid\">\r\n    <main>\r\n        <div class=\"d-flex flex-row-reverse bd-highlight\">\r\n            <button class=\"button-glavni-100 nazad-button\" mat-raised-button (click)=\"idiNazad()\">\r\n                <mat-icon>keyboard_arrow_left</mat-icon> Nazad\r\n            </button>\r\n        </div>\r\n        <div class=\"d-flex align-items-center justify-content-center\">\r\n            <div class=\"forms-input\">\r\n                <input class=\"p-1 flex-grow-1 search__input\" type=\"search\" [(ngModel)]=\"searchValue\" (keyup.enter)=\"pronaciPoTrazenojReci(searchValue)\" />\r\n                <div class=\"p-1\" (click)='pronaciPoTrazenojReci(searchValue)'>\r\n                    <button mat-mini-fab class=pozadina-glavna-100>\r\n                        <mat-icon>search</mat-icon>\r\n                    </button>\r\n                </div>\r\n                <div class=\"p-1\" (click)='toogleFilterDiv()'>\r\n                    <button *ngIf=\"!otvoriFilter\" class=pozadina-glavna-100 mat-mini-fab>\r\n                        <mat-icon>view_headline</mat-icon>\r\n                    </button>\r\n                    <button *ngIf=\"otvoriFilter\" mat-mini-fab class=\"button-glavni-200\">\r\n                        <mat-icon>view_headline</mat-icon>\r\n                    </button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n        <div class=\"d-flex justify-content-center\">\r\n            <label *ngIf=\"pocetnoPretrazivanje\">\r\n                <font color=\"#424242\"> Ukucajte kataloski broj</font>\r\n            </label>\r\n        </div>\r\n        \r\n        <!-- Filter komponenta izdvojena -->\r\n        <app-filter [vrstaRobe]=\"vrstaRobe\" [otvoriFilter]=\"otvoriFilter\" (filterEvent)=\"filtriraj($event)\">\r\n        </app-filter>\r\n\r\n        <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"!pronadjenaRoba\">\r\n            <i class=\"material-icons icon-size\">\r\n                error_outline\r\n            </i>\r\n            <h1 class=\"h1-upozorenje\">Artikal ne postoji</h1>\r\n        </div>\r\n\r\n        <div class=\"d-flex justify-content-center prazna-tabela\" *ngIf=\"ucitavanje\">\r\n            <mat-spinner></mat-spinner>\r\n        </div>\r\n        \r\n        <app-tabela \r\n        [rowsPerPage]=\"rowsPerPage\"\r\n        [pageIndex]=\"pageIndex\"\r\n        [tableLength]=\"tableLength\"\r\n        [dataSource]=\"dataSource\"\r\n        [roba]=\"roba\"\r\n        (magacinEvent)=\"paginatorEvent($event)\"\r\n        ></app-tabela>\r\n    </main>\r\n</div>"
+
+/***/ }),
+
+/***/ "./src/app/e-shop/magacin/ostalo/kategorija-specificna/kategorija-specificna.component.scss":
+/*!**************************************************************************************************!*\
+  !*** ./src/app/e-shop/magacin/ostalo/kategorija-specificna/kategorija-specificna.component.scss ***!
+  \**************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ".forms-input {\n  margin-top: 0px !important; }\n"
+
+/***/ }),
+
+/***/ "./src/app/e-shop/magacin/ostalo/kategorija-specificna/kategorija-specificna.component.ts":
+/*!************************************************************************************************!*\
+  !*** ./src/app/e-shop/magacin/ostalo/kategorija-specificna/kategorija-specificna.component.ts ***!
+  \************************************************************************************************/
+/*! exports provided: KategorijaSpecificnaComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "KategorijaSpecificnaComponent", function() { return KategorijaSpecificnaComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/e-shop/utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
+/* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
+/* harmony import */ var src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/e-shop/service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
+/* harmony import */ var src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/e-shop/model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
+/* harmony import */ var src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/e-shop/model/filter */ "./src/app/e-shop/model/filter.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+
+
+var KategorijaSpecificnaComponent = /** @class */ (function () {
+    function KategorijaSpecificnaComponent(route, utilsService, dataService, robaServis, router) {
+        this.route = route;
+        this.utilsService = utilsService;
+        this.dataService = dataService;
+        this.robaServis = robaServis;
+        this.router = router;
+        this.vrstaRobe = src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_7__["VrstaRobe"].OSTALO;
+        // Paging and Sorting elements
+        this.rowsPerPage = 10;
+        this.pageIndex = 0;
+        this.sort = null;
+        this.filter = new src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_8__["Filter"]();
+        this.searchValue = '';
+        this.lastSearchValue = '';
+        this.ucitavanje = false;
+        this.pronadjenaRoba = true;
+        this.otvoriFilter = false;
+        this.alive = true;
+    }
+    KategorijaSpecificnaComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.pocetnoPretrazivanje = true;
+        this.dataService.trenutnaKorpa.subscribe(function (korpa) { return _this.korpa = korpa; });
+        this.pronandjiRobu();
+    };
+    KategorijaSpecificnaComponent.prototype.pronandjiRobu = function () {
+        var _this = this;
+        this.route.params.subscribe(function (params) {
+            _this.robaServis.pronadjiPoKategoriji(_this.sort, _this.rowsPerPage, _this.pageIndex, null, null, null, params.id)
+                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(function (error) {
+                if (error.status === 404) {
+                    _this.pronadjenaRoba = false;
+                    return rxjs__WEBPACK_IMPORTED_MODULE_3__["EMPTY"];
+                }
+                return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["throwError"])(error);
+            }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["finalize"])(function () { return _this.ucitavanje = false; }))
+                .subscribe(function (res) {
+                _this.pronadjenaRoba = true;
+                _this.roba = res.content;
+                _this.dataService.skiniSaStanjaUkolikoJeUKorpi(_this.roba);
+                _this.dataSource = _this.roba;
+                _this.rowsPerPage = res.size;
+                _this.pageIndex = res.number;
+                _this.tableLength = res.totalElements;
+            }, function (error) {
+                _this.roba = null;
+                console.log('Podnaci robu izbacilo je gresko');
+            });
+        });
+    };
+    KategorijaSpecificnaComponent.prototype.pronaciPoTrazenojReci = function (searchValue) {
+        if (this.dataSource) {
+            this.pageIndex = 0;
+        }
+        this.pronadjiSvuRobuPoPretrazi(searchValue);
+    };
+    KategorijaSpecificnaComponent.prototype.pronadjiSvuRobuPoPretrazi = function (searchValue) {
+        var _this = this;
+        this.pocetnoPretrazivanje = false;
+        this.lastSearchValue = searchValue;
+        this.dataSource = null;
+        this.ucitavanje = true;
+        this.pronadjenaRoba = true;
+        this.route.params.subscribe(function (params) {
+            _this.robaServis.pronadjiPoKategoriji(_this.sort, _this.rowsPerPage, _this.pageIndex, searchValue, _this.filter.naStanju, _this.filter.proizvodjacId, params.id)
+                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(function (error) {
+                if (error.status === 404) {
+                    _this.pronadjenaRoba = false;
+                    return rxjs__WEBPACK_IMPORTED_MODULE_3__["EMPTY"];
+                }
+                return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["throwError"])(error);
+            }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["finalize"])(function () { return _this.ucitavanje = false; }))
+                .subscribe(function (res) {
+                _this.pronadjenaRoba = true;
+                _this.roba = res.content;
+                _this.dataService.skiniSaStanjaUkolikoJeUKorpi(_this.roba);
+                _this.dataSource = _this.roba;
+                _this.rowsPerPage = res.size;
+                _this.pageIndex = res.number;
+                _this.tableLength = res.totalElements;
+            }, function (error) {
+                _this.roba = null;
+                console.log('Podnaci robu izbacilo je gresko');
+            });
+        });
+    };
+    KategorijaSpecificnaComponent.prototype.paginatorEvent = function (pageEvent) {
+        this.dataSource = [];
+        this.rowsPerPage = pageEvent.pageSize;
+        this.pageIndex = pageEvent.pageIndex;
+        this.pronadjiSvuRobuPoPretrazi(this.searchValue);
+    };
+    KategorijaSpecificnaComponent.prototype.toogleFilterDiv = function () {
+        this.otvoriFilter = !this.otvoriFilter;
+    };
+    KategorijaSpecificnaComponent.prototype.filtriraj = function (filter) {
+        if (this.dataSource) {
+            this.pageIndex = 0;
+        }
+        this.filter = filter;
+        this.pronadjiSvuRobuPoPretrazi(this.searchValue);
+    };
+    KategorijaSpecificnaComponent.prototype.uKorpi = function (katBr) {
+        return this.utilsService.daLiJeRobaUKorpi(this.korpa, katBr);
+    };
+    KategorijaSpecificnaComponent.prototype.idiNazad = function () {
+        this.router.navigate(['/ostalo']);
+    };
+    KategorijaSpecificnaComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-kategorija-specificna',
+            template: __webpack_require__(/*! ./kategorija-specificna.component.html */ "./src/app/e-shop/magacin/ostalo/kategorija-specificna/kategorija-specificna.component.html"),
+            styles: [__webpack_require__(/*! ./kategorija-specificna.component.scss */ "./src/app/e-shop/magacin/ostalo/kategorija-specificna/kategorija-specificna.component.scss")]
+        }),
+        __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"],
+            src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__["AppUtilsService"],
+            src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_5__["DataService"],
+            src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_6__["RobaService"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"]])
+    ], KategorijaSpecificnaComponent);
+    return KategorijaSpecificnaComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/e-shop/magacin/ostalo/ostalo.component.html":
+/*!*************************************************************!*\
+  !*** ./src/app/e-shop/magacin/ostalo/ostalo.component.html ***!
+  \*************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"container-fluid\">\r\n  <main *ngIf=\"kategorije\">\r\n    <h1>Kategorije</h1>\r\n    <div *ngFor=\"let slovo of pocetnaSlova\">\r\n      <div class=\"d-flex flex-row flex-wrap\">\r\n        <div class=\"slovo\">\r\n          <h2>{{slovo}}</h2>\r\n        </div>\r\n        <div *ngFor=\"let kategorija of vratiKategorijuNaSlovo(slovo)\">\r\n          <a [routerLink]=\"[kategorija  | lowercase]\" mat-button>{{\"kategorija_\" + kategorija | translate}}</a>\r\n        </div>\r\n      </div>\r\n      <hr>\r\n    </div>\r\n  </main>\r\n</div>"
+
+/***/ }),
+
+/***/ "./src/app/e-shop/magacin/ostalo/ostalo.component.scss":
+/*!*************************************************************!*\
+  !*** ./src/app/e-shop/magacin/ostalo/ostalo.component.scss ***!
+  \*************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "h1 {\n  margin-top: 20px;\n  margin-left: 20px;\n  margin-bottom: 50px; }\n\na {\n  color: #345cac; }\n\n.slovo {\n  width: 30px;\n  margin-top: 0px;\n  padding: 0px; }\n"
+
+/***/ }),
+
+/***/ "./src/app/e-shop/magacin/ostalo/ostalo.component.ts":
+/*!***********************************************************!*\
+  !*** ./src/app/e-shop/magacin/ostalo/ostalo.component.ts ***!
+  \***********************************************************/
+/*! exports provided: OstaloComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OstaloComponent", function() { return OstaloComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var _service_roba_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var OstaloComponent = /** @class */ (function () {
+    function OstaloComponent(robaServis) {
+        this.robaServis = robaServis;
+        this.alive = true;
+        this.ucitavanje = false;
+        this.pocetnaSlova = ['A', 'B', 'C', 'D', 'G', 'H', 'Z', 'I', 'K', 'L', 'M', 'P', 'R', 'S', 'T', 'V', 'Z'];
+    }
+    OstaloComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.robaServis.ostaleKategorije().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(function (error) { return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["throwError"])(error); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["finalize"])(function () { return _this.ucitavanje = false; }))
+            .subscribe(function (res) {
+            _this.kategorije = res;
+        }, function (error) {
+            console.log('Podnaci kategorije je izbacilo je gresko');
+        });
+    };
+    OstaloComponent.prototype.vratiKategorijuNaSlovo = function (slovo) {
+        var kategorije = [];
+        this.kategorije.forEach(function (kategorija) {
+            if (kategorija[0] === slovo) {
+                kategorije.push(kategorija);
+            }
+        });
+        return kategorije;
+    };
+    OstaloComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-ostalo',
+            template: __webpack_require__(/*! ./ostalo.component.html */ "./src/app/e-shop/magacin/ostalo/ostalo.component.html"),
+            styles: [__webpack_require__(/*! ./ostalo.component.scss */ "./src/app/e-shop/magacin/ostalo/ostalo.component.scss")]
+        }),
+        __metadata("design:paramtypes", [_service_roba_service__WEBPACK_IMPORTED_MODULE_3__["RobaService"]])
+    ], OstaloComponent);
+    return OstaloComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/e-shop/magacin/roba/roba.component.css":
+/*!********************************************************!*\
+  !*** ./src/app/e-shop/magacin/roba/roba.component.css ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ""
+
+/***/ }),
+
+/***/ "./src/app/e-shop/magacin/roba/roba.component.html":
+/*!*********************************************************!*\
+  !*** ./src/app/e-shop/magacin/roba/roba.component.html ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"container-fluid\">\r\n\r\n    <div class=\"d-flex align-items-center justify-content-center\">\r\n        <div class=\"forms-input\">\r\n            <input class=\"p-1 flex-grow-1 search__input\" type=\"search\" [(ngModel)]=\"searchValue\" (keyup.enter)=\"pronaciPoTrazenojReci(searchValue)\" />\r\n            <div class=\"p-1\" (click)='pronaciPoTrazenojReci(searchValue)'>\r\n                <button mat-mini-fab class=pozadina-glavna-100>\r\n                    <mat-icon>search</mat-icon>\r\n                </button>\r\n            </div>\r\n            <div class=\"p-1\" (click)='toogleFilterDiv()'>\r\n                <button *ngIf=\"!otvoriFilter\" class=pozadina-glavna-100 mat-mini-fab>\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n                <button *ngIf=\"otvoriFilter\" mat-mini-fab class=\"button-glavni-200\">\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"d-flex justify-content-center\">\r\n        <label *ngIf=\"pocetnoPretrazivanje\">\r\n            <font color=\"#424242\"> Ukucajte kataloski broj</font>\r\n        </label>\r\n    </div>\r\n        \r\n    <!-- Filter komponenta izdvojena -->\r\n    <app-filter [vrstaRobe]=\"vrstaRobe\" [otvoriFilter]=\"otvoriFilter\" (filterEvent)=\"filtriraj($event)\">\r\n    </app-filter>\r\n\r\n    <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"!pronadjenaRoba\">\r\n        <i class=\"material-icons icon-size\">\r\n            error_outline\r\n        </i>\r\n        <h1 class=\"h1-upozorenje\">Artikal ne postoji</h1>\r\n    </div>\r\n\r\n    <div class=\"d-flex justify-content-center prazna-tabela\" *ngIf=\"ucitavanje\">\r\n        <mat-spinner></mat-spinner>\r\n    </div>\r\n        \r\n    <app-tabela \r\n    [rowsPerPage]=\"rowsPerPage\"\r\n    [pageIndex]=\"pageIndex\"\r\n    [tableLength]=\"tableLength\"\r\n    [dataSource]=\"dataSource\"\r\n    [roba]=\"roba\"\r\n    (magacinEvent)=\"paginatorEvent($event)\"\r\n    ></app-tabela>\r\n</div>"
+
+/***/ }),
+
+/***/ "./src/app/e-shop/magacin/roba/roba.component.ts":
+/*!*******************************************************!*\
+  !*** ./src/app/e-shop/magacin/roba/roba.component.ts ***!
+  \*******************************************************/
+/*! exports provided: RobaComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RobaComponent", function() { return RobaComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _service_roba_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var _service_data_data_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
+/* harmony import */ var _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
+/* harmony import */ var _model_roba_enum__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
+/* harmony import */ var _model_filter__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../model/filter */ "./src/app/e-shop/model/filter.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+
+var RobaComponent = /** @class */ (function () {
+    function RobaComponent(robaService, dataService, utilsService) {
+        this.robaService = robaService;
+        this.dataService = dataService;
+        this.utilsService = utilsService;
+        this.vrstaRobe = _model_roba_enum__WEBPACK_IMPORTED_MODULE_6__["VrstaRobe"].SVE;
+        // Paging and Sorting elements
+        this.rowsPerPage = 10;
+        this.pageIndex = 0;
+        this.sort = null;
+        this.filter = new _model_filter__WEBPACK_IMPORTED_MODULE_7__["Filter"]();
+        this.searchValue = '';
+        this.lastSearchValue = '';
+        this.ucitavanje = false;
+        this.pronadjenaRoba = true;
+        this.otvoriFilter = false;
+        this.alive = true;
+    }
+    RobaComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.pocetnoPretrazivanje = true;
+        this.dataService.trenutnaKorpa.subscribe(function (korpa) { return _this.korpa = korpa; });
+        this.pronadjiSvuRobu();
+    };
+    RobaComponent.prototype.pronadjiSvuRobu = function () {
+        var _this = this;
+        this.ucitavanje = true;
+        this.pronadjenaRoba = true;
+        this.robaService.pronadjiSvuRobu(this.sort, this.rowsPerPage, this.pageIndex, null, null, null)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(function (error) {
+            if (error.status === 404) {
+                _this.pronadjenaRoba = false;
+                return rxjs__WEBPACK_IMPORTED_MODULE_3__["EMPTY"];
+            }
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["throwError"])(error);
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["finalize"])(function () { return _this.ucitavanje = false; }))
+            .subscribe(function (res) {
+            _this.pronadjenaRoba = true;
+            _this.roba = res.content;
+            _this.dataSource = _this.roba;
+            _this.rowsPerPage = res.size;
+            _this.pageIndex = res.number;
+            _this.tableLength = res.totalElements;
+        }, function (error) {
+            _this.roba = null;
+            console.log('Podnaci robu izbacilo je gresko');
+        });
+    };
+    RobaComponent.prototype.pronaciPoTrazenojReci = function (searchValue) {
+        if (this.dataSource) {
+            this.pageIndex = 0;
+        }
+        this.pronadjiSvuRobuPoPretrazi(searchValue);
+    };
+    RobaComponent.prototype.pronadjiSvuRobuPoPretrazi = function (searchValue) {
+        var _this = this;
+        this.pocetnoPretrazivanje = false;
+        this.lastSearchValue = searchValue;
+        this.dataSource = null;
+        this.ucitavanje = true;
+        this.pronadjenaRoba = true;
+        this.robaService.pronadjiSvuRobu(this.sort, this.rowsPerPage, this.pageIndex, searchValue, this.filter.naStanju, this.filter.proizvodjacId)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(function (error) {
+            if (error.status === 404) {
+                _this.pronadjenaRoba = false;
+                return rxjs__WEBPACK_IMPORTED_MODULE_3__["EMPTY"];
+            }
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["throwError"])(error);
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["finalize"])(function () { return _this.ucitavanje = false; }))
+            .subscribe(function (res) {
+            _this.pronadjenaRoba = true;
+            _this.roba = res.content;
+            _this.dataSource = _this.roba;
+            _this.rowsPerPage = res.size;
+            _this.pageIndex = res.number;
+            _this.tableLength = res.totalElements;
+        }, function (error) {
+            _this.roba = null;
+            console.log('Podnaci robu izbacilo je gresko');
+        });
+    };
+    RobaComponent.prototype.paginatorEvent = function (pageEvent) {
+        this.dataSource = [];
+        this.rowsPerPage = pageEvent.pageSize;
+        this.pageIndex = pageEvent.pageIndex;
+        this.pronadjiSvuRobuPoPretrazi(this.searchValue);
+    };
+    RobaComponent.prototype.toogleFilterDiv = function () {
+        this.otvoriFilter = !this.otvoriFilter;
+    };
+    RobaComponent.prototype.filtriraj = function (filter) {
+        if (this.dataSource) {
+            this.pageIndex = 0;
+        }
+        this.filter = filter;
+        this.pronadjiSvuRobuPoPretrazi(this.searchValue);
+    };
+    RobaComponent.prototype.uKorpi = function (katBr) {
+        return this.utilsService.daLiJeRobaUKorpi(this.korpa, katBr);
+    };
+    RobaComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-roba',
+            template: __webpack_require__(/*! ./roba.component.html */ "./src/app/e-shop/magacin/roba/roba.component.html"),
+            styles: [__webpack_require__(/*! ./roba.component.css */ "./src/app/e-shop/magacin/roba/roba.component.css")]
+        }),
+        __metadata("design:paramtypes", [_service_roba_service__WEBPACK_IMPORTED_MODULE_1__["RobaService"],
+            _service_data_data_service__WEBPACK_IMPORTED_MODULE_4__["DataService"],
+            _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_5__["AppUtilsService"]])
+    ], RobaComponent);
+    return RobaComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/e-shop/magacin/shared-components/filter/filter.component.html":
+/*!*******************************************************************************!*\
+  !*** ./src/app/e-shop/magacin/shared-components/filter/filter.component.html ***!
+  \*******************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"d-flex justify-content-center\" *ngIf=\"otvoriFilter\">\n  <div class=\"filter-div-test d-flex flex-column\">\n      <div class=\"d-flex justify-content-center\">\n          <h2>\n              Filter\n          </h2>\n      </div>\n      <div class=\"d-flex flex-column flex-xl-row input-group mb-3\">\n          <div class=\"input-group-prepend\">\n              <label class=\"input-group-text mobilna-duzina button-glavni-50\" for=\"inputGroupSelect01\">\n                  <p class=\"boja-siva-400\">Proizvodjač: </p>\n              </label>\n          </div>\n          <select class=\"custom-select mobilna-duzina\" id=\"inputGroupSelect01\" [(ngModel)]=\"filter.proizvodjac\">\n              <option *ngFor=\"let proizvodjac of proizvodjaci\" [value]=\"proizvodjac.naziv\">\n                  {{proizvodjac.naziv}}\n              </option>\n          </select>\n\n          <div class=\"input-group-prepend razmak\">\n              <label class=\"input-group-text mobilna-duzina button-glavni-50\" for=\"inputGroupSelect01\">\n                  Raspoloživost:\n              </label>\n          </div>\n          <select class=\"custom-select mobilna-duzina\" id=\"inputGroupSelect01\" [(ngModel)]=\"filter.raspolozivost\">\n              <option *ngFor=\"let raspoloziv of raspolozivost\" [value]=\"raspoloziv\">{{raspoloziv}}</option>\n          </select>\n      </div>\n      <div class=\"d-flex justify-content-center\">\n          <div>\n              <button mat-stroked-button class=pozadina-glavna-100 (click)='filtriraj()'>\n                  <p class=\"boja-siva-400\">Filtriraj</p>\n              </button>\n              <span class=\"col-2\"></span>\n              <button mat-stroked-button class=button-crveni-50 (click)='resetujFilter()'>\n                  <p class=\"boja-siva-400\">Poništi</p>\n              </button>\n          </div>\n      </div>\n  </div>\n</div>"
+
+/***/ }),
+
+/***/ "./src/app/e-shop/magacin/shared-components/filter/filter.component.scss":
+/*!*******************************************************************************!*\
+  !*** ./src/app/e-shop/magacin/shared-components/filter/filter.component.scss ***!
+  \*******************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ""
+
+/***/ }),
+
+/***/ "./src/app/e-shop/magacin/shared-components/filter/filter.component.ts":
+/*!*****************************************************************************!*\
+  !*** ./src/app/e-shop/magacin/shared-components/filter/filter.component.ts ***!
+  \*****************************************************************************/
+/*! exports provided: FilterComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FilterComponent", function() { return FilterComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var src_app_e_shop_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/e-shop/service/proizvodjac.service */ "./src/app/e-shop/service/proizvodjac.service.ts");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/e-shop/model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
+/* harmony import */ var src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/e-shop/model/filter */ "./src/app/e-shop/model/filter.ts");
+/* harmony import */ var src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/e-shop/utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+
+var FilterComponent = /** @class */ (function () {
+    function FilterComponent(route, proizvodjacService, utilsService) {
+        this.route = route;
+        this.proizvodjacService = proizvodjacService;
+        this.utilsService = utilsService;
+        this.filterEvent = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.filter = new src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_4__["Filter"]();
+        this.raspolozivost = ['Svi artikli', 'Ima na stanju'];
+        this.alive = true;
+    }
+    FilterComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        if (this.industrijkoUljeEvent) {
+            this.industrijkoUljeEvent.subscribe(function (vrstaUlja) {
+                _this.vrstaUlja = vrstaUlja;
+                _this.filter.raspolozivost = _this.raspolozivost[1];
+                _this.pronadjiProizvodjace();
+            });
+        }
+        this.filter.raspolozivost = this.raspolozivost[1];
+        this.pronadjiProizvodjace();
+    };
+    FilterComponent.prototype.pronadjiProizvodjace = function () {
+        var _this = this;
+        if (this.vrstaRobe === src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_3__["VrstaRobe"].AKUMULATORI) {
+            this.proizvodjacService.pronadjiSveProizvodjaceAkumulatora()
+                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }))
+                .subscribe(function (res) {
+                _this.proizvodjaci = res;
+                _this.filter.proizvodjac = _this.proizvodjaci[0].naziv;
+            }, function (error) {
+                _this.proizvodjaci = null;
+                console.log('Pronaci svu robu je bacilo gresku', error);
+            });
+        }
+        else if (this.vrstaRobe === src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_3__["VrstaRobe"].FILTERI) {
+            this.proizvodjacService.pronadjiSveProizvodjaceFiltera()
+                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }))
+                .subscribe(function (res) {
+                _this.proizvodjaci = res;
+                _this.filter.proizvodjac = _this.proizvodjaci[0].naziv;
+            }, function (error) {
+                _this.proizvodjaci = null;
+                console.log('Pronaci svu robu je bacilo gresku', error);
+            });
+        }
+        else if (this.vrstaRobe === src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_3__["VrstaRobe"].SVE) {
+            this.proizvodjacService.pronadjiSveProizvodjace()
+                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }))
+                .subscribe(function (res) {
+                _this.proizvodjaci = res;
+                _this.filter.proizvodjac = _this.proizvodjaci[0].naziv;
+            }, function (error) {
+                _this.proizvodjaci = null;
+                console.log('Pronaci svu robu je bacilo gresku', error);
+            });
+        }
+        else if (this.vrstaRobe === src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_3__["VrstaRobe"].ULJA) {
+            this.proizvodjacService.pronadjiSveProizvodjaceUljaPoVrsti(this.vrstaUlja)
+                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }))
+                .subscribe(function (res) {
+                _this.proizvodjaci = res;
+                _this.filter.proizvodjac = _this.proizvodjaci[0].naziv;
+            }, function (error) {
+                _this.proizvodjaci = null;
+                console.log('Pronaci svu robu je bacilo gresku', error);
+            });
+        }
+        else if (this.vrstaRobe === src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_3__["VrstaRobe"].OSTALO) {
+            this.route.params.subscribe(function (params) {
+                _this.proizvodjacService.pronadjiSveProizvodjaceKategorije(params.id)
+                    .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }))
+                    .subscribe(function (res) {
+                    _this.proizvodjaci = res;
+                    _this.filter.proizvodjac = _this.proizvodjaci[0].naziv;
+                }, function (error) {
+                    _this.proizvodjaci = null;
+                    console.log('Pronaci svu robu je bacilo gresku', error);
+                });
+            });
+        }
+    };
+    FilterComponent.prototype.filtriraj = function () {
+        this.filter.naStanju = this.utilsService.daLiRobaTrebaDaBudeNaStanju(this.raspolozivost, this.filter.raspolozivost);
+        this.filter.proizvodjacId = this.utilsService.vratiIdProizvodjacaAkoPostoji(this.filter.proizvodjac, this.proizvodjaci);
+        this.filterEvent.emit(this.filter);
+    };
+    FilterComponent.prototype.resetujFilter = function () {
+        this.filter.raspolozivost = this.raspolozivost[1];
+        this.filter.proizvodjac = this.proizvodjaci[0].naziv;
+        this.filter.naStanju = this.utilsService.daLiRobaTrebaDaBudeNaStanju(this.raspolozivost, this.filter.raspolozivost);
+        this.filter.proizvodjacId = this.utilsService.vratiIdProizvodjacaAkoPostoji(this.filter.proizvodjac, this.proizvodjaci);
+        this.filterEvent.emit(this.filter);
+    };
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", Object)
+    ], FilterComponent.prototype, "otvoriFilter", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", Object)
+    ], FilterComponent.prototype, "vrstaRobe", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", Object)
+    ], FilterComponent.prototype, "vrstaUlja", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", rxjs__WEBPACK_IMPORTED_MODULE_6__["Observable"])
+    ], FilterComponent.prototype, "industrijkoUljeEvent", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"])(),
+        __metadata("design:type", Object)
+    ], FilterComponent.prototype, "filterEvent", void 0);
+    FilterComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-filter',
+            template: __webpack_require__(/*! ./filter.component.html */ "./src/app/e-shop/magacin/shared-components/filter/filter.component.html"),
+            styles: [__webpack_require__(/*! ./filter.component.scss */ "./src/app/e-shop/magacin/shared-components/filter/filter.component.scss")]
+        }),
+        __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_7__["ActivatedRoute"],
+            src_app_e_shop_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_1__["ProizvodjacService"],
+            src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_5__["AppUtilsService"]])
+    ], FilterComponent);
+    return FilterComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/e-shop/magacin/shared-components/tabela/tabela.component.html":
+/*!*******************************************************************************!*\
+  !*** ./src/app/e-shop/magacin/shared-components/tabela/tabela.component.html ***!
+  \*******************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"tabela-div\" *ngIf=\"dataSource != null && dataSource.length > 0\">\n  <p class=\"pdv\"><i>Sve cene su prikazane sa pdv-om.</i></p>\n  <table mat-table [dataSource]=\"dataSource\">\n    <!-- Kataloski broj Column -->\n    <ng-container matColumnDef=\"katbr\">\n      <th mat-header-cell *matHeaderCellDef> Kataloski broj </th>\n      <td mat-cell *matCellDef=\"let roba\">\n        <p class=\"mat-body-2\">\n          {{roba.katbr}}\n        </p>\n      </td>\n    </ng-container>\n\n    <!-- Kataloski broj proizvodjaca Column -->\n    <ng-container matColumnDef=\"katbrpro\">\n      <th mat-header-cell *matHeaderCellDef> Kataloski broj proizvodjaca </th>\n      <td mat-cell *matCellDef=\"let roba\">\n        <p>\n          {{roba.katbrpro}}\n        </p>\n      </td>\n    </ng-container>\n\n    <!-- Naziv Column -->\n    <ng-container matColumnDef=\"naziv\">\n      <th mat-header-cell *matHeaderCellDef> Naziv </th>\n      <td mat-cell *matCellDef=\"let roba\">\n        <p>\n          {{roba.naziv}}\n        </p>\n      </td>\n    </ng-container>\n\n    <!-- Proizvodjač Column -->\n    <ng-container matColumnDef=\"proizvodjac\">\n      <th mat-header-cell *matHeaderCellDef> Proizvodjač </th>\n      <td mat-cell *matCellDef=\"let roba\">\n        <p class=\"mat-body-2\">\n          {{roba.proizvodjac.naziv}}\n        </p>\n      </td>\n    </ng-container>\n\n    <!-- Cena Column -->\n    <ng-container matColumnDef=\"rabat\">\n      <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Rabat </th>\n      <td mat-cell *matCellDef=\"let roba\">\n        <p class=\"mat-body-2 text-right iznos-margin\">\n          {{roba.rabat | currency:\" \"}}%\n        </p>\n      </td>\n    </ng-container>\n\n    <!-- Cena Column -->\n    <ng-container matColumnDef=\"cena\">\n      <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Cena </th>\n      <td mat-cell *matCellDef=\"let roba\">\n        <p class=\"mat-body-2 text-right iznos-margin\">\n          {{roba.cena | currency:\" \"}} RSD\n        </p>\n      </td>\n    </ng-container>\n\n    <!-- Stanje Column -->\n    <ng-container matColumnDef=\"stanje\">\n      <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Stanje </th>\n      <td mat-cell *matCellDef=\"let roba\">\n        <div *ngIf=\"roba.stanje > 0\" class=\"text-center\">\n          <mat-icon class=\"boja-zelena-50\">check_circle_outline</mat-icon>\n        </div>\n        <div *ngIf=\"roba.stanje == 0\" class=\"text-center\">\n          <mat-icon class=\"boja-crvena-50\">remove_circle_outline</mat-icon>\n        </div>\n      </td>\n    </ng-container>\n\n\n    <!-- Kolicina Column -->\n    <ng-container matColumnDef=\"kolicina\">\n      <th mat-header-cell *matHeaderCellDef>Kolicina </th>\n      <td mat-cell *matCellDef=\"let roba\">\n        <div *ngIf=\"roba.stanje > 0\">\n          <input type=\"number\" min=\"0\" placeholder=\"0\" max=\"{{roba.stanje}}\" class=\"kolicina-labela\"\n            [(ngModel)]=\"roba.kolicina\" />\n        </div>\n    </ng-container>\n\n    <!-- Kropa dugme Column -->\n    <ng-container matColumnDef=\"korpa\">\n      <th mat-header-cell *matHeaderCellDef> </th>\n      <td mat-cell *matCellDef=\"let roba\">\n        <div *ngIf=\"roba.stanje > 0\">\n          <button mat-raised-button class=\"button-glavni-100\" (click)='dodajUKorpu(roba)'>Dodaj u\n            korpu</button>\n        </div>\n    </ng-container>\n\n    <!-- Da li ima na stanju ikona -->\n    <ng-container matColumnDef=\"u-korpi\">\n      <th mat-header-cell *matHeaderCellDef> </th>\n      <td mat-cell *matCellDef=\"let roba\">\n        <div *ngIf=\"uKorpi(roba.katbr)\">\n          <mat-icon class=\"boja-crvena-50\">add_shopping_cart</mat-icon>\n        </div>\n    </ng-container>\n\n    <tr mat-header-row *matHeaderRowDef=\"getDisplayedColumns()\"></tr>\n    <tr mat-row *matRowDef=\"let row; columns: getDisplayedColumns();\"></tr>\n  </table>\n  <mat-paginator #paginator [length]=\"tableLength\" [pageSize]=\"rowsPerPage\" [pageSizeOptions]=\"[5, 10, 25]\"\n    [pageIndex]=\"pageIndex\" [length]=\"tableLength\" [showFirstLastButtons]=\"true\" (page)=\"paginatorEvent($event)\">\n  </mat-paginator>\n</div>"
+
+/***/ }),
+
+/***/ "./src/app/e-shop/magacin/shared-components/tabela/tabela.component.scss":
+/*!*******************************************************************************!*\
+  !*** ./src/app/e-shop/magacin/shared-components/tabela/tabela.component.scss ***!
+  \*******************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ""
+
+/***/ }),
+
+/***/ "./src/app/e-shop/magacin/shared-components/tabela/tabela.component.ts":
+/*!*****************************************************************************!*\
+  !*** ./src/app/e-shop/magacin/shared-components/tabela/tabela.component.ts ***!
+  \*****************************************************************************/
+/*! exports provided: TabelaComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TabelaComponent", function() { return TabelaComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/e-shop/service/login.service */ "./src/app/e-shop/service/login.service.ts");
+/* harmony import */ var src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/e-shop/utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
+/* harmony import */ var src_app_shared_service_notifikacija_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/shared/service/notifikacija.service */ "./src/app/shared/service/notifikacija.service.ts");
+/* harmony import */ var src_app_shared_model_konstante__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/shared/model/konstante */ "./src/app/shared/model/konstante.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+var TabelaComponent = /** @class */ (function () {
+    function TabelaComponent(utilsService, loginServis, notifikacijaServis) {
+        this.utilsService = utilsService;
+        this.loginServis = loginServis;
+        this.notifikacijaServis = notifikacijaServis;
+        // Paging and Sorting elements
+        this.rowsPerPage = 10;
+        this.pageIndex = 0;
+        this.magacinEvent = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        // Tabela
+        this.columnDefinitions = [
+            { def: 'katbr', ifNotAuth: true },
+            { def: 'katbrpro', ifNotAuth: true },
+            { def: 'proizvodjac', ifNotAuth: true },
+            { def: 'naziv', ifNotAuth: true },
+            { def: 'rabat', ifNotAuth: false },
+            { def: 'cena', ifNotAuth: true },
+            { def: 'stanje', ifNotAuth: true },
+            { def: 'kolicina', ifNotAuth: false },
+            { def: 'korpa', ifNotAuth: false },
+            { def: 'u-korpi', ifNotAuth: false },
+        ];
+    }
+    TabelaComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.loginServis.ulogovaniPartner.subscribe(function (partner) { return _this.partner = partner; });
+    };
+    TabelaComponent.prototype.paginatorEvent = function (pageEvent) {
+        this.magacinEvent.emit(pageEvent);
+    };
+    TabelaComponent.prototype.getDisplayedColumns = function () {
+        var isPartner = this.partner.ppid != null;
+        var dataColumns = this.columnDefinitions
+            .filter(function (cd) { return isPartner || cd.ifNotAuth; })
+            .map(function (cd) { return cd.def; });
+        return dataColumns;
+    };
+    TabelaComponent.prototype.dodajUKorpu = function (roba) {
+        var snackBarPoruka = this.utilsService.dodajUKorpu(roba);
+        this.notifikacijaServis.notify(snackBarPoruka, src_app_shared_model_konstante__WEBPACK_IMPORTED_MODULE_4__["MatSnackBarKlase"].Zelena);
+        this.utilsService.izbrisiRobuSaStanja(this.roba, roba);
+    };
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", Array)
+    ], TabelaComponent.prototype, "dataSource", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", Array)
+    ], TabelaComponent.prototype, "roba", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", Object)
+    ], TabelaComponent.prototype, "rowsPerPage", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", Object)
+    ], TabelaComponent.prototype, "pageIndex", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", Object)
+    ], TabelaComponent.prototype, "tableLength", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"])(),
+        __metadata("design:type", Object)
+    ], TabelaComponent.prototype, "magacinEvent", void 0);
+    TabelaComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-tabela',
+            template: __webpack_require__(/*! ./tabela.component.html */ "./src/app/e-shop/magacin/shared-components/tabela/tabela.component.html"),
+            styles: [__webpack_require__(/*! ./tabela.component.scss */ "./src/app/e-shop/magacin/shared-components/tabela/tabela.component.scss")]
+        }),
+        __metadata("design:paramtypes", [src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_2__["AppUtilsService"],
+            src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_1__["LoginService"],
+            src_app_shared_service_notifikacija_service__WEBPACK_IMPORTED_MODULE_3__["NotifikacijaService"]])
+    ], TabelaComponent);
+    return TabelaComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/e-shop/magacin/ulja/antifriz/antifriz.component.css":
+/*!*********************************************************************!*\
+  !*** ./src/app/e-shop/magacin/ulja/antifriz/antifriz.component.css ***!
+  \*********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ""
+
+/***/ }),
+
+/***/ "./src/app/e-shop/magacin/ulja/antifriz/antifriz.component.html":
+/*!**********************************************************************!*\
+  !*** ./src/app/e-shop/magacin/ulja/antifriz/antifriz.component.html ***!
+  \**********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"container-fluid\">\r\n\r\n    <div class=\"d-flex align-items-center justify-content-center\">\r\n        <div class=\"forms-input\">\r\n            <input class=\"p-1 flex-grow-1 search__input\" type=\"search\" [(ngModel)]=\"searchValue\" (keyup.enter)=\"pronaciPoTrazenojReci(searchValue)\" />\r\n            <div class=\"p-1\" (click)='pronaciPoTrazenojReci(searchValue)'>\r\n                <button mat-mini-fab class=pozadina-glavna-100>\r\n                    <mat-icon>search</mat-icon>\r\n                </button>\r\n            </div>\r\n            <div class=\"p-1\" (click)='toogleFilterDiv()'>\r\n                <button *ngIf=\"!otvoriFilter\" class=pozadina-glavna-100 mat-mini-fab>\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n                <button *ngIf=\"otvoriFilter\" mat-mini-fab class=\"button-glavni-200\">\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"d-flex justify-content-center\">\r\n        <label *ngIf=\"pocetnoPretrazivanje\">\r\n            <font color=\"#424242\"> Ukucajte kataloski broj</font>\r\n        </label>\r\n    </div>\r\n        \r\n    <!-- Filter komponenta izdvojena -->\r\n    <app-filter [vrstaRobe]=\"vrstaRobe\" [vrstaUlja]=\"vrstaUlja\" [otvoriFilter]=\"otvoriFilter\" (filterEvent)=\"filtriraj($event)\">\r\n    </app-filter>\r\n\r\n    <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"!pronadjenaRoba\">\r\n        <i class=\"material-icons icon-size\">\r\n            error_outline\r\n        </i>\r\n        <h1 class=\"h1-upozorenje\">Artikal ne postoji</h1>\r\n    </div>\r\n\r\n    <div class=\"d-flex justify-content-center prazna-tabela\" *ngIf=\"ucitavanje\">\r\n        <mat-spinner></mat-spinner>\r\n    </div>\r\n        \r\n    <app-tabela \r\n    [rowsPerPage]=\"rowsPerPage\"\r\n    [pageIndex]=\"pageIndex\"\r\n    [tableLength]=\"tableLength\"\r\n    [dataSource]=\"dataSource\"\r\n    [roba]=\"roba\"\r\n    (magacinEvent)=\"paginatorEvent($event)\"\r\n    ></app-tabela>\r\n</div>"
+
+/***/ }),
+
+/***/ "./src/app/e-shop/magacin/ulja/antifriz/antifriz.component.ts":
+/*!********************************************************************!*\
+  !*** ./src/app/e-shop/magacin/ulja/antifriz/antifriz.component.ts ***!
+  \********************************************************************/
+/*! exports provided: AntifrizComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AntifrizComponent", function() { return AntifrizComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/e-shop/service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
+/* harmony import */ var src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/e-shop/utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
+/* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
+/* harmony import */ var src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/e-shop/model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
+/* harmony import */ var src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/e-shop/model/filter */ "./src/app/e-shop/model/filter.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+
+var AntifrizComponent = /** @class */ (function () {
+    function AntifrizComponent(robaService, utilsService, dataService) {
+        this.robaService = robaService;
+        this.utilsService = utilsService;
+        this.dataService = dataService;
+        this.vrstaRobe = src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_6__["VrstaRobe"].ULJA;
+        // Paging and Sorting elements
+        this.rowsPerPage = 10;
+        this.pageIndex = 0;
+        this.sort = null;
+        this.filter = new src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_7__["Filter"]();
+        this.searchValue = '';
+        this.lastSearchValue = '';
+        this.ucitavanje = false;
+        this.pronadjenaRoba = true;
+        this.otvoriFilter = false;
+        this.alive = true;
+        this.vrstaUlja = 'antifriz';
+    }
+    AntifrizComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.pocetnoPretrazivanje = true;
+        this.dataService.trenutnaKorpa.subscribe(function (korpa) { return _this.korpa = korpa; });
+        this.pronandjiSavAntifriz();
+    };
+    AntifrizComponent.prototype.pronandjiSavAntifriz = function () {
+        var _this = this;
+        this.ucitavanje = true;
+        this.pronadjenaRoba = true;
+        this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, null, null, null, this.vrstaUlja)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(function (error) {
+            if (error.status === 404) {
+                _this.pronadjenaRoba = false;
+                return rxjs__WEBPACK_IMPORTED_MODULE_2__["EMPTY"];
+            }
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["throwError"])(error);
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["finalize"])(function () { return _this.ucitavanje = false; }))
+            .subscribe(function (res) {
+            _this.pronadjenaRoba = true;
+            _this.roba = res.content;
+            _this.dataSource = _this.roba;
+            _this.dataSource = _this.roba;
+            _this.rowsPerPage = res.size;
+            _this.pageIndex = res.number;
+            _this.tableLength = res.totalElements;
+        }, function (error) {
+            _this.roba = null;
+            console.log('Podnaci robu izbacilo je gresko');
+        });
+    };
+    AntifrizComponent.prototype.pronadjiEntitetePoPretrazi = function (searchValue) {
+        var _this = this;
+        this.pocetnoPretrazivanje = false;
+        this.lastSearchValue = searchValue;
+        this.ucitavanje = true;
+        this.dataSource = null;
+        this.ucitavanje = true;
+        this.pronadjenaRoba = true;
+        this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, searchValue, this.filter.naStanju, this.filter.proizvodjacId, this.vrstaUlja)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(function (error) {
+            if (error.status === 404) {
+                _this.pronadjenaRoba = false;
+                return rxjs__WEBPACK_IMPORTED_MODULE_2__["EMPTY"];
+            }
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["throwError"])(error);
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["finalize"])(function () { return _this.ucitavanje = false; }))
+            .subscribe(function (res) {
+            _this.pronadjenaRoba = true;
+            _this.roba = res.content;
+            _this.dataSource = _this.roba;
+            _this.rowsPerPage = res.size;
+            _this.pageIndex = res.number;
+            _this.tableLength = res.totalElements;
+        }, function (error) {
+            _this.roba = null;
+            console.log('Podnaci robu izbacilo je gresku: ' + error);
+        });
+    };
+    AntifrizComponent.prototype.pronaciPoTrazenojReci = function (searchValue) {
+        if (this.dataSource) {
+            this.pageIndex = 0;
+        }
+        this.pronadjiEntitetePoPretrazi(searchValue);
+    };
+    AntifrizComponent.prototype.paginatorEvent = function (pageEvent) {
+        this.dataSource = [];
+        this.rowsPerPage = pageEvent.pageSize;
+        this.pageIndex = pageEvent.pageIndex;
+        this.pronadjiEntitetePoPretrazi(this.searchValue);
+    };
+    AntifrizComponent.prototype.toogleFilterDiv = function () {
+        this.otvoriFilter = !this.otvoriFilter;
+    };
+    AntifrizComponent.prototype.filtriraj = function (filter) {
+        if (this.dataSource) {
+            this.pageIndex = 0;
+        }
+        this.filter = filter;
+        this.pronadjiEntitetePoPretrazi(this.searchValue);
+    };
+    AntifrizComponent.prototype.uKorpi = function (katBr) {
+        return this.utilsService.daLiJeRobaUKorpi(this.korpa, katBr);
+    };
+    AntifrizComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-antifriz',
+            template: __webpack_require__(/*! ./antifriz.component.html */ "./src/app/e-shop/magacin/ulja/antifriz/antifriz.component.html"),
+            styles: [__webpack_require__(/*! ./antifriz.component.css */ "./src/app/e-shop/magacin/ulja/antifriz/antifriz.component.css")]
+        }),
+        __metadata("design:paramtypes", [src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_3__["RobaService"],
+            src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__["AppUtilsService"],
+            src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_5__["DataService"]])
+    ], AntifrizComponent);
+    return AntifrizComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/e-shop/magacin/ulja/industrijska/industrijska.component.css":
+/*!*****************************************************************************!*\
+  !*** ./src/app/e-shop/magacin/ulja/industrijska/industrijska.component.css ***!
+  \*****************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ".sirina-odabira-vrste {\r\n    width: 450px;\r\n    float: right;\r\n}\r\n.forms-input-industrija {\r\n    display: flex;\r\n    border-radius: 45px;\r\n    padding: 1px;\r\n    margin-top: 5px;\r\n    background: white;\r\n    border:2px solid grey;\r\n    width: 40%;\r\n    font-weight: bold;\r\n    text-align: center;\r\n}\r\n.col-lg {\r\n  padding: 0px !important;\r\n}\r\n@media only screen and (max-device-width :1025px) { \r\n\r\n    .mobilna-visina {\r\n      margin-top: 10px;\r\n    }\r\n\r\n    .forms-input-industrija {\r\n      display: flex;\r\n      border-radius: 45px;\r\n      padding: 1px;\r\n      margin-top: 30px;\r\n      background: white;\r\n      border:2px solid grey;\r\n      width: 80%;\r\n      font-weight: bold;\r\n      text-align: center;\r\n    }\r\n  }\r\n@media only screen and (max-device-width : 640px) { \r\n\r\n    .mobilna-visina {\r\n      margin-top: 10px;\r\n    }\r\n    \r\n    .sirina-odabira-vrste {\r\n        width: 100%;\r\n    }\r\n    .forms-input-industrija {\r\n      border-radius: 45px;\r\n      background: white;\r\n      border:2px solid grey;\r\n      width:100%;\r\n      margin-top: 5px;\r\n      font-weight: bold;\r\n      text-align: center;\r\n      display: flex;\r\n      }  \r\n}"
+
+/***/ }),
+
+/***/ "./src/app/e-shop/magacin/ulja/industrijska/industrijska.component.html":
+/*!******************************************************************************!*\
+  !*** ./src/app/e-shop/magacin/ulja/industrijska/industrijska.component.html ***!
+  \******************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"container-fluid\">\r\n    <div class=\"d-flex col-lg p-2 justify-content-center sirina-odabira-vrste\">\r\n        <div class=\"input-group-prepend\">\r\n            <label class=\"pozadina-glavna-100 boja-siva-400 input-group-text \" for=\"inputGroupSelect01\">Izaberite vrstu\r\n                maziva:</label>\r\n        </div>\r\n        <select class=\"custom-select mobilna-visina\" (change)=\"onChange()\" id=\"inputGroupSelect01\" [(ngModel)]=\"izabranaVrsta\">\r\n            <option *ngFor=\"let izabranaVrsta of vrste\" [value]=\"izabranaVrsta\">{{izabranaVrsta}}</option>\r\n        </select>\r\n    </div>\r\n    <div class=\"d-flex align-items-center col-lg justify-content-center\">\r\n        <div class=\"forms-input-industrija\">\r\n            <input class=\"flex-grow-1 search__input\" type=\"search\" [(ngModel)]=\"searchValue\" (keyup.enter)=\"pronaciPoTrazenojReci(searchValue)\" />\r\n            <div class=\"p-1\" (click)='pronaciPoTrazenojReci(searchValue)'>\r\n                <button mat-mini-fab class=pozadina-glavna-100>\r\n                    <mat-icon>search</mat-icon>\r\n                </button>\r\n            </div>\r\n            <div class=\"p-1\" (click)='toogleFilterDiv()'>\r\n                <button *ngIf=\"!otvoriFilter\" class=pozadina-glavna-100 mat-mini-fab>\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n                <button *ngIf=\"otvoriFilter\" mat-mini-fab class=\"button-glavni-200\">\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"d-flex justify-content-center\">\r\n        <label *ngIf=\"pocetnoPretrazivanje\">\r\n            <font color=\"#424242\"> Ukucajte kataloski broj</font>\r\n        </label>\r\n    </div>\r\n        \r\n    <!-- Filter komponenta izdvojena -->\r\n    <app-filter [industrijkoUljeEvent]=\"vrstaIndustijskihUlja.asObservable()\" [vrstaRobe]=\"vrstaRobe\" [vrstaUlja]=\"vrstaUlja\" [otvoriFilter]=\"otvoriFilter\" (filterEvent)=\"filtriraj($event)\">\r\n    </app-filter>\r\n\r\n    <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"!pronadjenaRoba\">\r\n        <i class=\"material-icons icon-size\">\r\n            error_outline\r\n        </i>\r\n        <h1 class=\"h1-upozorenje\">Artikal ne postoji</h1>\r\n    </div>\r\n\r\n    <div class=\"d-flex justify-content-center prazna-tabela\" *ngIf=\"ucitavanje\">\r\n        <mat-spinner></mat-spinner>\r\n    </div>\r\n    \r\n    <app-tabela \r\n    [rowsPerPage]=\"rowsPerPage\"\r\n    [pageIndex]=\"pageIndex\"\r\n    [tableLength]=\"tableLength\"\r\n    [dataSource]=\"dataSource\"\r\n    [roba]=\"roba\"\r\n    (magacinEvent)=\"paginatorEvent($event)\"\r\n    ></app-tabela>\r\n</div>"
+
+/***/ }),
+
+/***/ "./src/app/e-shop/magacin/ulja/industrijska/industrijska.component.ts":
+/*!****************************************************************************!*\
+  !*** ./src/app/e-shop/magacin/ulja/industrijska/industrijska.component.ts ***!
+  \****************************************************************************/
+/*! exports provided: IndustrijskaComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "IndustrijskaComponent", function() { return IndustrijskaComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/e-shop/service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
+/* harmony import */ var src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/e-shop/utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
+/* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
+/* harmony import */ var src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/e-shop/model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
+/* harmony import */ var src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/e-shop/model/filter */ "./src/app/e-shop/model/filter.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+
+var IndustrijskaComponent = /** @class */ (function () {
+    function IndustrijskaComponent(robaService, utilsService, dataService) {
+        this.robaService = robaService;
+        this.utilsService = utilsService;
+        this.dataService = dataService;
+        this.vrstaRobe = src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_6__["VrstaRobe"].ULJA;
+        // Paging and Sorting elements
+        this.rowsPerPage = 10;
+        this.pageIndex = 0;
+        this.sort = null;
+        this.filter = new src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_7__["Filter"]();
+        this.vrstaIndustijskihUlja = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        this.searchValue = '';
+        this.lastSearchValue = '';
+        this.ucitavanje = false;
+        this.pronadjenaRoba = true;
+        this.otvoriFilter = false;
+        this.vrste = ['Hidraulično ulje', 'Kompresorkso ulje', 'Reduktorsko ulje',
+            'Transformatorsko ulje', 'Turbinska ulja', 'Ulja za pneumatske alate', 'Ulja za klizne staze', 'Ulja za prenos toplote'];
+        this.izabranaVrsta = this.vrste[0];
+        this.vrsteUlja = [
+            { 'url': 'hidraulicna', 'naziv': 'Hidraulično ulje' },
+            { 'url': 'kompresorska', 'naziv': 'Kompresorkso ulje' },
+            { 'url': 'redutktorska', 'naziv': 'Reduktorsko ulje' },
+            { 'url': 'transformatorska', 'naziv': 'Transformatorsko ulje' },
+            { 'url': 'turbinska', 'naziv': 'Turbinska ulja' },
+            { 'url': 'pneumatska', 'naziv': 'Ulja za pneumatske alate' },
+            { 'url': 'klizna', 'naziv': 'Ulja za klizne staze' },
+            { 'url': 'prenosna', 'naziv': 'Ulja za prenos toplote' },
+        ];
+        this.alive = true;
+        this.vrstaUlja = 'hidraulicna';
+    }
+    IndustrijskaComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.pocetnoPretrazivanje = true;
+        this.dataService.trenutnaKorpa.subscribe(function (korpa) { return _this.korpa = korpa; });
+        this.pronandjiUlja();
+    };
+    IndustrijskaComponent.prototype.pronandjiUlja = function () {
+        var _this = this;
+        this.dataSource = null;
+        this.ucitavanje = true;
+        this.pronadjenaRoba = true;
+        this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, null, null, null, this.vrstaUlja)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(function (error) {
+            if (error.status === 404) {
+                _this.pronadjenaRoba = false;
+                return rxjs__WEBPACK_IMPORTED_MODULE_2__["EMPTY"];
+            }
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["throwError"])(error);
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["finalize"])(function () { return _this.ucitavanje = false; }))
+            .subscribe(function (res) {
+            _this.pronadjenaRoba = true;
+            _this.roba = res.content;
+            _this.dataSource = _this.roba;
+            _this.rowsPerPage = res.size;
+            _this.pageIndex = res.number;
+            _this.tableLength = res.totalElements;
+        }, function (error) {
+            _this.roba = null;
+            console.log('Podnaci robu izbacilo je gresko');
+        });
+    };
+    IndustrijskaComponent.prototype.pronadjiEntitetePoPretrazi = function (searchValue) {
+        var _this = this;
+        this.pocetnoPretrazivanje = false;
+        this.lastSearchValue = searchValue;
+        this.dataSource = null;
+        this.ucitavanje = true;
+        this.pronadjenaRoba = true;
+        this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, searchValue, this.filter.naStanju, this.filter.proizvodjacId, this.vrstaUlja)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(function (error) {
+            if (error.status === 404) {
+                _this.pronadjenaRoba = false;
+                return rxjs__WEBPACK_IMPORTED_MODULE_2__["EMPTY"];
+            }
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["throwError"])(error);
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["finalize"])(function () { return _this.ucitavanje = false; }))
+            .subscribe(function (res) {
+            _this.pronadjenaRoba = true;
+            _this.roba = res.content;
+            _this.dataSource = _this.roba;
+            _this.rowsPerPage = res.size;
+            _this.pageIndex = res.number;
+            _this.tableLength = res.totalElements;
+        }, function (error) {
+            _this.roba = null;
+            console.log('Podnaci robu izbacilo je gresko');
+        });
+    };
+    IndustrijskaComponent.prototype.pronaciPoTrazenojReci = function (searchValue) {
+        if (this.dataSource) {
+            this.pageIndex = 0;
+        }
+        this.pronadjiEntitetePoPretrazi(searchValue);
+    };
+    IndustrijskaComponent.prototype.paginatorEvent = function (pageEvent) {
+        this.dataSource = [];
+        this.rowsPerPage = pageEvent.pageSize;
+        this.pageIndex = pageEvent.pageIndex;
+        this.pronadjiEntitetePoPretrazi(this.searchValue);
+    };
+    IndustrijskaComponent.prototype.toogleFilterDiv = function () {
+        this.otvoriFilter = !this.otvoriFilter;
+    };
+    IndustrijskaComponent.prototype.filtriraj = function (filter) {
+        if (this.dataSource) {
+            this.pageIndex = 0;
+        }
+        this.filter = filter;
+        this.pronadjiEntitetePoPretrazi(this.searchValue);
+    };
+    IndustrijskaComponent.prototype.onChange = function () {
+        var _this = this;
+        this.vrsteUlja.forEach(function (vrsta) {
+            if (vrsta.naziv === _this.izabranaVrsta) {
+                _this.vrstaUlja = vrsta.url;
+                _this.vrstaIndustijskihUlja.next(_this.vrstaUlja);
+            }
+        });
+        this.pronandjiUlja();
+    };
+    IndustrijskaComponent.prototype.uKorpi = function (katBr) {
+        return this.utilsService.daLiJeRobaUKorpi(this.korpa, katBr);
+    };
+    IndustrijskaComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-industrijska',
+            template: __webpack_require__(/*! ./industrijska.component.html */ "./src/app/e-shop/magacin/ulja/industrijska/industrijska.component.html"),
+            styles: [__webpack_require__(/*! ./industrijska.component.css */ "./src/app/e-shop/magacin/ulja/industrijska/industrijska.component.css")]
+        }),
+        __metadata("design:paramtypes", [src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_3__["RobaService"],
+            src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__["AppUtilsService"],
+            src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_5__["DataService"]])
+    ], IndustrijskaComponent);
+    return IndustrijskaComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/e-shop/magacin/ulja/kociona/kociona.component.css":
+/*!*******************************************************************!*\
+  !*** ./src/app/e-shop/magacin/ulja/kociona/kociona.component.css ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ""
+
+/***/ }),
+
+/***/ "./src/app/e-shop/magacin/ulja/kociona/kociona.component.html":
+/*!********************************************************************!*\
+  !*** ./src/app/e-shop/magacin/ulja/kociona/kociona.component.html ***!
+  \********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"container-fluid\">\r\n\r\n    <div class=\"d-flex align-items-center justify-content-center\">\r\n        <div class=\"forms-input\">\r\n            <input class=\"p-1 flex-grow-1 search__input\" type=\"search\" [(ngModel)]=\"searchValue\" (keyup.enter)=\"pronaciPoTrazenojReci(searchValue)\" />\r\n            <div class=\"p-1\" (click)='pronaciPoTrazenojReci(searchValue)'>\r\n                <button mat-mini-fab class=pozadina-glavna-100>\r\n                    <mat-icon>search</mat-icon>\r\n                </button>\r\n            </div>\r\n            <div class=\"p-1\" (click)='toogleFilterDiv()'>\r\n                <button *ngIf=\"!otvoriFilter\" class=pozadina-glavna-100 mat-mini-fab>\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n                <button *ngIf=\"otvoriFilter\" mat-mini-fab class=\"button-glavni-200\">\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"d-flex justify-content-center\">\r\n        <label *ngIf=\"pocetnoPretrazivanje\">\r\n            <font color=\"#424242\"> Ukucajte kataloski broj</font>\r\n        </label>\r\n    </div>\r\n        \r\n    <!-- Filter komponenta izdvojena -->\r\n    <app-filter [vrstaRobe]=\"vrstaRobe\" [vrstaUlja]=\"vrstaUlja\" [otvoriFilter]=\"otvoriFilter\" (filterEvent)=\"filtriraj($event)\">\r\n    </app-filter>\r\n\r\n    <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"!pronadjenaRoba\">\r\n        <i class=\"material-icons icon-size\">\r\n            error_outline\r\n        </i>\r\n        <h1 class=\"h1-upozorenje\">Artikal ne postoji</h1>\r\n    </div>\r\n\r\n    <div class=\"d-flex justify-content-center prazna-tabela\" *ngIf=\"ucitavanje\">\r\n        <mat-spinner></mat-spinner>\r\n    </div>\r\n        \r\n    <app-tabela \r\n    [rowsPerPage]=\"rowsPerPage\"\r\n    [pageIndex]=\"pageIndex\"\r\n    [tableLength]=\"tableLength\"\r\n    [dataSource]=\"dataSource\"\r\n    [roba]=\"roba\"\r\n    (magacinEvent)=\"paginatorEvent($event)\"\r\n    ></app-tabela>\r\n</div>"
+
+/***/ }),
+
+/***/ "./src/app/e-shop/magacin/ulja/kociona/kociona.component.ts":
+/*!******************************************************************!*\
+  !*** ./src/app/e-shop/magacin/ulja/kociona/kociona.component.ts ***!
+  \******************************************************************/
+/*! exports provided: KocionaComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "KocionaComponent", function() { return KocionaComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/e-shop/utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
+/* harmony import */ var src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/e-shop/service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
+/* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
+/* harmony import */ var src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/e-shop/model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
+/* harmony import */ var src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/e-shop/model/filter */ "./src/app/e-shop/model/filter.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+
+var KocionaComponent = /** @class */ (function () {
+    function KocionaComponent(robaService, utilsService, dataService) {
+        this.robaService = robaService;
+        this.utilsService = utilsService;
+        this.dataService = dataService;
+        this.vrstaRobe = src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_6__["VrstaRobe"].ULJA;
+        // Paging and Sorting elements
+        this.rowsPerPage = 10;
+        this.pageIndex = 0;
+        this.sort = null;
+        this.filter = new src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_7__["Filter"]();
+        this.searchValue = '';
+        this.lastSearchValue = '';
+        this.ucitavanje = false;
+        this.pronadjenaRoba = true;
+        this.otvoriFilter = false;
+        this.alive = true;
+        this.vrstaUlja = 'kociona';
+    }
+    KocionaComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.pocetnoPretrazivanje = true;
+        this.dataService.trenutnaKorpa.subscribe(function (korpa) { return _this.korpa = korpa; });
+        this.pronandjiSvaKocionaUlja();
+    };
+    KocionaComponent.prototype.pronandjiSvaKocionaUlja = function () {
+        var _this = this;
+        this.ucitavanje = true;
+        this.pronadjenaRoba = true;
+        this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, null, null, null, this.vrstaUlja)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(function (error) {
+            if (error.status === 404) {
+                _this.pronadjenaRoba = false;
+                return rxjs__WEBPACK_IMPORTED_MODULE_2__["EMPTY"];
+            }
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["throwError"])(error);
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["finalize"])(function () { return _this.ucitavanje = false; }))
+            .subscribe(function (res) {
+            _this.pronadjenaRoba = true;
+            _this.roba = res.content;
+            _this.dataSource = _this.roba;
+            _this.rowsPerPage = res.size;
+            _this.pageIndex = res.number;
+            _this.tableLength = res.totalElements;
+        }, function (error) {
+            _this.roba = null;
+            console.log('Podnaci robu izbacilo je gresko');
+        });
+    };
+    KocionaComponent.prototype.pronadjiEntitetePoPretrazi = function (searchValue) {
+        var _this = this;
+        this.pocetnoPretrazivanje = false;
+        this.lastSearchValue = searchValue;
+        this.dataSource = null;
+        this.ucitavanje = true;
+        this.pronadjenaRoba = true;
+        this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, searchValue, this.filter.naStanju, this.filter.proizvodjacId, this.vrstaUlja)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(function (error) {
+            if (error.status === 404) {
+                _this.pronadjenaRoba = false;
+                return rxjs__WEBPACK_IMPORTED_MODULE_2__["EMPTY"];
+            }
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["throwError"])(error);
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["finalize"])(function () { return _this.ucitavanje = false; }))
+            .subscribe(function (res) {
+            _this.pronadjenaRoba = true;
+            _this.roba = res.content;
+            _this.dataSource = _this.roba;
+            _this.rowsPerPage = res.size;
+            _this.pageIndex = res.number;
+            _this.tableLength = res.totalElements;
+        }, function (error) {
+            _this.roba = null;
+            console.log('Podnaci robu izbacilo je gresko');
+        });
+    };
+    KocionaComponent.prototype.pronaciPoTrazenojReci = function (searchValue) {
+        if (this.dataSource) {
+            this.pageIndex = 0;
+        }
+        this.pronadjiEntitetePoPretrazi(searchValue);
+    };
+    KocionaComponent.prototype.paginatorEvent = function (pageEvent) {
+        this.dataSource = [];
+        this.rowsPerPage = pageEvent.pageSize;
+        this.pageIndex = pageEvent.pageIndex;
+        this.pronadjiEntitetePoPretrazi(this.searchValue);
+    };
+    KocionaComponent.prototype.toogleFilterDiv = function () {
+        this.otvoriFilter = !this.otvoriFilter;
+    };
+    KocionaComponent.prototype.filtriraj = function (filter) {
+        if (this.dataSource) {
+            this.pageIndex = 0;
+        }
+        this.filter = filter;
+        this.pronadjiEntitetePoPretrazi(this.searchValue);
+    };
+    KocionaComponent.prototype.uKorpi = function (katBr) {
+        return this.utilsService.daLiJeRobaUKorpi(this.korpa, katBr);
+    };
+    KocionaComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-kociona',
+            template: __webpack_require__(/*! ./kociona.component.html */ "./src/app/e-shop/magacin/ulja/kociona/kociona.component.html"),
+            styles: [__webpack_require__(/*! ./kociona.component.css */ "./src/app/e-shop/magacin/ulja/kociona/kociona.component.css")]
+        }),
+        __metadata("design:paramtypes", [src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_4__["RobaService"],
+            src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_3__["AppUtilsService"],
+            src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_5__["DataService"]])
+    ], KocionaComponent);
+    return KocionaComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/e-shop/magacin/ulja/menjacko/menjacko.component.css":
+/*!*********************************************************************!*\
+  !*** ./src/app/e-shop/magacin/ulja/menjacko/menjacko.component.css ***!
+  \*********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ""
+
+/***/ }),
+
+/***/ "./src/app/e-shop/magacin/ulja/menjacko/menjacko.component.html":
+/*!**********************************************************************!*\
+  !*** ./src/app/e-shop/magacin/ulja/menjacko/menjacko.component.html ***!
+  \**********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"container-fluid\">\r\n\r\n    <div class=\"d-flex align-items-center justify-content-center\">\r\n        <div class=\"forms-input\">\r\n            <input class=\"p-1 flex-grow-1 search__input\" type=\"search\" [(ngModel)]=\"searchValue\" (keyup.enter)=\"pronaciPoTrazenojReci(searchValue)\" />\r\n            <div class=\"p-1\" (click)='pronaciPoTrazenojReci(searchValue)'>\r\n                <button mat-mini-fab class=pozadina-glavna-100>\r\n                    <mat-icon>search</mat-icon>\r\n                </button>\r\n            </div>\r\n            <div class=\"p-1\" (click)='toogleFilterDiv()'>\r\n                <button *ngIf=\"!otvoriFilter\" class=pozadina-glavna-100 mat-mini-fab>\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n                <button *ngIf=\"otvoriFilter\" mat-mini-fab class=\"button-glavni-200\">\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"d-flex justify-content-center\">\r\n        <label *ngIf=\"pocetnoPretrazivanje\">\r\n            <font color=\"#424242\"> Ukucajte kataloski broj</font>\r\n        </label>\r\n    </div>\r\n        \r\n    <!-- Filter komponenta izdvojena -->\r\n    <app-filter [vrstaRobe]=\"vrstaRobe\" [vrstaUlja]=\"vrstaUlja\" [otvoriFilter]=\"otvoriFilter\" (filterEvent)=\"filtriraj($event)\">\r\n    </app-filter>\r\n\r\n    <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"!pronadjenaRoba\">\r\n        <i class=\"material-icons icon-size\">\r\n            error_outline\r\n        </i>\r\n        <h1 class=\"h1-upozorenje\">Artikal ne postoji</h1>\r\n    </div>\r\n\r\n    <div class=\"d-flex justify-content-center prazna-tabela\" *ngIf=\"ucitavanje\">\r\n        <mat-spinner></mat-spinner>\r\n    </div>\r\n   \r\n    <app-tabela \r\n    [rowsPerPage]=\"rowsPerPage\"\r\n    [pageIndex]=\"pageIndex\"\r\n    [tableLength]=\"tableLength\"\r\n    [dataSource]=\"dataSource\"\r\n    [roba]=\"roba\"\r\n    (magacinEvent)=\"paginatorEvent($event)\"\r\n    ></app-tabela>\r\n</div>"
+
+/***/ }),
+
+/***/ "./src/app/e-shop/magacin/ulja/menjacko/menjacko.component.ts":
+/*!********************************************************************!*\
+  !*** ./src/app/e-shop/magacin/ulja/menjacko/menjacko.component.ts ***!
+  \********************************************************************/
+/*! exports provided: MenjackoComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MenjackoComponent", function() { return MenjackoComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/e-shop/service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
+/* harmony import */ var src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/e-shop/utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
+/* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
+/* harmony import */ var src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/e-shop/model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
+/* harmony import */ var src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/e-shop/model/filter */ "./src/app/e-shop/model/filter.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+
+var MenjackoComponent = /** @class */ (function () {
+    function MenjackoComponent(robaService, utilsService, dataService) {
+        this.robaService = robaService;
+        this.utilsService = utilsService;
+        this.dataService = dataService;
+        this.vrstaRobe = src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_6__["VrstaRobe"].ULJA;
+        // Paging and Sorting elements
+        this.rowsPerPage = 10;
+        this.pageIndex = 0;
+        this.sort = null;
+        this.searchValue = '';
+        this.lastSearchValue = '';
+        this.filter = new src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_7__["Filter"]();
+        this.ucitavanje = false;
+        this.pronadjenaRoba = true;
+        this.otvoriFilter = false;
+        this.alive = true;
+        this.vrstaUlja = 'menjacka';
+    }
+    MenjackoComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.pocetnoPretrazivanje = true;
+        this.dataService.trenutnaKorpa.subscribe(function (korpa) { return _this.korpa = korpa; });
+        this.pronandjiSvaMenjackaUlja();
+    };
+    MenjackoComponent.prototype.pronandjiSvaMenjackaUlja = function () {
+        var _this = this;
+        this.ucitavanje = true;
+        this.pronadjenaRoba = true;
+        this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, null, null, null, this.vrstaUlja)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(function (error) {
+            if (error.status === 404) {
+                _this.pronadjenaRoba = false;
+                return rxjs__WEBPACK_IMPORTED_MODULE_2__["EMPTY"];
+            }
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["throwError"])(error);
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["finalize"])(function () { return _this.ucitavanje = false; }))
+            .subscribe(function (res) {
+            _this.pronadjenaRoba = true;
+            _this.roba = res.content;
+            _this.dataSource = _this.roba;
+            _this.dataSource = _this.roba;
+            _this.rowsPerPage = res.size;
+            _this.pageIndex = res.number;
+            _this.tableLength = res.totalElements;
+        }, function (error) {
+            _this.roba = null;
+            console.log('Podnaci robu izbacilo je gresko');
+        });
+    };
+    MenjackoComponent.prototype.pronadjiEntitetePoPretrazi = function (searchValue) {
+        var _this = this;
+        this.pocetnoPretrazivanje = false;
+        this.lastSearchValue = searchValue;
+        this.ucitavanje = true;
+        this.dataSource = null;
+        this.ucitavanje = true;
+        this.pronadjenaRoba = true;
+        this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, searchValue, this.filter.naStanju, this.filter.proizvodjacId, this.vrstaUlja)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(function (error) {
+            if (error.status === 404) {
+                _this.pronadjenaRoba = false;
+                return rxjs__WEBPACK_IMPORTED_MODULE_2__["EMPTY"];
+            }
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["throwError"])(error);
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["finalize"])(function () { return _this.ucitavanje = false; }))
+            .subscribe(function (res) {
+            _this.pronadjenaRoba = true;
+            _this.roba = res.content;
+            _this.dataSource = _this.roba;
+            _this.rowsPerPage = res.size;
+            _this.pageIndex = res.number;
+            _this.tableLength = res.totalElements;
+        }, function (error) {
+            _this.roba = null;
+            console.log('Podnaci robu izbacilo je gresko');
+        });
+    };
+    MenjackoComponent.prototype.pronaciPoTrazenojReci = function (searchValue) {
+        if (this.dataSource) {
+            this.pageIndex = 0;
+        }
+        this.pronadjiEntitetePoPretrazi(searchValue);
+    };
+    MenjackoComponent.prototype.paginatorEvent = function (pageEvent) {
+        this.dataSource = [];
+        this.rowsPerPage = pageEvent.pageSize;
+        this.pageIndex = pageEvent.pageIndex;
+        this.pronadjiEntitetePoPretrazi(this.searchValue);
+    };
+    MenjackoComponent.prototype.toogleFilterDiv = function () {
+        this.otvoriFilter = !this.otvoriFilter;
+    };
+    MenjackoComponent.prototype.filtriraj = function (filter) {
+        if (this.dataSource) {
+            this.pageIndex = 0;
+        }
+        this.filter = filter;
+        this.pronadjiEntitetePoPretrazi(this.searchValue);
+    };
+    MenjackoComponent.prototype.uKorpi = function (katBr) {
+        return this.utilsService.daLiJeRobaUKorpi(this.korpa, katBr);
+    };
+    MenjackoComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-menjacko',
+            template: __webpack_require__(/*! ./menjacko.component.html */ "./src/app/e-shop/magacin/ulja/menjacko/menjacko.component.html"),
+            styles: [__webpack_require__(/*! ./menjacko.component.css */ "./src/app/e-shop/magacin/ulja/menjacko/menjacko.component.css")]
+        }),
+        __metadata("design:paramtypes", [src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_3__["RobaService"],
+            src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__["AppUtilsService"],
+            src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_5__["DataService"]])
+    ], MenjackoComponent);
+    return MenjackoComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/e-shop/magacin/ulja/motorna/motorna.component.css":
+/*!*******************************************************************!*\
+  !*** ./src/app/e-shop/magacin/ulja/motorna/motorna.component.css ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ""
+
+/***/ }),
+
+/***/ "./src/app/e-shop/magacin/ulja/motorna/motorna.component.html":
+/*!********************************************************************!*\
+  !*** ./src/app/e-shop/magacin/ulja/motorna/motorna.component.html ***!
+  \********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"container-fluid\">\r\n\r\n    <div class=\"d-flex align-items-center justify-content-center\">\r\n        <div class=\"forms-input\">\r\n            <input class=\"p-1 flex-grow-1 search__input\" type=\"search\" [(ngModel)]=\"searchValue\" (keyup.enter)=\"pronaciPoTrazenojReci(searchValue)\" />\r\n            <div class=\"p-1\" (click)='pronaciPoTrazenojReci(searchValue)'>\r\n                <button mat-mini-fab class=pozadina-glavna-100>\r\n                    <mat-icon>search</mat-icon>\r\n                </button>\r\n            </div>\r\n            <div class=\"p-1\" (click)='toogleFilterDiv()'>\r\n                <button *ngIf=\"!otvoriFilter\" class=pozadina-glavna-100 mat-mini-fab>\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n                <button *ngIf=\"otvoriFilter\" mat-mini-fab class=\"button-glavni-200\">\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"d-flex justify-content-center\">\r\n        <label *ngIf=\"pocetnoPretrazivanje\">\r\n            <font color=\"#424242\"> Ukucajte kataloski broj</font>\r\n        </label>\r\n    </div>\r\n        \r\n    <!-- Filter komponenta izdvojena -->\r\n    <app-filter [vrstaRobe]=\"vrstaRobe\" [vrstaUlja]=\"vrstaUlja\" [otvoriFilter]=\"otvoriFilter\" (filterEvent)=\"filtriraj($event)\">\r\n    </app-filter>\r\n\r\n    <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"!pronadjenaRoba\">\r\n        <i class=\"material-icons icon-size\">\r\n            error_outline\r\n        </i>\r\n        <h1 class=\"h1-upozorenje\">Artikal ne postoji</h1>\r\n    </div>\r\n\r\n    <div class=\"d-flex justify-content-center prazna-tabela\" *ngIf=\"ucitavanje\">\r\n        <mat-spinner></mat-spinner>\r\n    </div>\r\n    \r\n    <app-tabela \r\n    [rowsPerPage]=\"rowsPerPage\"\r\n    [pageIndex]=\"pageIndex\"\r\n    [tableLength]=\"tableLength\"\r\n    [dataSource]=\"dataSource\"\r\n    [roba]=\"roba\"\r\n    (magacinEvent)=\"paginatorEvent($event)\"\r\n    ></app-tabela>\r\n</div>"
+
+/***/ }),
+
+/***/ "./src/app/e-shop/magacin/ulja/motorna/motorna.component.ts":
+/*!******************************************************************!*\
+  !*** ./src/app/e-shop/magacin/ulja/motorna/motorna.component.ts ***!
+  \******************************************************************/
+/*! exports provided: MotornaComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MotornaComponent", function() { return MotornaComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/e-shop/service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
+/* harmony import */ var src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/e-shop/utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
+/* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
+/* harmony import */ var src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/e-shop/model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
+/* harmony import */ var src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/e-shop/model/filter */ "./src/app/e-shop/model/filter.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+
+var MotornaComponent = /** @class */ (function () {
+    function MotornaComponent(robaService, utilsService, dataService) {
+        this.robaService = robaService;
+        this.utilsService = utilsService;
+        this.dataService = dataService;
+        this.vrstaRobe = src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_6__["VrstaRobe"].ULJA;
+        // Paging and Sorting elements
+        this.rowsPerPage = 10;
+        this.pageIndex = 0;
+        this.sort = null;
+        this.filter = new src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_7__["Filter"]();
+        this.searchValue = '';
+        this.lastSearchValue = '';
+        this.ucitavanje = false;
+        this.pronadjenaRoba = true;
+        this.otvoriFilter = false;
+        this.alive = true;
+        this.vrstaUlja = 'motorna';
+    }
+    MotornaComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.pocetnoPretrazivanje = true;
+        this.dataService.trenutnaKorpa.subscribe(function (korpa) { return _this.korpa = korpa; });
+        this.pronandjiSvoMotornoUlje();
+    };
+    MotornaComponent.prototype.pronandjiSvoMotornoUlje = function () {
+        var _this = this;
+        this.ucitavanje = true;
+        this.pronadjenaRoba = true;
+        this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, null, null, null, this.vrstaUlja)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(function (error) {
+            if (error.status === 404) {
+                _this.pronadjenaRoba = false;
+                return rxjs__WEBPACK_IMPORTED_MODULE_2__["EMPTY"];
+            }
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["throwError"])(error);
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["finalize"])(function () { return _this.ucitavanje = false; }))
+            .subscribe(function (res) {
+            _this.pronadjenaRoba = true;
+            _this.roba = res.content;
+            _this.dataSource = _this.roba;
+            _this.dataSource = _this.roba;
+            _this.rowsPerPage = res.size;
+            _this.pageIndex = res.number;
+            _this.tableLength = res.totalElements;
+        }, function (error) {
+            _this.roba = null;
+            console.log('Podnaci robu izbacilo je gresko');
+        });
+    };
+    MotornaComponent.prototype.pronadjiEntitetePoPretrazi = function (searchValue) {
+        var _this = this;
+        this.pocetnoPretrazivanje = false;
+        this.lastSearchValue = searchValue;
+        this.ucitavanje = true;
+        this.dataSource = null;
+        this.ucitavanje = true;
+        this.pronadjenaRoba = true;
+        this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, searchValue, this.filter.naStanju, this.filter.proizvodjacId, this.vrstaUlja)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(function (error) {
+            if (error.status === 404) {
+                _this.pronadjenaRoba = false;
+                return rxjs__WEBPACK_IMPORTED_MODULE_2__["EMPTY"];
+            }
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["throwError"])(error);
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["finalize"])(function () { return _this.ucitavanje = false; }))
+            .subscribe(function (res) {
+            _this.pronadjenaRoba = true;
+            _this.roba = res.content;
+            _this.dataSource = _this.roba;
+            _this.rowsPerPage = res.size;
+            _this.pageIndex = res.number;
+            _this.tableLength = res.totalElements;
+        }, function (error) {
+            _this.roba = null;
+            console.log('Podnaci robu izbacilo je gresko');
+        });
+    };
+    MotornaComponent.prototype.pronaciPoTrazenojReci = function (searchValue) {
+        if (this.dataSource) {
+            this.pageIndex = 0;
+        }
+        this.pronadjiEntitetePoPretrazi(searchValue);
+    };
+    MotornaComponent.prototype.paginatorEvent = function (pageEvent) {
+        this.dataSource = [];
+        this.rowsPerPage = pageEvent.pageSize;
+        this.pageIndex = pageEvent.pageIndex;
+        this.pronadjiEntitetePoPretrazi(this.searchValue);
+    };
+    MotornaComponent.prototype.toogleFilterDiv = function () {
+        this.otvoriFilter = !this.otvoriFilter;
+    };
+    MotornaComponent.prototype.filtriraj = function (filter) {
+        if (this.dataSource) {
+            this.pageIndex = 0;
+        }
+        this.filter = filter;
+        this.pronadjiEntitetePoPretrazi(this.searchValue);
+    };
+    MotornaComponent.prototype.uKorpi = function (katBr) {
+        return this.utilsService.daLiJeRobaUKorpi(this.korpa, katBr);
+    };
+    MotornaComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-motorna',
+            template: __webpack_require__(/*! ./motorna.component.html */ "./src/app/e-shop/magacin/ulja/motorna/motorna.component.html"),
+            styles: [__webpack_require__(/*! ./motorna.component.css */ "./src/app/e-shop/magacin/ulja/motorna/motorna.component.css")]
+        }),
+        __metadata("design:paramtypes", [src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_3__["RobaService"],
+            src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__["AppUtilsService"],
+            src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_5__["DataService"]])
+    ], MotornaComponent);
+    return MotornaComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/e-shop/magacin/ulja/ulja.component.css":
+/*!********************************************************!*\
+  !*** ./src/app/e-shop/magacin/ulja/ulja.component.css ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ".industrijski-stil {\r\n    width: 100%;\r\n    height: 100%;\r\n}\r\n.spusti {\r\n    margin-top: 0px;\r\n}\r\n@media only screen and (max-device-width :1025px) { \r\n    .spusti {\r\n        margin-top: 30px;\r\n    }\r\n}\r\n@media only screen and (max-device-width : 1000px) { \r\n    .spusti {\r\n        margin-top: 10px;\r\n    }\r\n}"
+
+/***/ }),
+
+/***/ "./src/app/e-shop/magacin/ulja/ulja.component.html":
+/*!*********************************************************!*\
+  !*** ./src/app/e-shop/magacin/ulja/ulja.component.html ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<main class=\"spusti\">\r\n    <mat-tab-group mat-stretch-tabs>\r\n        <mat-tab label=\"Motorna ulja\">\r\n            <app-motorna></app-motorna>\r\n        </mat-tab>\r\n        <mat-tab label=\"Menjačka ulja\">\r\n            <app-menjacko></app-menjacko>\r\n        </mat-tab>\r\n        <mat-tab label=\"Kočiona ulja\">\r\n            <app-kociona></app-kociona>\r\n        </mat-tab>\r\n        <mat-tab label=\"Antifiriz\">\r\n            <app-antifriz></app-antifriz>\r\n        </mat-tab>\r\n        <mat-tab label=\"Industrijska ulja\">\r\n            <app-industrijska></app-industrijska>\r\n        </mat-tab>\r\n    </mat-tab-group>\r\n</main>"
+
+/***/ }),
+
+/***/ "./src/app/e-shop/magacin/ulja/ulja.component.ts":
+/*!*******************************************************!*\
+  !*** ./src/app/e-shop/magacin/ulja/ulja.component.ts ***!
+  \*******************************************************/
+/*! exports provided: UljaComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UljaComponent", function() { return UljaComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+var UljaComponent = /** @class */ (function () {
+    function UljaComponent() {
+        this.selectedTab = 0;
+    }
+    UljaComponent.prototype.changeTab = function (tabIndex) {
+        this.selectedTab = tabIndex;
+    };
+    UljaComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-ulja',
+            template: __webpack_require__(/*! ./ulja.component.html */ "./src/app/e-shop/magacin/ulja/ulja.component.html"),
+            styles: [__webpack_require__(/*! ./ulja.component.css */ "./src/app/e-shop/magacin/ulja/ulja.component.css")]
+        })
+    ], UljaComponent);
+    return UljaComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/e-shop/model/dto.ts":
 /*!*************************************!*\
   !*** ./src/app/e-shop/model/dto.ts ***!
@@ -2432,2341 +4529,6 @@ var ResetovanjeSfireComponent = /** @class */ (function () {
             _angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"]])
     ], ResetovanjeSfireComponent);
     return ResetovanjeSfireComponent;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/e-shop/roba/akumulatori/akumulatori.component.css":
-/*!*******************************************************************!*\
-  !*** ./src/app/e-shop/roba/akumulatori/akumulatori.component.css ***!
-  \*******************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = ""
-
-/***/ }),
-
-/***/ "./src/app/e-shop/roba/akumulatori/akumulatori.component.html":
-/*!********************************************************************!*\
-  !*** ./src/app/e-shop/roba/akumulatori/akumulatori.component.html ***!
-  \********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"container-fluid\">\r\n\r\n    <div class=\"d-flex align-items-center justify-content-center\">\r\n        <div class=\"forms-input\">\r\n            <input class=\"p-1 flex-grow-1 search__input\" type=\"search\" [(ngModel)]=\"searchValue\"\r\n                (keyup.enter)=\"pronaciPoTrazenojReci(searchValue)\" />\r\n            <div class=\"p-1\" (click)='pronaciPoTrazenojReci(searchValue)'>\r\n                <button mat-mini-fab class=pozadina-glavna-100>\r\n                    <mat-icon>search</mat-icon>\r\n                </button>\r\n            </div>\r\n            <div class=\"p-1\" (click)='toogleFilterDiv()'>\r\n                <button *ngIf=\"!otvoriFilter\" class=pozadina-glavna-100 mat-mini-fab>\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n                <button *ngIf=\"otvoriFilter\" mat-mini-fab class=\"button-glavni-200\">\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"d-flex justify-content-center\">\r\n        <label *ngIf=\"pocetnoPretrazivanje\">\r\n            <font color=\"#424242\"> Ukucajte kataloski broj</font>\r\n        </label>\r\n    </div>\r\n\r\n    <app-filter [vrstaRobe]=\"vrstaRobe\" [otvoriFilter]=\"otvoriFilter\" (filterEvent)=\"filtriraj($event)\"></app-filter>\r\n\r\n    <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"!pronadjenaRoba\">\r\n        <i class=\"material-icons icon-size\">\r\n            error_outline\r\n        </i>\r\n        <h1 class=\"h1-upozorenje\">Artikal ne postoji</h1>\r\n    </div>\r\n\r\n    <div class=\"d-flex justify-content-center prazna-tabela\" *ngIf=\"ucitavanje\">\r\n        <mat-spinner></mat-spinner>\r\n    </div>\r\n    <div class=\"tabela-div\" *ngIf=\"dataSource != null && dataSource.length > 0\">\r\n        <p class=\"pdv\"><i>Sve cene su prikazane sa pdv-om.</i></p>\r\n        <table mat-table [dataSource]=\"dataSource\">\r\n            <!-- Kataloski broj Column -->\r\n            <ng-container matColumnDef=\"katbr\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.katbr}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Kataloski broj proizvodjaca Column -->\r\n            <ng-container matColumnDef=\"katbrpro\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj proizvodjaca </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p>\r\n                        {{roba.katbrpro}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Naziv Column -->\r\n            <ng-container matColumnDef=\"naziv\">\r\n                <th mat-header-cell *matHeaderCellDef> Naziv </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p>\r\n                        {{roba.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Proizvodjač Column -->\r\n            <ng-container matColumnDef=\"proizvodjac\">\r\n                <th mat-header-cell *matHeaderCellDef> Proizvodjač </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.proizvodjac.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"rabat\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Rabat </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.rabat | currency:\" \"}}%\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"cena\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Cena </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.cena | currency:\" \"}} RSD\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Stanje Column -->\r\n            <ng-container matColumnDef=\"stanje\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Stanje </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-zelena-50\">check_circle_outline</mat-icon>\r\n                    </div>\r\n                    <div *ngIf=\"roba.stanje == 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-crvena-50\">remove_circle_outline</mat-icon>\r\n                    </div>\r\n                </td>\r\n            </ng-container>\r\n\r\n\r\n            <!-- Kolicina Column -->\r\n            <ng-container matColumnDef=\"kolicina\">\r\n                <th mat-header-cell *matHeaderCellDef>Kolicina </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <input type=\"number\" min=\"0\" placeholder=\"0\" max=\"{{roba.stanje}}\" class=\"kolicina-labela\"\r\n                            placeholder=\"0\" [(ngModel)]=\"roba.kolicina\" />\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Kropa dugme Column -->\r\n            <ng-container matColumnDef=\"korpa\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <button mat-raised-button class=\"button-glavni-100\" (click)='dodajUKorpu(roba)'>Dodaj u\r\n                            korpu</button>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Da li ima na stanju ikona -->\r\n            <ng-container matColumnDef=\"u-korpi\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"uKorpi(roba.katbr)\">\r\n                        <mat-icon class=\"boja-crvena-50\">add_shopping_cart</mat-icon>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <tr mat-header-row *matHeaderRowDef=\"getDisplayedColumns()\"></tr>\r\n            <tr mat-row *matRowDef=\"let row; columns: getDisplayedColumns();\"></tr>\r\n        </table>\r\n        <mat-paginator #paginator [length]=\"tableLength\" [pageSize]=\"rowsPerPage\" [pageSizeOptions]=\"[5, 10, 25]\"\r\n            [pageIndex]=\"pageIndex\" [length]=\"tableLength\" [showFirstLastButtons]=\"true\"\r\n            (page)=\"paginatorEvent($event)\">\r\n        </mat-paginator>\r\n    </div>\r\n\r\n</div>"
-
-/***/ }),
-
-/***/ "./src/app/e-shop/roba/akumulatori/akumulatori.component.ts":
-/*!******************************************************************!*\
-  !*** ./src/app/e-shop/roba/akumulatori/akumulatori.component.ts ***!
-  \******************************************************************/
-/*! exports provided: AkumulatoriComponent */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AkumulatoriComponent", function() { return AkumulatoriComponent; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
-/* harmony import */ var _service_roba_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
-/* harmony import */ var _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
-/* harmony import */ var _service_login_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../service/login.service */ "./src/app/e-shop/service/login.service.ts");
-/* harmony import */ var _service_data_data_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
-/* harmony import */ var _model_roba_enum__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
-/* harmony import */ var _model_filter__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../model/filter */ "./src/app/e-shop/model/filter.ts");
-/* harmony import */ var src_app_shared_service_notifikacija_service__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! src/app/shared/service/notifikacija.service */ "./src/app/shared/service/notifikacija.service.ts");
-/* harmony import */ var src_app_shared_model_konstante__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! src/app/shared/model/konstante */ "./src/app/shared/model/konstante.ts");
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-
-
-
-
-
-
-var AkumulatoriComponent = /** @class */ (function () {
-    function AkumulatoriComponent(robaService, utilsService, loginServis, dataService, notifikacijaServis) {
-        this.robaService = robaService;
-        this.utilsService = utilsService;
-        this.loginServis = loginServis;
-        this.dataService = dataService;
-        this.notifikacijaServis = notifikacijaServis;
-        this.vrstaRobe = _model_roba_enum__WEBPACK_IMPORTED_MODULE_7__["VrstaRobe"].AKUMULATORI;
-        // Paging and Sorting elements
-        this.rowsPerPage = 10;
-        this.pageIndex = 0;
-        this.sort = null;
-        this.filter = new _model_filter__WEBPACK_IMPORTED_MODULE_8__["Filter"]();
-        this.searchValue = '';
-        this.lastSearchValue = '';
-        this.ucitavanje = false;
-        this.pronadjenaRoba = true;
-        this.otvoriFilter = false;
-        // Tabela
-        this.columnDefinitions = [
-            { def: 'katbr', ifNotAuth: true },
-            { def: 'katbrpro', ifNotAuth: true },
-            { def: 'proizvodjac', ifNotAuth: true },
-            { def: 'naziv', ifNotAuth: true },
-            { def: 'rabat', ifNotAuth: false },
-            { def: 'cena', ifNotAuth: true },
-            { def: 'stanje', ifNotAuth: true },
-            { def: 'kolicina', ifNotAuth: false },
-            { def: 'korpa', ifNotAuth: false },
-            { def: 'u-korpi', ifNotAuth: false },
-        ];
-        this.alive = true;
-    }
-    AkumulatoriComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this.pocetnoPretrazivanje = true;
-        this.dataService.trenutnaKorpa.subscribe(function (korpa) { return _this.korpa = korpa; });
-        this.loginServis.ulogovaniPartner.subscribe(function (partner) { return _this.partner = partner; });
-        this.pronandjiSveAkumulatore();
-    };
-    AkumulatoriComponent.prototype.getDisplayedColumns = function () {
-        var isPartner = this.partner.ppid != null;
-        var dataColumns = this.columnDefinitions
-            .filter(function (cd) { return isPartner || cd.ifNotAuth; })
-            .map(function (cd) { return cd.def; });
-        return dataColumns;
-    };
-    AkumulatoriComponent.prototype.pronandjiSveAkumulatore = function () {
-        var _this = this;
-        this.ucitavanje = true;
-        this.pronadjenaRoba = true;
-        this.robaService.pronadjiAkumulatore(this.sort, this.rowsPerPage, this.pageIndex, null, null, null)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(function (error) {
-            if (error.status === 404) {
-                _this.pronadjenaRoba = false;
-                return rxjs__WEBPACK_IMPORTED_MODULE_2__["EMPTY"];
-            }
-            return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["throwError"])(error);
-        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["finalize"])(function () { return _this.ucitavanje = false; }))
-            .subscribe(function (res) {
-            _this.pronadjenaRoba = true;
-            _this.roba = res.content;
-            _this.dataSource = _this.roba;
-            _this.rowsPerPage = res.size;
-            _this.pageIndex = res.number;
-            _this.tableLength = res.totalElements;
-        }, function (error) {
-            _this.roba = null;
-            console.log('Podnaci robu izbacilo je gresko');
-        });
-    };
-    AkumulatoriComponent.prototype.pronadjiAkumulatorePoPretrazi = function (searchValue) {
-        var _this = this;
-        this.pocetnoPretrazivanje = false;
-        this.lastSearchValue = searchValue;
-        this.ucitavanje = true;
-        this.dataSource = null;
-        this.pronadjenaRoba = true;
-        this.robaService.pronadjiAkumulatore(this.sort, this.rowsPerPage, this.pageIndex, searchValue, this.filter.naStanju, this.filter.proizvodjacId)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(function (error) {
-            if (error.status === 404) {
-                _this.pronadjenaRoba = false;
-                return rxjs__WEBPACK_IMPORTED_MODULE_2__["EMPTY"];
-            }
-            return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["throwError"])(error);
-        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["finalize"])(function () { return _this.ucitavanje = false; }))
-            .subscribe(function (res) {
-            _this.pronadjenaRoba = true;
-            _this.roba = res.content;
-            _this.dataSource = _this.roba;
-            _this.rowsPerPage = res.size;
-            _this.pageIndex = res.number;
-            _this.tableLength = res.totalElements;
-        }, function (error) {
-            _this.roba = null;
-            console.log('Podnaci robu izbacilo je gresko');
-        });
-    };
-    AkumulatoriComponent.prototype.pronaciPoTrazenojReci = function (searchValue) {
-        if (this.dataSource) {
-            this.pageIndex = 0;
-        }
-        this.pronadjiAkumulatorePoPretrazi(searchValue);
-    };
-    AkumulatoriComponent.prototype.paginatorEvent = function (pageEvent) {
-        this.dataSource = [];
-        this.rowsPerPage = pageEvent.pageSize;
-        this.pageIndex = pageEvent.pageIndex;
-        this.pronadjiAkumulatorePoPretrazi(this.searchValue);
-    };
-    AkumulatoriComponent.prototype.sortData = function (sort) {
-        this.sort = sort;
-        this.pronadjiAkumulatorePoPretrazi(this.searchValue);
-    };
-    AkumulatoriComponent.prototype.toogleFilterDiv = function () {
-        this.otvoriFilter = !this.otvoriFilter;
-    };
-    AkumulatoriComponent.prototype.filtriraj = function (filter) {
-        if (this.dataSource) {
-            this.pageIndex = 0;
-        }
-        this.filter = filter;
-        this.pronadjiAkumulatorePoPretrazi(this.searchValue);
-    };
-    AkumulatoriComponent.prototype.dodajUKorpu = function (roba) {
-        var snackBarPoruka = this.utilsService.dodajUKorpu(roba);
-        this.notifikacijaServis.notify(snackBarPoruka, src_app_shared_model_konstante__WEBPACK_IMPORTED_MODULE_10__["MatSnackBarKlase"].Zelena);
-        this.utilsService.izbrisiRobuSaStanja(this.roba, roba);
-    };
-    AkumulatoriComponent.prototype.uKorpi = function (katBr) {
-        return this.utilsService.daLiJeRobaUKorpi(this.korpa, katBr);
-    };
-    AkumulatoriComponent = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
-            selector: 'app-akumulatori',
-            template: __webpack_require__(/*! ./akumulatori.component.html */ "./src/app/e-shop/roba/akumulatori/akumulatori.component.html"),
-            styles: [__webpack_require__(/*! ./akumulatori.component.css */ "./src/app/e-shop/roba/akumulatori/akumulatori.component.css")]
-        }),
-        __metadata("design:paramtypes", [_service_roba_service__WEBPACK_IMPORTED_MODULE_3__["RobaService"],
-            _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__["AppUtilsService"],
-            _service_login_service__WEBPACK_IMPORTED_MODULE_5__["LoginService"],
-            _service_data_data_service__WEBPACK_IMPORTED_MODULE_6__["DataService"],
-            src_app_shared_service_notifikacija_service__WEBPACK_IMPORTED_MODULE_9__["NotifikacijaService"]])
-    ], AkumulatoriComponent);
-    return AkumulatoriComponent;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/e-shop/roba/filteri/filteri.component.css":
-/*!***********************************************************!*\
-  !*** ./src/app/e-shop/roba/filteri/filteri.component.css ***!
-  \***********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "\r\n\r\n@media only screen and (max-device-width :1025px) { \r\n    .mobilna-duzina {\r\n        width: 100%;\r\n    }\r\n    .input-group-prepend {\r\n        margin-top: 10px;\r\n        margin-left: 0px;\r\n    }\r\n}"
-
-/***/ }),
-
-/***/ "./src/app/e-shop/roba/filteri/filteri.component.html":
-/*!************************************************************!*\
-  !*** ./src/app/e-shop/roba/filteri/filteri.component.html ***!
-  \************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"container-fluid\">\r\n    <main>\r\n        <div class=\"d-flex align-items-center justify-content-center\">\r\n            <div class=\"forms-input\">\r\n                <input class=\"p-1 flex-grow-1 search__input\" type=\"search\" [(ngModel)]=\"searchValue\"\r\n                    (keyup.enter)=\"pronaciPoTrazenojReci(searchValue)\" />\r\n                <div class=\"p-1\" (click)='pronaciPoTrazenojReci(searchValue)'>\r\n                    <button mat-mini-fab class=pozadina-glavna-100>\r\n                        <mat-icon>search</mat-icon>\r\n                    </button>\r\n                </div>\r\n                <div class=\"p-1\" (click)='toogleFilterDiv()'>\r\n                    <button *ngIf=\"!otvoriFilter\" class=pozadina-glavna-100 mat-mini-fab>\r\n                        <mat-icon>view_headline</mat-icon>\r\n                    </button>\r\n                    <button *ngIf=\"otvoriFilter\" mat-mini-fab class=\"button-glavni-200\">\r\n                        <mat-icon>view_headline</mat-icon>\r\n                    </button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n        <div class=\"d-flex justify-content-center\">\r\n            <label *ngIf=\"pocetnoPretrazivanje\">\r\n                <font color=\"#424242\"> Ukucajte kataloski broj</font>\r\n            </label>\r\n        </div>\r\n        \r\n        <!-- Filter komponenta izdvojena -->\r\n        <app-filter [vrstaRobe]=\"vrstaRobe\" [otvoriFilter]=\"otvoriFilter\" (filterEvent)=\"filtriraj($event)\">\r\n        </app-filter>\r\n\r\n        <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"!pronadjenaRoba\">\r\n            <i class=\"material-icons icon-size\">\r\n                error_outline\r\n            </i>\r\n            <h1 class=\"h1-upozorenje\">Artikal ne postoji</h1>\r\n        </div>\r\n\r\n        <div class=\"d-flex justify-content-center prazna-tabela\" *ngIf=\"ucitavanje\">\r\n            <mat-spinner></mat-spinner>\r\n        </div>\r\n        <div class=\"tabela-div\" *ngIf=\"dataSource != null && dataSource.length > 0\">\r\n            <p class=\"pdv\"><i>Sve cene su prikazane sa pdv-om.</i></p>\r\n            <table mat-table [dataSource]=\"dataSource\">\r\n                <!-- Kataloski broj Column -->\r\n                <ng-container matColumnDef=\"katbr\">\r\n                    <th mat-header-cell *matHeaderCellDef> Kataloski broj </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p class=\"mat-body-2\">\r\n                            {{roba.katbr}}\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Kataloski broj proizvodjaca Column -->\r\n                <ng-container matColumnDef=\"katbrpro\">\r\n                    <th mat-header-cell *matHeaderCellDef> Kataloski broj proizvodjaca </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p>\r\n                            {{roba.katbrpro}}\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Naziv Column -->\r\n                <ng-container matColumnDef=\"naziv\">\r\n                    <th mat-header-cell *matHeaderCellDef> Naziv </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p>\r\n                            {{roba.naziv}}\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Proizvodjač Column -->\r\n                <ng-container matColumnDef=\"proizvodjac\">\r\n                    <th mat-header-cell *matHeaderCellDef> Proizvodjač </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p class=\"mat-body-2\">\r\n                            {{roba.proizvodjac.naziv}}\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Cena Column -->\r\n                <ng-container matColumnDef=\"rabat\">\r\n                    <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Rabat </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p class=\"mat-body-2 text-right iznos-margin\">\r\n                            {{roba.rabat | currency:\" \"}}%\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Cena Column -->\r\n                <ng-container matColumnDef=\"cena\">\r\n                    <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Cena </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p class=\"mat-body-2 text-right iznos-margin\">\r\n                            {{roba.cena | currency:\" \"}} RSD\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Stanje Column -->\r\n                <ng-container matColumnDef=\"stanje\">\r\n                    <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Stanje </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <div *ngIf=\"roba.stanje > 0\" class=\"text-center\">\r\n                            <mat-icon class=\"boja-zelena-50\">check_circle_outline</mat-icon>\r\n                        </div>\r\n                        <div *ngIf=\"roba.stanje == 0\" class=\"text-center\">\r\n                            <mat-icon class=\"boja-crvena-50\">remove_circle_outline</mat-icon>\r\n                        </div>\r\n                    </td>\r\n                </ng-container>\r\n\r\n\r\n                <!-- Kolicina Column -->\r\n                <ng-container matColumnDef=\"kolicina\">\r\n                    <th mat-header-cell *matHeaderCellDef>Kolicina </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <div *ngIf=\"roba.stanje > 0\">\r\n                            <input type=\"number\" min=\"0\" placeholder=\"0\" max=\"{{roba.stanje}}\" class=\"kolicina-labela\"\r\n                                [(ngModel)]=\"roba.kolicina\" />\r\n                        </div>\r\n                </ng-container>\r\n\r\n                <!-- Kropa dugme Column -->\r\n                <ng-container matColumnDef=\"korpa\">\r\n                    <th mat-header-cell *matHeaderCellDef> </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <div *ngIf=\"roba.stanje > 0\">\r\n                            <button mat-raised-button class=\"button-glavni-100\" (click)='dodajUKorpu(roba)'>Dodaj u\r\n                                korpu</button>\r\n                        </div>\r\n                </ng-container>\r\n\r\n                <!-- Da li ima na stanju ikona -->\r\n                <ng-container matColumnDef=\"u-korpi\">\r\n                    <th mat-header-cell *matHeaderCellDef> </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <div *ngIf=\"uKorpi(roba.katbr)\">\r\n                            <mat-icon class=\"boja-crvena-50\">add_shopping_cart</mat-icon>\r\n                        </div>\r\n                </ng-container>\r\n\r\n                <tr mat-header-row *matHeaderRowDef=\"getDisplayedColumns()\"></tr>\r\n                <tr mat-row *matRowDef=\"let row; columns: getDisplayedColumns();\"></tr>\r\n            </table>\r\n            <mat-paginator #paginator [length]=\"tableLength\" [pageSize]=\"rowsPerPage\" [pageSizeOptions]=\"[5, 10, 25]\"\r\n                [pageIndex]=\"pageIndex\" [length]=\"tableLength\" [showFirstLastButtons]=\"true\"\r\n                (page)=\"paginatorEvent($event)\">\r\n            </mat-paginator>\r\n        </div>\r\n    </main>\r\n</div>"
-
-/***/ }),
-
-/***/ "./src/app/e-shop/roba/filteri/filteri.component.ts":
-/*!**********************************************************!*\
-  !*** ./src/app/e-shop/roba/filteri/filteri.component.ts ***!
-  \**********************************************************/
-/*! exports provided: FilteriComponent */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FilteriComponent", function() { return FilteriComponent; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
-/* harmony import */ var _service_roba_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
-/* harmony import */ var _service_login_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../service/login.service */ "./src/app/e-shop/service/login.service.ts");
-/* harmony import */ var _service_data_data_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
-/* harmony import */ var _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
-/* harmony import */ var _model_roba_enum__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
-/* harmony import */ var _model_filter__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../model/filter */ "./src/app/e-shop/model/filter.ts");
-/* harmony import */ var src_app_shared_service_notifikacija_service__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! src/app/shared/service/notifikacija.service */ "./src/app/shared/service/notifikacija.service.ts");
-/* harmony import */ var src_app_shared_model_konstante__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! src/app/shared/model/konstante */ "./src/app/shared/model/konstante.ts");
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-
-
-
-
-
-
-var FilteriComponent = /** @class */ (function () {
-    function FilteriComponent(robaService, loginServis, dataService, utilsService, notifikacijaServis) {
-        this.robaService = robaService;
-        this.loginServis = loginServis;
-        this.dataService = dataService;
-        this.utilsService = utilsService;
-        this.notifikacijaServis = notifikacijaServis;
-        this.vrstaRobe = _model_roba_enum__WEBPACK_IMPORTED_MODULE_7__["VrstaRobe"].FILTERI;
-        // Paging and Sorting elements
-        this.rowsPerPage = 10;
-        this.pageIndex = 0;
-        this.sort = null;
-        this.filter = new _model_filter__WEBPACK_IMPORTED_MODULE_8__["Filter"]();
-        this.searchValue = '';
-        this.lastSearchValue = '';
-        this.ucitavanje = false;
-        this.pronadjenaRoba = true;
-        this.otvoriFilter = false;
-        // Tabela
-        this.columnDefinitions = [
-            { def: 'katbr', ifNotAuth: true },
-            { def: 'katbrpro', ifNotAuth: true },
-            { def: 'proizvodjac', ifNotAuth: true },
-            { def: 'naziv', ifNotAuth: true },
-            { def: 'rabat', ifNotAuth: false },
-            { def: 'cena', ifNotAuth: true },
-            { def: 'stanje', ifNotAuth: true },
-            { def: 'kolicina', ifNotAuth: false },
-            { def: 'korpa', ifNotAuth: false },
-            { def: 'u-korpi', ifNotAuth: false },
-        ];
-        this.alive = true;
-    }
-    FilteriComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this.pocetnoPretrazivanje = true;
-        this.dataService.trenutnaKorpa.subscribe(function (korpa) { return _this.korpa = korpa; });
-        this.loginServis.ulogovaniPartner.subscribe(function (partner) { return _this.partner = partner; });
-        this.pronandjiSveFiltere();
-    };
-    FilteriComponent.prototype.getDisplayedColumns = function () {
-        var isPartner = this.partner.ppid != null;
-        var dataColumns = this.columnDefinitions
-            .filter(function (cd) { return isPartner || cd.ifNotAuth; })
-            .map(function (cd) { return cd.def; });
-        return dataColumns;
-    };
-    FilteriComponent.prototype.pronandjiSveFiltere = function () {
-        var _this = this;
-        this.ucitavanje = true;
-        this.pronadjenaRoba = true;
-        this.robaService.pronadjiFiltere(this.sort, this.rowsPerPage, this.pageIndex, null, null, null)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(function (error) {
-            if (error.status === 404) {
-                _this.pronadjenaRoba = false;
-                return rxjs__WEBPACK_IMPORTED_MODULE_2__["EMPTY"];
-            }
-            return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["throwError"])(error);
-        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["finalize"])(function () { return _this.ucitavanje = false; }))
-            .subscribe(function (res) {
-            _this.pronadjenaRoba = true;
-            _this.roba = res.content;
-            _this.dataService.skiniSaStanjaUkolikoJeUKorpi(_this.roba);
-            _this.dataSource = _this.roba;
-            _this.rowsPerPage = res.size;
-            _this.pageIndex = res.number;
-            _this.tableLength = res.totalElements;
-        }, function (error) {
-            _this.roba = null;
-            console.log('Podnaci robu izbacilo je gresko', error);
-        });
-    };
-    FilteriComponent.prototype.pronadjiFilterePoPretrazi = function (searchValue) {
-        var _this = this;
-        this.pocetnoPretrazivanje = false;
-        this.lastSearchValue = searchValue;
-        this.ucitavanje = true;
-        this.dataSource = null;
-        this.ucitavanje = true;
-        this.pronadjenaRoba = true;
-        this.robaService.pronadjiFiltere(this.sort, this.rowsPerPage, this.pageIndex, searchValue, this.filter.naStanju, this.filter.proizvodjacId)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(function (error) {
-            if (error.status === 404) {
-                _this.pronadjenaRoba = false;
-                return rxjs__WEBPACK_IMPORTED_MODULE_2__["EMPTY"];
-            }
-            return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["throwError"])(error);
-        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["finalize"])(function () { return _this.ucitavanje = false; }))
-            .subscribe(function (res) {
-            _this.pronadjenaRoba = true;
-            _this.roba = res.content;
-            _this.dataService.skiniSaStanjaUkolikoJeUKorpi(_this.roba);
-            _this.dataSource = _this.roba;
-            _this.rowsPerPage = res.size;
-            _this.pageIndex = res.number;
-            _this.tableLength = res.totalElements;
-        }, function (error) {
-            _this.roba = null;
-            console.log('Podnaci robu izbacilo je gresko');
-        });
-    };
-    FilteriComponent.prototype.pronaciPoTrazenojReci = function (searchValue) {
-        if (this.dataSource) {
-            this.pageIndex = 0;
-        }
-        this.pronadjiFilterePoPretrazi(searchValue);
-    };
-    FilteriComponent.prototype.paginatorEvent = function (pageEvent) {
-        this.dataSource = [];
-        this.rowsPerPage = pageEvent.pageSize;
-        this.pageIndex = pageEvent.pageIndex;
-        this.pronadjiFilterePoPretrazi(this.searchValue);
-    };
-    FilteriComponent.prototype.sortData = function (sort) {
-        this.sort = sort;
-        this.pronadjiFilterePoPretrazi(this.searchValue);
-    };
-    FilteriComponent.prototype.toogleFilterDiv = function () {
-        this.otvoriFilter = !this.otvoriFilter;
-    };
-    FilteriComponent.prototype.filtriraj = function (filter) {
-        if (this.dataSource) {
-            this.pageIndex = 0;
-        }
-        this.filter = filter;
-        this.pronadjiFilterePoPretrazi(this.searchValue);
-    };
-    FilteriComponent.prototype.dodajUKorpu = function (roba) {
-        var snackBarPoruka = this.utilsService.dodajUKorpu(roba);
-        this.notifikacijaServis.notify(snackBarPoruka, src_app_shared_model_konstante__WEBPACK_IMPORTED_MODULE_10__["MatSnackBarKlase"].Zelena);
-        this.utilsService.izbrisiRobuSaStanja(this.roba, roba);
-    };
-    FilteriComponent.prototype.uKorpi = function (katBr) {
-        return this.utilsService.daLiJeRobaUKorpi(this.korpa, katBr);
-    };
-    FilteriComponent = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
-            selector: 'app-filteri',
-            template: __webpack_require__(/*! ./filteri.component.html */ "./src/app/e-shop/roba/filteri/filteri.component.html"),
-            styles: [__webpack_require__(/*! ./filteri.component.css */ "./src/app/e-shop/roba/filteri/filteri.component.css")]
-        }),
-        __metadata("design:paramtypes", [_service_roba_service__WEBPACK_IMPORTED_MODULE_3__["RobaService"],
-            _service_login_service__WEBPACK_IMPORTED_MODULE_4__["LoginService"],
-            _service_data_data_service__WEBPACK_IMPORTED_MODULE_5__["DataService"],
-            _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_6__["AppUtilsService"],
-            src_app_shared_service_notifikacija_service__WEBPACK_IMPORTED_MODULE_9__["NotifikacijaService"]])
-    ], FilteriComponent);
-    return FilteriComponent;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/e-shop/roba/ostalo/kategorija-specificna/kategorija-specificna.component.html":
-/*!***********************************************************************************************!*\
-  !*** ./src/app/e-shop/roba/ostalo/kategorija-specificna/kategorija-specificna.component.html ***!
-  \***********************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"container-fluid\">\r\n    <main>\r\n        <div class=\"d-flex flex-row-reverse bd-highlight\">\r\n            <button class=\"button-glavni-100 nazad-button\" mat-raised-button (click)=\"idiNazad()\">\r\n                <mat-icon>keyboard_arrow_left</mat-icon> Nazad\r\n            </button>\r\n        </div>\r\n        <div class=\"d-flex align-items-center justify-content-center\">\r\n            <div class=\"forms-input\">\r\n                <input class=\"p-1 flex-grow-1 search__input\" type=\"search\" [(ngModel)]=\"searchValue\" (keyup.enter)=\"pronaciPoTrazenojReci(searchValue)\" />\r\n                <div class=\"p-1\" (click)='pronaciPoTrazenojReci(searchValue)'>\r\n                    <button mat-mini-fab class=pozadina-glavna-100>\r\n                        <mat-icon>search</mat-icon>\r\n                    </button>\r\n                </div>\r\n                <div class=\"p-1\" (click)='toogleFilterDiv()'>\r\n                    <button *ngIf=\"!otvoriFilter\" class=pozadina-glavna-100 mat-mini-fab>\r\n                        <mat-icon>view_headline</mat-icon>\r\n                    </button>\r\n                    <button *ngIf=\"otvoriFilter\" mat-mini-fab class=\"button-glavni-200\">\r\n                        <mat-icon>view_headline</mat-icon>\r\n                    </button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n        <div class=\"d-flex justify-content-center\">\r\n            <label *ngIf=\"pocetnoPretrazivanje\">\r\n                <font color=\"#424242\"> Ukucajte kataloski broj</font>\r\n            </label>\r\n        </div>\r\n        \r\n        <!-- Filter komponenta izdvojena -->\r\n        <app-filter [vrstaRobe]=\"vrstaRobe\" [otvoriFilter]=\"otvoriFilter\" (filterEvent)=\"filtriraj($event)\">\r\n        </app-filter>\r\n\r\n        <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"!pronadjenaRoba\">\r\n            <i class=\"material-icons icon-size\">\r\n                error_outline\r\n            </i>\r\n            <h1 class=\"h1-upozorenje\">Artikal ne postoji</h1>\r\n        </div>\r\n\r\n        <div class=\"d-flex justify-content-center prazna-tabela\" *ngIf=\"ucitavanje\">\r\n            <mat-spinner></mat-spinner>\r\n        </div>\r\n        <div class=\"tabela-div\" *ngIf=\"dataSource != null && dataSource.length > 0\">\r\n            <table mat-table [dataSource]=\"dataSource\">\r\n                <!-- Kataloski broj Column -->\r\n                <ng-container matColumnDef=\"katbr\">\r\n                    <th mat-header-cell *matHeaderCellDef> Kataloski broj </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p class=\"mat-body-2\">\r\n                            {{roba.katbr}}\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Kataloski broj proizvodjaca Column -->\r\n                <ng-container matColumnDef=\"katbrpro\">\r\n                    <th mat-header-cell *matHeaderCellDef> Kataloski broj proizvodjaca </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p >\r\n                            {{roba.katbrpro}}\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Naziv Column -->\r\n                <ng-container matColumnDef=\"naziv\">\r\n                    <th mat-header-cell *matHeaderCellDef> Naziv </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p >\r\n                            {{roba.naziv}}\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Proizvodjač Column -->\r\n                <ng-container matColumnDef=\"proizvodjac\">\r\n                    <th mat-header-cell *matHeaderCellDef> Proizvodjač </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p class=\"mat-body-2\">\r\n                            {{roba.proizvodjac.naziv}}\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Cena Column -->\r\n                <ng-container matColumnDef=\"cena\">\r\n                    <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Cena </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <p class=\"mat-body-2 text-right iznos-margin\">\r\n                            {{roba.cena | currency:\" \"}} RSD\r\n                        </p>\r\n                    </td>\r\n                </ng-container>\r\n\r\n                <!-- Stanje Column -->\r\n                <ng-container matColumnDef=\"stanje\">\r\n                    <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Stanje </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <div *ngIf=\"roba.stanje > 0\" class=\"text-center\">\r\n                            <mat-icon class=\"boja-zelena-50\">check_circle_outline</mat-icon>\r\n                        </div>\r\n                        <div *ngIf=\"roba.stanje == 0\" class=\"text-center\">\r\n                            <mat-icon class=\"boja-crvena-50\">remove_circle_outline</mat-icon>\r\n                        </div>\r\n                    </td>\r\n                </ng-container>\r\n\r\n\r\n                <!-- Kolicina Column -->\r\n                <ng-container matColumnDef=\"kolicina\">\r\n                    <th mat-header-cell *matHeaderCellDef>Kolicina </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <div *ngIf=\"roba.stanje > 0\">\r\n                            <input type=\"number\" min=\"0\" placeholder=\"0\" max=\"{{roba.stanje}}\" class=\"kolicina-labela\"\r\n                                [(ngModel)]=\"roba.kolicina\" />\r\n                        </div>\r\n                </ng-container>\r\n\r\n                <!-- Kropa dugme Column -->\r\n                <ng-container matColumnDef=\"korpa\">\r\n                    <th mat-header-cell *matHeaderCellDef> </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <div *ngIf=\"roba.stanje > 0\">\r\n                            <button mat-raised-button class=\"button-glavni-100\" (click)='dodajUKorpu(roba)'>Dodaj u\r\n                                korpu</button>\r\n                        </div>\r\n                </ng-container>\r\n\r\n                <!-- Da li ima na stanju ikona -->\r\n                <ng-container matColumnDef=\"u-korpi\">\r\n                    <th mat-header-cell *matHeaderCellDef> </th>\r\n                    <td mat-cell *matCellDef=\"let roba\">\r\n                        <div *ngIf=\"uKorpi(roba.katbr)\">\r\n                            <mat-icon class=\"boja-crvena-50\">add_shopping_cart</mat-icon>\r\n                        </div>\r\n                </ng-container>\r\n\r\n                <tr mat-header-row *matHeaderRowDef=\"getDisplayedColumns()\"></tr>\r\n                <tr mat-row *matRowDef=\"let row; columns: getDisplayedColumns();\"></tr>\r\n            </table>\r\n            <mat-paginator #paginator [length]=\"tableLength\" [pageSize]=\"rowsPerPage\" [pageSizeOptions]=\"[5, 10, 25]\"\r\n                [pageIndex]=\"pageIndex\" [length]=\"tableLength\" [showFirstLastButtons]=\"true\" (page)=\"paginatorEvent($event)\">\r\n            </mat-paginator>\r\n        </div>\r\n    </main>\r\n</div>"
-
-/***/ }),
-
-/***/ "./src/app/e-shop/roba/ostalo/kategorija-specificna/kategorija-specificna.component.scss":
-/*!***********************************************************************************************!*\
-  !*** ./src/app/e-shop/roba/ostalo/kategorija-specificna/kategorija-specificna.component.scss ***!
-  \***********************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = ".forms-input {\n  margin-top: 0px !important; }\n"
-
-/***/ }),
-
-/***/ "./src/app/e-shop/roba/ostalo/kategorija-specificna/kategorija-specificna.component.ts":
-/*!*********************************************************************************************!*\
-  !*** ./src/app/e-shop/roba/ostalo/kategorija-specificna/kategorija-specificna.component.ts ***!
-  \*********************************************************************************************/
-/*! exports provided: KategorijaSpecificnaComponent */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "KategorijaSpecificnaComponent", function() { return KategorijaSpecificnaComponent; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
-/* harmony import */ var src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/e-shop/service/login.service */ "./src/app/e-shop/service/login.service.ts");
-/* harmony import */ var src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/e-shop/utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
-/* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
-/* harmony import */ var src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/e-shop/service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
-/* harmony import */ var src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/e-shop/model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
-/* harmony import */ var src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! src/app/e-shop/model/filter */ "./src/app/e-shop/model/filter.ts");
-/* harmony import */ var src_app_shared_service_notifikacija_service__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! src/app/shared/service/notifikacija.service */ "./src/app/shared/service/notifikacija.service.ts");
-/* harmony import */ var src_app_shared_model_konstante__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! src/app/shared/model/konstante */ "./src/app/shared/model/konstante.ts");
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-
-
-
-
-
-
-
-var KategorijaSpecificnaComponent = /** @class */ (function () {
-    function KategorijaSpecificnaComponent(route, loginServis, utilsService, dataService, robaServis, notifikacijaServis, router) {
-        this.route = route;
-        this.loginServis = loginServis;
-        this.utilsService = utilsService;
-        this.dataService = dataService;
-        this.robaServis = robaServis;
-        this.notifikacijaServis = notifikacijaServis;
-        this.router = router;
-        this.vrstaRobe = src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_8__["VrstaRobe"].OSTALO;
-        // Paging and Sorting elements
-        this.rowsPerPage = 10;
-        this.pageIndex = 0;
-        this.sort = null;
-        this.filter = new src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_9__["Filter"]();
-        this.searchValue = '';
-        this.lastSearchValue = '';
-        this.ucitavanje = false;
-        this.pronadjenaRoba = true;
-        this.otvoriFilter = false;
-        // Tabela
-        this.columnDefinitions = [
-            { def: 'katbr', ifNotAuth: true },
-            { def: 'katbrpro', ifNotAuth: true },
-            { def: 'proizvodjac', ifNotAuth: true },
-            { def: 'naziv', ifNotAuth: true },
-            { def: 'cena', ifNotAuth: true },
-            { def: 'stanje', ifNotAuth: true },
-            { def: 'kolicina', ifNotAuth: false },
-            { def: 'korpa', ifNotAuth: false },
-            { def: 'u-korpi', ifNotAuth: false },
-        ];
-        this.alive = true;
-    }
-    KategorijaSpecificnaComponent.prototype.getDisplayedColumns = function () {
-        var isPartner = this.partner.ppid != null;
-        var dataColumns = this.columnDefinitions
-            .filter(function (cd) { return isPartner || cd.ifNotAuth; })
-            .map(function (cd) { return cd.def; });
-        return dataColumns;
-    };
-    KategorijaSpecificnaComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this.pocetnoPretrazivanje = true;
-        this.dataService.trenutnaKorpa.subscribe(function (korpa) { return _this.korpa = korpa; });
-        this.loginServis.ulogovaniPartner.subscribe(function (partner) { return _this.partner = partner; });
-        this.pronandjiRobu();
-    };
-    KategorijaSpecificnaComponent.prototype.pronandjiRobu = function () {
-        var _this = this;
-        this.route.params.subscribe(function (params) {
-            _this.robaServis.pronadjiPoKategoriji(_this.sort, _this.rowsPerPage, _this.pageIndex, null, null, null, params.id)
-                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(function (error) {
-                if (error.status === 404) {
-                    _this.pronadjenaRoba = false;
-                    return rxjs__WEBPACK_IMPORTED_MODULE_3__["EMPTY"];
-                }
-                return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["throwError"])(error);
-            }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["finalize"])(function () { return _this.ucitavanje = false; }))
-                .subscribe(function (res) {
-                _this.pronadjenaRoba = true;
-                _this.roba = res.content;
-                _this.dataService.skiniSaStanjaUkolikoJeUKorpi(_this.roba);
-                _this.dataSource = _this.roba;
-                _this.rowsPerPage = res.size;
-                _this.pageIndex = res.number;
-                _this.tableLength = res.totalElements;
-            }, function (error) {
-                _this.roba = null;
-                console.log('Podnaci robu izbacilo je gresko');
-            });
-        });
-    };
-    KategorijaSpecificnaComponent.prototype.pronaciPoTrazenojReci = function (searchValue) {
-        if (this.dataSource) {
-            this.pageIndex = 0;
-        }
-        this.pronadjiSvuRobuPoPretrazi(searchValue);
-    };
-    KategorijaSpecificnaComponent.prototype.pronadjiSvuRobuPoPretrazi = function (searchValue) {
-        var _this = this;
-        this.pocetnoPretrazivanje = false;
-        this.lastSearchValue = searchValue;
-        this.dataSource = null;
-        this.ucitavanje = true;
-        this.pronadjenaRoba = true;
-        this.route.params.subscribe(function (params) {
-            _this.robaServis.pronadjiPoKategoriji(_this.sort, _this.rowsPerPage, _this.pageIndex, searchValue, _this.filter.naStanju, _this.filter.proizvodjacId, params.id)
-                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(function (error) {
-                if (error.status === 404) {
-                    _this.pronadjenaRoba = false;
-                    return rxjs__WEBPACK_IMPORTED_MODULE_3__["EMPTY"];
-                }
-                return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["throwError"])(error);
-            }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["finalize"])(function () { return _this.ucitavanje = false; }))
-                .subscribe(function (res) {
-                _this.pronadjenaRoba = true;
-                _this.roba = res.content;
-                _this.dataService.skiniSaStanjaUkolikoJeUKorpi(_this.roba);
-                _this.dataSource = _this.roba;
-                _this.rowsPerPage = res.size;
-                _this.pageIndex = res.number;
-                _this.tableLength = res.totalElements;
-            }, function (error) {
-                _this.roba = null;
-                console.log('Podnaci robu izbacilo je gresko');
-            });
-        });
-    };
-    KategorijaSpecificnaComponent.prototype.paginatorEvent = function (pageEvent) {
-        this.dataSource = [];
-        this.rowsPerPage = pageEvent.pageSize;
-        this.pageIndex = pageEvent.pageIndex;
-        this.pronadjiSvuRobuPoPretrazi(this.searchValue);
-    };
-    KategorijaSpecificnaComponent.prototype.sortData = function (sort) {
-        this.sort = sort;
-        var searchTerm;
-        if (this.lastSearchValue) {
-            searchTerm = this.lastSearchValue;
-        }
-        else if (this.searchValue) {
-            searchTerm = this.searchValue;
-        }
-        else {
-            searchTerm = null;
-        }
-        this.pronadjiSvuRobuPoPretrazi(this.searchValue);
-    };
-    KategorijaSpecificnaComponent.prototype.toogleFilterDiv = function () {
-        this.otvoriFilter = !this.otvoriFilter;
-    };
-    KategorijaSpecificnaComponent.prototype.filtriraj = function (filter) {
-        if (this.dataSource) {
-            this.pageIndex = 0;
-        }
-        this.filter = filter;
-        this.pronadjiSvuRobuPoPretrazi(this.searchValue);
-    };
-    KategorijaSpecificnaComponent.prototype.dodajUKorpu = function (roba) {
-        var snackBarPoruka = this.utilsService.dodajUKorpu(roba);
-        this.notifikacijaServis.notify(snackBarPoruka, src_app_shared_model_konstante__WEBPACK_IMPORTED_MODULE_11__["MatSnackBarKlase"].Zelena);
-        this.utilsService.izbrisiRobuSaStanja(this.roba, roba);
-    };
-    KategorijaSpecificnaComponent.prototype.uKorpi = function (katBr) {
-        return this.utilsService.daLiJeRobaUKorpi(this.korpa, katBr);
-    };
-    KategorijaSpecificnaComponent.prototype.idiNazad = function () {
-        this.router.navigate(['/ostalo']);
-    };
-    KategorijaSpecificnaComponent = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
-            selector: 'app-kategorija-specificna',
-            template: __webpack_require__(/*! ./kategorija-specificna.component.html */ "./src/app/e-shop/roba/ostalo/kategorija-specificna/kategorija-specificna.component.html"),
-            styles: [__webpack_require__(/*! ./kategorija-specificna.component.scss */ "./src/app/e-shop/roba/ostalo/kategorija-specificna/kategorija-specificna.component.scss")]
-        }),
-        __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"],
-            src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_4__["LoginService"],
-            src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_5__["AppUtilsService"],
-            src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_6__["DataService"],
-            src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_7__["RobaService"],
-            src_app_shared_service_notifikacija_service__WEBPACK_IMPORTED_MODULE_10__["NotifikacijaService"],
-            _angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"]])
-    ], KategorijaSpecificnaComponent);
-    return KategorijaSpecificnaComponent;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/e-shop/roba/ostalo/ostalo.component.html":
-/*!**********************************************************!*\
-  !*** ./src/app/e-shop/roba/ostalo/ostalo.component.html ***!
-  \**********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"container-fluid\">\r\n  <main *ngIf=\"kategorije\">\r\n    <h1>Kategorije</h1>\r\n    <div *ngFor=\"let slovo of pocetnaSlova\">\r\n      <div class=\"d-flex flex-row flex-wrap\">\r\n        <div class=\"slovo\">\r\n          <h2>{{slovo}}</h2>\r\n        </div>\r\n        <div *ngFor=\"let kategorija of vratiKategorijuNaSlovo(slovo)\">\r\n          <a [routerLink]=\"[kategorija  | lowercase]\" mat-button>{{\"kategorija_\" + kategorija | translate}}</a>\r\n        </div>\r\n      </div>\r\n      <hr>\r\n    </div>\r\n  </main>\r\n</div>"
-
-/***/ }),
-
-/***/ "./src/app/e-shop/roba/ostalo/ostalo.component.scss":
-/*!**********************************************************!*\
-  !*** ./src/app/e-shop/roba/ostalo/ostalo.component.scss ***!
-  \**********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "h1 {\n  margin-top: 20px;\n  margin-left: 20px;\n  margin-bottom: 50px; }\n\na {\n  color: #345cac; }\n\n.slovo {\n  width: 30px;\n  margin-top: 0px;\n  padding: 0px; }\n"
-
-/***/ }),
-
-/***/ "./src/app/e-shop/roba/ostalo/ostalo.component.ts":
-/*!********************************************************!*\
-  !*** ./src/app/e-shop/roba/ostalo/ostalo.component.ts ***!
-  \********************************************************/
-/*! exports provided: OstaloComponent */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OstaloComponent", function() { return OstaloComponent; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
-/* harmony import */ var _service_roba_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-var OstaloComponent = /** @class */ (function () {
-    function OstaloComponent(robaServis) {
-        this.robaServis = robaServis;
-        this.alive = true;
-        this.ucitavanje = false;
-        this.pocetnaSlova = ['A', 'B', 'C', 'D', 'G', 'H', 'Z', 'I', 'K', 'L', 'M', 'P', 'R', 'S', 'T', 'V', 'Z'];
-    }
-    OstaloComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this.robaServis.ostaleKategorije().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(function (error) { return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["throwError"])(error); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["finalize"])(function () { return _this.ucitavanje = false; }))
-            .subscribe(function (res) {
-            _this.kategorije = res;
-        }, function (error) {
-            console.log('Podnaci kategorije je izbacilo je gresko');
-        });
-    };
-    OstaloComponent.prototype.vratiKategorijuNaSlovo = function (slovo) {
-        var kategorije = [];
-        this.kategorije.forEach(function (kategorija) {
-            if (kategorija[0] === slovo) {
-                kategorije.push(kategorija);
-            }
-        });
-        return kategorije;
-    };
-    OstaloComponent = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
-            selector: 'app-ostalo',
-            template: __webpack_require__(/*! ./ostalo.component.html */ "./src/app/e-shop/roba/ostalo/ostalo.component.html"),
-            styles: [__webpack_require__(/*! ./ostalo.component.scss */ "./src/app/e-shop/roba/ostalo/ostalo.component.scss")]
-        }),
-        __metadata("design:paramtypes", [_service_roba_service__WEBPACK_IMPORTED_MODULE_3__["RobaService"]])
-    ], OstaloComponent);
-    return OstaloComponent;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/e-shop/roba/roba.component.css":
-/*!************************************************!*\
-  !*** ./src/app/e-shop/roba/roba.component.css ***!
-  \************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = ""
-
-/***/ }),
-
-/***/ "./src/app/e-shop/roba/roba.component.html":
-/*!*************************************************!*\
-  !*** ./src/app/e-shop/roba/roba.component.html ***!
-  \*************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"container-fluid\">\r\n\r\n    <div class=\"d-flex align-items-center justify-content-center\">\r\n        <div class=\"forms-input\">\r\n            <input class=\"p-1 flex-grow-1 search__input\" type=\"search\" [(ngModel)]=\"searchValue\" (keyup.enter)=\"pronaciPoTrazenojReci(searchValue)\" />\r\n            <div class=\"p-1\" (click)='pronaciPoTrazenojReci(searchValue)'>\r\n                <button mat-mini-fab class=pozadina-glavna-100>\r\n                    <mat-icon>search</mat-icon>\r\n                </button>\r\n            </div>\r\n            <div class=\"p-1\" (click)='toogleFilterDiv()'>\r\n                <button *ngIf=\"!otvoriFilter\" class=pozadina-glavna-100 mat-mini-fab>\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n                <button *ngIf=\"otvoriFilter\" mat-mini-fab class=\"button-glavni-200\">\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"d-flex justify-content-center\">\r\n        <label *ngIf=\"pocetnoPretrazivanje\">\r\n            <font color=\"#424242\"> Ukucajte kataloski broj</font>\r\n        </label>\r\n    </div>\r\n        \r\n    <!-- Filter komponenta izdvojena -->\r\n    <app-filter [vrstaRobe]=\"vrstaRobe\" [otvoriFilter]=\"otvoriFilter\" (filterEvent)=\"filtriraj($event)\">\r\n    </app-filter>\r\n\r\n    <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"!pronadjenaRoba\">\r\n        <i class=\"material-icons icon-size\">\r\n            error_outline\r\n        </i>\r\n        <h1 class=\"h1-upozorenje\">Artikal ne postoji</h1>\r\n    </div>\r\n\r\n    <div class=\"d-flex justify-content-center prazna-tabela\" *ngIf=\"ucitavanje\">\r\n        <mat-spinner></mat-spinner>\r\n    </div>\r\n    <div class=\"tabela-div\" *ngIf=\"dataSource != null && dataSource.length > 0\">\r\n        <p class=\"pdv\"><i>Sve cene su prikazane sa pdv-om.</i></p>\r\n        <table mat-table [dataSource]=\"dataSource\">\r\n\r\n            <!-- Kataloski broj Column -->\r\n            <ng-container matColumnDef=\"katbr\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.katbr}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Kataloski broj proizvodjaca Column -->\r\n            <ng-container matColumnDef=\"katbrpro\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj proizvodjaca </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p >\r\n                        {{roba.katbrpro}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Naziv Column -->\r\n            <ng-container matColumnDef=\"naziv\">\r\n                <th mat-header-cell *matHeaderCellDef> Naziv </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p >\r\n                        {{roba.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Proizvodjač Column -->\r\n            <ng-container matColumnDef=\"proizvodjac\">\r\n                <th mat-header-cell *matHeaderCellDef> Proizvodjač </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.proizvodjac.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"rabat\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Rabat </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.rabat | currency:\" \"}}%\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"cena\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Cena </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.cena | currency:\" \"}} RSD\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Stanje Column -->\r\n            <ng-container matColumnDef=\"stanje\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Stanje </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-zelena-50\">check_circle_outline</mat-icon>\r\n                    </div>\r\n                    <div *ngIf=\"roba.stanje == 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-crvena-50\">remove_circle_outline</mat-icon>\r\n                    </div>\r\n                </td>\r\n            </ng-container>\r\n\r\n\r\n            <!-- Kolicina Column -->\r\n            <ng-container matColumnDef=\"kolicina\">\r\n                <th mat-header-cell *matHeaderCellDef>Kolicina </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <input type=\"number\" min=\"0\" placeholder=\"0\" max=\"{{roba.stanje}}\" class=\"kolicina-labela\"\r\n                            [(ngModel)]=\"roba.kolicina\" />\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Kropa dugme Column -->\r\n            <ng-container matColumnDef=\"korpa\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <button mat-raised-button class=\"button-glavni-100\" (click)='dodajUKorpu(roba)'>Dodaj u korpu</button>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Da li ima na stanju ikona -->\r\n            <ng-container matColumnDef=\"u-korpi\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"uKorpi(roba.katbr)\">\r\n                        <mat-icon class=\"boja-crvena-50\">add_shopping_cart</mat-icon>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <tr mat-header-row *matHeaderRowDef=\"getDisplayedColumns()\"></tr>\r\n            <tr mat-row *matRowDef=\"let row; columns: getDisplayedColumns();\"></tr>\r\n        </table>\r\n        <mat-paginator #paginator [length]=\"tableLength\" [pageSize]=\"rowsPerPage\" [pageSizeOptions]=\"[5, 10, 25]\"\r\n            [pageIndex]=\"pageIndex\" [length]=\"tableLength\" [showFirstLastButtons]=\"true\" (page)=\"paginatorEvent($event)\">\r\n        </mat-paginator>\r\n    </div>\r\n</div>"
-
-/***/ }),
-
-/***/ "./src/app/e-shop/roba/roba.component.ts":
-/*!***********************************************!*\
-  !*** ./src/app/e-shop/roba/roba.component.ts ***!
-  \***********************************************/
-/*! exports provided: RobaComponent */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RobaComponent", function() { return RobaComponent; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _service_roba_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
-/* harmony import */ var _service_data_data_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
-/* harmony import */ var _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
-/* harmony import */ var _service_login_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../service/login.service */ "./src/app/e-shop/service/login.service.ts");
-/* harmony import */ var _model_roba_enum__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
-/* harmony import */ var _model_filter__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../model/filter */ "./src/app/e-shop/model/filter.ts");
-/* harmony import */ var src_app_shared_model_konstante__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! src/app/shared/model/konstante */ "./src/app/shared/model/konstante.ts");
-/* harmony import */ var src_app_shared_service_notifikacija_service__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! src/app/shared/service/notifikacija.service */ "./src/app/shared/service/notifikacija.service.ts");
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-
-
-
-
-
-
-var RobaComponent = /** @class */ (function () {
-    function RobaComponent(robaService, loginServis, dataService, utilsService, notifikacijaServis) {
-        this.robaService = robaService;
-        this.loginServis = loginServis;
-        this.dataService = dataService;
-        this.utilsService = utilsService;
-        this.notifikacijaServis = notifikacijaServis;
-        this.vrstaRobe = _model_roba_enum__WEBPACK_IMPORTED_MODULE_7__["VrstaRobe"].SVE;
-        // Paging and Sorting elements
-        this.rowsPerPage = 10;
-        this.pageIndex = 0;
-        this.sort = null;
-        this.filter = new _model_filter__WEBPACK_IMPORTED_MODULE_8__["Filter"]();
-        this.searchValue = '';
-        this.lastSearchValue = '';
-        this.ucitavanje = false;
-        this.pronadjenaRoba = true;
-        this.otvoriFilter = false;
-        // Tabela
-        this.columnDefinitions = [
-            { def: 'katbr', ifNotAuth: true },
-            { def: 'katbrpro', ifNotAuth: true },
-            { def: 'proizvodjac', ifNotAuth: true },
-            { def: 'naziv', ifNotAuth: true },
-            { def: 'rabat', ifNotAuth: false },
-            { def: 'cena', ifNotAuth: true },
-            { def: 'stanje', ifNotAuth: true },
-            { def: 'kolicina', ifNotAuth: false },
-            { def: 'korpa', ifNotAuth: false },
-            { def: 'u-korpi', ifNotAuth: false },
-        ];
-        this.alive = true;
-    }
-    RobaComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this.pocetnoPretrazivanje = true;
-        this.dataService.trenutnaKorpa.subscribe(function (korpa) { return _this.korpa = korpa; });
-        this.loginServis.ulogovaniPartner.subscribe(function (partner) { return _this.partner = partner; });
-        this.pronadjiSvuRobu();
-    };
-    RobaComponent.prototype.getDisplayedColumns = function () {
-        var isPartner = this.partner.ppid != null;
-        var dataColumns = this.columnDefinitions
-            .filter(function (cd) { return isPartner || cd.ifNotAuth; })
-            .map(function (cd) { return cd.def; });
-        return dataColumns;
-    };
-    RobaComponent.prototype.pronadjiSvuRobu = function () {
-        var _this = this;
-        this.ucitavanje = true;
-        this.pronadjenaRoba = true;
-        this.robaService.pronadjiSvuRobu(this.sort, this.rowsPerPage, this.pageIndex, null, null, null)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(function (error) {
-            if (error.status === 404) {
-                _this.pronadjenaRoba = false;
-                return rxjs__WEBPACK_IMPORTED_MODULE_3__["EMPTY"];
-            }
-            return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["throwError"])(error);
-        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["finalize"])(function () { return _this.ucitavanje = false; }))
-            .subscribe(function (res) {
-            _this.pronadjenaRoba = true;
-            _this.roba = res.content;
-            _this.dataSource = _this.roba;
-            _this.rowsPerPage = res.size;
-            _this.pageIndex = res.number;
-            _this.tableLength = res.totalElements;
-        }, function (error) {
-            _this.roba = null;
-            console.log('Podnaci robu izbacilo je gresko');
-        });
-    };
-    RobaComponent.prototype.pronaciPoTrazenojReci = function (searchValue) {
-        if (this.dataSource) {
-            this.pageIndex = 0;
-        }
-        this.pronadjiSvuRobuPoPretrazi(searchValue);
-    };
-    RobaComponent.prototype.pronadjiSvuRobuPoPretrazi = function (searchValue) {
-        var _this = this;
-        this.pocetnoPretrazivanje = false;
-        this.lastSearchValue = searchValue;
-        this.dataSource = null;
-        this.ucitavanje = true;
-        this.pronadjenaRoba = true;
-        this.robaService.pronadjiSvuRobu(this.sort, this.rowsPerPage, this.pageIndex, searchValue, this.filter.naStanju, this.filter.proizvodjacId)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(function (error) {
-            if (error.status === 404) {
-                _this.pronadjenaRoba = false;
-                return rxjs__WEBPACK_IMPORTED_MODULE_3__["EMPTY"];
-            }
-            return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["throwError"])(error);
-        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["finalize"])(function () { return _this.ucitavanje = false; }))
-            .subscribe(function (res) {
-            _this.pronadjenaRoba = true;
-            _this.roba = res.content;
-            _this.dataSource = _this.roba;
-            _this.rowsPerPage = res.size;
-            _this.pageIndex = res.number;
-            _this.tableLength = res.totalElements;
-        }, function (error) {
-            _this.roba = null;
-            console.log('Podnaci robu izbacilo je gresko');
-        });
-    };
-    RobaComponent.prototype.paginatorEvent = function (pageEvent) {
-        this.dataSource = [];
-        this.rowsPerPage = pageEvent.pageSize;
-        this.pageIndex = pageEvent.pageIndex;
-        this.pronadjiSvuRobuPoPretrazi(this.searchValue);
-    };
-    RobaComponent.prototype.sortData = function (sort) {
-        this.sort = sort;
-        var searchTerm;
-        if (this.lastSearchValue) {
-            searchTerm = this.lastSearchValue;
-        }
-        else if (this.searchValue) {
-            searchTerm = this.searchValue;
-        }
-        else {
-            searchTerm = null;
-        }
-        this.pronadjiSvuRobuPoPretrazi(this.searchValue);
-    };
-    RobaComponent.prototype.toogleFilterDiv = function () {
-        this.otvoriFilter = !this.otvoriFilter;
-    };
-    RobaComponent.prototype.filtriraj = function (filter) {
-        if (this.dataSource) {
-            this.pageIndex = 0;
-        }
-        this.filter = filter;
-        this.pronadjiSvuRobuPoPretrazi(this.searchValue);
-    };
-    RobaComponent.prototype.dodajUKorpu = function (roba) {
-        var snackBarPoruka = this.utilsService.dodajUKorpu(roba);
-        this.notifikacijaServis.notify(snackBarPoruka, src_app_shared_model_konstante__WEBPACK_IMPORTED_MODULE_9__["MatSnackBarKlase"].Zelena);
-        this.utilsService.izbrisiRobuSaStanja(this.roba, roba);
-    };
-    RobaComponent.prototype.uKorpi = function (katBr) {
-        return this.utilsService.daLiJeRobaUKorpi(this.korpa, katBr);
-    };
-    RobaComponent = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
-            selector: 'app-roba',
-            template: __webpack_require__(/*! ./roba.component.html */ "./src/app/e-shop/roba/roba.component.html"),
-            styles: [__webpack_require__(/*! ./roba.component.css */ "./src/app/e-shop/roba/roba.component.css")]
-        }),
-        __metadata("design:paramtypes", [_service_roba_service__WEBPACK_IMPORTED_MODULE_1__["RobaService"],
-            _service_login_service__WEBPACK_IMPORTED_MODULE_6__["LoginService"],
-            _service_data_data_service__WEBPACK_IMPORTED_MODULE_4__["DataService"],
-            _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_5__["AppUtilsService"],
-            src_app_shared_service_notifikacija_service__WEBPACK_IMPORTED_MODULE_10__["NotifikacijaService"]])
-    ], RobaComponent);
-    return RobaComponent;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/e-shop/roba/shared-components/filter/filter.component.html":
-/*!****************************************************************************!*\
-  !*** ./src/app/e-shop/roba/shared-components/filter/filter.component.html ***!
-  \****************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"d-flex justify-content-center\" *ngIf=\"otvoriFilter\">\n  <div class=\"filter-div-test d-flex flex-column\">\n      <div class=\"d-flex justify-content-center\">\n          <h2>\n              Filter\n          </h2>\n      </div>\n      <div class=\"d-flex flex-column flex-xl-row input-group mb-3\">\n          <div class=\"input-group-prepend\">\n              <label class=\"input-group-text mobilna-duzina button-glavni-50\" for=\"inputGroupSelect01\">\n                  <p class=\"boja-siva-400\">Proizvodjač: </p>\n              </label>\n          </div>\n          <select class=\"custom-select mobilna-duzina\" id=\"inputGroupSelect01\" [(ngModel)]=\"filter.proizvodjac\">\n              <option *ngFor=\"let proizvodjac of proizvodjaci\" [value]=\"proizvodjac.naziv\">\n                  {{proizvodjac.naziv}}\n              </option>\n          </select>\n\n          <div class=\"input-group-prepend razmak\">\n              <label class=\"input-group-text mobilna-duzina button-glavni-50\" for=\"inputGroupSelect01\">\n                  Raspoloživost:\n              </label>\n          </div>\n          <select class=\"custom-select mobilna-duzina\" id=\"inputGroupSelect01\" [(ngModel)]=\"filter.raspolozivost\">\n              <option *ngFor=\"let raspoloziv of raspolozivost\" [value]=\"raspoloziv\">{{raspoloziv}}</option>\n          </select>\n      </div>\n      <div class=\"d-flex justify-content-center\">\n          <div>\n              <button mat-stroked-button class=pozadina-glavna-100 (click)='filtriraj()'>\n                  <p class=\"boja-siva-400\">Filtriraj</p>\n              </button>\n              <span class=\"col-2\"></span>\n              <button mat-stroked-button class=button-crveni-50 (click)='resetujFilter()'>\n                  <p class=\"boja-siva-400\">Poništi</p>\n              </button>\n          </div>\n      </div>\n  </div>\n</div>"
-
-/***/ }),
-
-/***/ "./src/app/e-shop/roba/shared-components/filter/filter.component.scss":
-/*!****************************************************************************!*\
-  !*** ./src/app/e-shop/roba/shared-components/filter/filter.component.scss ***!
-  \****************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = ""
-
-/***/ }),
-
-/***/ "./src/app/e-shop/roba/shared-components/filter/filter.component.ts":
-/*!**************************************************************************!*\
-  !*** ./src/app/e-shop/roba/shared-components/filter/filter.component.ts ***!
-  \**************************************************************************/
-/*! exports provided: FilterComponent */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FilterComponent", function() { return FilterComponent; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var src_app_e_shop_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/e-shop/service/proizvodjac.service */ "./src/app/e-shop/service/proizvodjac.service.ts");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
-/* harmony import */ var src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/e-shop/model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
-/* harmony import */ var src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/e-shop/model/filter */ "./src/app/e-shop/model/filter.ts");
-/* harmony import */ var src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/e-shop/utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-
-
-
-var FilterComponent = /** @class */ (function () {
-    function FilterComponent(route, proizvodjacService, utilsService) {
-        this.route = route;
-        this.proizvodjacService = proizvodjacService;
-        this.utilsService = utilsService;
-        this.filterEvent = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
-        this.filter = new src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_4__["Filter"]();
-        this.raspolozivost = ['Svi artikli', 'Ima na stanju'];
-        this.alive = true;
-    }
-    FilterComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        if (this.industrijkoUljeEvent) {
-            this.industrijkoUljeEvent.subscribe(function (vrstaUlja) {
-                _this.vrstaUlja = vrstaUlja;
-                _this.filter.raspolozivost = _this.raspolozivost[1];
-                _this.pronadjiProizvodjace();
-            });
-        }
-        this.filter.raspolozivost = this.raspolozivost[1];
-        this.pronadjiProizvodjace();
-    };
-    FilterComponent.prototype.pronadjiProizvodjace = function () {
-        var _this = this;
-        if (this.vrstaRobe === src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_3__["VrstaRobe"].AKUMULATORI) {
-            this.proizvodjacService.pronadjiSveProizvodjaceAkumulatora()
-                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }))
-                .subscribe(function (res) {
-                _this.proizvodjaci = res;
-                _this.filter.proizvodjac = _this.proizvodjaci[0].naziv;
-            }, function (error) {
-                _this.proizvodjaci = null;
-                console.log('Pronaci svu robu je bacilo gresku', error);
-            });
-        }
-        else if (this.vrstaRobe === src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_3__["VrstaRobe"].FILTERI) {
-            this.proizvodjacService.pronadjiSveProizvodjaceFiltera()
-                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }))
-                .subscribe(function (res) {
-                _this.proizvodjaci = res;
-                _this.filter.proizvodjac = _this.proizvodjaci[0].naziv;
-            }, function (error) {
-                _this.proizvodjaci = null;
-                console.log('Pronaci svu robu je bacilo gresku', error);
-            });
-        }
-        else if (this.vrstaRobe === src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_3__["VrstaRobe"].SVE) {
-            this.proizvodjacService.pronadjiSveProizvodjace()
-                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }))
-                .subscribe(function (res) {
-                _this.proizvodjaci = res;
-                _this.filter.proizvodjac = _this.proizvodjaci[0].naziv;
-            }, function (error) {
-                _this.proizvodjaci = null;
-                console.log('Pronaci svu robu je bacilo gresku', error);
-            });
-        }
-        else if (this.vrstaRobe === src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_3__["VrstaRobe"].ULJA) {
-            this.proizvodjacService.pronadjiSveProizvodjaceUljaPoVrsti(this.vrstaUlja)
-                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }))
-                .subscribe(function (res) {
-                _this.proizvodjaci = res;
-                _this.filter.proizvodjac = _this.proizvodjaci[0].naziv;
-            }, function (error) {
-                _this.proizvodjaci = null;
-                console.log('Pronaci svu robu je bacilo gresku', error);
-            });
-        }
-        else if (this.vrstaRobe === src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_3__["VrstaRobe"].OSTALO) {
-            this.route.params.subscribe(function (params) {
-                _this.proizvodjacService.pronadjiSveProizvodjaceKategorije(params.id)
-                    .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeWhile"])(function () { return _this.alive; }))
-                    .subscribe(function (res) {
-                    _this.proizvodjaci = res;
-                    _this.filter.proizvodjac = _this.proizvodjaci[0].naziv;
-                }, function (error) {
-                    _this.proizvodjaci = null;
-                    console.log('Pronaci svu robu je bacilo gresku', error);
-                });
-            });
-        }
-    };
-    FilterComponent.prototype.filtriraj = function () {
-        this.filter.naStanju = this.utilsService.daLiRobaTrebaDaBudeNaStanju(this.raspolozivost, this.filter.raspolozivost);
-        this.filter.proizvodjacId = this.utilsService.vratiIdProizvodjacaAkoPostoji(this.filter.proizvodjac, this.proizvodjaci);
-        this.filterEvent.emit(this.filter);
-    };
-    FilterComponent.prototype.resetujFilter = function () {
-        this.filter.raspolozivost = this.raspolozivost[1];
-        this.filter.proizvodjac = this.proizvodjaci[0].naziv;
-        this.filter.naStanju = this.utilsService.daLiRobaTrebaDaBudeNaStanju(this.raspolozivost, this.filter.raspolozivost);
-        this.filter.proizvodjacId = this.utilsService.vratiIdProizvodjacaAkoPostoji(this.filter.proizvodjac, this.proizvodjaci);
-        this.filterEvent.emit(this.filter);
-    };
-    __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
-        __metadata("design:type", Object)
-    ], FilterComponent.prototype, "otvoriFilter", void 0);
-    __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
-        __metadata("design:type", Object)
-    ], FilterComponent.prototype, "vrstaRobe", void 0);
-    __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
-        __metadata("design:type", Object)
-    ], FilterComponent.prototype, "vrstaUlja", void 0);
-    __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
-        __metadata("design:type", rxjs__WEBPACK_IMPORTED_MODULE_6__["Observable"])
-    ], FilterComponent.prototype, "industrijkoUljeEvent", void 0);
-    __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"])(),
-        __metadata("design:type", Object)
-    ], FilterComponent.prototype, "filterEvent", void 0);
-    FilterComponent = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
-            selector: 'app-filter',
-            template: __webpack_require__(/*! ./filter.component.html */ "./src/app/e-shop/roba/shared-components/filter/filter.component.html"),
-            styles: [__webpack_require__(/*! ./filter.component.scss */ "./src/app/e-shop/roba/shared-components/filter/filter.component.scss")]
-        }),
-        __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_7__["ActivatedRoute"],
-            src_app_e_shop_service_proizvodjac_service__WEBPACK_IMPORTED_MODULE_1__["ProizvodjacService"],
-            src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_5__["AppUtilsService"]])
-    ], FilterComponent);
-    return FilterComponent;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/e-shop/roba/ulja/antifriz/antifriz.component.css":
-/*!******************************************************************!*\
-  !*** ./src/app/e-shop/roba/ulja/antifriz/antifriz.component.css ***!
-  \******************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = ""
-
-/***/ }),
-
-/***/ "./src/app/e-shop/roba/ulja/antifriz/antifriz.component.html":
-/*!*******************************************************************!*\
-  !*** ./src/app/e-shop/roba/ulja/antifriz/antifriz.component.html ***!
-  \*******************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"container-fluid\">\r\n\r\n    <div class=\"d-flex align-items-center justify-content-center\">\r\n        <div class=\"forms-input\">\r\n            <input class=\"p-1 flex-grow-1 search__input\" type=\"search\" [(ngModel)]=\"searchValue\" (keyup.enter)=\"pronaciPoTrazenojReci(searchValue)\" />\r\n            <div class=\"p-1\" (click)='pronaciPoTrazenojReci(searchValue)'>\r\n                <button mat-mini-fab class=pozadina-glavna-100>\r\n                    <mat-icon>search</mat-icon>\r\n                </button>\r\n            </div>\r\n            <div class=\"p-1\" (click)='toogleFilterDiv()'>\r\n                <button *ngIf=\"!otvoriFilter\" class=pozadina-glavna-100 mat-mini-fab>\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n                <button *ngIf=\"otvoriFilter\" mat-mini-fab class=\"button-glavni-200\">\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"d-flex justify-content-center\">\r\n        <label *ngIf=\"pocetnoPretrazivanje\">\r\n            <font color=\"#424242\"> Ukucajte kataloski broj</font>\r\n        </label>\r\n    </div>\r\n        \r\n    <!-- Filter komponenta izdvojena -->\r\n    <app-filter [vrstaRobe]=\"vrstaRobe\" [vrstaUlja]=\"vrstaUlja\" [otvoriFilter]=\"otvoriFilter\" (filterEvent)=\"filtriraj($event)\">\r\n    </app-filter>\r\n\r\n    <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"!pronadjenaRoba\">\r\n        <i class=\"material-icons icon-size\">\r\n            error_outline\r\n        </i>\r\n        <h1 class=\"h1-upozorenje\">Artikal ne postoji</h1>\r\n    </div>\r\n\r\n    <div class=\"d-flex justify-content-center prazna-tabela\" *ngIf=\"ucitavanje\">\r\n        <mat-spinner></mat-spinner>\r\n    </div>\r\n    <div class=\"tabela-div\" *ngIf=\"dataSource != null && dataSource.length > 0\">\r\n        <p class=\"pdv\"><i>Sve cene su prikazane sa pdv-om.</i></p>\r\n        <table mat-table [dataSource]=\"dataSource\">\r\n            <!-- Kataloski broj Column -->\r\n            <ng-container matColumnDef=\"katbr\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.katbr}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Kataloski broj proizvodjaca Column -->\r\n            <ng-container matColumnDef=\"katbrpro\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj proizvodjaca </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p >\r\n                        {{roba.katbrpro}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Naziv Column -->\r\n            <ng-container matColumnDef=\"naziv\">\r\n                <th mat-header-cell *matHeaderCellDef> Naziv </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p >\r\n                        {{roba.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Proizvodjač Column -->\r\n            <ng-container matColumnDef=\"proizvodjac\">\r\n                <th mat-header-cell *matHeaderCellDef> Proizvodjač </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.proizvodjac.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"rabat\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Rabat </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.rabat | currency:\" \"}}%\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"cena\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Cena </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.cena | currency:\" \"}} RSD\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Stanje Column -->\r\n            <ng-container matColumnDef=\"stanje\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Stanje </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-zelena-50\">check_circle_outline</mat-icon>\r\n                    </div>\r\n                    <div *ngIf=\"roba.stanje == 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-crvena-50\">remove_circle_outline</mat-icon>\r\n                    </div>\r\n                </td>\r\n            </ng-container>\r\n\r\n\r\n            <!-- Kolicina Column -->\r\n            <ng-container matColumnDef=\"kolicina\">\r\n                <th mat-header-cell *matHeaderCellDef>Kolicina </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <input type=\"number\" min=\"0\" placeholder=\"0\" max=\"{{roba.stanje}}\" class=\"kolicina-labela\"\r\n                            [(ngModel)]=\"roba.kolicina\" />\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Kropa dugme Column -->\r\n            <ng-container matColumnDef=\"korpa\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <button mat-raised-button class=\"button-glavni-100\" (click)='dodajUKorpu(roba)'>Dodaj u korpu</button>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Da li ima na stanju ikona -->\r\n            <ng-container matColumnDef=\"u-korpi\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"uKorpi(roba.katbr)\">\r\n                        <mat-icon class=\"boja-crvena-50\">add_shopping_cart</mat-icon>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <tr mat-header-row *matHeaderRowDef=\"getDisplayedColumns()\"></tr>\r\n            <tr mat-row *matRowDef=\"let row; columns: getDisplayedColumns();\"></tr>\r\n        </table>\r\n        <mat-paginator #paginator [length]=\"tableLength\" [pageSize]=\"rowsPerPage\" [pageSizeOptions]=\"[5, 10, 25]\"\r\n            [pageIndex]=\"pageIndex\" [length]=\"tableLength\" [showFirstLastButtons]=\"true\" (page)=\"paginatorEvent($event)\">\r\n        </mat-paginator>\r\n    </div>\r\n</div>"
-
-/***/ }),
-
-/***/ "./src/app/e-shop/roba/ulja/antifriz/antifriz.component.ts":
-/*!*****************************************************************!*\
-  !*** ./src/app/e-shop/roba/ulja/antifriz/antifriz.component.ts ***!
-  \*****************************************************************/
-/*! exports provided: AntifrizComponent */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AntifrizComponent", function() { return AntifrizComponent; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
-/* harmony import */ var src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/e-shop/service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
-/* harmony import */ var src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/e-shop/utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
-/* harmony import */ var src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/e-shop/service/login.service */ "./src/app/e-shop/service/login.service.ts");
-/* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
-/* harmony import */ var src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/e-shop/model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
-/* harmony import */ var src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/e-shop/model/filter */ "./src/app/e-shop/model/filter.ts");
-/* harmony import */ var src_app_shared_service_notifikacija_service__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! src/app/shared/service/notifikacija.service */ "./src/app/shared/service/notifikacija.service.ts");
-/* harmony import */ var src_app_shared_model_konstante__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! src/app/shared/model/konstante */ "./src/app/shared/model/konstante.ts");
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-
-
-
-
-
-
-var AntifrizComponent = /** @class */ (function () {
-    function AntifrizComponent(robaService, utilsService, loginServis, dataService, notifikacijaServis) {
-        this.robaService = robaService;
-        this.utilsService = utilsService;
-        this.loginServis = loginServis;
-        this.dataService = dataService;
-        this.notifikacijaServis = notifikacijaServis;
-        this.vrstaRobe = src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_7__["VrstaRobe"].ULJA;
-        // Paging and Sorting elements
-        this.rowsPerPage = 10;
-        this.pageIndex = 0;
-        this.sort = null;
-        this.filter = new src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_8__["Filter"]();
-        this.searchValue = '';
-        this.lastSearchValue = '';
-        this.ucitavanje = false;
-        this.pronadjenaRoba = true;
-        this.otvoriFilter = false;
-        // Tabela
-        this.columnDefinitions = [
-            { def: 'katbr', ifNotAuth: true },
-            { def: 'katbrpro', ifNotAuth: true },
-            { def: 'proizvodjac', ifNotAuth: true },
-            { def: 'naziv', ifNotAuth: true },
-            { def: 'rabat', ifNotAuth: false },
-            { def: 'cena', ifNotAuth: true },
-            { def: 'stanje', ifNotAuth: true },
-            { def: 'kolicina', ifNotAuth: false },
-            { def: 'korpa', ifNotAuth: false },
-            { def: 'u-korpi', ifNotAuth: false },
-        ];
-        this.alive = true;
-        this.vrstaUlja = 'antifriz';
-    }
-    AntifrizComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this.pocetnoPretrazivanje = true;
-        this.dataService.trenutnaKorpa.subscribe(function (korpa) { return _this.korpa = korpa; });
-        this.loginServis.ulogovaniPartner.subscribe(function (partner) { return _this.partner = partner; });
-        this.pronandjiSavAntifriz();
-    };
-    AntifrizComponent.prototype.getDisplayedColumns = function () {
-        var isPartner = this.partner.ppid != null;
-        var dataColumns = this.columnDefinitions
-            .filter(function (cd) { return isPartner || cd.ifNotAuth; })
-            .map(function (cd) { return cd.def; });
-        return dataColumns;
-    };
-    AntifrizComponent.prototype.pronandjiSavAntifriz = function () {
-        var _this = this;
-        this.ucitavanje = true;
-        this.pronadjenaRoba = true;
-        this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, null, null, null, this.vrstaUlja)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(function (error) {
-            if (error.status === 404) {
-                _this.pronadjenaRoba = false;
-                return rxjs__WEBPACK_IMPORTED_MODULE_2__["EMPTY"];
-            }
-            return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["throwError"])(error);
-        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["finalize"])(function () { return _this.ucitavanje = false; }))
-            .subscribe(function (res) {
-            _this.pronadjenaRoba = true;
-            _this.roba = res.content;
-            _this.dataSource = _this.roba;
-            _this.dataSource = _this.roba;
-            _this.rowsPerPage = res.size;
-            _this.pageIndex = res.number;
-            _this.tableLength = res.totalElements;
-        }, function (error) {
-            _this.roba = null;
-            console.log('Podnaci robu izbacilo je gresko');
-        });
-    };
-    AntifrizComponent.prototype.pronadjiEntitetePoPretrazi = function (searchValue) {
-        var _this = this;
-        this.pocetnoPretrazivanje = false;
-        this.lastSearchValue = searchValue;
-        this.ucitavanje = true;
-        this.dataSource = null;
-        this.ucitavanje = true;
-        this.pronadjenaRoba = true;
-        this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, searchValue, this.filter.naStanju, this.filter.proizvodjacId, this.vrstaUlja)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(function (error) {
-            if (error.status === 404) {
-                _this.pronadjenaRoba = false;
-                return rxjs__WEBPACK_IMPORTED_MODULE_2__["EMPTY"];
-            }
-            return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["throwError"])(error);
-        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["finalize"])(function () { return _this.ucitavanje = false; }))
-            .subscribe(function (res) {
-            _this.pronadjenaRoba = true;
-            _this.roba = res.content;
-            _this.dataSource = _this.roba;
-            _this.rowsPerPage = res.size;
-            _this.pageIndex = res.number;
-            _this.tableLength = res.totalElements;
-        }, function (error) {
-            _this.roba = null;
-            console.log('Podnaci robu izbacilo je gresku: ' + error);
-        });
-    };
-    AntifrizComponent.prototype.pronaciPoTrazenojReci = function (searchValue) {
-        if (this.dataSource) {
-            this.pageIndex = 0;
-        }
-        this.pronadjiEntitetePoPretrazi(searchValue);
-    };
-    AntifrizComponent.prototype.paginatorEvent = function (pageEvent) {
-        this.dataSource = [];
-        this.rowsPerPage = pageEvent.pageSize;
-        this.pageIndex = pageEvent.pageIndex;
-        this.pronadjiEntitetePoPretrazi(this.searchValue);
-    };
-    AntifrizComponent.prototype.sortData = function (sort) {
-        this.sort = sort;
-        this.pronadjiEntitetePoPretrazi(this.searchValue);
-    };
-    AntifrizComponent.prototype.toogleFilterDiv = function () {
-        this.otvoriFilter = !this.otvoriFilter;
-    };
-    AntifrizComponent.prototype.filtriraj = function (filter) {
-        if (this.dataSource) {
-            this.pageIndex = 0;
-        }
-        this.filter = filter;
-        this.pronadjiEntitetePoPretrazi(this.searchValue);
-    };
-    AntifrizComponent.prototype.dodajUKorpu = function (roba) {
-        var snackBarPoruka = this.utilsService.dodajUKorpu(roba);
-        this.notifikacijaServis.notify(snackBarPoruka, src_app_shared_model_konstante__WEBPACK_IMPORTED_MODULE_10__["MatSnackBarKlase"].Zelena);
-        this.utilsService.izbrisiRobuSaStanja(this.roba, roba);
-    };
-    AntifrizComponent.prototype.uKorpi = function (katBr) {
-        return this.utilsService.daLiJeRobaUKorpi(this.korpa, katBr);
-    };
-    AntifrizComponent = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
-            selector: 'app-antifriz',
-            template: __webpack_require__(/*! ./antifriz.component.html */ "./src/app/e-shop/roba/ulja/antifriz/antifriz.component.html"),
-            styles: [__webpack_require__(/*! ./antifriz.component.css */ "./src/app/e-shop/roba/ulja/antifriz/antifriz.component.css")]
-        }),
-        __metadata("design:paramtypes", [src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_3__["RobaService"],
-            src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__["AppUtilsService"],
-            src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_5__["LoginService"],
-            src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_6__["DataService"],
-            src_app_shared_service_notifikacija_service__WEBPACK_IMPORTED_MODULE_9__["NotifikacijaService"]])
-    ], AntifrizComponent);
-    return AntifrizComponent;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/e-shop/roba/ulja/industrijska/industrijska.component.css":
-/*!**************************************************************************!*\
-  !*** ./src/app/e-shop/roba/ulja/industrijska/industrijska.component.css ***!
-  \**************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = ".sirina-odabira-vrste {\r\n    width: 450px;\r\n    float: right;\r\n}\r\n.forms-input-industrija {\r\n    display: flex;\r\n    border-radius: 45px;\r\n    padding: 1px;\r\n    margin-top: 5px;\r\n    background: white;\r\n    border:2px solid grey;\r\n    width: 40%;\r\n    font-weight: bold;\r\n    text-align: center;\r\n}\r\n.col-lg {\r\n  padding: 0px !important;\r\n}\r\n@media only screen and (max-device-width :1025px) { \r\n\r\n    .mobilna-visina {\r\n      margin-top: 10px;\r\n    }\r\n\r\n    .forms-input-industrija {\r\n      display: flex;\r\n      border-radius: 45px;\r\n      padding: 1px;\r\n      margin-top: 30px;\r\n      background: white;\r\n      border:2px solid grey;\r\n      width: 80%;\r\n      font-weight: bold;\r\n      text-align: center;\r\n    }\r\n  }\r\n@media only screen and (max-device-width : 640px) { \r\n\r\n    .mobilna-visina {\r\n      margin-top: 10px;\r\n    }\r\n    \r\n    .sirina-odabira-vrste {\r\n        width: 100%;\r\n    }\r\n    .forms-input-industrija {\r\n      border-radius: 45px;\r\n      background: white;\r\n      border:2px solid grey;\r\n      width:100%;\r\n      margin-top: 5px;\r\n      font-weight: bold;\r\n      text-align: center;\r\n      display: flex;\r\n      }  \r\n}"
-
-/***/ }),
-
-/***/ "./src/app/e-shop/roba/ulja/industrijska/industrijska.component.html":
-/*!***************************************************************************!*\
-  !*** ./src/app/e-shop/roba/ulja/industrijska/industrijska.component.html ***!
-  \***************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"container-fluid\">\r\n    <div class=\"d-flex col-lg p-2 justify-content-center sirina-odabira-vrste\">\r\n        <div class=\"input-group-prepend\">\r\n            <label class=\"pozadina-glavna-100 boja-siva-400 input-group-text \" for=\"inputGroupSelect01\">Izaberite vrstu\r\n                maziva:</label>\r\n        </div>\r\n        <select class=\"custom-select mobilna-visina\" (change)=\"onChange()\" id=\"inputGroupSelect01\" [(ngModel)]=\"izabranaVrsta\">\r\n            <option *ngFor=\"let izabranaVrsta of vrste\" [value]=\"izabranaVrsta\">{{izabranaVrsta}}</option>\r\n        </select>\r\n    </div>\r\n    <div class=\"d-flex align-items-center col-lg justify-content-center\">\r\n        <div class=\"forms-input-industrija\">\r\n            <input class=\"flex-grow-1 search__input\" type=\"search\" [(ngModel)]=\"searchValue\" (keyup.enter)=\"pronaciPoTrazenojReci(searchValue)\" />\r\n            <div class=\"p-1\" (click)='pronaciPoTrazenojReci(searchValue)'>\r\n                <button mat-mini-fab class=pozadina-glavna-100>\r\n                    <mat-icon>search</mat-icon>\r\n                </button>\r\n            </div>\r\n            <div class=\"p-1\" (click)='toogleFilterDiv()'>\r\n                <button *ngIf=\"!otvoriFilter\" class=pozadina-glavna-100 mat-mini-fab>\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n                <button *ngIf=\"otvoriFilter\" mat-mini-fab class=\"button-glavni-200\">\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"d-flex justify-content-center\">\r\n        <label *ngIf=\"pocetnoPretrazivanje\">\r\n            <font color=\"#424242\"> Ukucajte kataloski broj</font>\r\n        </label>\r\n    </div>\r\n        \r\n    <!-- Filter komponenta izdvojena -->\r\n    <app-filter [industrijkoUljeEvent]=\"vrstaIndustijskihUlja.asObservable()\" [vrstaRobe]=\"vrstaRobe\" [vrstaUlja]=\"vrstaUlja\" [otvoriFilter]=\"otvoriFilter\" (filterEvent)=\"filtriraj($event)\">\r\n    </app-filter>\r\n\r\n    <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"!pronadjenaRoba\">\r\n        <i class=\"material-icons icon-size\">\r\n            error_outline\r\n        </i>\r\n        <h1 class=\"h1-upozorenje\">Artikal ne postoji</h1>\r\n    </div>\r\n\r\n    <div class=\"d-flex justify-content-center prazna-tabela\" *ngIf=\"ucitavanje\">\r\n        <mat-spinner></mat-spinner>\r\n    </div>\r\n    <div class=\"tabela-div\" *ngIf=\"dataSource != null && dataSource.length > 0\">\r\n        <p class=\"pdv\"><i>Sve cene su prikazane sa pdv-om.</i></p>\r\n        <table mat-table [dataSource]=\"dataSource\">\r\n            <!-- Kataloski broj Column -->\r\n            <ng-container matColumnDef=\"katbr\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.katbr}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Kataloski broj proizvodjaca Column -->\r\n            <ng-container matColumnDef=\"katbrpro\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj proizvodjaca </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p >\r\n                        {{roba.katbrpro}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Naziv Column -->\r\n            <ng-container matColumnDef=\"naziv\">\r\n                <th mat-header-cell *matHeaderCellDef> Naziv </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p >\r\n                        {{roba.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Proizvodjač Column -->\r\n            <ng-container matColumnDef=\"proizvodjac\">\r\n                <th mat-header-cell *matHeaderCellDef> Proizvodjač </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.proizvodjac.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"rabat\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Rabat </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.rabat | currency:\" \"}}%\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"cena\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Cena </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.cena | currency:\" \"}} RSD\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Stanje Column -->\r\n            <ng-container matColumnDef=\"stanje\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Stanje </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-zelena-50\">check_circle_outline</mat-icon>\r\n                    </div>\r\n                    <div *ngIf=\"roba.stanje == 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-crvena-50\">remove_circle_outline</mat-icon>\r\n                    </div>\r\n                </td>\r\n            </ng-container>\r\n\r\n\r\n            <!-- Kolicina Column -->\r\n            <ng-container matColumnDef=\"kolicina\">\r\n                <th mat-header-cell *matHeaderCellDef>Kolicina </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <input type=\"number\" min=\"0\" placeholder=\"0\" max=\"{{roba.stanje}}\" class=\"kolicina-labela\"\r\n                            [(ngModel)]=\"roba.kolicina\" />\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Kropa dugme Column -->\r\n            <ng-container matColumnDef=\"korpa\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <button mat-raised-button class=\"button-glavni-100\" (click)='dodajUKorpu(roba)'>Dodaj u korpu</button>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Da li ima na stanju ikona -->\r\n            <ng-container matColumnDef=\"u-korpi\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"uKorpi(roba.katbr)\">\r\n                        <mat-icon class=\"boja-crvena-50\">add_shopping_cart</mat-icon>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <tr mat-header-row *matHeaderRowDef=\"getDisplayedColumns()\"></tr>\r\n            <tr mat-row *matRowDef=\"let row; columns: getDisplayedColumns();\"></tr>\r\n        </table>\r\n        <mat-paginator #paginator [length]=\"tableLength\" [pageSize]=\"rowsPerPage\" [pageSizeOptions]=\"[5, 10, 25]\"\r\n            [pageIndex]=\"pageIndex\" [length]=\"tableLength\" [showFirstLastButtons]=\"true\" (page)=\"paginatorEvent($event)\">\r\n        </mat-paginator>\r\n    </div>\r\n</div>"
-
-/***/ }),
-
-/***/ "./src/app/e-shop/roba/ulja/industrijska/industrijska.component.ts":
-/*!*************************************************************************!*\
-  !*** ./src/app/e-shop/roba/ulja/industrijska/industrijska.component.ts ***!
-  \*************************************************************************/
-/*! exports provided: IndustrijskaComponent */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "IndustrijskaComponent", function() { return IndustrijskaComponent; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
-/* harmony import */ var src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/e-shop/service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
-/* harmony import */ var src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/e-shop/utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
-/* harmony import */ var src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/e-shop/service/login.service */ "./src/app/e-shop/service/login.service.ts");
-/* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
-/* harmony import */ var src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/e-shop/model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
-/* harmony import */ var src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/e-shop/model/filter */ "./src/app/e-shop/model/filter.ts");
-/* harmony import */ var src_app_shared_model_konstante__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! src/app/shared/model/konstante */ "./src/app/shared/model/konstante.ts");
-/* harmony import */ var src_app_shared_service_notifikacija_service__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! src/app/shared/service/notifikacija.service */ "./src/app/shared/service/notifikacija.service.ts");
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-
-
-
-
-
-
-var IndustrijskaComponent = /** @class */ (function () {
-    function IndustrijskaComponent(robaService, utilsService, loginServis, dataService, notifikacijaServis) {
-        this.robaService = robaService;
-        this.utilsService = utilsService;
-        this.loginServis = loginServis;
-        this.dataService = dataService;
-        this.notifikacijaServis = notifikacijaServis;
-        this.vrstaRobe = src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_7__["VrstaRobe"].ULJA;
-        // Paging and Sorting elements
-        this.rowsPerPage = 10;
-        this.pageIndex = 0;
-        this.sort = null;
-        this.filter = new src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_8__["Filter"]();
-        this.vrstaIndustijskihUlja = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
-        this.searchValue = '';
-        this.lastSearchValue = '';
-        this.ucitavanje = false;
-        this.pronadjenaRoba = true;
-        this.otvoriFilter = false;
-        // Tabela
-        this.columnDefinitions = [
-            { def: 'katbr', ifNotAuth: true },
-            { def: 'katbrpro', ifNotAuth: true },
-            { def: 'proizvodjac', ifNotAuth: true },
-            { def: 'naziv', ifNotAuth: true },
-            { def: 'rabat', ifNotAuth: false },
-            { def: 'cena', ifNotAuth: true },
-            { def: 'stanje', ifNotAuth: true },
-            { def: 'kolicina', ifNotAuth: false },
-            { def: 'korpa', ifNotAuth: false },
-            { def: 'u-korpi', ifNotAuth: false },
-        ];
-        this.vrste = ['Hidraulično ulje', 'Kompresorkso ulje', 'Reduktorsko ulje',
-            'Transformatorsko ulje', 'Turbinska ulja', 'Ulja za pneumatske alate', 'Ulja za klizne staze', 'Ulja za prenos toplote'];
-        this.izabranaVrsta = this.vrste[0];
-        this.vrsteUlja = [
-            { 'url': 'hidraulicna', 'naziv': 'Hidraulično ulje' },
-            { 'url': 'kompresorska', 'naziv': 'Kompresorkso ulje' },
-            { 'url': 'redutktorska', 'naziv': 'Reduktorsko ulje' },
-            { 'url': 'transformatorska', 'naziv': 'Transformatorsko ulje' },
-            { 'url': 'turbinska', 'naziv': 'Turbinska ulja' },
-            { 'url': 'pneumatska', 'naziv': 'Ulja za pneumatske alate' },
-            { 'url': 'klizna', 'naziv': 'Ulja za klizne staze' },
-            { 'url': 'prenosna', 'naziv': 'Ulja za prenos toplote' },
-        ];
-        this.alive = true;
-        this.vrstaUlja = 'hidraulicna';
-    }
-    IndustrijskaComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this.pocetnoPretrazivanje = true;
-        this.dataService.trenutnaKorpa.subscribe(function (korpa) { return _this.korpa = korpa; });
-        this.loginServis.ulogovaniPartner.subscribe(function (partner) { return _this.partner = partner; });
-        this.pronandjiUlja();
-    };
-    IndustrijskaComponent.prototype.getDisplayedColumns = function () {
-        var isPartner = this.partner.ppid != null;
-        var dataColumns = this.columnDefinitions
-            .filter(function (cd) { return isPartner || cd.ifNotAuth; })
-            .map(function (cd) { return cd.def; });
-        return dataColumns;
-    };
-    IndustrijskaComponent.prototype.pronandjiUlja = function () {
-        var _this = this;
-        this.dataSource = null;
-        this.ucitavanje = true;
-        this.pronadjenaRoba = true;
-        this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, null, null, null, this.vrstaUlja)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(function (error) {
-            if (error.status === 404) {
-                _this.pronadjenaRoba = false;
-                return rxjs__WEBPACK_IMPORTED_MODULE_2__["EMPTY"];
-            }
-            return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["throwError"])(error);
-        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["finalize"])(function () { return _this.ucitavanje = false; }))
-            .subscribe(function (res) {
-            _this.pronadjenaRoba = true;
-            _this.roba = res.content;
-            _this.dataSource = _this.roba;
-            _this.rowsPerPage = res.size;
-            _this.pageIndex = res.number;
-            _this.tableLength = res.totalElements;
-        }, function (error) {
-            _this.roba = null;
-            console.log('Podnaci robu izbacilo je gresko');
-        });
-    };
-    IndustrijskaComponent.prototype.pronadjiEntitetePoPretrazi = function (searchValue) {
-        var _this = this;
-        this.pocetnoPretrazivanje = false;
-        this.lastSearchValue = searchValue;
-        this.dataSource = null;
-        this.ucitavanje = true;
-        this.pronadjenaRoba = true;
-        this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, searchValue, this.filter.naStanju, this.filter.proizvodjacId, this.vrstaUlja)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(function (error) {
-            if (error.status === 404) {
-                _this.pronadjenaRoba = false;
-                return rxjs__WEBPACK_IMPORTED_MODULE_2__["EMPTY"];
-            }
-            return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["throwError"])(error);
-        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["finalize"])(function () { return _this.ucitavanje = false; }))
-            .subscribe(function (res) {
-            _this.pronadjenaRoba = true;
-            _this.roba = res.content;
-            _this.dataSource = _this.roba;
-            _this.rowsPerPage = res.size;
-            _this.pageIndex = res.number;
-            _this.tableLength = res.totalElements;
-        }, function (error) {
-            _this.roba = null;
-            console.log('Podnaci robu izbacilo je gresko');
-        });
-    };
-    IndustrijskaComponent.prototype.pronaciPoTrazenojReci = function (searchValue) {
-        if (this.dataSource) {
-            this.pageIndex = 0;
-        }
-        this.pronadjiEntitetePoPretrazi(searchValue);
-    };
-    IndustrijskaComponent.prototype.paginatorEvent = function (pageEvent) {
-        this.dataSource = [];
-        this.rowsPerPage = pageEvent.pageSize;
-        this.pageIndex = pageEvent.pageIndex;
-        this.pronadjiEntitetePoPretrazi(this.searchValue);
-    };
-    IndustrijskaComponent.prototype.sortData = function (sort) {
-        this.sort = sort;
-        this.pronadjiEntitetePoPretrazi(this.searchValue);
-    };
-    IndustrijskaComponent.prototype.toogleFilterDiv = function () {
-        this.otvoriFilter = !this.otvoriFilter;
-    };
-    IndustrijskaComponent.prototype.filtriraj = function (filter) {
-        if (this.dataSource) {
-            this.pageIndex = 0;
-        }
-        this.filter = filter;
-        this.pronadjiEntitetePoPretrazi(this.searchValue);
-    };
-    IndustrijskaComponent.prototype.onChange = function () {
-        var _this = this;
-        this.vrsteUlja.forEach(function (vrsta) {
-            if (vrsta.naziv === _this.izabranaVrsta) {
-                _this.vrstaUlja = vrsta.url;
-                _this.vrstaIndustijskihUlja.next(_this.vrstaUlja);
-            }
-        });
-        this.pronandjiUlja();
-    };
-    IndustrijskaComponent.prototype.dodajUKorpu = function (roba) {
-        var snackBarPoruka = this.utilsService.dodajUKorpu(roba);
-        this.notifikacijaServis.notify(snackBarPoruka, src_app_shared_model_konstante__WEBPACK_IMPORTED_MODULE_9__["MatSnackBarKlase"].Zelena);
-        this.utilsService.izbrisiRobuSaStanja(this.roba, roba);
-    };
-    IndustrijskaComponent.prototype.uKorpi = function (katBr) {
-        return this.utilsService.daLiJeRobaUKorpi(this.korpa, katBr);
-    };
-    IndustrijskaComponent = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
-            selector: 'app-industrijska',
-            template: __webpack_require__(/*! ./industrijska.component.html */ "./src/app/e-shop/roba/ulja/industrijska/industrijska.component.html"),
-            styles: [__webpack_require__(/*! ./industrijska.component.css */ "./src/app/e-shop/roba/ulja/industrijska/industrijska.component.css")]
-        }),
-        __metadata("design:paramtypes", [src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_3__["RobaService"],
-            src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__["AppUtilsService"],
-            src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_5__["LoginService"],
-            src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_6__["DataService"],
-            src_app_shared_service_notifikacija_service__WEBPACK_IMPORTED_MODULE_10__["NotifikacijaService"]])
-    ], IndustrijskaComponent);
-    return IndustrijskaComponent;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/e-shop/roba/ulja/kociona/kociona.component.css":
-/*!****************************************************************!*\
-  !*** ./src/app/e-shop/roba/ulja/kociona/kociona.component.css ***!
-  \****************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = ""
-
-/***/ }),
-
-/***/ "./src/app/e-shop/roba/ulja/kociona/kociona.component.html":
-/*!*****************************************************************!*\
-  !*** ./src/app/e-shop/roba/ulja/kociona/kociona.component.html ***!
-  \*****************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"container-fluid\">\r\n\r\n    <div class=\"d-flex align-items-center justify-content-center\">\r\n        <div class=\"forms-input\">\r\n            <input class=\"p-1 flex-grow-1 search__input\" type=\"search\" [(ngModel)]=\"searchValue\" (keyup.enter)=\"pronaciPoTrazenojReci(searchValue)\" />\r\n            <div class=\"p-1\" (click)='pronaciPoTrazenojReci(searchValue)'>\r\n                <button mat-mini-fab class=pozadina-glavna-100>\r\n                    <mat-icon>search</mat-icon>\r\n                </button>\r\n            </div>\r\n            <div class=\"p-1\" (click)='toogleFilterDiv()'>\r\n                <button *ngIf=\"!otvoriFilter\" class=pozadina-glavna-100 mat-mini-fab>\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n                <button *ngIf=\"otvoriFilter\" mat-mini-fab class=\"button-glavni-200\">\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"d-flex justify-content-center\">\r\n        <label *ngIf=\"pocetnoPretrazivanje\">\r\n            <font color=\"#424242\"> Ukucajte kataloski broj</font>\r\n        </label>\r\n    </div>\r\n        \r\n    <!-- Filter komponenta izdvojena -->\r\n    <app-filter [vrstaRobe]=\"vrstaRobe\" [vrstaUlja]=\"vrstaUlja\" [otvoriFilter]=\"otvoriFilter\" (filterEvent)=\"filtriraj($event)\">\r\n    </app-filter>\r\n\r\n    <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"!pronadjenaRoba\">\r\n        <i class=\"material-icons icon-size\">\r\n            error_outline\r\n        </i>\r\n        <h1 class=\"h1-upozorenje\">Artikal ne postoji</h1>\r\n    </div>\r\n\r\n    <div class=\"d-flex justify-content-center prazna-tabela\" *ngIf=\"ucitavanje\">\r\n        <mat-spinner></mat-spinner>\r\n    </div>\r\n    <div class=\"tabela-div\" *ngIf=\"dataSource != null && dataSource.length > 0\">\r\n        <p class=\"pdv\"><i>Sve cene su prikazane sa pdv-om.</i></p>\r\n        <table mat-table [dataSource]=\"dataSource\">\r\n            <!-- Kataloski broj Column -->\r\n            <ng-container matColumnDef=\"katbr\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.katbr}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Kataloski broj proizvodjaca Column -->\r\n            <ng-container matColumnDef=\"katbrpro\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj proizvodjaca </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p >\r\n                        {{roba.katbrpro}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Naziv Column -->\r\n            <ng-container matColumnDef=\"naziv\">\r\n                <th mat-header-cell *matHeaderCellDef> Naziv </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p >\r\n                        {{roba.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Proizvodjač Column -->\r\n            <ng-container matColumnDef=\"proizvodjac\">\r\n                <th mat-header-cell *matHeaderCellDef> Proizvodjač </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.proizvodjac.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"rabat\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Rabat </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.rabat | currency:\" \"}}%\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"cena\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Cena </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.cena | currency:\" \"}} RSD\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Stanje Column -->\r\n            <ng-container matColumnDef=\"stanje\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Stanje </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-zelena-50\">check_circle_outline</mat-icon>\r\n                    </div>\r\n                    <div *ngIf=\"roba.stanje == 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-crvena-50\">remove_circle_outline</mat-icon>\r\n                    </div>\r\n                </td>\r\n            </ng-container>\r\n\r\n\r\n            <!-- Kolicina Column -->\r\n            <ng-container matColumnDef=\"kolicina\">\r\n                <th mat-header-cell *matHeaderCellDef>Kolicina </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <input type=\"number\" min=\"0\" placeholder=\"0\" max=\"{{roba.stanje}}\" class=\"kolicina-labela\"\r\n                            [(ngModel)]=\"roba.kolicina\" />\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Kropa dugme Column -->\r\n            <ng-container matColumnDef=\"korpa\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <button mat-raised-button class=\"button-glavni-100\" (click)='dodajUKorpu(roba)'>Dodaj u korpu</button>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Da li ima na stanju ikona -->\r\n            <ng-container matColumnDef=\"u-korpi\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"uKorpi(roba.katbr)\">\r\n                        <mat-icon class=\"boja-crvena-50\">add_shopping_cart</mat-icon>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <tr mat-header-row *matHeaderRowDef=\"getDisplayedColumns()\"></tr>\r\n            <tr mat-row *matRowDef=\"let row; columns: getDisplayedColumns();\"></tr>\r\n        </table>\r\n        <mat-paginator #paginator [length]=\"tableLength\" [pageSize]=\"rowsPerPage\" [pageSizeOptions]=\"[5, 10, 25]\"\r\n            [pageIndex]=\"pageIndex\" [length]=\"tableLength\" [showFirstLastButtons]=\"true\" (page)=\"paginatorEvent($event)\">\r\n        </mat-paginator>\r\n    </div>\r\n</div>"
-
-/***/ }),
-
-/***/ "./src/app/e-shop/roba/ulja/kociona/kociona.component.ts":
-/*!***************************************************************!*\
-  !*** ./src/app/e-shop/roba/ulja/kociona/kociona.component.ts ***!
-  \***************************************************************/
-/*! exports provided: KocionaComponent */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "KocionaComponent", function() { return KocionaComponent; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
-/* harmony import */ var src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/e-shop/utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
-/* harmony import */ var src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/e-shop/service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
-/* harmony import */ var src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/e-shop/service/login.service */ "./src/app/e-shop/service/login.service.ts");
-/* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
-/* harmony import */ var src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/e-shop/model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
-/* harmony import */ var src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/e-shop/model/filter */ "./src/app/e-shop/model/filter.ts");
-/* harmony import */ var src_app_shared_model_konstante__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! src/app/shared/model/konstante */ "./src/app/shared/model/konstante.ts");
-/* harmony import */ var src_app_shared_service_notifikacija_service__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! src/app/shared/service/notifikacija.service */ "./src/app/shared/service/notifikacija.service.ts");
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-
-
-
-
-
-
-var KocionaComponent = /** @class */ (function () {
-    function KocionaComponent(robaService, utilsService, loginServis, dataService, notifikacijaServis) {
-        this.robaService = robaService;
-        this.utilsService = utilsService;
-        this.loginServis = loginServis;
-        this.dataService = dataService;
-        this.notifikacijaServis = notifikacijaServis;
-        this.vrstaRobe = src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_7__["VrstaRobe"].ULJA;
-        // Paging and Sorting elements
-        this.rowsPerPage = 10;
-        this.pageIndex = 0;
-        this.sort = null;
-        this.filter = new src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_8__["Filter"]();
-        this.searchValue = '';
-        this.lastSearchValue = '';
-        this.ucitavanje = false;
-        this.pronadjenaRoba = true;
-        this.otvoriFilter = false;
-        // Tabela
-        this.columnDefinitions = [
-            { def: 'katbr', ifNotAuth: true },
-            { def: 'katbrpro', ifNotAuth: true },
-            { def: 'proizvodjac', ifNotAuth: true },
-            { def: 'naziv', ifNotAuth: true },
-            { def: 'rabat', ifNotAuth: false },
-            { def: 'cena', ifNotAuth: true },
-            { def: 'stanje', ifNotAuth: true },
-            { def: 'kolicina', ifNotAuth: false },
-            { def: 'korpa', ifNotAuth: false },
-            { def: 'u-korpi', ifNotAuth: false },
-        ];
-        this.alive = true;
-        this.vrstaUlja = 'kociona';
-    }
-    KocionaComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this.pocetnoPretrazivanje = true;
-        this.dataService.trenutnaKorpa.subscribe(function (korpa) { return _this.korpa = korpa; });
-        this.loginServis.ulogovaniPartner.subscribe(function (partner) { return _this.partner = partner; });
-        this.pronandjiSvaKocionaUlja();
-    };
-    KocionaComponent.prototype.getDisplayedColumns = function () {
-        var isPartner = this.partner.ppid != null;
-        var dataColumns = this.columnDefinitions
-            .filter(function (cd) { return isPartner || cd.ifNotAuth; })
-            .map(function (cd) { return cd.def; });
-        return dataColumns;
-    };
-    KocionaComponent.prototype.pronandjiSvaKocionaUlja = function () {
-        var _this = this;
-        this.ucitavanje = true;
-        this.pronadjenaRoba = true;
-        this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, null, null, null, this.vrstaUlja)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(function (error) {
-            if (error.status === 404) {
-                _this.pronadjenaRoba = false;
-                return rxjs__WEBPACK_IMPORTED_MODULE_2__["EMPTY"];
-            }
-            return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["throwError"])(error);
-        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["finalize"])(function () { return _this.ucitavanje = false; }))
-            .subscribe(function (res) {
-            _this.pronadjenaRoba = true;
-            _this.roba = res.content;
-            _this.dataSource = _this.roba;
-            _this.rowsPerPage = res.size;
-            _this.pageIndex = res.number;
-            _this.tableLength = res.totalElements;
-        }, function (error) {
-            _this.roba = null;
-            console.log('Podnaci robu izbacilo je gresko');
-        });
-    };
-    KocionaComponent.prototype.pronadjiEntitetePoPretrazi = function (searchValue) {
-        var _this = this;
-        this.pocetnoPretrazivanje = false;
-        this.lastSearchValue = searchValue;
-        this.dataSource = null;
-        this.ucitavanje = true;
-        this.pronadjenaRoba = true;
-        this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, searchValue, this.filter.naStanju, this.filter.proizvodjacId, this.vrstaUlja)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(function (error) {
-            if (error.status === 404) {
-                _this.pronadjenaRoba = false;
-                return rxjs__WEBPACK_IMPORTED_MODULE_2__["EMPTY"];
-            }
-            return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["throwError"])(error);
-        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["finalize"])(function () { return _this.ucitavanje = false; }))
-            .subscribe(function (res) {
-            _this.pronadjenaRoba = true;
-            _this.roba = res.content;
-            _this.dataSource = _this.roba;
-            _this.rowsPerPage = res.size;
-            _this.pageIndex = res.number;
-            _this.tableLength = res.totalElements;
-        }, function (error) {
-            _this.roba = null;
-            console.log('Podnaci robu izbacilo je gresko');
-        });
-    };
-    KocionaComponent.prototype.pronaciPoTrazenojReci = function (searchValue) {
-        if (this.dataSource) {
-            this.pageIndex = 0;
-        }
-        this.pronadjiEntitetePoPretrazi(searchValue);
-    };
-    KocionaComponent.prototype.paginatorEvent = function (pageEvent) {
-        this.dataSource = [];
-        this.rowsPerPage = pageEvent.pageSize;
-        this.pageIndex = pageEvent.pageIndex;
-        this.pronadjiEntitetePoPretrazi(this.searchValue);
-    };
-    KocionaComponent.prototype.sortData = function (sort) {
-        this.sort = sort;
-        this.pronadjiEntitetePoPretrazi(this.searchValue);
-    };
-    KocionaComponent.prototype.toogleFilterDiv = function () {
-        this.otvoriFilter = !this.otvoriFilter;
-    };
-    KocionaComponent.prototype.filtriraj = function (filter) {
-        if (this.dataSource) {
-            this.pageIndex = 0;
-        }
-        this.filter = filter;
-        this.pronadjiEntitetePoPretrazi(this.searchValue);
-    };
-    KocionaComponent.prototype.dodajUKorpu = function (roba) {
-        var snackBarPoruka = this.utilsService.dodajUKorpu(roba);
-        this.notifikacijaServis.notify(snackBarPoruka, src_app_shared_model_konstante__WEBPACK_IMPORTED_MODULE_9__["MatSnackBarKlase"].Zelena);
-        this.utilsService.izbrisiRobuSaStanja(this.roba, roba);
-    };
-    KocionaComponent.prototype.uKorpi = function (katBr) {
-        return this.utilsService.daLiJeRobaUKorpi(this.korpa, katBr);
-    };
-    KocionaComponent = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
-            selector: 'app-kociona',
-            template: __webpack_require__(/*! ./kociona.component.html */ "./src/app/e-shop/roba/ulja/kociona/kociona.component.html"),
-            styles: [__webpack_require__(/*! ./kociona.component.css */ "./src/app/e-shop/roba/ulja/kociona/kociona.component.css")]
-        }),
-        __metadata("design:paramtypes", [src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_4__["RobaService"],
-            src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_3__["AppUtilsService"],
-            src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_5__["LoginService"],
-            src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_6__["DataService"],
-            src_app_shared_service_notifikacija_service__WEBPACK_IMPORTED_MODULE_10__["NotifikacijaService"]])
-    ], KocionaComponent);
-    return KocionaComponent;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/e-shop/roba/ulja/menjacko/menjacko.component.css":
-/*!******************************************************************!*\
-  !*** ./src/app/e-shop/roba/ulja/menjacko/menjacko.component.css ***!
-  \******************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = ""
-
-/***/ }),
-
-/***/ "./src/app/e-shop/roba/ulja/menjacko/menjacko.component.html":
-/*!*******************************************************************!*\
-  !*** ./src/app/e-shop/roba/ulja/menjacko/menjacko.component.html ***!
-  \*******************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"container-fluid\">\r\n\r\n    <div class=\"d-flex align-items-center justify-content-center\">\r\n        <div class=\"forms-input\">\r\n            <input class=\"p-1 flex-grow-1 search__input\" type=\"search\" [(ngModel)]=\"searchValue\" (keyup.enter)=\"pronaciPoTrazenojReci(searchValue)\" />\r\n            <div class=\"p-1\" (click)='pronaciPoTrazenojReci(searchValue)'>\r\n                <button mat-mini-fab class=pozadina-glavna-100>\r\n                    <mat-icon>search</mat-icon>\r\n                </button>\r\n            </div>\r\n            <div class=\"p-1\" (click)='toogleFilterDiv()'>\r\n                <button *ngIf=\"!otvoriFilter\" class=pozadina-glavna-100 mat-mini-fab>\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n                <button *ngIf=\"otvoriFilter\" mat-mini-fab class=\"button-glavni-200\">\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"d-flex justify-content-center\">\r\n        <label *ngIf=\"pocetnoPretrazivanje\">\r\n            <font color=\"#424242\"> Ukucajte kataloski broj</font>\r\n        </label>\r\n    </div>\r\n        \r\n    <!-- Filter komponenta izdvojena -->\r\n    <app-filter [vrstaRobe]=\"vrstaRobe\" [vrstaUlja]=\"vrstaUlja\" [otvoriFilter]=\"otvoriFilter\" (filterEvent)=\"filtriraj($event)\">\r\n    </app-filter>\r\n\r\n    <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"!pronadjenaRoba\">\r\n        <i class=\"material-icons icon-size\">\r\n            error_outline\r\n        </i>\r\n        <h1 class=\"h1-upozorenje\">Artikal ne postoji</h1>\r\n    </div>\r\n\r\n    <div class=\"d-flex justify-content-center prazna-tabela\" *ngIf=\"ucitavanje\">\r\n        <mat-spinner></mat-spinner>\r\n    </div>\r\n    <div class=\"tabela-div\" *ngIf=\"dataSource != null && dataSource.length > 0\">\r\n        <p class=\"pdv\"><i>Sve cene su prikazane sa pdv-om.</i></p>\r\n        <table mat-table [dataSource]=\"dataSource\">\r\n            <!-- Kataloski broj Column -->\r\n            <ng-container matColumnDef=\"katbr\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.katbr}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Kataloski broj proizvodjaca Column -->\r\n            <ng-container matColumnDef=\"katbrpro\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj proizvodjaca </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p >\r\n                        {{roba.katbrpro}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Naziv Column -->\r\n            <ng-container matColumnDef=\"naziv\">\r\n                <th mat-header-cell *matHeaderCellDef> Naziv </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p >\r\n                        {{roba.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Proizvodjač Column -->\r\n            <ng-container matColumnDef=\"proizvodjac\">\r\n                <th mat-header-cell *matHeaderCellDef> Proizvodjač </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.proizvodjac.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"rabat\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Rabat </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.rabat | currency:\" \"}}%\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"cena\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Cena </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.cena | currency:\" \"}} RSD\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Stanje Column -->\r\n            <ng-container matColumnDef=\"stanje\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Stanje </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-zelena-50\">check_circle_outline</mat-icon>\r\n                    </div>\r\n                    <div *ngIf=\"roba.stanje == 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-crvena-50\">remove_circle_outline</mat-icon>\r\n                    </div>\r\n                </td>\r\n            </ng-container>\r\n\r\n\r\n            <!-- Kolicina Column -->\r\n            <ng-container matColumnDef=\"kolicina\">\r\n                <th mat-header-cell *matHeaderCellDef>Kolicina </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <input type=\"number\" min=\"0\" placeholder=\"0\" placeholder=\"0\" max=\"{{roba.stanje}}\" class=\"kolicina-labela\"\r\n                            [(ngModel)]=\"roba.kolicina\" />\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Kropa dugme Column -->\r\n            <ng-container matColumnDef=\"korpa\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <button mat-raised-button class=\"button-glavni-100\" (click)='dodajUKorpu(roba)'>Dodaj u korpu</button>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Da li ima na stanju ikona -->\r\n            <ng-container matColumnDef=\"u-korpi\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"uKorpi(roba.katbr)\">\r\n                        <mat-icon class=\"boja-crvena-50\">add_shopping_cart</mat-icon>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <tr mat-header-row *matHeaderRowDef=\"getDisplayedColumns()\"></tr>\r\n            <tr mat-row *matRowDef=\"let row; columns: getDisplayedColumns();\"></tr>\r\n        </table>\r\n        <mat-paginator #paginator [length]=\"tableLength\" [pageSize]=\"rowsPerPage\" [pageSizeOptions]=\"[5, 10, 25]\"\r\n            [pageIndex]=\"pageIndex\" [length]=\"tableLength\" [showFirstLastButtons]=\"true\" (page)=\"paginatorEvent($event)\">\r\n        </mat-paginator>\r\n    </div>\r\n</div>"
-
-/***/ }),
-
-/***/ "./src/app/e-shop/roba/ulja/menjacko/menjacko.component.ts":
-/*!*****************************************************************!*\
-  !*** ./src/app/e-shop/roba/ulja/menjacko/menjacko.component.ts ***!
-  \*****************************************************************/
-/*! exports provided: MenjackoComponent */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MenjackoComponent", function() { return MenjackoComponent; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
-/* harmony import */ var src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/e-shop/service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
-/* harmony import */ var src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/e-shop/utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
-/* harmony import */ var src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/e-shop/service/login.service */ "./src/app/e-shop/service/login.service.ts");
-/* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
-/* harmony import */ var src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/e-shop/model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
-/* harmony import */ var src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/e-shop/model/filter */ "./src/app/e-shop/model/filter.ts");
-/* harmony import */ var src_app_shared_model_konstante__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! src/app/shared/model/konstante */ "./src/app/shared/model/konstante.ts");
-/* harmony import */ var src_app_shared_service_notifikacija_service__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! src/app/shared/service/notifikacija.service */ "./src/app/shared/service/notifikacija.service.ts");
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-
-
-
-
-
-
-var MenjackoComponent = /** @class */ (function () {
-    function MenjackoComponent(robaService, utilsService, loginServis, dataService, notifikacijaServis) {
-        this.robaService = robaService;
-        this.utilsService = utilsService;
-        this.loginServis = loginServis;
-        this.dataService = dataService;
-        this.notifikacijaServis = notifikacijaServis;
-        this.vrstaRobe = src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_7__["VrstaRobe"].ULJA;
-        // Paging and Sorting elements
-        this.rowsPerPage = 10;
-        this.pageIndex = 0;
-        this.sort = null;
-        this.searchValue = '';
-        this.lastSearchValue = '';
-        this.filter = new src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_8__["Filter"]();
-        this.ucitavanje = false;
-        this.pronadjenaRoba = true;
-        this.otvoriFilter = false;
-        // Tabela
-        this.columnDefinitions = [
-            { def: 'katbr', ifNotAuth: true },
-            { def: 'katbrpro', ifNotAuth: true },
-            { def: 'proizvodjac', ifNotAuth: true },
-            { def: 'rabat', ifNotAuth: false },
-            { def: 'naziv', ifNotAuth: true },
-            { def: 'cena', ifNotAuth: true },
-            { def: 'stanje', ifNotAuth: true },
-            { def: 'kolicina', ifNotAuth: false },
-            { def: 'korpa', ifNotAuth: false },
-            { def: 'u-korpi', ifNotAuth: false },
-        ];
-        this.alive = true;
-        this.vrstaUlja = 'menjacka';
-    }
-    MenjackoComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this.pocetnoPretrazivanje = true;
-        this.dataService.trenutnaKorpa.subscribe(function (korpa) { return _this.korpa = korpa; });
-        this.loginServis.ulogovaniPartner.subscribe(function (partner) { return _this.partner = partner; });
-        this.pronandjiSvaMenjackaUlja();
-    };
-    MenjackoComponent.prototype.getDisplayedColumns = function () {
-        var isPartner = this.partner.ppid != null;
-        var dataColumns = this.columnDefinitions
-            .filter(function (cd) { return isPartner || cd.ifNotAuth; })
-            .map(function (cd) { return cd.def; });
-        return dataColumns;
-    };
-    MenjackoComponent.prototype.pronandjiSvaMenjackaUlja = function () {
-        var _this = this;
-        this.ucitavanje = true;
-        this.pronadjenaRoba = true;
-        this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, null, null, null, this.vrstaUlja)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(function (error) {
-            if (error.status === 404) {
-                _this.pronadjenaRoba = false;
-                return rxjs__WEBPACK_IMPORTED_MODULE_2__["EMPTY"];
-            }
-            return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["throwError"])(error);
-        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["finalize"])(function () { return _this.ucitavanje = false; }))
-            .subscribe(function (res) {
-            _this.pronadjenaRoba = true;
-            _this.roba = res.content;
-            _this.dataSource = _this.roba;
-            _this.dataSource = _this.roba;
-            _this.rowsPerPage = res.size;
-            _this.pageIndex = res.number;
-            _this.tableLength = res.totalElements;
-        }, function (error) {
-            _this.roba = null;
-            console.log('Podnaci robu izbacilo je gresko');
-        });
-    };
-    MenjackoComponent.prototype.pronadjiEntitetePoPretrazi = function (searchValue) {
-        var _this = this;
-        this.pocetnoPretrazivanje = false;
-        this.lastSearchValue = searchValue;
-        this.ucitavanje = true;
-        this.dataSource = null;
-        this.ucitavanje = true;
-        this.pronadjenaRoba = true;
-        this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, searchValue, this.filter.naStanju, this.filter.proizvodjacId, this.vrstaUlja)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(function (error) {
-            if (error.status === 404) {
-                _this.pronadjenaRoba = false;
-                return rxjs__WEBPACK_IMPORTED_MODULE_2__["EMPTY"];
-            }
-            return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["throwError"])(error);
-        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["finalize"])(function () { return _this.ucitavanje = false; }))
-            .subscribe(function (res) {
-            _this.pronadjenaRoba = true;
-            _this.roba = res.content;
-            _this.dataSource = _this.roba;
-            _this.rowsPerPage = res.size;
-            _this.pageIndex = res.number;
-            _this.tableLength = res.totalElements;
-        }, function (error) {
-            _this.roba = null;
-            console.log('Podnaci robu izbacilo je gresko');
-        });
-    };
-    MenjackoComponent.prototype.pronaciPoTrazenojReci = function (searchValue) {
-        if (this.dataSource) {
-            this.pageIndex = 0;
-        }
-        this.pronadjiEntitetePoPretrazi(searchValue);
-    };
-    MenjackoComponent.prototype.paginatorEvent = function (pageEvent) {
-        this.dataSource = [];
-        this.rowsPerPage = pageEvent.pageSize;
-        this.pageIndex = pageEvent.pageIndex;
-        this.pronadjiEntitetePoPretrazi(this.searchValue);
-    };
-    MenjackoComponent.prototype.sortData = function (sort) {
-        this.sort = sort;
-        this.pronadjiEntitetePoPretrazi(this.searchValue);
-    };
-    MenjackoComponent.prototype.toogleFilterDiv = function () {
-        this.otvoriFilter = !this.otvoriFilter;
-    };
-    MenjackoComponent.prototype.filtriraj = function (filter) {
-        if (this.dataSource) {
-            this.pageIndex = 0;
-        }
-        this.filter = filter;
-        this.pronadjiEntitetePoPretrazi(this.searchValue);
-    };
-    MenjackoComponent.prototype.dodajUKorpu = function (roba) {
-        var snackBarPoruka = this.utilsService.dodajUKorpu(roba);
-        this.notifikacijaServis.notify(snackBarPoruka, src_app_shared_model_konstante__WEBPACK_IMPORTED_MODULE_9__["MatSnackBarKlase"].Zelena);
-        this.utilsService.izbrisiRobuSaStanja(this.roba, roba);
-    };
-    MenjackoComponent.prototype.uKorpi = function (katBr) {
-        return this.utilsService.daLiJeRobaUKorpi(this.korpa, katBr);
-    };
-    MenjackoComponent = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
-            selector: 'app-menjacko',
-            template: __webpack_require__(/*! ./menjacko.component.html */ "./src/app/e-shop/roba/ulja/menjacko/menjacko.component.html"),
-            styles: [__webpack_require__(/*! ./menjacko.component.css */ "./src/app/e-shop/roba/ulja/menjacko/menjacko.component.css")]
-        }),
-        __metadata("design:paramtypes", [src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_3__["RobaService"],
-            src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__["AppUtilsService"],
-            src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_5__["LoginService"],
-            src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_6__["DataService"],
-            src_app_shared_service_notifikacija_service__WEBPACK_IMPORTED_MODULE_10__["NotifikacijaService"]])
-    ], MenjackoComponent);
-    return MenjackoComponent;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/e-shop/roba/ulja/motorna/motorna.component.css":
-/*!****************************************************************!*\
-  !*** ./src/app/e-shop/roba/ulja/motorna/motorna.component.css ***!
-  \****************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = ""
-
-/***/ }),
-
-/***/ "./src/app/e-shop/roba/ulja/motorna/motorna.component.html":
-/*!*****************************************************************!*\
-  !*** ./src/app/e-shop/roba/ulja/motorna/motorna.component.html ***!
-  \*****************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"container-fluid\">\r\n\r\n    <div class=\"d-flex align-items-center justify-content-center\">\r\n        <div class=\"forms-input\">\r\n            <input class=\"p-1 flex-grow-1 search__input\" type=\"search\" [(ngModel)]=\"searchValue\" (keyup.enter)=\"pronaciPoTrazenojReci(searchValue)\" />\r\n            <div class=\"p-1\" (click)='pronaciPoTrazenojReci(searchValue)'>\r\n                <button mat-mini-fab class=pozadina-glavna-100>\r\n                    <mat-icon>search</mat-icon>\r\n                </button>\r\n            </div>\r\n            <div class=\"p-1\" (click)='toogleFilterDiv()'>\r\n                <button *ngIf=\"!otvoriFilter\" class=pozadina-glavna-100 mat-mini-fab>\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n                <button *ngIf=\"otvoriFilter\" mat-mini-fab class=\"button-glavni-200\">\r\n                    <mat-icon>view_headline</mat-icon>\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"d-flex justify-content-center\">\r\n        <label *ngIf=\"pocetnoPretrazivanje\">\r\n            <font color=\"#424242\"> Ukucajte kataloski broj</font>\r\n        </label>\r\n    </div>\r\n        \r\n    <!-- Filter komponenta izdvojena -->\r\n    <app-filter [vrstaRobe]=\"vrstaRobe\" [vrstaUlja]=\"vrstaUlja\" [otvoriFilter]=\"otvoriFilter\" (filterEvent)=\"filtriraj($event)\">\r\n    </app-filter>\r\n\r\n    <div class=\"d-flex flex-column prazna-tabela\" *ngIf=\"!pronadjenaRoba\">\r\n        <i class=\"material-icons icon-size\">\r\n            error_outline\r\n        </i>\r\n        <h1 class=\"h1-upozorenje\">Artikal ne postoji</h1>\r\n    </div>\r\n\r\n    <div class=\"d-flex justify-content-center prazna-tabela\" *ngIf=\"ucitavanje\">\r\n        <mat-spinner></mat-spinner>\r\n    </div>\r\n    <div class=\"tabela-div\" *ngIf=\"dataSource != null && dataSource.length > 0\">\r\n        <p class=\"pdv\"><i>Sve cene su prikazane sa pdv-om.</i></p>\r\n        <table mat-table [dataSource]=\"dataSource\">\r\n            <!-- Kataloski broj Column -->\r\n            <ng-container matColumnDef=\"katbr\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.katbr}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Kataloski broj proizvodjaca Column -->\r\n            <ng-container matColumnDef=\"katbrpro\">\r\n                <th mat-header-cell *matHeaderCellDef> Kataloski broj proizvodjaca </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p >\r\n                        {{roba.katbrpro}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Naziv Column -->\r\n            <ng-container matColumnDef=\"naziv\">\r\n                <th mat-header-cell *matHeaderCellDef> Naziv </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p >\r\n                        {{roba.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Proizvodjač Column -->\r\n            <ng-container matColumnDef=\"proizvodjac\">\r\n                <th mat-header-cell *matHeaderCellDef> Proizvodjač </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2\">\r\n                        {{roba.proizvodjac.naziv}}\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"rabat\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Rabat </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.rabat | currency:\" \"}}%\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Cena Column -->\r\n            <ng-container matColumnDef=\"cena\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Cena </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <p class=\"mat-body-2 text-right iznos-margin\">\r\n                        {{roba.cena | currency:\" \"}} RSD\r\n                    </p>\r\n                </td>\r\n            </ng-container>\r\n\r\n            <!-- Stanje Column -->\r\n            <ng-container matColumnDef=\"stanje\">\r\n                <th mat-header-cell *matHeaderCellDef class=\"text-center\"> Stanje </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-zelena-50\">check_circle_outline</mat-icon>\r\n                    </div>\r\n                    <div *ngIf=\"roba.stanje == 0\" class=\"text-center\">\r\n                        <mat-icon class=\"boja-crvena-50\">remove_circle_outline</mat-icon>\r\n                    </div>\r\n                </td>\r\n            </ng-container>\r\n\r\n\r\n            <!-- Kolicina Column -->\r\n            <ng-container matColumnDef=\"kolicina\">\r\n                <th mat-header-cell *matHeaderCellDef>Kolicina </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <input type=\"number\" min=\"0\" placeholder=\"0\" max=\"{{roba.stanje}}\" class=\"kolicina-labela\"\r\n                            [(ngModel)]=\"roba.kolicina\" />\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Kropa dugme Column -->\r\n            <ng-container matColumnDef=\"korpa\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"roba.stanje > 0\">\r\n                        <button mat-raised-button class=\"button-glavni-100\" (click)='dodajUKorpu(roba)'>Dodaj u korpu</button>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <!-- Da li ima na stanju ikona -->\r\n            <ng-container matColumnDef=\"u-korpi\">\r\n                <th mat-header-cell *matHeaderCellDef> </th>\r\n                <td mat-cell *matCellDef=\"let roba\">\r\n                    <div *ngIf=\"uKorpi(roba.katbr)\">\r\n                        <mat-icon class=\"boja-crvena-50\">add_shopping_cart</mat-icon>\r\n                    </div>\r\n            </ng-container>\r\n\r\n            <tr mat-header-row *matHeaderRowDef=\"getDisplayedColumns()\"></tr>\r\n            <tr mat-row *matRowDef=\"let row; columns: getDisplayedColumns();\"></tr>\r\n        </table>\r\n        <mat-paginator #paginator [length]=\"tableLength\" [pageSize]=\"rowsPerPage\" [pageSizeOptions]=\"[5, 10, 25]\"\r\n            [pageIndex]=\"pageIndex\" [length]=\"tableLength\" [showFirstLastButtons]=\"true\" (page)=\"paginatorEvent($event)\">\r\n        </mat-paginator>\r\n    </div>\r\n</div>"
-
-/***/ }),
-
-/***/ "./src/app/e-shop/roba/ulja/motorna/motorna.component.ts":
-/*!***************************************************************!*\
-  !*** ./src/app/e-shop/roba/ulja/motorna/motorna.component.ts ***!
-  \***************************************************************/
-/*! exports provided: MotornaComponent */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MotornaComponent", function() { return MotornaComponent; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
-/* harmony import */ var src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/e-shop/service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
-/* harmony import */ var src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/e-shop/utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
-/* harmony import */ var src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/e-shop/service/login.service */ "./src/app/e-shop/service/login.service.ts");
-/* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
-/* harmony import */ var src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/e-shop/model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
-/* harmony import */ var src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/e-shop/model/filter */ "./src/app/e-shop/model/filter.ts");
-/* harmony import */ var src_app_shared_model_konstante__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! src/app/shared/model/konstante */ "./src/app/shared/model/konstante.ts");
-/* harmony import */ var src_app_shared_service_notifikacija_service__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! src/app/shared/service/notifikacija.service */ "./src/app/shared/service/notifikacija.service.ts");
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-
-
-
-
-
-
-var MotornaComponent = /** @class */ (function () {
-    function MotornaComponent(robaService, utilsService, loginServis, dataService, notifikacijaServis) {
-        this.robaService = robaService;
-        this.utilsService = utilsService;
-        this.loginServis = loginServis;
-        this.dataService = dataService;
-        this.notifikacijaServis = notifikacijaServis;
-        this.vrstaRobe = src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_7__["VrstaRobe"].ULJA;
-        // Paging and Sorting elements
-        this.rowsPerPage = 10;
-        this.pageIndex = 0;
-        this.sort = null;
-        this.filter = new src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_8__["Filter"]();
-        this.searchValue = '';
-        this.lastSearchValue = '';
-        this.ucitavanje = false;
-        this.pronadjenaRoba = true;
-        this.otvoriFilter = false;
-        // Tabela
-        this.columnDefinitions = [
-            { def: 'katbr', ifNotAuth: true },
-            { def: 'katbrpro', ifNotAuth: true },
-            { def: 'proizvodjac', ifNotAuth: true },
-            { def: 'naziv', ifNotAuth: true },
-            { def: 'rabat', ifNotAuth: false },
-            { def: 'cena', ifNotAuth: true },
-            { def: 'stanje', ifNotAuth: true },
-            { def: 'kolicina', ifNotAuth: false },
-            { def: 'korpa', ifNotAuth: false },
-            { def: 'u-korpi', ifNotAuth: false },
-        ];
-        this.alive = true;
-        this.vrstaUlja = 'motorna';
-    }
-    MotornaComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this.pocetnoPretrazivanje = true;
-        this.dataService.trenutnaKorpa.subscribe(function (korpa) { return _this.korpa = korpa; });
-        this.loginServis.ulogovaniPartner.subscribe(function (partner) { return _this.partner = partner; });
-        this.pronandjiSvoMotornoUlje();
-    };
-    MotornaComponent.prototype.getDisplayedColumns = function () {
-        var isPartner = this.partner.ppid != null;
-        var dataColumns = this.columnDefinitions
-            .filter(function (cd) { return isPartner || cd.ifNotAuth; })
-            .map(function (cd) { return cd.def; });
-        return dataColumns;
-    };
-    MotornaComponent.prototype.pronandjiSvoMotornoUlje = function () {
-        var _this = this;
-        this.ucitavanje = true;
-        this.pronadjenaRoba = true;
-        this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, null, null, null, this.vrstaUlja)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(function (error) {
-            if (error.status === 404) {
-                _this.pronadjenaRoba = false;
-                return rxjs__WEBPACK_IMPORTED_MODULE_2__["EMPTY"];
-            }
-            return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["throwError"])(error);
-        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["finalize"])(function () { return _this.ucitavanje = false; }))
-            .subscribe(function (res) {
-            _this.pronadjenaRoba = true;
-            _this.roba = res.content;
-            _this.dataSource = _this.roba;
-            _this.dataSource = _this.roba;
-            _this.rowsPerPage = res.size;
-            _this.pageIndex = res.number;
-            _this.tableLength = res.totalElements;
-        }, function (error) {
-            _this.roba = null;
-            console.log('Podnaci robu izbacilo je gresko');
-        });
-    };
-    MotornaComponent.prototype.pronadjiEntitetePoPretrazi = function (searchValue) {
-        var _this = this;
-        this.pocetnoPretrazivanje = false;
-        this.lastSearchValue = searchValue;
-        this.ucitavanje = true;
-        this.dataSource = null;
-        this.ucitavanje = true;
-        this.pronadjenaRoba = true;
-        this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, searchValue, this.filter.naStanju, this.filter.proizvodjacId, this.vrstaUlja)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(function (error) {
-            if (error.status === 404) {
-                _this.pronadjenaRoba = false;
-                return rxjs__WEBPACK_IMPORTED_MODULE_2__["EMPTY"];
-            }
-            return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["throwError"])(error);
-        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["finalize"])(function () { return _this.ucitavanje = false; }))
-            .subscribe(function (res) {
-            _this.pronadjenaRoba = true;
-            _this.roba = res.content;
-            _this.dataSource = _this.roba;
-            _this.rowsPerPage = res.size;
-            _this.pageIndex = res.number;
-            _this.tableLength = res.totalElements;
-        }, function (error) {
-            _this.roba = null;
-            console.log('Podnaci robu izbacilo je gresko');
-        });
-    };
-    MotornaComponent.prototype.pronaciPoTrazenojReci = function (searchValue) {
-        if (this.dataSource) {
-            this.pageIndex = 0;
-        }
-        this.pronadjiEntitetePoPretrazi(searchValue);
-    };
-    MotornaComponent.prototype.paginatorEvent = function (pageEvent) {
-        this.dataSource = [];
-        this.rowsPerPage = pageEvent.pageSize;
-        this.pageIndex = pageEvent.pageIndex;
-        this.pronadjiEntitetePoPretrazi(this.searchValue);
-    };
-    MotornaComponent.prototype.sortData = function (sort) {
-        this.sort = sort;
-        this.pronadjiEntitetePoPretrazi(this.searchValue);
-    };
-    MotornaComponent.prototype.toogleFilterDiv = function () {
-        this.otvoriFilter = !this.otvoriFilter;
-    };
-    MotornaComponent.prototype.filtriraj = function (filter) {
-        if (this.dataSource) {
-            this.pageIndex = 0;
-        }
-        this.filter = filter;
-        this.pronadjiEntitetePoPretrazi(this.searchValue);
-    };
-    MotornaComponent.prototype.dodajUKorpu = function (roba) {
-        var snackBarPoruka = this.utilsService.dodajUKorpu(roba);
-        this.notifikacijaServis.notify(snackBarPoruka, src_app_shared_model_konstante__WEBPACK_IMPORTED_MODULE_9__["MatSnackBarKlase"].Zelena);
-        this.utilsService.izbrisiRobuSaStanja(this.roba, roba);
-    };
-    MotornaComponent.prototype.uKorpi = function (katBr) {
-        return this.utilsService.daLiJeRobaUKorpi(this.korpa, katBr);
-    };
-    MotornaComponent = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
-            selector: 'app-motorna',
-            template: __webpack_require__(/*! ./motorna.component.html */ "./src/app/e-shop/roba/ulja/motorna/motorna.component.html"),
-            styles: [__webpack_require__(/*! ./motorna.component.css */ "./src/app/e-shop/roba/ulja/motorna/motorna.component.css")]
-        }),
-        __metadata("design:paramtypes", [src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_3__["RobaService"],
-            src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__["AppUtilsService"],
-            src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_5__["LoginService"],
-            src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_6__["DataService"],
-            src_app_shared_service_notifikacija_service__WEBPACK_IMPORTED_MODULE_10__["NotifikacijaService"]])
-    ], MotornaComponent);
-    return MotornaComponent;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/e-shop/roba/ulja/ulja.component.css":
-/*!*****************************************************!*\
-  !*** ./src/app/e-shop/roba/ulja/ulja.component.css ***!
-  \*****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = ".industrijski-stil {\r\n    width: 100%;\r\n    height: 100%;\r\n}\r\n.spusti {\r\n    margin-top: 0px;\r\n}\r\n@media only screen and (max-device-width :1025px) { \r\n    .spusti {\r\n        margin-top: 30px;\r\n    }\r\n}\r\n@media only screen and (max-device-width : 1000px) { \r\n    .spusti {\r\n        margin-top: 10px;\r\n    }\r\n}"
-
-/***/ }),
-
-/***/ "./src/app/e-shop/roba/ulja/ulja.component.html":
-/*!******************************************************!*\
-  !*** ./src/app/e-shop/roba/ulja/ulja.component.html ***!
-  \******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<main class=\"spusti\">\r\n    <mat-tab-group mat-stretch-tabs>\r\n        <mat-tab label=\"Motorna ulja\">\r\n            <app-motorna></app-motorna>\r\n        </mat-tab>\r\n        <mat-tab label=\"Menjačka ulja\">\r\n            <app-menjacko></app-menjacko>\r\n        </mat-tab>\r\n        <mat-tab label=\"Kočiona ulja\">\r\n            <app-kociona></app-kociona>\r\n        </mat-tab>\r\n        <mat-tab label=\"Antifiriz\">\r\n            <app-antifriz></app-antifriz>\r\n        </mat-tab>\r\n        <mat-tab label=\"Industrijska ulja\">\r\n            <app-industrijska></app-industrijska>\r\n        </mat-tab>\r\n    </mat-tab-group>\r\n</main>"
-
-/***/ }),
-
-/***/ "./src/app/e-shop/roba/ulja/ulja.component.ts":
-/*!****************************************************!*\
-  !*** ./src/app/e-shop/roba/ulja/ulja.component.ts ***!
-  \****************************************************/
-/*! exports provided: UljaComponent */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UljaComponent", function() { return UljaComponent; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-var UljaComponent = /** @class */ (function () {
-    function UljaComponent() {
-        this.selectedTab = 0;
-    }
-    UljaComponent.prototype.changeTab = function (tabIndex) {
-        this.selectedTab = tabIndex;
-    };
-    UljaComponent = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
-            selector: 'app-ulja',
-            template: __webpack_require__(/*! ./ulja.component.html */ "./src/app/e-shop/roba/ulja/ulja.component.html"),
-            styles: [__webpack_require__(/*! ./ulja.component.css */ "./src/app/e-shop/roba/ulja/ulja.component.css")]
-        })
-    ], UljaComponent);
-    return UljaComponent;
 }());
 
 

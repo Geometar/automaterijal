@@ -5,18 +5,18 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './shared/material/material.module';
 import { NavigacijaComponent } from './navigacija/navigacija.component';
-import { RobaComponent } from './e-shop/roba/roba.component';
+import { RobaComponent } from './e-shop/magacin/roba/roba.component';
 import { HttpModule } from '@angular/http';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FilteriComponent } from './e-shop/roba/filteri/filteri.component';
-import { AkumulatoriComponent } from './e-shop/roba/akumulatori/akumulatori.component';
-import { UljaComponent } from './e-shop/roba/ulja/ulja.component';
-import { MotornaComponent } from './e-shop/roba/ulja/motorna/motorna.component';
-import { MenjackoComponent } from './e-shop/roba/ulja/menjacko/menjacko.component';
-import { KocionaComponent } from './e-shop/roba/ulja/kociona/kociona.component';
-import { AntifrizComponent } from './e-shop/roba/ulja/antifriz/antifriz.component';
-import { IndustrijskaComponent } from './e-shop/roba/ulja/industrijska/industrijska.component';
+import { FilteriComponent } from './e-shop/magacin/filteri/filteri.component';
+import { AkumulatoriComponent } from './e-shop/magacin/akumulatori/akumulatori.component';
+import { UljaComponent } from './e-shop/magacin/ulja/ulja.component';
+import { MotornaComponent } from './e-shop/magacin/ulja/motorna/motorna.component';
+import { MenjackoComponent } from './e-shop/magacin/ulja/menjacko/menjacko.component';
+import { KocionaComponent } from './e-shop/magacin/ulja/kociona/kociona.component';
+import { AntifrizComponent } from './e-shop/magacin/ulja/antifriz/antifriz.component';
+import { IndustrijskaComponent } from './e-shop/magacin/ulja/industrijska/industrijska.component';
 import { KorpaComponent } from './e-shop/korpa/korpa.component';
 import { LoginComponent } from './e-shop/login/login.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -25,8 +25,8 @@ import { TranslatePipe } from './shared/pipes/PrevodilacPipe';
 import { EmptyPipe } from './shared/pipes/EmptyPipe';
 import { FakturaDetaljiComponent } from './e-shop/faktura/faktura-detalji/faktura-detalji.component';
 import { DatePipe } from './shared/pipes/DatePipe';
-import { OstaloComponent } from './e-shop/roba/ostalo/ostalo.component';
-import { KategorijaSpecificnaComponent } from './e-shop/roba/ostalo/kategorija-specificna/kategorija-specificna.component';
+import { OstaloComponent } from './e-shop/magacin/ostalo/ostalo.component';
+import { KategorijaSpecificnaComponent } from './e-shop/magacin/ostalo/kategorija-specificna/kategorija-specificna.component';
 import { PartnerComponent } from './e-shop/partner/partner.component';
 import { DasboardComponent } from './e-commerce/dasboard/dasboard.component';
 import { ResetovanjeSfireComponent } from './e-shop/resetovanje-sfire/resetovanje-sfire.component';
@@ -46,7 +46,8 @@ import { VestiComponent } from './e-commerce/dasboard/vesti/vesti.component';
 import { PonudaComponent } from './e-commerce/dasboard/ponuda/ponuda.component';
 import { KampanjaComponent } from './e-commerce/dasboard/kampanja/kampanja.component';
 import { UpitModalComponent } from './shared/modal/upit-modal/upit-modal.component';
-import { FilterComponent } from './e-shop/roba/shared-components/filter/filter.component';
+import { FilterComponent } from './e-shop/magacin/shared-components/filter/filter.component';
+import { TabelaComponent } from './e-shop/magacin/shared-components/tabela/tabela.component';
 
 @NgModule({
   declarations: [
@@ -87,7 +88,8 @@ import { FilterComponent } from './e-shop/roba/shared-components/filter/filter.c
     PonudaComponent,
     KampanjaComponent,
     UpitModalComponent,
-    FilterComponent
+    FilterComponent,
+    TabelaComponent
   ],
   imports: [
     BrowserModule,

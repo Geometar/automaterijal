@@ -1,0 +1,113 @@
+<div class="tabela-div" *ngIf="dataSource != null && dataSource.length > 0">
+  <p class="pdv"><i>Sve cene su prikazane sa pdv-om.</i></p>
+  <table mat-table [dataSource]="dataSource">
+    <!-- Kataloski broj Column -->
+    <ng-container matColumnDef="katbr">
+      <th mat-header-cell *matHeaderCellDef> Kataloski broj </th>
+      <td mat-cell *matCellDef="let roba">
+        <p class="mat-body-2">
+          {{roba.katbr}}
+        </p>
+      </td>
+    </ng-container>
+
+    <!-- Kataloski broj proizvodjaca Column -->
+    <ng-container matColumnDef="katbrpro">
+      <th mat-header-cell *matHeaderCellDef> Kataloski broj proizvodjaca </th>
+      <td mat-cell *matCellDef="let roba">
+        <p>
+          {{roba.katbrpro}}
+        </p>
+      </td>
+    </ng-container>
+
+    <!-- Naziv Column -->
+    <ng-container matColumnDef="naziv">
+      <th mat-header-cell *matHeaderCellDef> Naziv </th>
+      <td mat-cell *matCellDef="let roba">
+        <p>
+          {{roba.naziv}}
+        </p>
+      </td>
+    </ng-container>
+
+    <!-- Proizvodjač Column -->
+    <ng-container matColumnDef="proizvodjac">
+      <th mat-header-cell *matHeaderCellDef> Proizvodjač </th>
+      <td mat-cell *matCellDef="let roba">
+        <p class="mat-body-2">
+          {{roba.proizvodjac.naziv}}
+        </p>
+      </td>
+    </ng-container>
+
+    <!-- Cena Column -->
+    <ng-container matColumnDef="rabat">
+      <th mat-header-cell *matHeaderCellDef class="text-center"> Rabat </th>
+      <td mat-cell *matCellDef="let roba">
+        <p class="mat-body-2 text-right iznos-margin">
+          {{roba.rabat | currency:" "}}%
+        </p>
+      </td>
+    </ng-container>
+
+    <!-- Cena Column -->
+    <ng-container matColumnDef="cena">
+      <th mat-header-cell *matHeaderCellDef class="text-center"> Cena </th>
+      <td mat-cell *matCellDef="let roba">
+        <p class="mat-body-2 text-right iznos-margin">
+          {{roba.cena | currency:" "}} RSD
+        </p>
+      </td>
+    </ng-container>
+
+    <!-- Stanje Column -->
+    <ng-container matColumnDef="stanje">
+      <th mat-header-cell *matHeaderCellDef class="text-center"> Stanje </th>
+      <td mat-cell *matCellDef="let roba">
+        <div *ngIf="roba.stanje > 0" class="text-center">
+          <mat-icon class="boja-zelena-50">check_circle_outline</mat-icon>
+        </div>
+        <div *ngIf="roba.stanje == 0" class="text-center">
+          <mat-icon class="boja-crvena-50">remove_circle_outline</mat-icon>
+        </div>
+      </td>
+    </ng-container>
+
+
+    <!-- Kolicina Column -->
+    <ng-container matColumnDef="kolicina">
+      <th mat-header-cell *matHeaderCellDef>Kolicina </th>
+      <td mat-cell *matCellDef="let roba">
+        <div *ngIf="roba.stanje > 0">
+          <input type="number" min="0" placeholder="0" max="{{roba.stanje}}" class="kolicina-labela"
+            [(ngModel)]="roba.kolicina" />
+        </div>
+    </ng-container>
+
+    <!-- Kropa dugme Column -->
+    <ng-container matColumnDef="korpa">
+      <th mat-header-cell *matHeaderCellDef> </th>
+      <td mat-cell *matCellDef="let roba">
+        <div *ngIf="roba.stanje > 0">
+          <button mat-raised-button class="button-glavni-100" (click)='dodajUKorpu(roba)'>Dodaj u
+            korpu</button>
+        </div>
+    </ng-container>
+
+    <!-- Da li ima na stanju ikona -->
+    <ng-container matColumnDef="u-korpi">
+      <th mat-header-cell *matHeaderCellDef> </th>
+      <td mat-cell *matCellDef="let roba">
+        <div *ngIf="uKorpi(roba.katbr)">
+          <mat-icon class="boja-crvena-50">add_shopping_cart</mat-icon>
+        </div>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="getDisplayedColumns()"></tr>
+    <tr mat-row *matRowDef="let row; columns: getDisplayedColumns();"></tr>
+  </table>
+  <mat-paginator #paginator [length]="tableLength" [pageSize]="rowsPerPage" [pageSizeOptions]="[5, 10, 25]"
+    [pageIndex]="pageIndex" [length]="tableLength" [showFirstLastButtons]="true" (page)="paginatorEvent($event)">
+  </mat-paginator>
+</div>
