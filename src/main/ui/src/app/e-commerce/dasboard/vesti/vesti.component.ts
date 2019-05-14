@@ -21,11 +21,29 @@ export class VestiComponent implements OnInit {
   }
 
   vratiSvePonude() {
-    const ponuda1 = this.ponuda1();
-    const ponuda2 = this.ponuda1();
+    const mahlePakovanjeVest = this.vestNovoPakovanjeMahle();
+    const mahleKompresori = this.vestMahleKompresori();
     const ponuda3 = this.ponuda1();
     const ponuda4 = this.ponuda1();
-    this.ponuda.push(ponuda1, ponuda2, ponuda3, ponuda4);
+    this.ponuda.push(mahlePakovanjeVest, mahleKompresori, ponuda3, ponuda4);
+  }
+
+  vestNovoPakovanjeMahle() {
+    const vest = new VestiNaslovna();
+    vest.id = 'mahle-pakovanje';
+    vest.naslov = 'Novo Pakovanje Mahle';
+    vest.opis = 'Novi dizajn ambalaže za MAHLE Aftermarket proizvode od 2019. godine';
+    vest.opisSlika = 'assets/slike/novouponudi/mala/mahle.png';
+    return vest;
+  }
+
+  vestMahleKompresori() {
+    const vest = new VestiNaslovna();
+    vest.id = 'mahle-kompresori';
+    vest.naslov = 'Mahle Kompresori Klime';
+    vest.opis = 'Novo u asortimanu - kompresori klime Mahle';
+    vest.opisSlika = 'assets/slike/novouponudi/mala/mahle.png';
+    return vest;
   }
 
   ponuda1(): VestiNaslovna {

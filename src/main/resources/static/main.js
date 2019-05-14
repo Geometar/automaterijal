@@ -384,7 +384,7 @@ module.exports = "<main>\n  <div class=\"d-flex flex-row-reverse bd-highlight\">
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "img {\n  width: 100%;\n  height: 300px; }\n\n.vest-sektor {\n  width: 50%;\n  margin-left: 25%; }\n\n/* :host /deep/ mySelector { */\n\n:host ::ng-deep p {\n  margin-top: 20px;\n  padding: 10px; }\n\n:host ::ng-deep h1 {\n  text-align: center;\n  margin-bottom: 20px; }\n\n@media only screen and (max-width: 1025px) {\n  .img {\n    width: 100%;\n    height: 100px; }\n  .vest-sektor {\n    width: 90%;\n    margin-left: 5%; } }\n"
+module.exports = "img {\n  width: 100%;\n  height: 300px; }\n\n.vest-sektor {\n  width: 50%;\n  margin-left: 25%; }\n\n::ng-deep ul {\n  list-style-type: circle;\n  padding: 0px 30px; }\n\n/* :host /deep/ mySelector { */\n\n:host ::ng-deep p {\n  margin-top: 15px;\n  padding: 10px; }\n\n:host ::ng-deep h1 {\n  text-align: center;\n  margin-bottom: 20px; }\n\n@media only screen and (max-width: 1025px) {\n  .img {\n    width: 100%;\n    height: 100px; }\n  .vest-sektor {\n    width: 90%;\n    margin-left: 5%; } }\n"
 
 /***/ }),
 
@@ -432,7 +432,7 @@ var ClanakComponent = /** @class */ (function () {
     };
     ClanakComponent.prototype.objediniSveVesti = function () {
         var sveVesti = [];
-        sveVesti.push(this.shell_u_ponudi(), this.febi_u_ponudi(), this.mahle_u_ponudi(), this.ks_u_ponudi());
+        sveVesti.push(this.shell_u_ponudi(), this.febi_u_ponudi(), this.mahle_u_ponudi(), this.ks_u_ponudi(), this.mahle_pakovanje_vesti(), this.mahle_kompresori_vesti());
         return sveVesti;
     };
     ClanakComponent.prototype.shell_u_ponudi = function () {
@@ -466,6 +466,22 @@ var ClanakComponent = /** @class */ (function () {
         shell_u_ponudi.slika = 'assets/slike/novouponudi/velika/ks.png';
         shell_u_ponudi.tekst = '<p>U svojoj ulozi dobavljača prvog reda, Pierburg je tradicionalno bio jedan od najbližih partnera automobilskoj industriji, od samog početka uspešnog unapređenja razvoja automobila.Pierburg je osnovan 1909. godine kao trgovac čelikom u Berlinu; 1928. godine, Pierburg je počeo s proizvodnjom karburatora i vrlo brzo je stsao u glavnog  dobavljača za sve nemačke proizvođače automobila i mnoge međunarodne proizvođače motornih vozila i proizvođače motora.Godine 1986. Pierburg je preuzeo Rheinmetall Group i 1998. se spojio sa Kolbenschmidt-om da bi formirao Kolbenschmidt Pierburg AG.U okviru Rheinmetall Automotive, Pierburg je specijalista za kontrolu emisije, dovod vazduha, prigušne ventile i solenoidne ventile.Decenije iskustva u kombinaciji sa sveobuhvatnim, inovativnim i globalno priznatim mogućnostima u svakom aspektu motora su faktori koji su doveli Pierburg u svoju misiju da stalno razvija i proizvodi komponente, module i sisteme za budućnost.U razvoju novih generacija motora dobijaju na značaju takvi faktori kao što su smanjena potrošnja goriva, niže emisije štetnih gasova  i poboljšane performanse, udobnost i sigurnost.U te svrhe, Pierburg nudi visoko tehnološka rešenja: električne pumpe za hlađenje na zahtev, sisteme za recirkulaciju izduvnih gasova  sa ​​istosmernim motorom, ventile za odvod vazduha, te različite verzije pogonskih modula. Svi ovi razvoji pomažu da se stvori ekonomski i ekološki uravnotežen automobil.</p> <p>Divizija KS Kolbenschmidt razvija, proizvodi i prodaje klipove za benzinske i dizel motore za automobile i komercijalna vozila i jedan je od najistaknutijih igrača u svom segmentu. Ostali proizvodi uključuju klipove za dvotaktne i kompresorske motore kao i velike klipove za stacionarne, brodske i lokomotivne motore.Unapređenje gustine snage, kao i postizanje daljnjeg smanjenja potrošnje goriva i emisija, već godinama predstavljaju faktore koji utiču na razvoj novih tipova klipova kod KS Kolbenschmidt.</p>';
         return shell_u_ponudi;
+    };
+    ClanakComponent.prototype.mahle_pakovanje_vesti = function () {
+        var mahlePakovanjeVesti = new _model_dto__WEBPACK_IMPORTED_MODULE_2__["Vest"]();
+        mahlePakovanjeVesti.id = 'mahle-pakovanje';
+        mahlePakovanjeVesti.naslov = '<h1>Nova ambalaža - dokazan kvalitet</h1>';
+        mahlePakovanjeVesti.slika = 'assets/slike/novouponudi/velika/mahle.png';
+        mahlePakovanjeVesti.tekst = '<p>MAHLE Aftermarket proizvodi dolaze u novo dizajniranom pakovanju od 2019. godine. Jednostavno i jasno za lako rukovanje u trgovini i radionicama. I naravno, oni će još uvek imati dokazan kvalitet MAHLE.</p> <p>Novo: Jasne boje, koncizna informacija i jasan dizajn omogućavaju lako rukovanje i brzu identifikaciju u skladištu.</p> <p>Novi pristup opisu proizvoda prilagođen čitaču, dodatne ikone podrške za proizvode, prikazuju se samo bitne informacije.</p><p>Takođe je usklađena šema boja, što je rezultiralo sledećim promjenama:</p> <ul><li>Promena boje ambalaže BEHR sa narandžaste na plavu</li><li> Promena boje za delove motora od crvene do plave</li><li> Činimo ga još jednostavnijim: MAHLE ORIGINAL postaje MAHLE</li></ul> <p> Jednostavno i jasno - zahvaljujući novom dizajnu ambalaže: </p><ul> <li>Svi relevantni detalji na prvi pogled</li> <li>Jednostavno rukovanje u trgovini i radionicama</li> <li>Jednostavna identifikacija u skladištu (sa udaljenosti) zahvaljujući jasnim bojama</li> <li>Garantovana visoka sigurnost (zaštita od piraterije proizvoda)</li> <li>Snažan izgled za sedam jakih brendova</li></ul> <p>MAHLE Aftermarket objedinjuje sedam jakih, međunarodnih brendova koji su sinonim za inovacije i beskompromisni kvalitet. Pored kišobranskog brenda MAHLE, tu spadaju uspešne kompanije kao što su BEHR, CLEVITE, IZUMI, METAL LEVE i KNECHT FILTER. BRAIN BEE, novo integrisana u MAHLE porodicu marki 2018. godine, je stručnjak za radioničku opremu i dijagnostiku za tržišta u Evropi, Bliskom Istoku, Africi, Južnoj Americi i delovima Azije.</p>   <p>Širom svijeta, brand MAHLE je sinonim za rezervne delove u kvalitetui originalne opreme duž celog pogonskog sklopa - od komponenti motora, turbokompresora, filtera, hlađenja motora i klima uređaja, starter motora i alternatora kroz radioničku opremu i dijagnostiku, e-mobilnost i elektroniku , pa čak i rezervne delove za klasična vozila.</p>';
+        return mahlePakovanjeVesti;
+    };
+    ClanakComponent.prototype.mahle_kompresori_vesti = function () {
+        var mahleKompresoriVesti = new _model_dto__WEBPACK_IMPORTED_MODULE_2__["Vest"]();
+        mahleKompresoriVesti.id = 'mahle-kompresori';
+        mahleKompresoriVesti.naslov = '<h1>Mahle kompresori klime</h1>';
+        mahleKompresoriVesti.slika = 'assets/slike/novouponudi/velika/mahle.png';
+        mahleKompresoriVesti.tekst = '<p>Kompanija MAHLE ulazi na tržište kompresora klima uređaja. Sinonim kvaliteta i pouzdanosti kompanije MAHLE  ovi kompresori opravdavaju.</p> <p>Nivo klimatskog komfora definisan u današnjim vozilima je već na visokom nivou i nastaviće da raste u budućnosti. Međutim, klima uređaji imaju više uloga nego što je  udobna vožnja. Oni takođe igraju ključnu ulogu u pogledu bezbednosti. Pored održavanja vozača udobnim i opreznim, klima uređaj takođe odvlažuje vazduh u kabini i na taj način sprečava zamagljivanje prozora.</p> <p>U svom portfoliu MAHLE nudi veliki broj kompresora za veliki broj renomiranih proizvođača vozila, kao što su VW, AUDI, BMW, Mercedes, Opel...</p>';
+        return mahleKompresoriVesti;
     };
     ClanakComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -594,7 +610,7 @@ var DasboardComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h1>Izdvajamo iz ponude</h1>\n<div class=\"d-flex flex-lg-row flex-column justify-content-center\">\n  <div *ngFor=\"let vest of ponuda\">\n    <mat-card class=\"example-card\" fxLayout=\"row\" fxLayoutWrap>\n      <mat-card-header class=\"naslov\">\n        <mat-card-title>\n          <h2>{{vest.naslov}}</h2>\n        </mat-card-title>\n      </mat-card-header>\n      <img mat-card-image src=\"{{vest.opisSlika}}\" alt=\"Photo of a Shiba Inu\">\n      <mat-card-content class=\"card-sadrzaj\">\n        <p class=\"opis-vesti\">\n          {{vest.opis}}\n        </p>\n      </mat-card-content>\n      <mat-card-actions class=\"d-flex justify-content-center\">\n        <button class=\"sirina button-glavni-100\" button-glavni-100 mat-raised-button\n          (click)=\"detaljiVesti(vest.id)\">Pročitaj</button>\n      </mat-card-actions>\n    </mat-card>\n  </div>\n</div>"
+module.exports = "<h1>Izdvajamo iz ponude</h1>\n<div class=\"d-flex flex-lg-row flex-column justify-content-center\">\n  <div *ngFor=\"let vest of ponuda\">\n    <mat-card class=\"example-card\" fxLayout=\"row\" fxLayoutWrap>\n      <mat-card-header class=\"naslov\">\n        <mat-card-title>\n          <h2>{{vest.naslov}}</h2>\n        </mat-card-title>\n      </mat-card-header>\n      <img mat-card-image src=\"{{vest.opisSlika}}\" alt=\"Slika Ponude\">\n      <mat-card-content class=\"card-sadrzaj\">\n        <p class=\"opis-vesti\">\n          {{vest.opis}}\n        </p>\n      </mat-card-content>\n      <mat-card-actions class=\"d-flex justify-content-center\">\n        <button class=\"sirina button-glavni-100\" mat-raised-button (click)=\"detaljiVesti(vest.id)\">Pročitaj</button>\n      </mat-card-actions>\n    </mat-card>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -706,7 +722,7 @@ var PonudaComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h1>Vesti</h1>\n<div class=\"d-flex flex-lg-row flex-column justify-content-center\">\n  <div *ngFor=\"let vest of ponuda\">\n    <mat-card class=\"example-card\" fxLayout=\"row\" fxLayoutWrap>\n      <mat-card-header>\n        <mat-card-title><h2>{{vest.naslov}}</h2></mat-card-title>\n      </mat-card-header>\n      <img mat-card-image src=\"{{vest.opisSlika}}\" alt=\"Photo of a Shiba Inu\">\n      <mat-card-content>\n        <p>\n          {{vest.opis}}\n        </p>\n      </mat-card-content>\n      <mat-card-actions class=\"d-flex justify-content-center\">\n        <button class=\"sirina\" mat-raised-button (click)=\"detaljiVesti(vest.id)\" color=\"primary\">Pročitaj</button>\n      </mat-card-actions>\n    </mat-card>\n  </div>\n</div>"
+module.exports = "<h1>Vesti</h1>\n<div class=\"d-flex flex-lg-row flex-column justify-content-center\">\n  <div *ngFor=\"let vest of ponuda\">\n    <mat-card class=\"example-card\" fxLayout=\"row\" fxLayoutWrap>\n      <mat-card-header class=\"naslov\">\n        <mat-card-title>\n          <h2>{{vest.naslov}}</h2>\n        </mat-card-title>\n      </mat-card-header>\n      <img mat-card-image src=\"{{vest.opisSlika}}\" alt=\"Slika vesti\">\n      <mat-card-content class=\"card-sadrzaj\">\n        <p class=\"opis-vesti\">\n          {{vest.opis}}\n        </p>\n      </mat-card-content>\n      <mat-card-actions class=\"d-flex justify-content-center\">\n        <button class=\"sirina button-glavni-100\" mat-raised-button (click)=\"detaljiVesti(vest.id)\"\n          color=\"primary\">Pročitaj</button>\n      </mat-card-actions>\n    </mat-card>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -717,7 +733,7 @@ module.exports = "<h1>Vesti</h1>\n<div class=\"d-flex flex-lg-row flex-column ju
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "h1 {\n  font-size: 1.6em;\n  color: #345cac;\n  margin-bottom: 20px;\n  text-align: center; }\n\nh2 {\n  font-size: 1.3em;\n  font-weight: bold; }\n\n.example-card {\n  width: 80%;\n  margin-left: 5%; }\n\n.sirina {\n  width: 200px; }\n\n@media only screen and (max-width: 1025px) {\n  .example-card {\n    width: 95%;\n    margin-left: 10px;\n    margin-top: 10px; } }\n"
+module.exports = "h1 {\n  font-size: 1.6em;\n  color: #345cac;\n  margin-bottom: 20px;\n  text-align: center; }\n\nh2 {\n  font-size: 1.3em;\n  font-weight: bold; }\n\n.naslov {\n  justify-content: center; }\n\n.example-card {\n  width: 80%;\n  margin-left: 5%; }\n\n.opis-vesti {\n  text-align: center;\n  font-size: 0.97em; }\n\n.sirina {\n  width: 200px; }\n\n.card-sadrzaj {\n  height: 40px; }\n\n@media only screen and (max-width: 1025px) {\n  .example-card {\n    width: 95%;\n    margin-left: 10px;\n    margin-top: 10px; }\n  h1 {\n    font-size: 1.5em; }\n  h2 {\n    font-size: 1.2em; } }\n"
 
 /***/ }),
 
@@ -758,11 +774,27 @@ var VestiComponent = /** @class */ (function () {
         this.router.navigate(['/naslovna/' + id]);
     };
     VestiComponent.prototype.vratiSvePonude = function () {
-        var ponuda1 = this.ponuda1();
-        var ponuda2 = this.ponuda1();
+        var mahlePakovanjeVest = this.vestNovoPakovanjeMahle();
+        var mahleKompresori = this.vestMahleKompresori();
         var ponuda3 = this.ponuda1();
         var ponuda4 = this.ponuda1();
-        this.ponuda.push(ponuda1, ponuda2, ponuda3, ponuda4);
+        this.ponuda.push(mahlePakovanjeVest, mahleKompresori, ponuda3, ponuda4);
+    };
+    VestiComponent.prototype.vestNovoPakovanjeMahle = function () {
+        var vest = new _model_dto__WEBPACK_IMPORTED_MODULE_2__["VestiNaslovna"]();
+        vest.id = 'mahle-pakovanje';
+        vest.naslov = 'Novo Pakovanje Mahle';
+        vest.opis = 'Novi dizajn ambalaže za MAHLE Aftermarket proizvode od 2019. godine';
+        vest.opisSlika = 'assets/slike/novouponudi/mala/mahle.png';
+        return vest;
+    };
+    VestiComponent.prototype.vestMahleKompresori = function () {
+        var vest = new _model_dto__WEBPACK_IMPORTED_MODULE_2__["VestiNaslovna"]();
+        vest.id = 'mahle-kompresori';
+        vest.naslov = 'Mahle Kompresori Klime';
+        vest.opis = 'Novo u asortimanu - kompresori klime Mahle';
+        vest.opisSlika = 'assets/slike/novouponudi/mala/mahle.png';
+        return vest;
     };
     VestiComponent.prototype.ponuda1 = function () {
         var prva = new _model_dto__WEBPACK_IMPORTED_MODULE_2__["VestiNaslovna"]();

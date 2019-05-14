@@ -33,7 +33,8 @@ export class ClanakComponent implements OnInit {
     const sveVesti = [];
     sveVesti.push(
       this.shell_u_ponudi(), this.febi_u_ponudi(),
-      this.mahle_u_ponudi(), this.ks_u_ponudi());
+      this.mahle_u_ponudi(), this.ks_u_ponudi(),
+      this.mahle_pakovanje_vesti(), this.mahle_kompresori_vesti());
     return sveVesti;
   }
 
@@ -71,6 +72,24 @@ export class ClanakComponent implements OnInit {
     shell_u_ponudi.slika = 'assets/slike/novouponudi/velika/ks.png';
     shell_u_ponudi.tekst = '<p>U svojoj ulozi dobavljača prvog reda, Pierburg je tradicionalno bio jedan od najbližih partnera automobilskoj industriji, od samog početka uspešnog unapređenja razvoja automobila.Pierburg je osnovan 1909. godine kao trgovac čelikom u Berlinu; 1928. godine, Pierburg je počeo s proizvodnjom karburatora i vrlo brzo je stsao u glavnog  dobavljača za sve nemačke proizvođače automobila i mnoge međunarodne proizvođače motornih vozila i proizvođače motora.Godine 1986. Pierburg je preuzeo Rheinmetall Group i 1998. se spojio sa Kolbenschmidt-om da bi formirao Kolbenschmidt Pierburg AG.U okviru Rheinmetall Automotive, Pierburg je specijalista za kontrolu emisije, dovod vazduha, prigušne ventile i solenoidne ventile.Decenije iskustva u kombinaciji sa sveobuhvatnim, inovativnim i globalno priznatim mogućnostima u svakom aspektu motora su faktori koji su doveli Pierburg u svoju misiju da stalno razvija i proizvodi komponente, module i sisteme za budućnost.U razvoju novih generacija motora dobijaju na značaju takvi faktori kao što su smanjena potrošnja goriva, niže emisije štetnih gasova  i poboljšane performanse, udobnost i sigurnost.U te svrhe, Pierburg nudi visoko tehnološka rešenja: električne pumpe za hlađenje na zahtev, sisteme za recirkulaciju izduvnih gasova  sa ​​istosmernim motorom, ventile za odvod vazduha, te različite verzije pogonskih modula. Svi ovi razvoji pomažu da se stvori ekonomski i ekološki uravnotežen automobil.</p> <p>Divizija KS Kolbenschmidt razvija, proizvodi i prodaje klipove za benzinske i dizel motore za automobile i komercijalna vozila i jedan je od najistaknutijih igrača u svom segmentu. Ostali proizvodi uključuju klipove za dvotaktne i kompresorske motore kao i velike klipove za stacionarne, brodske i lokomotivne motore.Unapređenje gustine snage, kao i postizanje daljnjeg smanjenja potrošnje goriva i emisija, već godinama predstavljaju faktore koji utiču na razvoj novih tipova klipova kod KS Kolbenschmidt.</p>';
     return shell_u_ponudi;
+  }
+
+  mahle_pakovanje_vesti() {
+    const mahlePakovanjeVesti = new Vest();
+    mahlePakovanjeVesti.id = 'mahle-pakovanje';
+    mahlePakovanjeVesti.naslov = '<h1>Nova ambalaža - dokazan kvalitet</h1>';
+    mahlePakovanjeVesti.slika = 'assets/slike/novouponudi/velika/mahle.png';
+    mahlePakovanjeVesti.tekst = '<p>MAHLE Aftermarket proizvodi dolaze u novo dizajniranom pakovanju od 2019. godine. Jednostavno i jasno za lako rukovanje u trgovini i radionicama. I naravno, oni će još uvek imati dokazan kvalitet MAHLE.</p> <p>Novo: Jasne boje, koncizna informacija i jasan dizajn omogućavaju lako rukovanje i brzu identifikaciju u skladištu.</p> <p>Novi pristup opisu proizvoda prilagođen čitaču, dodatne ikone podrške za proizvode, prikazuju se samo bitne informacije.</p><p>Takođe je usklađena šema boja, što je rezultiralo sledećim promjenama:</p> <ul><li>Promena boje ambalaže BEHR sa narandžaste na plavu</li><li> Promena boje za delove motora od crvene do plave</li><li> Činimo ga još jednostavnijim: MAHLE ORIGINAL postaje MAHLE</li></ul> <p> Jednostavno i jasno - zahvaljujući novom dizajnu ambalaže: </p><ul> <li>Svi relevantni detalji na prvi pogled</li> <li>Jednostavno rukovanje u trgovini i radionicama</li> <li>Jednostavna identifikacija u skladištu (sa udaljenosti) zahvaljujući jasnim bojama</li> <li>Garantovana visoka sigurnost (zaštita od piraterije proizvoda)</li> <li>Snažan izgled za sedam jakih brendova</li></ul> <p>MAHLE Aftermarket objedinjuje sedam jakih, međunarodnih brendova koji su sinonim za inovacije i beskompromisni kvalitet. Pored kišobranskog brenda MAHLE, tu spadaju uspešne kompanije kao što su BEHR, CLEVITE, IZUMI, METAL LEVE i KNECHT FILTER. BRAIN BEE, novo integrisana u MAHLE porodicu marki 2018. godine, je stručnjak za radioničku opremu i dijagnostiku za tržišta u Evropi, Bliskom Istoku, Africi, Južnoj Americi i delovima Azije.</p>   <p>Širom svijeta, brand MAHLE je sinonim za rezervne delove u kvalitetui originalne opreme duž celog pogonskog sklopa - od komponenti motora, turbokompresora, filtera, hlađenja motora i klima uređaja, starter motora i alternatora kroz radioničku opremu i dijagnostiku, e-mobilnost i elektroniku , pa čak i rezervne delove za klasična vozila.</p>';
+    return mahlePakovanjeVesti;
+  }
+
+  mahle_kompresori_vesti() {
+    const mahleKompresoriVesti = new Vest();
+    mahleKompresoriVesti.id = 'mahle-kompresori';
+    mahleKompresoriVesti.naslov = '<h1>Mahle kompresori klime</h1>';
+    mahleKompresoriVesti.slika = 'assets/slike/novouponudi/velika/mahle.png';
+    mahleKompresoriVesti.tekst = '<p>Kompanija MAHLE ulazi na tržište kompresora klima uređaja. Sinonim kvaliteta i pouzdanosti kompanije MAHLE  ovi kompresori opravdavaju.</p> <p>Nivo klimatskog komfora definisan u današnjim vozilima je već na visokom nivou i nastaviće da raste u budućnosti. Međutim, klima uređaji imaju više uloga nego što je  udobna vožnja. Oni takođe igraju ključnu ulogu u pogledu bezbednosti. Pored održavanja vozača udobnim i opreznim, klima uređaj takođe odvlažuje vazduh u kabini i na taj način sprečava zamagljivanje prozora.</p> <p>U svom portfoliu MAHLE nudi veliki broj kompresora za veliki broj renomiranih proizvođača vozila, kao što su VW, AUDI, BMW, Mercedes, Opel...</p>';
+    return mahleKompresoriVesti;
   }
 
 }

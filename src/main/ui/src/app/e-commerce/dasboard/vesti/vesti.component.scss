@@ -1,4 +1,3 @@
-
 @import "src/automaterijal-theme.scss";
 
 h1 {
@@ -7,24 +6,40 @@ h1 {
     margin-bottom: 20px;
     text-align: center;
 }
-
 h2 {
     font-size: 1.3em;
     font-weight: bold;
 }
 
+.naslov {
+    justify-content: center;
+}
 .example-card {
     width: 80%;
     margin-left: 5%;
 }
 
+.opis-vesti {
+    text-align: center;
+    font-size: 0.97em;
+}
 .sirina {
     width: 200px;
+}
+
+.card-sadrzaj {
+    height: 40px;
 }
 @media only screen and (max-width :1025px) { 
   .example-card {
       width: 95%;
       margin-left: 10px;
       margin-top: 10px;
+  }
+  h1 {
+      font-size: 1.5em;
+  }
+  h2 {
+      font-size: 1.2em;
   }
 }
