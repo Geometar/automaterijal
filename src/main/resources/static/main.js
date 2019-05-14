@@ -50,7 +50,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _e_shop_resetovanje_sfire_resetovanje_sfire_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./e-shop/resetovanje-sfire/resetovanje-sfire.component */ "./src/app/e-shop/resetovanje-sfire/resetovanje-sfire.component.ts");
 /* harmony import */ var _e_commerce_kontakt_kontakt_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./e-commerce/kontakt/kontakt.component */ "./src/app/e-commerce/kontakt/kontakt.component.ts");
 /* harmony import */ var _e_commerce_o_nama_o_nama_component__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./e-commerce/o-nama/o-nama.component */ "./src/app/e-commerce/o-nama/o-nama.component.ts");
-/* harmony import */ var _e_commerce_dasboard_vesti_vesti_component__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./e-commerce/dasboard/vesti/vesti.component */ "./src/app/e-commerce/dasboard/vesti/vesti.component.ts");
+/* harmony import */ var _e_commerce_dasboard_clanak_clanak_component__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./e-commerce/dasboard/clanak/clanak.component */ "./src/app/e-commerce/dasboard/clanak/clanak.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -91,7 +91,7 @@ var routes = [
     { path: 'licni-podaci', component: _e_shop_partner_partner_component__WEBPACK_IMPORTED_MODULE_11__["PartnerComponent"] },
     { path: 'porudzbenice', component: _e_shop_faktura_faktura_component__WEBPACK_IMPORTED_MODULE_7__["FakturaComponent"] },
     { path: 'porudzbenice/:id', component: _e_shop_faktura_faktura_detalji_faktura_detalji_component__WEBPACK_IMPORTED_MODULE_8__["FakturaDetaljiComponent"] },
-    { path: 'naslovna/:id', component: _e_commerce_dasboard_vesti_vesti_component__WEBPACK_IMPORTED_MODULE_17__["VestiComponent"] },
+    { path: 'naslovna/:id', component: _e_commerce_dasboard_clanak_clanak_component__WEBPACK_IMPORTED_MODULE_17__["ClanakComponent"] },
     { path: 'korpa', component: _e_shop_korpa_korpa_component__WEBPACK_IMPORTED_MODULE_5__["KorpaComponent"] },
     { path: 'reset-sifre/:id', component: _e_shop_resetovanje_sfire_resetovanje_sfire_component__WEBPACK_IMPORTED_MODULE_14__["ResetovanjeSfireComponent"] },
 ];
@@ -224,9 +224,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var ngx_owl_carousel__WEBPACK_IMPORTED_MODULE_41___default = /*#__PURE__*/__webpack_require__.n(ngx_owl_carousel__WEBPACK_IMPORTED_MODULE_41__);
 /* harmony import */ var _shared_modal_brendovi_modal_brendovi_modal_component__WEBPACK_IMPORTED_MODULE_42__ = __webpack_require__(/*! ./shared/modal/brendovi-modal/brendovi-modal.component */ "./src/app/shared/modal/brendovi-modal/brendovi-modal.component.ts");
 /* harmony import */ var ngx_bootstrap_carousel__WEBPACK_IMPORTED_MODULE_43__ = __webpack_require__(/*! ngx-bootstrap/carousel */ "./node_modules/ngx-bootstrap/carousel/fesm5/ngx-bootstrap-carousel.js");
-/* harmony import */ var _e_commerce_dasboard_vesti_vesti_component__WEBPACK_IMPORTED_MODULE_44__ = __webpack_require__(/*! ./e-commerce/dasboard/vesti/vesti.component */ "./src/app/e-commerce/dasboard/vesti/vesti.component.ts");
+/* harmony import */ var _e_commerce_dasboard_clanak_clanak_component__WEBPACK_IMPORTED_MODULE_44__ = __webpack_require__(/*! ./e-commerce/dasboard/clanak/clanak.component */ "./src/app/e-commerce/dasboard/clanak/clanak.component.ts");
 /* harmony import */ var _e_commerce_dasboard_ponuda_ponuda_component__WEBPACK_IMPORTED_MODULE_45__ = __webpack_require__(/*! ./e-commerce/dasboard/ponuda/ponuda.component */ "./src/app/e-commerce/dasboard/ponuda/ponuda.component.ts");
-/* harmony import */ var _e_commerce_dasboard_kampanja_kampanja_component__WEBPACK_IMPORTED_MODULE_46__ = __webpack_require__(/*! ./e-commerce/dasboard/kampanja/kampanja.component */ "./src/app/e-commerce/dasboard/kampanja/kampanja.component.ts");
+/* harmony import */ var _e_commerce_dasboard_vesti_vesti_component__WEBPACK_IMPORTED_MODULE_46__ = __webpack_require__(/*! ./e-commerce/dasboard/vesti/vesti.component */ "./src/app/e-commerce/dasboard/vesti/vesti.component.ts");
 /* harmony import */ var _shared_modal_upit_modal_upit_modal_component__WEBPACK_IMPORTED_MODULE_47__ = __webpack_require__(/*! ./shared/modal/upit-modal/upit-modal.component */ "./src/app/shared/modal/upit-modal/upit-modal.component.ts");
 /* harmony import */ var _e_shop_magacin_shared_components_filter_filter_component__WEBPACK_IMPORTED_MODULE_48__ = __webpack_require__(/*! ./e-shop/magacin/shared-components/filter/filter.component */ "./src/app/e-shop/magacin/shared-components/filter/filter.component.ts");
 /* harmony import */ var _e_shop_magacin_shared_components_tabela_tabela_component__WEBPACK_IMPORTED_MODULE_49__ = __webpack_require__(/*! ./e-shop/magacin/shared-components/tabela/tabela.component */ "./src/app/e-shop/magacin/shared-components/tabela/tabela.component.ts");
@@ -325,9 +325,9 @@ var AppModule = /** @class */ (function () {
                 _shared_modal_poruka_modal_poruka_modal_component__WEBPACK_IMPORTED_MODULE_39__["PorukaModalComponent"],
                 _e_commerce_o_nama_o_nama_component__WEBPACK_IMPORTED_MODULE_40__["ONamaComponent"],
                 _shared_modal_brendovi_modal_brendovi_modal_component__WEBPACK_IMPORTED_MODULE_42__["BrendoviModalComponent"],
-                _e_commerce_dasboard_vesti_vesti_component__WEBPACK_IMPORTED_MODULE_44__["VestiComponent"],
+                _e_commerce_dasboard_clanak_clanak_component__WEBPACK_IMPORTED_MODULE_44__["ClanakComponent"],
                 _e_commerce_dasboard_ponuda_ponuda_component__WEBPACK_IMPORTED_MODULE_45__["PonudaComponent"],
-                _e_commerce_dasboard_kampanja_kampanja_component__WEBPACK_IMPORTED_MODULE_46__["KampanjaComponent"],
+                _e_commerce_dasboard_vesti_vesti_component__WEBPACK_IMPORTED_MODULE_46__["VestiComponent"],
                 _shared_modal_upit_modal_upit_modal_component__WEBPACK_IMPORTED_MODULE_47__["UpitModalComponent"],
                 _e_shop_magacin_shared_components_filter_filter_component__WEBPACK_IMPORTED_MODULE_48__["FilterComponent"],
                 _e_shop_magacin_shared_components_tabela_tabela_component__WEBPACK_IMPORTED_MODULE_49__["TabelaComponent"]
@@ -366,6 +366,123 @@ var AppModule = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/e-commerce/dasboard/clanak/clanak.component.html":
+/*!******************************************************************!*\
+  !*** ./src/app/e-commerce/dasboard/clanak/clanak.component.html ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<main>\n  <div class=\"d-flex flex-row-reverse bd-highlight\">\n    <button class=\"button-glavni-100 nazad-button\" mat-raised-button (click)=\"idiNazad()\">\n      <mat-icon>keyboard_arrow_left</mat-icon> Nazad\n    </button>\n  </div>\n  <section>\n    <div class=\"d-flex flex-column d-flex justify-content-center vest-sektor\">\n      <div [innerHTML]=\"vest.naslov\"></div>\n      <div><img src={{vest.slika}}></div>\n      <div [innerHTML]=\"vest.tekst\"></div>\n    </div>\n  </section>\n</main>"
+
+/***/ }),
+
+/***/ "./src/app/e-commerce/dasboard/clanak/clanak.component.scss":
+/*!******************************************************************!*\
+  !*** ./src/app/e-commerce/dasboard/clanak/clanak.component.scss ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "img {\n  width: 100%;\n  height: 300px; }\n\n.vest-sektor {\n  width: 50%;\n  margin-left: 25%; }\n\n/* :host /deep/ mySelector { */\n\n:host ::ng-deep p {\n  margin-top: 20px;\n  padding: 10px; }\n\n:host ::ng-deep h1 {\n  text-align: center;\n  margin-bottom: 20px; }\n\n@media only screen and (max-width: 1025px) {\n  .img {\n    width: 100%;\n    height: 100px; }\n  .vest-sektor {\n    width: 90%;\n    margin-left: 5%; } }\n"
+
+/***/ }),
+
+/***/ "./src/app/e-commerce/dasboard/clanak/clanak.component.ts":
+/*!****************************************************************!*\
+  !*** ./src/app/e-commerce/dasboard/clanak/clanak.component.ts ***!
+  \****************************************************************/
+/*! exports provided: ClanakComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ClanakComponent", function() { return ClanakComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _model_dto__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../model/dto */ "./src/app/e-commerce/model/dto.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var ClanakComponent = /** @class */ (function () {
+    function ClanakComponent(router, route) {
+        this.router = router;
+        this.route = route;
+    }
+    ClanakComponent.prototype.ngOnInit = function () {
+        var urlParam;
+        this.route.params.subscribe(function (params) {
+            urlParam = params.id;
+        });
+        this.vest = this.objediniSveVesti()
+            .filter(function (vest) { return vest.id === urlParam; })
+            .pop();
+    };
+    ClanakComponent.prototype.idiNazad = function () {
+        this.router.navigate(['/naslovna']);
+    };
+    ClanakComponent.prototype.objediniSveVesti = function () {
+        var sveVesti = [];
+        sveVesti.push(this.shell_u_ponudi(), this.febi_u_ponudi(), this.mahle_u_ponudi(), this.ks_u_ponudi());
+        return sveVesti;
+    };
+    ClanakComponent.prototype.shell_u_ponudi = function () {
+        var shell_u_ponudi = new _model_dto__WEBPACK_IMPORTED_MODULE_2__["Vest"]();
+        shell_u_ponudi.id = 'shell-u-ponudi';
+        shell_u_ponudi.naslov = '<h1>Uz novu <b>GTL</b> tehnologiju budućnost je počela</h1>';
+        shell_u_ponudi.slika = 'assets/slike/novouponudi/velika/shell.png';
+        shell_u_ponudi.tekst = '<p>Shell je multinacionalna angloholandska naftna kompanija osnovana osnovana u Ujedinjenom Kraljevstvu sa sedištem u Holandiji. Kompanija je vertikalno integrisana i ima aktivnosti gotovo u svim područijima industrije nafte i gasa. Kao vodeća kompanija u proizvodnji ulja I maziva prisutan je u preko 100 zemalja. U svom portfoliu ima preko 2000 proizvoda raznih namena kako bi odgovorio svim zahtevima koje tržište diktira. Shell je takođe izbor mnogih proizvođača vozila, mašina, industrijskih postrojenja I mnogih dugih proizvođača kao prvo punjenje u svojim proizvodima. Shell je trenutno jedina energentska kompanija na svetu koja bazna ulja dobija iz gasa (GTL tehnologija). Postorjenje za preradu se nalazi u Kataru i jedino je tog tipa. Prvo postrojenje se nalazilo u Maleziji I napravljeno je pre 40 godina I sluzilo je za razvoj tehnologije. Razvitkom fabrika je premeštena u Katar I sada punim kapacitetima proizvodi potrebne količine baznog ulja za potrebe svetskog tržišta. </p> <p>Šel je takođe I po tržišnoj kapitalizaciji jedno od vodećih preuzeća u svetu. Šel je u  2013 godini bio vodeće preduzeće na Fortune global 500-listi najvećih preduzeća na svetu.</p>';
+        return shell_u_ponudi;
+    };
+    ClanakComponent.prototype.febi_u_ponudi = function () {
+        var shell_u_ponudi = new _model_dto__WEBPACK_IMPORTED_MODULE_2__["Vest"]();
+        shell_u_ponudi.id = 'febi-u-ponudi';
+        shell_u_ponudi.naslov = '<h1>Kompletno rešenje za vaše vozilo</h1>';
+        shell_u_ponudi.slika = 'assets/slike/novouponudi/velika/febi.png';
+        shell_u_ponudi.tekst = '<p>Febi bilstein je  osnovan davne 1844 godine. Danas je jedan od vodećih svetskih proizvođača i dobavljača rezervnih delova za putnička i komercijalna vozila na nezavisnom tržištu rezervnih delova.  Više od 170 godina održava kontinuitet, kvalitet, uslugu, pouzdanost i inovacije. Asortiman cini 30.000 razlicitih rezervnih delova. Osim toga, febi ima svoja predstavništva ili iskusnog partnera u preko 69 zemalja. </p> <p>Od upravljačke, motorne i kočne tehnike, tehnike šasija i učvršćivanja točkova do autoelektrike i pneumatike i programa febi plus – kod firme febi bilstein ćete naći sve za profesionalno servisiranje - putničkih vozila, kamiona, autobusa, prikolica, poluprikolica i malih transportera svih aktuelnih marki i modela.</p> <p class="proba">Febi bilstein stoji za proizvode koji ispunjavaju najviše zahteve kvaliteta izrade i bezbednosti ugradnje. Kvalitetom, brzinom i postavljanjem trendova febi bilstein vam daje odlučujući podsticaj na globalnom tržištu. Zato što kao premium marka ima obavezu da ispuni zahteve svojih kupaca – svakodnevno.</p> <p>AUTOMATERIJAL d.o.o - je zastupnik koncerna Febi Bilstein i Blue Printa za zapadnu Srbiju.</p>';
+        return shell_u_ponudi;
+    };
+    ClanakComponent.prototype.mahle_u_ponudi = function () {
+        var mahle_u_ponudi = new _model_dto__WEBPACK_IMPORTED_MODULE_2__["Vest"]();
+        mahle_u_ponudi.id = 'mahle-u-ponudi';
+        mahle_u_ponudi.naslov = '<h1>U korak sa vremenom</h1>';
+        mahle_u_ponudi.slika = 'assets/slike/novouponudi/velika/mahle.png';
+        mahle_u_ponudi.tekst = '<p>Mahle je vodeći međunarodni partner za razvoj I dobavljač za automobilsku industriju, kao I pionir I pokretač tehnologije za budućnost.</p> <p>Zasnovan na velikoj složenosti sistema koja se sastoji od motora I komponenata motora, filtriranja I upravljanja toplotnom energijom, portfolio proizvoda grupe se bavi svim ključnim pitanjima vezanim za tehnologiju pogonskog sistema i klima uređaja.</p> <p>Mahle proizvodi se ugrađuju u najmanje svako drugo vozilo širom sveta. Decenijama Mahle komponente I sistemi su takođe korišćeni na svetskim trkalištima I izvan puta-u stacionarnim aplikacijama, za mobilnu mašineriju, železničku transport, kao I pomorske aplikacije.</p> <p>Ono po čemu je Mahle preopoznatljiv širom sveta je svakako pre svega motorna grupa. Ogroman deo svetskih proizvođača vozila, kako  putničkih tako I teretnih upravo ugrađuju u svoje motore komponente dizajnirane u napravljene u Mahle fabrikama. Takođe, kupovinom svetskog Brenda Knecht, Mahle ulazi kao premijum proizvođač filtera na tržište, nudeći svoje proizvode u aftermarketu istog kvaliteta kao I oni koji su prva ugradnja ovog proizvođača.</p> <p>Kupovinom nekoliko velikih proizođača komponenti za vozila Mahle je svoj portfolio proširio I na uređaje vezane za klimatizaciju vozila, termomenadžment, turbopunjače, alternatore, alnasere I mnoge druge sastavne delove vozila. Ono po čemu je mahle prepoznatljiv je motorna grupa.</p>';
+        return mahle_u_ponudi;
+    };
+    ClanakComponent.prototype.ks_u_ponudi = function () {
+        var shell_u_ponudi = new _model_dto__WEBPACK_IMPORTED_MODULE_2__["Vest"]();
+        shell_u_ponudi.id = 'ks-u-ponudi';
+        shell_u_ponudi.naslov = '<h1>Godine poverenja su preporuka</h1>';
+        shell_u_ponudi.slika = 'assets/slike/novouponudi/velika/ks.png';
+        shell_u_ponudi.tekst = '<p>U svojoj ulozi dobavljača prvog reda, Pierburg je tradicionalno bio jedan od najbližih partnera automobilskoj industriji, od samog početka uspešnog unapređenja razvoja automobila.Pierburg je osnovan 1909. godine kao trgovac čelikom u Berlinu; 1928. godine, Pierburg je počeo s proizvodnjom karburatora i vrlo brzo je stsao u glavnog  dobavljača za sve nemačke proizvođače automobila i mnoge međunarodne proizvođače motornih vozila i proizvođače motora.Godine 1986. Pierburg je preuzeo Rheinmetall Group i 1998. se spojio sa Kolbenschmidt-om da bi formirao Kolbenschmidt Pierburg AG.U okviru Rheinmetall Automotive, Pierburg je specijalista za kontrolu emisije, dovod vazduha, prigušne ventile i solenoidne ventile.Decenije iskustva u kombinaciji sa sveobuhvatnim, inovativnim i globalno priznatim mogućnostima u svakom aspektu motora su faktori koji su doveli Pierburg u svoju misiju da stalno razvija i proizvodi komponente, module i sisteme za budućnost.U razvoju novih generacija motora dobijaju na značaju takvi faktori kao što su smanjena potrošnja goriva, niže emisije štetnih gasova  i poboljšane performanse, udobnost i sigurnost.U te svrhe, Pierburg nudi visoko tehnološka rešenja: električne pumpe za hlađenje na zahtev, sisteme za recirkulaciju izduvnih gasova  sa ​​istosmernim motorom, ventile za odvod vazduha, te različite verzije pogonskih modula. Svi ovi razvoji pomažu da se stvori ekonomski i ekološki uravnotežen automobil.</p> <p>Divizija KS Kolbenschmidt razvija, proizvodi i prodaje klipove za benzinske i dizel motore za automobile i komercijalna vozila i jedan je od najistaknutijih igrača u svom segmentu. Ostali proizvodi uključuju klipove za dvotaktne i kompresorske motore kao i velike klipove za stacionarne, brodske i lokomotivne motore.Unapređenje gustine snage, kao i postizanje daljnjeg smanjenja potrošnje goriva i emisija, već godinama predstavljaju faktore koji utiču na razvoj novih tipova klipova kod KS Kolbenschmidt.</p>';
+        return shell_u_ponudi;
+    };
+    ClanakComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-clanak',
+            template: __webpack_require__(/*! ./clanak.component.html */ "./src/app/e-commerce/dasboard/clanak/clanak.component.html"),
+            styles: [__webpack_require__(/*! ./clanak.component.scss */ "./src/app/e-commerce/dasboard/clanak/clanak.component.scss")]
+        }),
+        __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"]])
+    ], ClanakComponent);
+    return ClanakComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/e-commerce/dasboard/dasboard.component.html":
 /*!*************************************************************!*\
   !*** ./src/app/e-commerce/dasboard/dasboard.component.html ***!
@@ -373,7 +490,7 @@ var AppModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<main>\n  <section class=\"d-flex flex-xl-row-reverse flex-column centar skecija-mala\">\n    <div class=\"pomeri-levo\">\n      <i class=\"material-icons velicina-ikone\">\n        place\n      </i>\n      <p class=\"header\">Prvomajska 61, Šabac</p>\n    </div>\n    <div class=\"pomeri-levo\">\n      <i class=\"material-icons velicina-ikone\">\n        email\n      </i>\n      <p class=\"header\">office@automaterijal.com</p>\n    </div>\n    <div class=\"pomeri-levo\">\n      <i class=\"material-icons velicina-ikone\">\n        phone\n      </i>\n      <p class=\"header\"> <a class=\"header\" href=\"tel:015334630\">015/334-630</a></p>\n    </div>\n  </section>\n  <section>\n    <carousel>\n      <slide class=\"animated fadeIn\" *ngFor=\"let brand of mySlidePagePapers;let i = index\">\n        <img src=\"{{brand.urlSlikePozadina}}\" alt=\"first slide\" style=\"display: block; width: 100%;\">\n      </slide>\n    </carousel>\n  </section>\n  <section class=\"d-flex flex-xl-row flex-column centar pozadina-bela skecija-srednja\">\n    <div class=\"flex-fill mobilni\">\n      <p class=\"inline-content paragraph text-center\">Posetite našu online prodavnicu i webshop katalog</p>\n      <button color=\"primary\" class=\"inline-content inline-button\" (click)=\"goToShoping()\" mat-mini-fab>\n        <mat-icon aria-label=\"Example icon-button with a heart icon\">shopping_cart</mat-icon>\n      </button>\n    </div>\n    <div class=\"flex-fill\">\n      <p class=\"inline-content paragraph text-center\">Pošaljite nam upit za deo koji trižite</p>\n      <button color=\"primary\" (click)=\"otvoriUpitModal()\" class=\"inline-content inline-button\" mat-mini-fab>\n        <mat-icon aria-label=\"Example icon-button with a heart icon\">question_answer</mat-icon>\n      </button>\n    </div>\n  </section>\n  <section class=\"sekcija\">\n    <app-ponuda></app-ponuda>\n  </section>\n  <section class=\"pozadina-bela sekcija\">\n    <app-kampanja></app-kampanja>\n  </section>\n</main>"
+module.exports = "<main>\n  <section class=\"d-flex flex-xl-row-reverse flex-column centar skecija-mala\">\n    <div class=\"pomeri-levo\">\n      <i class=\"material-icons velicina-ikone\">\n        place\n      </i>\n      <p class=\"header\">Prvomajska 61, Šabac</p>\n    </div>\n    <div class=\"pomeri-levo\">\n      <i class=\"material-icons velicina-ikone\">\n        email\n      </i>\n      <p class=\"header\">office@automaterijal.com</p>\n    </div>\n    <div class=\"pomeri-levo\">\n      <i class=\"material-icons velicina-ikone\">\n        phone\n      </i>\n      <p class=\"header\"> <a class=\"header\" href=\"tel:015334630\">015/334-630</a></p>\n    </div>\n  </section>\n  <section>\n    <carousel>\n      <slide class=\"animated fadeIn\" *ngFor=\"let brand of mySlidePagePapers;let i = index\">\n        <img src=\"{{brand.urlSlikePozadina}}\" alt=\"first slide\" style=\"display: block; width: 100%;\">\n      </slide>\n    </carousel>\n  </section>\n  <section class=\"d-flex flex-xl-row flex-column centar pozadina-bela skecija-srednja\">\n    <div class=\"flex-fill mobilni\">\n      <p class=\"inline-content paragraph text-center\">Posetite našu online prodavnicu i webshop katalog</p>\n      <button color=\"primary\" class=\"inline-content inline-button\" (click)=\"goToShoping()\" mat-mini-fab>\n        <mat-icon aria-label=\"Example icon-button with a heart icon\">shopping_cart</mat-icon>\n      </button>\n    </div>\n    <div class=\"flex-fill\">\n      <p class=\"inline-content paragraph text-center\">Pošaljite nam upit za deo koji trižite</p>\n      <button color=\"primary\" (click)=\"otvoriUpitModal()\" class=\"inline-content inline-button\" mat-mini-fab>\n        <mat-icon aria-label=\"Example icon-button with a heart icon\">question_answer</mat-icon>\n      </button>\n    </div>\n  </section>\n  <section class=\"sekcija\">\n    <app-ponuda></app-ponuda>\n  </section>\n  <section class=\"pozadina-bela sekcija\">\n    <app-vesti></app-vesti>\n  </section>\n</main>"
 
 /***/ }),
 
@@ -470,94 +587,6 @@ var DasboardComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/e-commerce/dasboard/kampanja/kampanja.component.html":
-/*!**********************************************************************!*\
-  !*** ./src/app/e-commerce/dasboard/kampanja/kampanja.component.html ***!
-  \**********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<h1>Kampanja</h1>\n<div class=\"d-flex flex-lg-row flex-column justify-content-center\">\n  <div *ngFor=\"let vest of ponuda\">\n    <mat-card class=\"example-card\" fxLayout=\"row\" fxLayoutWrap>\n      <mat-card-header>\n        <mat-card-title><h2>{{vest.naslov}}</h2></mat-card-title>\n      </mat-card-header>\n      <img mat-card-image src=\"{{vest.opisSlika}}\" alt=\"Photo of a Shiba Inu\">\n      <mat-card-content>\n        <p>\n          {{vest.opis}}\n        </p>\n      </mat-card-content>\n      <mat-card-actions class=\"d-flex justify-content-center\">\n        <button class=\"sirina\" mat-raised-button (click)=\"detaljiVesti(vest.id)\" color=\"primary\">Pročitaj</button>\n      </mat-card-actions>\n    </mat-card>\n  </div>\n</div>"
-
-/***/ }),
-
-/***/ "./src/app/e-commerce/dasboard/kampanja/kampanja.component.scss":
-/*!**********************************************************************!*\
-  !*** ./src/app/e-commerce/dasboard/kampanja/kampanja.component.scss ***!
-  \**********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "h1 {\n  font-size: 1.6em;\n  color: #345cac;\n  margin-bottom: 20px;\n  text-align: center; }\n\nh2 {\n  font-size: 1.3em;\n  font-weight: bold; }\n\n.example-card {\n  width: 80%;\n  margin-left: 5%; }\n\n.sirina {\n  width: 200px; }\n\n@media only screen and (max-width: 1025px) {\n  .example-card {\n    width: 95%;\n    margin-left: 10px;\n    margin-top: 10px; } }\n"
-
-/***/ }),
-
-/***/ "./src/app/e-commerce/dasboard/kampanja/kampanja.component.ts":
-/*!********************************************************************!*\
-  !*** ./src/app/e-commerce/dasboard/kampanja/kampanja.component.ts ***!
-  \********************************************************************/
-/*! exports provided: KampanjaComponent */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "KampanjaComponent", function() { return KampanjaComponent; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var _model_dto__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../model/dto */ "./src/app/e-commerce/model/dto.ts");
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-var KampanjaComponent = /** @class */ (function () {
-    function KampanjaComponent(router) {
-        this.router = router;
-        this.ponuda = [];
-    }
-    KampanjaComponent.prototype.ngOnInit = function () {
-        this.vratiSvePonude();
-    };
-    KampanjaComponent.prototype.detaljiVesti = function (id) {
-        this.router.navigate(['/naslovna/' + id]);
-    };
-    KampanjaComponent.prototype.vratiSvePonude = function () {
-        var ponuda1 = this.ponuda1();
-        var ponuda2 = this.ponuda1();
-        var ponuda3 = this.ponuda1();
-        var ponuda4 = this.ponuda1();
-        this.ponuda.push(ponuda1, ponuda2, ponuda3, ponuda4);
-    };
-    KampanjaComponent.prototype.ponuda1 = function () {
-        var prva = new _model_dto__WEBPACK_IMPORTED_MODULE_2__["VestiNaslovna"]();
-        prva.id = 'ponuda-generic';
-        prva.naslov = 'Ponuda generic';
-        prva.opis = 'Opis Vesti ide ovde.';
-        prva.opisSlika = 'https://material.angular.io/assets/img/examples/shiba2.jpg';
-        return prva;
-    };
-    KampanjaComponent = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
-            selector: 'app-kampanja',
-            template: __webpack_require__(/*! ./kampanja.component.html */ "./src/app/e-commerce/dasboard/kampanja/kampanja.component.html"),
-            styles: [__webpack_require__(/*! ./kampanja.component.scss */ "./src/app/e-commerce/dasboard/kampanja/kampanja.component.scss")]
-        }),
-        __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"]])
-    ], KampanjaComponent);
-    return KampanjaComponent;
-}());
-
-
-
-/***/ }),
-
 /***/ "./src/app/e-commerce/dasboard/ponuda/ponuda.component.html":
 /*!******************************************************************!*\
   !*** ./src/app/e-commerce/dasboard/ponuda/ponuda.component.html ***!
@@ -565,7 +594,7 @@ var KampanjaComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h1>Novo u ponudi</h1>\n<div class=\"d-flex flex-lg-row flex-column justify-content-center\">\n  <div *ngFor=\"let vest of ponuda\">\n    <mat-card class=\"example-card\" fxLayout=\"row\" fxLayoutWrap>\n      <mat-card-header>\n        <mat-card-title>\n          <h2>{{vest.naslov}}</h2>\n        </mat-card-title>\n      </mat-card-header>\n      <img mat-card-image src=\"{{vest.opisSlika}}\" alt=\"Photo of a Shiba Inu\">\n      <mat-card-content>\n        <p>\n          {{vest.opis}}\n        </p>\n      </mat-card-content>\n      <mat-card-actions class=\"d-flex justify-content-center\">\n        <button class=\"sirina button-glavni-100\" button-glavni-100 mat-raised-button\n          (click)=\"detaljiVesti(vest.id)\">Pročitaj</button>\n      </mat-card-actions>\n    </mat-card>\n  </div>\n</div>"
+module.exports = "<h1>Izdvajamo iz ponude</h1>\n<div class=\"d-flex flex-lg-row flex-column justify-content-center\">\n  <div *ngFor=\"let vest of ponuda\">\n    <mat-card class=\"example-card\" fxLayout=\"row\" fxLayoutWrap>\n      <mat-card-header class=\"naslov\">\n        <mat-card-title>\n          <h2>{{vest.naslov}}</h2>\n        </mat-card-title>\n      </mat-card-header>\n      <img mat-card-image src=\"{{vest.opisSlika}}\" alt=\"Photo of a Shiba Inu\">\n      <mat-card-content class=\"card-sadrzaj\">\n        <p class=\"opis-vesti\">\n          {{vest.opis}}\n        </p>\n      </mat-card-content>\n      <mat-card-actions class=\"d-flex justify-content-center\">\n        <button class=\"sirina button-glavni-100\" button-glavni-100 mat-raised-button\n          (click)=\"detaljiVesti(vest.id)\">Pročitaj</button>\n      </mat-card-actions>\n    </mat-card>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -576,7 +605,7 @@ module.exports = "<h1>Novo u ponudi</h1>\n<div class=\"d-flex flex-lg-row flex-c
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "h1 {\n  font-size: 1.6em;\n  color: #345cac;\n  margin-bottom: 20px;\n  text-align: center; }\n\nh2 {\n  font-size: 1.3em;\n  font-weight: bold; }\n\n.example-card {\n  width: 80%;\n  margin-left: 5%; }\n\n.sirina {\n  width: 200px; }\n\n@media only screen and (max-width: 1025px) {\n  .example-card {\n    width: 95%;\n    margin-left: 10px;\n    margin-top: 10px; } }\n"
+module.exports = "h1 {\n  font-size: 1.6em;\n  color: #345cac;\n  margin-bottom: 20px;\n  text-align: center; }\n\nh2 {\n  font-size: 1.3em;\n  font-weight: bold; }\n\n.naslov {\n  justify-content: center; }\n\n.example-card {\n  width: 80%;\n  margin-left: 5%; }\n\n.opis-vesti {\n  text-align: center;\n  font-size: 0.97em; }\n\n.sirina {\n  width: 200px; }\n\n.card-sadrzaj {\n  height: 40px; }\n\n@media only screen and (max-width: 1025px) {\n  .example-card {\n    width: 95%;\n    margin-left: 10px;\n    margin-top: 10px; }\n  h1 {\n    font-size: 1.5em; }\n  h2 {\n    font-size: 1.2em; } }\n"
 
 /***/ }),
 
@@ -627,7 +656,7 @@ var PonudaComponent = /** @class */ (function () {
         var shell = new _model_dto__WEBPACK_IMPORTED_MODULE_1__["VestiNaslovna"]();
         shell.id = 'shell-u-ponudi';
         shell.naslov = 'Shell';
-        shell.opis = 'Opis Shell-a ide ovde. SINOVAC SE CEKA';
+        shell.opis = 'Shell – globalni lider u proizvodnji ulja I maziva';
         shell.opisSlika = 'assets/slike/novouponudi/mala/shell.png';
         return shell;
     };
@@ -635,7 +664,7 @@ var PonudaComponent = /** @class */ (function () {
         var febi = new _model_dto__WEBPACK_IMPORTED_MODULE_1__["VestiNaslovna"]();
         febi.id = 'febi-u-ponudi';
         febi.naslov = 'Febi';
-        febi.opis = 'Opis Febi-a ide ovde. SINOVAC SE CEKA';
+        febi.opis = 'Više od 45000 proizvoda u službi održavanja vašeg vozila';
         febi.opisSlika = 'assets/slike/novouponudi/mala/febi.png';
         return febi;
     };
@@ -643,15 +672,15 @@ var PonudaComponent = /** @class */ (function () {
         var mahle = new _model_dto__WEBPACK_IMPORTED_MODULE_1__["VestiNaslovna"]();
         mahle.id = 'mahle-u-ponudi';
         mahle.naslov = 'Mahle';
-        mahle.opis = 'Opis Mahle-a ide ovde. SINOVAC SE CEKA';
+        mahle.opis = 'Od 1920 u srži automobila';
         mahle.opisSlika = 'assets/slike/novouponudi/mala/mahle.png';
         return mahle;
     };
     PonudaComponent.prototype.ks = function () {
         var ks = new _model_dto__WEBPACK_IMPORTED_MODULE_1__["VestiNaslovna"]();
         ks.id = 'ks-u-ponudi';
-        ks.naslov = 'Ks';
-        ks.opis = 'Opis Ks-a ide ovde. SINOVAC SE CEKA';
+        ks.naslov = 'Kolbenschmidt';
+        ks.opis = 'Godine poverenja su preporuka';
         ks.opisSlika = 'assets/slike/novouponudi/mala/ks.png';
         return ks;
     };
@@ -677,7 +706,7 @@ var PonudaComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<main>\n  <div class=\"d-flex flex-row-reverse bd-highlight\">\n    <button class=\"button-glavni-100 nazad-button\" mat-raised-button (click)=\"idiNazad()\">\n      <mat-icon>keyboard_arrow_left</mat-icon> Nazad\n    </button>\n  </div>\n  <section>\n    <div class=\"d-flex flex-column d-flex justify-content-center vest-sektor\">\n      <div [innerHTML]=\"vest.naslov\"></div>\n      <div><img src={{vest.slika}}></div>\n      <div [innerHTML]=\"vest.tekst\"></div>\n    </div>\n  </section>\n</main>"
+module.exports = "<h1>Vesti</h1>\n<div class=\"d-flex flex-lg-row flex-column justify-content-center\">\n  <div *ngFor=\"let vest of ponuda\">\n    <mat-card class=\"example-card\" fxLayout=\"row\" fxLayoutWrap>\n      <mat-card-header>\n        <mat-card-title><h2>{{vest.naslov}}</h2></mat-card-title>\n      </mat-card-header>\n      <img mat-card-image src=\"{{vest.opisSlika}}\" alt=\"Photo of a Shiba Inu\">\n      <mat-card-content>\n        <p>\n          {{vest.opis}}\n        </p>\n      </mat-card-content>\n      <mat-card-actions class=\"d-flex justify-content-center\">\n        <button class=\"sirina\" mat-raised-button (click)=\"detaljiVesti(vest.id)\" color=\"primary\">Pročitaj</button>\n      </mat-card-actions>\n    </mat-card>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -688,7 +717,7 @@ module.exports = "<main>\n  <div class=\"d-flex flex-row-reverse bd-highlight\">
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "img {\n  width: 100%;\n  height: 300px; }\n\n.vest-sektor {\n  width: 50%;\n  margin-left: 25%; }\n\n/* :host /deep/ mySelector { */\n\n:host ::ng-deep p {\n  margin-top: 20px;\n  padding: 10px; }\n\n:host ::ng-deep h1 {\n  text-align: center;\n  margin-bottom: 20px; }\n\n@media only screen and (max-width: 1025px) {\n  .img {\n    width: 100%;\n    height: 100px; }\n  .vest-sektor {\n    width: 90%;\n    margin-left: 5%; } }\n"
+module.exports = "h1 {\n  font-size: 1.6em;\n  color: #345cac;\n  margin-bottom: 20px;\n  text-align: center; }\n\nh2 {\n  font-size: 1.3em;\n  font-weight: bold; }\n\n.example-card {\n  width: 80%;\n  margin-left: 5%; }\n\n.sirina {\n  width: 200px; }\n\n@media only screen and (max-width: 1025px) {\n  .example-card {\n    width: 95%;\n    margin-left: 10px;\n    margin-top: 10px; } }\n"
 
 /***/ }),
 
@@ -718,58 +747,30 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 var VestiComponent = /** @class */ (function () {
-    function VestiComponent(router, route) {
+    function VestiComponent(router) {
         this.router = router;
-        this.route = route;
+        this.ponuda = [];
     }
     VestiComponent.prototype.ngOnInit = function () {
-        var urlParam;
-        this.route.params.subscribe(function (params) {
-            urlParam = params.id;
-        });
-        this.vest = this.objediniSveVesti()
-            .filter(function (vest) { return vest.id === urlParam; })
-            .pop();
+        this.vratiSvePonude();
     };
-    VestiComponent.prototype.idiNazad = function () {
-        this.router.navigate(['/naslovna']);
+    VestiComponent.prototype.detaljiVesti = function (id) {
+        this.router.navigate(['/naslovna/' + id]);
     };
-    VestiComponent.prototype.objediniSveVesti = function () {
-        var sveVesti = [];
-        sveVesti.push(this.shell_u_ponudi(), this.febi_u_ponudi(), this.mahle_u_ponudi(), this.ks_u_ponudi());
-        return sveVesti;
+    VestiComponent.prototype.vratiSvePonude = function () {
+        var ponuda1 = this.ponuda1();
+        var ponuda2 = this.ponuda1();
+        var ponuda3 = this.ponuda1();
+        var ponuda4 = this.ponuda1();
+        this.ponuda.push(ponuda1, ponuda2, ponuda3, ponuda4);
     };
-    VestiComponent.prototype.shell_u_ponudi = function () {
-        var shell_u_ponudi = new _model_dto__WEBPACK_IMPORTED_MODULE_2__["Vest"]();
-        shell_u_ponudi.id = 'shell-u-ponudi';
-        shell_u_ponudi.naslov = '<h1>Sinovac se trazi</h1>';
-        shell_u_ponudi.slika = 'assets/slike/novouponudi/velika/shell.png';
-        shell_u_ponudi.tekst = '<p>Febi bilstein je  osnovan davne 1844 godine. Danas je jedan od vodećih svetskih proizvođača i dobavljača rezervnih delova za putnička i komercijalna vozila na nezavisnom tržištu rezervnih delova.  Više od 170 godina održava kontinuitet, kvalitet, uslugu, pouzdanost i inovacije. Asortiman cini 30.000 razlicitih rezervnih delova. Osim toga, febi ima svoja predstavništva ili iskusnog partnera u preko 69 zemalja. </p> <p>Od upravljačke, motorne i kočne tehnike, tehnike šasija i učvršćivanja točkova do autoelektrike i pneumatike i programa febi plus – kod firme febi bilstein ćete naći sve za profesionalno servisiranje - putničkih vozila, kamiona, autobusa, prikolica, poluprikolica i malih transportera svih aktuelnih marki i modela.</p> <p class="proba">Febi bilstein stoji za proizvode koji ispunjavaju najviše zahteve kvaliteta izrade i bezbednosti ugradnje. Kvalitetom, brzinom i postavljanjem trendova febi bilstein vam daje odlučujući podsticaj na globalnom tržištu. Zato što kao premium marka ima obavezu da ispuni zahteve svojih kupaca – svakodnevno.</p> <p>AUTOMATERIJAL d.o.o - je zastupnik koncerna Febi Bilstein i Blue Printa za zapadnu Srbiju.</p>';
-        return shell_u_ponudi;
-    };
-    VestiComponent.prototype.febi_u_ponudi = function () {
-        var shell_u_ponudi = new _model_dto__WEBPACK_IMPORTED_MODULE_2__["Vest"]();
-        shell_u_ponudi.id = 'febi-u-ponudi';
-        shell_u_ponudi.naslov = '<h1>Sinovac se trazi</h1>';
-        shell_u_ponudi.slika = 'assets/slike/novouponudi/velika/febi.png';
-        shell_u_ponudi.tekst = '<p>Febi bilstein je  osnovan davne 1844 godine. Danas je jedan od vodećih svetskih proizvođača i dobavljača rezervnih delova za putnička i komercijalna vozila na nezavisnom tržištu rezervnih delova.  Više od 170 godina održava kontinuitet, kvalitet, uslugu, pouzdanost i inovacije. Asortiman cini 30.000 razlicitih rezervnih delova. Osim toga, febi ima svoja predstavništva ili iskusnog partnera u preko 69 zemalja. </p> <p>Od upravljačke, motorne i kočne tehnike, tehnike šasija i učvršćivanja točkova do autoelektrike i pneumatike i programa febi plus – kod firme febi bilstein ćete naći sve za profesionalno servisiranje - putničkih vozila, kamiona, autobusa, prikolica, poluprikolica i malih transportera svih aktuelnih marki i modela.</p> <p class="proba">Febi bilstein stoji za proizvode koji ispunjavaju najviše zahteve kvaliteta izrade i bezbednosti ugradnje. Kvalitetom, brzinom i postavljanjem trendova febi bilstein vam daje odlučujući podsticaj na globalnom tržištu. Zato što kao premium marka ima obavezu da ispuni zahteve svojih kupaca – svakodnevno.</p> <p>AUTOMATERIJAL d.o.o - je zastupnik koncerna Febi Bilstein i Blue Printa za zapadnu Srbiju.</p>';
-        return shell_u_ponudi;
-    };
-    VestiComponent.prototype.mahle_u_ponudi = function () {
-        var shell_u_ponudi = new _model_dto__WEBPACK_IMPORTED_MODULE_2__["Vest"]();
-        shell_u_ponudi.id = 'mahle-u-ponudi';
-        shell_u_ponudi.naslov = '<h1>Sinovac se trazi</h1>';
-        shell_u_ponudi.slika = 'assets/slike/novouponudi/velika/mahle.png';
-        shell_u_ponudi.tekst = '<p>Febi bilstein je  osnovan davne 1844 godine. Danas je jedan od vodećih svetskih proizvođača i dobavljača rezervnih delova za putnička i komercijalna vozila na nezavisnom tržištu rezervnih delova.  Više od 170 godina održava kontinuitet, kvalitet, uslugu, pouzdanost i inovacije. Asortiman cini 30.000 razlicitih rezervnih delova. Osim toga, febi ima svoja predstavništva ili iskusnog partnera u preko 69 zemalja. </p> <p>Od upravljačke, motorne i kočne tehnike, tehnike šasija i učvršćivanja točkova do autoelektrike i pneumatike i programa febi plus – kod firme febi bilstein ćete naći sve za profesionalno servisiranje - putničkih vozila, kamiona, autobusa, prikolica, poluprikolica i malih transportera svih aktuelnih marki i modela.</p> <p class="proba">Febi bilstein stoji za proizvode koji ispunjavaju najviše zahteve kvaliteta izrade i bezbednosti ugradnje. Kvalitetom, brzinom i postavljanjem trendova febi bilstein vam daje odlučujući podsticaj na globalnom tržištu. Zato što kao premium marka ima obavezu da ispuni zahteve svojih kupaca – svakodnevno.</p> <p>AUTOMATERIJAL d.o.o - je zastupnik koncerna Febi Bilstein i Blue Printa za zapadnu Srbiju.</p>';
-        return shell_u_ponudi;
-    };
-    VestiComponent.prototype.ks_u_ponudi = function () {
-        var shell_u_ponudi = new _model_dto__WEBPACK_IMPORTED_MODULE_2__["Vest"]();
-        shell_u_ponudi.id = 'ks-u-ponudi';
-        shell_u_ponudi.naslov = '<h1>Sinovac se trazi</h1>';
-        shell_u_ponudi.slika = 'assets/slike/novouponudi/velika/ks.png';
-        shell_u_ponudi.tekst = '<p>Febi bilstein je  osnovan davne 1844 godine. Danas je jedan od vodećih svetskih proizvođača i dobavljača rezervnih delova za putnička i komercijalna vozila na nezavisnom tržištu rezervnih delova.  Više od 170 godina održava kontinuitet, kvalitet, uslugu, pouzdanost i inovacije. Asortiman cini 30.000 razlicitih rezervnih delova. Osim toga, febi ima svoja predstavništva ili iskusnog partnera u preko 69 zemalja. </p> <p>Od upravljačke, motorne i kočne tehnike, tehnike šasija i učvršćivanja točkova do autoelektrike i pneumatike i programa febi plus – kod firme febi bilstein ćete naći sve za profesionalno servisiranje - putničkih vozila, kamiona, autobusa, prikolica, poluprikolica i malih transportera svih aktuelnih marki i modela.</p> <p class="proba">Febi bilstein stoji za proizvode koji ispunjavaju najviše zahteve kvaliteta izrade i bezbednosti ugradnje. Kvalitetom, brzinom i postavljanjem trendova febi bilstein vam daje odlučujući podsticaj na globalnom tržištu. Zato što kao premium marka ima obavezu da ispuni zahteve svojih kupaca – svakodnevno.</p> <p>AUTOMATERIJAL d.o.o - je zastupnik koncerna Febi Bilstein i Blue Printa za zapadnu Srbiju.</p>';
-        return shell_u_ponudi;
+    VestiComponent.prototype.ponuda1 = function () {
+        var prva = new _model_dto__WEBPACK_IMPORTED_MODULE_2__["VestiNaslovna"]();
+        prva.id = 'ponuda-generic';
+        prva.naslov = 'Ponuda generic';
+        prva.opis = 'Opis Vesti ide ovde.';
+        prva.opisSlika = 'https://material.angular.io/assets/img/examples/shiba2.jpg';
+        return prva;
     };
     VestiComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -777,8 +778,7 @@ var VestiComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./vesti.component.html */ "./src/app/e-commerce/dasboard/vesti/vesti.component.html"),
             styles: [__webpack_require__(/*! ./vesti.component.scss */ "./src/app/e-commerce/dasboard/vesti/vesti.component.scss")]
         }),
-        __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"],
-            _angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"]])
+        __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"]])
     ], VestiComponent);
     return VestiComponent;
 }());
@@ -1805,11 +1805,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
 /* harmony import */ var _service_roba_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
-/* harmony import */ var _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
-/* harmony import */ var _service_data_data_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
-/* harmony import */ var _model_roba_enum__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
-/* harmony import */ var _model_filter__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../model/filter */ "./src/app/e-shop/model/filter.ts");
-/* harmony import */ var src_app_shared_service_notifikacija_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/shared/service/notifikacija.service */ "./src/app/shared/service/notifikacija.service.ts");
+/* harmony import */ var _service_data_data_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
+/* harmony import */ var _model_roba_enum__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
+/* harmony import */ var _model_filter__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../model/filter */ "./src/app/e-shop/model/filter.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1826,20 +1824,16 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
-
-
 var AkumulatoriComponent = /** @class */ (function () {
-    function AkumulatoriComponent(robaService, utilsService, dataService, notifikacijaServis) {
+    function AkumulatoriComponent(robaService, dataService) {
         this.robaService = robaService;
-        this.utilsService = utilsService;
         this.dataService = dataService;
-        this.notifikacijaServis = notifikacijaServis;
-        this.vrstaRobe = _model_roba_enum__WEBPACK_IMPORTED_MODULE_6__["VrstaRobe"].AKUMULATORI;
+        this.vrstaRobe = _model_roba_enum__WEBPACK_IMPORTED_MODULE_5__["VrstaRobe"].AKUMULATORI;
         // Paging and Sorting elements
         this.rowsPerPage = 10;
         this.pageIndex = 0;
         this.sort = null;
-        this.filter = new _model_filter__WEBPACK_IMPORTED_MODULE_7__["Filter"]();
+        this.filter = new _model_filter__WEBPACK_IMPORTED_MODULE_6__["Filter"]();
         this.searchValue = '';
         this.lastSearchValue = '';
         this.ucitavanje = false;
@@ -1848,9 +1842,7 @@ var AkumulatoriComponent = /** @class */ (function () {
         this.alive = true;
     }
     AkumulatoriComponent.prototype.ngOnInit = function () {
-        var _this = this;
         this.pocetnoPretrazivanje = true;
-        this.dataService.trenutnaKorpa.subscribe(function (korpa) { return _this.korpa = korpa; });
         this.pronandjiSveAkumulatore();
     };
     AkumulatoriComponent.prototype.pronandjiSveAkumulatore = function () {
@@ -1868,6 +1860,7 @@ var AkumulatoriComponent = /** @class */ (function () {
             .subscribe(function (res) {
             _this.pronadjenaRoba = true;
             _this.roba = res.content;
+            _this.roba = _this.dataService.skiniSaStanjaUkolikoJeUKorpi(_this.roba);
             _this.dataSource = _this.roba;
             _this.rowsPerPage = res.size;
             _this.pageIndex = res.number;
@@ -1895,6 +1888,7 @@ var AkumulatoriComponent = /** @class */ (function () {
             .subscribe(function (res) {
             _this.pronadjenaRoba = true;
             _this.roba = res.content;
+            _this.roba = _this.dataService.skiniSaStanjaUkolikoJeUKorpi(_this.roba);
             _this.dataSource = _this.roba;
             _this.rowsPerPage = res.size;
             _this.pageIndex = res.number;
@@ -1926,9 +1920,6 @@ var AkumulatoriComponent = /** @class */ (function () {
         this.filter = filter;
         this.pronadjiAkumulatorePoPretrazi(this.searchValue);
     };
-    AkumulatoriComponent.prototype.uKorpi = function (katBr) {
-        return this.utilsService.daLiJeRobaUKorpi(this.korpa, katBr);
-    };
     AkumulatoriComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-akumulatori',
@@ -1936,9 +1927,7 @@ var AkumulatoriComponent = /** @class */ (function () {
             styles: [__webpack_require__(/*! ./akumulatori.component.css */ "./src/app/e-shop/magacin/akumulatori/akumulatori.component.css")]
         }),
         __metadata("design:paramtypes", [_service_roba_service__WEBPACK_IMPORTED_MODULE_3__["RobaService"],
-            _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__["AppUtilsService"],
-            _service_data_data_service__WEBPACK_IMPORTED_MODULE_5__["DataService"],
-            src_app_shared_service_notifikacija_service__WEBPACK_IMPORTED_MODULE_8__["NotifikacijaService"]])
+            _service_data_data_service__WEBPACK_IMPORTED_MODULE_4__["DataService"]])
     ], AkumulatoriComponent);
     return AkumulatoriComponent;
 }());
@@ -1984,9 +1973,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
 /* harmony import */ var _service_roba_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
 /* harmony import */ var _service_data_data_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
-/* harmony import */ var _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
-/* harmony import */ var _model_roba_enum__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
-/* harmony import */ var _model_filter__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../model/filter */ "./src/app/e-shop/model/filter.ts");
+/* harmony import */ var _model_roba_enum__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
+/* harmony import */ var _model_filter__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../model/filter */ "./src/app/e-shop/model/filter.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2003,18 +1991,16 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
-
 var FilteriComponent = /** @class */ (function () {
-    function FilteriComponent(robaService, dataService, utilsService) {
+    function FilteriComponent(robaService, dataService) {
         this.robaService = robaService;
         this.dataService = dataService;
-        this.utilsService = utilsService;
-        this.vrstaRobe = _model_roba_enum__WEBPACK_IMPORTED_MODULE_6__["VrstaRobe"].FILTERI;
+        this.vrstaRobe = _model_roba_enum__WEBPACK_IMPORTED_MODULE_5__["VrstaRobe"].FILTERI;
         // Paging and Sorting elements
         this.rowsPerPage = 10;
         this.pageIndex = 0;
         this.sort = null;
-        this.filter = new _model_filter__WEBPACK_IMPORTED_MODULE_7__["Filter"]();
+        this.filter = new _model_filter__WEBPACK_IMPORTED_MODULE_6__["Filter"]();
         this.searchValue = '';
         this.lastSearchValue = '';
         this.ucitavanje = false;
@@ -2023,9 +2009,7 @@ var FilteriComponent = /** @class */ (function () {
         this.alive = true;
     }
     FilteriComponent.prototype.ngOnInit = function () {
-        var _this = this;
         this.pocetnoPretrazivanje = true;
-        this.dataService.trenutnaKorpa.subscribe(function (korpa) { return _this.korpa = korpa; });
         this.pronandjiSveFiltere();
     };
     FilteriComponent.prototype.pronandjiSveFiltere = function () {
@@ -2043,7 +2027,7 @@ var FilteriComponent = /** @class */ (function () {
             .subscribe(function (res) {
             _this.pronadjenaRoba = true;
             _this.roba = res.content;
-            _this.dataService.skiniSaStanjaUkolikoJeUKorpi(_this.roba);
+            _this.roba = _this.dataService.skiniSaStanjaUkolikoJeUKorpi(_this.roba);
             _this.dataSource = _this.roba;
             _this.rowsPerPage = res.size;
             _this.pageIndex = res.number;
@@ -2072,7 +2056,7 @@ var FilteriComponent = /** @class */ (function () {
             .subscribe(function (res) {
             _this.pronadjenaRoba = true;
             _this.roba = res.content;
-            _this.dataService.skiniSaStanjaUkolikoJeUKorpi(_this.roba);
+            _this.roba = _this.dataService.skiniSaStanjaUkolikoJeUKorpi(_this.roba);
             _this.dataSource = _this.roba;
             _this.rowsPerPage = res.size;
             _this.pageIndex = res.number;
@@ -2104,9 +2088,6 @@ var FilteriComponent = /** @class */ (function () {
         this.filter = filter;
         this.pronadjiFilterePoPretrazi(this.searchValue);
     };
-    FilteriComponent.prototype.uKorpi = function (katBr) {
-        return this.utilsService.daLiJeRobaUKorpi(this.korpa, katBr);
-    };
     FilteriComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-filteri',
@@ -2114,8 +2095,7 @@ var FilteriComponent = /** @class */ (function () {
             styles: [__webpack_require__(/*! ./filteri.component.css */ "./src/app/e-shop/magacin/filteri/filteri.component.css")]
         }),
         __metadata("design:paramtypes", [_service_roba_service__WEBPACK_IMPORTED_MODULE_3__["RobaService"],
-            _service_data_data_service__WEBPACK_IMPORTED_MODULE_4__["DataService"],
-            _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_5__["AppUtilsService"]])
+            _service_data_data_service__WEBPACK_IMPORTED_MODULE_4__["DataService"]])
     ], FilteriComponent);
     return FilteriComponent;
 }());
@@ -2160,11 +2140,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
-/* harmony import */ var src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/e-shop/utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
-/* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
-/* harmony import */ var src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/e-shop/service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
-/* harmony import */ var src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/e-shop/model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
-/* harmony import */ var src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/e-shop/model/filter */ "./src/app/e-shop/model/filter.ts");
+/* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
+/* harmony import */ var src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/e-shop/service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
+/* harmony import */ var src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/e-shop/model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
+/* harmony import */ var src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/e-shop/model/filter */ "./src/app/e-shop/model/filter.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2182,20 +2161,18 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
-
 var KategorijaSpecificnaComponent = /** @class */ (function () {
-    function KategorijaSpecificnaComponent(route, utilsService, dataService, robaServis, router) {
+    function KategorijaSpecificnaComponent(route, dataService, robaServis, router) {
         this.route = route;
-        this.utilsService = utilsService;
         this.dataService = dataService;
         this.robaServis = robaServis;
         this.router = router;
-        this.vrstaRobe = src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_7__["VrstaRobe"].OSTALO;
+        this.vrstaRobe = src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_6__["VrstaRobe"].OSTALO;
         // Paging and Sorting elements
         this.rowsPerPage = 10;
         this.pageIndex = 0;
         this.sort = null;
-        this.filter = new src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_8__["Filter"]();
+        this.filter = new src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_7__["Filter"]();
         this.searchValue = '';
         this.lastSearchValue = '';
         this.ucitavanje = false;
@@ -2204,9 +2181,7 @@ var KategorijaSpecificnaComponent = /** @class */ (function () {
         this.alive = true;
     }
     KategorijaSpecificnaComponent.prototype.ngOnInit = function () {
-        var _this = this;
         this.pocetnoPretrazivanje = true;
-        this.dataService.trenutnaKorpa.subscribe(function (korpa) { return _this.korpa = korpa; });
         this.pronandjiRobu();
     };
     KategorijaSpecificnaComponent.prototype.pronandjiRobu = function () {
@@ -2223,7 +2198,7 @@ var KategorijaSpecificnaComponent = /** @class */ (function () {
                 .subscribe(function (res) {
                 _this.pronadjenaRoba = true;
                 _this.roba = res.content;
-                _this.dataService.skiniSaStanjaUkolikoJeUKorpi(_this.roba);
+                _this.roba = _this.dataService.skiniSaStanjaUkolikoJeUKorpi(_this.roba);
                 _this.dataSource = _this.roba;
                 _this.rowsPerPage = res.size;
                 _this.pageIndex = res.number;
@@ -2259,7 +2234,7 @@ var KategorijaSpecificnaComponent = /** @class */ (function () {
                 .subscribe(function (res) {
                 _this.pronadjenaRoba = true;
                 _this.roba = res.content;
-                _this.dataService.skiniSaStanjaUkolikoJeUKorpi(_this.roba);
+                _this.roba = _this.dataService.skiniSaStanjaUkolikoJeUKorpi(_this.roba);
                 _this.dataSource = _this.roba;
                 _this.rowsPerPage = res.size;
                 _this.pageIndex = res.number;
@@ -2286,9 +2261,6 @@ var KategorijaSpecificnaComponent = /** @class */ (function () {
         this.filter = filter;
         this.pronadjiSvuRobuPoPretrazi(this.searchValue);
     };
-    KategorijaSpecificnaComponent.prototype.uKorpi = function (katBr) {
-        return this.utilsService.daLiJeRobaUKorpi(this.korpa, katBr);
-    };
     KategorijaSpecificnaComponent.prototype.idiNazad = function () {
         this.router.navigate(['/ostalo']);
     };
@@ -2299,9 +2271,8 @@ var KategorijaSpecificnaComponent = /** @class */ (function () {
             styles: [__webpack_require__(/*! ./kategorija-specificna.component.scss */ "./src/app/e-shop/magacin/ostalo/kategorija-specificna/kategorija-specificna.component.scss")]
         }),
         __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"],
-            src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__["AppUtilsService"],
-            src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_5__["DataService"],
-            src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_6__["RobaService"],
+            src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_4__["DataService"],
+            src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_5__["RobaService"],
             _angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"]])
     ], KategorijaSpecificnaComponent);
     return KategorijaSpecificnaComponent;
@@ -2437,9 +2408,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
 /* harmony import */ var _service_data_data_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
-/* harmony import */ var _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
-/* harmony import */ var _model_roba_enum__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
-/* harmony import */ var _model_filter__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../model/filter */ "./src/app/e-shop/model/filter.ts");
+/* harmony import */ var _model_roba_enum__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
+/* harmony import */ var _model_filter__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../model/filter */ "./src/app/e-shop/model/filter.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2456,18 +2426,16 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
-
 var RobaComponent = /** @class */ (function () {
-    function RobaComponent(robaService, dataService, utilsService) {
+    function RobaComponent(robaService, dataService) {
         this.robaService = robaService;
         this.dataService = dataService;
-        this.utilsService = utilsService;
-        this.vrstaRobe = _model_roba_enum__WEBPACK_IMPORTED_MODULE_6__["VrstaRobe"].SVE;
+        this.vrstaRobe = _model_roba_enum__WEBPACK_IMPORTED_MODULE_5__["VrstaRobe"].SVE;
         // Paging and Sorting elements
         this.rowsPerPage = 10;
         this.pageIndex = 0;
         this.sort = null;
-        this.filter = new _model_filter__WEBPACK_IMPORTED_MODULE_7__["Filter"]();
+        this.filter = new _model_filter__WEBPACK_IMPORTED_MODULE_6__["Filter"]();
         this.searchValue = '';
         this.lastSearchValue = '';
         this.ucitavanje = false;
@@ -2476,9 +2444,7 @@ var RobaComponent = /** @class */ (function () {
         this.alive = true;
     }
     RobaComponent.prototype.ngOnInit = function () {
-        var _this = this;
         this.pocetnoPretrazivanje = true;
-        this.dataService.trenutnaKorpa.subscribe(function (korpa) { return _this.korpa = korpa; });
         this.pronadjiSvuRobu();
     };
     RobaComponent.prototype.pronadjiSvuRobu = function () {
@@ -2496,6 +2462,7 @@ var RobaComponent = /** @class */ (function () {
             .subscribe(function (res) {
             _this.pronadjenaRoba = true;
             _this.roba = res.content;
+            _this.roba = _this.dataService.skiniSaStanjaUkolikoJeUKorpi(_this.roba);
             _this.dataSource = _this.roba;
             _this.rowsPerPage = res.size;
             _this.pageIndex = res.number;
@@ -2529,6 +2496,7 @@ var RobaComponent = /** @class */ (function () {
             .subscribe(function (res) {
             _this.pronadjenaRoba = true;
             _this.roba = res.content;
+            _this.roba = _this.dataService.skiniSaStanjaUkolikoJeUKorpi(_this.roba);
             _this.dataSource = _this.roba;
             _this.rowsPerPage = res.size;
             _this.pageIndex = res.number;
@@ -2554,9 +2522,6 @@ var RobaComponent = /** @class */ (function () {
         this.filter = filter;
         this.pronadjiSvuRobuPoPretrazi(this.searchValue);
     };
-    RobaComponent.prototype.uKorpi = function (katBr) {
-        return this.utilsService.daLiJeRobaUKorpi(this.korpa, katBr);
-    };
     RobaComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-roba',
@@ -2564,8 +2529,7 @@ var RobaComponent = /** @class */ (function () {
             styles: [__webpack_require__(/*! ./roba.component.css */ "./src/app/e-shop/magacin/roba/roba.component.css")]
         }),
         __metadata("design:paramtypes", [_service_roba_service__WEBPACK_IMPORTED_MODULE_1__["RobaService"],
-            _service_data_data_service__WEBPACK_IMPORTED_MODULE_4__["DataService"],
-            _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_5__["AppUtilsService"]])
+            _service_data_data_service__WEBPACK_IMPORTED_MODULE_4__["DataService"]])
     ], RobaComponent);
     return RobaComponent;
 }());
@@ -2799,6 +2763,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/e-shop/utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
 /* harmony import */ var src_app_shared_service_notifikacija_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/shared/service/notifikacija.service */ "./src/app/shared/service/notifikacija.service.ts");
 /* harmony import */ var src_app_shared_model_konstante__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/shared/model/konstante */ "./src/app/shared/model/konstante.ts");
+/* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2813,11 +2778,13 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var TabelaComponent = /** @class */ (function () {
-    function TabelaComponent(utilsService, loginServis, notifikacijaServis) {
+    function TabelaComponent(utilsService, loginServis, notifikacijaServis, dataService) {
         this.utilsService = utilsService;
         this.loginServis = loginServis;
         this.notifikacijaServis = notifikacijaServis;
+        this.dataService = dataService;
         // Paging and Sorting elements
         this.rowsPerPage = 10;
         this.pageIndex = 0;
@@ -2838,6 +2805,7 @@ var TabelaComponent = /** @class */ (function () {
     }
     TabelaComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this.dataService.trenutnaKorpa.subscribe(function (korpa) { return _this.korpa = korpa; });
         this.loginServis.ulogovaniPartner.subscribe(function (partner) { return _this.partner = partner; });
     };
     TabelaComponent.prototype.paginatorEvent = function (pageEvent) {
@@ -2854,6 +2822,9 @@ var TabelaComponent = /** @class */ (function () {
         var snackBarPoruka = this.utilsService.dodajUKorpu(roba);
         this.notifikacijaServis.notify(snackBarPoruka, src_app_shared_model_konstante__WEBPACK_IMPORTED_MODULE_4__["MatSnackBarKlase"].Zelena);
         this.utilsService.izbrisiRobuSaStanja(this.roba, roba);
+    };
+    TabelaComponent.prototype.uKorpi = function (katBr) {
+        return this.utilsService.daLiJeRobaUKorpi(this.korpa, katBr);
     };
     __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
@@ -2887,7 +2858,8 @@ var TabelaComponent = /** @class */ (function () {
         }),
         __metadata("design:paramtypes", [src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_2__["AppUtilsService"],
             src_app_e_shop_service_login_service__WEBPACK_IMPORTED_MODULE_1__["LoginService"],
-            src_app_shared_service_notifikacija_service__WEBPACK_IMPORTED_MODULE_3__["NotifikacijaService"]])
+            src_app_shared_service_notifikacija_service__WEBPACK_IMPORTED_MODULE_3__["NotifikacijaService"],
+            src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_5__["DataService"]])
     ], TabelaComponent);
     return TabelaComponent;
 }());
@@ -2932,10 +2904,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
 /* harmony import */ var src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/e-shop/service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
-/* harmony import */ var src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/e-shop/utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
-/* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
-/* harmony import */ var src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/e-shop/model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
-/* harmony import */ var src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/e-shop/model/filter */ "./src/app/e-shop/model/filter.ts");
+/* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
+/* harmony import */ var src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/e-shop/model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
+/* harmony import */ var src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/e-shop/model/filter */ "./src/app/e-shop/model/filter.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2952,18 +2923,16 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
-
 var AntifrizComponent = /** @class */ (function () {
-    function AntifrizComponent(robaService, utilsService, dataService) {
+    function AntifrizComponent(robaService, dataService) {
         this.robaService = robaService;
-        this.utilsService = utilsService;
         this.dataService = dataService;
-        this.vrstaRobe = src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_6__["VrstaRobe"].ULJA;
+        this.vrstaRobe = src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_5__["VrstaRobe"].ULJA;
         // Paging and Sorting elements
         this.rowsPerPage = 10;
         this.pageIndex = 0;
         this.sort = null;
-        this.filter = new src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_7__["Filter"]();
+        this.filter = new src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_6__["Filter"]();
         this.searchValue = '';
         this.lastSearchValue = '';
         this.ucitavanje = false;
@@ -2973,9 +2942,7 @@ var AntifrizComponent = /** @class */ (function () {
         this.vrstaUlja = 'antifriz';
     }
     AntifrizComponent.prototype.ngOnInit = function () {
-        var _this = this;
         this.pocetnoPretrazivanje = true;
-        this.dataService.trenutnaKorpa.subscribe(function (korpa) { return _this.korpa = korpa; });
         this.pronandjiSavAntifriz();
     };
     AntifrizComponent.prototype.pronandjiSavAntifriz = function () {
@@ -2993,7 +2960,7 @@ var AntifrizComponent = /** @class */ (function () {
             .subscribe(function (res) {
             _this.pronadjenaRoba = true;
             _this.roba = res.content;
-            _this.dataSource = _this.roba;
+            _this.roba = _this.dataService.skiniSaStanjaUkolikoJeUKorpi(_this.roba);
             _this.dataSource = _this.roba;
             _this.rowsPerPage = res.size;
             _this.pageIndex = res.number;
@@ -3022,6 +2989,7 @@ var AntifrizComponent = /** @class */ (function () {
             .subscribe(function (res) {
             _this.pronadjenaRoba = true;
             _this.roba = res.content;
+            _this.roba = _this.dataService.skiniSaStanjaUkolikoJeUKorpi(_this.roba);
             _this.dataSource = _this.roba;
             _this.rowsPerPage = res.size;
             _this.pageIndex = res.number;
@@ -3053,9 +3021,6 @@ var AntifrizComponent = /** @class */ (function () {
         this.filter = filter;
         this.pronadjiEntitetePoPretrazi(this.searchValue);
     };
-    AntifrizComponent.prototype.uKorpi = function (katBr) {
-        return this.utilsService.daLiJeRobaUKorpi(this.korpa, katBr);
-    };
     AntifrizComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-antifriz',
@@ -3063,8 +3028,7 @@ var AntifrizComponent = /** @class */ (function () {
             styles: [__webpack_require__(/*! ./antifriz.component.css */ "./src/app/e-shop/magacin/ulja/antifriz/antifriz.component.css")]
         }),
         __metadata("design:paramtypes", [src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_3__["RobaService"],
-            src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__["AppUtilsService"],
-            src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_5__["DataService"]])
+            src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_4__["DataService"]])
     ], AntifrizComponent);
     return AntifrizComponent;
 }());
@@ -3109,10 +3073,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
 /* harmony import */ var src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/e-shop/service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
-/* harmony import */ var src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/e-shop/utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
-/* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
-/* harmony import */ var src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/e-shop/model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
-/* harmony import */ var src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/e-shop/model/filter */ "./src/app/e-shop/model/filter.ts");
+/* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
+/* harmony import */ var src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/e-shop/model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
+/* harmony import */ var src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/e-shop/model/filter */ "./src/app/e-shop/model/filter.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3129,18 +3092,16 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
-
 var IndustrijskaComponent = /** @class */ (function () {
-    function IndustrijskaComponent(robaService, utilsService, dataService) {
+    function IndustrijskaComponent(robaService, dataService) {
         this.robaService = robaService;
-        this.utilsService = utilsService;
         this.dataService = dataService;
-        this.vrstaRobe = src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_6__["VrstaRobe"].ULJA;
+        this.vrstaRobe = src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_5__["VrstaRobe"].ULJA;
         // Paging and Sorting elements
         this.rowsPerPage = 10;
         this.pageIndex = 0;
         this.sort = null;
-        this.filter = new src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_7__["Filter"]();
+        this.filter = new src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_6__["Filter"]();
         this.vrstaIndustijskihUlja = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
         this.searchValue = '';
         this.lastSearchValue = '';
@@ -3164,9 +3125,7 @@ var IndustrijskaComponent = /** @class */ (function () {
         this.vrstaUlja = 'hidraulicna';
     }
     IndustrijskaComponent.prototype.ngOnInit = function () {
-        var _this = this;
         this.pocetnoPretrazivanje = true;
-        this.dataService.trenutnaKorpa.subscribe(function (korpa) { return _this.korpa = korpa; });
         this.pronandjiUlja();
     };
     IndustrijskaComponent.prototype.pronandjiUlja = function () {
@@ -3185,6 +3144,7 @@ var IndustrijskaComponent = /** @class */ (function () {
             .subscribe(function (res) {
             _this.pronadjenaRoba = true;
             _this.roba = res.content;
+            _this.roba = _this.dataService.skiniSaStanjaUkolikoJeUKorpi(_this.roba);
             _this.dataSource = _this.roba;
             _this.rowsPerPage = res.size;
             _this.pageIndex = res.number;
@@ -3212,6 +3172,7 @@ var IndustrijskaComponent = /** @class */ (function () {
             .subscribe(function (res) {
             _this.pronadjenaRoba = true;
             _this.roba = res.content;
+            _this.roba = _this.dataService.skiniSaStanjaUkolikoJeUKorpi(_this.roba);
             _this.dataSource = _this.roba;
             _this.rowsPerPage = res.size;
             _this.pageIndex = res.number;
@@ -3253,9 +3214,6 @@ var IndustrijskaComponent = /** @class */ (function () {
         });
         this.pronandjiUlja();
     };
-    IndustrijskaComponent.prototype.uKorpi = function (katBr) {
-        return this.utilsService.daLiJeRobaUKorpi(this.korpa, katBr);
-    };
     IndustrijskaComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-industrijska',
@@ -3263,8 +3221,7 @@ var IndustrijskaComponent = /** @class */ (function () {
             styles: [__webpack_require__(/*! ./industrijska.component.css */ "./src/app/e-shop/magacin/ulja/industrijska/industrijska.component.css")]
         }),
         __metadata("design:paramtypes", [src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_3__["RobaService"],
-            src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__["AppUtilsService"],
-            src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_5__["DataService"]])
+            src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_4__["DataService"]])
     ], IndustrijskaComponent);
     return IndustrijskaComponent;
 }());
@@ -3308,11 +3265,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
-/* harmony import */ var src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/e-shop/utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
-/* harmony import */ var src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/e-shop/service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
-/* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
-/* harmony import */ var src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/e-shop/model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
-/* harmony import */ var src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/e-shop/model/filter */ "./src/app/e-shop/model/filter.ts");
+/* harmony import */ var src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/e-shop/service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
+/* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
+/* harmony import */ var src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/e-shop/model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
+/* harmony import */ var src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/e-shop/model/filter */ "./src/app/e-shop/model/filter.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3329,18 +3285,16 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
-
 var KocionaComponent = /** @class */ (function () {
-    function KocionaComponent(robaService, utilsService, dataService) {
+    function KocionaComponent(robaService, dataService) {
         this.robaService = robaService;
-        this.utilsService = utilsService;
         this.dataService = dataService;
-        this.vrstaRobe = src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_6__["VrstaRobe"].ULJA;
+        this.vrstaRobe = src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_5__["VrstaRobe"].ULJA;
         // Paging and Sorting elements
         this.rowsPerPage = 10;
         this.pageIndex = 0;
         this.sort = null;
-        this.filter = new src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_7__["Filter"]();
+        this.filter = new src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_6__["Filter"]();
         this.searchValue = '';
         this.lastSearchValue = '';
         this.ucitavanje = false;
@@ -3350,9 +3304,7 @@ var KocionaComponent = /** @class */ (function () {
         this.vrstaUlja = 'kociona';
     }
     KocionaComponent.prototype.ngOnInit = function () {
-        var _this = this;
         this.pocetnoPretrazivanje = true;
-        this.dataService.trenutnaKorpa.subscribe(function (korpa) { return _this.korpa = korpa; });
         this.pronandjiSvaKocionaUlja();
     };
     KocionaComponent.prototype.pronandjiSvaKocionaUlja = function () {
@@ -3370,6 +3322,7 @@ var KocionaComponent = /** @class */ (function () {
             .subscribe(function (res) {
             _this.pronadjenaRoba = true;
             _this.roba = res.content;
+            _this.roba = _this.dataService.skiniSaStanjaUkolikoJeUKorpi(_this.roba);
             _this.dataSource = _this.roba;
             _this.rowsPerPage = res.size;
             _this.pageIndex = res.number;
@@ -3397,6 +3350,7 @@ var KocionaComponent = /** @class */ (function () {
             .subscribe(function (res) {
             _this.pronadjenaRoba = true;
             _this.roba = res.content;
+            _this.roba = _this.dataService.skiniSaStanjaUkolikoJeUKorpi(_this.roba);
             _this.dataSource = _this.roba;
             _this.rowsPerPage = res.size;
             _this.pageIndex = res.number;
@@ -3428,18 +3382,14 @@ var KocionaComponent = /** @class */ (function () {
         this.filter = filter;
         this.pronadjiEntitetePoPretrazi(this.searchValue);
     };
-    KocionaComponent.prototype.uKorpi = function (katBr) {
-        return this.utilsService.daLiJeRobaUKorpi(this.korpa, katBr);
-    };
     KocionaComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-kociona',
             template: __webpack_require__(/*! ./kociona.component.html */ "./src/app/e-shop/magacin/ulja/kociona/kociona.component.html"),
             styles: [__webpack_require__(/*! ./kociona.component.css */ "./src/app/e-shop/magacin/ulja/kociona/kociona.component.css")]
         }),
-        __metadata("design:paramtypes", [src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_4__["RobaService"],
-            src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_3__["AppUtilsService"],
-            src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_5__["DataService"]])
+        __metadata("design:paramtypes", [src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_3__["RobaService"],
+            src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_4__["DataService"]])
     ], KocionaComponent);
     return KocionaComponent;
 }());
@@ -3484,10 +3434,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
 /* harmony import */ var src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/e-shop/service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
-/* harmony import */ var src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/e-shop/utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
-/* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
-/* harmony import */ var src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/e-shop/model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
-/* harmony import */ var src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/e-shop/model/filter */ "./src/app/e-shop/model/filter.ts");
+/* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
+/* harmony import */ var src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/e-shop/model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
+/* harmony import */ var src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/e-shop/model/filter */ "./src/app/e-shop/model/filter.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3504,20 +3453,18 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
-
 var MenjackoComponent = /** @class */ (function () {
-    function MenjackoComponent(robaService, utilsService, dataService) {
+    function MenjackoComponent(robaService, dataService) {
         this.robaService = robaService;
-        this.utilsService = utilsService;
         this.dataService = dataService;
-        this.vrstaRobe = src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_6__["VrstaRobe"].ULJA;
+        this.vrstaRobe = src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_5__["VrstaRobe"].ULJA;
         // Paging and Sorting elements
         this.rowsPerPage = 10;
         this.pageIndex = 0;
         this.sort = null;
         this.searchValue = '';
         this.lastSearchValue = '';
-        this.filter = new src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_7__["Filter"]();
+        this.filter = new src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_6__["Filter"]();
         this.ucitavanje = false;
         this.pronadjenaRoba = true;
         this.otvoriFilter = false;
@@ -3525,9 +3472,7 @@ var MenjackoComponent = /** @class */ (function () {
         this.vrstaUlja = 'menjacka';
     }
     MenjackoComponent.prototype.ngOnInit = function () {
-        var _this = this;
         this.pocetnoPretrazivanje = true;
-        this.dataService.trenutnaKorpa.subscribe(function (korpa) { return _this.korpa = korpa; });
         this.pronandjiSvaMenjackaUlja();
     };
     MenjackoComponent.prototype.pronandjiSvaMenjackaUlja = function () {
@@ -3545,6 +3490,7 @@ var MenjackoComponent = /** @class */ (function () {
             .subscribe(function (res) {
             _this.pronadjenaRoba = true;
             _this.roba = res.content;
+            _this.roba = _this.dataService.skiniSaStanjaUkolikoJeUKorpi(_this.roba);
             _this.dataSource = _this.roba;
             _this.dataSource = _this.roba;
             _this.rowsPerPage = res.size;
@@ -3574,6 +3520,7 @@ var MenjackoComponent = /** @class */ (function () {
             .subscribe(function (res) {
             _this.pronadjenaRoba = true;
             _this.roba = res.content;
+            _this.roba = _this.dataService.skiniSaStanjaUkolikoJeUKorpi(_this.roba);
             _this.dataSource = _this.roba;
             _this.rowsPerPage = res.size;
             _this.pageIndex = res.number;
@@ -3605,9 +3552,6 @@ var MenjackoComponent = /** @class */ (function () {
         this.filter = filter;
         this.pronadjiEntitetePoPretrazi(this.searchValue);
     };
-    MenjackoComponent.prototype.uKorpi = function (katBr) {
-        return this.utilsService.daLiJeRobaUKorpi(this.korpa, katBr);
-    };
     MenjackoComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-menjacko',
@@ -3615,8 +3559,7 @@ var MenjackoComponent = /** @class */ (function () {
             styles: [__webpack_require__(/*! ./menjacko.component.css */ "./src/app/e-shop/magacin/ulja/menjacko/menjacko.component.css")]
         }),
         __metadata("design:paramtypes", [src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_3__["RobaService"],
-            src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__["AppUtilsService"],
-            src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_5__["DataService"]])
+            src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_4__["DataService"]])
     ], MenjackoComponent);
     return MenjackoComponent;
 }());
@@ -3661,10 +3604,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
 /* harmony import */ var src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/e-shop/service/roba.service */ "./src/app/e-shop/service/roba.service.ts");
-/* harmony import */ var src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/e-shop/utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
-/* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
-/* harmony import */ var src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/e-shop/model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
-/* harmony import */ var src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/e-shop/model/filter */ "./src/app/e-shop/model/filter.ts");
+/* harmony import */ var src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/e-shop/service/data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
+/* harmony import */ var src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/e-shop/model/roba.enum */ "./src/app/e-shop/model/roba.enum.ts");
+/* harmony import */ var src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/e-shop/model/filter */ "./src/app/e-shop/model/filter.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3681,18 +3623,16 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
-
 var MotornaComponent = /** @class */ (function () {
-    function MotornaComponent(robaService, utilsService, dataService) {
+    function MotornaComponent(robaService, dataService) {
         this.robaService = robaService;
-        this.utilsService = utilsService;
         this.dataService = dataService;
-        this.vrstaRobe = src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_6__["VrstaRobe"].ULJA;
+        this.vrstaRobe = src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_5__["VrstaRobe"].ULJA;
         // Paging and Sorting elements
         this.rowsPerPage = 10;
         this.pageIndex = 0;
         this.sort = null;
-        this.filter = new src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_7__["Filter"]();
+        this.filter = new src_app_e_shop_model_filter__WEBPACK_IMPORTED_MODULE_6__["Filter"]();
         this.searchValue = '';
         this.lastSearchValue = '';
         this.ucitavanje = false;
@@ -3702,9 +3642,7 @@ var MotornaComponent = /** @class */ (function () {
         this.vrstaUlja = 'motorna';
     }
     MotornaComponent.prototype.ngOnInit = function () {
-        var _this = this;
         this.pocetnoPretrazivanje = true;
-        this.dataService.trenutnaKorpa.subscribe(function (korpa) { return _this.korpa = korpa; });
         this.pronandjiSvoMotornoUlje();
     };
     MotornaComponent.prototype.pronandjiSvoMotornoUlje = function () {
@@ -3722,6 +3660,7 @@ var MotornaComponent = /** @class */ (function () {
             .subscribe(function (res) {
             _this.pronadjenaRoba = true;
             _this.roba = res.content;
+            _this.roba = _this.dataService.skiniSaStanjaUkolikoJeUKorpi(_this.roba);
             _this.dataSource = _this.roba;
             _this.dataSource = _this.roba;
             _this.rowsPerPage = res.size;
@@ -3751,6 +3690,7 @@ var MotornaComponent = /** @class */ (function () {
             .subscribe(function (res) {
             _this.pronadjenaRoba = true;
             _this.roba = res.content;
+            _this.roba = _this.dataService.skiniSaStanjaUkolikoJeUKorpi(_this.roba);
             _this.dataSource = _this.roba;
             _this.rowsPerPage = res.size;
             _this.pageIndex = res.number;
@@ -3782,9 +3722,6 @@ var MotornaComponent = /** @class */ (function () {
         this.filter = filter;
         this.pronadjiEntitetePoPretrazi(this.searchValue);
     };
-    MotornaComponent.prototype.uKorpi = function (katBr) {
-        return this.utilsService.daLiJeRobaUKorpi(this.korpa, katBr);
-    };
     MotornaComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-motorna',
@@ -3792,8 +3729,7 @@ var MotornaComponent = /** @class */ (function () {
             styles: [__webpack_require__(/*! ./motorna.component.css */ "./src/app/e-shop/magacin/ulja/motorna/motorna.component.css")]
         }),
         __metadata("design:paramtypes", [src_app_e_shop_service_roba_service__WEBPACK_IMPORTED_MODULE_3__["RobaService"],
-            src_app_e_shop_utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__["AppUtilsService"],
-            src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_5__["DataService"]])
+            src_app_e_shop_service_data_data_service__WEBPACK_IMPORTED_MODULE_4__["DataService"]])
     ], MotornaComponent);
     return MotornaComponent;
 }());
@@ -4608,6 +4544,7 @@ var DataService = /** @class */ (function () {
                 });
             });
         }
+        return robaBaza;
     };
     DataService.prototype.izbaciIzKorpe = function (index) {
         this.korpa.roba.splice(index, 1);
@@ -5497,7 +5434,7 @@ module.exports = "<mat-sidenav-container class=\"sidenav-container pozadina-siva
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".sidenav-container {\n  height: 100%; }\n\n.pozicija {\n  margin: 0 auto;\n  padding-bottom: 220px; }\n\n.sidenav {\n  width: 200px;\n  height: 100%; }\n\n.mat-toolbar.mat-primary {\n  position: -webkit-sticky;\n  position: sticky;\n  top: 0; }\n\n.header-navigacija {\n  font-size: 0.6em !important;\n  width: 200pxpx; }\n\n.header-sirina {\n  width: 200px !important; }\n\np {\n  color: #f1f1f1 !important; }\n\nmat-divider {\n  border-width: 1px;\n  border-style: solid;\n  border-color: #dfe5e7; }\n\n.margin-gore {\n  margin-top: 120px; }\n\n.side-toolbar {\n  height: 120px;\n  width: 200px;\n  padding: 0px 0px !important; }\n\n.header-pozicija {\n  top: 0px;\n  position: fixed;\n  z-index: 999; }\n\n@media screen and (max-device-width: 1000px) {\n  .pozicija {\n    padding-bottom: 490px; } }\n\n@media screen and (max-width: 990px) {\n  .pozicija {\n    padding-bottom: 500px; } }\n"
+module.exports = ".sidenav-container {\n  height: 100%; }\n\n.pozicija {\n  margin: 0 auto;\n  padding-bottom: 220px; }\n\n.sidenav {\n  width: 200px;\n  height: 100%; }\n\n.mat-toolbar.mat-primary {\n  position: -webkit-sticky;\n  position: sticky;\n  top: 0; }\n\n.header-navigacija {\n  font-size: 0.6em !important;\n  width: 200pxpx; }\n\n.header-sirina {\n  width: 200px !important; }\n\np {\n  color: #f6f6f6 !important; }\n\nmat-divider {\n  border-width: 1px;\n  border-style: solid;\n  border-color: #dfe5e7; }\n\n.margin-gore {\n  margin-top: 120px; }\n\n.side-toolbar {\n  height: 120px;\n  width: 200px;\n  padding: 0px 0px !important; }\n\n.header-pozicija {\n  top: 0px;\n  position: fixed;\n  z-index: 999; }\n\n@media screen and (max-device-width: 1000px) {\n  .pozicija {\n    padding-bottom: 490px; } }\n\n@media screen and (max-width: 990px) {\n  .pozicija {\n    padding-bottom: 500px; } }\n"
 
 /***/ }),
 
