@@ -3,10 +3,7 @@ import { RobaService } from '../../service/roba.service';
 import { Roba } from '../../model/dto';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY } from 'rxjs';
-import { Sort } from '@angular/material';
 import { DataService } from '../../service/data/data.service';
-import { Korpa } from '../../model/porudzbenica';
-import { AppUtilsService } from '../../utils/app-utils.service';
 import { VrstaRobe } from '../../model/roba.enum';
 import { Filter } from '../../model/filter';
 @Component({
@@ -37,16 +34,13 @@ export class RobaComponent implements OnInit {
   public dataSource: any;
 
   private alive = true;
-  private korpa: Korpa;
 
   constructor(private robaService: RobaService,
     private dataService: DataService,
-    private utilsService: AppUtilsService,
   ) { }
 
   ngOnInit() {
     this.pocetnoPretrazivanje = true;
-    this.dataService.trenutnaKorpa.subscribe(korpa => this.korpa = korpa);
     this.pronadjiSvuRobu();
   }
 
@@ -69,6 +63,7 @@ export class RobaComponent implements OnInit {
         res => {
           this.pronadjenaRoba = true;
           this.roba = res.content;
+          this.roba = this.dataService.skiniSaStanjaUkolikoJeUKorpi(this.roba);
           this.dataSource = this.roba;
           this.rowsPerPage = res.size;
           this.pageIndex = res.number;
@@ -110,6 +105,7 @@ export class RobaComponent implements OnInit {
         res => {
           this.pronadjenaRoba = true;
           this.roba = res.content;
+          this.roba = this.dataService.skiniSaStanjaUkolikoJeUKorpi(this.roba);
           this.dataSource = this.roba;
           this.rowsPerPage = res.size;
           this.pageIndex = res.number;
@@ -138,9 +134,5 @@ export class RobaComponent implements OnInit {
     }
     this.filter = filter;
     this.pronadjiSvuRobuPoPretrazi(this.searchValue);
-  }
-
-  uKorpi(katBr: string) {
-    return this.utilsService.daLiJeRobaUKorpi(this.korpa, katBr);
   }
 }

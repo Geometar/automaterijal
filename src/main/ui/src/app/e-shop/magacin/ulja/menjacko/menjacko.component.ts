@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY } from 'rxjs';
-import { Roba, Partner } from 'src/app/e-shop/model/dto';
-import { Korpa } from 'src/app/e-shop/model/porudzbenica';
+import { Roba } from 'src/app/e-shop/model/dto';
 import { RobaService } from 'src/app/e-shop/service/roba.service';
-import { AppUtilsService } from 'src/app/e-shop/utils/app-utils.service';
 import { DataService } from 'src/app/e-shop/service/data/data.service';
 import { VrstaRobe } from 'src/app/e-shop/model/roba.enum';
 import { Filter } from 'src/app/e-shop/model/filter';
@@ -36,18 +34,15 @@ export class MenjackoComponent implements OnInit {
   public dataSource: any;
 
   private alive = true;
-  private korpa: Korpa;
 
   public vrstaUlja = 'menjacka';
 
   constructor(
     private robaService: RobaService,
-    private utilsService: AppUtilsService,
     private dataService: DataService) { }
 
   ngOnInit() {
     this.pocetnoPretrazivanje = true;
-    this.dataService.trenutnaKorpa.subscribe(korpa => this.korpa = korpa);
      this.pronandjiSvaMenjackaUlja();
   }
 
@@ -70,6 +65,7 @@ export class MenjackoComponent implements OnInit {
         res => {
           this.pronadjenaRoba = true;
           this.roba = res.content;
+          this.roba = this.dataService.skiniSaStanjaUkolikoJeUKorpi(this.roba);
           this.dataSource = this.roba;
           this.dataSource = this.roba;
           this.rowsPerPage = res.size;
@@ -107,6 +103,7 @@ export class MenjackoComponent implements OnInit {
         res => {
           this.pronadjenaRoba = true;
           this.roba = res.content;
+          this.roba = this.dataService.skiniSaStanjaUkolikoJeUKorpi(this.roba);
           this.dataSource = this.roba;
           this.rowsPerPage = res.size;
           this.pageIndex = res.number;
@@ -142,9 +139,5 @@ export class MenjackoComponent implements OnInit {
     }
     this.filter = filter;
     this.pronadjiEntitetePoPretrazi(this.searchValue);
-  }
-
-  uKorpi(katBr: string): boolean {
-    return this.utilsService.daLiJeRobaUKorpi(this.korpa, katBr);
   }
 }

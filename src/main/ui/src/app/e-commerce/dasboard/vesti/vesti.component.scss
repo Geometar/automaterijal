@@ -1,31 +1,30 @@
-img {
-    width: 100%;
-    height: 300px;
-}
 
-.vest-sektor {
-    width: 50%;
-    margin-left: 25%;
-}
+@import "src/automaterijal-theme.scss";
 
-/* :host /deep/ mySelector { */
-:host ::ng-deep p { 
-    margin-top: 20px;
-    padding: 10px;
-}
-:host ::ng-deep h1 { 
-    text-align: center;
+h1 {
+    font-size: 1.6em;
+    color: $automaterijal-primary-100;
     margin-bottom: 20px;
+    text-align: center;
 }
 
+h2 {
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+.example-card {
+    width: 80%;
+    margin-left: 5%;
+}
+
+.sirina {
+    width: 200px;
+}
 @media only screen and (max-width :1025px) { 
-    .img {
-        width: 100%;
-        height: 100px;
-    }
-    
-    .vest-sektor {
-        width: 90%;
-        margin-left: 5%;
-    }
+  .example-card {
+      width: 95%;
+      margin-left: 10px;
+      margin-top: 10px;
   }
+}

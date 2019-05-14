@@ -37,18 +37,15 @@ export class MotornaComponent implements OnInit {
   public dataSource: any;
 
   private alive = true;
-  private korpa: Korpa;
 
   public vrstaUlja = 'motorna';
 
   constructor(
     private robaService: RobaService,
-    private utilsService: AppUtilsService,
     private dataService: DataService) { }
 
   ngOnInit() {
     this.pocetnoPretrazivanje = true;
-    this.dataService.trenutnaKorpa.subscribe(korpa => this.korpa = korpa);
     this.pronandjiSvoMotornoUlje();
   }
 
@@ -72,6 +69,7 @@ export class MotornaComponent implements OnInit {
         res => {
           this.pronadjenaRoba = true;
           this.roba = res.content;
+          this.roba = this.dataService.skiniSaStanjaUkolikoJeUKorpi(this.roba);
           this.dataSource = this.roba;
           this.dataSource = this.roba;
           this.rowsPerPage = res.size;
@@ -108,6 +106,7 @@ export class MotornaComponent implements OnInit {
         res => {
           this.pronadjenaRoba = true;
           this.roba = res.content;
+          this.roba = this.dataService.skiniSaStanjaUkolikoJeUKorpi(this.roba);
           this.dataSource = this.roba;
           this.rowsPerPage = res.size;
           this.pageIndex = res.number;
@@ -143,9 +142,5 @@ export class MotornaComponent implements OnInit {
     }
     this.filter = filter;
     this.pronadjiEntitetePoPretrazi( this.searchValue);
-  }
-
-  uKorpi(katBr: string): boolean {
-    return this.utilsService.daLiJeRobaUKorpi(this.korpa, katBr);
   }
 }

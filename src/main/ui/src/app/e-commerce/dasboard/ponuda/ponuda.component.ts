@@ -32,7 +32,7 @@ export class PonudaComponent implements OnInit {
     const shell = new VestiNaslovna();
     shell.id = 'shell-u-ponudi';
     shell.naslov = 'Shell';
-    shell.opis = 'Opis Shell-a ide ovde. SINOVAC SE CEKA';
+    shell.opis = 'Shell – globalni lider u proizvodnji ulja I maziva';
     shell.opisSlika = 'assets/slike/novouponudi/mala/shell.png';
     return shell;
   }
@@ -41,7 +41,7 @@ export class PonudaComponent implements OnInit {
     const febi = new VestiNaslovna();
     febi.id = 'febi-u-ponudi';
     febi.naslov = 'Febi';
-    febi.opis = 'Opis Febi-a ide ovde. SINOVAC SE CEKA';
+    febi.opis = 'Više od 45000 proizvoda u službi održavanja vašeg vozila';
     febi.opisSlika = 'assets/slike/novouponudi/mala/febi.png';
     return febi;
   }
@@ -50,7 +50,7 @@ export class PonudaComponent implements OnInit {
     const mahle = new VestiNaslovna();
     mahle.id = 'mahle-u-ponudi';
     mahle.naslov = 'Mahle';
-    mahle.opis = 'Opis Mahle-a ide ovde. SINOVAC SE CEKA';
+    mahle.opis = 'Od 1920 u srži automobila';
     mahle.opisSlika = 'assets/slike/novouponudi/mala/mahle.png';
     return mahle;
   }
@@ -58,8 +58,8 @@ export class PonudaComponent implements OnInit {
   ks(): VestiNaslovna {
     const ks = new VestiNaslovna();
     ks.id = 'ks-u-ponudi';
-    ks.naslov = 'Ks';
-    ks.opis = 'Opis Ks-a ide ovde. SINOVAC SE CEKA';
+    ks.naslov = 'Kolbenschmidt';
+    ks.opis = 'Godine poverenja su preporuka';
     ks.opisSlika = 'assets/slike/novouponudi/mala/ks.png';
     return ks;
   }

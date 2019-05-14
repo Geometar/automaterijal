@@ -42,9 +42,9 @@ import { ONamaComponent } from './e-commerce/o-nama/o-nama.component';
 import { OwlModule } from 'ngx-owl-carousel';
 import { BrendoviModalComponent } from './shared/modal/brendovi-modal/brendovi-modal.component';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
-import { VestiComponent } from './e-commerce/dasboard/vesti/vesti.component';
+import { ClanakComponent } from './e-commerce/dasboard/clanak/clanak.component';
 import { PonudaComponent } from './e-commerce/dasboard/ponuda/ponuda.component';
-import { KampanjaComponent } from './e-commerce/dasboard/kampanja/kampanja.component';
+import { VestiComponent as Vesti } from './e-commerce/dasboard/vesti/vesti.component';
 import { UpitModalComponent } from './shared/modal/upit-modal/upit-modal.component';
 import { FilterComponent } from './e-shop/magacin/shared-components/filter/filter.component';
 import { TabelaComponent } from './e-shop/magacin/shared-components/tabela/tabela.component';
@@ -84,9 +84,9 @@ import { TabelaComponent } from './e-shop/magacin/shared-components/tabela/tabel
     PorukaModalComponent,
     ONamaComponent,
     BrendoviModalComponent,
-    VestiComponent,
+    ClanakComponent,
     PonudaComponent,
-    KampanjaComponent,
+    Vesti,
     UpitModalComponent,
     FilterComponent,
     TabelaComponent

@@ -3,8 +3,6 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY } from 'rxjs';
 import { Roba } from 'src/app/e-shop/model/dto';
-import { Korpa } from 'src/app/e-shop/model/porudzbenica';
-import { AppUtilsService } from 'src/app/e-shop/utils/app-utils.service';
 import { DataService } from 'src/app/e-shop/service/data/data.service';
 import { RobaService } from 'src/app/e-shop/service/roba.service';
 import { VrstaRobe } from 'src/app/e-shop/model/roba.enum';
@@ -39,11 +37,9 @@ export class KategorijaSpecificnaComponent implements OnInit {
   public dataSource: any;
 
   private alive = true;
-  private korpa: Korpa;
 
   constructor(
     private route: ActivatedRoute,
-    private utilsService: AppUtilsService,
     private dataService: DataService,
     private robaServis: RobaService,
     private router: Router
@@ -51,7 +47,6 @@ export class KategorijaSpecificnaComponent implements OnInit {
 
   ngOnInit() {
     this.pocetnoPretrazivanje = true;
-    this.dataService.trenutnaKorpa.subscribe(korpa => this.korpa = korpa);
     this.pronandjiRobu();
   }
 
@@ -73,7 +68,7 @@ export class KategorijaSpecificnaComponent implements OnInit {
           res => {
             this.pronadjenaRoba = true;
             this.roba = res.content;
-            this.dataService.skiniSaStanjaUkolikoJeUKorpi(this.roba);
+            this.roba = this.dataService.skiniSaStanjaUkolikoJeUKorpi(this.roba);
             this.dataSource = this.roba;
             this.rowsPerPage = res.size;
             this.pageIndex = res.number;
@@ -117,7 +112,7 @@ export class KategorijaSpecificnaComponent implements OnInit {
           res => {
             this.pronadjenaRoba = true;
             this.roba = res.content;
-            this.dataService.skiniSaStanjaUkolikoJeUKorpi(this.roba);
+            this.roba = this.dataService.skiniSaStanjaUkolikoJeUKorpi(this.roba);
             this.dataSource = this.roba;
             this.rowsPerPage = res.size;
             this.pageIndex = res.number;
@@ -146,10 +141,6 @@ export class KategorijaSpecificnaComponent implements OnInit {
     }
     this.filter = filter;
     this.pronadjiSvuRobuPoPretrazi(this.searchValue);
-  }
-
-  uKorpi(katBr: string) {
-    return this.utilsService.daLiJeRobaUKorpi(this.korpa, katBr);
   }
 
   idiNazad() {

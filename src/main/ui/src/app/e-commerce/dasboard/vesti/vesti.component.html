@@ -1,14 +1,19 @@
-<main>
-  <div class="d-flex flex-row-reverse bd-highlight">
-    <button class="button-glavni-100 nazad-button" mat-raised-button (click)="idiNazad()">
-      <mat-icon>keyboard_arrow_left</mat-icon> Nazad
-    </button>
+<h1>Vesti</h1>
+<div class="d-flex flex-lg-row flex-column justify-content-center">
+  <div *ngFor="let vest of ponuda">
+    <mat-card class="example-card" fxLayout="row" fxLayoutWrap>
+      <mat-card-header>
+        <mat-card-title><h2>{{vest.naslov}}</h2></mat-card-title>
+      </mat-card-header>
+      <img mat-card-image src="{{vest.opisSlika}}" alt="Photo of a Shiba Inu">
+      <mat-card-content>
+        <p>
+          {{vest.opis}}
+        </p>
+      </mat-card-content>
+      <mat-card-actions class="d-flex justify-content-center">
+        <button class="sirina" mat-raised-button (click)="detaljiVesti(vest.id)" color="primary">Pročitaj</button>
+      </mat-card-actions>
+    </mat-card>
   </div>
-  <section>
-    <div class="d-flex flex-column d-flex justify-content-center vest-sektor">
-      <div [innerHTML]="vest.naslov"></div>
-      <div><img src={{vest.slika}}></div>
-      <div [innerHTML]="vest.tekst"></div>
-    </div>
-  </section>
-</main>
+</div>

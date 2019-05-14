@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY, Subject } from 'rxjs';
 import { Roba } from 'src/app/e-shop/model/dto';
-import { Korpa } from 'src/app/e-shop/model/porudzbenica';
 import { RobaService } from 'src/app/e-shop/service/roba.service';
-import { AppUtilsService } from 'src/app/e-shop/utils/app-utils.service';
 import { DataService } from 'src/app/e-shop/service/data/data.service';
 import { VrstaRobe } from 'src/app/e-shop/model/roba.enum';
 import { Filter } from 'src/app/e-shop/model/filter';
@@ -52,18 +50,15 @@ export class IndustrijskaComponent implements OnInit {
   ];
 
   private alive = true;
-  private korpa: Korpa;
 
   public vrstaUlja = 'hidraulicna';
 
   constructor(
     private robaService: RobaService,
-    private utilsService: AppUtilsService,
     private dataService: DataService) { }
 
   ngOnInit() {
     this.pocetnoPretrazivanje = true;
-    this.dataService.trenutnaKorpa.subscribe(korpa => this.korpa = korpa);
     this.pronandjiUlja();
   }
 
@@ -87,6 +82,7 @@ export class IndustrijskaComponent implements OnInit {
         res => {
           this.pronadjenaRoba = true;
           this.roba = res.content;
+          this.roba = this.dataService.skiniSaStanjaUkolikoJeUKorpi(this.roba);
           this.dataSource = this.roba;
           this.rowsPerPage = res.size;
           this.pageIndex = res.number;
@@ -121,6 +117,7 @@ export class IndustrijskaComponent implements OnInit {
         res => {
           this.pronadjenaRoba = true;
           this.roba = res.content;
+          this.roba = this.dataService.skiniSaStanjaUkolikoJeUKorpi(this.roba);
           this.dataSource = this.roba;
           this.rowsPerPage = res.size;
           this.pageIndex = res.number;
@@ -166,9 +163,5 @@ export class IndustrijskaComponent implements OnInit {
       }
     });
     this.pronandjiUlja();
-  }
-
-  uKorpi(katBr: string): boolean {
-    return this.utilsService.daLiJeRobaUKorpi(this.korpa, katBr);
   }
 }

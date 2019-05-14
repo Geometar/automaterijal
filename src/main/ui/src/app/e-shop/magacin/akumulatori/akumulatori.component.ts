@@ -2,13 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY } from 'rxjs';
 import { Roba } from '../../model/dto';
-import { Korpa } from '../../model/porudzbenica';
 import { RobaService } from '../../service/roba.service';
-import { AppUtilsService } from '../../utils/app-utils.service';
 import { DataService } from '../../service/data/data.service';
 import { VrstaRobe } from '../../model/roba.enum';
 import { Filter } from '../../model/filter';
-import { NotifikacijaService } from 'src/app/shared/service/notifikacija.service';
 
 @Component({
   selector: 'app-akumulatori',
@@ -37,17 +34,13 @@ export class AkumulatoriComponent implements OnInit {
   public dataSource: any;
 
   private alive = true;
-  private korpa: Korpa;
 
   constructor(
     private robaService: RobaService,
-    private utilsService: AppUtilsService,
-    private dataService: DataService,
-    private notifikacijaServis: NotifikacijaService) { }
+    private dataService: DataService) { }
 
   ngOnInit() {
     this.pocetnoPretrazivanje = true;
-    this.dataService.trenutnaKorpa.subscribe(korpa => this.korpa = korpa);
     this.pronandjiSveAkumulatore();
   }
 
@@ -70,6 +63,7 @@ export class AkumulatoriComponent implements OnInit {
         res => {
           this.pronadjenaRoba = true;
           this.roba = res.content;
+          this.roba = this.dataService.skiniSaStanjaUkolikoJeUKorpi(this.roba);
           this.dataSource = this.roba;
           this.rowsPerPage = res.size;
           this.pageIndex = res.number;
@@ -105,6 +99,7 @@ export class AkumulatoriComponent implements OnInit {
         res => {
           this.pronadjenaRoba = true;
           this.roba = res.content;
+          this.roba = this.dataService.skiniSaStanjaUkolikoJeUKorpi(this.roba);
           this.dataSource = this.roba;
           this.rowsPerPage = res.size;
           this.pageIndex = res.number;
@@ -141,9 +136,5 @@ export class AkumulatoriComponent implements OnInit {
     this.filter = filter;
 
     this.pronadjiAkumulatorePoPretrazi(this.searchValue);
-  }
-
-  uKorpi(katBr: string) {
-    return this.utilsService.daLiJeRobaUKorpi(this.korpa, katBr);
   }
 }

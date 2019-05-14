@@ -43,14 +43,15 @@ export class DataService {
   public skiniSaStanjaUkolikoJeUKorpi(robaBaza: Roba[]) {
     const korpa = this.korpaStorage.vratiKorpuIzMemorije();
     if (korpa && robaBaza) {
-      korpa.roba.forEach(storage => {
-        robaBaza.forEach(roba => {
+      korpa.roba.forEach((storage: RobaKorpa) => {
+        robaBaza.forEach((roba: Roba) => {
           if (storage.katbr === roba.katbr) {
             roba.stanje = roba.stanje - storage.kolicina;
           }
         });
       });
     }
+    return robaBaza;
   }
   public izbaciIzKorpe(index: number) {
     this.korpa.roba.splice(index, 1);

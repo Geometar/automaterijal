@@ -37,15 +37,13 @@ export class FilteriComponent implements OnInit {
   public dataSource: any;
 
   private alive = true;
-  private korpa: Korpa;
 
-  constructor(private robaService: RobaService,
-    private dataService: DataService,
-    private utilsService: AppUtilsService) { }
+  constructor(
+    private robaService: RobaService,
+    private dataService: DataService) { }
 
   ngOnInit() {
     this.pocetnoPretrazivanje = true;
-    this.dataService.trenutnaKorpa.subscribe(korpa => this.korpa = korpa);
     this.pronandjiSveFiltere();
   }
 
@@ -68,7 +66,7 @@ export class FilteriComponent implements OnInit {
         res => {
           this.pronadjenaRoba = true;
           this.roba = res.content;
-          this.dataService.skiniSaStanjaUkolikoJeUKorpi(this.roba);
+          this.roba = this.dataService.skiniSaStanjaUkolikoJeUKorpi(this.roba);
           this.dataSource = this.roba;
           this.rowsPerPage = res.size;
           this.pageIndex = res.number;
@@ -105,7 +103,7 @@ export class FilteriComponent implements OnInit {
         res => {
           this.pronadjenaRoba = true;
           this.roba = res.content;
-          this.dataService.skiniSaStanjaUkolikoJeUKorpi(this.roba);
+          this.roba = this.dataService.skiniSaStanjaUkolikoJeUKorpi(this.roba);
           this.dataSource = this.roba;
           this.rowsPerPage = res.size;
           this.pageIndex = res.number;
@@ -142,9 +140,5 @@ export class FilteriComponent implements OnInit {
     }
     this.filter = filter;
     this.pronadjiFilterePoPretrazi(this.searchValue);
-  }
-
-  uKorpi(katBr: string): boolean {
-    return this.utilsService.daLiJeRobaUKorpi(this.korpa, katBr);
   }
 }

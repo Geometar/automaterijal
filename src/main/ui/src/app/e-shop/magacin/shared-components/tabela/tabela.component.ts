@@ -4,6 +4,8 @@ import { LoginService } from 'src/app/e-shop/service/login.service';
 import { AppUtilsService } from 'src/app/e-shop/utils/app-utils.service';
 import { NotifikacijaService } from 'src/app/shared/service/notifikacija.service';
 import { MatSnackBarKlase } from 'src/app/shared/model/konstante';
+import { DataService } from 'src/app/e-shop/service/data/data.service';
+import { Korpa } from 'src/app/e-shop/model/porudzbenica';
 
 @Component({
   selector: 'app-tabela',
@@ -22,6 +24,7 @@ export class TabelaComponent implements OnInit {
   @Output() magacinEvent = new EventEmitter<any>();
 
   public partner: Partner;
+  private korpa: Korpa;
 
   // Tabela
   private columnDefinitions = [
@@ -40,10 +43,12 @@ export class TabelaComponent implements OnInit {
   constructor(
     private utilsService: AppUtilsService,
     private loginServis: LoginService,
-    private notifikacijaServis: NotifikacijaService
+    private notifikacijaServis: NotifikacijaService,
+    private dataService: DataService
   ) { }
 
   ngOnInit() {
+    this.dataService.trenutnaKorpa.subscribe(korpa => this.korpa = korpa);
     this.loginServis.ulogovaniPartner.subscribe(partner => this.partner = partner);
   }
 
@@ -65,4 +70,7 @@ export class TabelaComponent implements OnInit {
     this.utilsService.izbrisiRobuSaStanja(this.roba, roba);
   }
 
+  uKorpi(katBr: string): boolean {
+    return this.utilsService.daLiJeRobaUKorpi(this.korpa, katBr);
+  }
 }
