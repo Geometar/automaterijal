@@ -40,7 +40,7 @@ export class VestiComponent implements OnInit {
   vestMahleKompresori() {
     const vest = new VestiNaslovna();
     vest.id = 'mahle-kompresori';
-    vest.naslov = 'Mahle Kompresori Klime';
+    vest.naslov = 'Mahle kompresori klime';
     vest.opis = 'Novo u asortimanu - kompresori klime Mahle';
     vest.opisSlika = 'assets/slike/novouponudi/mala/mahle.png';
     return vest;

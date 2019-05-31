@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "http://localhost:4200")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RobaKategorijeController {
+public class RobaKOstalaController {
 
     @NonNull
     final

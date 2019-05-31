@@ -8,12 +8,12 @@ img {
     margin-left: 25%;
 }
 
-::ng-deep ul {
+/* :host /deep/ mySelector { */
+
+:host ::ng-deep ul {
     list-style-type: circle;
     padding: 0px 30px;
 }
-
-/* :host /deep/ mySelector { */
 :host ::ng-deep p { 
     margin-top: 15px;
     padding: 10px;
