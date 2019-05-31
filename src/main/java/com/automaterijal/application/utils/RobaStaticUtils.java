@@ -8,6 +8,7 @@ import com.automaterijal.application.domain.entity.RobaKatBrPro;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import lombok.experimental.UtilityClass;
 import org.springframework.data.domain.Sort;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -24,7 +25,7 @@ public class RobaStaticUtils {
         final Boolean iNaStanju = naStanju == null ? true : naStanju;
         final RobaSortiranjePolja iSortiranjePolja = sortBy == null ? RobaSortiranjePolja.KATBR : sortBy;
         final Sort.Direction iDirection = sortDirection == null ? Sort.Direction.ASC : sortDirection;
-        final String iSearchTerm = searchTerm == null ? null : searchTerm.trim().toUpperCase();
+        final String iSearchTerm = StringUtils.isEmpty(searchTerm) ? null : searchTerm.trim().toUpperCase();
         return popuniParametreZaServis(iPage, iPageSize, iProizvodjac, iNaStanju, iSortiranjePolja, iDirection, iSearchTerm);
     }
 

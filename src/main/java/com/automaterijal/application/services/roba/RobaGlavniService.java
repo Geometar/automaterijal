@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.HashSet;
 import java.util.List;
@@ -55,7 +56,7 @@ public class RobaGlavniService {
 
     private Page<Roba> vratiRobuUZavisnostiOdKriterijuma(final UniverzalniParametri parametri, final Pageable pageable) {
         final List<String> kataloskiBrojevi;
-        if (parametri.getTrazenKatBroj() != null) {
+        if (!StringUtils.isEmpty(parametri.getTrazenKatBroj())) {
             kataloskiBrojevi = vratiSveKataloskeBrojevePoTrazenojReci(parametri.getTrazenKatBroj());
         } else {
             kataloskiBrojevi = vratiSveKataloskeBrojeve(parametri.getProizvodjac());
