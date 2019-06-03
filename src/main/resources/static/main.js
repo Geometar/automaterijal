@@ -471,7 +471,7 @@ var ClanakComponent = /** @class */ (function () {
         var mahlePakovanjeVesti = new _model_dto__WEBPACK_IMPORTED_MODULE_2__["Vest"]();
         mahlePakovanjeVesti.id = 'mahle-pakovanje';
         mahlePakovanjeVesti.naslov = '<h1>Nova ambalaža - dokazan kvalitet</h1>';
-        mahlePakovanjeVesti.slika = 'assets/slike/novouponudi/velika/mahle.png';
+        mahlePakovanjeVesti.slika = 'assets/slike/novouponudi/velika/mahle-pakovanja.png';
         mahlePakovanjeVesti.tekst = '<p>MAHLE Aftermarket proizvodi dolaze u novo dizajniranom pakovanju od 2019. godine. Jednostavno i jasno za lako rukovanje u trgovini i radionicama. I naravno, oni će još uvek imati dokazan kvalitet MAHLE.</p> <p>Novo: Jasne boje, koncizna informacija i jasan dizajn omogućavaju lako rukovanje i brzu identifikaciju u skladištu.</p> <p>Novi pristup opisu proizvoda prilagođen čitaču, dodatne ikone podrške za proizvode, prikazuju se samo bitne informacije.</p><p>Takođe je usklađena šema boja, što je rezultiralo sledećim promjenama:</p> <ul><li>Promena boje ambalaže BEHR sa narandžaste na plavu</li><li> Promena boje za delove motora od crvene do plave</li><li> Činimo ga još jednostavnijim: MAHLE ORIGINAL postaje MAHLE</li></ul> <p> Jednostavno i jasno - zahvaljujući novom dizajnu ambalaže: </p><ul> <li>Svi relevantni detalji na prvi pogled</li> <li>Jednostavno rukovanje u trgovini i radionicama</li> <li>Jednostavna identifikacija u skladištu (sa udaljenosti) zahvaljujući jasnim bojama</li> <li>Garantovana visoka sigurnost (zaštita od piraterije proizvoda)</li> <li>Snažan izgled za sedam jakih brendova</li></ul> <p>MAHLE Aftermarket objedinjuje sedam jakih, međunarodnih brendova koji su sinonim za inovacije i beskompromisni kvalitet. Pored kišobranskog brenda MAHLE, tu spadaju uspešne kompanije kao što su BEHR, CLEVITE, IZUMI, METAL LEVE i KNECHT FILTER. BRAIN BEE, novo integrisana u MAHLE porodicu marki 2018. godine, je stručnjak za radioničku opremu i dijagnostiku za tržišta u Evropi, Bliskom Istoku, Africi, Južnoj Americi i delovima Azije.</p>   <p>Širom svijeta, brand MAHLE je sinonim za rezervne delove u kvalitetui originalne opreme duž celog pogonskog sklopa - od komponenti motora, turbokompresora, filtera, hlađenja motora i klima uređaja, starter motora i alternatora kroz radioničku opremu i dijagnostiku, e-mobilnost i elektroniku , pa čak i rezervne delove za klasična vozila.</p>';
         return mahlePakovanjeVesti;
     };
@@ -479,7 +479,7 @@ var ClanakComponent = /** @class */ (function () {
         var mahleKompresoriVesti = new _model_dto__WEBPACK_IMPORTED_MODULE_2__["Vest"]();
         mahleKompresoriVesti.id = 'mahle-kompresori';
         mahleKompresoriVesti.naslov = '<h1>Mahle kompresori klime</h1>';
-        mahleKompresoriVesti.slika = 'assets/slike/novouponudi/velika/mahle.png';
+        mahleKompresoriVesti.slika = 'assets/slike/novouponudi/velika/kompresori.png';
         mahleKompresoriVesti.tekst = '<p>Kompanija MAHLE ulazi na tržište kompresora klima uređaja. Sinonim kvaliteta i pouzdanosti kompanije MAHLE  ovi kompresori opravdavaju.</p> <p>Nivo klimatskog komfora definisan u današnjim vozilima je već na visokom nivou i nastaviće da raste u budućnosti. Međutim, klima uređaji imaju više uloga nego što je  udobna vožnja. Oni takođe igraju ključnu ulogu u pogledu bezbednosti. Pored održavanja vozača udobnim i opreznim, klima uređaj takođe odvlažuje vazduh u kabini i na taj način sprečava zamagljivanje prozora.</p> <p>U svom portfoliu MAHLE nudi veliki broj kompresora za veliki broj renomiranih proizvođača vozila, kao što su VW, AUDI, BMW, Mercedes, Opel...</p>';
         return mahleKompresoriVesti;
     };
@@ -570,7 +570,7 @@ var DasboardComponent = /** @class */ (function () {
     };
     DasboardComponent.prototype.febi = function () {
         var febi = new _model_dto__WEBPACK_IMPORTED_MODULE_1__["Brend"]();
-        febi.urlSlikePozadina = 'assets/slike/brendovi/pagepaper/febi.png';
+        febi.urlSlikePozadina = 'assets/slike/novouponudi/mala/kompresori.png';
         return febi;
     };
     DasboardComponent.prototype.shell = function () {
@@ -722,7 +722,7 @@ var PonudaComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h1>Vesti</h1>\n<div class=\"d-flex flex-lg-row flex-column justify-content-center\">\n  <div *ngFor=\"let vest of ponuda\">\n    <mat-card class=\"example-card\" fxLayout=\"row\" fxLayoutWrap>\n      <mat-card-header class=\"naslov\">\n        <mat-card-title>\n          <h2>{{vest.naslov}}</h2>\n        </mat-card-title>\n      </mat-card-header>\n      <img mat-card-image src=\"{{vest.opisSlika}}\" alt=\"Slika vesti\">\n      <mat-card-content class=\"card-sadrzaj\">\n        <p class=\"opis-vesti\">\n          {{vest.opis}}\n        </p>\n      </mat-card-content>\n      <mat-card-actions class=\"d-flex justify-content-center\">\n        <button class=\"sirina button-glavni-100\" mat-raised-button (click)=\"detaljiVesti(vest.id)\"\n          color=\"primary\">Pročitaj</button>\n      </mat-card-actions>\n    </mat-card>\n  </div>\n</div>"
+module.exports = "<h1>Vesti</h1>\n<div class=\"d-flex flex-lg-row flex-column\">\n  <div class=\"d-flex flex-lg-row flex-column justify-content-center\" *ngFor=\"let vest of ponuda\">\n    <mat-card class=\"example-card\" fxLayout=\"row\" fxLayoutWrap>\n      <mat-card-header class=\"naslov\">\n        <mat-card-title>\n          <h2>{{vest.naslov}}</h2>\n        </mat-card-title>\n      </mat-card-header>\n      <img mat-card-image src=\"{{vest.opisSlika}}\" alt=\"Slika vesti\">\n      <mat-card-content class=\"card-sadrzaj\">\n        <p class=\"opis-vesti\">\n          {{vest.opis}}\n        </p>\n      </mat-card-content>\n      <mat-card-actions class=\"d-flex justify-content-center\">\n        <button class=\"sirina button-glavni-100\" mat-raised-button (click)=\"detaljiVesti(vest.id)\"\n          color=\"primary\">Pročitaj</button>\n      </mat-card-actions>\n    </mat-card>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -776,16 +776,14 @@ var VestiComponent = /** @class */ (function () {
     VestiComponent.prototype.vratiSvePonude = function () {
         var mahlePakovanjeVest = this.vestNovoPakovanjeMahle();
         var mahleKompresori = this.vestMahleKompresori();
-        var ponuda3 = this.ponuda1();
-        var ponuda4 = this.ponuda1();
-        this.ponuda.push(mahlePakovanjeVest, mahleKompresori, ponuda3, ponuda4);
+        this.ponuda.push(mahlePakovanjeVest, mahleKompresori);
     };
     VestiComponent.prototype.vestNovoPakovanjeMahle = function () {
         var vest = new _model_dto__WEBPACK_IMPORTED_MODULE_2__["VestiNaslovna"]();
         vest.id = 'mahle-pakovanje';
         vest.naslov = 'Novo Pakovanje Mahle';
         vest.opis = 'Novi dizajn ambalaže za MAHLE Aftermarket proizvode od 2019. godine';
-        vest.opisSlika = 'assets/slike/novouponudi/mala/mahle.png';
+        vest.opisSlika = 'assets/slike/novouponudi/mala/mahle-pakovanja.png';
         return vest;
     };
     VestiComponent.prototype.vestMahleKompresori = function () {
@@ -793,16 +791,8 @@ var VestiComponent = /** @class */ (function () {
         vest.id = 'mahle-kompresori';
         vest.naslov = 'Mahle kompresori klime';
         vest.opis = 'Novo u asortimanu - kompresori klime Mahle';
-        vest.opisSlika = 'assets/slike/novouponudi/mala/mahle.png';
+        vest.opisSlika = 'assets/slike/novouponudi/mala/kompresori.png';
         return vest;
-    };
-    VestiComponent.prototype.ponuda1 = function () {
-        var prva = new _model_dto__WEBPACK_IMPORTED_MODULE_2__["VestiNaslovna"]();
-        prva.id = 'ponuda-generic';
-        prva.naslov = 'Ponuda generic';
-        prva.opis = 'Opis Vesti ide ovde.';
-        prva.opisSlika = 'https://material.angular.io/assets/img/examples/shiba2.jpg';
-        return prva;
     };
     VestiComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -1098,7 +1088,7 @@ var ONamaComponent = /** @class */ (function () {
     ONamaComponent.prototype.febi = function () {
         var febi = new _model_dto__WEBPACK_IMPORTED_MODULE_1__["Brend"]();
         febi.ime = 'Febi';
-        febi.urlSlikeLogo = 'assets/slike/brendovi/logo/febi.jpg';
+        febi.urlSlikeLogo = 'assets/slike/brendovi/logo/febi.png';
         febi.urlSlikePozadina = 'assets/slike/brendovi/pagepaper/febi.png';
         febi.opis = '<p>Febi bilstein je  osnovan davne 1844 godine. Danas je jedan od vodećih svetskih proizvođača i dobavljača rezervnih delova za putnička i komercijalna vozila na nezavisnom tržištu rezervnih delova.  Više od 170 godina održava kontinuitet, kvalitet, uslugu, pouzdanost i inovacije. Asortiman cini 30.000 razlicitih rezervnih delova. Osim toga, febi ima svoja predstavništva ili iskusnog partnera u preko 69 zemalja. </p> <p>Od upravljačke, motorne i kočne tehnike, tehnike šasija i učvršćivanja točkova do autoelektrike i pneumatike i programa febi plus – kod firme febi bilstein ćete naći sve za profesionalno servisiranje - putničkih vozila, kamiona, autobusa, prikolica, poluprikolica i malih transportera svih aktuelnih marki i modela.</p> <p class="proba">Febi bilstein stoji za proizvode koji ispunjavaju najviše zahteve kvaliteta izrade i bezbednosti ugradnje. Kvalitetom, brzinom i postavljanjem trendova febi bilstein vam daje odlučujući podsticaj na globalnom tržištu. Zato što kao premium marka ima obavezu da ispuni zahteve svojih kupaca – svakodnevno.</p> <p>AUTOMATERIJAL d.o.o - je zastupnik koncerna Febi Bilstein i Blue Printa za zapadnu Srbiju.</p>';
         return febi;
@@ -1106,7 +1096,7 @@ var ONamaComponent = /** @class */ (function () {
     ONamaComponent.prototype.shell = function () {
         var shell = new _model_dto__WEBPACK_IMPORTED_MODULE_1__["Brend"]();
         shell.ime = 'Shell';
-        shell.urlSlikeLogo = 'assets/slike/brendovi/logo/shell.jpg';
+        shell.urlSlikeLogo = 'assets/slike/brendovi/logo/shell.png';
         shell.urlSlikePozadina = 'assets/slike/brendovi/pagepaper/shell.png';
         shell.opis = '<p> Kompanije Shell ima iza sebe 70 godina u inovacijama i stoga je broj jedan dobavljač lubrikanata. Poznata činjenica je da neki od  svetskih proizvođaća automobila preferiraju Shell motorno ulje prvo punjenje novih vozila koja izlaze iz fabike. Kompletan asortiman uključujući sintetičke proizvode visokih performansi može da zadovolji sve poterbe i aplikacije koje vam trebaju.</p><p>AUTOMATERIJAL d.o.o je ovlašceni distributer Shell ulja. </p>';
         return shell;
@@ -1114,7 +1104,7 @@ var ONamaComponent = /** @class */ (function () {
     ONamaComponent.prototype.victorReinz = function () {
         var vr = new _model_dto__WEBPACK_IMPORTED_MODULE_1__["Brend"]();
         vr.ime = 'Victor Reinz';
-        vr.urlSlikeLogo = 'assets/slike/brendovi/logo/vik.jpg';
+        vr.urlSlikeLogo = 'assets/slike/brendovi/logo/vik.png';
         vr.urlSlikePozadina = 'assets/slike/brendovi/pagepaper/victor-reinz.png';
         vr.opis = '<p> Victor Reinz je Nemačka kompanija koja donosi inovativne tehnologije zaptivanja vrhunskog kvaliteta. Više od 80 godina brend Victor Reinz je sinonim za vrhunske zaptivače i semeringe. Svi rezervni delovi u asortimanu ispunjavaju visoke standarde kvaliteta OEM. Poslednjih godina na tržištu su zauzeli vodeću poziciju, kao proizvođači dihtunga glave, garniture dihtunga i semeringa.</p><p > Skoro sve poznate marke i modeli proizvođača automobila širom sveta su opremljeni sa profesionalnim zaptivnim rešenjima iz Victor Reinza u oblasti motora i izduvnih grasova.</p>';
         return vr;
@@ -1122,31 +1112,31 @@ var ONamaComponent = /** @class */ (function () {
     ONamaComponent.prototype.mahle = function () {
         var mahle = new _model_dto__WEBPACK_IMPORTED_MODULE_1__["Brend"]();
         mahle.ime = 'Mahle';
-        mahle.urlSlikeLogo = 'assets/slike/brendovi/logo/mahle.jpg';
-        mahle.urlSlikePozadina = 'assets/slike/brendovi/pagepaper/mahle.jpg';
+        mahle.urlSlikeLogo = 'assets/slike/brendovi/logo/mahle.png';
+        mahle.urlSlikePozadina = 'assets/slike/brendovi/pagepaper/mahle.png';
         mahle.opis = '<p>Marka MAHLE označava rezervne delove u kvalitetu originalne opreme duž celog pogonskog sklopa - od komponenti motora, filtracije i perifernih uređaja motora do upravljanja toplotom i mehatronike. Takođe predstavlja visokokvalitetnu specijalnu opremu za održavanje i servis. </p> <p>Marka je podržana od strane MAHLE-a, vodećeg svetskog dobavljača automobilske opreme, koji snabdeva tržište automobilske opreme visokokvalitetnim proizvodima zahvaljujući OE kompetenciji, vodeći istraživački i razvojni rad, kao i svoju međunarodnu logističku mrežu. </p>';
         return mahle;
     };
     ONamaComponent.prototype.kolbenschmidt = function () {
         var kolbenschmidt = new _model_dto__WEBPACK_IMPORTED_MODULE_1__["Brend"]();
         kolbenschmidt.ime = 'Kolbenschmidt';
-        kolbenschmidt.urlSlikeLogo = 'assets/slike/brendovi/logo/ks.jpg';
-        kolbenschmidt.urlSlikePozadina = 'assets/slike/brendovi/pagepaper/msc.png';
+        kolbenschmidt.urlSlikeLogo = 'assets/slike/brendovi/logo/ks.png';
+        kolbenschmidt.urlSlikePozadina = 'assets/slike/brendovi/pagepaper/ks.png';
         kolbenschmidt.opis = '<p> Kolbenschmidt razvija i proizvodi klipove za benzin i dizel motore za putnicka i teretna vozila. Jedan je od najistaknutijih igraca u ovom segmentu. Ostali proizvodi uključuju ventile, vođice ventila, karike, ležajeve radilica, bregaste osovine.. </p> <p class="probam">Smanjenje potrošnje goriva i emisija izduvnih gasova su godinama glavni pokretač razvoja  novih vrsta klipova.</p> <p class="proba"> Već godinama, mnogi važni dileri originalnih delova su redovne mušterije Kolbenschmidt-a. Glavna tržišta su Evropa, Serverna i Južna Amerika, i Azija.';
         return kolbenschmidt;
     };
     ONamaComponent.prototype.pierburg = function () {
         var pierburg = new _model_dto__WEBPACK_IMPORTED_MODULE_1__["Brend"]();
         pierburg.ime = 'Pierburg';
-        pierburg.urlSlikeLogo = 'assets/slike/brendovi/logo/pirb.jpg';
-        pierburg.urlSlikePozadina = 'assets/slike/brendovi/pagepaper/msc.png';
+        pierburg.urlSlikeLogo = 'assets/slike/brendovi/logo/pirb.png';
+        pierburg.urlSlikePozadina = 'assets/slike/brendovi/pagepaper/pb.png';
         pierburg.opis = '<p>Pierburg, kao dobavljač prve klase, tradicionalno je jedan od najbližih partnera u autobomilskoj industriji. Osnovan je 1909. godine, kao trgovina čelika u Berlinu. 1928. godine počinje sa proizvodnjom karburatora i uskoro postaje jedini snabdevač svih nemačkih automobila i mnogih svetskih proizvođača motornih vozila i proizvođača motora. Pierburg razvija inovativne komponente i sistemska rešenja sa priznatim nadležnostima u oblasti dovoda vazduha i kontrole emisija. Svi ovi proizvodi, pumpe goriva, egr ventil, nepovratni ventil, protokomeri o vakuum pumpe, odgovaraju visokim zahtevima tržišta i standardima kvaliteta.</p> <p> Kako u prošlosti tako i sad, Pierburg aktivno oblikuje budućnost automobila.</p>';
         return pierburg;
     };
     ONamaComponent.prototype.mm = function () {
         var mm = new _model_dto__WEBPACK_IMPORTED_MODULE_1__["Brend"]();
         mm.ime = 'Magenti Marreli';
-        mm.urlSlikeLogo = 'assets/slike/brendovi/logo/mm.jpg';
+        mm.urlSlikeLogo = 'assets/slike/brendovi/logo/mm.png';
         mm.urlSlikePozadina = 'assets/slike/brendovi/pagepaper/magneti-marelli.png';
         mm.opis = '<p>Magneti Mareilli je međunarodna grupa posvećena projektovanju i proizvodnji sistema visoke tehnologije i komponenti za automobilsku indrustriju. Osnovana je 1919. godine, sa kapitalom potpisana na dva jednaka dela između Fiat-a i kompanije Ercole Marelli. Sa 38.000 zaposlenih, 89 proizvodnih pogona, prisutni su u 19 zemalja i snabdevaju sve najvažnije proizvođače u Evropi, Severnoj i Južnoj Americi i Aziji. Cilj Magenti Marelli-ja je da bude na raspolaganju kupcima po pristupačnoj ceni, spajanjem visokog kvaliteta i visoke tehnologije.</p> <p> Magneti Marelli je prvi stvorio ksenonsko svetlo 1991. godine, dajući novu dimenziju frontalnoj rasvetli. Od 2010. godine, postaje dobavljač Mercedes-Benz za sve LED farove sa prilagodljivom funkcijom za svetlo.</p> <p>2010. godine Ministartsvo za kulturnu baštinu i aktivnost Italije nagrađuje Magneti Marelli sa "Deklaracija o istorijskom značaju".</p>';
         return mm;
@@ -1154,7 +1144,7 @@ var ONamaComponent = /** @class */ (function () {
     ONamaComponent.prototype.bluePrint = function () {
         var bp = new _model_dto__WEBPACK_IMPORTED_MODULE_1__["Brend"]();
         bp.ime = 'Blue Print';
-        bp.urlSlikeLogo = 'assets/slike/brendovi/logo/bp.jpg';
+        bp.urlSlikeLogo = 'assets/slike/brendovi/logo/bp.png';
         bp.urlSlikePozadina = 'assets/slike/brendovi/pagepaper/blueprint.png';
         bp.opis = '<p>Blue Print je pravi izbor za kvalitetne rezervne delove za azijske, američke, britanske automobile i laka komercijalna vozila. Blue Print pruža aftermarket visoko preciznim komponentama kao i tehničkim i informacijskim rešenjima za više od 160 različitih tipova proizvoda.</p> <p>Širok asortiman od više od 23.000 artikala dostupnih u preko 160 vrsta proizvoda pod jednom robnom markom, uključujući i OE proizvode svrstava Blue Print kao jednog od brendova sa najvećom ponudom na tržištu.</p>';
         return bp;

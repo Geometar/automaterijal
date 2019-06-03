@@ -30,7 +30,7 @@ export class DasboardComponent implements OnInit {
 
   febi() {
     const febi = new Brend();
-    febi.urlSlikePozadina = 'assets/slike/brendovi/pagepaper/febi.png';
+    febi.urlSlikePozadina = 'assets/slike/novouponudi/mala/kompresori.png';
     return febi;
    }
 

@@ -23,9 +23,7 @@ export class VestiComponent implements OnInit {
   vratiSvePonude() {
     const mahlePakovanjeVest = this.vestNovoPakovanjeMahle();
     const mahleKompresori = this.vestMahleKompresori();
-    const ponuda3 = this.ponuda1();
-    const ponuda4 = this.ponuda1();
-    this.ponuda.push(mahlePakovanjeVest, mahleKompresori, ponuda3, ponuda4);
+    this.ponuda.push(mahlePakovanjeVest, mahleKompresori);
   }
 
   vestNovoPakovanjeMahle() {
@@ -33,7 +31,7 @@ export class VestiComponent implements OnInit {
     vest.id = 'mahle-pakovanje';
     vest.naslov = 'Novo Pakovanje Mahle';
     vest.opis = 'Novi dizajn ambalaže za MAHLE Aftermarket proizvode od 2019. godine';
-    vest.opisSlika = 'assets/slike/novouponudi/mala/mahle.png';
+    vest.opisSlika = 'assets/slike/novouponudi/mala/mahle-pakovanja.png';
     return vest;
   }
 
@@ -42,17 +40,7 @@ export class VestiComponent implements OnInit {
     vest.id = 'mahle-kompresori';
     vest.naslov = 'Mahle kompresori klime';
     vest.opis = 'Novo u asortimanu - kompresori klime Mahle';
-    vest.opisSlika = 'assets/slike/novouponudi/mala/mahle.png';
+    vest.opisSlika = 'assets/slike/novouponudi/mala/kompresori.png';
     return vest;
   }
-
-  ponuda1(): VestiNaslovna {
-    const prva = new VestiNaslovna();
-    prva.id = 'ponuda-generic';
-    prva.naslov = 'Ponuda generic';
-    prva.opis = 'Opis Vesti ide ovde.';
-    prva.opisSlika = 'https://material.angular.io/assets/img/examples/shiba2.jpg';
-    return prva;
-  }
-
 }
