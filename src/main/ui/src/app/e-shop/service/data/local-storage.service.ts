@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
-import { SESSION_STORAGE, StorageService } from 'angular-webstorage-service';
+import { LOCAL_STORAGE, StorageService } from 'angular-webstorage-service';
 import { Korpa, RobaKorpa } from '../../model/porudzbenica';
 import { Partner } from '../../model/dto';
 
@@ -11,7 +11,7 @@ const PARTNER_KLJUC = 'partner_kljuc';
 })
 export class LocalStorageService {
 
-  constructor(@Inject(SESSION_STORAGE) private storage: StorageService) { }
+  constructor(@Inject(LOCAL_STORAGE) private storage: StorageService) { }
 
   public sacuvajPartneraUMemoriju(partner: Partner ) {
     if (partner != null && partner.ppid != null) {

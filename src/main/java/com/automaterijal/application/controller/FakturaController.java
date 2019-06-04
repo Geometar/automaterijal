@@ -50,7 +50,7 @@ public class FakturaController {
     }
 
     @PostMapping
-    public ResponseEntity<FakturaDto> vratiSveFaktureKorisnika(@RequestBody final FakturaDto fakturaDto, final Authentication authentication) {
+    public ResponseEntity<FakturaDto> podnesiFakturu(@RequestBody final FakturaDto fakturaDto, final Authentication authentication) {
         final Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
 
         if(partner == null) {

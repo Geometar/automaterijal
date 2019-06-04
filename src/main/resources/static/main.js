@@ -783,7 +783,7 @@ var VestiComponent = /** @class */ (function () {
         vest.id = 'mahle-pakovanje';
         vest.naslov = 'Novo Pakovanje Mahle';
         vest.opis = 'Novi dizajn ambalaže za MAHLE Aftermarket proizvode od 2019. godine';
-        vest.opisSlika = 'assets/slike/novouponudi/mala/mahle-pakovanja.png';
+        vest.opisSlika = 'assets/slike/novouponudi/mala/mahle-pakovanje.png';
         return vest;
     };
     VestiComponent.prototype.vestMahleKompresori = function () {
@@ -4693,7 +4693,7 @@ var LocalStorageService = /** @class */ (function () {
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
             providedIn: 'root'
         }),
-        __param(0, Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"])(angular_webstorage_service__WEBPACK_IMPORTED_MODULE_1__["SESSION_STORAGE"])),
+        __param(0, Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"])(angular_webstorage_service__WEBPACK_IMPORTED_MODULE_1__["LOCAL_STORAGE"])),
         __metadata("design:paramtypes", [Object])
     ], LocalStorageService);
     return LocalStorageService;

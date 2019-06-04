@@ -31,7 +31,7 @@ export class VestiComponent implements OnInit {
     vest.id = 'mahle-pakovanje';
     vest.naslov = 'Novo Pakovanje Mahle';
     vest.opis = 'Novi dizajn ambalaže za MAHLE Aftermarket proizvode od 2019. godine';
-    vest.opisSlika = 'assets/slike/novouponudi/mala/mahle-pakovanja.png';
+    vest.opisSlika = 'assets/slike/novouponudi/mala/mahle-pakovanje.png';
     return vest;
   }
 
