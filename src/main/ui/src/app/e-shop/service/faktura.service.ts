@@ -39,7 +39,7 @@ export class FakturaService {
         catchError((error: any) => throwError(error)));
   }
 
-  public sacuvajFakturu(faktura: Fakutra) {
+  public submitujFakturu(faktura: Fakutra) {
     const fullUrl = DOMAIN_URL + FAKTURA_URL;
     return this.http
       .post(fullUrl, faktura)

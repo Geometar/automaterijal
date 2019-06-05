@@ -1,6 +1,7 @@
 package com.automaterijal.application.controller;
 
 import com.automaterijal.application.domain.dto.FakturaDto;
+import com.automaterijal.application.domain.dto.RobaDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.services.FakturaService;
 import com.automaterijal.application.utils.PartnerSpringBeanUtils;
@@ -14,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/fakture")
@@ -50,13 +53,13 @@ public class FakturaController {
     }
 
     @PostMapping
-    public ResponseEntity<FakturaDto> podnesiFakturu(@RequestBody final FakturaDto fakturaDto, final Authentication authentication) {
+    public ResponseEntity<List<RobaDto>> podnesiFakturu(@RequestBody final FakturaDto fakturaDto, final Authentication authentication) {
         final Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
 
         if(partner == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        final FakturaDto response = fakturaService.sacuvajFakturu(fakturaDto, partner);
+        final var response = fakturaService.submitujFakturu(fakturaDto, partner);
         return ResponseEntity.ok(response);
     }
 

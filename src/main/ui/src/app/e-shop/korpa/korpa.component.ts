@@ -4,14 +4,15 @@ import { Korpa, RobaKorpa } from '../model/porudzbenica';
 import { LocalStorageService } from '../service/data/local-storage.service';
 import { MatTable, MatDialog } from '@angular/material';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
-import { throwError, EMPTY } from 'rxjs';
-import { ValueHelp, Partner, Fakutra, FakturaDetalji, Proizvodjač } from '../model/dto';
+import { throwError } from 'rxjs';
+import { ValueHelp, Partner, Fakutra, FakturaDetalji, Roba } from '../model/dto';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { LoginService } from '../service/login.service';
 import { FakturaService } from '../service/faktura.service';
 import { Router } from '@angular/router';
 import { IzmenaKolicineModalComponent } from 'src/app/shared/modal/izmena-kolicine-modal/izmena-kolicine-modal.component';
 import { UspesnoPorucivanjeModalComponent } from 'src/app/shared/modal/uspesno-porucivanje-modal/uspesno-porucivanje-modal.component';
+import { NeuspesnoPorucivanjeModalComponent } from 'src/app/shared/modal/neuspesno-porucivanje-modal/neuspesno-porucivanje-modal.component';
 
 @Component({
   selector: 'app-korpa',
@@ -126,14 +127,37 @@ export class KorpaComponent implements OnInit {
       }
     });
   }
-  otvoriDialogUspesnoPorucivanje(faktura: Fakutra): void {
+  otvoriDialogUspesnoPorucivanje(): void {
     const dialogRef = this.dialog.open(UspesnoPorucivanjeModalComponent, {
-      width: '400px',
-      data: faktura
+      width: '400px'
     });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+    dialogRef.afterClosed().subscribe(() => {
       this.router.navigate(['/naslovna']);
+    });
+  }
+  otvoriDialogNeuspesnoPorucivanje(roba: Roba[], faktura: Fakutra): void {
+    const dialogRef = this.dialog.open(NeuspesnoPorucivanjeModalComponent, {
+      width: '400px',
+      data: { faktura: faktura, roba: roba }
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      this.zatvaranjeNeuspesnogDiloga(roba);
+    });
+  }
+
+  zatvaranjeNeuspesnogDiloga(roba: Roba[]) {
+    let stanjePromenjeno = false;
+    roba.forEach((r: Roba) => {
+      this.korpa.roba
+      .filter((robaKorpa: RobaKorpa) => robaKorpa.robaid === r.robaid)
+      .map((robaKorpa: RobaKorpa) => {
+        stanjePromenjeno = true;
+        robaKorpa.kolicina = r.stanje;
+      });
+
+      if (stanjePromenjeno) {
+        this.dataSource.value = this.korpa.roba;
+      }
     });
   }
 
@@ -177,20 +201,22 @@ export class KorpaComponent implements OnInit {
     this.korpa.nacinPlacanja = this.izabranNacinPlacanja.id;
     this.popuniNapomenu();
     this.korpaUFakturu();
-    this.fakturaServis.sacuvajFakturu(this.faktura).pipe(
+    this.fakturaServis.submitujFakturu(this.faktura).pipe(
       takeWhile(() => this.alive),
       catchError((error: Response) => throwError(error)),
       finalize(() => this.ucitavanje = false)
     )
-      .subscribe(
-        res => {
-          this.faktura = res;
-          this.otvoriDialogUspesnoPorucivanje(this.faktura);
-          this.dataService.ocistiKorpu();
-          this.router.navigate(['/naslovna']);
+      .subscribe((res: Roba[]) => {
+          if (res.length === 0) {
+            this.otvoriDialogUspesnoPorucivanje();
+            this.dataService.ocistiKorpu();
+            this.router.navigate(['/naslovna']);
+          } else {
+            this.otvoriDialogNeuspesnoPorucivanje(res, this.faktura);
+          }
         },
         error => {
-          console.log('Cuvaj fakturu u bazi');
+          console.log('Error = ', error);
         });
 
     console.log('Kora za porudzbinu  ' + JSON.stringify(this.faktura));

@@ -48,6 +48,7 @@ import { VestiComponent as Vesti } from './e-commerce/dasboard/vesti/vesti.compo
 import { UpitModalComponent } from './shared/modal/upit-modal/upit-modal.component';
 import { FilterComponent } from './e-shop/magacin/shared-components/filter/filter.component';
 import { TabelaComponent } from './e-shop/magacin/shared-components/tabela/tabela.component';
+import { NeuspesnoPorucivanjeModalComponent } from './shared/modal/neuspesno-porucivanje-modal/neuspesno-porucivanje-modal.component';
 
 @NgModule({
   declarations: [
@@ -89,7 +90,8 @@ import { TabelaComponent } from './e-shop/magacin/shared-components/tabela/tabel
     Vesti,
     UpitModalComponent,
     FilterComponent,
-    TabelaComponent
+    TabelaComponent,
+    NeuspesnoPorucivanjeModalComponent
   ],
   imports: [
     BrowserModule,
@@ -112,6 +114,7 @@ import { TabelaComponent } from './e-shop/magacin/shared-components/tabela/tabel
     IzmenaKolicineModalComponent,
     LogoutModalComponent,
     UspesnoPorucivanjeModalComponent,
+    NeuspesnoPorucivanjeModalComponent,
     PorukaModalComponent,
     BrendoviModalComponent,
     UpitModalComponent]

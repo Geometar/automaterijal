@@ -1,4 +1,4 @@
-import { ValueHelp, Proizvodjač } from "./dto";
+import { Proizvodjač } from './dto';
 
 export class Korpa {
     public roba: RobaKorpa[] = [];
@@ -34,4 +34,11 @@ export class RobaKorpa {
         this.cenaUkupno = cena * kolicina;
         this.stanje = stanje;
     }
+}
+
+export class RobaPromena {
+    katbr: string = null;
+    opis: string = null;
+    rapolozivaKolicina: number = null;
+    trazenaKolicina: number = null;
 }

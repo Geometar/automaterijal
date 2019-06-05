@@ -230,12 +230,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _shared_modal_upit_modal_upit_modal_component__WEBPACK_IMPORTED_MODULE_47__ = __webpack_require__(/*! ./shared/modal/upit-modal/upit-modal.component */ "./src/app/shared/modal/upit-modal/upit-modal.component.ts");
 /* harmony import */ var _e_shop_magacin_shared_components_filter_filter_component__WEBPACK_IMPORTED_MODULE_48__ = __webpack_require__(/*! ./e-shop/magacin/shared-components/filter/filter.component */ "./src/app/e-shop/magacin/shared-components/filter/filter.component.ts");
 /* harmony import */ var _e_shop_magacin_shared_components_tabela_tabela_component__WEBPACK_IMPORTED_MODULE_49__ = __webpack_require__(/*! ./e-shop/magacin/shared-components/tabela/tabela.component */ "./src/app/e-shop/magacin/shared-components/tabela/tabela.component.ts");
+/* harmony import */ var _shared_modal_neuspesno_porucivanje_modal_neuspesno_porucivanje_modal_component__WEBPACK_IMPORTED_MODULE_50__ = __webpack_require__(/*! ./shared/modal/neuspesno-porucivanje-modal/neuspesno-porucivanje-modal.component */ "./src/app/shared/modal/neuspesno-porucivanje-modal/neuspesno-porucivanje-modal.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -330,7 +332,8 @@ var AppModule = /** @class */ (function () {
                 _e_commerce_dasboard_vesti_vesti_component__WEBPACK_IMPORTED_MODULE_46__["VestiComponent"],
                 _shared_modal_upit_modal_upit_modal_component__WEBPACK_IMPORTED_MODULE_47__["UpitModalComponent"],
                 _e_shop_magacin_shared_components_filter_filter_component__WEBPACK_IMPORTED_MODULE_48__["FilterComponent"],
-                _e_shop_magacin_shared_components_tabela_tabela_component__WEBPACK_IMPORTED_MODULE_49__["TabelaComponent"]
+                _e_shop_magacin_shared_components_tabela_tabela_component__WEBPACK_IMPORTED_MODULE_49__["TabelaComponent"],
+                _shared_modal_neuspesno_porucivanje_modal_neuspesno_porucivanje_modal_component__WEBPACK_IMPORTED_MODULE_50__["NeuspesnoPorucivanjeModalComponent"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
@@ -353,6 +356,7 @@ var AppModule = /** @class */ (function () {
                 _shared_modal_izmena_kolicine_modal_izmena_kolicine_modal_component__WEBPACK_IMPORTED_MODULE_34__["IzmenaKolicineModalComponent"],
                 _shared_modal_logout_modal_logout_modal_component__WEBPACK_IMPORTED_MODULE_35__["LogoutModalComponent"],
                 _shared_modal_uspesno_porucivanje_modal_uspesno_porucivanje_modal_component__WEBPACK_IMPORTED_MODULE_36__["UspesnoPorucivanjeModalComponent"],
+                _shared_modal_neuspesno_porucivanje_modal_neuspesno_porucivanje_modal_component__WEBPACK_IMPORTED_MODULE_50__["NeuspesnoPorucivanjeModalComponent"],
                 _shared_modal_poruka_modal_poruka_modal_component__WEBPACK_IMPORTED_MODULE_39__["PorukaModalComponent"],
                 _shared_modal_brendovi_modal_brendovi_modal_component__WEBPACK_IMPORTED_MODULE_42__["BrendoviModalComponent"],
                 _shared_modal_upit_modal_upit_modal_component__WEBPACK_IMPORTED_MODULE_47__["UpitModalComponent"]
@@ -1425,6 +1429,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 /* harmony import */ var src_app_shared_modal_izmena_kolicine_modal_izmena_kolicine_modal_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! src/app/shared/modal/izmena-kolicine-modal/izmena-kolicine-modal.component */ "./src/app/shared/modal/izmena-kolicine-modal/izmena-kolicine-modal.component.ts");
 /* harmony import */ var src_app_shared_modal_uspesno_porucivanje_modal_uspesno_porucivanje_modal_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! src/app/shared/modal/uspesno-porucivanje-modal/uspesno-porucivanje-modal.component */ "./src/app/shared/modal/uspesno-porucivanje-modal/uspesno-porucivanje-modal.component.ts");
+/* harmony import */ var src_app_shared_modal_neuspesno_porucivanje_modal_neuspesno_porucivanje_modal_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! src/app/shared/modal/neuspesno-porucivanje-modal/neuspesno-porucivanje-modal.component */ "./src/app/shared/modal/neuspesno-porucivanje-modal/neuspesno-porucivanje-modal.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1434,6 +1439,7 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -1524,15 +1530,38 @@ var KorpaComponent = /** @class */ (function () {
             }
         });
     };
-    KorpaComponent.prototype.otvoriDialogUspesnoPorucivanje = function (faktura) {
+    KorpaComponent.prototype.otvoriDialogUspesnoPorucivanje = function () {
         var _this = this;
         var dialogRef = this.dialog.open(src_app_shared_modal_uspesno_porucivanje_modal_uspesno_porucivanje_modal_component__WEBPACK_IMPORTED_MODULE_12__["UspesnoPorucivanjeModalComponent"], {
-            width: '400px',
-            data: faktura
+            width: '400px'
         });
-        dialogRef.afterClosed().subscribe(function (result) {
-            console.log('The dialog was closed');
+        dialogRef.afterClosed().subscribe(function () {
             _this.router.navigate(['/naslovna']);
+        });
+    };
+    KorpaComponent.prototype.otvoriDialogNeuspesnoPorucivanje = function (roba, faktura) {
+        var _this = this;
+        var dialogRef = this.dialog.open(src_app_shared_modal_neuspesno_porucivanje_modal_neuspesno_porucivanje_modal_component__WEBPACK_IMPORTED_MODULE_13__["NeuspesnoPorucivanjeModalComponent"], {
+            width: '400px',
+            data: { faktura: faktura, roba: roba }
+        });
+        dialogRef.afterClosed().subscribe(function () {
+            _this.zatvaranjeNeuspesnogDiloga(roba);
+        });
+    };
+    KorpaComponent.prototype.zatvaranjeNeuspesnogDiloga = function (roba) {
+        var _this = this;
+        var stanjePromenjeno = false;
+        roba.forEach(function (r) {
+            _this.korpa.roba
+                .filter(function (robaKorpa) { return robaKorpa.robaid === r.robaid; })
+                .map(function (robaKorpa) {
+                stanjePromenjeno = true;
+                robaKorpa.kolicina = r.stanje;
+            });
+            if (stanjePromenjeno) {
+                _this.dataSource.value = _this.korpa.roba;
+            }
         });
     };
     KorpaComponent.prototype.promeniKolicinuArtikla = function (artikal) {
@@ -1575,14 +1604,18 @@ var KorpaComponent = /** @class */ (function () {
         this.korpa.nacinPlacanja = this.izabranNacinPlacanja.id;
         this.popuniNapomenu();
         this.korpaUFakturu();
-        this.fakturaServis.sacuvajFakturu(this.faktura).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(function (error) { return Object(rxjs__WEBPACK_IMPORTED_MODULE_5__["throwError"])(error); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["finalize"])(function () { return _this.ucitavanje = false; }))
+        this.fakturaServis.submitujFakturu(this.faktura).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(function (error) { return Object(rxjs__WEBPACK_IMPORTED_MODULE_5__["throwError"])(error); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["finalize"])(function () { return _this.ucitavanje = false; }))
             .subscribe(function (res) {
-            _this.faktura = res;
-            _this.otvoriDialogUspesnoPorucivanje(_this.faktura);
-            _this.dataService.ocistiKorpu();
-            _this.router.navigate(['/naslovna']);
+            if (res.length === 0) {
+                _this.otvoriDialogUspesnoPorucivanje();
+                _this.dataService.ocistiKorpu();
+                _this.router.navigate(['/naslovna']);
+            }
+            else {
+                _this.otvoriDialogNeuspesnoPorucivanje(res, _this.faktura);
+            }
         }, function (error) {
-            console.log('Cuvaj fakturu u bazi');
+            console.log('Error = ', error);
         });
         console.log('Kora za porudzbinu  ' + JSON.stringify(this.faktura));
         console.log('Porucivanje je uspesno! :)');
@@ -4067,13 +4100,14 @@ var Page = /** @class */ (function () {
 /*!**********************************************!*\
   !*** ./src/app/e-shop/model/porudzbenica.ts ***!
   \**********************************************/
-/*! exports provided: Korpa, RobaKorpa */
+/*! exports provided: Korpa, RobaKorpa, RobaPromena */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Korpa", function() { return Korpa; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RobaKorpa", function() { return RobaKorpa; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RobaPromena", function() { return RobaPromena; });
 var Korpa = /** @class */ (function () {
     function Korpa() {
         this.roba = [];
@@ -4095,6 +4129,16 @@ var RobaKorpa = /** @class */ (function () {
         this.stanje = stanje;
     }
     return RobaKorpa;
+}());
+
+var RobaPromena = /** @class */ (function () {
+    function RobaPromena() {
+        this.katbr = null;
+        this.opis = null;
+        this.rapolozivaKolicina = null;
+        this.trazenaKolicina = null;
+    }
+    return RobaPromena;
 }());
 
 
@@ -4757,7 +4801,7 @@ var FakturaService = /** @class */ (function () {
             .get(fullUrl)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["timeoutWith"])(TIMEOUT, Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["throwError"])(TIMEOUT_ERROR)), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["catchError"])(function (error) { return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["throwError"])(error); }));
     };
-    FakturaService.prototype.sacuvajFakturu = function (faktura) {
+    FakturaService.prototype.submitujFakturu = function (faktura) {
         var fullUrl = DOMAIN_URL + FAKTURA_URL;
         return this.http
             .post(fullUrl, faktura)
@@ -5895,6 +5939,105 @@ var LogoutModalComponent = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/shared/modal/neuspesno-porucivanje-modal/neuspesno-porucivanje-modal.component.html":
+/*!*****************************************************************************************************!*\
+  !*** ./src/app/shared/modal/neuspesno-porucivanje-modal/neuspesno-porucivanje-modal.component.html ***!
+  \*****************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<h3 class=\"text-center boja-glavna-50\">Obaveštenje</h3>\n<p>Došlo je do promene količina traženih artikala.</p>\n<mat-dialog-content>\n  <table mat-table [dataSource]=\"dataSource\" class=\"mat-elevation-z8\">\n\n    <!--- Note that these columns can be defined in any order.\n        The actual rendered columns are set as a property on the row definition\" -->\n\n    <!-- Position Column -->\n    <ng-container matColumnDef=\"katBr\">\n      <th mat-header-cell *matHeaderCellDef> Kat. br. </th>\n      <td mat-cell *matCellDef=\"let roba\"> {{roba.katbr}} </td>\n    </ng-container>\n\n    <!-- Weight Column -->\n    <ng-container matColumnDef=\"trazeno\">\n      <th mat-header-cell *matHeaderCellDef> Traženo </th>\n      <td mat-cell *matCellDef=\"let roba\"> {{roba.trazenaKolicina}} </td>\n    </ng-container>\n\n    <!-- Symbol Column -->\n    <ng-container matColumnDef=\"raspolozivo\">\n      <th mat-header-cell *matHeaderCellDef> Raspoloživo </th>\n      <td mat-cell *matCellDef=\"let roba\">\n        <p class=\"boja-crvena-50\">{{roba.rapolozivaKolicina}}</p>\n      </td>\n    </ng-container>\n\n    <tr mat-header-row *matHeaderRowDef=\"displayedColumns\"></tr>\n    <tr mat-row *matRowDef=\"let row; columns: displayedColumns;\"></tr>\n  </table>\n  <div class=\"text-center pomeri-dole\">\n    <button mat-raised-button (click)=\"zatvoriDialog()\"class=\"button-glavni-100\">Zatvori</button>\n  </div>\n</mat-dialog-content>"
+
+/***/ }),
+
+/***/ "./src/app/shared/modal/neuspesno-porucivanje-modal/neuspesno-porucivanje-modal.component.scss":
+/*!*****************************************************************************************************!*\
+  !*** ./src/app/shared/modal/neuspesno-porucivanje-modal/neuspesno-porucivanje-modal.component.scss ***!
+  \*****************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "th {\n  text-align: center; }\n\ntd {\n  text-align: center; }\n\n.pomeri-dole {\n  margin-top: 20px; }\n"
+
+/***/ }),
+
+/***/ "./src/app/shared/modal/neuspesno-porucivanje-modal/neuspesno-porucivanje-modal.component.ts":
+/*!***************************************************************************************************!*\
+  !*** ./src/app/shared/modal/neuspesno-porucivanje-modal/neuspesno-porucivanje-modal.component.ts ***!
+  \***************************************************************************************************/
+/*! exports provided: NeuspesnoPorucivanjeModalComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NeuspesnoPorucivanjeModalComponent", function() { return NeuspesnoPorucivanjeModalComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var src_app_e_shop_model_porudzbenica__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/e-shop/model/porudzbenica */ "./src/app/e-shop/model/porudzbenica.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (undefined && undefined.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+
+
+
+var NeuspesnoPorucivanjeModalComponent = /** @class */ (function () {
+    function NeuspesnoPorucivanjeModalComponent(dialogRef, data) {
+        this.dialogRef = dialogRef;
+        this.data = data;
+        this.robaPromena = [];
+        this.displayedColumns = ['katBr', 'trazeno', 'raspolozivo'];
+        this.dataSource = [];
+    }
+    NeuspesnoPorucivanjeModalComponent.prototype.ngOnInit = function () {
+        this.fakturaModal = this.data.faktura;
+        this.robaModal = this.data.roba;
+        this.popuniPromene();
+    };
+    NeuspesnoPorucivanjeModalComponent.prototype.popuniPromene = function () {
+        var _this = this;
+        this.robaModal.forEach(function (roba) {
+            _this.fakturaModal.detalji.forEach(function (detalji) {
+                if (detalji.robaId === roba.robaid) {
+                    var robaPromena = new src_app_e_shop_model_porudzbenica__WEBPACK_IMPORTED_MODULE_2__["RobaPromena"]();
+                    robaPromena.katbr = roba.katbr;
+                    robaPromena.opis = roba.naziv;
+                    robaPromena.rapolozivaKolicina = roba.stanje;
+                    robaPromena.trazenaKolicina = detalji.kolicina;
+                    _this.robaPromena.push(robaPromena);
+                }
+            });
+        });
+        this.dataSource = this.robaPromena;
+        console.log('Neuspesno porucivanje: ' + JSON.stringify(this.robaPromena));
+    };
+    NeuspesnoPorucivanjeModalComponent.prototype.zatvoriDialog = function () {
+        this.dialogRef.close();
+    };
+    NeuspesnoPorucivanjeModalComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-neuspesno-porucivanje-modal',
+            template: __webpack_require__(/*! ./neuspesno-porucivanje-modal.component.html */ "./src/app/shared/modal/neuspesno-porucivanje-modal/neuspesno-porucivanje-modal.component.html"),
+            styles: [__webpack_require__(/*! ./neuspesno-porucivanje-modal.component.scss */ "./src/app/shared/modal/neuspesno-porucivanje-modal/neuspesno-porucivanje-modal.component.scss")]
+        }),
+        __param(1, Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"])(_angular_material__WEBPACK_IMPORTED_MODULE_1__["MAT_DIALOG_DATA"])),
+        __metadata("design:paramtypes", [_angular_material__WEBPACK_IMPORTED_MODULE_1__["MatDialogRef"], Object])
+    ], NeuspesnoPorucivanjeModalComponent);
+    return NeuspesnoPorucivanjeModalComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/shared/modal/poruka-modal/poruka-modal.component.html":
 /*!***********************************************************************!*\
   !*** ./src/app/shared/modal/poruka-modal/poruka-modal.component.html ***!
@@ -6376,7 +6519,7 @@ var UpitModalComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\r\n  <main class=\"text-center\">\r\n      <p>Porudžbina je uspešno poslata.</p>\r\n      <p>Broj porudžbine je <b>{{faktura.orderId}}</b></p>\r\n    <div class=\"d-flex flex-row justify-content-center\">\r\n      <button mat-raised-button class=\"button-glavni-100 pomeri\" (click)=\"zatvori()\">Zatvori</button>\r\n      </div>\r\n  </main>\r\n</div>"
+module.exports = "<div class=\"container\">\r\n  <main class=\"text-center\">\r\n      <p>Porudžbina je uspešno poslata i uskoro će biti obradjena.</p>\r\n    <div class=\"d-flex flex-row justify-content-center\">\r\n      <button mat-raised-button class=\"button-glavni-100 pomeri\" (click)=\"zatvori()\">Zatvori</button>\r\n      </div>\r\n  </main>\r\n</div>"
 
 /***/ }),
 
@@ -6403,7 +6546,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UspesnoPorucivanjeModalComponent", function() { return UspesnoPorucivanjeModalComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
-/* harmony import */ var src_app_e_shop_model_dto__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/e-shop/model/dto */ "./src/app/e-shop/model/dto.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6413,19 +6555,13 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (undefined && undefined.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
-
 
 
 var UspesnoPorucivanjeModalComponent = /** @class */ (function () {
-    function UspesnoPorucivanjeModalComponent(dialogRef, faktura) {
+    function UspesnoPorucivanjeModalComponent(dialogRef) {
         this.dialogRef = dialogRef;
-        this.faktura = faktura;
     }
     UspesnoPorucivanjeModalComponent.prototype.ngOnInit = function () {
-        this.data = this.faktura;
     };
     UspesnoPorucivanjeModalComponent.prototype.zatvori = function () {
         this.dialogRef.close();
@@ -6436,9 +6572,7 @@ var UspesnoPorucivanjeModalComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./uspesno-porucivanje-modal.component.html */ "./src/app/shared/modal/uspesno-porucivanje-modal/uspesno-porucivanje-modal.component.html"),
             styles: [__webpack_require__(/*! ./uspesno-porucivanje-modal.component.scss */ "./src/app/shared/modal/uspesno-porucivanje-modal/uspesno-porucivanje-modal.component.scss")]
         }),
-        __param(1, Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"])(_angular_material__WEBPACK_IMPORTED_MODULE_1__["MAT_DIALOG_DATA"])),
-        __metadata("design:paramtypes", [_angular_material__WEBPACK_IMPORTED_MODULE_1__["MatDialogRef"],
-            src_app_e_shop_model_dto__WEBPACK_IMPORTED_MODULE_2__["Fakutra"]])
+        __metadata("design:paramtypes", [_angular_material__WEBPACK_IMPORTED_MODULE_1__["MatDialogRef"]])
     ], UspesnoPorucivanjeModalComponent);
     return UspesnoPorucivanjeModalComponent;
 }());

@@ -10,13 +10,10 @@ import { Fakutra } from 'src/app/e-shop/model/dto';
 })
 export class UspesnoPorucivanjeModalComponent implements OnInit {
 
-  public data: Fakutra;
   constructor(
-    public dialogRef: MatDialogRef<UspesnoPorucivanjeModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public faktura: Fakutra) {}
+    public dialogRef: MatDialogRef<UspesnoPorucivanjeModalComponent>) {}
 
   ngOnInit() {
-    this.data = this.faktura;
   }
 
   zatvori() {

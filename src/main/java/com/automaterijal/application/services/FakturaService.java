@@ -2,10 +2,13 @@ package com.automaterijal.application.services;
 
 import com.automaterijal.application.domain.dto.FakturaDetaljiDto;
 import com.automaterijal.application.domain.dto.FakturaDto;
+import com.automaterijal.application.domain.dto.RobaDto;
 import com.automaterijal.application.domain.entity.Faktura;
 import com.automaterijal.application.domain.entity.FakturaDetalji;
 import com.automaterijal.application.domain.entity.Partner;
+import com.automaterijal.application.domain.entity.Roba;
 import com.automaterijal.application.domain.mapper.FakturaMapper;
+import com.automaterijal.application.domain.mapper.RobaMapper;
 import com.automaterijal.application.domain.repository.FakturaDetaljiRepository;
 import com.automaterijal.application.domain.repository.FakturaRepository;
 import com.automaterijal.application.domain.repository.MestaIsporukeRepository;
@@ -24,6 +27,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,15 +60,37 @@ public class FakturaService {
 
     @NonNull
     final FakturaMapper mapper;
+    @NonNull
+    final RobaMapper robaMapper = RobaMapper.INSTANCE;
 
-    public FakturaDto sacuvajFakturu(final FakturaDto fakturaDto, final Partner partner) {
+    public List<RobaDto> submitujFakturu(final FakturaDto fakturaDto, final Partner partner) {
+        final List<RobaDto> dozvoljenaKolicina = new ArrayList<>();
+        proveraMagacinaIKolicina(dozvoljenaKolicina, fakturaDto);
+        if(dozvoljenaKolicina.isEmpty()) {
+            sacuvajFakturu(fakturaDto, partner);
+        }
+        return dozvoljenaKolicina;
+    }
+
+    private void proveraMagacinaIKolicina(final List<RobaDto> dozvoljenaKolicina, final FakturaDto fakturaDto) {
+        fakturaDto.getDetalji().forEach(detalji -> {
+            final Optional<Roba> robaOptional = robaService.pronadjiRobuPoPrimarnomKljucu(detalji.getRobaId());
+            if(robaOptional.isPresent()) {
+                final Roba roba = robaOptional.get();
+                if (roba.getStanje() < detalji.getKolicina()) {
+                    dozvoljenaKolicina.add(robaMapper.map(roba));
+                }
+            }
+        });
+    }
+
+    private void sacuvajFakturu(final FakturaDto fakturaDto, final Partner partner) {
         final Faktura faktura = mapper.map(fakturaDto);
         mapper.popuniFakuturu(faktura, partner, vratiPoslednjiIdFakturuKorisnikaPovecan(partner.getPpid()));
         faktura.getDetalji().forEach(fakturaDetalji -> fakturaDetaljiRepository.save(fakturaDetalji));
         final Faktura fakturaDatabase = fakturaRepository.save(faktura);
         partnerService.povecanPartnerovOrderCount(partner);
         skiniRobuSaSastanja(faktura.getDetalji());
-        return obogatiDto(mapper.map(fakturaDatabase), partner);
     }
 
     private void skiniRobuSaSastanja(final List<FakturaDetalji> detalji) {
