@@ -1,4 +1,9 @@
-<h3 class="text-center boja-glavna-50">Obaveštenje</h3>
+<div class="header">
+  <h3>Obaveštenje</h3>
+  <button type="button" class="close" (click)="zatvoriDialog()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
 <p>Došlo je do promene količina traženih artikala.</p>
 <mat-dialog-content>
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
@@ -30,6 +35,6 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
   <div class="text-center pomeri-dole">
-    <button mat-raised-button (click)="zatvoriDialog()"class="button-glavni-100">Zatvori</button>
+    <button mat-raised-button (click)="zatvoriDialog()" class="button-glavni-100">Zatvori</button>
   </div>
 </mat-dialog-content>

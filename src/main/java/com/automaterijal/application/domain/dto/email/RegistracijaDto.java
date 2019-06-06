@@ -16,7 +16,7 @@ public class RegistracijaDto extends Email{
     // Fizicko Lice
     String imeIPrezime;
 
-    // zajednicki sadrzilac
+    // Zajednicki sadrzilac
     String grad;
     String adresa;
     String email;
