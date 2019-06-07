@@ -149,16 +149,19 @@ export class KorpaComponent implements OnInit {
     let stanjePromenjeno = false;
     roba.forEach((r: Roba) => {
       this.korpa.roba
-      .filter((robaKorpa: RobaKorpa) => robaKorpa.robaid === r.robaid)
-      .map((robaKorpa: RobaKorpa) => {
-        stanjePromenjeno = true;
-        robaKorpa.kolicina = r.stanje;
-      });
-
-      if (stanjePromenjeno) {
-        this.dataSource.value = this.korpa.roba;
-      }
+        .filter((robaKorpa: RobaKorpa) => robaKorpa.robaid === r.robaid)
+        .map((robaKorpa: RobaKorpa) => {
+          stanjePromenjeno = true;
+          robaKorpa.kolicina = r.stanje;
+        });
     });
+
+    this.korpa.roba = this.korpa.roba.filter((rKorpa: RobaKorpa) => rKorpa.kolicina > 0);
+
+    if (stanjePromenjeno) {
+      this.dataSource = null;
+      this.dataSource = this.korpa.roba;
+    }
   }
 
   promeniKolicinuArtikla(artikal: RobaKorpa) {
@@ -207,14 +210,14 @@ export class KorpaComponent implements OnInit {
       finalize(() => this.ucitavanje = false)
     )
       .subscribe((res: Roba[]) => {
-          if (res.length === 0) {
-            this.otvoriDialogUspesnoPorucivanje();
-            this.dataService.ocistiKorpu();
-            this.router.navigate(['/naslovna']);
-          } else {
-            this.otvoriDialogNeuspesnoPorucivanje(res, this.faktura);
-          }
-        },
+        if (res.length === 0) {
+          this.otvoriDialogUspesnoPorucivanje();
+          this.dataService.ocistiKorpu();
+          this.router.navigate(['/naslovna']);
+        } else {
+          this.otvoriDialogNeuspesnoPorucivanje(res, this.faktura);
+        }
+      },
         error => {
           console.log('Error = ', error);
         });

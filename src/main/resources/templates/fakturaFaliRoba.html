@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!--<link rel="stylesheet" type="text/css"-->
+    <!--href="css/registracija.css" th:href="@{css/registracija.css}"/>-->
+    <style>
+        html {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .main {
+            text-align: center;
+        }
+
+        h1 {
+            color: rgba(40, 59, 78, 1);
+        }
+
+        h3 {
+            color: rgba(40, 59, 78, 1);
+            margin-bottom: 0px;
+        }
+
+        th {
+            text-align: center;
+            width: 20%;
+            color: rgba(62, 94, 158, 1);
+        }
+
+        td {
+            text-align: center;
+            font-family: serif;
+            font-size: 16px;
+        }
+
+        .detalji tr:nth-child(even) {
+            background-color: #f2f2f2
+        }
+
+        .vreme {
+            margin-top: 30px;
+            font-size: 17px;
+        }
+
+        .vreme span {
+            font-weight: bold;
+        }
+
+        table {
+            width: 500px;
+        }
+
+        .footer {
+            margin-top: 30px;
+            padding-right: 250px;
+        }
+
+        .tabela {
+            display: inline-block;
+        }
+
+        .footer-tabela td {
+            text-align: left;
+        }
+
+        .naslov {
+            width: 150px;
+        }
+
+        a,
+        u {
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <h1>Obaveštenje</h1>
+        <p>Poštovani, vaša porudžbina je obradjena.</p>
+        <p>Ustanovljeno je da za odredjene artikle nemamo tražene količine koje ste tražili. Više informacija u
+            tabeli.</p>
+        <div class="tabela">
+            <table class="detalji">
+                <tr>
+                    <th>Kat. broj</th>
+                    <th>Proizvodjač</th>
+                    <th>Tražena kol.</th>
+                    <th>Potvrdjena kol.</th>
+                    <th>Cena</th>
+                </tr>
+                <tr th:each="detalji : ${faktura.detalji}">
+                    <td th:text="${detalji.kataloskiBroj}">KataloskiBroj</td>
+                    <td th:text="${detalji.proizvodjac.naziv}">Proizvodjac</td>
+                    <td th:text="${detalji.kolicina}">Kolicina</td>
+                    <td th:text="${detalji.potvrdjenaKolicina}">PotvrdjenaKolicina</td>
+                    <td th:text="${detalji.cena}">Cena</td>
+                </tr>
+            </table>
+        </div>
+        <div class="footer">
+            <h3>Automaterijal web aplikacija</b></h3>
+        </div>
+        <div class="tabela">
+            <table class="footer-tabela">
+                <tbody>
+                    <tr>
+                        <td class="naslov">Adresa:</td>
+                        <td>Prvomajska 61, Šabac</td>
+                    </tr>
+                    <tr>
+                        <td>Tel. maloprodaja:</td>
+                        <td><a class="telefon" href="tel:015334630">015/334-630</a></td>
+                    <tr>
+                        <td>Tel. Veleprodaja:</td>
+                        <td><a class="telefon" href="tel:015319000">015/319-000</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>

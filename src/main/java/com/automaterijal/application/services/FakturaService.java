@@ -27,6 +27,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -155,5 +156,10 @@ public class FakturaService {
             ++orderId;
         }
         return orderId;
+    }
+
+    @Transactional(readOnly = true)
+    public List<Faktura> vratiUpdejtovaneFakture(final Timestamp timestamp) {
+        return fakturaRepository.findByLastUpdateGreaterThan(timestamp);
     }
 }

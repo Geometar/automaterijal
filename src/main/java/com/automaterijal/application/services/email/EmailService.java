@@ -1,5 +1,6 @@
 package com.automaterijal.application.services.email;
 
+import com.automaterijal.application.domain.dto.FakturaDto;
 import com.automaterijal.application.domain.dto.email.*;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.services.PartnerService;
@@ -17,7 +18,6 @@ import org.thymeleaf.context.Context;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -58,8 +58,16 @@ public class EmailService {
         return context;
     }
 
+    public void posaljiMailONedovoljnimKolicinama(final FakturaDto faktura, final Partner partner) {
+        final var context = new Context();
+
+        context.setVariable("faktura", faktura);
+        pripremiIPosaljiEmail("radespasoje@gmail.com", "radespasoje@gmail.com", "Obavestenje o potvrdjenoj robi", "fakturaFaliRoba", context);
+
+    }
+
     public void posaljiZaboravljenaSifraMail(final ZaboravljenaSifraDto dto, final String host) {
-        Optional<Partner> optionalPartner = partnerService.pronadjiPartneraPoMejlu(dto.getEmail());
+        var optionalPartner = partnerService.pronadjiPartneraPoMejlu(dto.getEmail());
 
         if (optionalPartner.isPresent()) {
             zaboravljenaSifraPripremaISlanje(dto, optionalPartner.get(), host);
@@ -130,7 +138,7 @@ public class EmailService {
 
     private void pripremiIPosaljiEmail(final String emailPosaljioca, final String emailprimaoca, final String naslov, final String template, final Context context) {
         final MimeMessagePreparator preparator = mimeMessage -> {
-            final MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
+            final var messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setFrom(emailPosaljioca);
             messageHelper.setTo(emailprimaoca);
             messageHelper.setSubject(naslov);
