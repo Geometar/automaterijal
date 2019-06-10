@@ -41,7 +41,7 @@
 
         .iznos {
             text-align: left;
-            width: 200px;
+            width: 250px;
             margin-top: 25px;
         }
 
@@ -110,22 +110,22 @@
                     <td th:text="${detalji.proizvodjac.naziv}">Proizvodjac</td>
                     <td th:text="${detalji.kolicina}">Kolicina</td>
                     <td class="crveno" th:text="${detalji.potvrdjenaKolicina}">PotvrdjenaKolicina</td>
-                    <td th:text="${detalji.cena}">Cena</td>
+                    <td th:text="${detalji.cena + ' RSD'}">Cena</td>
                 </tr>
             </table>
             <table class="iznos">
                 <tbody>
                     <tr>
                         <td class="cene">Iznos narucen:</td>
-                        <td class="cene" th:text="${faktura.iznosNarucen}">15000</td>
+                        <td class="cene" th:text="${faktura.iznosNarucen + ' RSD'}">15000.00 RSD</td>
                     </tr>
                     <tr>
                         <td class="cene">Iznos potvrdjen:</td>
-                        <td class="cene crveno" th:text="${faktura.iznosPotvrdjen}">13000</td>
+                        <td class="cene crveno" th:text="${faktura.iznosPotvrdjen + ' RSD'}">13000.00 RSD</td>
                     </tr>
                 </tbody>
             </table>
-            <p>Za vise informacija o porudzbenici kliknite na link: <a class="link" href="http://localhost:8080/porudzbenice/${faktura.id}" >automaterijal-link</a></p>
+            <p>Za više informacija o porudžbenici kliknite na link: <a class="link" th:href="${'http://localhost:8080/porudzbenice/' + faktura.id}" >automaterijal-link</a></p>
         </div>
         <div class="footer">
             <h3>Automaterijal web aplikacija</b></h3>

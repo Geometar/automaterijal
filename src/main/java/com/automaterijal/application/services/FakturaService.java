@@ -128,13 +128,19 @@ public class FakturaService {
         return fakturaDto;
     }
 
-    private void formatirajCenuFakture(FakturaDto fakturaDto) {
+    private void formatirajCenuFakture(final FakturaDto fakturaDto) {
         final var formater = new DecimalFormat("#.##");
         formater.setRoundingMode(RoundingMode.UP);
+
         fakturaDto.getDetalji().forEach(fakturaDetaljiDto -> {
-            Double cena = Double.valueOf(formater.format(fakturaDetaljiDto.getCena()));
+            final var cena = Double.valueOf(formater.format(fakturaDetaljiDto.getCena()));
             fakturaDetaljiDto.setCena(cena);
         });
+
+        final var iznosNarucen = Double.valueOf(formater.format(fakturaDto.getIznosNarucen()));
+        final var iznosPotvrdjen = Double.valueOf(formater.format(fakturaDto.getIznosPotvrdjen()));
+        fakturaDto.setIznosNarucen(iznosNarucen);
+        fakturaDto.setIznosPotvrdjen(iznosPotvrdjen);
     }
 
     private void obogatiDetalje(final FakturaDetaljiDto dto, final Partner partner) {

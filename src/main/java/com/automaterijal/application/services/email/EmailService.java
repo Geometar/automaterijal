@@ -60,9 +60,11 @@ public class EmailService {
 
     public void posaljiMailONedovoljnimKolicinama(final FakturaDto faktura, final Partner partner) {
         final var context = new Context();
+        final var naslov = "Obavestenje o potvrdjenoj robi";
+        final var template = "fakturaFaliRoba";
 
         context.setVariable("faktura", faktura);
-        pripremiIPosaljiEmail("radespasoje@gmail.com", "radespasoje@gmail.com", "Obavestenje o potvrdjenoj robi", "fakturaFaliRoba", context);
+        pripremiIPosaljiEmail(Email.AUTOMATERIJAL_EMAIL, partner.getEmail(), naslov, template, context);
 
     }
 

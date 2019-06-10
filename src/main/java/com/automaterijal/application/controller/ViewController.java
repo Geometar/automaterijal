@@ -19,6 +19,8 @@ public class ViewController {
             "/login",
             "/korpa",
             "/reset-sifre",
+            "/porudzbenice/**",
+            "/porudzbenice",
             "/reset-sifre/**"})
     public String index() {
         return "forward:/index.html";

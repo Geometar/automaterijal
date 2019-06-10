@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <main>
         <div *ngIf="faktura && fakturaDetalji && dataSource != null && dataSource.length > 0">
-            <h1>Detalji fakture: {{faktura.orderId}}</h1>
+            <h1>Detalji fakture: {{faktura.id}}</h1>
             <div class="d-flex flex-row-reverse bd-highlight">
                 <button class="button-glavni-100 nazad-button" mat-raised-button (click)="idiNazad()">
                     <mat-icon>keyboard_arrow_left</mat-icon> Nazad
@@ -120,7 +120,7 @@
                         <table class="table sirina-cena">
                             <tbody>
                                 <tr>
-                                    <td class="pozadina-glavna-50 boja-siva-400">Ukupno za iznos: </td>
+                                    <td class="pozadina-glavna-50 boja-siva-400">Ukupnan iznos: </td>
                                     <td class="text-right"><b>{{faktura.iznosPotvrdjen | currency:" "}} RSD</b></td>
                                 </tr>
                             </tbody>

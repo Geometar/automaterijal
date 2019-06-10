@@ -662,10 +662,10 @@ if(false) {}
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\mine\projekti\automaterijal\src\main\ui\node_modules\@angular\material\prebuilt-themes\indigo-pink.css */"./node_modules/@angular/material/prebuilt-themes/indigo-pink.css");
-__webpack_require__(/*! C:\mine\projekti\automaterijal\src\main\ui\src\styles.scss */"./src/styles.scss");
-__webpack_require__(/*! C:\mine\projekti\automaterijal\src\main\ui\node_modules\owl.carousel\dist\assets\owl.carousel.min.css */"./node_modules/owl.carousel/dist/assets/owl.carousel.min.css");
-module.exports = __webpack_require__(/*! C:\mine\projekti\automaterijal\src\main\ui\node_modules\owl.carousel\dist\assets\owl.theme.default.min.css */"./node_modules/owl.carousel/dist/assets/owl.theme.default.min.css");
+__webpack_require__(/*! D:\Automaterijal\Project\automaterijal\src\main\ui\node_modules\@angular\material\prebuilt-themes\indigo-pink.css */"./node_modules/@angular/material/prebuilt-themes/indigo-pink.css");
+__webpack_require__(/*! D:\Automaterijal\Project\automaterijal\src\main\ui\src\styles.scss */"./src/styles.scss");
+__webpack_require__(/*! D:\Automaterijal\Project\automaterijal\src\main\ui\node_modules\owl.carousel\dist\assets\owl.carousel.min.css */"./node_modules/owl.carousel/dist/assets/owl.carousel.min.css");
+module.exports = __webpack_require__(/*! D:\Automaterijal\Project\automaterijal\src\main\ui\node_modules\owl.carousel\dist\assets\owl.theme.default.min.css */"./node_modules/owl.carousel/dist/assets/owl.theme.default.min.css");
 
 
 /***/ })
