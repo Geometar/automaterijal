@@ -3,7 +3,7 @@
   <table mat-table [dataSource]="dataSource">
     <!-- Kataloski broj Column -->
     <ng-container matColumnDef="katbr">
-      <th mat-header-cell *matHeaderCellDef> Kataloski broj </th>
+      <th mat-header-cell *matHeaderCellDef> Kataloški broj </th>
       <td mat-cell *matCellDef="let roba">
         <p class="mat-body-2">
           {{roba.katbr}}
@@ -13,7 +13,7 @@
 
     <!-- Kataloski broj proizvodjaca Column -->
     <ng-container matColumnDef="katbrpro">
-      <th mat-header-cell *matHeaderCellDef> Kataloski broj proizvodjaca </th>
+      <th mat-header-cell *matHeaderCellDef> Kataloški broj proizvodjača </th>
       <td mat-cell *matCellDef="let roba">
         <p>
           {{roba.katbrpro}}
@@ -67,7 +67,7 @@
 
     <!-- Kolicina Column -->
     <ng-container matColumnDef="kolicina">
-      <th mat-header-cell *matHeaderCellDef>Kolicina </th>
+      <th mat-header-cell *matHeaderCellDef>Količina </th>
       <td mat-cell *matCellDef="let roba">
         <div *ngIf="roba.stanje > 0">
           <input type="number" min="0" placeholder="0" max="{{roba.stanje}}" class="kolicina-labela"

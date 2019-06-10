@@ -1,5 +1,6 @@
 package com.automaterijal.application.domain.mapper;
 
+import com.automaterijal.application.domain.constants.StatusiKonstante;
 import com.automaterijal.application.domain.dto.FakturaDetaljiDto;
 import com.automaterijal.application.domain.dto.FakturaDto;
 import com.automaterijal.application.domain.dto.ValueHelpDto;
@@ -34,7 +35,7 @@ public abstract class FakturaMapper {
         faktura.setBackOrder(0);
         faktura.setCreatedByPpid(partner.getPpid());
         faktura.setIznosPotvrdjen(0.0);
-        faktura.setStatus(3);
+        faktura.setStatus(StatusiKonstante.NIJE_UZETA_U_OBRADU.getFieldValue());
         faktura.setPrid(1);
 
         popuniFakturaDetalje(faktura);

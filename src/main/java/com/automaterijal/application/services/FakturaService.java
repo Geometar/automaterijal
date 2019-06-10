@@ -91,8 +91,10 @@ public class FakturaService {
         final Faktura faktura = mapper.map(fakturaDto);
         mapper.popuniFakuturu(faktura, partner, vratiPoslednjiIdFakturuKorisnikaPovecan(partner.getPpid()));
         faktura.getDetalji().forEach(fakturaDetalji -> fakturaDetaljiRepository.save(fakturaDetalji));
-        final Faktura fakturaDatabase = fakturaRepository.save(faktura);
+
+        fakturaRepository.save(faktura);
         partnerService.povecanPartnerovOrderCount(partner);
+
         skiniRobuSaSastanja(faktura.getDetalji());
     }
 
