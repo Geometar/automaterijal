@@ -43,5 +43,4 @@ public class FakturaDetalji {
     Timestamp insertDatetime;
     @Column(name = "napomena")
     String napomena;
-
 }

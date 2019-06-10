@@ -18,7 +18,6 @@ import java.time.LocalDateTime;
 public abstract class FakturaMapper {
 
     @Mapping(target = "vremePorucivanja", source = "dataSent")
-    @Mapping(target = "iznos", source = "iznosNarucen")
     @Mapping(target = "status.id", source = "status")
     @Mapping(target = "nacinPlacanja.id", source = "nuid")
     @Mapping(target = "nacinPrevoza.id", source = "niid")
@@ -54,7 +53,6 @@ public abstract class FakturaMapper {
         });
     }
 
-    @Mapping(target = "iznosNarucen", source = "iznos")
     @Mapping(target = "nuid", source = "nacinPlacanja.id")
     @Mapping(target = "niid", source = "nacinPrevoza.id")
     @Mapping(target = "mestoIsporuke", source = "adresa.id")

@@ -10,7 +10,8 @@
         }
 
         .main {
-            text-align: center;
+            text-align: left;
+            padding: 5px;
         }
 
         h1 {
@@ -19,7 +20,7 @@
 
         h3 {
             color: rgba(40, 59, 78, 1);
-            margin-bottom: 0px;
+            margin-bottom: 10px;
         }
 
         th {
@@ -31,24 +32,29 @@
         td {
             text-align: center;
             font-family: serif;
-            font-size: 16px;
-        }
-
-        .detalji tr:nth-child(even) {
-            background-color: #f2f2f2
-        }
-
-        .vreme {
-            margin-top: 30px;
             font-size: 17px;
         }
 
-        .vreme span {
-            font-weight: bold;
+        .detalji td {
+            background-color: #f2f2f2;
+        }
+
+        .iznos {
+            text-align: left;
+            width: 200px;
+            margin-top: 25px;
+        }
+
+        .cene {
+            text-align: left;
+        }
+
+        .crveno {
+            color: red;
         }
 
         table {
-            width: 500px;
+            width: 550px;
         }
 
         .footer {
@@ -60,17 +66,26 @@
             display: inline-block;
         }
 
+        .link {
+            color: rgba(62, 94, 158, 1);;
+        }
+
+        .footer-tabela-wraper {
+            display: inline-block;
+        }
+
         .footer-tabela td {
             text-align: left;
         }
 
-        .naslov {
+        .footer-td {
             width: 150px;
         }
 
         a,
         u {
             text-decoration: none;
+            color: black;
         }
     </style>
 </head>
@@ -79,7 +94,7 @@
     <div class="main">
         <h1>Obaveštenje</h1>
         <p>Poštovani, vaša porudžbina je obradjena.</p>
-        <p>Ustanovljeno je da za odredjene artikle nemamo tražene količine koje ste tražili. Više informacija u
+        <p>Ustanovljeno je da za odredjene artikle nemamo tražene količine. Detalji u
             tabeli.</p>
         <div class="tabela">
             <table class="detalji">
@@ -94,27 +109,44 @@
                     <td th:text="${detalji.kataloskiBroj}">KataloskiBroj</td>
                     <td th:text="${detalji.proizvodjac.naziv}">Proizvodjac</td>
                     <td th:text="${detalji.kolicina}">Kolicina</td>
-                    <td th:text="${detalji.potvrdjenaKolicina}">PotvrdjenaKolicina</td>
+                    <td class="crveno" th:text="${detalji.potvrdjenaKolicina}">PotvrdjenaKolicina</td>
                     <td th:text="${detalji.cena}">Cena</td>
                 </tr>
             </table>
+            <table class="iznos">
+                <tbody>
+                    <tr>
+                        <td class="cene">Iznos narucen:</td>
+                        <td class="cene" th:text="${faktura.iznosNarucen}">15000</td>
+                    </tr>
+                    <tr>
+                        <td class="cene">Iznos potvrdjen:</td>
+                        <td class="cene crveno" th:text="${faktura.iznosPotvrdjen}">13000</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>Za vise informacija o porudzbenici kliknite na link: <a class="link" href="http://localhost:8080/porudzbenice/${faktura.id}" >automaterijal-link</a></p>
         </div>
         <div class="footer">
             <h3>Automaterijal web aplikacija</b></h3>
         </div>
-        <div class="tabela">
+        <div class="footer-tabela-wraper">
             <table class="footer-tabela">
                 <tbody>
                     <tr>
-                        <td class="naslov">Adresa:</td>
+                        <td class="footer-td">Adresa:</td>
                         <td>Prvomajska 61, Šabac</td>
                     </tr>
                     <tr>
+                        <td>Sajt:</td>
+                        <td><a href="http://automaterijal.com/" target="_blank">www.automaterijal.com</a></td>
+                    </tr>
+                    <tr>
                         <td>Tel. maloprodaja:</td>
-                        <td><a class="telefon" href="tel:015334630">015/334-630</a></td>
+                        <td><a href="tel:015334630">015/334-630</a></td>
                     <tr>
                         <td>Tel. Veleprodaja:</td>
-                        <td><a class="telefon" href="tel:015319000">015/319-000</a></td>
+                        <td><a href="tel:015319000">015/319-000</a></td>
                     </tr>
                 </tbody>
             </table>

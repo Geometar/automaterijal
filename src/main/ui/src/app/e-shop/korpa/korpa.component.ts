@@ -232,7 +232,7 @@ export class KorpaComponent implements OnInit {
     this.faktura.nacinPlacanja = this.napraviIPopuniValueHelp(this.korpa.nacinPlacanja);
     this.faktura.nacinPrevoza = this.napraviIPopuniValueHelp(this.korpa.nacinIsporuke);
     this.faktura.napomena = this.korpa.napomena;
-    this.faktura.iznos = this.korpa.ukupno;
+    this.faktura.iznosNarucen = this.korpa.ukupno;
     this.faktura.detalji = [];
     this.korpa.roba.forEach((roba: RobaKorpa) => {
       this.faktura.detalji.push(this.popuniStavke(roba));

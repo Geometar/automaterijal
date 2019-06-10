@@ -23,8 +23,7 @@ export class FakturaComponent implements OnInit {
   public sort = null;
   public tableLength;
 
-  public displayedColumns: string[] = ['orderId', 'nacinPlacanja', 'nacinPrevoza'
-  , 'adresa', 'napomena', 'brojStavki', 'iznos', 'vremePorucivanja', 'status', 'ackije'];
+  public displayedColumns: string[] = ['orderId', 'brojStavki', 'iznosNarucen', 'iznosPotvrdjen', 'vremePorucivanja', 'status', 'ackije'];
 
   constructor(
     private loginServis: LoginService,

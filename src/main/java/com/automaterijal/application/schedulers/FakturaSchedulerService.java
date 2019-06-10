@@ -54,15 +54,8 @@ public class FakturaSchedulerService {
     }
 
     private void posaljiMail(final Faktura faktura) {
-        final var df2 = new DecimalFormat("#.##");
-        df2.setRoundingMode(RoundingMode.UP);
         final var partner = partnerService.pronadjiPartneraPoId(faktura.getPpid());
         final var fakturaDto = fakturaService.vratiFakuturuPojedinacno(partner, faktura.getId());
-        fakturaDto.getDetalji().forEach(dto -> {
-            final double cena = Double.valueOf(df2.format(dto.getCena()));
-            dto.setCena(cena);
-        });
         emailService.posaljiMailONedovoljnimKolicinama(fakturaDto, partner);
-
     }
 }

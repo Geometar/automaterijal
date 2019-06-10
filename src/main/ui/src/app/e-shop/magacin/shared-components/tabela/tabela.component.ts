@@ -32,7 +32,6 @@ export class TabelaComponent implements OnInit {
     { def: 'katbrpro', ifNotAuth: true },
     { def: 'proizvodjac', ifNotAuth: true },
     { def: 'naziv', ifNotAuth: true },
-    { def: 'rabat', ifNotAuth: false },
     { def: 'cena', ifNotAuth: true },
     { def: 'stanje', ifNotAuth: true },
     { def: 'kolicina', ifNotAuth: false },

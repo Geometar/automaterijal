@@ -45,7 +45,8 @@ export class Fakutra {
     adresa?: ValueHelp;
     napomena?: string;
     brojStavki?: number;
-    iznos?: number;
+    iznosNarucen?: number;
+    iznosPotvrdjen?: number;
     detalji?: FakturaDetalji[];
 }
 

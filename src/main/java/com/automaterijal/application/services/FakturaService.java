@@ -27,7 +27,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.RoundingMode;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -122,7 +124,17 @@ public class FakturaService {
         if (fakturaDto.getDetalji() != null && !fakturaDto.getDetalji().isEmpty()) {
             fakturaDto.getDetalji().stream().forEach(fakturaDetaljiDto -> obogatiDetalje(fakturaDetaljiDto, partner));
         }
+        formatirajCenuFakture(fakturaDto);
         return fakturaDto;
+    }
+
+    private void formatirajCenuFakture(FakturaDto fakturaDto) {
+        final var formater = new DecimalFormat("#.##");
+        formater.setRoundingMode(RoundingMode.UP);
+        fakturaDto.getDetalji().forEach(fakturaDetaljiDto -> {
+            Double cena = Double.valueOf(formater.format(fakturaDetaljiDto.getCena()));
+            fakturaDetaljiDto.setCena(cena);
+        });
     }
 
     private void obogatiDetalje(final FakturaDetaljiDto dto, final Partner partner) {
