@@ -52,14 +52,14 @@ export class KontaktComponent implements OnInit {
       catchError((error: Response) =>  throwError(error)),
       finalize(() => this.ucitavanje = false)
     ).subscribe(res => {
-      console.log('Poruka uspesno poslat');
-      this.notifikacijaServis.notify('Poruka uspešno poslatata', MatSnackBarKlase.Plava);
-      this.porukaForm.reset();
-      this.porukaSubmited = false;
     }, error => {
       console.log('Error pri slanju poruke', error);
       this.notifikacijaServis.notify('Poruka nije poslata, pokusajte kasnije.', MatSnackBarKlase.Crvena);
     });
+    console.log('Poruka uspesno poslat');
+    this.notifikacijaServis.notify('Poruka uspešno poslatata', MatSnackBarKlase.Plava);
+    this.porukaForm.reset();
+    this.porukaSubmited = false;
   }
 
   popuniPoruku(): Poruka {

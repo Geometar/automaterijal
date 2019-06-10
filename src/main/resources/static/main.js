@@ -901,14 +901,14 @@ var KontaktComponent = /** @class */ (function () {
         var poruka = this.popuniPoruku();
         this.emailServis.posaljiPoruku(poruka)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["catchError"])(function (error) { return Object(rxjs__WEBPACK_IMPORTED_MODULE_4__["throwError"])(error); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["finalize"])(function () { return _this.ucitavanje = false; })).subscribe(function (res) {
-            console.log('Poruka uspesno poslat');
-            _this.notifikacijaServis.notify('Poruka uspešno poslatata', src_app_shared_model_konstante__WEBPACK_IMPORTED_MODULE_7__["MatSnackBarKlase"].Plava);
-            _this.porukaForm.reset();
-            _this.porukaSubmited = false;
         }, function (error) {
             console.log('Error pri slanju poruke', error);
             _this.notifikacijaServis.notify('Poruka nije poslata, pokusajte kasnije.', src_app_shared_model_konstante__WEBPACK_IMPORTED_MODULE_7__["MatSnackBarKlase"].Crvena);
         });
+        console.log('Poruka uspesno poslat');
+        this.notifikacijaServis.notify('Poruka uspešno poslatata', src_app_shared_model_konstante__WEBPACK_IMPORTED_MODULE_7__["MatSnackBarKlase"].Plava);
+        this.porukaForm.reset();
+        this.porukaSubmited = false;
     };
     KontaktComponent.prototype.popuniPoruku = function () {
         var poruka = new _model_dto__WEBPACK_IMPORTED_MODULE_5__["Poruka"]();
