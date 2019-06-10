@@ -7,7 +7,7 @@
       </div>
       <form role="form" [formGroup]="promenaSifreForm">
         <div class="form-group">
-          <input type="password" #pass1 formControlName="pass1" class="form-control rounded" placeholder="Šifra" id="pass1"
+          <input type="password" #pass1 formControlName="pass1" class="form-control rounded" placeholder="Nova šifra" id="pass1"
             name="pass1" />
           <div *ngIf="submitted && r.pass1.errors">
             <div *ngIf="r.pass1.errors.required">

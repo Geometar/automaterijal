@@ -1,5 +1,5 @@
 <mat-dialog-content>
-  <section>
+  <section *ngIf="!ucitavanje">
     <div class="header">
       <h1>Pošalji poruku</h1>
       <button type="button" class="close" (click)="zatvoriDialog()">
@@ -71,3 +71,8 @@
     </form>
   </section>
 </mat-dialog-content>
+<section *ngIf="ucitavanje">
+  <div class="d-flex justify-content-center margin-bottom--10 margin-top--10">
+    <mat-spinner></mat-spinner>
+  </div>
+</section>

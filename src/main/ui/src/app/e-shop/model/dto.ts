@@ -10,7 +10,7 @@ export class Roba {
     public katbr: string;
     public katbrpro: string;
     public naziv: string;
-    public proizvodjac: Proizvodjač;
+    public proizvodjac: Proizvodjac;
     public grupa: string;
     public podGrupa: string;
     public stanje: number;
@@ -57,7 +57,7 @@ export class FakturaPage extends Page {
 export class FakturaDetalji {
     robaId?: number;
     kataloskiBroj?: string;
-    proizvodjac?: Proizvodjač;
+    proizvodjac?: Proizvodjac;
     kolicina?: number;
     potvrdjenaKolicina?: number;
     cena?: number;
@@ -66,7 +66,7 @@ export class FakturaDetalji {
     vremePorucivanja?: string;
 }
 
-export class Proizvodjač {
+export class Proizvodjac {
     public proid: string;
     public naziv: string;
 }

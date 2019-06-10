@@ -47,6 +47,7 @@ export class PorukaModalComponent implements OnInit {
       return;
     }
     const poruka = this.popuniPoruku();
+    this.ucitavanje = true;
     this.emailServis.posaljiPoruku(poruka)
       .pipe(
         takeWhile(() => this.alive),

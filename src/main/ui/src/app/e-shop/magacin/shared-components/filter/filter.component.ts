@@ -1,12 +1,12 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ProizvodjacService } from 'src/app/e-shop/service/proizvodjac.service';
 import { takeWhile } from 'rxjs/operators';
-import { Proizvodjač } from 'src/app/e-shop/model/dto';
 import { VrstaRobe } from 'src/app/e-shop/model/roba.enum';
 import { Filter } from 'src/app/e-shop/model/filter';
 import { AppUtilsService } from 'src/app/e-shop/utils/app-utils.service';
 import { Observable } from 'rxjs';
 import { ActivatedRoute, Params } from '@angular/router';
+import { Proizvodjac } from 'src/app/e-shop/model/dto';
 
 @Component({
   selector: 'app-filter',
@@ -21,7 +21,7 @@ export class FilterComponent implements OnInit {
   @Input() industrijkoUljeEvent: Observable<string>;
   @Output() filterEvent = new EventEmitter<any>();
 
-  public proizvodjaci: Proizvodjač[];
+  public proizvodjaci: Proizvodjac[];
 
   public filter = new Filter();
 

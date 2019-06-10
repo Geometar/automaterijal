@@ -64,6 +64,7 @@ export class UpitModalComponent implements OnInit {
       return;
     }
     const upit = this.popuniUpit();
+    this.ucitavanje = true;
     this.emailServis.posaljiUpit(upit)
       .pipe(
         takeWhile(() => this.alive),

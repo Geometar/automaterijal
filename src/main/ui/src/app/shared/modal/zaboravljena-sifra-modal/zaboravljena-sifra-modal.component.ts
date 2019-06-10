@@ -44,13 +44,14 @@ export class ZaboravljenaSifraModalComponent implements OnInit {
     if (this.zaboravljeSifraForma.invalid) {
       return;
     }
+    this.ucitavanje = true;
     this.resetSifre.email = this.zaboravljeno.email.value;
     this.emailService
     .posaljiMailZaResetovanjeSifre(this.resetSifre)
     .pipe(
       takeWhile(() => this.alive),
       catchError((error: Response) => {
-        if (error.status === 400) {
+        if (error.status === 400 || error.status === 404) {
           const snackPoruka = 'E-mail ili korisničko ime ne postoji u našoj bazi.';
           this.notifikacijaServis.notify(snackPoruka, MatSnackBarKlase.Crvena);
           return EMPTY;

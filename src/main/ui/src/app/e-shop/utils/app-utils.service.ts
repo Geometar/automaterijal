@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Proizvodjač, Roba } from '../model/dto';
+import { Roba, Proizvodjac } from '../model/dto';
 import { RobaKorpa, Korpa } from '../model/porudzbenica';
 import { DataService } from '../service/data/data.service';
 
@@ -10,7 +10,7 @@ export class AppUtilsService {
 
   constructor(private dataService: DataService) { }
 
-  public vratiIdProizvodjacaAkoPostoji(izabraniProizvodjac: string, proizvodjaci: Proizvodjač[]): string {
+  public vratiIdProizvodjacaAkoPostoji(izabraniProizvodjac: string, proizvodjaci: Proizvodjac[]): string {
     let proId = null;
     if (izabraniProizvodjac && izabraniProizvodjac === 'SVI') {
       proId = null;
@@ -42,7 +42,7 @@ export class AppUtilsService {
       roba.kolicina = roba.stanje;
     }
     const robaKorpa =
-      new RobaKorpa(roba.robaid, roba.katbr, roba.katbrpro, roba.naziv, roba.proizvodjac, 
+      new RobaKorpa(roba.robaid, roba.katbr, roba.katbrpro, roba.naziv, roba.proizvodjac,
         roba.kolicina, roba.rabat, roba.cena, roba.stanje);
     this.dataService.ubaciUKorpu(robaKorpa);
     return snackBarPoruka;

@@ -1,4 +1,4 @@
-<mat-dialog-content>
+<mat-dialog-content *ngIf="!ucitavanje">
   <section *ngIf="!porukaJePoslata">
     <div class="header">
       <h1>Pošalji upit</h1>
@@ -139,3 +139,8 @@
     </div>
   </section>
 </mat-dialog-content>
+<section *ngIf="ucitavanje">
+  <div class="d-flex justify-content-center margin-bottom--10 margin-top--10">
+    <mat-spinner></mat-spinner>
+  </div>
+</section>

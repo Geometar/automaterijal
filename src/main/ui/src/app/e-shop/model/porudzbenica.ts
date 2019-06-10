@@ -1,4 +1,4 @@
-import { Proizvodjač } from './dto';
+import { Proizvodjac } from './dto';
 
 export class Korpa {
     public roba: RobaKorpa[] = [];
@@ -14,14 +14,14 @@ export class RobaKorpa {
     public katbr: string;
     public katbrpro: string;
     public naziv: string;
-    public proizvodjac: Proizvodjač;
+    public proizvodjac: Proizvodjac;
     public kolicina: number;
     public rabat: number;
     public cenaKom: number;
     public stanje: number;
     public cenaUkupno: number;
 
-    constructor(robaid: number, katbr: string, katbrpro: string, naziv: string, proizvodjac: Proizvodjač,
+    constructor(robaid: number, katbr: string, katbrpro: string, naziv: string, proizvodjac: Proizvodjac,
          kolicina: number, rabat: number, cena: number, stanje: number) {
         this.robaid = robaid;
         this.katbr = katbr;
