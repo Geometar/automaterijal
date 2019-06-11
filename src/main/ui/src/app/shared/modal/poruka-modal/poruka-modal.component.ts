@@ -16,6 +16,7 @@ import { MatSnackBarKlase } from '../../model/konstante';
 export class PorukaModalComponent implements OnInit {
   public porukaForm: FormGroup;
   public porukaSubmited = false;
+  public porukaPoslata = false;
 
   private alive = true;
   public ucitavanje = false;
@@ -55,10 +56,10 @@ export class PorukaModalComponent implements OnInit {
         finalize(() => this.ucitavanje = false)
       ).subscribe(res => {
         console.log('Poruka uspesno poslat');
+        this.porukaPoslata = true;
         this.porukaForm.reset();
         this.porukaSubmited = false;
         this.notifikacijaServis.notify('Poruka je uspešno poslata', MatSnackBarKlase.Zelena);
-        this.dialogRef.close();
       }, error => {
         console.log('Error pri slanju poruke', error);
         this.notifikacijaServis.notify('Došlo je do greške, poruka nije poslata', MatSnackBarKlase.Crvena);

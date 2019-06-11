@@ -4004,11 +4004,11 @@ var transformator = {
     prevoz_1: 'Vi vozite robu',
     prevoz_2: 'Treće lice vozi robu',
     kategorija_AMORTIZER: 'Amortizeri',
-    kategorija_BRAVA: 'Brava vrata i elek. ulozak brave',
+    kategorija_BRAVA: 'Brava vrata i elek. uložak brave',
     kategorija_BREGASTA: 'Bregasta osovina',
     kategorija_BRISAC: 'Brisači - metlice',
     kategorija_CILINDAR: 'Cilindri-kočioni',
-    kategorija_DIHTUNG: 'Dihtunzi svi',
+    kategorija_DIHTUNG: 'Dihtunzi',
     kategorija_DISK_PLOCICE: 'Disk pločice',
     kategorija_DISKOVI: 'Diskovi',
     kategorija_DVOTAKTOL: 'Dvotaktol ulje',
@@ -4039,7 +4039,7 @@ var transformator = {
     kategorija_RAZVODNIK: 'Razvodnik paljenja',
     kategorija_REMENICA: 'Remenice',
     kategorija_SEMERING: 'Semering',
-    kategorija_SVECICA: 'Svećica i kablovi',
+    kategorija_SVECICA: 'Svećice i kablovi',
     kategorija_SIJALICA: 'Sijalice',
     kategorija_SILEN: 'Silen blokovi',
     kategorija_STABILIZATOR: 'Stabilizator',
@@ -6045,7 +6045,7 @@ var NeuspesnoPorucivanjeModalComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<mat-dialog-content>\n  <section *ngIf=\"!ucitavanje\">\n    <div class=\"header\">\n      <h1>Pošalji poruku</h1>\n      <button type=\"button\" class=\"close\" (click)=\"zatvoriDialog()\">\n        <span aria-hidden=\"true\">&times;</span>\n      </button>\n    </div>\n    <form role=\"form\" [formGroup]=\"porukaForm\">\n      <div class=\"forma-poruke\">\n        <table cellspacing=\"0\">\n          <tr>\n            <td>\n              <mat-form-field class=\"sirina-polja-unosa\">\n                <input matInput formControlName=\"ime\" placeholder=\"Ime\">\n              </mat-form-field>\n            </td>\n          </tr>\n          <tr>\n            <td>\n              <mat-form-field class=\"sirina-polja-unosa\">\n                <input matInput formControlName=\"prezime\" placeholder=\"Prezime\">\n              </mat-form-field>\n            </td>\n          </tr>\n        </table>\n        <table cellspacing=\"0\">\n          <tr>\n            <td>\n              <mat-form-field class=\"sirina-polja-unosa\">\n                <input matInput formControlName=\"firma\" placeholder=\"Ima firme\">\n              </mat-form-field>\n            </td>\n          </tr>\n          <tr>\n            <td>\n              <mat-form-field class=\"sirina-polja-unosa\">\n                <input matInput type=\"tel\" formControlName=\"telefon\" placeholder=\"Broj telefona\">\n              </mat-form-field>\n            </td>\n          </tr>\n        </table>\n        <div>\n          <mat-form-field class=\"sirina-polja-unosa\">\n            <input matInput type=\"email\" formControlName=\"posta\" placeholder=\"Pošta\">\n          </mat-form-field>\n          <div *ngIf=\"porukaSubmited && p.posta.errors\">\n            <div *ngIf=\"p.posta.errors.required\">\n              <p class=\"upozorenje\">Pošta je obavezna</p>\n            </div>\n            <div *ngIf=\"p.posta.errors.email\">\n              <p class=\"upozorenje\">Pošta nije validna</p>\n            </div>\n          </div>\n        </div>\n        <div>\n          <mat-form-field class=\"sirina-polja-unosa\">\n            <textarea matInput formControlName=\"poruka\" rows=\"8\" placeholder=\"Poruka\"></textarea>\n          </mat-form-field>\n          <div *ngIf=\"porukaSubmited && p.poruka.errors\">\n            <div *ngIf=\"p.poruka.errors.required\">\n              <p class=\"upozorenje\">Poruka je obavezna</p>\n            </div>\n            <div *ngIf=\"p.poruka.errors.minlength\">\n              <p class=\"upozorenje\">Poruka mora imate minimalno 3 karaktera</p>\n            </div>\n          </div>\n        </div>\n        <button mat-flat-button class=\"sirina-polja-unosa\" (click)=\"posaljiPoruku()\" color=\"primary\">Pošalji</button>\n      </div>\n    </form>\n  </section>\n</mat-dialog-content>\n<section *ngIf=\"ucitavanje\">\n  <div class=\"d-flex justify-content-center margin-bottom--10 margin-top--10\">\n    <mat-spinner></mat-spinner>\n  </div>\n</section>"
+module.exports = "<mat-dialog-content>\n  <section *ngIf=\"!porukaPoslata && !ucitavanje\">\n    <div class=\"header\">\n      <h1>Pošalji poruku</h1>\n      <button type=\"button\" class=\"close\" (click)=\"zatvoriDialog()\">\n        <span aria-hidden=\"true\">&times;</span>\n      </button>\n    </div>\n    <form role=\"form\" [formGroup]=\"porukaForm\">\n      <div class=\"forma-poruke\">\n        <table cellspacing=\"0\">\n          <tr>\n            <td>\n              <mat-form-field class=\"sirina-polja-unosa\">\n                <input matInput formControlName=\"ime\" placeholder=\"Ime\">\n              </mat-form-field>\n            </td>\n          </tr>\n          <tr>\n            <td>\n              <mat-form-field class=\"sirina-polja-unosa\">\n                <input matInput formControlName=\"prezime\" placeholder=\"Prezime\">\n              </mat-form-field>\n            </td>\n          </tr>\n        </table>\n        <table cellspacing=\"0\">\n          <tr>\n            <td>\n              <mat-form-field class=\"sirina-polja-unosa\">\n                <input matInput formControlName=\"firma\" placeholder=\"Ima firme\">\n              </mat-form-field>\n            </td>\n          </tr>\n          <tr>\n            <td>\n              <mat-form-field class=\"sirina-polja-unosa\">\n                <input matInput type=\"tel\" formControlName=\"telefon\" placeholder=\"Broj telefona\">\n              </mat-form-field>\n            </td>\n          </tr>\n        </table>\n        <div>\n          <mat-form-field class=\"sirina-polja-unosa\">\n            <input matInput type=\"email\" formControlName=\"posta\" placeholder=\"Pošta\">\n          </mat-form-field>\n          <div *ngIf=\"porukaSubmited && p.posta.errors\">\n            <div *ngIf=\"p.posta.errors.required\">\n              <p class=\"upozorenje\">Pošta je obavezna</p>\n            </div>\n            <div *ngIf=\"p.posta.errors.email\">\n              <p class=\"upozorenje\">Pošta nije validna</p>\n            </div>\n          </div>\n        </div>\n        <div>\n          <mat-form-field class=\"sirina-polja-unosa\">\n            <textarea matInput formControlName=\"poruka\" rows=\"6\" placeholder=\"Poruka\"></textarea>\n          </mat-form-field>\n          <div *ngIf=\"porukaSubmited && p.poruka.errors\">\n            <div *ngIf=\"p.poruka.errors.required\">\n              <p class=\"upozorenje\">Poruka je obavezna</p>\n            </div>\n            <div *ngIf=\"p.poruka.errors.minlength\">\n              <p class=\"upozorenje\">Poruka mora imate minimalno 3 karaktera</p>\n            </div>\n          </div>\n        </div>\n        <button mat-flat-button class=\"sirina-polja-unosa\" (click)=\"posaljiPoruku()\" color=\"primary\">Pošalji</button>\n      </div>\n    </form>\n  </section>\n  <section *ngIf=\"porukaPoslata\">\n    <button type=\"button\" class=\"close\" (click)=\"zatvoriDialog()\">\n      <span aria-hidden=\"true\">&times;</span>\n    </button>\n    <p>Poruka je uspešno poslata. Odgovrićemo vam u najkraćem mogućem roku.</p>\n    <div class=\"text-center margin-top--15\">\n      <button mat-flat-button color=\"primary\" (click)=\"zatvoriDialog()\">Zatvori</button>\n    </div>\n  </section>\n</mat-dialog-content>\n<section *ngIf=\"ucitavanje\">\n  <div class=\"d-flex justify-content-center margin-bottom--10 margin-top--10\">\n    <mat-spinner></mat-spinner>\n  </div>\n</section>"
 
 /***/ }),
 
@@ -6104,6 +6104,7 @@ var PorukaModalComponent = /** @class */ (function () {
         this.emailServis = emailServis;
         this.notifikacijaServis = notifikacijaServis;
         this.porukaSubmited = false;
+        this.porukaPoslata = false;
         this.alive = true;
         this.ucitavanje = false;
     }
@@ -6131,10 +6132,10 @@ var PorukaModalComponent = /** @class */ (function () {
         this.emailServis.posaljiPoruku(poruka)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["catchError"])(function (error) { return Object(rxjs__WEBPACK_IMPORTED_MODULE_4__["throwError"])(error); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["finalize"])(function () { return _this.ucitavanje = false; })).subscribe(function (res) {
             console.log('Poruka uspesno poslat');
+            _this.porukaPoslata = true;
             _this.porukaForm.reset();
             _this.porukaSubmited = false;
             _this.notifikacijaServis.notify('Poruka je uspešno poslata', _model_konstante__WEBPACK_IMPORTED_MODULE_8__["MatSnackBarKlase"].Zelena);
-            _this.dialogRef.close();
         }, function (error) {
             console.log('Error pri slanju poruke', error);
             _this.notifikacijaServis.notify('Došlo je do greške, poruka nije poslata', _model_konstante__WEBPACK_IMPORTED_MODULE_8__["MatSnackBarKlase"].Crvena);

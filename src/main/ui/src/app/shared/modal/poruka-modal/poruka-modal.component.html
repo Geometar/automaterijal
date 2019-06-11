@@ -1,5 +1,5 @@
 <mat-dialog-content>
-  <section *ngIf="!ucitavanje">
+  <section *ngIf="!porukaPoslata && !ucitavanje">
     <div class="header">
       <h1>Pošalji poruku</h1>
       <button type="button" class="close" (click)="zatvoriDialog()">
@@ -55,7 +55,7 @@
         </div>
         <div>
           <mat-form-field class="sirina-polja-unosa">
-            <textarea matInput formControlName="poruka" rows="8" placeholder="Poruka"></textarea>
+            <textarea matInput formControlName="poruka" rows="6" placeholder="Poruka"></textarea>
           </mat-form-field>
           <div *ngIf="porukaSubmited && p.poruka.errors">
             <div *ngIf="p.poruka.errors.required">
@@ -69,6 +69,15 @@
         <button mat-flat-button class="sirina-polja-unosa" (click)="posaljiPoruku()" color="primary">Pošalji</button>
       </div>
     </form>
+  </section>
+  <section *ngIf="porukaPoslata">
+    <button type="button" class="close" (click)="zatvoriDialog()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <p>Poruka je uspešno poslata. Odgovrićemo vam u najkraćem mogućem roku.</p>
+    <div class="text-center margin-top--15">
+      <button mat-flat-button color="primary" (click)="zatvoriDialog()">Zatvori</button>
+    </div>
   </section>
 </mat-dialog-content>
 <section *ngIf="ucitavanje">
