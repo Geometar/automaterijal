@@ -56,7 +56,6 @@ export class FilterComponent implements OnInit {
         },
           error => {
             this.proizvodjaci = null;
-            console.log('Pronaci svu robu je bacilo gresku', error);
           });
     } else if (this.vrstaRobe === VrstaRobe.FILTERI) {
       this.proizvodjacService.pronadjiSveProizvodjaceFiltera()
@@ -67,7 +66,6 @@ export class FilterComponent implements OnInit {
         },
           error => {
             this.proizvodjaci = null;
-            console.log('Pronaci svu robu je bacilo gresku', error);
           });
     } else if (this.vrstaRobe === VrstaRobe.SVE) {
       this.proizvodjacService.pronadjiSveProizvodjace()
@@ -78,7 +76,6 @@ export class FilterComponent implements OnInit {
         },
           error => {
             this.proizvodjaci = null;
-            console.log('Pronaci svu robu je bacilo gresku', error);
           });
     } else if (this.vrstaRobe === VrstaRobe.ULJA) {
       this.proizvodjacService.pronadjiSveProizvodjaceUljaPoVrsti(this.vrstaUlja)
@@ -89,7 +86,6 @@ export class FilterComponent implements OnInit {
         },
           error => {
             this.proizvodjaci = null;
-            console.log('Pronaci svu robu je bacilo gresku', error);
           });
     } else if (this.vrstaRobe === VrstaRobe.OSTALO) {
       this.route.params.subscribe((params: Params) => {
@@ -101,7 +97,6 @@ export class FilterComponent implements OnInit {
           },
             error => {
               this.proizvodjaci = null;
-              console.log('Pronaci svu robu je bacilo gresku', error);
             });
       });
     }

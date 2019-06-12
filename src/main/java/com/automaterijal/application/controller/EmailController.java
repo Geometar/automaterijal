@@ -9,6 +9,7 @@ import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailSendException;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/api/email")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Slf4j
 public class EmailController {
 
     @NonNull
@@ -24,29 +26,38 @@ public class EmailController {
 
     @PostMapping(value = "/registracija")
     public ResponseEntity registracioniMail(@RequestBody final RegistracijaDto dto) {
+        log.info("Registracija mail podaci: email =  {}, firma = {}, imeIPrezime = {}",
+                dto.getEmail(),
+                dto.getNazivFirme(),
+                dto.getImeIPrezime());
+
         emailService.posaljiRegistracioniEmail(dto);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping(value = "/zaboravljena-sifra")
     public ResponseEntity zaboravljenaSifraMail(@RequestBody final ZaboravljenaSifraDto dto, @RequestHeader final String host) {
+        log.info("Zaboravljena Sifra mail: email ili username = {}", dto.getEmail());
         try {
             emailService.posaljiZaboravljenaSifraMail(dto, host);
             return ResponseEntity.ok().build();
         } catch (final MailSendException ex) {
+            log.error("Zaboravljena sifra: email ili us = {}, greska = {}", dto.getEmail(), ex.getMessage());
             return ResponseEntity.badRequest().build();
         }
     }
 
     @PostMapping(value = "/poruka")
-    public ResponseEntity posaljiPorukuMail(@RequestBody final PorukaDto porukaDto) {
-        emailService.posaljiPoruku(porukaDto);
+    public ResponseEntity posaljiPorukuMail(@RequestBody final PorukaDto dto) {
+        log.info("Poruka mail: ime = {}, poruka = {}", dto.getIme(),  dto.getPoruka());
+        emailService.posaljiPoruku(dto);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping(value = "/upit")
-    public ResponseEntity upitMail(@RequestBody final UpitDto upitDto) {
-        emailService.posaljiUpitMail(upitDto);
+    public ResponseEntity upitMail(@RequestBody final UpitDto dto) {
+        log.info("Upit mail: upit za = {}", dto.getInteresujeMe());
+        emailService.posaljiUpitMail(dto);
         return ResponseEntity.ok().build();
     }
 }

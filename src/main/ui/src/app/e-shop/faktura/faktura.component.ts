@@ -47,7 +47,6 @@ export class FakturaComponent implements OnInit {
     },
       error => {
         this.error = true;
-        console.log('Pronaci fakture je bacilo gresku', error);
       });
   }
 

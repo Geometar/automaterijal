@@ -74,7 +74,6 @@ export class AntifrizComponent implements OnInit {
         },
         error => {
           this.roba = null;
-          console.log('Podnaci robu izbacilo je gresko');
         });
   }
 
@@ -111,7 +110,6 @@ export class AntifrizComponent implements OnInit {
         },
         error => {
           this.roba = null;
-          console.log('Podnaci robu izbacilo je gresku: ' + error);
         });
   }
 

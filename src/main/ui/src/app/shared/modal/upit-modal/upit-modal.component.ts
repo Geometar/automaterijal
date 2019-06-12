@@ -71,14 +71,12 @@ export class UpitModalComponent implements OnInit {
         catchError((error: Response) => throwError(error)),
         finalize(() => this.ucitavanje = false)
       ).subscribe(res => {
-        console.log('Poruka uspesno poslat');
         this.upitForm.reset();
         this.upitSubmited = false;
         this.porukaJePoslata = true;
         this.notifikacijaServis.notify('Upit je uspešno poslat', MatSnackBarKlase.Plava);
 
       }, error => {
-        console.log('Error pri slanju poruke', error);
         this.notifikacijaServis.notify('Došlo je do greške, upit nije poslat', MatSnackBarKlase.Crvena);
         this.dialogRef.close();
       });

@@ -53,8 +53,8 @@ public class RobaController {
             final Authentication authentication
     ) {
 
-        final UniverzalniParametri univerzalniParametri = RobaStaticUtils.popuniIVratiGenerickeParametreZaServis(page, pageSize, sortBy, sortBy, proizvodjac, naStanju, sortBy, sortDirection, searchTerm);
-        final Partner ulogovaniPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+        final var univerzalniParametri = RobaStaticUtils.popuniIVratiGenerickeParametreZaServis(page, pageSize, sortBy, sortBy, proizvodjac, naStanju, sortBy, sortDirection, searchTerm);
+        final var ulogovaniPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
 
         final Page<RobaDto> roba = robaGlavniService.pronadjiRobuPoPretrazi(
                 univerzalniParametri, ulogovaniPartner
@@ -102,8 +102,8 @@ public class RobaController {
             final Authentication authentication
     ) {
 
-        final UniverzalniParametri univerzalniParametri = RobaStaticUtils.popuniIVratiGenerickeParametreZaServis(page, pageSize, sortBy, sortBy, proizvodjac, naStanju, sortBy, sortDirection, searchTerm);
-        final Partner ulogovaniPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+        final var univerzalniParametri = RobaStaticUtils.popuniIVratiGenerickeParametreZaServis(page, pageSize, sortBy, sortBy, proizvodjac, naStanju, sortBy, sortDirection, searchTerm);
+        final var ulogovaniPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
 
         final Page<RobaDto> roba = akumulatoriService.pronadjiSveAkumulatore(
                 univerzalniParametri, ulogovaniPartner
@@ -127,8 +127,8 @@ public class RobaController {
             @RequestParam(required = false) final String searchTerm,
             final Authentication authentication
     ) {
-        final UniverzalniParametri univerzalniParametri = RobaStaticUtils.popuniIVratiGenerickeParametreZaServis(page, pageSize, sortBy, sortBy, proizvodjac, naStanju, sortBy, sortDirection, searchTerm);
-        final Partner ulogovaniPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+        final var univerzalniParametri = RobaStaticUtils.popuniIVratiGenerickeParametreZaServis(page, pageSize, sortBy, sortBy, proizvodjac, naStanju, sortBy, sortDirection, searchTerm);
+        final var ulogovaniPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
 
         final Page<RobaDto> roba = uljaService.pronadjiSvaUlja(
                 univerzalniParametri, vrstaUlja, ulogovaniPartner

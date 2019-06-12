@@ -53,10 +53,8 @@ export class KontaktComponent implements OnInit {
       finalize(() => this.ucitavanje = false)
     ).subscribe(res => {
     }, error => {
-      console.log('Error pri slanju poruke', error);
       this.notifikacijaServis.notify('Poruka nije poslata, pokusajte kasnije.', MatSnackBarKlase.Crvena);
     });
-    console.log('Poruka uspesno poslat');
     this.notifikacijaServis.notify('Poruka uspešno poslatata', MatSnackBarKlase.Plava);
     this.porukaForm.reset();
     this.porukaSubmited = false;

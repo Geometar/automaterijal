@@ -121,7 +121,6 @@ export class PartnerComponent implements OnInit {
           this.notifikacijaServis.notify(poruka, MatSnackBarKlase.Zelena);
         },
         error => {
-          console.log('Updejtovanje partnera nije uspelo');
         });
   }
 
@@ -154,7 +153,6 @@ export class PartnerComponent implements OnInit {
           this.notifikacijaServis.notify(poruka, MatSnackBarKlase.Zelena);
         },
         error => {
-          console.log('Updejtovanje partnera nije uspelo');
         });
   }
 
@@ -171,7 +169,6 @@ export class PartnerComponent implements OnInit {
           this.notifikacijaServis.notify(poruka, MatSnackBarKlase.Zelena);
         },
         error => {
-          console.log('Updejtovanje partnera nije uspelo');
         });
   }
 

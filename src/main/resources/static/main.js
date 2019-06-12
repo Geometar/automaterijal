@@ -902,10 +902,8 @@ var KontaktComponent = /** @class */ (function () {
         this.emailServis.posaljiPoruku(poruka)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["catchError"])(function (error) { return Object(rxjs__WEBPACK_IMPORTED_MODULE_4__["throwError"])(error); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["finalize"])(function () { return _this.ucitavanje = false; })).subscribe(function (res) {
         }, function (error) {
-            console.log('Error pri slanju poruke', error);
             _this.notifikacijaServis.notify('Poruka nije poslata, pokusajte kasnije.', src_app_shared_model_konstante__WEBPACK_IMPORTED_MODULE_7__["MatSnackBarKlase"].Crvena);
         });
-        console.log('Poruka uspesno poslat');
         this.notifikacijaServis.notify('Poruka uspešno poslatata', src_app_shared_model_konstante__WEBPACK_IMPORTED_MODULE_7__["MatSnackBarKlase"].Plava);
         this.porukaForm.reset();
         this.porukaSubmited = false;
@@ -1251,7 +1249,6 @@ var FakturaDetaljiComponent = /** @class */ (function () {
                 _this.dataSource = _this.fakturaDetalji;
             }, function (error) {
                 _this.error = true;
-                console.log('Pronaci detalje fakture je bacilo gresku', error);
             });
         });
     };
@@ -1354,7 +1351,6 @@ var FakturaComponent = /** @class */ (function () {
             _this.tableLength = res.totalElements;
         }, function (error) {
             _this.error = true;
-            console.log('Pronaci fakture je bacilo gresku', error);
         });
     };
     FakturaComponent.prototype.paginatorEvent = function (pageEvent) {
@@ -1508,7 +1504,6 @@ var KorpaComponent = /** @class */ (function () {
                     _this.izabranNacinPrevoza = res[0];
                 }
             }, function (error) {
-                console.log('Podnaci informaciju je izbacilo gresku izbacilo je gresko');
             });
         });
     };
@@ -1523,7 +1518,6 @@ var KorpaComponent = /** @class */ (function () {
             data: roba
         });
         dialogRef.afterClosed().subscribe(function (result) {
-            console.log('The dialog was closed');
             if (result) {
                 _this.promeniKolicinuArtikla(result);
             }
@@ -1616,10 +1610,7 @@ var KorpaComponent = /** @class */ (function () {
                 _this.otvoriDialogNeuspesnoPorucivanje(res, _this.faktura);
             }
         }, function (error) {
-            console.log('Error = ', error);
         });
-        console.log('Kora za porudzbinu  ' + JSON.stringify(this.faktura));
-        console.log('Porucivanje je uspesno! :)');
     };
     KorpaComponent.prototype.korpaUFakturu = function () {
         var _this = this;
@@ -1923,7 +1914,6 @@ var AkumulatoriComponent = /** @class */ (function () {
             _this.tableLength = res.totalElements;
         }, function (error) {
             _this.roba = null;
-            console.log('Podnaci robu izbacilo je gresko');
         });
     };
     AkumulatoriComponent.prototype.pronadjiAkumulatorePoPretrazi = function (searchValue) {
@@ -1951,7 +1941,6 @@ var AkumulatoriComponent = /** @class */ (function () {
             _this.tableLength = res.totalElements;
         }, function (error) {
             _this.roba = null;
-            console.log('Podnaci robu izbacilo je gresko');
         });
     };
     AkumulatoriComponent.prototype.pronaciPoTrazenojReci = function (searchValue) {
@@ -2090,7 +2079,6 @@ var FilteriComponent = /** @class */ (function () {
             _this.tableLength = res.totalElements;
         }, function (error) {
             _this.roba = null;
-            console.log('Podnaci robu izbacilo je gresko', error);
         });
     };
     FilteriComponent.prototype.pronadjiFilterePoPretrazi = function (searchValue) {
@@ -2119,7 +2107,6 @@ var FilteriComponent = /** @class */ (function () {
             _this.tableLength = res.totalElements;
         }, function (error) {
             _this.roba = null;
-            console.log('Podnaci robu izbacilo je gresko');
         });
     };
     FilteriComponent.prototype.pronaciPoTrazenojReci = function (searchValue) {
@@ -2261,7 +2248,6 @@ var KategorijaSpecificnaComponent = /** @class */ (function () {
                 _this.tableLength = res.totalElements;
             }, function (error) {
                 _this.roba = null;
-                console.log('Podnaci robu izbacilo je gresko');
             });
         });
     };
@@ -2297,7 +2283,6 @@ var KategorijaSpecificnaComponent = /** @class */ (function () {
                 _this.tableLength = res.totalElements;
             }, function (error) {
                 _this.roba = null;
-                console.log('Podnaci robu izbacilo je gresko');
             });
         });
     };
@@ -2400,7 +2385,6 @@ var OstaloComponent = /** @class */ (function () {
             .subscribe(function (res) {
             _this.kategorije = res;
         }, function (error) {
-            console.log('Podnaci kategorije je izbacilo je gresko');
         });
     };
     OstaloComponent.prototype.vratiKategorijuNaSlovo = function (slovo) {
@@ -2525,7 +2509,6 @@ var RobaComponent = /** @class */ (function () {
             _this.tableLength = res.totalElements;
         }, function (error) {
             _this.roba = null;
-            console.log('Podnaci robu izbacilo je gresko');
         });
     };
     RobaComponent.prototype.pronaciPoTrazenojReci = function (searchValue) {
@@ -2559,7 +2542,6 @@ var RobaComponent = /** @class */ (function () {
             _this.tableLength = res.totalElements;
         }, function (error) {
             _this.roba = null;
-            console.log('Podnaci robu izbacilo je gresko');
         });
     };
     RobaComponent.prototype.paginatorEvent = function (pageEvent) {
@@ -2683,7 +2665,6 @@ var FilterComponent = /** @class */ (function () {
                 _this.filter.proizvodjac = _this.proizvodjaci[0].naziv;
             }, function (error) {
                 _this.proizvodjaci = null;
-                console.log('Pronaci svu robu je bacilo gresku', error);
             });
         }
         else if (this.vrstaRobe === src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_3__["VrstaRobe"].FILTERI) {
@@ -2694,7 +2675,6 @@ var FilterComponent = /** @class */ (function () {
                 _this.filter.proizvodjac = _this.proizvodjaci[0].naziv;
             }, function (error) {
                 _this.proizvodjaci = null;
-                console.log('Pronaci svu robu je bacilo gresku', error);
             });
         }
         else if (this.vrstaRobe === src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_3__["VrstaRobe"].SVE) {
@@ -2705,7 +2685,6 @@ var FilterComponent = /** @class */ (function () {
                 _this.filter.proizvodjac = _this.proizvodjaci[0].naziv;
             }, function (error) {
                 _this.proizvodjaci = null;
-                console.log('Pronaci svu robu je bacilo gresku', error);
             });
         }
         else if (this.vrstaRobe === src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_3__["VrstaRobe"].ULJA) {
@@ -2716,7 +2695,6 @@ var FilterComponent = /** @class */ (function () {
                 _this.filter.proizvodjac = _this.proizvodjaci[0].naziv;
             }, function (error) {
                 _this.proizvodjaci = null;
-                console.log('Pronaci svu robu je bacilo gresku', error);
             });
         }
         else if (this.vrstaRobe === src_app_e_shop_model_roba_enum__WEBPACK_IMPORTED_MODULE_3__["VrstaRobe"].OSTALO) {
@@ -2728,7 +2706,6 @@ var FilterComponent = /** @class */ (function () {
                     _this.filter.proizvodjac = _this.proizvodjaci[0].naziv;
                 }, function (error) {
                     _this.proizvodjaci = null;
-                    console.log('Pronaci svu robu je bacilo gresku', error);
                 });
             });
         }
@@ -3022,7 +2999,6 @@ var AntifrizComponent = /** @class */ (function () {
             _this.tableLength = res.totalElements;
         }, function (error) {
             _this.roba = null;
-            console.log('Podnaci robu izbacilo je gresko');
         });
     };
     AntifrizComponent.prototype.pronadjiEntitetePoPretrazi = function (searchValue) {
@@ -3051,7 +3027,6 @@ var AntifrizComponent = /** @class */ (function () {
             _this.tableLength = res.totalElements;
         }, function (error) {
             _this.roba = null;
-            console.log('Podnaci robu izbacilo je gresku: ' + error);
         });
     };
     AntifrizComponent.prototype.pronaciPoTrazenojReci = function (searchValue) {
@@ -3206,7 +3181,6 @@ var IndustrijskaComponent = /** @class */ (function () {
             _this.tableLength = res.totalElements;
         }, function (error) {
             _this.roba = null;
-            console.log('Podnaci robu izbacilo je gresko');
         });
     };
     IndustrijskaComponent.prototype.pronadjiEntitetePoPretrazi = function (searchValue) {
@@ -3234,7 +3208,6 @@ var IndustrijskaComponent = /** @class */ (function () {
             _this.tableLength = res.totalElements;
         }, function (error) {
             _this.roba = null;
-            console.log('Podnaci robu izbacilo je gresko');
         });
     };
     IndustrijskaComponent.prototype.pronaciPoTrazenojReci = function (searchValue) {
@@ -3384,7 +3357,6 @@ var KocionaComponent = /** @class */ (function () {
             _this.tableLength = res.totalElements;
         }, function (error) {
             _this.roba = null;
-            console.log('Podnaci robu izbacilo je gresko');
         });
     };
     KocionaComponent.prototype.pronadjiEntitetePoPretrazi = function (searchValue) {
@@ -3412,7 +3384,6 @@ var KocionaComponent = /** @class */ (function () {
             _this.tableLength = res.totalElements;
         }, function (error) {
             _this.roba = null;
-            console.log('Podnaci robu izbacilo je gresko');
         });
     };
     KocionaComponent.prototype.pronaciPoTrazenojReci = function (searchValue) {
@@ -3553,7 +3524,6 @@ var MenjackoComponent = /** @class */ (function () {
             _this.tableLength = res.totalElements;
         }, function (error) {
             _this.roba = null;
-            console.log('Podnaci robu izbacilo je gresko');
         });
     };
     MenjackoComponent.prototype.pronadjiEntitetePoPretrazi = function (searchValue) {
@@ -3582,7 +3552,6 @@ var MenjackoComponent = /** @class */ (function () {
             _this.tableLength = res.totalElements;
         }, function (error) {
             _this.roba = null;
-            console.log('Podnaci robu izbacilo je gresko');
         });
     };
     MenjackoComponent.prototype.pronaciPoTrazenojReci = function (searchValue) {
@@ -3723,7 +3692,6 @@ var MotornaComponent = /** @class */ (function () {
             _this.tableLength = res.totalElements;
         }, function (error) {
             _this.roba = null;
-            console.log('Podnaci robu izbacilo je gresko');
         });
     };
     MotornaComponent.prototype.pronadjiEntitetePoPretrazi = function (searchValue) {
@@ -3752,7 +3720,6 @@ var MotornaComponent = /** @class */ (function () {
             _this.tableLength = res.totalElements;
         }, function (error) {
             _this.roba = null;
-            console.log('Podnaci robu izbacilo je gresko');
         });
     };
     MotornaComponent.prototype.pronaciPoTrazenojReci = function (searchValue) {
@@ -4315,7 +4282,6 @@ var PartnerComponent = /** @class */ (function () {
             _this.partner = res;
             _this.notifikacijaServis.notify(poruka, src_app_shared_model_konstante__WEBPACK_IMPORTED_MODULE_7__["MatSnackBarKlase"].Zelena);
         }, function (error) {
-            console.log('Updejtovanje partnera nije uspelo');
         });
     };
     PartnerComponent.prototype.promeniSifru = function (staraSifra, novaSifra, novaSifra2) {
@@ -4342,7 +4308,6 @@ var PartnerComponent = /** @class */ (function () {
             _this.losaSifra = false;
             _this.notifikacijaServis.notify(poruka, src_app_shared_model_konstante__WEBPACK_IMPORTED_MODULE_7__["MatSnackBarKlase"].Zelena);
         }, function (error) {
-            console.log('Updejtovanje partnera nije uspelo');
         });
     };
     PartnerComponent.prototype.updejtPartnera = function (partner, poruka) {
@@ -4353,7 +4318,6 @@ var PartnerComponent = /** @class */ (function () {
             _this.partner = res;
             _this.notifikacijaServis.notify(poruka, src_app_shared_model_konstante__WEBPACK_IMPORTED_MODULE_7__["MatSnackBarKlase"].Zelena);
         }, function (error) {
-            console.log('Updejtovanje partnera nije uspelo');
         });
     };
     Object.defineProperty(PartnerComponent.prototype, "a", {
@@ -4507,7 +4471,6 @@ var ResetovanjeSfireComponent = /** @class */ (function () {
             _this.router.navigate(['/login']);
         }, function (error) {
             _this.uspesnaPromena = false;
-            console.log('Updejtovanje partnera nije uspelo');
         });
     };
     ResetovanjeSfireComponent.prototype.napraviDto = function () {
@@ -4890,7 +4853,6 @@ var LoginService = /** @class */ (function () {
         }, function (error) {
             _this.logovanjeSubjekat.next(false);
             _this.storageServis.logout();
-            console.log('Greska kod logovanja');
         });
     };
     LoginService.prototype.vratiUlogovanogKorisnika = function () {
@@ -4910,7 +4872,6 @@ var LoginService = /** @class */ (function () {
             _this.router.navigateByUrl('naslovna');
         }, function (error) {
             _this.logovanjeSubjekat.next(false);
-            console.log('Logovanje nije uspelo.');
         });
     };
     LoginService.prototype.logout = function () {
@@ -4927,7 +4888,6 @@ var LoginService = /** @class */ (function () {
             _this.router.navigateByUrl('naslovna');
         }, function (error) {
             _this.logovanjeSubjekat.next(false);
-            console.log('Greska kod logout-a');
         });
     };
     LoginService = __decorate([
@@ -5557,7 +5517,6 @@ var NavigacijaComponent = /** @class */ (function () {
             width: '400px'
         });
         dialogRef.afterClosed().subscribe(function (result) {
-            console.log('The dialog was closed');
         });
     };
     NavigacijaComponent = __decorate([
@@ -6017,7 +5976,6 @@ var NeuspesnoPorucivanjeModalComponent = /** @class */ (function () {
             });
         });
         this.dataSource = this.robaPromena;
-        console.log('Neuspesno porucivanje: ' + JSON.stringify(this.robaPromena));
     };
     NeuspesnoPorucivanjeModalComponent.prototype.zatvoriDialog = function () {
         this.dialogRef.close();
@@ -6131,13 +6089,11 @@ var PorukaModalComponent = /** @class */ (function () {
         this.ucitavanje = true;
         this.emailServis.posaljiPoruku(poruka)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["catchError"])(function (error) { return Object(rxjs__WEBPACK_IMPORTED_MODULE_4__["throwError"])(error); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["finalize"])(function () { return _this.ucitavanje = false; })).subscribe(function (res) {
-            console.log('Poruka uspesno poslat');
             _this.porukaPoslata = true;
             _this.porukaForm.reset();
             _this.porukaSubmited = false;
             _this.notifikacijaServis.notify('Poruka je uspešno poslata', _model_konstante__WEBPACK_IMPORTED_MODULE_8__["MatSnackBarKlase"].Zelena);
         }, function (error) {
-            console.log('Error pri slanju poruke', error);
             _this.notifikacijaServis.notify('Došlo je do greške, poruka nije poslata', _model_konstante__WEBPACK_IMPORTED_MODULE_8__["MatSnackBarKlase"].Crvena);
             _this.dialogRef.close();
         });
@@ -6289,9 +6245,7 @@ var RegistracijaModalComponent = /** @class */ (function () {
             }
         }
         this.emailService.posaljiMailZaRegistraciju(this.registracija).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["catchError"])(function (error) { return Object(rxjs__WEBPACK_IMPORTED_MODULE_4__["throwError"])(error); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["finalize"])(function () { return _this.ucitavanje = false; })).subscribe(function (res) {
-            console.log('Mail uspesno poslat');
         }, function (error) {
-            console.log('Error pri slanju registracionog maila', error);
         });
     };
     RegistracijaModalComponent.prototype.odrediFormu = function () {
@@ -6458,13 +6412,11 @@ var UpitModalComponent = /** @class */ (function () {
         this.ucitavanje = true;
         this.emailServis.posaljiUpit(upit)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["catchError"])(function (error) { return Object(rxjs__WEBPACK_IMPORTED_MODULE_6__["throwError"])(error); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["finalize"])(function () { return _this.ucitavanje = false; })).subscribe(function (res) {
-            console.log('Poruka uspesno poslat');
             _this.upitForm.reset();
             _this.upitSubmited = false;
             _this.porukaJePoslata = true;
             _this.notifikacijaServis.notify('Upit je uspešno poslat', _model_konstante__WEBPACK_IMPORTED_MODULE_8__["MatSnackBarKlase"].Plava);
         }, function (error) {
-            console.log('Error pri slanju poruke', error);
             _this.notifikacijaServis.notify('Došlo je do greške, upit nije poslat', _model_konstante__WEBPACK_IMPORTED_MODULE_8__["MatSnackBarKlase"].Crvena);
             _this.dialogRef.close();
         });
@@ -6682,9 +6634,7 @@ var ZaboravljenaSifraModalComponent = /** @class */ (function () {
             Object(rxjs__WEBPACK_IMPORTED_MODULE_4__["throwError"])(error);
         }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["finalize"])(function () { return _this.ucitavanje = false; })).subscribe(function (res) {
             _this.mailUspesnoPoslat = true;
-            console.log('Mail za resetovanje sifre uspesno poslat');
         }, function (error) {
-            console.log('Error pri slanju za resetovanje sifre', error);
         });
     };
     ZaboravljenaSifraModalComponent.prototype.zatvoriDialog = function () {

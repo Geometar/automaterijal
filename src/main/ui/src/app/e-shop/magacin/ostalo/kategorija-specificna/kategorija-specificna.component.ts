@@ -76,7 +76,6 @@ export class KategorijaSpecificnaComponent implements OnInit {
           },
           error => {
             this.roba = null;
-            console.log('Podnaci robu izbacilo je gresko');
           });
     });
   }
@@ -120,7 +119,6 @@ export class KategorijaSpecificnaComponent implements OnInit {
           },
           error => {
             this.roba = null;
-            console.log('Podnaci robu izbacilo je gresko');
           });
     });
   }

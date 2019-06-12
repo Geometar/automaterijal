@@ -43,7 +43,6 @@ export class FakturaDetaljiComponent implements OnInit {
         },
           error => {
             this.error = true;
-            console.log('Pronaci detalje fakture je bacilo gresku', error);
           });
     });
   }

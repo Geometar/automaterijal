@@ -75,7 +75,6 @@ export class ResetovanjeSfireComponent implements OnInit {
       },
       error => {
         this.uspesnaPromena = false;
-        console.log('Updejtovanje partnera nije uspelo');
       });
   }
 

@@ -59,6 +59,12 @@ public class FakturaController {
         if(partner == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
+
+        log.info("Porudzbenica podneta: korisnik {}, iznos narucen = {}, broj stavki = {}",
+                partner.getNaziv(),
+                fakturaDto.getIznosNarucen(),
+                fakturaDto.getBrojStavki());
+
         final var response = fakturaService.submitujFakturu(fakturaDto, partner);
         return ResponseEntity.ok(response);
     }
@@ -77,6 +83,7 @@ public class FakturaController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
+        log.info("Partner {} trazi fakturu pojedinacnu sa brojem {}", partner.getNaziv(), id);
         final FakturaDto fakture = fakturaService.vratiFakuturuPojedinacno(partner, id);
         if (fakture != null) {
             return ResponseEntity.ok(fakture);

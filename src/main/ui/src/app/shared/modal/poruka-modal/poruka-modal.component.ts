@@ -55,13 +55,11 @@ export class PorukaModalComponent implements OnInit {
         catchError((error: Response) => throwError(error)),
         finalize(() => this.ucitavanje = false)
       ).subscribe(res => {
-        console.log('Poruka uspesno poslat');
         this.porukaPoslata = true;
         this.porukaForm.reset();
         this.porukaSubmited = false;
         this.notifikacijaServis.notify('Poruka je uspešno poslata', MatSnackBarKlase.Zelena);
       }, error => {
-        console.log('Error pri slanju poruke', error);
         this.notifikacijaServis.notify('Došlo je do greške, poruka nije poslata', MatSnackBarKlase.Crvena);
         this.dialogRef.close();
       });

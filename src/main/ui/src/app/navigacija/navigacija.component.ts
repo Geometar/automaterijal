@@ -40,7 +40,6 @@ export class NavigacijaComponent implements OnInit {
       width: '400px'
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
     });
   }
 }

@@ -104,7 +104,6 @@ export class KorpaComponent implements OnInit {
             }
           },
           error => {
-            console.log('Podnaci informaciju je izbacilo gresku izbacilo je gresko');
           });
     });
 
@@ -121,7 +120,6 @@ export class KorpaComponent implements OnInit {
       data: roba
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
       if (result) {
         this.promeniKolicinuArtikla(result);
       }
@@ -219,11 +217,7 @@ export class KorpaComponent implements OnInit {
         }
       },
         error => {
-          console.log('Error = ', error);
         });
-
-    console.log('Kora za porudzbinu  ' + JSON.stringify(this.faktura));
-    console.log('Porucivanje je uspesno! :)');
   }
 
   korpaUFakturu() {

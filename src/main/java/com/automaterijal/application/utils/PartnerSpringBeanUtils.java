@@ -1,7 +1,6 @@
 package com.automaterijal.application.utils;
 
 import com.automaterijal.application.domain.entity.Partner;
-import com.automaterijal.application.domain.entity.Users;
 import com.automaterijal.application.domain.model.CurrentUser;
 import com.automaterijal.application.services.PartnerService;
 import lombok.AccessLevel;
@@ -26,17 +25,5 @@ public class PartnerSpringBeanUtils {
             retVal = partnerService.pronadjiPartneraPoId(ppid);
         }
         return retVal;
-    }
-
-    public CurrentUser mockujUsera() {
-        final Partner mockPartner = new Partner();
-        mockPartner.setPpid(933);
-        mockPartner.setWebKorisnik("radespasoje@gmail.com");
-        mockPartner.setPrivilegije(1);
-        mockPartner.setProcpc(20.0);
-        final Users users  = new Users();
-        users.setPassword("rade");
-        mockPartner.setUsers(users);
-        return new CurrentUser(mockPartner);
     }
 }

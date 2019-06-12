@@ -52,7 +52,6 @@ export class LoginService {
         error => {
           this.logovanjeSubjekat.next(false);
           this.storageServis.logout();
-          console.log('Greska kod logovanja');
         });
   }
 
@@ -76,7 +75,6 @@ export class LoginService {
       },
         error => {
           this.logovanjeSubjekat.next(false);
-          console.log('Logovanje nije uspelo.');
         });
   }
 
@@ -97,7 +95,6 @@ export class LoginService {
       },
         error => {
           this.logovanjeSubjekat.next(false);
-          console.log('Greska kod logout-a');
         });
   }
 }

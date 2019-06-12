@@ -28,7 +28,6 @@ export class OstaloComponent implements OnInit {
           this.kategorije = res;
         },
         error => {
-          console.log('Podnaci kategorije je izbacilo je gresko');
         });
   }
 

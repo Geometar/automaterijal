@@ -78,7 +78,6 @@ export class MotornaComponent implements OnInit {
         },
         error => {
           this.roba = null;
-          console.log('Podnaci robu izbacilo je gresko');
         });
   }
 
@@ -114,7 +113,6 @@ export class MotornaComponent implements OnInit {
         },
         error => {
           this.roba = null;
-          console.log('Podnaci robu izbacilo je gresko');
         });
   }
 

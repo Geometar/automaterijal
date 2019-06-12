@@ -30,3 +30,6 @@ spring:
 schedule:
   fakture:
     upadte: 600000
+
+logging:
+  file: arhiva/automaterijal

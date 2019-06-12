@@ -2,7 +2,6 @@ package com.automaterijal.application.controller;
 
 import com.automaterijal.application.domain.dto.PartnerDto;
 import com.automaterijal.application.domain.dto.ResetovanjeSifreDto;
-import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.services.PartnerService;
 import com.automaterijal.application.services.security.UserDetailsService;
 import com.automaterijal.application.services.security.UsersService;
@@ -41,8 +40,9 @@ public class PartnerController {
 
     @GetMapping
     public ResponseEntity<PartnerDto> vratiUlogovanogPartnera(final Authentication authentication) {
-        final PartnerDto dto = service.vratiUlogovanogKorisnika(authentication);
+        final var dto = service.vratiUlogovanogKorisnika(authentication);
         if(dto != null) {
+            log.info("Ulogovao se partner: {}", dto.getNaziv());
             usersService.logovanomUseruPovecajKolikoSePutaLogovao(dto.getPpid());
             return ResponseEntity.ok(dto);
         }
@@ -51,7 +51,7 @@ public class PartnerController {
 
     @PutMapping
     public ResponseEntity<PartnerDto> updejtujPartnera(@RequestBody final PartnerDto partnerDto, final Authentication authentication) {
-        final Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+        final var partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
         if(partner.getPpid().intValue() != partnerDto.getPpid().intValue()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
@@ -61,10 +61,11 @@ public class PartnerController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
         }
-        final PartnerDto response = partnerService.updejtPartnera(partnerDto, authentication);
+        final var response = partnerService.updejtPartnera(partnerDto, authentication);
         if(response == null) {
             return ResponseEntity.badRequest().build();
         }
+        log.info("Partner {} updejtovao svoj nalog", partner.getNaziv());
         return ResponseEntity.ok(response);
     }
 
@@ -74,8 +75,9 @@ public class PartnerController {
             return ResponseEntity.badRequest().build();
         }
 
-        final boolean uspesnaPromena = partnerService.promeniSifruPartnera(dto);
+        final var uspesnaPromena = partnerService.promeniSifruPartnera(dto);
         if(uspesnaPromena) {
+            log.info("Partner sa id {} je promenio sifru", dto.getPpid());
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.badRequest().build();

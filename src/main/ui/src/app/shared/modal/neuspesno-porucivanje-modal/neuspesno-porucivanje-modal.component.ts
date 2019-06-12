@@ -40,7 +40,6 @@ export class NeuspesnoPorucivanjeModalComponent implements OnInit {
       });
     });
     this.dataSource = this.robaPromena;
-    console.log('Neuspesno porucivanje: ' + JSON.stringify(this.robaPromena));
   }
 
   zatvoriDialog() {

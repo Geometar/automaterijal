@@ -61,9 +61,7 @@ export class ZaboravljenaSifraModalComponent implements OnInit {
       finalize(() => this.ucitavanje = false)
     ).subscribe(res => {
       this.mailUspesnoPoslat = true;
-      console.log('Mail za resetovanje sifre uspesno poslat');
     }, error => {
-      console.log('Error pri slanju za resetovanje sifre', error);
     });
   }
 

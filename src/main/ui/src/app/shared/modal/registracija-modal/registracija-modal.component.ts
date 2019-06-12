@@ -77,9 +77,7 @@ export class RegistracijaModalComponent implements OnInit {
       catchError((error: Response) => throwError(error)),
       finalize(() => this.ucitavanje = false)
     ).subscribe(res => {
-      console.log('Mail uspesno poslat');
     }, error => {
-      console.log('Error pri slanju registracionog maila', error);
     });
   }
 

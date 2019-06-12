@@ -7,17 +7,17 @@ import com.automaterijal.application.services.PartnerService;
 import com.automaterijal.application.services.email.EmailService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.math.RoundingMode;
 import java.sql.Timestamp;
-import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class FakturaSchedulerService {
 
     @NonNull
@@ -40,6 +40,7 @@ public class FakturaSchedulerService {
               nedostajeRoba = proveriDaLiJeSvaRobaPotvrdjena(faktura);
             }
             if (nedostajeRoba) {
+                log.info("Parnteru {} potvrdjen manjak porucene robe na porudzbenici {}", faktura.getPpid(), faktura.getId());
                 posaljiMail(faktura);
             }
         });
