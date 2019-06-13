@@ -7,7 +7,6 @@ import { Partner } from '../e-shop/model/dto';
 import { LoginService } from '../e-shop/service/login.service';
 import { DataService } from '../e-shop/service/data/data.service';
 import { LogoutModalComponent } from '../shared/modal/logout-modal/logout-modal.component';
-
 @Component({
   selector: 'app-navigacija',
   templateUrl: './navigacija.component.html',
@@ -17,6 +16,7 @@ export class NavigacijaComponent implements OnInit {
 
   public korpaBadge = 0;
   public partner: Partner;
+  public partnerUlogovan = false;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -32,6 +32,7 @@ export class NavigacijaComponent implements OnInit {
 
   ngOnInit() {
     this.korpaServis.trenutnaKorpa.subscribe(korpa => this.korpaBadge = korpa.roba.length);
+    this.loginServis.daLiJePartnerUlogovan.subscribe(bool => this.partnerUlogovan = bool);
     this.loginServis.ulogovaniPartner.subscribe(partner => this.partner = partner);
   }
 
@@ -39,7 +40,7 @@ export class NavigacijaComponent implements OnInit {
     const dialogRef = this.dialog.open(LogoutModalComponent, {
       width: '400px'
     });
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(() => {
     });
   }
 }

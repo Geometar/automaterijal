@@ -1,11 +1,12 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Roba, Partner } from 'src/app/e-shop/model/dto';
+import { Roba } from 'src/app/e-shop/model/dto';
 import { LoginService } from 'src/app/e-shop/service/login.service';
 import { AppUtilsService } from 'src/app/e-shop/utils/app-utils.service';
 import { NotifikacijaService } from 'src/app/shared/service/notifikacija.service';
 import { MatSnackBarKlase } from 'src/app/shared/model/konstante';
 import { DataService } from 'src/app/e-shop/service/data/data.service';
 import { Korpa } from 'src/app/e-shop/model/porudzbenica';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tabela',
@@ -23,7 +24,7 @@ export class TabelaComponent implements OnInit {
   @Input() tableLength;
   @Output() magacinEvent = new EventEmitter<any>();
 
-  public partner: Partner;
+  public partnerLogovan = false;
   private korpa: Korpa;
 
   // Tabela
@@ -43,12 +44,13 @@ export class TabelaComponent implements OnInit {
     private utilsService: AppUtilsService,
     private loginServis: LoginService,
     private notifikacijaServis: NotifikacijaService,
-    private dataService: DataService
+    private dataService: DataService,
+    private router: Router
   ) { }
 
   ngOnInit() {
     this.dataService.trenutnaKorpa.subscribe(korpa => this.korpa = korpa);
-    this.loginServis.ulogovaniPartner.subscribe(partner => this.partner = partner);
+    this.loginServis.daLiJePartnerUlogovan.subscribe(bool => this.partnerLogovan = bool);
   }
 
   paginatorEvent(pageEvent) {
@@ -56,17 +58,23 @@ export class TabelaComponent implements OnInit {
   }
 
   getDisplayedColumns(): string[] {
-    const isPartner = this.partner.ppid != null;
     const dataColumns = this.columnDefinitions
-      .filter(cd => isPartner || cd.ifNotAuth)
+      .filter(cd => this.partnerLogovan || cd.ifNotAuth)
       .map(cd => cd.def);
     return dataColumns;
   }
 
   dodajUKorpu(roba: Roba) {
-    const snackBarPoruka = this.utilsService.dodajUKorpu(roba);
-    this.notifikacijaServis.notify(snackBarPoruka, MatSnackBarKlase.Zelena);
-    this.utilsService.izbrisiRobuSaStanja(this.roba, roba);
+    this.loginServis.vratiUlogovanogKorisnika(false).subscribe(partner => {
+      if (partner) {
+        const snackBarPoruka = this.utilsService.dodajUKorpu(roba);
+        this.notifikacijaServis.notify(snackBarPoruka, MatSnackBarKlase.Zelena);
+        this.utilsService.izbrisiRobuSaStanja(this.roba, roba);
+      } else {
+        this.router.navigate(['/login']);
+        this.loginServis.izbaciPartnerIzSesije();
+      }
+    });
   }
 
   uKorpi(katBr: string): boolean {

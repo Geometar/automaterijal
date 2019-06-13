@@ -31,23 +31,31 @@ export class FakturaComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
-    this.loginServis.ulogovaniPartner.subscribe(partner => this.partner = partner);
-    this.vratiFaktureKorisnika();
+    this.loginServis.vratiUlogovanogKorisnika(false)
+      .subscribe((res: Partner) => {
+        if (res !== null) {
+          this.partner = res;
+          this.vratiFaktureKorisnika();
+        } else {
+          this.router.navigate(['/login']);
+          this.loginServis.izbaciPartnerIzSesije();
+        }
+      });
   }
 
   vratiFaktureKorisnika() {
     this.fakturaService.vratiFaktureKorisnika(this.pageIndex, this.rowsPerPage, this.partner.ppid)
-    .subscribe((res: FakturaPage) => {
-      this.error = false;
-      this.fakure = res.content;
-      this.dataSource = this.fakure;
-      this.rowsPerPage = res.size;
-      this.pageIndex = res.number;
-      this.tableLength = res.totalElements;
-    },
-      error => {
-        this.error = true;
-      });
+      .subscribe((res: FakturaPage) => {
+        this.error = false;
+        this.fakure = res.content;
+        this.dataSource = this.fakure;
+        this.rowsPerPage = res.size;
+        this.pageIndex = res.number;
+        this.tableLength = res.totalElements;
+      },
+        error => {
+          this.error = true;
+        });
   }
 
   paginatorEvent(pageEvent) {

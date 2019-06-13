@@ -39,30 +39,32 @@ public class PartnerController {
     final PartnerSpringBeanUtils partnerSpringBeanUtils;
 
     @GetMapping
-    public ResponseEntity<PartnerDto> vratiUlogovanogPartnera(final Authentication authentication) {
+    public ResponseEntity<PartnerDto> vratiUlogovanogPartnera(
+            final Authentication authentication,
+            @RequestParam final boolean prviRequest) {
+
         final var dto = service.vratiUlogovanogKorisnika(authentication);
-        if(dto != null) {
+        if (dto != null && prviRequest) {
             log.info("Ulogovao se partner: {}", dto.getNaziv());
             usersService.logovanomUseruPovecajKolikoSePutaLogovao(dto.getPpid());
-            return ResponseEntity.ok(dto);
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(dto);
     }
 
     @PutMapping
     public ResponseEntity<PartnerDto> updejtujPartnera(@RequestBody final PartnerDto partnerDto, final Authentication authentication) {
         final var partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
-        if(partner.getPpid().intValue() != partnerDto.getPpid().intValue()) {
+        if (partner.getPpid().intValue() != partnerDto.getPpid().intValue()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        if(partnerDto.getWebKorisnik() != null
+        if (partnerDto.getWebKorisnik() != null
                 && !partnerDto.getWebKorisnik().equals(partner.getWebKorisnik())
                 && partnerService.daLiPostojiVecZauzetaRegistracije(partnerDto)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
         }
         final var response = partnerService.updejtPartnera(partnerDto, authentication);
-        if(response == null) {
+        if (response == null) {
             return ResponseEntity.badRequest().build();
         }
         log.info("Partner {} updejtovao svoj nalog", partner.getNaziv());
@@ -76,7 +78,7 @@ public class PartnerController {
         }
 
         final var uspesnaPromena = partnerService.promeniSifruPartnera(dto);
-        if(uspesnaPromena) {
+        if (uspesnaPromena) {
             log.info("Partner sa id {} je promenio sifru", dto.getPpid());
             return ResponseEntity.ok().build();
         } else {

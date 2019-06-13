@@ -44,7 +44,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/static/**", "/").permitAll()
                 .antMatchers(
                         "/api/roba/**", "/api/proizvodjaci/**", "/api/kategorije", "/api/kategorije/**", "/api/email/**",
-                        "/api/partner/promena-sifre").permitAll()
+                        "/api/partner/promena-sifre", "/api/partner").permitAll()
                 .antMatchers("/naslovna","/o-nama","/kontakt","/roba","/filteri","/ulja","/akumulatori","/ostalo","/ostalo/**").permitAll()
                 .antMatchers("/login","/reset-sifre/**").permitAll()
                 .antMatchers("/resources/**").permitAll()

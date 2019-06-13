@@ -28,6 +28,7 @@ public class FakturaController {
 
     @NonNull
     final FakturaService fakturaService;
+    
     @NonNull
     final PartnerSpringBeanUtils partnerSpringBeanUtils;
 

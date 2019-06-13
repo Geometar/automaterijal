@@ -7,6 +7,7 @@ import { throwError, EMPTY } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NotifikacijaService } from 'src/app/shared/service/notifikacija.service';
 import { MatSnackBarKlase } from 'src/app/shared/model/konstante';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-partner',
@@ -38,14 +39,21 @@ export class PartnerComponent implements OnInit {
     private loginServis: LoginService,
     private partnerServis: PartnerService,
     private formBuilder: FormBuilder,
-    private notifikacijaServis: NotifikacijaService) { }
+    private notifikacijaServis: NotifikacijaService,
+    private router: Router) { }
 
   ngOnInit() {
-    this.loginServis.ulogovaniPartner.subscribe(partner => this.partner = partner);
-    if (this.partner) {
-      this.daLiDuguje = this.partner.stanje < 0;
-    }
-    this.inicijalizujSveRegistracioneForme();
+    this.loginServis.vratiUlogovanogKorisnika(false)
+      .subscribe((res: Partner) => {
+        if (res !== null) {
+          this.partner = res;
+          this.daLiDuguje = this.partner.stanje < 0;
+          this.inicijalizujSveRegistracioneForme();
+        } else {
+          this.router.navigate(['/login']);
+          this.loginServis.izbaciPartnerIzSesije();
+        }
+      });
   }
 
   inicijalizujSveRegistracioneForme() {

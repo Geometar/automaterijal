@@ -23,7 +23,7 @@ export class FakturaDetaljiComponent implements OnInit {
   public pageIndex = 0;
 
   public displayedColumns: string[] = ['robaId', 'proizvodjac', 'kolicina', 'potvrdjenaKolicina'
-  , 'rabat', 'cena', 'status'];
+    , 'rabat', 'cena', 'status'];
 
   constructor(
     private loginServis: LoginService,
@@ -32,7 +32,20 @@ export class FakturaDetaljiComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
-    this.loginServis.ulogovaniPartner.subscribe(partner => this.partner = partner);
+    this.loginServis.vratiUlogovanogKorisnika(false)
+      .subscribe((res: Partner) => {
+        if (res !== null) {
+          this.partner = res;
+          this.vratiFakturu();
+        } else {
+          this.router.navigate(['/login']);
+          this.loginServis.izbaciPartnerIzSesije();
+        }
+      });
+      this.loginServis.ulogovaniPartner.subscribe(partner => this.partner = partner);
+  }
+
+  vratiFakturu() {
     this.route.params.subscribe((params: Params) => {
       this.fakturaServis.vratiFakturuPojedinacno(params.id, this.partner.ppid)
         .subscribe((res: Fakutra) => {

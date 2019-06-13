@@ -2,7 +2,7 @@
   <mat-sidenav #drawer class="sidenav pozadina-glavna-50" fixedInViewport="true"
     [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
     [opened]="!(isHandset$ | async)">
-    <mat-toolbar *ngIf="partner.ppid" class="side-toolbar pozadina-glavna-50 header-pozicija">
+    <mat-toolbar *ngIf="partnerUlogovan" class="side-toolbar pozadina-glavna-50 header-pozicija">
       <div class="d-flex flex-column justify-content-center">
         <div class="d-flex justify-content-center header-sirina">
           <mat-icon class="boja-siva-300">person</mat-icon>
@@ -10,8 +10,8 @@
         <div><p class="text-center header-navigacija">{{partner.naziv}}</p></div>
       </div>
     </mat-toolbar>
-    <mat-nav-list [class.margin-gore]="partner.ppid">
-      <mat-divider *ngIf="partner.ppid" class="pozadina-siva-300"></mat-divider>
+    <mat-nav-list [class.margin-gore]="partnerUlogovan">
+      <mat-divider *ngIf="partnerUlogovan" class="pozadina-siva-300"></mat-divider>
       <mat-list-item class="material-icons" [routerLink]="['naslovna']" [routerLinkActive]="['pozadina-glavna-200']">
         <mat-icon class="boja-siva-300" mat-list-icon>home</mat-icon>
         <p mat-line>Naslovna</p>
@@ -32,7 +32,7 @@
     <mat-nav-list>
       <h3 class="pozadina-glavna-50 boja-siva-300" mat-subheader>Internet prodavnica</h3>
 
-      <mat-list-item class="material-icons" *ngIf="partner.ppid" [routerLink]="['korpa']"
+      <mat-list-item class="material-icons" *ngIf="partnerUlogovan" [routerLink]="['korpa']"
         [routerLinkActive]="['pozadina-glavna-200']">
         <mat-icon matBadgeColor="warn" class="boja-siva-300" matBadge="{{korpaBadge}}" mat-list-icon>shopping_cart
         </mat-icon>
@@ -68,7 +68,7 @@
     </mat-nav-list>
 
     <mat-divider></mat-divider>
-    <mat-nav-list *ngIf="partner.ppid">
+    <mat-nav-list *ngIf="partnerUlogovan">
       <h3 class="pozadina-glavna-50 boja-siva-300" mat-subheader>Moj Profil</h3>
       <mat-list-item class="material-icons" [routerLink]="['licni-podaci']"
         [routerLinkActive]="['pozadina-glavna-200']">
@@ -83,12 +83,12 @@
     </mat-nav-list>
     <mat-divider></mat-divider>
     <mat-nav-list>
-      <mat-list-item *ngIf="partner.ppid == null" class="material-icons" [routerLink]="['login']"
+      <mat-list-item *ngIf="partnerUlogovan === false" class="material-icons" [routerLink]="['login']"
         [routerLinkActive]="['pozadina-glavna-200']">
         <mat-icon class="boja-siva-300" mat-list-icon>exit_to_app</mat-icon>
         <p mat-line>Login</p>
       </mat-list-item>
-      <mat-list-item *ngIf="partner.ppid" class="material-icons" (click)="otvoriDialog()">
+      <mat-list-item *ngIf="partnerUlogovan" class="material-icons" (click)="otvoriDialog()">
         <mat-icon class="boja-siva-300" mat-list-icon>power_settings_new</mat-icon>
         <p mat-line>Logout</p>
       </mat-list-item>

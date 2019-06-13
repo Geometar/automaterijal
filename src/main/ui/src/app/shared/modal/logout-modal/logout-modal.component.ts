@@ -16,6 +16,13 @@ export class LogoutModalComponent implements OnInit {
     private loginServis: LoginService) {}
 
   ngOnInit() {
+    this.loginServis.vratiUlogovanogKorisnika(false).subscribe(partner => {
+      if (partner === null) {
+        this.dialogRef.close();
+        this.router.navigateByUrl('naslovna');
+        this.loginServis.izbaciPartnerIzSesije();
+      }
+    });
   }
 
   logout() {

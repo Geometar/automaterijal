@@ -5,6 +5,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { RegistracijaModalComponent } from 'src/app/shared/modal/registracija-modal/registracija-modal.component';
 import { ZaboravljenaSifraModalComponent } from 'src/app/shared/modal/zaboravljena-sifra-modal/zaboravljena-sifra-modal.component';
+import { Router } from '@angular/router';
+import { LocalStorageService } from '../service/data/local-storage.service';
 
 @Component({
   selector: 'app-login',
@@ -22,6 +24,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private loginServis: LoginService,
     private formBuilder: FormBuilder,
+    public dataService: LocalStorageService,
+    public router: Router,
     public dialog: MatDialog) { }
 
   ngOnInit() {
@@ -29,6 +33,7 @@ export class LoginComponent implements OnInit {
       username: ['', [Validators.required, Validators.minLength(3)]],
       password: ['', [Validators.required, Validators.minLength(3)]]
     });
+    this.uspesnoLogovanje = true;
   }
 
   // convenience getter for easy access to form fields
@@ -38,21 +43,39 @@ export class LoginComponent implements OnInit {
     this.submitted = true;
     // stop here if form is invalid
     if (this.registerForm.invalid) {
-        return;
+      return;
     }
-    this.loginServis.ulogujSe(this.credentials);
-    this.loginServis.ulogovaniPartner.subscribe(partner => this.partner = partner);
-    this.loginServis.daLiJeLogovanjeUspesno.subscribe(b => this.uspesnoLogovanje = b);
+    this.loginServis.ulogujSe(this.credentials).subscribe(() => {
+      this.vratiKorisnika();
+    });
+  }
+
+  vratiKorisnika() {
+    this.dataService.ocistiKorpuIzMemorije();
+    this.loginServis.vratiUlogovanogKorisnika(true)
+      .subscribe((res: Partner) => {
+        if (res !== null) {
+          this.partner = res;
+          this.uspesnoLogovanje = true;
+          this.loginServis.setDaLiJeUserLogovan(true);
+          this.loginServis.setUlogovanogPartner(this.partner);
+          this.router.navigateByUrl('naslovna');
+        } else {
+          this.uspesnoLogovanje = false;
+          this.loginServis.setDaLiJeUserLogovan(false);
+          this.loginServis.logout();
+        }
+      });
   }
 
   otvoriResgracijaDialog() {
-    const dialogRef = this.dialog.open(RegistracijaModalComponent, {
+    this.dialog.open(RegistracijaModalComponent, {
       width: '400px'
     });
   }
 
   otvoriZaboravljenuSifruDialog() {
-    const dialogRef = this.dialog.open(ZaboravljenaSifraModalComponent, {
+    this.dialog.open(ZaboravljenaSifraModalComponent, {
       width: '400px'
     });
   }

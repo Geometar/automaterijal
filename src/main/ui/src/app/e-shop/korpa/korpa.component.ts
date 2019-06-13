@@ -62,7 +62,19 @@ export class KorpaComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
-    this.loginServis.ulogovaniPartner.subscribe(partner => this.partner = partner);
+    this.loginServis.vratiUlogovanogKorisnika(false)
+      .subscribe((res: Partner) => {
+        if (res !== null) {
+          this.partner = res;
+          this.inicijalizujKorup();
+        } else {
+          this.router.navigate(['/login']);
+          this.loginServis.izbaciPartnerIzSesije();
+        }
+      });
+  }
+
+  inicijalizujKorup() {
     this.vratiOpsteInformacije();
     this.dataService.trenutnaKorpa.subscribe(korpa => {
       this.korpa = korpa;
@@ -202,22 +214,30 @@ export class KorpaComponent implements OnInit {
     this.korpa.nacinPlacanja = this.izabranNacinPlacanja.id;
     this.popuniNapomenu();
     this.korpaUFakturu();
+    this.loginServis.vratiUlogovanogKorisnika(false).subscribe(partner => {
+      if (partner) {
+        this.submitujFakturu();
+      } else {
+        this.router.navigate(['/login']);
+        this.loginServis.izbaciPartnerIzSesije();
+      }
+    });
+  }
+
+  submitujFakturu() {
     this.fakturaServis.submitujFakturu(this.faktura).pipe(
       takeWhile(() => this.alive),
       catchError((error: Response) => throwError(error)),
-      finalize(() => this.ucitavanje = false)
-    )
+      finalize(() => this.ucitavanje = false))
       .subscribe((res: Roba[]) => {
-        if (res.length === 0) {
-          this.otvoriDialogUspesnoPorucivanje();
-          this.dataService.ocistiKorpu();
-          this.router.navigate(['/naslovna']);
-        } else {
-          this.otvoriDialogNeuspesnoPorucivanje(res, this.faktura);
-        }
-      },
-        error => {
-        });
+      if (res.length === 0) {
+        this.otvoriDialogUspesnoPorucivanje();
+        this.dataService.ocistiKorpu();
+        this.router.navigate(['/naslovna']);
+      } else {
+        this.otvoriDialogNeuspesnoPorucivanje(res, this.faktura);
+      }
+    });
   }
 
   korpaUFakturu() {

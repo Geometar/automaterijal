@@ -1,5 +1,9 @@
 server:
   port: ${PORT:8080}
+  servlet:
+    session:
+      timeout: 5
+
 spring:
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration
