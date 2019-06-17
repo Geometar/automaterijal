@@ -2,6 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { LOCAL_STORAGE, StorageService } from 'angular-webstorage-service';
 import { Korpa, RobaKorpa } from '../../model/porudzbenica';
 import { Partner } from '../../model/dto';
+import * as _ from 'lodash';
 
 const KORPA_KLJUC = 'korpa_roba';
 const PARTNER_KLJUC = 'partner_kljuc';
@@ -13,9 +14,11 @@ export class LocalStorageService {
 
   constructor(@Inject(LOCAL_STORAGE) private storage: StorageService) { }
 
-  public sacuvajPartneraUMemoriju(partner: Partner ) {
-    if (partner != null && partner.ppid != null) {
-    this.storage.set(PARTNER_KLJUC, partner);
+  public sacuvajPartneraUMemoriju(partner: Partner) {
+    const partnerCopy = _.cloneDeep(partner);
+    if (partnerCopy != null && partnerCopy.ppid != null) {
+      partnerCopy.loginCount = null;
+      this.storage.set(PARTNER_KLJUC, partnerCopy);
     }
   }
 
@@ -46,17 +49,17 @@ export class LocalStorageService {
   }
 
   private ubaciRobuUMemoriju(trenutnaKorpa: Korpa, robaKorpa: RobaKorpa) {
-      let daLiPostojiVecUMemoriji = false;
-      trenutnaKorpa.roba.forEach(storage => {
-        if (storage.katbr === robaKorpa.katbr) {
-          storage.kolicina = storage.kolicina + robaKorpa.kolicina;
-          storage.cenaUkupno = storage.kolicina * robaKorpa.cenaKom;
-          daLiPostojiVecUMemoriji = true;
-        }
-      });
-      if (daLiPostojiVecUMemoriji === false) {
-        trenutnaKorpa.roba.push(robaKorpa);
+    let daLiPostojiVecUMemoriji = false;
+    trenutnaKorpa.roba.forEach(storage => {
+      if (storage.katbr === robaKorpa.katbr) {
+        storage.kolicina = storage.kolicina + robaKorpa.kolicina;
+        storage.cenaUkupno = storage.kolicina * robaKorpa.cenaKom;
+        daLiPostojiVecUMemoriji = true;
       }
+    });
+    if (daLiPostojiVecUMemoriji === false) {
+      trenutnaKorpa.roba.push(robaKorpa);
+    }
   }
 
   public izbaciIzMemorije(index: number) {

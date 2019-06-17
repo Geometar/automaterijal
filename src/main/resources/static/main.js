@@ -232,12 +232,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _e_shop_magacin_shared_components_tabela_tabela_component__WEBPACK_IMPORTED_MODULE_49__ = __webpack_require__(/*! ./e-shop/magacin/shared-components/tabela/tabela.component */ "./src/app/e-shop/magacin/shared-components/tabela/tabela.component.ts");
 /* harmony import */ var _shared_modal_neuspesno_porucivanje_modal_neuspesno_porucivanje_modal_component__WEBPACK_IMPORTED_MODULE_50__ = __webpack_require__(/*! ./shared/modal/neuspesno-porucivanje-modal/neuspesno-porucivanje-modal.component */ "./src/app/shared/modal/neuspesno-porucivanje-modal/neuspesno-porucivanje-modal.component.ts");
 /* harmony import */ var _shared_modal_sesija_istekla_modal_sesija_istekla_modal_component__WEBPACK_IMPORTED_MODULE_51__ = __webpack_require__(/*! ./shared/modal/sesija-istekla-modal/sesija-istekla-modal.component */ "./src/app/shared/modal/sesija-istekla-modal/sesija-istekla-modal.component.ts");
+/* harmony import */ var _shared_modal_prvo_logovanje_modal_prvo_logovanje_modal_component__WEBPACK_IMPORTED_MODULE_52__ = __webpack_require__(/*! ./shared/modal/prvo-logovanje-modal/prvo-logovanje-modal.component */ "./src/app/shared/modal/prvo-logovanje-modal/prvo-logovanje-modal.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -336,7 +338,8 @@ var AppModule = /** @class */ (function () {
                 _e_shop_magacin_shared_components_filter_filter_component__WEBPACK_IMPORTED_MODULE_48__["FilterComponent"],
                 _e_shop_magacin_shared_components_tabela_tabela_component__WEBPACK_IMPORTED_MODULE_49__["TabelaComponent"],
                 _shared_modal_neuspesno_porucivanje_modal_neuspesno_porucivanje_modal_component__WEBPACK_IMPORTED_MODULE_50__["NeuspesnoPorucivanjeModalComponent"],
-                _shared_modal_sesija_istekla_modal_sesija_istekla_modal_component__WEBPACK_IMPORTED_MODULE_51__["SesijaIsteklaModalComponent"]
+                _shared_modal_sesija_istekla_modal_sesija_istekla_modal_component__WEBPACK_IMPORTED_MODULE_51__["SesijaIsteklaModalComponent"],
+                _shared_modal_prvo_logovanje_modal_prvo_logovanje_modal_component__WEBPACK_IMPORTED_MODULE_52__["PrvoLogovanjeModalComponent"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
@@ -363,7 +366,8 @@ var AppModule = /** @class */ (function () {
                 _shared_modal_poruka_modal_poruka_modal_component__WEBPACK_IMPORTED_MODULE_39__["PorukaModalComponent"],
                 _shared_modal_brendovi_modal_brendovi_modal_component__WEBPACK_IMPORTED_MODULE_42__["BrendoviModalComponent"],
                 _shared_modal_upit_modal_upit_modal_component__WEBPACK_IMPORTED_MODULE_47__["UpitModalComponent"],
-                _shared_modal_sesija_istekla_modal_sesija_istekla_modal_component__WEBPACK_IMPORTED_MODULE_51__["SesijaIsteklaModalComponent"]
+                _shared_modal_sesija_istekla_modal_sesija_istekla_modal_component__WEBPACK_IMPORTED_MODULE_51__["SesijaIsteklaModalComponent"],
+                _shared_modal_prvo_logovanje_modal_prvo_logovanje_modal_component__WEBPACK_IMPORTED_MODULE_52__["PrvoLogovanjeModalComponent"]
             ]
         })
     ], AppModule);
@@ -1790,6 +1794,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var src_app_shared_modal_zaboravljena_sifra_modal_zaboravljena_sifra_modal_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/shared/modal/zaboravljena-sifra-modal/zaboravljena-sifra-modal.component */ "./src/app/shared/modal/zaboravljena-sifra-modal/zaboravljena-sifra-modal.component.ts");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 /* harmony import */ var _service_data_local_storage_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../service/data/local-storage.service */ "./src/app/e-shop/service/data/local-storage.service.ts");
+/* harmony import */ var src_app_shared_modal_prvo_logovanje_modal_prvo_logovanje_modal_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/shared/modal/prvo-logovanje-modal/prvo-logovanje-modal.component */ "./src/app/shared/modal/prvo-logovanje-modal/prvo-logovanje-modal.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1799,6 +1804,7 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -1852,6 +1858,13 @@ var LoginComponent = /** @class */ (function () {
                 _this.uspesnoLogovanje = true;
                 _this.loginServis.setDaLiJeUserLogovan(true);
                 _this.loginServis.setUlogovanogPartner(_this.partner);
+                if (_this.partner.loginCount === 0) {
+                    _this.dialog.open(src_app_shared_modal_prvo_logovanje_modal_prvo_logovanje_modal_component__WEBPACK_IMPORTED_MODULE_8__["PrvoLogovanjeModalComponent"], {
+                        width: '600px',
+                        data: _this.partner,
+                        disableClose: true
+                    });
+                }
                 _this.router.navigateByUrl('naslovna');
             }
             else {
@@ -4234,7 +4247,7 @@ var VrstaRobe;
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container-fluid\">\r\n  <main class=\"licni-podaci\">\r\n    <div class=\"d-flex flex-column  flex-xl-row\">\r\n      <div class=\"strana\">\r\n        <div class=\"header2\">\r\n          <h1>Licni podaci</h1>\r\n        </div>\r\n        <ul>\r\n          <li>\r\n            <span class=\"leva-strana\">\r\n              Naziv:\r\n            </span> <span class=\"desna-strana\"> {{partner.naziv}} </span>\r\n          </li>\r\n          <li><span class=\"leva-strana\">Adresa:</span> {{partner.adresa}}</li>\r\n          <li><span class=\"leva-strana\">Email:</span> {{partner.email | lowercase}}</li>\r\n          <li><span class=\"leva-strana\">Stanje:</span> <span [ngClass]=\"{'dugovanje': daLiDuguje}\"><b>{{partner.stanje\r\n                | currency:\" \"}} RSD</b></span></li>\r\n        </ul>\r\n      </div>\r\n      <div class=\"strana2\">\r\n        <div class=\"header2\">\r\n          <h1>Akcije</h1>\r\n        </div>\r\n        <mat-accordion>\r\n          <mat-expansion-panel class=\"exp-panel\">\r\n            <mat-expansion-panel-header>\r\n              <mat-panel-title>\r\n                <p class=\"panel\">Promenite adresu</p>\r\n              </mat-panel-title>\r\n            </mat-expansion-panel-header>\r\n            <form role=\"form\" [formGroup]=\"adresaForm\">\r\n              <div>\r\n                <mat-form-field>\r\n                  <input type=\"text\" #ulica formControlName=\"ulica\" [ngClass]=\"{ 'is-invalid': adresaSubmited && a.ulica.errors }\"\r\n                    matInput placeholder=\"Ulica i broj\">\r\n                </mat-form-field>\r\n              </div>\r\n              <div *ngIf=\"adresaSubmited && a.ulica.errors\">\r\n                <div *ngIf=\"a.ulica.errors.required\">\r\n                    <p class=\"upozorenje\">Naziv ulice je obavezan</p>\r\n                </div>\r\n                <div *ngIf=\"a.ulica.errors.minlength\">\r\n                    <p class=\"upozorenje\">Naziv ulice mora imati minimalno 3 karaktera</p>\r\n                </div>\r\n              </div>\r\n              <div>\r\n                <mat-form-field>\r\n                  <input type=\"text\" #grad formControlName=\"grad\" matInput [ngClass]=\"{ 'is-invalid': adresaSubmited && a.grad.errors }\"\r\n                    placeholder=\"Grad\">\r\n                </mat-form-field>\r\n                <div *ngIf=\"adresaSubmited && a.grad.errors\">\r\n                  <div *ngIf=\"a.grad.errors.required\">\r\n                      <p class=\"upozorenje\">Naziv grada je obavezan</p>\r\n                  </div>\r\n                  <div *ngIf=\"a.grad.errors.minlength\">\r\n                      <p class=\"upozorenje\">Naziv grada mora imati minimalno 2 karaktera</p>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n              <div class=\"button-div\">\r\n                <button class=\"button-glavni-100\" (click)=\"promeniAdresu(ulica.value, grad.value)\" mat-raised-button>Sacuvaj</button>\r\n                <button class=\"button-crveni-50 float-right\" (click)=\"ulica.value = ''; grad.value = ''; adresaSubmited=false\"\r\n                  mat-raised-button>Poništi</button>\r\n              </div>\r\n            </form>\r\n\r\n          </mat-expansion-panel>\r\n          <mat-expansion-panel class=\"exp-panel\">\r\n            <mat-expansion-panel-header>\r\n              <mat-panel-title>\r\n                <p class=\"panel\">Promenite email</p>\r\n              </mat-panel-title>\r\n            </mat-expansion-panel-header>\r\n            <form role=\"form\" [formGroup]=\"emailForm\">\r\n              <div>\r\n                <mat-form-field>\r\n                  <input type=\"email\" #email formControlName=\"email\" matInput [ngClass]=\"{ 'is-invalid': emailSubmited && e.email.errors }\"\r\n                    placeholder=\"Novi email...\">\r\n                </mat-form-field>\r\n              </div>\r\n              <div *ngIf=\"emailSubmited && e.email.errors\">\r\n                <div *ngIf=\"e.email.errors.required\">\r\n                    <p class=\"upozorenje\">Email je obavezan</p>\r\n                </div>\r\n                <div *ngIf=\"e.email.errors.email\">\r\n                    <p class=\"upozorenje\">Email nije validan</p>\r\n                </div>\r\n              </div>\r\n              <div class=\"button-div\">\r\n                <button class=\"button-glavni-100\" (click)=\"promeniLEmail(email.value)\" mat-raised-button>Sacuvaj</button>\r\n                <button class=\"button-crveni-50 float-right\" (click)=\"email.value = ''; emailSubmited=false\"\r\n                  mat-raised-button>Poništi</button>\r\n              </div>\r\n            </form>\r\n          </mat-expansion-panel>\r\n          <mat-expansion-panel class=\"exp-panel\">\r\n            <mat-expansion-panel-header>\r\n              <mat-panel-title>\r\n                <p class=\"panel\">Promenite korisničko ime</p>\r\n              </mat-panel-title>\r\n            </mat-expansion-panel-header>\r\n            <div>\r\n              <mat-radio-group class=\"radio-group\" [(ngModel)]=\"korisnickoImeMetod\">\r\n                <mat-radio-button color=\"primary\" *ngIf =\"partner.email \" value=\"email\">Koristi trenutni email</mat-radio-button>\r\n                <mat-radio-button color=\"primary\" value=\"novo\">\r\n                  <p>Kreirajte novi</p>\r\n                </mat-radio-button>\r\n              </mat-radio-group>\r\n            </div>\r\n\r\n            <form role=\"form\" [formGroup]=\"usernameForm\">\r\n              <div>\r\n                <mat-form-field *ngIf=\"korisnickoImeMetod != 'email'\">\r\n                  <input type=\"text\" #username formControlName=\"username\" [ngClass]=\"{ 'email-selected': korisnickoImeMetod === 'email'}\"\r\n                    [attr.disabled]=\"daLiKorisnickoImeTrebaDaBudeEmail() ? '' : null\" matInput placeholder=\"Novo korisničko ime\">\r\n                </mat-form-field>\r\n              </div>\r\n\r\n              <div *ngIf=\"usernameSubmited && u.username.errors\">\r\n                <div *ngIf=\"u.username.errors.required && korisnickoImeMetod != 'email'\">\r\n                    <p class=\"upozorenje\">Korisničko ime je obavezno</p>\r\n                </div>\r\n                <div *ngIf=\"u.username.errors.minlength && korisnickoImeMetod != 'email'\">\r\n                  <p class=\"upozorenje\">Korisničko ime mora imati vise od 3 karaktera</p>\r\n                </div>\r\n              </div>\r\n              <div *ngIf=\"usernameSubmited && korisnickoImeJeZauzeto\">\r\n                <p class=\"upozorenje\">Korisničko ime je vec zazueto</p>\r\n              </div>\r\n              <div class=\"button-div\">\r\n                <button class=\"button-glavni-100\" (click)=\"promeniUsername()\" mat-raised-button>Sacuvaj</button>\r\n                <button *ngIf=\"korisnickoImeMetod != 'email'\" class=\"button-crveni-50 float-right\" (click)=\"username.value = ''; usernameSubmited=false\"\r\n                  mat-raised-button>Poništi</button>\r\n              </div>\r\n            </form>\r\n          </mat-expansion-panel>\r\n          <mat-expansion-panel class=\"exp-panel\">\r\n            <mat-expansion-panel-header>\r\n              <mat-panel-title>\r\n                <p class=\"panel\">Promenite šifru</p>\r\n              </mat-panel-title>\r\n            </mat-expansion-panel-header>\r\n            <form role=\"form\" [formGroup]=\"passwordForm\">\r\n              <div>\r\n                <mat-form-field>\r\n                  <input matInput type=\"password\" #staraSifra formControlName=\"staraSifra\" placeholder=\"Stara šifra\">\r\n                </mat-form-field>\r\n                <div *ngIf=\"passwordSubmited && !s.staraSifra.errors && losaSifra\">\r\n                  <p class=\"upozorenje\">Stara šifra nije tačna</p>\r\n                </div>\r\n                <div *ngIf=\"passwordSubmited && s.staraSifra.errors\">\r\n                  <div *ngIf=\"s.staraSifra.errors.required\">\r\n                    <p class=\" upozorenje\">Stara šifra je obavezna</p>\r\n                  </div>\r\n                  <div *ngIf=\"s.staraSifra.errors.minlength\">\r\n                    <p class=\"upozorenje\">Korisničko ime mora imati vise od 3 karaktera</p>\r\n                  </div>\r\n                </div>\r\n                <div>\r\n                  <mat-form-field>\r\n                    <input matInput type=\"password\" #novaSifra formControlName=\"novaSifra\" placeholder=\"Nova šifra\">\r\n                  </mat-form-field>\r\n                </div>\r\n                <div *ngIf=\"passwordSubmited && s.novaSifra.errors\">\r\n                  <div *ngIf=\"s.novaSifra.errors.required\">\r\n                    <p class=\" upozorenje\">Nova šifra je obavezna</p>\r\n                  </div>\r\n                  <div *ngIf=\"s.novaSifra.errors.minlength\">\r\n                    <p class=\"upozorenje\">Nova sifra mora imati vise od 3 karaktera</p>\r\n                  </div>\r\n                </div>\r\n                <div>\r\n                  <mat-form-field>\r\n                    <input matInput type=\"password\" #novaSifra2 formControlName=\"novaSifra2\" placeholder=\"Ponovite novu šifru\">\r\n                  </mat-form-field>\r\n                </div>\r\n                <div *ngIf=\"passwordSubmited && s.novaSifra2.errors\">\r\n                  <div *ngIf=\"s.novaSifra2.errors.required\">\r\n                    <p class=\" upozorenje\">Nova šifra je obavezna</p>\r\n                  </div>\r\n                  <div *ngIf=\"s.novaSifra2.errors.minlength\">\r\n                    <p class=\"upozorenje\">Nova sifra mora imati vise od 3 karaktera</p>\r\n                  </div>\r\n                </div>\r\n                <div *ngIf=\"novaSifra.value != novaSifra2.value && !s.novaSifra.errors && !s.novaSifra2.errors  && passwordSubmited\">\r\n                  <p class=\"upozorenje\">Nova sifra nije ista</p>\r\n                </div>\r\n                <div class=\"button-div\">\r\n                  <button class=\"button-glavni-100\" (click)=\"promeniSifru(staraSifra.value, novaSifra.value, novaSifra2.value)\"\r\n                    mat-raised-button>Sacuvaj</button>\r\n                  <button *ngIf=\"korisnickoImeMetod != 'email'\" class=\"button-crveni-50 float-right\" (click)=\"username.value = ''; passwordSubmited=false\"\r\n                    mat-raised-button>Poništi</button>\r\n                </div>\r\n              </div>\r\n            </form>\r\n          </mat-expansion-panel>\r\n        </mat-accordion>\r\n      </div>\r\n    </div>\r\n  </main>\r\n</div>"
+module.exports = "<div class=\"container-fluid\">\r\n  <main class=\"licni-podaci\">\r\n    <div class=\"d-flex flex-column  flex-xl-row\">\r\n      <div class=\"strana\">\r\n        <div class=\"header2\">\r\n          <h1>Licni podaci</h1>\r\n        </div>\r\n        <ul>\r\n          <li>\r\n            <span class=\"leva-strana\">\r\n              Naziv:\r\n            </span> <span class=\"desna-strana\"> {{partner.naziv | titlecase}} </span>\r\n          </li>\r\n          <li><span class=\"leva-strana\">Adresa:</span> \r\n            <span *ngIf =\"partner.adresa\">{{partner.adresa | titlecase}}</span>\r\n            <span *ngIf =\"!partner.adresa\" class=\"boja-siva-200\">Ne postoji podatak</span>\r\n          </li>\r\n          <li>\r\n            <span class=\"leva-strana\">Email:</span> \r\n            <span *ngIf =\"partner.email\">{{partner.email | lowercase}}</span>\r\n            <span *ngIf =\"!partner.email\" class=\"boja-siva-200\">Ne postoji podatak</span>\r\n          </li>\r\n          <li><span class=\"leva-strana\">Stanje:</span> \r\n            <span *ngIf =\"partner.stanje\" [ngClass]=\"{'dugovanje': daLiDuguje}\"><b>{{partner.stanje | currency:\" \"}} RSD</b></span>\r\n            <span *ngIf =\"!partner.stanje\" class=\"boja-siva-200\">Ne postoji podatak</span>\r\n          </li>\r\n        </ul>\r\n      </div>\r\n      <div class=\"strana2\">\r\n        <div class=\"header2\">\r\n          <h1>Akcije</h1>\r\n        </div>\r\n        <mat-accordion>\r\n          <mat-expansion-panel class=\"exp-panel\">\r\n            <mat-expansion-panel-header>\r\n              <mat-panel-title>\r\n                <p class=\"panel\">Promenite adresu</p>\r\n              </mat-panel-title>\r\n            </mat-expansion-panel-header>\r\n            <form role=\"form\" [formGroup]=\"adresaForm\">\r\n              <div>\r\n                <mat-form-field>\r\n                  <input type=\"text\" #ulica formControlName=\"ulica\" [ngClass]=\"{ 'is-invalid': adresaSubmited && a.ulica.errors }\"\r\n                    matInput placeholder=\"Ulica i broj\">\r\n                </mat-form-field>\r\n              </div>\r\n              <div *ngIf=\"adresaSubmited && a.ulica.errors\">\r\n                <div *ngIf=\"a.ulica.errors.required\">\r\n                    <p class=\"upozorenje\">Naziv ulice je obavezan</p>\r\n                </div>\r\n                <div *ngIf=\"a.ulica.errors.minlength\">\r\n                    <p class=\"upozorenje\">Naziv ulice mora imati minimalno 3 karaktera</p>\r\n                </div>\r\n              </div>\r\n              <div>\r\n                <mat-form-field>\r\n                  <input type=\"text\" #grad formControlName=\"grad\" matInput [ngClass]=\"{ 'is-invalid': adresaSubmited && a.grad.errors }\"\r\n                    placeholder=\"Grad\">\r\n                </mat-form-field>\r\n                <div *ngIf=\"adresaSubmited && a.grad.errors\">\r\n                  <div *ngIf=\"a.grad.errors.required\">\r\n                      <p class=\"upozorenje\">Naziv grada je obavezan</p>\r\n                  </div>\r\n                  <div *ngIf=\"a.grad.errors.minlength\">\r\n                      <p class=\"upozorenje\">Naziv grada mora imati minimalno 2 karaktera</p>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n              <div class=\"button-div\">\r\n                <button class=\"button-glavni-100\" (click)=\"promeniAdresu(ulica.value, grad.value)\" mat-raised-button>Sacuvaj</button>\r\n                <button class=\"button-crveni-50 float-right\" (click)=\"ulica.value = ''; grad.value = ''; adresaSubmited=false\"\r\n                  mat-raised-button>Poništi</button>\r\n              </div>\r\n            </form>\r\n\r\n          </mat-expansion-panel>\r\n          <mat-expansion-panel class=\"exp-panel\">\r\n            <mat-expansion-panel-header>\r\n              <mat-panel-title>\r\n                <p class=\"panel\">Promenite email</p>\r\n              </mat-panel-title>\r\n            </mat-expansion-panel-header>\r\n            <form role=\"form\" [formGroup]=\"emailForm\">\r\n              <div>\r\n                <mat-form-field>\r\n                  <input type=\"email\" #email formControlName=\"email\" matInput [ngClass]=\"{ 'is-invalid': emailSubmited && e.email.errors }\"\r\n                    placeholder=\"Novi email...\">\r\n                </mat-form-field>\r\n              </div>\r\n              <div *ngIf=\"emailSubmited && e.email.errors\">\r\n                <div *ngIf=\"e.email.errors.required\">\r\n                    <p class=\"upozorenje\">Email je obavezan</p>\r\n                </div>\r\n                <div *ngIf=\"e.email.errors.email\">\r\n                    <p class=\"upozorenje\">Email nije validan</p>\r\n                </div>\r\n              </div>\r\n              <div class=\"button-div\">\r\n                <button class=\"button-glavni-100\" (click)=\"promeniLEmail(email.value)\" mat-raised-button>Sacuvaj</button>\r\n                <button class=\"button-crveni-50 float-right\" (click)=\"email.value = ''; emailSubmited=false\"\r\n                  mat-raised-button>Poništi</button>\r\n              </div>\r\n            </form>\r\n          </mat-expansion-panel>\r\n          <mat-expansion-panel class=\"exp-panel\">\r\n            <mat-expansion-panel-header>\r\n              <mat-panel-title>\r\n                <p class=\"panel\">Promenite korisničko ime</p>\r\n              </mat-panel-title>\r\n            </mat-expansion-panel-header>\r\n            <div>\r\n              <mat-radio-group class=\"radio-group\" [(ngModel)]=\"korisnickoImeMetod\">\r\n                <mat-radio-button color=\"primary\" *ngIf =\"partner.email\" value=\"email\">Koristi trenutni email</mat-radio-button>\r\n                <mat-radio-button color=\"primary\" value=\"novo\">\r\n                  <p>Kreirajte novo</p>\r\n                </mat-radio-button>\r\n              </mat-radio-group>\r\n            </div>\r\n\r\n            <form role=\"form\" [formGroup]=\"usernameForm\">\r\n              <div>\r\n                <mat-form-field *ngIf=\"korisnickoImeMetod != 'email'\">\r\n                  <input type=\"text\" #username formControlName=\"username\" [ngClass]=\"{ 'email-selected': korisnickoImeMetod === 'email'}\"\r\n                    [attr.disabled]=\"daLiKorisnickoImeTrebaDaBudeEmail() ? '' : null\" matInput placeholder=\"Novo korisničko ime\">\r\n                </mat-form-field>\r\n              </div>\r\n\r\n              <div *ngIf=\"usernameSubmited && u.username.errors\">\r\n                <div *ngIf=\"u.username.errors.required && korisnickoImeMetod != 'email'\">\r\n                    <p class=\"upozorenje\">Korisničko ime je obavezno</p>\r\n                </div>\r\n                <div *ngIf=\"u.username.errors.minlength && korisnickoImeMetod != 'email'\">\r\n                  <p class=\"upozorenje\">Korisničko ime mora imati vise od 3 karaktera</p>\r\n                </div>\r\n              </div>\r\n              <div *ngIf=\"usernameSubmited && korisnickoImeJeZauzeto\">\r\n                <p class=\"upozorenje\">Korisničko ime je vec zazueto</p>\r\n              </div>\r\n              <div class=\"button-div\">\r\n                <button class=\"button-glavni-100\" (click)=\"promeniUsername()\" mat-raised-button>Sacuvaj</button>\r\n                <button *ngIf=\"korisnickoImeMetod != 'email'\" class=\"button-crveni-50 float-right\" (click)=\"username.value = ''; usernameSubmited=false\"\r\n                  mat-raised-button>Poništi</button>\r\n              </div>\r\n            </form>\r\n          </mat-expansion-panel>\r\n          <mat-expansion-panel class=\"exp-panel\">\r\n            <mat-expansion-panel-header>\r\n              <mat-panel-title>\r\n                <p class=\"panel\">Promenite šifru</p>\r\n              </mat-panel-title>\r\n            </mat-expansion-panel-header>\r\n            <form role=\"form\" [formGroup]=\"passwordForm\">\r\n              <div>\r\n                <mat-form-field>\r\n                  <input matInput type=\"password\" #staraSifra formControlName=\"staraSifra\" placeholder=\"Stara šifra\">\r\n                </mat-form-field>\r\n                <div *ngIf=\"passwordSubmited && !s.staraSifra.errors && losaSifra\">\r\n                  <p class=\"upozorenje\">Stara šifra nije tačna</p>\r\n                </div>\r\n                <div *ngIf=\"passwordSubmited && s.staraSifra.errors\">\r\n                  <div *ngIf=\"s.staraSifra.errors.required\">\r\n                    <p class=\" upozorenje\">Stara šifra je obavezna</p>\r\n                  </div>\r\n                  <div *ngIf=\"s.staraSifra.errors.minlength\">\r\n                    <p class=\"upozorenje\">Korisničko ime mora imati vise od 3 karaktera</p>\r\n                  </div>\r\n                </div>\r\n                <div>\r\n                  <mat-form-field>\r\n                    <input matInput type=\"password\" #novaSifra formControlName=\"novaSifra\" placeholder=\"Nova šifra\">\r\n                  </mat-form-field>\r\n                </div>\r\n                <div *ngIf=\"passwordSubmited && s.novaSifra.errors\">\r\n                  <div *ngIf=\"s.novaSifra.errors.required\">\r\n                    <p class=\" upozorenje\">Nova šifra je obavezna</p>\r\n                  </div>\r\n                  <div *ngIf=\"s.novaSifra.errors.minlength\">\r\n                    <p class=\"upozorenje\">Nova sifra mora imati vise od 3 karaktera</p>\r\n                  </div>\r\n                </div>\r\n                <div>\r\n                  <mat-form-field>\r\n                    <input matInput type=\"password\" #novaSifra2 formControlName=\"novaSifra2\" placeholder=\"Ponovite novu šifru\">\r\n                  </mat-form-field>\r\n                </div>\r\n                <div *ngIf=\"passwordSubmited && s.novaSifra2.errors\">\r\n                  <div *ngIf=\"s.novaSifra2.errors.required\">\r\n                    <p class=\" upozorenje\">Nova šifra je obavezna</p>\r\n                  </div>\r\n                  <div *ngIf=\"s.novaSifra2.errors.minlength\">\r\n                    <p class=\"upozorenje\">Nova sifra mora imati vise od 3 karaktera</p>\r\n                  </div>\r\n                </div>\r\n                <div *ngIf=\"novaSifra.value != novaSifra2.value && !s.novaSifra.errors && !s.novaSifra2.errors  && passwordSubmited\">\r\n                  <p class=\"upozorenje\">Nova sifra nije ista</p>\r\n                </div>\r\n                <div class=\"button-div\">\r\n                  <button class=\"button-glavni-100\" (click)=\"promeniSifru(staraSifra.value, novaSifra.value, novaSifra2.value)\"\r\n                    mat-raised-button>Sacuvaj</button>\r\n                  <button *ngIf=\"korisnickoImeMetod != 'email'\" class=\"button-crveni-50 float-right\" (click)=\"username.value = ''; passwordSubmited=false\"\r\n                    mat-raised-button>Poništi</button>\r\n                </div>\r\n              </div>\r\n            </form>\r\n          </mat-expansion-panel>\r\n        </mat-accordion>\r\n      </div>\r\n    </div>\r\n  </main>\r\n</div>"
 
 /***/ }),
 
@@ -4562,7 +4575,7 @@ var ResetovanjeSfireComponent = /** @class */ (function () {
             return;
         }
         var dto = this.napraviDto();
-        this.partnerServis.promeniSifru(dto).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["catchError"])(function (error) {
+        this.partnerServis.promeniSifru(dto, false).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["catchError"])(function (error) {
             if (error.status === 400) {
                 _this.uspesnaPromena = false;
                 return rxjs__WEBPACK_IMPORTED_MODULE_4__["EMPTY"];
@@ -4721,6 +4734,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var angular_webstorage_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! angular-webstorage-service */ "./node_modules/angular-webstorage-service/bundles/angular-webstorage-service.es5.js");
 /* harmony import */ var _model_porudzbenica__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../model/porudzbenica */ "./src/app/e-shop/model/porudzbenica.ts");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_3__);
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -4736,6 +4751,7 @@ var __param = (undefined && undefined.__param) || function (paramIndex, decorato
 
 
 
+
 var KORPA_KLJUC = 'korpa_roba';
 var PARTNER_KLJUC = 'partner_kljuc';
 var LocalStorageService = /** @class */ (function () {
@@ -4743,8 +4759,10 @@ var LocalStorageService = /** @class */ (function () {
         this.storage = storage;
     }
     LocalStorageService.prototype.sacuvajPartneraUMemoriju = function (partner) {
-        if (partner != null && partner.ppid != null) {
-            this.storage.set(PARTNER_KLJUC, partner);
+        var partnerCopy = lodash__WEBPACK_IMPORTED_MODULE_3__["cloneDeep"](partner);
+        if (partnerCopy != null && partnerCopy.ppid != null) {
+            partnerCopy.loginCount = null;
+            this.storage.set(PARTNER_KLJUC, partnerCopy);
         }
     };
     LocalStorageService.prototype.logout = function () {
@@ -5026,6 +5044,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
+/* harmony import */ var _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5039,13 +5058,15 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var PARTNER_URL = '/api/partner';
 var RESETOVANJE_SIFRE_URL = '/promena-sifre';
 var TIMEOUT = 15000;
 var TIMEOUT_ERROR = 'Timeout error!';
 var PartnerService = /** @class */ (function () {
-    function PartnerService(http) {
+    function PartnerService(http, utils) {
         this.http = http;
+        this.utils = utils;
     }
     PartnerService.prototype.updejtujPartnera = function (partner) {
         var fullUrl = PARTNER_URL;
@@ -5053,8 +5074,11 @@ var PartnerService = /** @class */ (function () {
             .put(fullUrl, partner)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["timeoutWith"])(TIMEOUT, Object(rxjs__WEBPACK_IMPORTED_MODULE_1__["throwError"])(TIMEOUT_ERROR)), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(function (error) { return Object(rxjs__WEBPACK_IMPORTED_MODULE_1__["throwError"])(error); }));
     };
-    PartnerService.prototype.promeniSifru = function (reset) {
-        var fullUrl = PARTNER_URL + RESETOVANJE_SIFRE_URL;
+    PartnerService.prototype.promeniSifru = function (reset, isPrvaPromena) {
+        var parameterObject = {};
+        parameterObject['isPrvaPromena'] = isPrvaPromena;
+        var parametersString = this.utils.vratiKveriParametre(parameterObject);
+        var fullUrl = PARTNER_URL + RESETOVANJE_SIFRE_URL + parametersString;
         return this.http
             .put(fullUrl, reset)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["timeoutWith"])(TIMEOUT, Object(rxjs__WEBPACK_IMPORTED_MODULE_1__["throwError"])(TIMEOUT_ERROR)), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(function (error) { return Object(rxjs__WEBPACK_IMPORTED_MODULE_1__["throwError"])(error); }));
@@ -5063,7 +5087,8 @@ var PartnerService = /** @class */ (function () {
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
             providedIn: 'root'
         }),
-        __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpClient"]])
+        __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpClient"],
+            _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__["AppUtilsService"]])
     ], PartnerService);
     return PartnerService;
 }());
@@ -6244,6 +6269,146 @@ var PorukaModalComponent = /** @class */ (function () {
             _service_notifikacija_service__WEBPACK_IMPORTED_MODULE_7__["NotifikacijaService"]])
     ], PorukaModalComponent);
     return PorukaModalComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/shared/modal/prvo-logovanje-modal/prvo-logovanje-modal.component.html":
+/*!***************************************************************************************!*\
+  !*** ./src/app/shared/modal/prvo-logovanje-modal/prvo-logovanje-modal.component.html ***!
+  \***************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<section>\n    <mat-horizontal-stepper [linear]=\"true\" #stepper>\n        <mat-step>\n          <form >\n            <ng-template matStepLabel>Obaveštenje</ng-template>\n            <div>\n              <h1>Poštovani</h1>\n              <p>Dobrodošli u internet prodavnicu Automaterijala.</p>\n              <p class=\"margin-top--10\">Da bi Vaš nalog bio kompletno fukncionalan neophodno je da promenite vašu šifru. \n                Klikom na dugme dalje, prelazite na sledeći korak gde možete da ukucate vašu novu šifru.</p>\n            </div>\n            <div class=\"margin-top--15\">\n              <button mat-flat-button color=\"primary\" matStepperNext>Dalje</button>\n            </div>\n          </form>\n        </mat-step>\n        <mat-step [stepControl]=\"promenaSifreForm\">\n          <form [formGroup]=\"promenaSifreForm\" role=\"form\">\n            <ng-template matStepLabel>Promena</ng-template>\n            <h1>Promena šifre</h1>\n            <div class=\"form-group\">\n                <input type=\"password\" #pass1 formControlName=\"pass1\" class=\"form-control rounded\" placeholder=\"Nova šifra\" id=\"pass1\"\n                  name=\"pass1\" />\n                <div *ngIf=\"submitted && r.pass1.errors\">\n                  <div *ngIf=\"r.pass1.errors.required\">\n                    <p class=\"upozorenje\">Šifra je obavezna</p>\n                  </div>\n                  <div *ngIf=\"r.pass1.errors.minlength\">\n                    <p class=\"upozorenje\">Šifra mora imati minimalno 3 karaktera</p>\n                  </div>\n                </div>\n              </div>\n              <div class=\"form-group\">\n                <input type=\"password\" #pass2 formControlName=\"pass2\" class=\"form-control rounded\" placeholder=\"Ponovite šifru\"\n                  id=\"password\" name=\"password\" />\n                <div *ngIf=\"submitted && r.pass2.errors\">\n                  <div *ngIf=\"r.pass2.errors.required\">\n                    <p class=\"upozorenje\">Šifra je obavezna</p>\n                  </div>\n                  <div *ngIf=\"r.pass2.errors.minlength\">\n                    <p class=\"upozorenje\">Šifra mora imati minimalno 3 karaktera</p>\n                  </div>\n                </div>\n                <div *ngIf=\"submitted && !r.pass2.errors && pass1.value != pass2.value\">\n                  <p class=\"upozorenje\">Šifre nisu iste</p>\n                </div>\n              </div>\n            <div>\n              <button mat-flat-button color=\"warm\" matStepperPrevious>Back</button>\n              <button mat-flat-button color=\"primary\" (click)=\"promeniSifru()\" matStepperNext>Next</button>\n            </div>\n          </form>\n        </mat-step>\n        <mat-step>\n          <ng-template matStepLabel>Konačno</ng-template>\n          <div>\n              <h1>Ćestitamo</h1>\n              <p>Šifra je uspešno promenjena, Vaš nalog je uspešno podešen i aktiviran.</p>\n            </div>\n          <div class=\"d-flex justify-content-center margin-top--15\">\n            <button mat-flat-button color=\"primary\" (click)=\"zatvoriDialog()\" matStepperNext>Zatvori</button>\n          </div>\n        </mat-step>\n      </mat-horizontal-stepper>\n</section>\n"
+
+/***/ }),
+
+/***/ "./src/app/shared/modal/prvo-logovanje-modal/prvo-logovanje-modal.component.scss":
+/*!***************************************************************************************!*\
+  !*** ./src/app/shared/modal/prvo-logovanje-modal/prvo-logovanje-modal.component.scss ***!
+  \***************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "h1 {\n  font-size: 1.4em;\n  text-align: center;\n  color: #345cac; }\n\n.upozorenje {\n  text-align: left;\n  font-size: 0.8em;\n  color: red;\n  margin-top: 2px; }\n"
+
+/***/ }),
+
+/***/ "./src/app/shared/modal/prvo-logovanje-modal/prvo-logovanje-modal.component.ts":
+/*!*************************************************************************************!*\
+  !*** ./src/app/shared/modal/prvo-logovanje-modal/prvo-logovanje-modal.component.ts ***!
+  \*************************************************************************************/
+/*! exports provided: PrvoLogovanjeModalComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PrvoLogovanjeModalComponent", function() { return PrvoLogovanjeModalComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var src_app_e_shop_service_partner_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/e-shop/service/partner.service */ "./src/app/e-shop/service/partner.service.ts");
+/* harmony import */ var src_app_e_shop_model_dto__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/e-shop/model/dto */ "./src/app/e-shop/model/dto.ts");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (undefined && undefined.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+
+
+
+
+
+
+
+var PrvoLogovanjeModalComponent = /** @class */ (function () {
+    function PrvoLogovanjeModalComponent(dialogRef, partnerServis, formBuilder, data) {
+        this.dialogRef = dialogRef;
+        this.partnerServis = partnerServis;
+        this.formBuilder = formBuilder;
+        this.data = data;
+        this.submitted = false;
+        this.alive = true;
+        this.uspesnaPromena = true;
+        this.ucitavanje = false;
+    }
+    PrvoLogovanjeModalComponent.prototype.ngOnInit = function () {
+        this.partner = this.data;
+        this.inicijalizujForme();
+    };
+    PrvoLogovanjeModalComponent.prototype.inicijalizujForme = function () {
+        this.promenaSifreForm = this.formBuilder.group({
+            pass1: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].minLength(3)]],
+            pass2: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].minLength(3)]]
+        }, { validator: this.proveriSifre });
+    };
+    PrvoLogovanjeModalComponent.prototype.proveriSifre = function (group) {
+        var pass = group.controls.pass1.value;
+        var confirmPass = group.controls.pass2.value;
+        return pass === confirmPass ? null : { notSame: true };
+    };
+    PrvoLogovanjeModalComponent.prototype.promeniSifru = function () {
+        this.submitted = true;
+        if (this.promenaSifreForm.invalid || this.r.pass1.value !== this.r.pass2.value) {
+            return;
+        }
+        this.pozoviServisIPromeniSifru();
+    };
+    PrvoLogovanjeModalComponent.prototype.pozoviServisIPromeniSifru = function () {
+        var _this = this;
+        var dto = this.napraviDto();
+        this.partnerServis.promeniSifru(dto, true).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["takeWhile"])(function () { return _this.alive; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["catchError"])(function (error) {
+            if (error.status === 400) {
+                _this.uspesnaPromena = false;
+                return rxjs__WEBPACK_IMPORTED_MODULE_6__["EMPTY"];
+            }
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_6__["throwError"])(error);
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["finalize"])(function () { return _this.ucitavanje = false; }))
+            .subscribe(function () {
+            _this.uspesnaPromena = true;
+        }, function () {
+            _this.uspesnaPromena = false;
+        });
+    };
+    PrvoLogovanjeModalComponent.prototype.zatvoriDialog = function () {
+        this.dialogRef.close();
+    };
+    PrvoLogovanjeModalComponent.prototype.napraviDto = function () {
+        var dto = new src_app_e_shop_model_dto__WEBPACK_IMPORTED_MODULE_4__["PromenaSifre"]();
+        dto.sifra = this.r.pass1.value;
+        dto.ponovljenjaSifra = this.r.pass2.value;
+        dto.ppid = 933;
+        return dto;
+    };
+    Object.defineProperty(PrvoLogovanjeModalComponent.prototype, "r", {
+        get: function () { return this.promenaSifreForm.controls; },
+        enumerable: true,
+        configurable: true
+    });
+    PrvoLogovanjeModalComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-prvo-logovanje-modal',
+            template: __webpack_require__(/*! ./prvo-logovanje-modal.component.html */ "./src/app/shared/modal/prvo-logovanje-modal/prvo-logovanje-modal.component.html"),
+            styles: [__webpack_require__(/*! ./prvo-logovanje-modal.component.scss */ "./src/app/shared/modal/prvo-logovanje-modal/prvo-logovanje-modal.component.scss")]
+        }),
+        __param(3, Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"])(_angular_material__WEBPACK_IMPORTED_MODULE_2__["MAT_DIALOG_DATA"])),
+        __metadata("design:paramtypes", [_angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialogRef"],
+            src_app_e_shop_service_partner_service__WEBPACK_IMPORTED_MODULE_3__["PartnerService"],
+            _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormBuilder"], Object])
+    ], PrvoLogovanjeModalComponent);
+    return PrvoLogovanjeModalComponent;
 }());
 
 

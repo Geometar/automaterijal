@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { timeoutWith, catchError } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { Partner, ResetSifre, PromenaSifre } from '../model/dto';
+import { Partner, PromenaSifre } from '../model/dto';
+import { AppUtilsService } from '../utils/app-utils.service';
 
 const PARTNER_URL = '/api/partner';
 const RESETOVANJE_SIFRE_URL = '/promena-sifre';
@@ -15,27 +16,32 @@ const TIMEOUT_ERROR = 'Timeout error!';
 })
 export class PartnerService {
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private utils: AppUtilsService) { }
 
   public updejtujPartnera(partner: Partner): Observable<Partner> {
     const fullUrl = PARTNER_URL;
 
     return this.http
-        .put(fullUrl, partner)
-        .pipe(
-          timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
-          catchError((error: any) => throwError(error))
-        );
+      .put(fullUrl, partner)
+      .pipe(
+        timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
+        catchError((error: any) => throwError(error))
+      );
   }
 
-  public promeniSifru(reset: PromenaSifre): Observable<any> {
-    const fullUrl = PARTNER_URL + RESETOVANJE_SIFRE_URL;
+  public promeniSifru(reset: PromenaSifre, isPrvaPromena: boolean): Observable<any> {
+    const parameterObject = {};
+    parameterObject['isPrvaPromena'] = isPrvaPromena;
+    const parametersString = this.utils.vratiKveriParametre(parameterObject);
+    const fullUrl = PARTNER_URL + RESETOVANJE_SIFRE_URL + parametersString;
 
     return this.http
-        .put(fullUrl, reset)
-        .pipe(
-          timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
-          catchError((error: any) => throwError(error))
-        );
+      .put(fullUrl, reset)
+      .pipe(
+        timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
+        catchError((error: any) => throwError(error))
+      );
   }
 }

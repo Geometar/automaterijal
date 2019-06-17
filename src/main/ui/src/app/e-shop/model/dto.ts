@@ -33,6 +33,7 @@ export class Partner {
     stariPassword?: string;
     stanje?: number;
     stanjeporoku?: number;
+    loginCount?: any;
 }
 
 export class Fakutra {

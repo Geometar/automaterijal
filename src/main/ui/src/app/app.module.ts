@@ -50,6 +50,7 @@ import { FilterComponent } from './e-shop/magacin/shared-components/filter/filte
 import { TabelaComponent } from './e-shop/magacin/shared-components/tabela/tabela.component';
 import { NeuspesnoPorucivanjeModalComponent } from './shared/modal/neuspesno-porucivanje-modal/neuspesno-porucivanje-modal.component';
 import { SesijaIsteklaModalComponent } from './shared/modal/sesija-istekla-modal/sesija-istekla-modal.component';
+import { PrvoLogovanjeModalComponent } from './shared/modal/prvo-logovanje-modal/prvo-logovanje-modal.component';
 
 @NgModule({
   declarations: [
@@ -93,7 +94,8 @@ import { SesijaIsteklaModalComponent } from './shared/modal/sesija-istekla-modal
     FilterComponent,
     TabelaComponent,
     NeuspesnoPorucivanjeModalComponent,
-    SesijaIsteklaModalComponent
+    SesijaIsteklaModalComponent,
+    PrvoLogovanjeModalComponent
   ],
   imports: [
     BrowserModule,
@@ -120,6 +122,7 @@ import { SesijaIsteklaModalComponent } from './shared/modal/sesija-istekla-modal
     PorukaModalComponent,
     BrendoviModalComponent,
     UpitModalComponent,
-    SesijaIsteklaModalComponent]
+    SesijaIsteklaModalComponent,
+    PrvoLogovanjeModalComponent]
 })
 export class AppModule { }

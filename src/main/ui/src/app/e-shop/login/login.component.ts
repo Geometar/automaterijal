@@ -7,6 +7,7 @@ import { RegistracijaModalComponent } from 'src/app/shared/modal/registracija-mo
 import { ZaboravljenaSifraModalComponent } from 'src/app/shared/modal/zaboravljena-sifra-modal/zaboravljena-sifra-modal.component';
 import { Router } from '@angular/router';
 import { LocalStorageService } from '../service/data/local-storage.service';
+import { PrvoLogovanjeModalComponent } from 'src/app/shared/modal/prvo-logovanje-modal/prvo-logovanje-modal.component';
 
 @Component({
   selector: 'app-login',
@@ -59,6 +60,13 @@ export class LoginComponent implements OnInit {
           this.uspesnoLogovanje = true;
           this.loginServis.setDaLiJeUserLogovan(true);
           this.loginServis.setUlogovanogPartner(this.partner);
+          if (this.partner.loginCount === 0) {
+            this.dialog.open(PrvoLogovanjeModalComponent, {
+              width: '600px',
+              data: this.partner,
+              disableClose: true
+            });
+          }
           this.router.navigateByUrl('naslovna');
         } else {
           this.uspesnoLogovanje = false;

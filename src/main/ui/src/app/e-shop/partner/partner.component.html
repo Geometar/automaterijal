@@ -9,12 +9,21 @@
           <li>
             <span class="leva-strana">
               Naziv:
-            </span> <span class="desna-strana"> {{partner.naziv}} </span>
+            </span> <span class="desna-strana"> {{partner.naziv | titlecase}} </span>
           </li>
-          <li><span class="leva-strana">Adresa:</span> {{partner.adresa}}</li>
-          <li><span class="leva-strana">Email:</span> {{partner.email | lowercase}}</li>
-          <li><span class="leva-strana">Stanje:</span> <span [ngClass]="{'dugovanje': daLiDuguje}"><b>{{partner.stanje
-                | currency:" "}} RSD</b></span></li>
+          <li><span class="leva-strana">Adresa:</span> 
+            <span *ngIf ="partner.adresa">{{partner.adresa | titlecase}}</span>
+            <span *ngIf ="!partner.adresa" class="boja-siva-200">Ne postoji podatak</span>
+          </li>
+          <li>
+            <span class="leva-strana">Email:</span> 
+            <span *ngIf ="partner.email">{{partner.email | lowercase}}</span>
+            <span *ngIf ="!partner.email" class="boja-siva-200">Ne postoji podatak</span>
+          </li>
+          <li><span class="leva-strana">Stanje:</span> 
+            <span *ngIf ="partner.stanje" [ngClass]="{'dugovanje': daLiDuguje}"><b>{{partner.stanje | currency:" "}} RSD</b></span>
+            <span *ngIf ="!partner.stanje" class="boja-siva-200">Ne postoji podatak</span>
+          </li>
         </ul>
       </div>
       <div class="strana2">
@@ -101,9 +110,9 @@
             </mat-expansion-panel-header>
             <div>
               <mat-radio-group class="radio-group" [(ngModel)]="korisnickoImeMetod">
-                <mat-radio-button color="primary" *ngIf ="partner.email " value="email">Koristi trenutni email</mat-radio-button>
+                <mat-radio-button color="primary" *ngIf ="partner.email" value="email">Koristi trenutni email</mat-radio-button>
                 <mat-radio-button color="primary" value="novo">
-                  <p>Kreirajte novi</p>
+                  <p>Kreirajte novo</p>
                 </mat-radio-button>
               </mat-radio-group>
             </div>

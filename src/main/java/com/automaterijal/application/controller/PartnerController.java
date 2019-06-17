@@ -72,8 +72,15 @@ public class PartnerController {
     }
 
     @PutMapping(value = "/promena-sifre")
-    public ResponseEntity promeniSifruPartnera(@RequestBody final ResetovanjeSifreDto dto) {
-        if (!dto.getSifra().equals(dto.getPonovljenjaSifra())) {
+    public ResponseEntity promeniSifruPartnera(
+            final Authentication authentication,
+            @RequestBody final ResetovanjeSifreDto dto,
+            @RequestParam final boolean isPrvaPromena) {
+        final var partnerDto = service.vratiUlogovanogKorisnika(authentication);
+
+        if (!isPrvaPromena && !dto.getSifra().equals(dto.getPonovljenjaSifra())) {
+            return ResponseEntity.badRequest().build();
+        } else if (isPrvaPromena && partnerDto == null || !dto.getSifra().equals(dto.getPonovljenjaSifra())) {
             return ResponseEntity.badRequest().build();
         }
 

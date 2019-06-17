@@ -56,7 +56,7 @@ export class ResetovanjeSfireComponent implements OnInit {
       return;
     }
     const dto = this.napraviDto();
-    this.partnerServis.promeniSifru(dto).pipe(
+    this.partnerServis.promeniSifru(dto, false).pipe(
       takeWhile(() => this.alive),
       catchError((error: Response) => {
         if (error.status === 400) {

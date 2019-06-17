@@ -20,6 +20,7 @@ public abstract class PartnerMapper {
     @Mapping(target = "stariPassword", ignore = true)
     @Mapping(target = "naziv", source = "mestaIsporuke.naziv")
     @Mapping(target = "adresa", source = "mestaIsporuke.adresa")
+    @Mapping(target = "loginCount", source = "users.loginCount")
     public abstract PartnerDto map(Partner partner);
 
 

@@ -48,7 +48,7 @@ public class PartnerService {
 
     public boolean promeniSifruPartnera(final ResetovanjeSifreDto resetovanjeSifreDto) {
         boolean uspesnaPromenaSifre = false;
-        final Optional<Partner> partnerOptinal = partnerRepository.findByPpidAndUsersPassword(resetovanjeSifreDto.getPpid(), resetovanjeSifreDto.getStaraSifra());
+        final Optional<Partner> partnerOptinal = partnerRepository.findByPpid(resetovanjeSifreDto.getPpid());
         if (partnerOptinal.isPresent()) {
             final Partner partner = partnerOptinal.get();
             partner.getUsers().setPassword(LoginStaticUtils.md5Password(resetovanjeSifreDto.getSifra()));

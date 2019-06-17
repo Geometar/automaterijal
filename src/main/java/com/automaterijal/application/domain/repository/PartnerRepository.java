@@ -10,5 +10,5 @@ import java.util.Optional;
 public interface PartnerRepository extends JpaRepository<Partner, Integer> {
     Optional<Partner> findByWebKorisnik(String webKorisnik);
     Optional<Partner> findByEmail(String email);
-    Optional<Partner> findByPpidAndUsersPassword(Integer ppid, String password);
+    Optional<Partner> findByPpid(Integer ppid);
 }
