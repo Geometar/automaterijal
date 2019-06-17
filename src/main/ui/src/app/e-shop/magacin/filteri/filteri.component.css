@@ -1,5 +1,10 @@
 
-
+.sekcija-pretraga {
+    height: 150px;
+    background-image: url('/assets/slike/ui/pozadine/filteri.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
 @media only screen and (max-device-width :1025px) { 
     .mobilna-duzina {
         width: 100%;

@@ -1,29 +1,31 @@
-<div class="container-fluid">
-
-    <div class="d-flex align-items-center justify-content-center">
-        <div class="forms-input">
-            <input class="p-1 flex-grow-1 search__input" type="search" [(ngModel)]="searchValue" (keyup.enter)="pronaciPoTrazenojReci(searchValue)" />
-            <div class="p-1" (click)='pronaciPoTrazenojReci(searchValue)'>
-                <button mat-mini-fab class=pozadina-glavna-100>
-                    <mat-icon>search</mat-icon>
-                </button>
-            </div>
-            <div class="p-1" (click)='toogleFilterDiv()'>
-                <button *ngIf="!otvoriFilter" class=pozadina-glavna-100 mat-mini-fab>
-                    <mat-icon>view_headline</mat-icon>
-                </button>
-                <button *ngIf="otvoriFilter" mat-mini-fab class="button-glavni-200">
-                    <mat-icon>view_headline</mat-icon>
-                </button>
+<main>
+    <div class="sekcija-pretraga">
+        <div class="d-flex align-items-center justify-content-center">
+            <div class="forms-input">
+                <input class="p-1 flex-grow-1 search__input" type="search" [(ngModel)]="searchValue"
+                    (keyup.enter)="pronaciPoTrazenojReci(searchValue)" />
+                <div class="p-1" (click)='pronaciPoTrazenojReci(searchValue)'>
+                    <button mat-mini-fab class=pozadina-glavna-100>
+                        <mat-icon>search</mat-icon>
+                    </button>
+                </div>
+                <div class="p-1" (click)='toogleFilterDiv()'>
+                    <button *ngIf="!otvoriFilter" class=pozadina-glavna-100 mat-mini-fab>
+                        <mat-icon>view_headline</mat-icon>
+                    </button>
+                    <button *ngIf="otvoriFilter" mat-mini-fab class="button-glavni-200">
+                        <mat-icon>view_headline</mat-icon>
+                    </button>
+                </div>
             </div>
         </div>
+        <div class="d-flex justify-content-center">
+            <label *ngIf="pocetnoPretrazivanje">
+                <font color="#424242"> Ukucajte kataloski broj</font>
+            </label>
+        </div>
     </div>
-    <div class="d-flex justify-content-center">
-        <label *ngIf="pocetnoPretrazivanje">
-            <font color="#424242"> Ukucajte kataloski broj</font>
-        </label>
-    </div>
-        
+
     <!-- Filter komponenta izdvojena -->
     <app-filter [vrstaRobe]="vrstaRobe" [otvoriFilter]="otvoriFilter" (filterEvent)="filtriraj($event)">
     </app-filter>
@@ -38,13 +40,7 @@
     <div class="d-flex justify-content-center prazna-tabela" *ngIf="ucitavanje">
         <mat-spinner></mat-spinner>
     </div>
-        
-    <app-tabela 
-    [rowsPerPage]="rowsPerPage"
-    [pageIndex]="pageIndex"
-    [tableLength]="tableLength"
-    [dataSource]="dataSource"
-    [roba]="roba"
-    (magacinEvent)="paginatorEvent($event)"
-    ></app-tabela>
-</div>
+
+    <app-tabela [rowsPerPage]="rowsPerPage" [pageIndex]="pageIndex" [tableLength]="tableLength"
+        [dataSource]="dataSource" [roba]="roba" (magacinEvent)="paginatorEvent($event)"></app-tabela>
+</main>

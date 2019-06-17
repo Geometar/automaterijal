@@ -17,6 +17,12 @@
 .col-lg {
   padding: 0px !important;
 }
+.sekcija-pretraga {
+    height: 130px;
+    background-image: url('/assets/slike/ui/pozadine/ulje.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
 
 @media only screen and (max-device-width :1025px) { 
 

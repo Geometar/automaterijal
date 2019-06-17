@@ -101,7 +101,7 @@
             </mat-expansion-panel-header>
             <div>
               <mat-radio-group class="radio-group" [(ngModel)]="korisnickoImeMetod">
-                <mat-radio-button color="primary" value="email">Koristi trenutni email</mat-radio-button>
+                <mat-radio-button color="primary" *ngIf ="partner.email " value="email">Koristi trenutni email</mat-radio-button>
                 <mat-radio-button color="primary" value="novo">
                   <p>Kreirajte novi</p>
                 </mat-radio-button>

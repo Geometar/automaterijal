@@ -6,6 +6,11 @@
     margin-top: 0px;
 }
 
+.motorna-ulja {
+    background-image: url('/assets/slike/ui/tabovi/mu.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
 @media only screen and (max-device-width :1025px) { 
     .spusti {
         margin-top: 30px;

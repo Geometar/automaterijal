@@ -63,7 +63,7 @@ export class LoginComponent implements OnInit {
         } else {
           this.uspesnoLogovanje = false;
           this.loginServis.setDaLiJeUserLogovan(false);
-          this.loginServis.logout();
+          this.dataService.logout();
         }
       });
   }

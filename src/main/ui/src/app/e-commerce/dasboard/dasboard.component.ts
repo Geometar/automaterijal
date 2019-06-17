@@ -21,29 +21,29 @@ export class DasboardComponent implements OnInit {
 
   vratiSveSlajdove() {
     const nizSlajdovi = [];
-    const febi = this.febi();
-    const shell = this.shell();
-    const kolbenschmidt = this.kolbenschmidt();
-    nizSlajdovi.push(febi, shell, kolbenschmidt);
+    const slide1 = this.slide1();
+    const slide2 = this.slide2();
+    const slide3 = this.slide3();
+    nizSlajdovi.push(slide1, slide2, slide3);
     return nizSlajdovi;
   }
 
-  febi() {
-    const febi = new Brend();
-    febi.urlSlikePozadina = 'assets/slike/novouponudi/mala/kompresori.png';
-    return febi;
+  slide1() {
+    const slide = new Brend();
+    slide.urlSlikePozadina = 'assets/slike/ui/slider/111.png';
+    return slide;
    }
 
-   shell() {
-    const shell = new Brend();
-    shell.urlSlikePozadina = 'assets/slike/brendovi/pagepaper/shell.png';
-      return shell;
+   slide2() {
+    const slide = new Brend();
+    slide.urlSlikePozadina = 'assets/slike/ui/slider/HEADER2.png';
+    return slide;
    }
 
-   kolbenschmidt() {
-    const kolbenschmidt = new Brend();
-    kolbenschmidt.urlSlikePozadina = 'assets/slike/brendovi/pagepaper/msc.png';
-    return kolbenschmidt;
+   slide3() {
+    const slide = new Brend();
+    slide.urlSlikePozadina = 'assets/slike/ui/slider/HEADER3.png';
+    return slide;
    }
 
    otvoriUpitModal() {
