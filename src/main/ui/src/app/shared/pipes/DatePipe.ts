@@ -10,7 +10,7 @@ export class DatePipe implements PipeTransform {
             const datumNVremeiz = value.split('T');
             const datumNiz = datumNVremeiz[0].split('-');
             datumNiz[1] = mesec['mesec_' + datumNiz[1]];
-            value = datumNiz[0] + '-' +  datumNiz[1] + '-' + datumNiz[2] + ' ' + datumNVremeiz[1].substr(0, 5);
+            value = datumNiz[2] + '-' +  datumNiz[1] + '-' + datumNiz[0] + ' ' + datumNVremeiz[1].substr(0, 5);
         }
         return value;
     }

@@ -1,7 +1,12 @@
 <div class="container">
   <main>
+    <div class="header">
       <p>Da li ste sigurni da zelite da se odjavite?</p>
-    <div class="d-flex flex-row justify-content-center">
+      <button type="button" class="close" (click)="ostaniUlogovan()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="d-flex flex-row justify-content-center margin-top--15">
       <button mat-raised-button class="button-glavni-100" (click)="logout()">Odjava</button>
       <span class="col-2"></span>
       <button mat-raised-button class="button-crveni-50" (click)="ostaniUlogovan()">Poništi</button>
