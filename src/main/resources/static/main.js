@@ -144,23 +144,36 @@ module.exports = "<app-navigacija></app-navigacija>"
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppComponent", function() { return AppComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+ // import Router and NavigationEnd
 
 var AppComponent = /** @class */ (function () {
-    function AppComponent() {
+    function AppComponent(router) {
+        this.router = router;
         this.title = 'Automaterijal';
+        var navEndEvent$ = router.events.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["filter"])(function (e) { return e instanceof _angular_router__WEBPACK_IMPORTED_MODULE_1__["NavigationEnd"]; }));
+        navEndEvent$.subscribe(function (e) {
+            gtag('config', 'UA-143220679-1', { 'page_path': e.urlAfterRedirects });
+        });
     }
     AppComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-root',
             template: __webpack_require__(/*! ./app.component.html */ "./src/app/app.component.html"),
             styles: [__webpack_require__(/*! ./app.component.css */ "./src/app/app.component.css")]
-        })
+        }),
+        __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"]])
     ], AppComponent);
     return AppComponent;
 }());
@@ -1004,7 +1017,7 @@ var Vest = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<main>\n  <h1>O nama</h1>\n  <div class=\"d-flex flex-column flex-lg-row pozadina-bela\">\n    <div class=\"parcele\">\n      <div class=\"parcela-ikona\">\n        <i class=\"material-icons ikona\">\n          account_balance\n        </i>\n        <h2>Istorija</h2>\n      </div>\n    </div>\n    <div class=\"parcele\">\n      <p>\n        <b>AUTOMATERIJAL d.o.o. </b> Šabac je osnovano 1990. godine i, sada već preko 29 godina, bavi se snabdevanjem\n        našeg tržišta kvalitetnim delovima, mazivima materijalom za održavanje motornih vozila.\n      </p>\n      <p class=\"drugi-stih\">Poslujemo kao maloprodaja i veleprodaja. Kao veleprodaja razvili smo svoju prodajnu mrežu na\n        regionu Zapadne Srbije (mačvanski, sremski, kolubarski i zlatiborski okrug). Naši partneri u ovom poslu su\n        fizička lica, ovlašćeni i nezavisni serviseri, vlasnici voznih parkova, proizvođačka industrijska preduzeća,\n        veleprodaje i maloprodaje delova i materijala za popravku motornih vozila.\n      </p>\n    </div>\n  </div>\n  <div class=\"d-flex flex-column-reverse flex-lg-row\">\n    <div class=\"parcele\">\n      <p>\n        Mi zadovoljavamo potrebe naših partnera koje se najvećim delom odnose na delove i materijal za održavanje i\n        popravku motora i stajnog trapa, prvenstveno putničkih motornih vozila proizvedenih u Nemačkoj a sve više smo\n        snabdeveni i odgovarajućim artiklima za vozila proizvedena u drugim evropskim zemljama, npr.: Škoda, Fiat,\n        Renault, Peugeot, Citroen, Alfa Romeo, Saab, Volvo itd., kao i za vozila proizvedena u Japanu, Koreji i širom\n        sveta: Toyota, Honda, Mazda, Nissan, Mitsubishi, Suzuki, Kia, Hyundai, Chevrolet - Daewoo, Chrysler, Rover,\n        Daihatsu, Subaru, itd.\n      </p>\n      <p class=\"drugi-stih\">Uz našu robu uvek plasiramo i dodatnu uslugu, prvenstveno se to odnosi na svaku vrstu pomoći\n        u pronalaženju odgovarajućeg artikla i pored svog angažmana u tu svrhu obezbeđujemo odgovarajuću dokumentaciju i\n        kataloge za servisere i trgovce. Zatim, organizujemo i realizujemo razne vrste obuka za servisere i trgovce, u\n        saradnji sa proizvođačima – uvoznicima učestvujemo u ugovornom opremanju poslovnog – radnog prostora naših\n        partnera, istrajavamo u potpunom realizovanju svih ugovorenih garancija i drugo.\n      </p>\n    </div>\n    <div class=\"parcele\">\n      <div class=\"parcela-ikona\">\n        <i class=\"material-icons ikona\">\n          work\n        </i>\n        <h2>Usluge</h2>\n      </div>\n    </div>\n  </div>\n  <div class=\"d-flex flex-column flex-lg-row pozadina-bela\">\n    <div class=\"parcele\">\n      <div class=\"parcela-ikona\">\n        <i class=\"material-icons ikona\">\n          build\n        </i>\n        <h2>Proizvodi</h2>\n      </div>\n    </div>\n    <div class=\"parcele\">\n      <p>\n        Za neke brendove smo se zaštitili kao ovlašćeni uvoznici i distributeri za definisanu teritoriju, a sa nekim\n        konkurentima i sarađujemo, tako da smo vremenom izgradili poziciju nezaobilaznog faktora na svom terenu u\n        oblasti kojom se bavimo. AUTOMATERIJAL d.o.o. je direktni uvoznik, iz Nemačke, od proizvođača \"Kolbenschmidt\",\n        \"Pierburg\", i \"Victor Reinz\", iz Italije \"DeDaX\", zastupnik koncerna \"Bilstein\" i \"Febi\", uključujući i brend\n        \"Blue Print\", regionalni zastupnik - ovlašćeni distributer „Magneti Marelli“, regionalni zastupnik - ovlašćeni\n        distributer „Shell“, „Castrol“ „TOTAL“, „Fuchs“, „LukOil“ i „ENEOS“ maziva, ovlašćeni distributer i serviser\n        „energizer“ akumulatora, regionalni zastupnik - originalih BMW rezervnih delova. U našoj prodaji se nalaze\n        proizvodi raznih renomiranih proizvodjača rezervnih delova i opreme.</p>\n    </div>\n  </div>\n  <div class=\"pozadina-bela\">\n    <div class=\"d-flex justify-content-center logoi\">\n      <div class=\"owl-carousel-moj\">\n        <owl-carousel [options]=\"mySlideOptions\"[carouselClasses]=\"['owl-theme']\">\n          <div class=\"item\" *ngFor=\"let brand of mySlideBrands;let i = index\">\n            <div class=\"dobavljaci-logo\">\n                <button mat-button class=\"dugme\" (click)=\"otvoriDialog(brand)\">\n                <img width=\"65px\" height=\"65px\" src={{brand.urlSlikeLogo}} />\n              </button>\n            </div>\n          </div>\n        </owl-carousel>\n      </div>\n    </div>\n  </div>\n</main>"
+module.exports = "<main>\r\n  <h1>O nama</h1>\r\n  <div class=\"d-flex flex-column flex-lg-row pozadina-bela\">\r\n    <div class=\"parcele\">\r\n      <div class=\"parcela-ikona\">\r\n        <i class=\"material-icons ikona\">\r\n          account_balance\r\n        </i>\r\n        <h2>Istorija</h2>\r\n      </div>\r\n    </div>\r\n    <div class=\"parcele\">\r\n      <p>\r\n        <b>AUTOMATERIJAL d.o.o. </b> Šabac je osnovano 1990. godine i, sada već preko 29 godina, bavi se snabdevanjem\r\n        našeg tržišta kvalitetnim delovima, mazivima materijalom za održavanje motornih vozila.\r\n      </p>\r\n      <p class=\"drugi-stih\">Poslujemo kao maloprodaja i veleprodaja. Kao veleprodaja razvili smo svoju prodajnu mrežu na\r\n        regionu Zapadne Srbije (mačvanski, sremski, kolubarski i zlatiborski okrug). Naši partneri u ovom poslu su\r\n        fizička lica, ovlašćeni i nezavisni serviseri, vlasnici voznih parkova, proizvođačka industrijska preduzeća,\r\n        veleprodaje i maloprodaje delova i materijala za popravku motornih vozila.\r\n      </p>\r\n    </div>\r\n  </div>\r\n  <div class=\"d-flex flex-column-reverse flex-lg-row\">\r\n    <div class=\"parcele\">\r\n      <p>\r\n        Mi zadovoljavamo potrebe naših partnera koje se najvećim delom odnose na delove i materijal za održavanje i\r\n        popravku motora i stajnog trapa, prvenstveno putničkih motornih vozila proizvedenih u Nemačkoj a sve više smo\r\n        snabdeveni i odgovarajućim artiklima za vozila proizvedena u drugim evropskim zemljama, npr.: Škoda, Fiat,\r\n        Renault, Peugeot, Citroen, Alfa Romeo, Saab, Volvo itd., kao i za vozila proizvedena u Japanu, Koreji i širom\r\n        sveta: Toyota, Honda, Mazda, Nissan, Mitsubishi, Suzuki, Kia, Hyundai, Chevrolet - Daewoo, Chrysler, Rover,\r\n        Daihatsu, Subaru, itd.\r\n      </p>\r\n      <p class=\"drugi-stih\">Uz našu robu uvek plasiramo i dodatnu uslugu, prvenstveno se to odnosi na svaku vrstu pomoći\r\n        u pronalaženju odgovarajućeg artikla i pored svog angažmana u tu svrhu obezbeđujemo odgovarajuću dokumentaciju i\r\n        kataloge za servisere i trgovce. Zatim, organizujemo i realizujemo razne vrste obuka za servisere i trgovce, u\r\n        saradnji sa proizvođačima – uvoznicima učestvujemo u ugovornom opremanju poslovnog – radnog prostora naših\r\n        partnera, istrajavamo u potpunom realizovanju svih ugovorenih garancija i drugo.\r\n      </p>\r\n    </div>\r\n    <div class=\"parcele\">\r\n      <div class=\"parcela-ikona\">\r\n        <i class=\"material-icons ikona\">\r\n          work\r\n        </i>\r\n        <h2>Usluge</h2>\r\n      </div>\r\n    </div>\r\n  </div>\r\n  <div class=\"d-flex flex-column flex-lg-row pozadina-bela\">\r\n    <div class=\"parcele\">\r\n      <div class=\"parcela-ikona\">\r\n        <i class=\"material-icons ikona\">\r\n          build\r\n        </i>\r\n        <h2>Proizvodi</h2>\r\n      </div>\r\n    </div>\r\n    <div class=\"parcele\">\r\n      <p>\r\n        Za neke brendove smo se zaštitili kao ovlašćeni uvoznici i distributeri za definisanu teritoriju, a sa nekim\r\n        konkurentima i sarađujemo, tako da smo vremenom izgradili poziciju nezaobilaznog faktora na svom terenu u\r\n        oblasti kojom se bavimo. AUTOMATERIJAL d.o.o. je direktni uvoznik, iz Nemačke, od proizvođača \"Kolbenschmidt\",\r\n        \"Pierburg\", i \"Victor Reinz\", iz Italije \"DeDaX\", zastupnik koncerna \"Bilstein\" i \"Febi\", uključujući i brend\r\n        \"Blue Print\", regionalni zastupnik - ovlašćeni distributer „Magneti Marelli“, regionalni zastupnik - ovlašćeni\r\n        distributer „Shell“, „Castrol“ „TOTAL“, „Fuchs“, „LukOil“ i „ENEOS“ maziva, ovlašćeni distributer i serviser\r\n        „energizer“ akumulatora, regionalni zastupnik - originalih BMW rezervnih delova. U našoj prodaji se nalaze\r\n        proizvodi raznih renomiranih proizvodjača rezervnih delova i opreme.</p>\r\n    </div>\r\n  </div>\r\n  <div class=\"pozadina-bela\">\r\n    <div class=\"d-flex justify-content-center logoi\">\r\n      <div class=\"owl-carousel-moj\">\r\n        <owl-carousel [options]=\"mySlideOptions\"[carouselClasses]=\"['owl-theme']\">\r\n          <div class=\"item\" *ngFor=\"let brand of mySlideBrands;let i = index\">\r\n            <div class=\"dobavljaci-logo\">\r\n                <button mat-button class=\"dugme\" (click)=\"otvoriDialog(brand)\">\r\n                <img width=\"65px\" height=\"65px\" src={{brand.urlSlikeLogo}} />\r\n              </button>\r\n            </div>\r\n          </div>\r\n        </owl-carousel>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</main>"
 
 /***/ }),
 
@@ -1915,7 +1928,7 @@ var LoginComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\r\n.sekcija-pretraga {\r\n    height: 150px;\r\n    background-image: url('/assets/slike/ui/pozadine/akumulatori.png');\r\n    background-repeat: no-repeat;\r\n    background-size: cover;\r\n}"
+module.exports = "\r\n.sekcija-pretraga {\r\n    height: 150px;\r\n    background-image: url('/automaterijal/assets/slike/ui/pozadine/akumulatori.png');\r\n    background-repeat: no-repeat;\r\n    background-size: cover;\r\n}"
 
 /***/ }),
 
@@ -2080,7 +2093,7 @@ var AkumulatoriComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\r\n.sekcija-pretraga {\r\n    height: 150px;\r\n    background-image: url('/assets/slike/ui/pozadine/filteri.png');\r\n    background-repeat: no-repeat;\r\n    background-size: cover;\r\n}\r\n@media only screen and (max-device-width :1025px) { \r\n    .mobilna-duzina {\r\n        width: 100%;\r\n    }\r\n    .input-group-prepend {\r\n        margin-top: 10px;\r\n        margin-left: 0px;\r\n    }\r\n}"
+module.exports = "\r\n.sekcija-pretraga {\r\n    height: 150px;\r\n    background-image: url('/automaterijal/assets/slike/ui/pozadine/filteri.png');\r\n    background-repeat: no-repeat;\r\n    background-size: cover;\r\n}\r\n@media only screen and (max-device-width :1025px) { \r\n    .mobilna-duzina {\r\n        width: 100%;\r\n    }\r\n    .input-group-prepend {\r\n        margin-top: 10px;\r\n        margin-left: 0px;\r\n    }\r\n}"
 
 /***/ }),
 
@@ -2510,7 +2523,7 @@ var OstaloComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".sekcija-pretraga {\r\n    height: 150px;\r\n    background-image: url('/assets/slike/ui/pozadine/roba.png');\r\n    background-repeat: no-repeat;\r\n    background-size: cover;\r\n}"
+module.exports = ".sekcija-pretraga {\r\n    height: 150px;\r\n    background-image: url('/automaterijal/assets/slike/ui/pozadine/roba.png');\r\n    background-repeat: no-repeat;\r\n    background-size: cover;\r\n}"
 
 /***/ }),
 
@@ -3013,7 +3026,7 @@ var TabelaComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\r\n.sekcija-pretraga {\r\n    height: 130px;\r\n    background-image: url('/assets/slike/ui/pozadine/ulje.png');\r\n    background-repeat: no-repeat;\r\n    background-size: cover;\r\n}"
+module.exports = "\r\n.sekcija-pretraga {\r\n    height: 130px;\r\n    background-image: url('/automaterijal/assets/slike/ui/pozadine/ulje.png');\r\n    background-repeat: no-repeat;\r\n    background-size: cover;\r\n}"
 
 /***/ }),
 
@@ -3180,7 +3193,7 @@ var AntifrizComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".sirina-odabira-vrste {\r\n    width: 450px;\r\n    float: right;\r\n}\r\n.forms-input-industrija {\r\n    display: flex;\r\n    border-radius: 45px;\r\n    padding: 1px;\r\n    margin-top: 5px;\r\n    background: white;\r\n    border:2px solid grey;\r\n    width: 40%;\r\n    font-weight: bold;\r\n    text-align: center;\r\n}\r\n.col-lg {\r\n  padding: 0px !important;\r\n}\r\n.sekcija-pretraga {\r\n    height: 130px;\r\n    background-image: url('/assets/slike/ui/pozadine/ulje.png');\r\n    background-repeat: no-repeat;\r\n    background-size: cover;\r\n}\r\n@media only screen and (max-device-width :1025px) { \r\n\r\n    .mobilna-visina {\r\n      margin-top: 10px;\r\n    }\r\n\r\n    .forms-input-industrija {\r\n      display: flex;\r\n      border-radius: 45px;\r\n      padding: 1px;\r\n      margin-top: 30px;\r\n      background: white;\r\n      border:2px solid grey;\r\n      width: 80%;\r\n      font-weight: bold;\r\n      text-align: center;\r\n    }\r\n  }\r\n@media only screen and (max-device-width : 640px) { \r\n\r\n    .mobilna-visina {\r\n      margin-top: 10px;\r\n    }\r\n    \r\n    .sirina-odabira-vrste {\r\n        width: 100%;\r\n    }\r\n    .forms-input-industrija {\r\n      border-radius: 45px;\r\n      background: white;\r\n      border:2px solid grey;\r\n      width:100%;\r\n      margin-top: 5px;\r\n      font-weight: bold;\r\n      text-align: center;\r\n      display: flex;\r\n      }  \r\n}"
+module.exports = ".sirina-odabira-vrste {\r\n    width: 450px;\r\n    float: right;\r\n}\r\n.forms-input-industrija {\r\n    display: flex;\r\n    border-radius: 45px;\r\n    padding: 1px;\r\n    margin-top: 5px;\r\n    background: white;\r\n    border:2px solid grey;\r\n    width: 40%;\r\n    font-weight: bold;\r\n    text-align: center;\r\n}\r\n.col-lg {\r\n  padding: 0px !important;\r\n}\r\n.sekcija-pretraga {\r\n    height: 130px;\r\n    background-image: url('/automaterijal/assets/slike/ui/pozadine/ulje.png');\r\n    background-repeat: no-repeat;\r\n    background-size: cover;\r\n}\r\n@media only screen and (max-device-width :1025px) { \r\n\r\n    .mobilna-visina {\r\n      margin-top: 10px;\r\n    }\r\n\r\n    .forms-input-industrija {\r\n      display: flex;\r\n      border-radius: 45px;\r\n      padding: 1px;\r\n      margin-top: 30px;\r\n      background: white;\r\n      border:2px solid grey;\r\n      width: 80%;\r\n      font-weight: bold;\r\n      text-align: center;\r\n    }\r\n  }\r\n@media only screen and (max-device-width : 640px) { \r\n\r\n    .mobilna-visina {\r\n      margin-top: 10px;\r\n    }\r\n    \r\n    .sirina-odabira-vrste {\r\n        width: 100%;\r\n    }\r\n    .forms-input-industrija {\r\n      border-radius: 45px;\r\n      background: white;\r\n      border:2px solid grey;\r\n      width:100%;\r\n      margin-top: 5px;\r\n      font-weight: bold;\r\n      text-align: center;\r\n      display: flex;\r\n      }  \r\n}"
 
 /***/ }),
 
@@ -3371,7 +3384,7 @@ var IndustrijskaComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\r\n.sekcija-pretraga {\r\n    height: 130px;\r\n    background-image: url('/assets/slike/ui/pozadine/ulje.png');\r\n    background-repeat: no-repeat;\r\n    background-size: cover;\r\n}"
+module.exports = "\r\n.sekcija-pretraga {\r\n    height: 130px;\r\n    background-image: url('/automaterijal/assets/slike/ui/pozadine/ulje.png');\r\n    background-repeat: no-repeat;\r\n    background-size: cover;\r\n}"
 
 /***/ }),
 
@@ -3537,7 +3550,7 @@ var KocionaComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\r\n.sekcija-pretraga {\r\n    height: 130px;\r\n    background-image: url('/assets/slike/ui/pozadine/ulje.png');\r\n    background-repeat: no-repeat;\r\n    background-size: cover;\r\n}"
+module.exports = "\r\n.sekcija-pretraga {\r\n    height: 130px;\r\n    background-image: url('/automaterijal/assets/slike/ui/pozadine/ulje.png');\r\n    background-repeat: no-repeat;\r\n    background-size: cover;\r\n}"
 
 /***/ }),
 
@@ -3705,7 +3718,7 @@ var MenjackoComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\r\n.sekcija-pretraga {\r\n    height: 130px;\r\n    background-image: url('/assets/slike/ui/pozadine/ulje.png');\r\n    background-repeat: no-repeat;\r\n    background-size: cover;\r\n}"
+module.exports = "\r\n.sekcija-pretraga {\r\n    height: 130px;\r\n    background-image: url('/automaterijal/assets/slike/ui/pozadine/ulje.png');\r\n    background-repeat: no-repeat;\r\n    background-size: cover;\r\n}"
 
 /***/ }),
 
@@ -3873,7 +3886,7 @@ var MotornaComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".industrijski-stil {\r\n    width: 100%;\r\n    height: 100%;\r\n}\r\n.spusti {\r\n    margin-top: 0px;\r\n}\r\n.motorna-ulja {\r\n    background-image: url('/assets/slike/ui/tabovi/mu.png');\r\n    background-repeat: no-repeat;\r\n    background-size: cover;\r\n}\r\n@media only screen and (max-device-width :1025px) { \r\n    .spusti {\r\n        margin-top: 30px;\r\n    }\r\n}\r\n@media only screen and (max-device-width : 1000px) { \r\n    .spusti {\r\n        margin-top: 10px;\r\n    }\r\n}"
+module.exports = ".industrijski-stil {\r\n    width: 100%;\r\n    height: 100%;\r\n}\r\n.spusti {\r\n    margin-top: 0px;\r\n}\r\n.motorna-ulja {\r\n    background-image: url('/automaterijal/assets/slike/ui/tabovi/mu.png');\r\n    background-repeat: no-repeat;\r\n    background-size: cover;\r\n}\r\n@media only screen and (max-device-width :1025px) { \r\n    .spusti {\r\n        margin-top: 30px;\r\n    }\r\n}\r\n@media only screen and (max-device-width : 1000px) { \r\n    .spusti {\r\n        margin-top: 10px;\r\n    }\r\n}"
 
 /***/ }),
 
@@ -3884,7 +3897,7 @@ module.exports = ".industrijski-stil {\r\n    width: 100%;\r\n    height: 100%;\
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<main class=\"spusti\">\r\n    <mat-tab-group mat-stretch-tabs>\r\n        <mat-tab label=\"Motorna ulja\">\r\n            <ng-template mat-tab-label>\r\n                <img width=\"200\" src=\"/assets/slike/ui/tabovi/mu.png\">\r\n            </ng-template>\r\n            <app-motorna></app-motorna>\r\n        </mat-tab>\r\n        <mat-tab label=\"Menjačka ulja\">\r\n            <ng-template mat-tab-label>\r\n                <img width=\"200\" src=\"/assets/slike/ui/tabovi/MEU.png\">\r\n            </ng-template>\r\n            <app-menjacko></app-menjacko>\r\n        </mat-tab>\r\n        <mat-tab label=\"Kočiona ulja\">\r\n            <ng-template mat-tab-label>\r\n                <img width=\"200\" src=\"/assets/slike/ui/tabovi/KU.png\">\r\n            </ng-template>\r\n            <app-kociona></app-kociona>\r\n        </mat-tab>\r\n        <mat-tab label=\"Antifiriz\">\r\n            <ng-template mat-tab-label>\r\n                <img width=\"200\" src=\"/assets/slike/ui/tabovi/ANTI.png\">\r\n            </ng-template>\r\n            <app-antifriz></app-antifriz>\r\n        </mat-tab>\r\n        <mat-tab label=\"Industrijska ulja\">\r\n            <ng-template mat-tab-label>\r\n                <img width=\"200\" src=\"/assets/slike/ui/tabovi/INDUSTR.png\">\r\n            </ng-template>\r\n            <app-industrijska></app-industrijska>\r\n        </mat-tab>\r\n    </mat-tab-group>\r\n</main>"
+module.exports = "<main class=\"spusti\">\r\n    <mat-tab-group mat-stretch-tabs>\r\n        <mat-tab label=\"Motorna ulja\">\r\n            <ng-template mat-tab-label>\r\n                <img width=\"200\" [src]=\"slike.motorna_ulja\">\r\n            </ng-template>\r\n            <app-motorna></app-motorna>\r\n        </mat-tab>\r\n        <mat-tab label=\"Menjačka ulja\">\r\n            <ng-template mat-tab-label>\r\n                <img width=\"200\" [src]=\"slike.menjacka_ulja\">\r\n            </ng-template>\r\n            <app-menjacko></app-menjacko>\r\n        </mat-tab>\r\n        <mat-tab label=\"Kočiona ulja\">\r\n            <ng-template mat-tab-label>\r\n                <img width=\"200\" [src]=\"slike.kociona_ulja\">\r\n            </ng-template>\r\n            <app-kociona></app-kociona>\r\n        </mat-tab>\r\n        <mat-tab label=\"Antifiriz\">\r\n            <ng-template mat-tab-label>\r\n                <img width=\"200\" [src]=\"slike.antifriz\">\r\n            </ng-template>\r\n            <app-antifriz></app-antifriz>\r\n        </mat-tab>\r\n        <mat-tab label=\"Industrijska ulja\">\r\n            <ng-template mat-tab-label>\r\n                <img width=\"200\" [src]=\"slike.industrijska_ulja\">\r\n            </ng-template>\r\n            <app-industrijska></app-industrijska>\r\n        </mat-tab>\r\n    </mat-tab-group>\r\n</main>"
 
 /***/ }),
 
@@ -3899,6 +3912,7 @@ module.exports = "<main class=\"spusti\">\r\n    <mat-tab-group mat-stretch-tabs
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UljaComponent", function() { return UljaComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var src_environments_environment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/environments/environment */ "./src/environments/environment.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3906,9 +3920,18 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 
+
 var UljaComponent = /** @class */ (function () {
     function UljaComponent() {
         this.selectedTab = 0;
+        this.baseUrl = src_environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].baseUrl;
+        this.slike = {
+            motorna_ulja: this.baseUrl + '/assets/slike/ui/tabovi/mu.png',
+            menjacka_ulja: this.baseUrl + '/assets/slike/ui/tabovi/MEU.png',
+            kociona_ulja: this.baseUrl + '/assets/slike/ui/tabovi/KU.png',
+            antifriz: this.baseUrl + '/assets/slike/ui/tabovi/ANTI.png',
+            industrijska_ulja: this.baseUrl + '/assets/slike/ui/tabovi/INDUSTR.png',
+        };
     }
     UljaComponent.prototype.changeTab = function (tabIndex) {
         this.selectedTab = tabIndex;
@@ -4633,6 +4656,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _model_porudzbenica__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../model/porudzbenica */ "./src/app/e-shop/model/porudzbenica.ts");
 /* harmony import */ var _local_storage_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./local-storage.service */ "./src/app/e-shop/service/data/local-storage.service.ts");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
+/* harmony import */ var src_environments_environment__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/environments/environment */ "./src/environments/environment.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -4648,7 +4672,8 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
-var DOMAIN_URL = '/api/informacije/';
+
+var DOMAIN_URL = src_environments_environment__WEBPACK_IMPORTED_MODULE_6__["environment"].baseUrl + '/api/informacije/';
 var TIMEOUT = 15000;
 var TIMEOUT_ERROR = 'Timeout error!';
 var DataService = /** @class */ (function () {
@@ -4847,6 +4872,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
 /* harmony import */ var _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
+/* harmony import */ var src_environments_environment__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/environments/environment */ "./src/environments/environment.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -4861,7 +4887,8 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
-var DOMAIN_URL = '/api';
+
+var DOMAIN_URL = src_environments_environment__WEBPACK_IMPORTED_MODULE_5__["environment"].baseUrl + '/api';
 var FAKTURA_URL = '/fakture';
 var TIMEOUT = 15000;
 var TIMEOUT_ERROR = 'Timeout error!';
@@ -4925,6 +4952,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _data_data_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./data/data.service */ "./src/app/e-shop/service/data/data.service.ts");
 /* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
 /* harmony import */ var src_app_shared_modal_sesija_istekla_modal_sesija_istekla_modal_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! src/app/shared/modal/sesija-istekla-modal/sesija-istekla-modal.component */ "./src/app/shared/modal/sesija-istekla-modal/sesija-istekla-modal.component.ts");
+/* harmony import */ var src_environments_environment__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! src/environments/environment */ "./src/environments/environment.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -4944,11 +4972,12 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var TIMEOUT = 15000;
 var TIMEOUT_ERROR = 'Timeout error!';
-var LOGIN_URL = '/login';
-var LOGOUT_URL = '/logout';
-var PARTNER_URL = '/api/partner';
+var LOGIN_URL = src_environments_environment__WEBPACK_IMPORTED_MODULE_10__["environment"].baseUrl + '/login';
+var LOGOUT_URL = src_environments_environment__WEBPACK_IMPORTED_MODULE_10__["environment"].baseUrl + '/logout';
+var PARTNER_URL = src_environments_environment__WEBPACK_IMPORTED_MODULE_10__["environment"].baseUrl + '/api/partner';
 var LoginService = /** @class */ (function () {
     function LoginService(http, router, utils, korpaServis, storageServis, dialog) {
         this.http = http;
@@ -5045,6 +5074,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
 /* harmony import */ var _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
+/* harmony import */ var src_environments_environment__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/environments/environment */ "./src/environments/environment.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5059,7 +5089,8 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
-var PARTNER_URL = '/api/partner';
+
+var PARTNER_URL = src_environments_environment__WEBPACK_IMPORTED_MODULE_5__["environment"].baseUrl + '/api/partner';
 var RESETOVANJE_SIFRE_URL = '/promena-sifre';
 var TIMEOUT = 15000;
 var TIMEOUT_ERROR = 'Timeout error!';
@@ -5112,6 +5143,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
 /* harmony import */ var _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
+/* harmony import */ var src_environments_environment__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/environments/environment */ "./src/environments/environment.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5126,7 +5158,8 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
-var DOMAIN_URL = '/api';
+
+var DOMAIN_URL = src_environments_environment__WEBPACK_IMPORTED_MODULE_5__["environment"].baseUrl + '/api';
 var ROBA_URL = '/proizvodjaci';
 var FILTERI_URL = '/filteri';
 var AKUMULATORI_URL = '/akumulatori';
@@ -5197,6 +5230,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
 /* harmony import */ var _utils_app_utils_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/app-utils.service */ "./src/app/e-shop/utils/app-utils.service.ts");
+/* harmony import */ var src_environments_environment__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/environments/environment */ "./src/environments/environment.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5211,7 +5245,8 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
-var DOMAIN_URL = '/api';
+
+var DOMAIN_URL = src_environments_environment__WEBPACK_IMPORTED_MODULE_5__["environment"].baseUrl + '/api';
 var ROBA_URL = '/roba';
 var FILTERI_URL = '/filteri';
 var AKUMULATORI_URL = '/akumulatori';
@@ -5515,6 +5550,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _shared_modal_zaboravljena_sifra_modal_zaboravljena_sifra_modal_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../shared/modal/zaboravljena-sifra-modal/zaboravljena-sifra-modal.component */ "./src/app/shared/modal/zaboravljena-sifra-modal/zaboravljena-sifra-modal.component.ts");
 /* harmony import */ var _shared_modal_poruka_modal_poruka_modal_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../shared/modal/poruka-modal/poruka-modal.component */ "./src/app/shared/modal/poruka-modal/poruka-modal.component.ts");
 /* harmony import */ var _shared_modal_upit_modal_upit_modal_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../shared/modal/upit-modal/upit-modal.component */ "./src/app/shared/modal/upit-modal/upit-modal.component.ts");
+/* harmony import */ var src_environments_environment__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/environments/environment */ "./src/environments/environment.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5530,10 +5566,11 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var FooterComponent = /** @class */ (function () {
     function FooterComponent(dialog) {
         this.dialog = dialog;
-        this.img_logo = '/assets/slike/logo/automaterijal.png';
+        this.img_logo = src_environments_environment__WEBPACK_IMPORTED_MODULE_6__["environment"].baseUrl + '/assets/slike/logo/automaterijal.png';
     }
     FooterComponent.prototype.ngOnInit = function () {
     };
@@ -5590,7 +5627,7 @@ module.exports = "<mat-sidenav-container class=\"sidenav-container pozadina-siva
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".sidenav-container {\n  height: 100%; }\n\n.pozicija {\n  margin: 0 auto;\n  padding-bottom: 220px; }\n\n.sidenav {\n  width: 200px;\n  height: 100%; }\n\n.mat-toolbar.mat-primary {\n  position: -webkit-sticky;\n  position: sticky;\n  top: 0; }\n\n.header-navigacija {\n  font-size: 0.6em !important;\n  width: 200pxpx; }\n\n.header-sirina {\n  width: 200px !important; }\n\np {\n  color: #f6f6f6 !important; }\n\nmat-divider {\n  border-width: 1px;\n  border-style: solid;\n  border-color: #dfe5e7; }\n\n.margin-gore {\n  margin-top: 70px; }\n\n.side-toolbar {\n  height: 75px;\n  width: 200px;\n  padding: 0px 0px !important; }\n\n.header-pozicija {\n  top: 0px;\n  position: fixed;\n  z-index: 999; }\n\n@media screen and (max-device-width: 1000px) {\n  .pozicija {\n    padding-bottom: 490px; } }\n\n@media screen and (max-width: 990px) {\n  .pozicija {\n    padding-bottom: 500px; } }\n"
+module.exports = ".sidenav-container {\n  height: 100%; }\n\n.pozicija {\n  margin: 0 auto;\n  padding-bottom: 220px; }\n\n.sidenav {\n  width: 200px;\n  height: 100%; }\n\n.mat-toolbar.mat-primary {\n  position: -webkit-sticky;\n  position: sticky;\n  top: 0; }\n\n.header-navigacija {\n  font-size: 0.6em !important;\n  width: 200pxpx; }\n\n.header-sirina {\n  width: 200px !important; }\n\np {\n  color: #f6f6f6 !important;\n  height: 18px; }\n\nmat-divider {\n  border-width: 1px;\n  border-style: solid;\n  border-color: #dfe5e7; }\n\n.margin-gore {\n  margin-top: 70px; }\n\n.side-toolbar {\n  height: 75px;\n  width: 200px;\n  padding: 0px 0px !important; }\n\n.header-pozicija {\n  top: 0px;\n  position: fixed;\n  z-index: 999; }\n\n@media screen and (max-device-width: 1000px) {\n  .pozicija {\n    padding-bottom: 490px; } }\n\n@media screen and (max-width: 990px) {\n  .pozicija {\n    padding-bottom: 500px; } }\n"
 
 /***/ }),
 
@@ -7168,6 +7205,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var src_environments_environment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/environments/environment */ "./src/environments/environment.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -7181,7 +7219,8 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
-var DOMAIN_URL = '/api/email';
+
+var DOMAIN_URL = src_environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].baseUrl + '/api/email';
 var REGISTRACIJA_URL = '/registracija';
 var RESETOVANJE_SIFRE_URL = '/zaboravljena-sifra';
 var PORUKA_URL = '/poruka';
@@ -7285,7 +7324,8 @@ __webpack_require__.r(__webpack_exports__);
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 var environment = {
-    production: false
+    production: false,
+    baseUrl: '/automaterijal'
 };
 /*
  * For easier debugging in development mode, you can import the following file

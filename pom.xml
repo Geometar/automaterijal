@@ -132,7 +132,7 @@
 
     </dependencies>
     <build>
-        <finalName>ROOT</finalName>
+        <finalName>automaterijal</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

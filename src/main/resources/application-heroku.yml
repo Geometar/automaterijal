@@ -7,8 +7,25 @@ spring:
     url: jdbc:mysql://eu-cdbr-west-02.cleardb.net/heroku_2cfab89ae15d9b0?reconnect=true
     username: b9da90be7021c5
     password: f8532a32
-  jpa:
-    database: h2
-    database-platform: org.hibernate.dialect.H2Dialect
-    show-sql: true
-    ddl-auto: none
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.xml
+    enabled: false
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: radespasoje@gmail.com
+    password: eogoliufyhgfrtyi
+    protocol: smtp
+    defaultEncoding: UTF-8 # Default message encoding
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+schedule:
+  fakture:
+    upadte: 600000
+
+logging:
+  file: ../logs/arhiva/automaterijal
