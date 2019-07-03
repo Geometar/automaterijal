@@ -4,8 +4,9 @@ import { throwError } from 'rxjs';
 import { timeoutWith, catchError, map } from 'rxjs/operators';
 import { AppUtilsService } from '../utils/app-utils.service';
 import { Fakutra } from '../model/dto';
+import { environment } from 'src/environments/environment';
 
-const DOMAIN_URL = '/api';
+const DOMAIN_URL = environment.baseUrl + '/api';
 const FAKTURA_URL = '/fakture';
 
 const TIMEOUT = 15000;

@@ -3,8 +3,9 @@ import { Observable, throwError } from 'rxjs';
 import { timeoutWith, catchError } from 'rxjs/operators';
 import { AppUtilsService } from '../utils/app-utils.service';
 import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
-const DOMAIN_URL = '/api';
+const DOMAIN_URL = environment.baseUrl + '/api';
 const ROBA_URL = '/proizvodjaci';
 const FILTERI_URL = '/filteri';
 const AKUMULATORI_URL = '/akumulatori';

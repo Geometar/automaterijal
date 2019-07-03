@@ -9,13 +9,14 @@ import { LocalStorageService } from './data/local-storage.service';
 import { DataService } from './data/data.service';
 import { MatDialog } from '@angular/material';
 import { SesijaIsteklaModalComponent } from 'src/app/shared/modal/sesija-istekla-modal/sesija-istekla-modal.component';
+import { environment } from 'src/environments/environment';
 
 const TIMEOUT = 15000;
 const TIMEOUT_ERROR = 'Timeout error!';
 
-const LOGIN_URL = '/login';
-const LOGOUT_URL = '/logout';
-const PARTNER_URL = '/api/partner';
+const LOGIN_URL = environment.baseUrl + '/login';
+const LOGOUT_URL = environment.baseUrl +  '/logout';
+const PARTNER_URL = environment.baseUrl +  '/api/partner';
 @Injectable({
   providedIn: 'root'
 })

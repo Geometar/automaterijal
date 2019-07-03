@@ -4,8 +4,9 @@ import { Observable, throwError } from 'rxjs';
 import { timeoutWith, catchError } from 'rxjs/operators';
 import { Sort } from '@angular/material';
 import { AppUtilsService } from '../utils/app-utils.service';
+import { environment } from 'src/environments/environment';
 
-const DOMAIN_URL = '/api';
+const DOMAIN_URL = environment.baseUrl + '/api';
 const ROBA_URL = '/roba';
 const FILTERI_URL = '/filteri';
 const AKUMULATORI_URL = '/akumulatori';

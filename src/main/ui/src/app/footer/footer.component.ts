@@ -4,6 +4,7 @@ import { RegistracijaModalComponent } from '../shared/modal/registracija-modal/r
 import { ZaboravljenaSifraModalComponent } from '../shared/modal/zaboravljena-sifra-modal/zaboravljena-sifra-modal.component';
 import { PorukaModalComponent } from '../shared/modal/poruka-modal/poruka-modal.component';
 import { UpitModalComponent } from '../shared/modal/upit-modal/upit-modal.component';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-footer',
@@ -12,7 +13,7 @@ import { UpitModalComponent } from '../shared/modal/upit-modal/upit-modal.compon
 })
 export class FooterComponent implements OnInit {
 
-  public img_logo = '/assets/slike/logo/automaterijal.png';
+  public img_logo = environment.baseUrl + '/assets/slike/logo/automaterijal.png';
   constructor(
     public dialog: MatDialog
   ) { }
