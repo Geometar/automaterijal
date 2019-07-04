@@ -43,7 +43,7 @@ export class KorpaComponent implements OnInit {
 
   public treceLiceOpcije: string[] = ['Kurirske službe', 'Drugo'];
   public izabranaTrecaLiceOpcija: string;
-  public kurirskeSluzbe: string[] = ['Aks', 'Beks', 'City'];
+  public kurirskeSluzbe: string[] = ['Aks', 'Beks'];
   public izabraneKurirskeSluzbe: string;
   public adresaDostave: string[] = ['Vaša adresa', 'Druga'];
   public izabraneAdresaDostave: string;
