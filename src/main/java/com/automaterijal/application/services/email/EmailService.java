@@ -9,9 +9,6 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.mail.MailSendException;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 
@@ -25,17 +22,14 @@ import java.time.format.DateTimeFormatter;
 public class EmailService {
 
     @NonNull
-    final JavaMailSender emailSender;
-
-    @NonNull
-    final MailContentBuilder mailContentBuilder;
-
-    @NonNull
     final PartnerService partnerService;
+
+    @NonNull
+    final SendEmail sendEmail;
 
     public void posaljiRegistracioniEmail(final RegistracijaDto dto) {
         final Context context = popuniKontextRegistracionogEmaila(dto);
-        pripremiIPosaljiEmail(dto.AUTOMATERIJAL_EMAIL, dto.AUTOMATERIJAL_EMAIL, dto.NASLOV, dto.TEMPLATE, context);
+        sendEmail.pripremiIPosaljiEmail(dto.EMAIL_ZA_PRIMANJE, dto.NASLOV, dto.TEMPLATE, context);
     }
 
     private Context popuniKontextRegistracionogEmaila(final RegistracijaDto dto) {
@@ -64,29 +58,26 @@ public class EmailService {
         final var template = "fakturaFaliRoba";
 
         context.setVariable("faktura", faktura);
-        pripremiIPosaljiEmail(Email.AUTOMATERIJAL_EMAIL, partner.getEmail(), naslov, template, context);
+        sendEmail.pripremiIPosaljiEmail(partner.getEmail(), naslov, template, context);
 
     }
 
     public void posaljiZaboravljenaSifraMail(final ZaboravljenaSifraDto dto, final String host) {
         var optionalPartner = partnerService.pronadjiPartneraPoMejlu(dto.getEmail());
+        if (!optionalPartner.isPresent()) {
+            optionalPartner = partnerService.vratiPartneraPomocuKorisnickogImena(dto.getEmail());
+        }
 
         if (optionalPartner.isPresent()) {
             zaboravljenaSifraPripremaISlanje(dto, optionalPartner.get(), host);
         } else {
-            optionalPartner = partnerService.vratiPartneraPomocuKorisnickogImena(dto.getEmail());
-            if (optionalPartner.isPresent()) {
-                zaboravljenaSifraPripremaISlanje(dto, optionalPartner.get(), host);
-            } else {
-                throw new MailSendException("Mail not found");
-
-            }
+            throw new MailSendException("Mail not found");
         }
     }
 
     private void zaboravljenaSifraPripremaISlanje(final ZaboravljenaSifraDto dto, final Partner partner, final String host) {
         final Context context = popuniKontextZaborvaljeneSifreEmaila(partner, host);
-        pripremiIPosaljiEmail(Email.AUTOMATERIJAL_EMAIL, partner.getEmail(), dto.NASLOV, dto.TEMPLATE, context);
+        sendEmail.pripremiIPosaljiEmail(partner.getEmail(), dto.NASLOV, dto.TEMPLATE, context);
     }
 
     private Context popuniKontextZaborvaljeneSifreEmaila(final Partner partner, final String host) {
@@ -99,7 +90,7 @@ public class EmailService {
 
     public void posaljiPoruku(final PorukaDto porukaDto) {
         final Context context = popuniKontekstPorukeEmail(porukaDto);
-        pripremiIPosaljiEmail(Email.AUTOMATERIJAL_EMAIL, Email.AUTOMATERIJAL_EMAIL, porukaDto.NASLOV, porukaDto.TEMPLATE, context);
+        sendEmail.pripremiIPosaljiEmail(Email.EMAIL_ZA_PRIMANJE, porukaDto.NASLOV, porukaDto.TEMPLATE, context);
     }
 
     private Context popuniKontekstPorukeEmail(final PorukaDto dto) {
@@ -120,7 +111,7 @@ public class EmailService {
 
     public void posaljiUpitMail(final UpitDto upitDto) {
         final Context context = popuniKontekstUpitEmail(upitDto);
-        pripremiIPosaljiEmail(Email.AUTOMATERIJAL_EMAIL, Email.AUTOMATERIJAL_EMAIL, upitDto.NASLOV, upitDto.TEMPLATE, context);
+        sendEmail.pripremiIPosaljiEmail(Email.EMAIL_ZA_PRIMANJE, upitDto.NASLOV, upitDto.TEMPLATE, context);
     }
 
     private Context popuniKontekstUpitEmail(final UpitDto dto) {
@@ -136,18 +127,5 @@ public class EmailService {
         context.setVariable("drugo", dto.getDrugo());
         context.setVariable("vreme", vratiVremeSlanja());
         return context;
-    }
-
-    private void pripremiIPosaljiEmail(final String emailPosaljioca, final String emailprimaoca, final String naslov, final String template, final Context context) {
-        final MimeMessagePreparator preparator = mimeMessage -> {
-            final var messageHelper = new MimeMessageHelper(mimeMessage);
-            messageHelper.setFrom(emailPosaljioca);
-            messageHelper.setTo(emailprimaoca);
-            messageHelper.setSubject(naslov);
-            final String text = mailContentBuilder.build(template, context);
-            messageHelper.setText(text, true);
-        };
-
-        emailSender.send(preparator);
     }
 }
