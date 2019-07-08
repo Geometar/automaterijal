@@ -2,7 +2,7 @@
   <mat-sidenav #drawer class="sidenav pozadina-glavna-50" fixedInViewport="true"
     [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
     [opened]="!(isHandset$ | async)">
-    <mat-toolbar *ngIf="partnerUlogovan" class="side-toolbar pozadina-glavna-50 header-pozicija">
+    <mat-toolbar *ngIf="partnerUlogovan" class="side-toolbar pozadina-glavna-50 header-glavni">
       <div class="d-flex flex-column justify-content-center">
         <div class="d-flex justify-content-center header-sirina">
           <mat-icon class="boja-siva-300">person</mat-icon>

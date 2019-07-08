@@ -50,10 +50,17 @@ mat-divider {
 .header-pozicija {
   top: 0px;
   position: fixed;
-  z-index:999;
+  z-index: 999 !important;
+}
+
+.header-glavni {
+  top: 0px;
+  position: absolute;
+  z-index: 999 !important;
 }
 @media screen and (max-device-width :1000px) { 
   .pozicija {
+    padding-top: 56px;
     padding-bottom: 490px;
   }
 }
