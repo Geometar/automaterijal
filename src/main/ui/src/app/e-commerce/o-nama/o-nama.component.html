@@ -73,7 +73,7 @@
       <div class="owl-carousel-moj">
         <owl-carousel [options]="mySlideOptions"[carouselClasses]="['owl-theme']">
           <div class="item" *ngFor="let brand of mySlideBrands;let i = index">
-            <div class="dobavljaci-logo">
+            <div>
                 <button mat-button class="dugme" (click)="otvoriDialog(brand)">
                 <img width="65px" height="65px" src={{brand.urlSlikeLogo}} />
               </button>

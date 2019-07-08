@@ -1,45 +1,28 @@
 import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { FilteriComponent } from './e-shop/magacin/filteri/filteri.component';
-import { AkumulatoriComponent } from './e-shop/magacin/akumulatori/akumulatori.component';
-import { UljaComponent } from './e-shop/magacin/ulja/ulja.component';
-import { KorpaComponent } from './e-shop/korpa/korpa.component';
-import { LoginComponent } from './e-shop/login/login.component';
-import { FakturaComponent } from './e-shop/faktura/faktura.component';
-import { FakturaDetaljiComponent } from './e-shop/faktura/faktura-detalji/faktura-detalji.component';
-import { OstaloComponent } from './e-shop/magacin/ostalo/ostalo.component';
-import { KategorijaSpecificnaComponent } from './e-shop/magacin/ostalo/kategorija-specificna/kategorija-specificna.component';
-import { PartnerComponent } from './e-shop/partner/partner.component';
-import { RobaComponent } from './e-shop/magacin/roba/roba.component';
-import { DasboardComponent } from './e-commerce/dasboard/dasboard.component';
-import { ResetovanjeSfireComponent } from './e-shop/resetovanje-sfire/resetovanje-sfire.component';
-import { KontaktComponent } from './e-commerce/kontakt/kontakt.component';
-import { ONamaComponent } from './e-commerce/o-nama/o-nama.component';
-import { ClanakComponent } from './e-commerce/dasboard/clanak/clanak.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/naslovna', pathMatch: 'full' },
-  {path: 'naslovna' , component: DasboardComponent},
-  {path: 'o-nama' , component: ONamaComponent},
-  {path: 'kontakt' , component: KontaktComponent},
-  {path: 'roba' , component: RobaComponent},
-  {path: 'filteri' , component: FilteriComponent},
-  {path: 'ulja' , component: UljaComponent},
-  {path: 'akumulatori' , component: AkumulatoriComponent},
-  {path: 'ostalo' , component: OstaloComponent},
-  {path: 'ostalo/:id', component: KategorijaSpecificnaComponent},
-  {path: 'login' , component: LoginComponent},
-  {path: 'kontakt' , component: DasboardComponent},
-  {path: 'licni-podaci' , component: PartnerComponent},
-  {path: 'porudzbenice', component: FakturaComponent},
-  {path: 'porudzbenice/:id', component: FakturaDetaljiComponent},
-  {path: 'naslovna/:id', component: ClanakComponent},
-  {path: 'korpa', component: KorpaComponent},
-  {path: 'reset-sifre/:id', component: ResetovanjeSfireComponent},
+  {path: 'naslovna' , loadChildren: './e-commerce/dasboard/dasboard.module#DasboardModule'},
+  {path: 'naslovna/:id', loadChildren: './e-commerce/dasboard/dasboard.module#DasboardModule'},
+  {path: 'o-nama' , loadChildren: './e-commerce/o-nama/o-nama.module#ONamaModule'},
+  {path: 'kontakt' , loadChildren: './e-commerce/kontakt/kontakt.module#KontaktModule'},
+  {path: 'roba' , loadChildren: './e-shop/magacin/roba/roba.module#RobaModule'},
+  {path: 'filteri' , loadChildren: './e-shop/magacin/filteri/filteri.module#FilteriModule'},
+  {path: 'ulja' , loadChildren: './e-shop/magacin/ulja/ulja.module#UljaModule'},
+  {path: 'akumulatori', loadChildren: './e-shop/magacin/akumulatori/akumulatori.module#AkumulatoriModule'},
+  {path: 'ostalo' , loadChildren: './e-shop/magacin/ostalo/ostalo.module#OstaloModule'},
+  {path: 'ostalo/:id', loadChildren: './e-shop/magacin/ostalo/ostalo.module#OstaloModule'},
+  {path: 'login' , loadChildren: './e-shop/login/login.module#LoginModule'},
+  {path: 'licni-podaci' , loadChildren: './e-shop/partner/partner.module#PartnerModule'},
+  {path: 'porudzbenice', loadChildren: './e-shop/faktura/fakture.module#FaktureModule'},
+  {path: 'porudzbenice/:id', loadChildren: './e-shop/faktura/fakture.module#FaktureModule'},
+  {path: 'korpa', loadChildren: './e-shop/korpa/korpa.module#KorpaModule'},
+  {path: 'reset-sifre/:id', loadChildren: './e-shop/resetovanje-sfire/reset-sifre.module#ResetSifreModule'},
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {scrollPositionRestoration: 'enabled'})],
+  imports: [RouterModule.forRoot(routes, {useHash: true})],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}
