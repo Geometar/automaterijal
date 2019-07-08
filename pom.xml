@@ -155,6 +155,7 @@
                     <workingDirectory>${project.basedir}/src/main/ui</workingDirectory>
                     <arguments>
                         <argument>build</argument>
+                        <argument>--prod</argument>
                     </arguments>
                 </configuration>
             </plugin>

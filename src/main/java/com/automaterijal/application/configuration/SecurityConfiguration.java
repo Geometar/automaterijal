@@ -49,6 +49,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login","/reset-sifre/**").permitAll()
                 .antMatchers("/resources/**").permitAll()
                 .antMatchers("/*.js").permitAll()
+                .antMatchers("/*.ico").permitAll()
+                .antMatchers("/*.css").permitAll()
                 .antMatchers("/assets/slike/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
