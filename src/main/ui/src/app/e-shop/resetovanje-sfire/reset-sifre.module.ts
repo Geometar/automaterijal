@@ -8,7 +8,7 @@ import { ResetovanjeSfireComponent } from './resetovanje-sfire.component';
 
 const routes: Routes = [
   {
-    path: ':id',
+    path: '',
     component: ResetovanjeSfireComponent
   }
 ];
