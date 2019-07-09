@@ -1,11 +1,11 @@
 <main>
-    <div class="d-flex flex-column prazna-tabela" *ngIf="dataSource.length == 0">
+    <div class="d-flex flex-column prazna-tabela" *ngIf="!dataSource || dataSource.length == 0">
         <i class="material-icons icon-size">
             shopping_cart
         </i>
         <h1 class="h1-upozorenje">Korpa je trenutno prazna</h1>
     </div>
-    <div class="tabela-div" *ngIf="dataSource.length > 0">
+    <div class="tabela-div" *ngIf="dataSource && dataSource.length > 0">
         <i class="material-icons korpa-h1">
             shopping_cart
         </i>
