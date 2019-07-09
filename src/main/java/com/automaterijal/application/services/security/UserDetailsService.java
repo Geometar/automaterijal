@@ -25,17 +25,26 @@ public class UserDetailsService implements org.springframework.security.core.use
     final PartnerRepository partnerRepository;
 
     @NonNull
+    final UsersService usersService;
+
+    @NonNull
     final PartnerSpringBeanUtils partnerSpringBeanUtils;
 
     final PartnerMapper mapper = PartnerMapper.INSTANCE;
 
     @Override
     public CurrentUser loadUserByUsername(final String username) throws UsernameNotFoundException {
-        final Optional<Partner> partner = partnerRepository.findByWebKorisnik(username);
-        if (!partner.isPresent()) {
+        final Optional<Partner> optionalPartner = partnerRepository.findByWebKorisnik(username);
+        if (!optionalPartner.isPresent()) {
             throw new UsernameNotFoundException("Partner not found with username " + username);
         }
-        return new CurrentUser(partner.get());
+        final Partner partner = optionalPartner.get();
+        if (partner.getUsers() == null) {
+            final var user = usersService.sacuvajUsera(partner);
+            partner.setUsers(user);
+        }
+
+        return new CurrentUser(partner);
     }
 
     public PartnerDto vratiUlogovanogKorisnika(final Authentication authentication) {

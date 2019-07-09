@@ -1,7 +1,10 @@
 package com.automaterijal.application.services.security;
 
+import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.Users;
+import com.automaterijal.application.domain.mapper.UsersMapper;
 import com.automaterijal.application.domain.repository.UsersRepository;
+import com.automaterijal.application.utils.LoginStaticUtils;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +25,9 @@ public class UsersService {
 
     @NonNull
     final UsersRepository usersRepository;
-    final
+
+    @NonNull
+    final UsersMapper mapper;
 
     public Optional<Users> pronadjiUseraPoIdu(final Integer id) {
         return usersRepository.findById(id);
@@ -36,5 +41,12 @@ public class UsersService {
            user.setLoginCount(user.getLoginCount() + 1);
            user.setLastLogin(Timestamp.valueOf(LocalDateTime.now()));
        }
+    }
+
+    public Users sacuvajUsera(final Partner partner) {
+        final var users = mapper.map(partner);
+        users.setPassword(LoginStaticUtils.md5Password(partner.getPpid().toString()));
+        final var userSaved = usersRepository.save(users);
+        return userSaved;
     }
 }

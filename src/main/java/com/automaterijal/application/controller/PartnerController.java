@@ -11,7 +11,6 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -49,26 +48,6 @@ public class PartnerController {
             usersService.logovanomUseruPovecajKolikoSePutaLogovao(dto.getPpid());
         }
         return ResponseEntity.ok(dto);
-    }
-
-    @PutMapping
-    public ResponseEntity<PartnerDto> updejtujPartnera(@RequestBody final PartnerDto partnerDto, final Authentication authentication) {
-        final var partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
-        if (partner.getPpid().intValue() != partnerDto.getPpid().intValue()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-        if (partnerDto.getWebKorisnik() != null
-                && !partnerDto.getWebKorisnik().equals(partner.getWebKorisnik())
-                && partnerService.daLiPostojiVecZauzetaRegistracije(partnerDto)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-
-        }
-        final var response = partnerService.updejtPartnera(partnerDto, authentication);
-        if (response == null) {
-            return ResponseEntity.badRequest().build();
-        }
-        log.info("Partner {} updejtovao svoj nalog", partner.getNaziv());
-        return ResponseEntity.ok(response);
     }
 
     @PutMapping(value = "/promena-sifre")

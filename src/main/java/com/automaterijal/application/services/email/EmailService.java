@@ -4,6 +4,7 @@ import com.automaterijal.application.domain.dto.FakturaDto;
 import com.automaterijal.application.domain.dto.email.*;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.services.PartnerService;
+import com.automaterijal.application.services.security.UsersService;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,9 @@ public class EmailService {
 
     @NonNull
     final PartnerService partnerService;
+
+    @NonNull
+    final UsersService usersService;
 
     @NonNull
     final SendEmail sendEmail;
@@ -76,6 +80,10 @@ public class EmailService {
     }
 
     private void zaboravljenaSifraPripremaISlanje(final ZaboravljenaSifraDto dto, final Partner partner, final String host) {
+        if(partner.getUsers() == null) {
+           final var users = usersService.sacuvajUsera(partner);
+           partner.setUsers(users);
+        }
         final Context context = popuniKontextZaborvaljeneSifreEmaila(partner, host);
         sendEmail.pripremiIPosaljiEmail(partner.getEmail(), dto.NASLOV, dto.TEMPLATE, context);
     }

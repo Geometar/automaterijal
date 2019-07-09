@@ -32,4 +32,6 @@ public class Users {
     Timestamp lastLogin;
     @Column(name = "user_status")
     Integer userStatus;
+    @Column(name = "active")
+    Integer active;
 }

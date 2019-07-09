@@ -21,17 +21,6 @@ export class PartnerService {
     private http: HttpClient,
     private utils: AppUtilsService) { }
 
-  public updejtujPartnera(partner: Partner): Observable<Partner> {
-    const fullUrl = PARTNER_URL;
-
-    return this.http
-      .put(fullUrl, partner)
-      .pipe(
-        timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
-        catchError((error: any) => throwError(error))
-      );
-  }
-
   public promeniSifru(reset: PromenaSifre, isPrvaPromena: boolean): Observable<any> {
     const parameterObject = {};
     parameterObject['isPrvaPromena'] = isPrvaPromena;
