@@ -34,7 +34,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 
     @Override
     public CurrentUser loadUserByUsername(final String username) throws UsernameNotFoundException {
-        final Optional<Partner> optionalPartner = partnerRepository.findByWebKorisnik(username);
+        final Optional<Partner> optionalPartner = partnerRepository.findByWebKorisnikAndWebStatusGreaterThan(username, 0);
         if (!optionalPartner.isPresent()) {
             throw new UsernameNotFoundException("Partner not found with username " + username);
         }

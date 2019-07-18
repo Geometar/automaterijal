@@ -58,16 +58,21 @@ export class LoginComponent implements OnInit {
         if (res !== null) {
           this.partner = res;
           this.uspesnoLogovanje = true;
-          this.loginServis.setDaLiJeUserLogovan(true);
-          this.loginServis.setUlogovanogPartner(this.partner);
-          if (this.partner.loginCount === 0) {
-            this.dialog.open(PrvoLogovanjeModalComponent, {
-              width: '600px',
-              data: this.partner,
-              disableClose: true
-            });
+          if (this.partner.webStatus !== 4) {
+            this.router.navigateByUrl('naslovna');
+            this.loginServis.setDaLiJeUserLogovan(true);
+            this.loginServis.setUlogovanogPartner(this.partner);
+            if (this.partner.loginCount === 0) {
+              this.dialog.open(PrvoLogovanjeModalComponent, {
+                width: '600px',
+                data: this.partner,
+                disableClose: true
+              });
+            }
+          } else {
+            this.loginServis.setDaLiJeUserLogovan(false);
+            this.dataService.logout();
           }
-          this.router.navigateByUrl('naslovna');
         } else {
           this.uspesnoLogovanje = false;
           this.loginServis.setDaLiJeUserLogovan(false);

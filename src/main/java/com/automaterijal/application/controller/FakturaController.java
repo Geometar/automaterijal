@@ -39,7 +39,7 @@ public class FakturaController {
             @PathVariable(name = "ppid") final Integer ppid,
             final Authentication authentication
     ) {
-        final Integer iPage = page == null ? 0 : page;
+            final Integer iPage = page == null ? 0 : page;
         final Integer iPageSize = pageSize == null ? 10 : pageSize;
 
         final Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);

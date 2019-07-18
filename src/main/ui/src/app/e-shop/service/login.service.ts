@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { throwError, BehaviorSubject, EMPTY, Observable } from 'rxjs';
+import { throwError, BehaviorSubject, Observable } from 'rxjs';
 import { Credentials, Partner } from '../model/dto';
-import { timeoutWith, catchError, finalize } from 'rxjs/operators';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { timeoutWith, catchError } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 import { AppUtilsService } from '../utils/app-utils.service';
 import { Router } from '@angular/router';
 import { LocalStorageService } from './data/local-storage.service';
@@ -76,6 +76,9 @@ export class LoginService {
   }
 
   public izbaciPartnerIzSesije() {
+    this.storageServis.logout();
+    this.logovanjeSubjekat.next(false);
+    this.partnerSubjekat.next(null);
     const sesijaDialog = this.dialog.open(SesijaIsteklaModalComponent, {
       width: '400px'
     });
@@ -83,7 +86,6 @@ export class LoginService {
     sesijaDialog.afterClosed().subscribe(() => {
       this.logovanjeSubjekat.next(false);
       this.partnerSubjekat.next(null);
-      this.storageServis.logout();
     });
   }
 

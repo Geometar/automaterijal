@@ -46,7 +46,7 @@ public class RobaCeneService {
                 retVal = robaCene.get().getDeviznacena()
                         .multiply(new BigDecimal(popust))
                         .multiply(new BigDecimal(120))
-                        .setScale(0, RoundingMode.CEILING);
+                        .setScale(0, RoundingMode.HALF_UP);
             } else {
                 retVal = robaCene.get().getDeviznacena()
                         .multiply(new BigDecimal(popust))

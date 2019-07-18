@@ -5,6 +5,9 @@
 			<div class="alert alert-danger" role="alert" *ngIf="!uspesnoLogovanje">
 				<p>Korisničko ime ili šifra je pogrešna.</p>
 			</div>
+			<div class="alert alert-danger" role="alert" *ngIf="uspesnoLogovanje && partner && partner.webStatus === 4">
+				<p>Vaš nalog trenutno ima zabranu pristupa.</p>
+			</div>
 			<form role="form" (keydown)="enterNaFormi($event)" [formGroup]="registerForm">
 				<div class="form-group">
 					<input type="text" formControlName="username" class="form-control rounded" placeholder="Korisničko ime" id="username"

@@ -15,7 +15,7 @@ export class FakturaDetaljiComponent implements OnInit {
   public faktura: Fakutra = new Fakutra();
   public fakturaDetalji: FakturaDetalji[];
   public dataSource: any;
-
+  public ucitavanje = false;
   public error = false;
 
   // Paging and Sorting elements
@@ -32,6 +32,7 @@ export class FakturaDetaljiComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
+    this.ucitavanje = true;
     this.loginServis.vratiUlogovanogKorisnika(false)
       .subscribe((res: Partner) => {
         if (res !== null) {
@@ -53,9 +54,11 @@ export class FakturaDetaljiComponent implements OnInit {
           this.faktura = res;
           this.fakturaDetalji = res.detalji;
           this.dataSource = this.fakturaDetalji;
+          this.ucitavanje = false;
         },
           error => {
             this.error = true;
+            this.ucitavanje = false;
           });
     });
   }

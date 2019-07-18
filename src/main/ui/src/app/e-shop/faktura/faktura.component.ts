@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 export class FakturaComponent implements OnInit {
 
   public partner: Partner;
-  private fakure: Fakutra[];
+  public fakure: Fakutra[];
   public dataSource: any;
 
   public error = false;

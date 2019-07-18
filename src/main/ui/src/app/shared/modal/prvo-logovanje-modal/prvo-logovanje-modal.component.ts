@@ -85,7 +85,7 @@ export class PrvoLogovanjeModalComponent implements OnInit {
     const dto = new PromenaSifre();
     dto.sifra = this.r.pass1.value;
     dto.ponovljenjaSifra = this.r.pass2.value;
-    dto.ppid = 933;
+    dto.ppid = this.partner.ppid;
     return dto;
   }
 

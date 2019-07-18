@@ -18,5 +18,6 @@ public class PartnerDto {
     Double stanje;
     Double stanjeporoku;
     Integer loginCount;
+    Integer webStatus;
 
 }
