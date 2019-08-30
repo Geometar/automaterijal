@@ -46,14 +46,14 @@ public class RobaCeneService {
                 retVal = robaCene.get().getDeviznacena()
                         .multiply(new BigDecimal(popust))
                         .multiply(new BigDecimal(120))
-                        .setScale(0, RoundingMode.HALF_UP);
+                        .setScale(0, RoundingMode.CEILING);
             } else {
                 retVal = robaCene.get().getDeviznacena()
                         .multiply(new BigDecimal(popust))
                         .multiply(new BigDecimal(120));
             }
         }
-        return retVal;
+         return retVal;
     }
 
     public Double vratiRabatPartneraNaArtikal(final Roba roba, final Partner partner) {

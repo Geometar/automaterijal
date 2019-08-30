@@ -165,13 +165,4 @@ public class RobaService {
             return robaRepository.findByRobaidIn(ids, pageable);
         }
     }
-
-    @Transactional
-    public void skiniNarucenuRobuSaStanja(final Long robaId, final Double kolicina) {
-       final Optional<Roba> robaOptional = robaRepository.findById(robaId);
-       if(robaOptional.isPresent()) {
-           final Roba roba = robaOptional.get();
-           roba.setStanje(roba.getStanje() - kolicina);
-       }
-    }
 }

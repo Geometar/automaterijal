@@ -4,7 +4,6 @@ import com.automaterijal.application.domain.dto.FakturaDetaljiDto;
 import com.automaterijal.application.domain.dto.FakturaDto;
 import com.automaterijal.application.domain.dto.RobaDto;
 import com.automaterijal.application.domain.entity.Faktura;
-import com.automaterijal.application.domain.entity.FakturaDetalji;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.Roba;
 import com.automaterijal.application.domain.mapper.FakturaMapper;
@@ -94,14 +93,6 @@ public class FakturaService {
 
         fakturaRepository.save(faktura);
         partnerService.povecanPartnerovOrderCount(partner);
-
-        skiniRobuSaSastanja(faktura.getDetalji());
-    }
-
-    private void skiniRobuSaSastanja(final List<FakturaDetalji> detalji) {
-        detalji.forEach(fakturaDetalji -> {
-            robaService.skiniNarucenuRobuSaStanja(fakturaDetalji.getRobaId(), fakturaDetalji.getKolicina());
-        });
     }
 
     @Transactional(readOnly = true)
