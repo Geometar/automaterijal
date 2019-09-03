@@ -1,5 +1,5 @@
-<div class="container-fluid">
-    <main>
+<main>
+    <div class="sekcija-pretraga">
         <div class="d-flex flex-row-reverse bd-highlight">
             <button class="button-glavni-100 nazad-button" mat-raised-button (click)="idiNazad()">
                 <mat-icon>keyboard_arrow_left</mat-icon> Nazad
@@ -29,25 +29,24 @@
                 <font color="#424242"> Ukucajte kataloski broj</font>
             </label>
         </div>
+    </div>
 
-        <div class="margin-top--20" *ngIf="otvoriFilter">
-            <!-- Filter komponenta izdvojena -->
-            <app-filter [vrstaRobe]="vrstaRobe" [otvoriFilter]="otvoriFilter" (filterEvent)="filtriraj($event)">
-            </app-filter>
-        </div>
+    <!-- Filter komponenta izdvojena -->
+    <app-filter class="margin-top--20" [vrstaRobe]="vrstaRobe" [otvoriFilter]="otvoriFilter"
+        (filterEvent)="filtriraj($event)">
+    </app-filter>
 
-        <div class="d-flex flex-column prazna-tabela" *ngIf="!pronadjenaRoba">
-            <i class="material-icons icon-size">
-                error_outline
-            </i>
-            <h1 class="h1-upozorenje">Artikal ne postoji</h1>
-        </div>
+    <div class="d-flex flex-column prazna-tabela" *ngIf="!pronadjenaRoba">
+        <i class="material-icons icon-size">
+            error_outline
+        </i>
+        <h1 class="h1-upozorenje">Artikal ne postoji</h1>
+    </div>
 
-        <div class="d-flex justify-content-center prazna-tabela" *ngIf="ucitavanje">
-            <mat-spinner></mat-spinner>
-        </div>
+    <div class="d-flex justify-content-center prazna-tabela" *ngIf="ucitavanje">
+        <mat-spinner></mat-spinner>
+    </div>
 
-        <app-tabela [rowsPerPage]="rowsPerPage" [pageIndex]="pageIndex" [tableLength]="tableLength"
-            [dataSource]="dataSource" [roba]="roba" (magacinEvent)="paginatorEvent($event)"></app-tabela>
-    </main>
-</div>
+    <app-tabela [rowsPerPage]="rowsPerPage" [pageIndex]="pageIndex" [tableLength]="tableLength"
+        [dataSource]="dataSource" [roba]="roba" (magacinEvent)="paginatorEvent($event)"></app-tabela>
+</main>

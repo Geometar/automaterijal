@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY } from 'rxjs';
-import { Roba, Partner } from '../../model/dto';
+import { Roba } from '../../model/dto';
 import { RobaService } from '../../service/roba.service';
-import { Korpa } from '../../model/porudzbenica';
 import { DataService } from '../../service/data/data.service';
-import { AppUtilsService } from '../../utils/app-utils.service';
 import { VrstaRobe } from '../../model/roba.enum';
 import { Filter } from '../../model/filter';
 

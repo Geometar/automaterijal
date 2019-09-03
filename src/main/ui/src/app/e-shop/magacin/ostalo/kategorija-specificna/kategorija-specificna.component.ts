@@ -52,6 +52,7 @@ export class KategorijaSpecificnaComponent implements OnInit {
 
   pronandjiRobu() {
     this.route.params.subscribe((params: Params) => {
+      this.ucitavanje = true;
       this.robaServis.pronadjiPoKategoriji(this.sort, this.rowsPerPage, this.pageIndex, null, null, null, params.id)
         .pipe(
           takeWhile(() => this.alive),
