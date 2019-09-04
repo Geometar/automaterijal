@@ -6,6 +6,7 @@ import { RobaService } from 'src/app/e-shop/service/roba.service';
 import { DataService } from 'src/app/e-shop/service/data/data.service';
 import { VrstaRobe } from 'src/app/e-shop/model/roba.enum';
 import { Filter } from 'src/app/e-shop/model/filter';
+import { LoginService } from 'src/app/e-shop/service/login.service';
 @Component({
   selector: 'app-antifriz',
   templateUrl: './antifriz.component.html',
@@ -39,9 +40,11 @@ export class AntifrizComponent implements OnInit {
 
   constructor(
     private robaService: RobaService,
-    private dataService: DataService) { }
+    private dataService: DataService,
+    private loginService: LoginService) { }
 
   ngOnInit() {
+    this.loginService.izbaciPartneraIzSesiseAkoJeUMemoriji();
     this.pocetnoPretrazivanje = true;
     this.pronandjiSavAntifriz();
   }

@@ -7,6 +7,7 @@ import { DataService } from 'src/app/e-shop/service/data/data.service';
 import { RobaService } from 'src/app/e-shop/service/roba.service';
 import { VrstaRobe } from 'src/app/e-shop/model/roba.enum';
 import { Filter } from 'src/app/e-shop/model/filter';
+import { LoginService } from 'src/app/e-shop/service/login.service';
 
 @Component({
   selector: 'app-kategorija-specificna',
@@ -42,10 +43,12 @@ export class KategorijaSpecificnaComponent implements OnInit {
     private route: ActivatedRoute,
     private dataService: DataService,
     private robaServis: RobaService,
-    private router: Router
+    private router: Router,
+    private loginService: LoginService
   ) { }
 
   ngOnInit() {
+    this.loginService.izbaciPartneraIzSesiseAkoJeUMemoriji();
     this.pocetnoPretrazivanje = true;
     this.pronandjiRobu();
   }

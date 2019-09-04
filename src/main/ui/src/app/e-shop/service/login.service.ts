@@ -10,13 +10,14 @@ import { DataService } from './data/data.service';
 import { MatDialog } from '@angular/material';
 import { SesijaIsteklaModalComponent } from 'src/app/shared/modal/sesija-istekla-modal/sesija-istekla-modal.component';
 import { environment } from 'src/environments/environment';
+import { PartnerService } from './partner.service';
 
 const TIMEOUT = 15000;
 const TIMEOUT_ERROR = 'Timeout error!';
 
 const LOGIN_URL = environment.baseUrl + '/login';
-const LOGOUT_URL = environment.baseUrl +  '/logout';
-const PARTNER_URL = environment.baseUrl +  '/api/partner';
+const LOGOUT_URL = environment.baseUrl + '/logout';
+const PARTNER_URL = environment.baseUrl + '/api/partner';
 @Injectable({
   providedIn: 'root'
 })
@@ -75,17 +76,25 @@ export class LoginService {
     this.storageServis.sacuvajPartneraUMemoriju(partner);
   }
 
+  public izbaciPartneraIzSesiseAkoJeUMemoriji() {
+    this.vratiUlogovanogKorisnika(false)
+      .subscribe((res: Partner) => {
+        const partner = res;
+        if (partner === null) {
+          const partnerStorage = this.storageServis.procitajPartneraIzMemorije();
+          if (partnerStorage !== null && partnerStorage.ppid) {
+            this.izbaciPartnerIzSesije();
+          }
+        }
+      });
+  }
+
   public izbaciPartnerIzSesije() {
     this.storageServis.logout();
     this.logovanjeSubjekat.next(false);
     this.partnerSubjekat.next(null);
-    const sesijaDialog = this.dialog.open(SesijaIsteklaModalComponent, {
+    this.dialog.open(SesijaIsteklaModalComponent, {
       width: '400px'
-    });
-
-    sesijaDialog.afterClosed().subscribe(() => {
-      this.logovanjeSubjekat.next(false);
-      this.partnerSubjekat.next(null);
     });
   }
 

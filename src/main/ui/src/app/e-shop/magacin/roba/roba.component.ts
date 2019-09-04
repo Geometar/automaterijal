@@ -6,6 +6,7 @@ import { throwError, EMPTY } from 'rxjs';
 import { DataService } from '../../service/data/data.service';
 import { VrstaRobe } from '../../model/roba.enum';
 import { Filter } from '../../model/filter';
+import { LoginService } from '../../service/login.service';
 @Component({
   selector: 'app-roba',
   templateUrl: './roba.component.html',
@@ -37,9 +38,11 @@ export class RobaComponent implements OnInit {
 
   constructor(private robaService: RobaService,
     private dataService: DataService,
+    private loginService: LoginService
   ) { }
 
   ngOnInit() {
+    this.loginService.izbaciPartneraIzSesiseAkoJeUMemoriji();
     this.pocetnoPretrazivanje = true;
     this.pronadjiSvuRobu();
   }

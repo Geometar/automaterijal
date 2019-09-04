@@ -66,7 +66,7 @@ export class KorpaComponent implements OnInit {
       .subscribe((res: Partner) => {
         if (res !== null) {
           this.partner = res;
-          this.inicijalizujKorup();
+          this.inicijalizujKorpu();
         } else {
           this.router.navigate(['/login']);
           this.loginServis.izbaciPartnerIzSesije();
@@ -74,7 +74,7 @@ export class KorpaComponent implements OnInit {
       });
   }
 
-  inicijalizujKorup() {
+  inicijalizujKorpu() {
     this.vratiOpsteInformacije();
     this.dataService.trenutnaKorpa.subscribe(korpa => {
       this.korpa = korpa;

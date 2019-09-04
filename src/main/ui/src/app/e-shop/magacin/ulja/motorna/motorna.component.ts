@@ -8,6 +8,7 @@ import { AppUtilsService } from 'src/app/e-shop/utils/app-utils.service';
 import { DataService } from 'src/app/e-shop/service/data/data.service';
 import { VrstaRobe } from 'src/app/e-shop/model/roba.enum';
 import { Filter } from 'src/app/e-shop/model/filter';
+import { LoginService } from 'src/app/e-shop/service/login.service';
 
 @Component({
   selector: 'app-motorna',
@@ -42,9 +43,11 @@ export class MotornaComponent implements OnInit {
 
   constructor(
     private robaService: RobaService,
-    private dataService: DataService) { }
+    private dataService: DataService,
+    private loginService: LoginService) { }
 
   ngOnInit() {
+    this.loginService.izbaciPartneraIzSesiseAkoJeUMemoriji();
     this.pocetnoPretrazivanje = true;
     this.pronandjiSvoMotornoUlje();
   }

@@ -6,6 +6,7 @@ import { RobaService } from '../../service/roba.service';
 import { DataService } from '../../service/data/data.service';
 import { VrstaRobe } from '../../model/roba.enum';
 import { Filter } from '../../model/filter';
+import { LoginService } from '../../service/login.service';
 
 @Component({
   selector: 'app-akumulatori',
@@ -37,9 +38,11 @@ export class AkumulatoriComponent implements OnInit {
 
   constructor(
     private robaService: RobaService,
-    private dataService: DataService) { }
+    private dataService: DataService,
+    private loginService: LoginService) { }
 
   ngOnInit() {
+    this.loginService.izbaciPartneraIzSesiseAkoJeUMemoriji();
     this.pocetnoPretrazivanje = true;
     this.pronandjiSveAkumulatore();
   }

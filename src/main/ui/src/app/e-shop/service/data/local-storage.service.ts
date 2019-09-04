@@ -27,7 +27,7 @@ export class LocalStorageService {
     this.storage.remove(KORPA_KLJUC);
   }
 
-  public procitajPartneraIzMemorije() {
+  public procitajPartneraIzMemorije(): Partner {
     return this.storage.get(PARTNER_KLJUC);
   }
 
