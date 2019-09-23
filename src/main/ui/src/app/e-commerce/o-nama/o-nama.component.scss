@@ -2,8 +2,8 @@
 
 h1 {
     text-align: center;
-    margin-top: 1em;
-    margin-bottom: 1em;
+    padding-top: 1em;
+    padding-bottom: 1em;
 }
 
 h2 {
@@ -14,9 +14,19 @@ p {
     text-align: justify;
 }
 
+.headerONama {
+    background-image: url('/automaterijal/assets/slike/ui/pozadine/onama.png');
+}
+
 .parcele {
     width: 50%;
     padding: 3%;
+}
+
+.pozadina-istorija {
+    background-image: url('/automaterijal/assets/slike/ui/pozadine/istorija.png');
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .parcela-ikona {

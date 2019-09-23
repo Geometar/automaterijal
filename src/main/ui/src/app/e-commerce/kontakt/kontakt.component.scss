@@ -3,7 +3,8 @@
 // Element css 
 h1 {
     text-align: center;
-    margin-top: 1em;
+    padding-top: 1em;
+    padding-bottom: 1em;
 }
 
 h2 {
@@ -37,6 +38,10 @@ iframe {
     height: 450px;
 }
 
+.headerKontankt {
+    background-image: url('/automaterijal/assets/slike/ui/pozadine/kontakt.png');
+}
+
 .telefon {
     display: inline;
     font-size: 1em;
@@ -48,7 +53,6 @@ iframe {
 
 .informacije {
     width: 100%;
-    margin-top: 50px;
 }
 
 .informacije-deo {
@@ -132,8 +136,9 @@ iframe {
 }
 
 .google-mapa {
-    margin-top: 5px;
+    margin-top: 1em;
     margin-left: 15%;
+    margin-bottom: 5em;
     height: 405px;
 }
 

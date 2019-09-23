@@ -30,7 +30,8 @@ public class UserDetailsService implements org.springframework.security.core.use
     @NonNull
     final PartnerSpringBeanUtils partnerSpringBeanUtils;
 
-    final PartnerMapper mapper = PartnerMapper.INSTANCE;
+    @NonNull
+    final PartnerMapper mapper;
 
     @Override
     public CurrentUser loadUserByUsername(final String username) throws UsernameNotFoundException {

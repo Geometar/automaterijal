@@ -46,7 +46,7 @@ public abstract class FakturaMapper {
             fakturaDetalji.setOrderId(faktura.getOrderId());
             fakturaDetalji.setPotvrdjenaKolicina(0.0);
             fakturaDetalji.setKolicine(1);
-            fakturaDetalji.setStatus(3);
+            fakturaDetalji.setStatus(StatusiKonstante.NIJE_UZETA_U_OBRADU.getFieldValue());
             fakturaDetalji.setPdv(20.0);
             fakturaDetalji.setMagacinId(1);
             fakturaDetalji.setInsertDatetime(Timestamp.valueOf(LocalDateTime.now()));

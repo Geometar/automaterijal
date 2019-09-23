@@ -48,7 +48,8 @@ public class RobaSpringBeanUtils {
     @NonNull
     final EntityManager manager;
 
-    final RobaMapper mapper = RobaMapper.INSTANCE;
+    @NonNull
+    final RobaMapper mapper;
 
     public RobaDto pretvoriUDTO(final Roba roba, final Partner partner) {
         manager.clear();

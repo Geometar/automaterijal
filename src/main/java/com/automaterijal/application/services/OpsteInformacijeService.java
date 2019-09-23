@@ -26,7 +26,8 @@ public class OpsteInformacijeService {
     @NonNull
     final NacinPrevozaRepository nacinPrevozaRepository;
 
-    final OpsteInformacijeMapper mapper = OpsteInformacijeMapper.INSTANCE;
+    @NonNull
+    final OpsteInformacijeMapper mapper;
 
     public List<ValueHelpDto> vratiSveNacinePlacanja() {
         return nacinPlacanjaRepository.findAll().stream().map(mapper::map).collect(Collectors.toList());

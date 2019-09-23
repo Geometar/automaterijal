@@ -63,7 +63,7 @@ public class FakturaService {
     @NonNull
     final FakturaMapper mapper;
     @NonNull
-    final RobaMapper robaMapper = RobaMapper.INSTANCE;
+    final RobaMapper robaMapper;
 
     public List<RobaDto> submitujFakturu(final FakturaDto fakturaDto, final Partner partner) {
         final List<RobaDto> dozvoljenaKolicina = new ArrayList<>();

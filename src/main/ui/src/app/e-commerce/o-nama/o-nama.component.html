@@ -1,5 +1,7 @@
 <main>
-  <h1>O nama</h1>
+  <div class="headerONama">
+    <h1>O nama</h1>
+  </div>
   <div class="d-flex flex-column flex-lg-row pozadina-bela">
     <div class="parcele">
       <div class="parcela-ikona">
@@ -38,13 +40,7 @@
         partnera, istrajavamo u potpunom realizovanju svih ugovorenih garancija i drugo.
       </p>
     </div>
-    <div class="parcele">
-      <div class="parcela-ikona">
-        <i class="material-icons ikona">
-          work
-        </i>
-        <h2>Usluge</h2>
-      </div>
+    <div class="parcele pozadina-istorija">
     </div>
   </div>
   <div class="d-flex flex-column flex-lg-row pozadina-bela">
@@ -71,10 +67,10 @@
   <div class="pozadina-bela">
     <div class="d-flex justify-content-center logoi">
       <div class="owl-carousel-moj">
-        <owl-carousel [options]="mySlideOptions"[carouselClasses]="['owl-theme']">
+        <owl-carousel [options]="mySlideOptions" [carouselClasses]="['owl-theme']">
           <div class="item" *ngFor="let brand of mySlideBrands;let i = index">
             <div>
-                <button mat-button class="dugme" (click)="otvoriDialog(brand)">
+              <button mat-button class="dugme" (click)="otvoriDialog(brand)">
                 <img width="65px" height="65px" src={{brand.urlSlikeLogo}} />
               </button>
             </div>
