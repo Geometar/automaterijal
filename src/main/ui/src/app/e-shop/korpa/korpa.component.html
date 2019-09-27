@@ -6,9 +6,8 @@
         <h1 class="h1-upozorenje">Korpa je trenutno prazna</h1>
     </div>
     <div class="tabela-div" *ngIf="dataSource && dataSource.length > 0">
-        <i class="material-icons korpa-h1">
-            shopping_cart
-        </i>
+        <div class="headerKorpa">
+        </div>
         <div class="margin-bottom--10" style="overflow-x:auto;">
             <p class="pdv"><i>Sve cene su prikazane sa pdv-om.</i></p>
             <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
