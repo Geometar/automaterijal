@@ -3,5 +3,5 @@
     height: 130px;
     background-image: url('/automaterijal/assets/slike/ui/pozadine/ulje.png');
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: contain;
 }

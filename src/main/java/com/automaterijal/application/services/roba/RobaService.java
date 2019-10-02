@@ -63,7 +63,7 @@ public class RobaService {
     }
 
     public List<Roba> pronadjiRobuPoKatBrojevima(final List<String> katBrojevi) {
-        return robaRepository.findByKatbrIn(katBrojevi);
+        return robaRepository.findByKatbrInOrKatbrproIn(katBrojevi, katBrojevi);
     }
 
     public Page<Roba> pronadjiRobuPoKljucevima(final Set<Long> ids, final String proizvdojacId, final Boolean naStanju, final Pageable pageable) {

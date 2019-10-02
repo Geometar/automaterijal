@@ -10,6 +10,7 @@
   background-image: url('/automaterijal/assets/slike/ui/pozadine/korpa.png');
   background-position: center;
   background-repeat: no-repeat;
+  background-size: 100% 90px;
   height: 100px;
 }
 
@@ -90,8 +91,15 @@ label {
   margin-left: 10%;
   width: 80%;
 }
+@media only screen and (max-width : 1200px) {
 
-@media only screen and (max-device-width : 640px) { 
+  .granice {
+    width: 99%;
+  }
+  
+}
+
+@media only screen and (max-width : 640px) { 
 
   .korpa-h1 {
     margin-top: 0.5em;
@@ -99,10 +107,7 @@ label {
 
   
 .headerKorpa {
-  background-image: url('/automaterijal/assets/slike/ui/pozadine/korpa.png');
-  background-position: center;
-  background-repeat: no-repeat;
-  height: 100px;
+  background-size: 100% 75px;
 }
 
   .sirina-cena {

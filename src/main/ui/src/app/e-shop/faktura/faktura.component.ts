@@ -16,6 +16,7 @@ export class FakturaComponent implements OnInit {
   public dataSource: any;
 
   public error = false;
+  public ucitavanje = false;
 
   // Paging and Sorting elements
   public rowsPerPage = 10;
@@ -31,6 +32,7 @@ export class FakturaComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
+    this.ucitavanje = true;
     this.loginServis.vratiUlogovanogKorisnika(false)
       .subscribe((res: Partner) => {
         if (res !== null) {
@@ -49,11 +51,13 @@ export class FakturaComponent implements OnInit {
         this.error = false;
         this.fakure = res.content;
         this.dataSource = this.fakure;
+        this.ucitavanje = false;
         this.rowsPerPage = res.size;
         this.pageIndex = res.number;
         this.tableLength = res.totalElements;
       },
         error => {
+          this.ucitavanje = false;
           this.error = true;
         });
   }

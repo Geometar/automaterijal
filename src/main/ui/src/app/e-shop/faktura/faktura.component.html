@@ -1,8 +1,8 @@
 <div class="container-fluid">
     <main>
-        <div *ngIf="dataSource != null && dataSource.length > 0">
+        <div>
             <h1>Moje porudzbenice</h1>
-            <div class="tabela-div">
+            <div *ngIf="!ucitavanje && dataSource != null && dataSource.length > 0" class="tabela-div">
                 <table mat-table [dataSource]="dataSource">
 
                     <!-- Kataloski broj Column -->
@@ -80,6 +80,9 @@
                 <mat-paginator #paginator [length]="tableLength" [pageSize]="rowsPerPage" [pageSizeOptions]="[5, 10, 25]"
                     [pageIndex]="pageIndex" [length]="tableLength" [showFirstLastButtons]="true" (page)="paginatorEvent($event)">
                 </mat-paginator>
+            </div>
+            <div class="d-flex justify-content-center prazna-tabela" *ngIf="ucitavanje">
+                <mat-spinner></mat-spinner>
             </div>
         </div>
 

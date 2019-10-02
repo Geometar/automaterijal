@@ -58,15 +58,16 @@ mat-divider {
   position: absolute;
   z-index: 999 !important;
 }
-@media screen and (max-device-width :1000px) { 
+
+@media screen and (max-width :1000px) { 
   .pozicija {
-    padding-top: 56px;
     padding-bottom: 490px;
   }
 }
 
-@media screen and (max-width: 990px) {
+@media screen and (max-width: 950px) {
   .pozicija {
-    padding-bottom: 500px;
+    margin-top: 66px;
+    padding-bottom: 490px;
   }
 }

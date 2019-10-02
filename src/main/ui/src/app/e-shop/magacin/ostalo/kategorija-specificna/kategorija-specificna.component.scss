@@ -7,5 +7,11 @@
     height: 160px;
     background-image: url('/automaterijal/assets/slike/ui/pozadine/roba.png');
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: contain;
 }
+
+@media only screen and (max-width: 950px) {
+    .sekcija-pretraga {
+        background-image: none;
+    }
+  }

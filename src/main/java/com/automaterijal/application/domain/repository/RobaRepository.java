@@ -23,7 +23,7 @@ public interface RobaRepository extends JpaRepository<Roba, Long> {
     Page<Roba> findByRobaidInAndStanjeGreaterThan(Collection<Long> ids, double stanje, Pageable pageable);
     Page<Roba> findByRobaidInAndStanjeGreaterThanAndProid(Collection<Long> ids, double stanje, String proId, Pageable pageable);
 
-    List<Roba> findByKatbrIn(Collection<String> katBr);
+    List<Roba> findByKatbrInOrKatbrproIn(Collection<String> katBr, Collection<String> katBrPro);
     List<Roba> findByKatbrContainingOrKatbrproContaining(String katbr, String katbrpro);
 
     List<Roba> findByProid(String proId);

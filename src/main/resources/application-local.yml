@@ -22,10 +22,10 @@ spring:
     change-log: classpath:/db/changelog/db.changelog-master.xml
     enabled: false
   mail:
-    host: hatsja.orion.rs
+    host: smtp.gmail.com
     port: 587
-    username: webshop@automaterijal.com
-    password: automate19
+    username: webshop.automaterijal@gmail.com
+    password: tfvxwhdivvkujswd
     protocol: smtp
     defaultEncoding: UTF-8 # Default message encoding
     properties:

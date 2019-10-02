@@ -1,7 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { Partner } from '../e-shop/model/dto';
 import { LoginService } from '../e-shop/service/login.service';
@@ -17,23 +14,24 @@ export class NavigacijaComponent implements OnInit {
   public korpaBadge = 0;
   public partner: Partner;
   public partnerUlogovan = false;
-
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
-    .pipe(
-      map(result => result.matches)
-    );
+  public openSideNav = false;
 
   constructor(
-    private breakpointObserver: BreakpointObserver,
     private korpaServis: DataService,
     private loginServis: LoginService,
     public dialog: MatDialog
   ) { }
 
   ngOnInit() {
+    this.openSideNav = window.innerWidth < 950;
     this.korpaServis.trenutnaKorpa.subscribe(korpa => this.korpaBadge = korpa.roba.length);
     this.loginServis.daLiJePartnerUlogovan.subscribe(bool => this.partnerUlogovan = bool);
     this.loginServis.ulogovaniPartner.subscribe(partner => this.partner = partner);
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.openSideNav = window.innerWidth < 950;
   }
 
   otvoriDialog(): void {

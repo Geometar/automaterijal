@@ -16,9 +16,17 @@ p {
 
 .headerONama {
     background-image: url('/automaterijal/assets/slike/ui/pozadine/onama.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100% 102px;
 }
 
 .parcele {
+    width: 50%;
+    padding: 3%;
+}
+
+.parcele-slika {
     width: 50%;
     padding: 3%;
 }
@@ -27,18 +35,21 @@ p {
     background-image: url('/automaterijal/assets/slike/ui/pozadine/istorija.png');
     background-position: center;
     background-repeat: no-repeat;
+    background-size: contain;
 }
 
 .pozadina-usluga {
     background-image: url('/automaterijal/assets/slike/ui/pozadine/usluga.png');
     background-position: center;
     background-repeat: no-repeat;
+    background-size: contain;
 }
 
 .pozadina-proizvodi {
     background-image: url('/automaterijal/assets/slike/ui/pozadine/proizvodi.png');
     background-position: center;
     background-repeat: no-repeat;
+    background-size: contain;
 }
 
 .parcela-ikona {
@@ -75,14 +86,23 @@ p {
     padding: 0px;
 }
 
+@media only screen and (max-width :1025px) { 
 
-@media only screen and (max-device-width :1025px) { 
+    .parcela-najveca {
+        height: 700px !important;
+    }
+
     .owl-carousel-moj{
         width: 500px !important;
     }
 
     .parcele {
         width: 100%;
+        padding: 3%;
+    }
+    .parcele-slika {
+        width: 100%;
+        height: 250px;
         padding: 3%;
     }
     .logoi {
@@ -93,17 +113,90 @@ p {
         width: 100% !important;
     }
 }
-@media only screen and (max-width :1025px) { 
+    
+@media only screen and (max-width :991px) { 
+
+    .parcela-najveca {
+        height: 450px !important;
+    }
+
     .owl-carousel-moj{
-        width: 100% !important;
+        width: 500px !important;
+    }
+        .owl-carousel-moj{
+            width: 98% !important;
+        }
+        .parcele {
+            width: 100%;
+            padding: 3%;
+            height: 350px;
+        }
+        .parcele-slike {
+            width: 100%;
+            padding: 3%;
+            height: 250px;
+        }
+        .poslednja-parcela {
+            height: 700px;
+            padding-bottom: 100px;
+        }
+}
+    
+@media only screen and (max-width :720px) { 
+        .poslednja-parcela {
+            height: 700px;
+            padding-bottom: 100px;
+        }
+
+        .parcele {
+            width: 100%;
+            padding: 3%;
+            height: 350px;
+        }
+        .parcele-slika {
+            width: 100%;
+            padding: 3%;
+            height: 250px;
+        }
+        .owl-carousel-moj{
+            margin-top: 100px;
+            width: 60% !important;
+        }
+        .pozadina-proizvodi {
+            margin-top: 0px;
+        }
+
+        .parcela-najveca {
+            height: 700px !important;
+        }
+}
+
+@media only screen and (max-width :500px) { 
+    .poslednja-parcela {
+        height: 800px;
+        padding-bottom: 100px;
     }
 
     .parcele {
         width: 100%;
         padding: 3%;
+        height: 450px;
     }
-    .logoi {
+
+    .parcele-slika {
         width: 100%;
-        margin-left: 0%;
+        padding: 3%;
+        height: 250px;
+    }
+    .owl-carousel-moj{
+        margin-top: 100px;
+        width: 60% !important;
+    }
+    .pozadina-proizvodi {
+        margin-top: 0px;
+    }
+
+    .parcela-najveca {
+        height: 800px !important;
     }
 }
