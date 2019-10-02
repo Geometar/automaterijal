@@ -1,41 +1,40 @@
 <div class="d-flex justify-content-center" *ngIf="otvoriFilter">
-  <div class="filter-div-test d-flex flex-column">
-      <div class="d-flex justify-content-center">
-          <h2>
-              Filter
-          </h2>
-      </div>
-      <div class="d-flex flex-column flex-xl-row input-group mb-3">
-          <div class="input-group-prepend">
-              <label class="input-group-text mobilna-duzina button-glavni-50" for="inputGroupSelect01">
-                  <p class="boja-siva-400">Proizvodjač: </p>
-              </label>
-          </div>
-          <select class="custom-select mobilna-duzina" id="inputGroupSelect01" [(ngModel)]="filter.proizvodjac">
-              <option *ngFor="let proizvodjac of proizvodjaci" [value]="proizvodjac.naziv">
-                  {{proizvodjac.naziv}}
-              </option>
-          </select>
-
-          <div class="input-group-prepend razmak">
-              <label class="input-group-text mobilna-duzina button-glavni-50" for="inputGroupSelect01">
-                  Raspoloživost:
-              </label>
-          </div>
-          <select class="custom-select mobilna-duzina" id="inputGroupSelect01" [(ngModel)]="filter.raspolozivost">
-              <option *ngFor="let raspoloziv of raspolozivost" [value]="raspoloziv">{{raspoloziv}}</option>
-          </select>
-      </div>
-      <div class="d-flex justify-content-center">
-          <div>
-              <button mat-stroked-button class=pozadina-glavna-100 (click)='filtriraj()'>
-                  <p class="boja-siva-400">Filtriraj</p>
-              </button>
-              <span class="col-2"></span>
-              <button mat-stroked-button class=button-crveni-50 (click)='resetujFilter()'>
-                  <p class="boja-siva-400">Poništi</p>
-              </button>
-          </div>
-      </div>
-  </div>
+    <div class="filter-div-test d-flex flex-column">
+        <div class="d-flex justify-content-center">
+            <h2>
+                Filter
+            </h2>
+        </div>
+        <div class="d-flex flex-column flex-xl-row input-group mb-3">
+                <div class="input-group-prepend">
+                    <label class="input-group-text mobilna-duzina button-glavni-50" for="inputGroupSelect01">
+                        <p class="boja-siva-400">Proizvodjač: </p>
+                    </label>
+                </div>
+                <select class="custom-select mobilna-duzina" id="inputGroupSelect01" [(ngModel)]="filter.proizvodjac">
+                    <option *ngFor="let proizvodjac of proizvodjaci" [value]="proizvodjac.naziv">
+                        {{proizvodjac.naziv}}
+                    </option>
+                </select>
+                <div class="input-group-prepend razmak">
+                    <label class="input-group-text mobilna-duzina button-glavni-50" for="inputGroupSelect01">
+                        Raspoloživost:
+                    </label>
+                </div>
+                <select class="custom-select mobilna-duzina" id="inputGroupSelect01" [(ngModel)]="filter.raspolozivost">
+                    <option *ngFor="let raspoloziv of raspolozivost" [value]="raspoloziv">{{raspoloziv}}</option>
+                </select>
+        </div>
+        <div class="d-flex justify-content-center">
+            <div>
+                <button mat-stroked-button class=pozadina-glavna-100 (click)='filtriraj()'>
+                    <p class="boja-siva-400">Filtriraj</p>
+                </button>
+                <span class="col-2"></span>
+                <button mat-stroked-button class=button-crveni-50 (click)='resetujFilter()'>
+                    <p class="boja-siva-400">Poništi</p>
+                </button>
+            </div>
+        </div>
+    </div>
 </div>

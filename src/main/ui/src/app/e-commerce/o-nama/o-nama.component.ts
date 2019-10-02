@@ -12,7 +12,20 @@ import { e } from '@angular/core/src/render3';
 export class ONamaComponent implements OnInit {
   innerWidth;
   public mySlideBrands = this.vratiSveBrendove();
-  public mySlideOptions = null;
+
+  public mySlideLargeOptions = {
+    items: 7, margin: 20,
+    dots: true, nav: false, autoplay: true,
+    autoplayTimeout: 2500, rewind: true
+  };
+  
+  public mySlideSmallOptions = {
+    items: 3, margin: 5,
+    dots: true, nav: false, autoplay: true,
+    autoplayTimeout: 2500, rewind: true
+  };
+
+  public isLargeDiv = window.innerWidth > 750;
 
   constructor(public dialog: MatDialog) { }
 
@@ -28,18 +41,10 @@ export class ONamaComponent implements OnInit {
   }
 
   changeSlideConfiguration() {
-    if (this.innerWidth < 500) {
-      this.mySlideOptions = {
-        items: 3, margin: 5,
-        dots: true, nav: false, autoplay: true,
-        autoplayTimeout: 2500, rewind: true
-      };
+    if (this.innerWidth < 750) {
+      this.isLargeDiv = false;
     } else {
-      this.mySlideOptions = {
-        items: 7, margin: 20,
-        dots: true, nav: false, autoplay: true,
-        autoplayTimeout: 2500, rewind: true
-      };
+      this.isLargeDiv = true;
     }
   }
 

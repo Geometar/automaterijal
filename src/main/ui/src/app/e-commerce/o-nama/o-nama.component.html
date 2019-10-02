@@ -54,8 +54,19 @@
   </div>
   <div class="pozadina-bela">
     <div class="d-flex justify-content-center logoi">
-      <div class="owl-carousel-moj">
-        <owl-carousel [options]="mySlideOptions" [carouselClasses]="['owl-theme']">
+      <div *ngIf="isLargeDiv" class="owl-carousel-moj">
+        <owl-carousel [options]="mySlideLargeOptions" [carouselClasses]="['owl-theme']">
+          <div class="item" *ngFor="let brand of mySlideBrands;let i = index">
+            <div>
+              <button mat-button class="dugme" (click)="otvoriDialog(brand)">
+                <img width="65px" height="65px" src={{brand.urlSlikeLogo}} />
+              </button>
+            </div>
+          </div>
+        </owl-carousel>
+      </div>
+      <div *ngIf="!isLargeDiv" class="owl-carousel-moj">
+        <owl-carousel [options]="mySlideSmallOptions" [carouselClasses]="['owl-theme']">
           <div class="item" *ngFor="let brand of mySlideBrands;let i = index">
             <div>
               <button mat-button class="dugme" (click)="otvoriDialog(brand)">
