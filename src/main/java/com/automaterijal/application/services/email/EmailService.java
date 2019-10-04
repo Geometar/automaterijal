@@ -91,7 +91,7 @@ public class EmailService {
     private Context popuniKontextZaborvaljeneSifreEmaila(final Partner partner, final String host) {
         final Context context = new Context();
         final String customerIdParam = "?id=" + partner.getPpid();
-        final String url = "http://" + host + "/automaterijal/#/reset-sifre/" + partner.getUsers().getPassword() + customerIdParam;
+        final String url = "http://" + host + "/#/reset-sifre/" + partner.getUsers().getPassword() + customerIdParam;
         context.setVariable("url", url);
         return context;
     }

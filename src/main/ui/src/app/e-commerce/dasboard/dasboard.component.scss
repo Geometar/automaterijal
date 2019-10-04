@@ -22,7 +22,7 @@
 
 
 img {
-  height: 300px;
+  height: 100%;
   vw: 100 !important;
 }
 
@@ -63,6 +63,7 @@ img {
 .pomeri-levo {
   margin-right: 15px;
 }
+
 @media only screen and (max-width :1025px) { 
   .paragraph {
     font-size: 1em;
@@ -83,3 +84,11 @@ img {
     text-align: center;
   }
 }
+
+@media only screen and (max-width :670px) { 
+  img {
+    height: 155px;
+    vw: 100 !important;
+  }
+}
+

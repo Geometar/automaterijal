@@ -1,7 +1,6 @@
 server:
   port: ${PORT:8080}
   servlet:
-    contextPath: /automaterijal
     session:
       timeout: 5
 

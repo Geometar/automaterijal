@@ -5,7 +5,7 @@
 
     <groupId>com.automaterijal</groupId>
     <artifactId>application</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <!--<packaging>jar</packaging>-->
     <packaging>war</packaging>
 
@@ -132,7 +132,7 @@
 
     </dependencies>
     <build>
-        <finalName>automaterijal</finalName>
+        <finalName>ROOT</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
