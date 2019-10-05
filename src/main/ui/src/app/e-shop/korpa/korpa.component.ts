@@ -283,10 +283,7 @@ export class KorpaComponent implements OnInit {
     }
 
     if (this.izabraneAdresaDostave === this.adresaDostave[1]) {
-      let adresaDostave;
-      if (this.izabranaTrecaLiceOpcija === this.treceLiceOpcije[0]) {
-        adresaDostave = this.adresaForm.controls.ulica.value + ', ' + this.adresaForm.controls.grad.value;
-      }
+      const adresaDostave = this.adresaForm.controls.ulica.value + ', ' + this.adresaForm.controls.grad.value;
       this.korpa.napomena = this.korpa.napomena + 'Adresa dostave: ' + adresaDostave + ' - ';
     }
     if (this.napomena) {

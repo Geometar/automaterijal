@@ -106,7 +106,6 @@ export class LoginService {
         catchError((error: any) => throwError(error))
       )
       .subscribe(() => {
-        this.korpaServis.ocistiKorpu();
         this.logovanjeSubjekat.next(false);
         this.partnerSubjekat.next(null);
         this.storageServis.logout();

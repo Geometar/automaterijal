@@ -52,7 +52,6 @@ export class LoginComponent implements OnInit {
   }
 
   vratiKorisnika() {
-    this.dataService.ocistiKorpuIzMemorije();
     this.loginServis.vratiUlogovanogKorisnika(true)
       .subscribe((res: Partner) => {
         if (res !== null) {
