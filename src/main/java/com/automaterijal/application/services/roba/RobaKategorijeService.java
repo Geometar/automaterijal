@@ -38,6 +38,13 @@ public class RobaKategorijeService {
             final List<String> podGrupe,
             final Partner ulogovaniPartner) {
         final Page<Roba> roba;
+
+        log.info("Partner {} trazi ostalu robu po kataloskom broju {} i prozivodjacu {}",
+                ulogovaniPartner != null ? ulogovaniPartner.getNaziv() : "anoniman",
+                parametri.getTrazenKatBroj() != null ? parametri.getTrazenKatBroj() : "-",
+                parametri.getProizvodjac() != null ? parametri.getProizvodjac() : "-"
+        );
+
         final List<Integer> sveFilterPodGrupeId = podGrupaService.vratiSvePodGrupePoNazivima(podGrupe);
         final var pageable = PageRequest.of(parametri.getPage(), parametri.getPageSize(), new Sort(parametri.getDirection(), parametri.getSortiranjePolja().getFieldName()));
         if (parametri.getTrazenKatBroj() == null && parametri.getProizvodjac() == null) {

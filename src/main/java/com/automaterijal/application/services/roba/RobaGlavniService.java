@@ -45,6 +45,13 @@ public class RobaGlavniService {
                 parametri.getPage(), parametri.getPageSize(), new Sort(parametri.getDirection(), parametri.getSortiranjePolja().getFieldName())
         );
         final Page<Roba> roba;
+
+        log.info("Partner {} trazi sve artikle po kataloskom broju {} i prozivodjacu {}",
+                ulogovaniPartner != null ? ulogovaniPartner.getNaziv() : "anoniman",
+                parametri.getTrazenKatBroj() != null ? parametri.getTrazenKatBroj() : "-",
+                parametri.getProizvodjac() != null ? parametri.getProizvodjac() : "-"
+        );
+
         if (parametri.getTrazenKatBroj() == null && parametri.getProizvodjac()== null) {
             roba = robaService.pronadjiSvuRobu(parametri.getNaStanju(), pageable);
         } else {

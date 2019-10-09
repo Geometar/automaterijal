@@ -64,7 +64,7 @@ public class FakturaController {
         log.info("Porudzbenica podneta: korisnik {}, iznos narucen = {}, broj stavki = {}",
                 partner.getNaziv(),
                 fakturaDto.getIznosNarucen(),
-                fakturaDto.getBrojStavki());
+                fakturaDto.getDetalji().size());
 
         final var response = fakturaService.submitujFakturu(fakturaDto, partner);
         return ResponseEntity.ok(response);

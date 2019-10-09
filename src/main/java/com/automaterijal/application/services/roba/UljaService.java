@@ -45,6 +45,13 @@ public class UljaService {
         final var pageable = PageRequest.of(
                 parametri.getPage(), parametri.getPageSize(), new Sort(parametri.getDirection(), parametri.getSortiranjePolja().getFieldName())
         );
+
+        log.info("Partner {} trazi ulje po kataloskom broju {} i prozivodjacu {}",
+                ulogovaniPartner != null ? ulogovaniPartner.getNaziv() : "anoniman",
+                parametri.getTrazenKatBroj() != null ? parametri.getTrazenKatBroj() : "-",
+                parametri.getProizvodjac() != null ? parametri.getProizvodjac() : "-"
+        );
+
         if (parametri.getTrazenKatBroj() == null && parametri.getProizvodjac() == null) {
             roba = vratiSvuRobuUZavisnostiOdTrazenogStanja(parametri.getNaStanju(), svePodGrupeUlja, pageable);
         } else {

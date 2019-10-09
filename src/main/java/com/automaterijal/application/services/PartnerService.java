@@ -60,8 +60,8 @@ public class PartnerService {
 
     public void povecanPartnerovOrderCount(final Partner partner) {
         final Optional<Partner> partnerHibernate = partnerRepository.findById(partner.getPpid());
-        partnerHibernate.ifPresent(partner1 -> {
-           final Users users = partner.getUsers();
+        partnerHibernate.ifPresent(partnerBaza -> {
+           final Users users = partnerBaza.getUsers();
            users.setOrderCount(users.getOrderCount() + 1);
         });
     }

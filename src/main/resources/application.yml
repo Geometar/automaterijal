@@ -10,7 +10,7 @@ spring:
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration
   datasource:
-    url: jdbc:mysql://localhost:3306/automate_orders?autoReconnect=true&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/automate_orders?autoReconnect=true&useSSL=false&serverTimezone=Europe/Amsterdam
     username: root
     password: Crninovembar18!
     jpa:
