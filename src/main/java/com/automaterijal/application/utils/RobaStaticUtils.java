@@ -37,8 +37,13 @@ public class RobaStaticUtils {
         final Set<String> kataloskiBrojevi = new HashSet<>();
         if (!katBr.isEmpty()) {
             katBr.forEach(roba -> {
+                if(!StringUtils.isEmpty(roba.getKatbr()) && !" ".equals(roba.getKatbr())) {
                 kataloskiBrojevi.add(roba.getKatbr());
-                kataloskiBrojevi.add(roba.getKatbrpro());
+                }
+
+                if(!StringUtils.isEmpty(roba.getKatbrpro()) && !" ".equals(roba.getKatbrpro())) {
+                    kataloskiBrojevi.add(roba.getKatbrpro());
+                }
             });
         }
         if (!katBrProLista.isEmpty()) {
