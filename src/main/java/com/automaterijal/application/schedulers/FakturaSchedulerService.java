@@ -8,13 +8,15 @@ import com.automaterijal.application.services.email.EmailService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
+/**
+ * Ne ukljucivati scheduler do daljnjeg
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -29,7 +31,6 @@ public class FakturaSchedulerService {
     @NonNull
     EmailService emailService;
 
-    @Scheduled(fixedDelayString = "${schedule.fakture.upadte}")
     public void proveriPromeneStatusaFakture() {
         final var timestamp  = Timestamp.valueOf(LocalDateTime.now().minusMinutes(10));
         final var fakture = fakturaService.vratiUpdejtovaneFakture(timestamp);
