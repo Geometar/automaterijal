@@ -1,5 +1,9 @@
 @import "src/automaterijal-theme.scss";
 
+.velicina-dugmeta {
+  padding: 0 10px;
+}
+
 .korpa-h1 {
   margin-top: 0.5em;
   font-size: 3.5em;
@@ -114,4 +118,37 @@ label {
     width: 95%;
     margin-left: 2%;
   }
+}
+  
+@media screen and (max-width: 900px) {
+
+    p {
+        font-size: 0.85em;
+        font-weight: bold;
+        text-align: right !important;
+    }
+    tr.mat-header-row {
+        height: 0px;
+    }
+    .text-center {
+        text-align: none;
+    }
+    .mat-table .mat-cell:last-child {
+       margin-top: 10px;
+       padding-left: 10px;
+       padding-right: 10px;
+       height: 45px;
+    }
+    .button-align {
+      text-align: center;
+    }
+    .levo-dugme {
+      padding-right: 20px !important ;
+      display: inline-block !important ;
+    }
+
+    .desno-dugme {
+      padding-left: 20px !important ;
+      display: inline-block !important ;
+    }
 }

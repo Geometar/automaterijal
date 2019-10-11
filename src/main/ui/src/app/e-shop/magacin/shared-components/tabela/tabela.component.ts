@@ -55,6 +55,7 @@ export class TabelaComponent implements OnInit {
 
   paginatorEvent(pageEvent) {
     this.magacinEvent.emit(pageEvent);
+    window.scroll(0, 0);
   }
 
   getDisplayedColumns(): string[] {

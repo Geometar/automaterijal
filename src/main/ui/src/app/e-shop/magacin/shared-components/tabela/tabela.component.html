@@ -4,7 +4,7 @@
     <!-- Kataloski broj Column -->
     <ng-container matColumnDef="katbr">
       <th mat-header-cell *matHeaderCellDef> Kataloški broj </th>
-      <td mat-cell *matCellDef="let roba">
+      <td data-label="Kataloški broj" mat-cell *matCellDef="let roba">
         <p class="mat-body-2">
           {{roba.katbr}}
         </p>
@@ -14,7 +14,7 @@
     <!-- Kataloski broj proizvodjaca Column -->
     <ng-container matColumnDef="katbrpro">
       <th mat-header-cell *matHeaderCellDef> Kataloški broj proizvodjača </th>
-      <td mat-cell *matCellDef="let roba">
+      <td data-label="Kataloški broj proizvodjača" mat-cell *matCellDef="let roba">
         <p>
           {{roba.katbrpro}}
         </p>
@@ -24,7 +24,7 @@
     <!-- Naziv Column -->
     <ng-container matColumnDef="naziv">
       <th mat-header-cell *matHeaderCellDef> Naziv </th>
-      <td mat-cell *matCellDef="let roba">
+      <td data-label="Naziv" mat-cell *matCellDef="let roba">
         <p>
           {{roba.naziv}}
         </p>
@@ -34,7 +34,7 @@
     <!-- Proizvodjač Column -->
     <ng-container matColumnDef="proizvodjac">
       <th mat-header-cell *matHeaderCellDef> Proizvodjač </th>
-      <td mat-cell *matCellDef="let roba">
+      <td data-label="Proizvodjač" mat-cell *matCellDef="let roba">
         <p class="mat-body-2">
           {{roba.proizvodjac.naziv}}
         </p>
@@ -44,7 +44,7 @@
     <!-- Cena Column -->
     <ng-container matColumnDef="cena">
       <th mat-header-cell *matHeaderCellDef class="text-center"> Cena </th>
-      <td mat-cell *matCellDef="let roba">
+      <td data-label="Cena" mat-cell *matCellDef="let roba">
         <p class="mat-body-2 text-right iznos-margin">
           {{roba.cena | currency:" "}} RSD
         </p>
@@ -54,11 +54,11 @@
     <!-- Stanje Column -->
     <ng-container matColumnDef="stanje">
       <th mat-header-cell *matHeaderCellDef class="text-center"> Stanje </th>
-      <td mat-cell *matCellDef="let roba">
-        <div *ngIf="roba.stanje > 0" class="text-center">
+      <td data-label="Stanje" mat-cell *matCellDef="let roba">
+        <div *ngIf="roba.stanje > 0" class="text-center tabela-u-korpi">
           <mat-icon matTooltip="Ima na stanju" class="boja-zelena-50">check_circle_outline</mat-icon>
         </div>
-        <div *ngIf="roba.stanje == 0" class="text-center">
+        <div *ngIf="roba.stanje == 0" class="text-center tabela-u-korpi">
           <mat-icon matTooltip="Nema na stanju" class="boja-crvena-50">remove_circle_outline</mat-icon>
         </div>
       </td>
@@ -68,7 +68,7 @@
     <!-- Kolicina Column -->
     <ng-container matColumnDef="kolicina">
       <th mat-header-cell *matHeaderCellDef>Količina </th>
-      <td mat-cell *matCellDef="let roba">
+      <td class="visina-div-kolicine" data-label="Količina" mat-cell *matCellDef="let roba">
         <div *ngIf="roba.stanje > 0">
           <input type="number" min="0" placeholder="0" max="{{roba.stanje}}" class="kolicina-labela"
             [(ngModel)]="roba.kolicina" />
@@ -78,9 +78,9 @@
     <!-- Kropa dugme Column -->
     <ng-container matColumnDef="korpa">
       <th mat-header-cell *matHeaderCellDef> </th>
-      <td mat-cell *matCellDef="let roba">
-        <div *ngIf="roba.stanje > 0">
-          <button mat-raised-button class="button-glavni-100" (click)='dodajUKorpu(roba)'>Dodaj u
+      <td class="visina-div-dugmeta" mat-cell *matCellDef="let roba">
+        <div class="dugme-mobilni" *ngIf="roba.stanje > 0">
+          <button mat-raised-button class="velicina-dugmeta button-glavni-100" (click)='dodajUKorpu(roba)'>Dodaj u
             korpu</button>
         </div>
     </ng-container>
@@ -89,8 +89,8 @@
     <ng-container matColumnDef="u-korpi">
       <th mat-header-cell *matHeaderCellDef> </th>
       <td mat-cell *matCellDef="let roba">
-        <div *ngIf="uKorpi(roba.katbr)">
-          <mat-icon matTooltip="U korpi" class="boja-crvena-50">add_shopping_cart</mat-icon>
+        <div class="dugme-mobilni" *ngIf="uKorpi(roba.katbr)">
+          <mat-icon matTooltip="U korpi" class="tabela-u-korpi boja-crvena-50">add_shopping_cart</mat-icon>
         </div>
     </ng-container>
 

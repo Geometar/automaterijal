@@ -3,7 +3,7 @@
 .h1-upozorenje {
   color: $automaterijal-grey-200 !important;
   text-align: center;
-  font-size: 50px
+  font-size: 45px
 }
 
 .prazna-tabela {
@@ -20,6 +20,9 @@
 @media only screen and (max-width : 960px) { 
   .prazna-tabela {
     margin-top: 100px;
+  }
+  .h1-upozorenje {
+    font-size: 30px
   }
 }
 

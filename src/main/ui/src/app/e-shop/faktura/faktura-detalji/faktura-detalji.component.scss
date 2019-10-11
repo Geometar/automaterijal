@@ -27,6 +27,21 @@ table {
     margin-left: 5%;
 }
 
+@media screen and (max-width: 900px) {
+
+    p {
+        font-size: 0.85em;
+        font-weight: bold;
+    }
+    tr.mat-header-row {
+        height: 0px;
+    }
+    .text-center {
+        text-align: none;
+    }
+
+}
+
 
 @media only screen and (max-device-width : 640px) {
     h1 {

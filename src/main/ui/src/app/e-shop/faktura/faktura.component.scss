@@ -1,17 +1,11 @@
-@import "src/automaterijal-theme.scss";
+@media screen and (max-width: 900px) {
 
-.napomena {
-  width: 300px;
-}
+    p {
+        font-size: 0.85em;
+        font-weight: bold;
+    }
+    tr.mat-header-row {
+        height: 0px;
+    }
 
-h1 {
-  margin-top: 30px;
-  margin-left: 5%;
-}
-
-
-@media only screen and (max-device-width : 640px) {
-  h1 {
-      margin-top: 0px;
   }
-}
