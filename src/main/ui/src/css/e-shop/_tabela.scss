@@ -1,3 +1,4 @@
+@import "src/automaterijal-theme.scss";
 .velicina-dugmeta {
     padding: 0 10px;
   }
@@ -24,7 +25,7 @@
     }
     
     .mat-table .mat-row {
-        box-shadow: 0 0px 5px 4px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+        border-bottom: 3px double $automaterijal-grey-100;
     }
       
     .mat-table .mat-cell {
