@@ -26,6 +26,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
@@ -59,7 +60,6 @@ public class FakturaService {
     final ProizvodjacService proizvodjacService;
     @NonNull
     final PartnerService partnerService;
-
     @NonNull
     final FakturaMapper mapper;
     @NonNull
@@ -68,7 +68,7 @@ public class FakturaService {
     public List<RobaDto> submitujFakturu(final FakturaDto fakturaDto, final Partner partner) {
         final List<RobaDto> dozvoljenaKolicina = new ArrayList<>();
         proveraMagacinaIKolicina(dozvoljenaKolicina, fakturaDto);
-        if(dozvoljenaKolicina.isEmpty()) {
+        if (dozvoljenaKolicina.isEmpty()) {
             sacuvajFakturu(fakturaDto, partner);
         }
         return dozvoljenaKolicina;
@@ -77,7 +77,7 @@ public class FakturaService {
     private void proveraMagacinaIKolicina(final List<RobaDto> dozvoljenaKolicina, final FakturaDto fakturaDto) {
         fakturaDto.getDetalji().forEach(detalji -> {
             final Optional<Roba> robaOptional = robaService.pronadjiRobuPoPrimarnomKljucu(detalji.getRobaId());
-            if(robaOptional.isPresent()) {
+            if (robaOptional.isPresent()) {
                 final Roba roba = robaOptional.get();
                 if (roba.getStanje() < detalji.getKolicina()) {
                     dozvoljenaKolicina.add(robaMapper.map(roba));
@@ -124,16 +124,18 @@ public class FakturaService {
     private void formatirajCenuFakture(final FakturaDto fakturaDto) {
         final var formater = new DecimalFormat("#.##");
         formater.setRoundingMode(RoundingMode.UP);
-
-        fakturaDto.getDetalji().forEach(fakturaDetaljiDto -> {
-            final var cena = Double.valueOf(formater.format(fakturaDetaljiDto.getCena()));
-            fakturaDetaljiDto.setCena(cena);
-        });
+        BigDecimal bigDecimal = new BigDecimal(0);
+        for (final FakturaDetaljiDto dto : fakturaDto.getDetalji()) {
+            if (dto.getPotvrdjenaKolicina() > 0) {
+                final double ukupnaCenaDela = dto.getPotvrdjenaKolicina() * dto.getCena();
+                bigDecimal = bigDecimal.add(new BigDecimal(ukupnaCenaDela));
+            }
+            dto.setCena(Double.valueOf(formater.format(dto.getCena())));
+        }
 
         final var iznosNarucen = Double.valueOf(formater.format(fakturaDto.getIznosNarucen()));
-        final var iznosPotvrdjen = Double.valueOf(formater.format(fakturaDto.getIznosPotvrdjen()));
         fakturaDto.setIznosNarucen(iznosNarucen);
-        fakturaDto.setIznosPotvrdjen(iznosPotvrdjen);
+        fakturaDto.setIznosPotvrdjen(bigDecimal.doubleValue());
     }
 
     private void obogatiDetalje(final FakturaDetaljiDto dto, final Partner partner) {
