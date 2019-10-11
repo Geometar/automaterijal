@@ -5,7 +5,7 @@
 
     <groupId>com.automaterijal</groupId>
     <artifactId>application</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <!--<packaging>jar</packaging>-->
     <packaging>war</packaging>
 
@@ -65,11 +65,11 @@
         </dependency>
 
         <!--Server - Deployment on prod-->
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-starter-tomcat</artifactId>-->
-            <!--<scope>provided</scope>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
         <!--Database-->
         <dependency>
