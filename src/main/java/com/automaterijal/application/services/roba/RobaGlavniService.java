@@ -90,10 +90,14 @@ public class RobaGlavniService {
     }
 
     private List<String> vratiSveKataloskeBrojevePoTrazenojReci(final String searchTerm) {
-        final List<Roba> katBr = robaService.pronadjuSvuRobuPoPretrazi(searchTerm);
+        final List<Roba> katBr = pronadjuSvuRobuPoPretrazi(searchTerm);
         final List<RobaKatBrPro> katBrProLista = robaKatBrProService.pronadjiPoPretrazi(searchTerm);
         final List<String> katBrojevi = RobaStaticUtils.miksujSveKatBrojeve(katBr, katBrProLista);
         return katBrojevi.stream().filter(katBroj -> !katBroj.isEmpty()).collect(Collectors.toList());
+    }
+
+    private List<Roba> pronadjuSvuRobuPoPretrazi(final String searchTerm) {
+        return robaService.pronadjuSvuRobuPoPretrazi(searchTerm);
     }
 
     private Page<Roba> pronadjiRobuPoIzvucenimKatBrojevima(final List<String> katBrojevi, final String filterProizvodjac, final Boolean filterRaspolozivostfinal, final Pageable pageable) {

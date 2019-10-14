@@ -78,7 +78,15 @@ public class RobaSpringBeanUtils {
 
     public List<String> vratiSveKataloskeBrojevePoTrazenojReciIPodGrupi(final String searchTerm, final List<Integer> svePodGrupeId) {
         final List<Roba> robaPoPodGrupi = robaService.pronadjuSvuRobuPodGrupomId(svePodGrupeId);
-        final List<Roba> katBr = robaPoPodGrupi.stream().filter(roba -> roba.getKatbr().contains(searchTerm) || roba.getKatbrpro().contains(searchTerm)).collect(Collectors.toList());
+
+        final List<Roba> katBr = robaPoPodGrupi.stream()
+                .filter(roba -> roba.getKatbr().contains(searchTerm)
+                            || roba.getKatbrpro().contains(searchTerm)
+                            || roba.getKatbrpro().contains(searchTerm)
+                            || roba.getNaziv().contains(searchTerm)
+                )
+                .collect(Collectors.toList());
+
         final List<RobaKatBrPro> katBrProLista = robaKatBrProService.pronadjiPoPretrazi(searchTerm);
         final List<String> katBrojevi = RobaStaticUtils.miksujSveKatBrojeve(katBr, katBrProLista);
         return katBrojevi.stream().filter(katBroj -> !katBroj.isEmpty()).collect(Collectors.toList());

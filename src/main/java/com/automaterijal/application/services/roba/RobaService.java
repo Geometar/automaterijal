@@ -47,7 +47,7 @@ public class RobaService {
     }
 
     public List<Roba> pronadjuSvuRobuPoPretrazi(final String searchTerm) {
-        return robaRepository.findByKatbrContainingOrKatbrproContaining(searchTerm, searchTerm);
+        return robaRepository.findByKatbrContainingOrKatbrproContainingOrNazivContaining(searchTerm, searchTerm, searchTerm);
     }
 
     public List<Roba> pronadjuSvuRobuPodGrupomId(final List<Integer> podGrupeId) {
