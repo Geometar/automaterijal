@@ -12,9 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -47,7 +45,11 @@ public class RobaService {
     }
 
     public List<Roba> pronadjuSvuRobuPoPretrazi(final String searchTerm) {
-        return robaRepository.findByKatbrContainingOrKatbrproContainingOrNazivContaining(searchTerm, searchTerm, searchTerm);
+        final Set<Roba> svaRoba = new HashSet<>();
+        svaRoba.addAll(robaRepository.findByKatbrContainingOrKatbrproContainingOrNazivContaining(searchTerm, searchTerm, searchTerm));
+        final String searchTermWihoutWhiteSpaces = searchTerm.replaceAll("\\s+","");
+        svaRoba.addAll(robaRepository.findByKatbrContainingOrKatbrproContainingOrNazivContaining(searchTermWihoutWhiteSpaces, searchTermWihoutWhiteSpaces, searchTermWihoutWhiteSpaces));
+        return new ArrayList<>(svaRoba);
     }
 
     public List<Roba> pronadjuSvuRobuPodGrupomId(final List<Integer> podGrupeId) {

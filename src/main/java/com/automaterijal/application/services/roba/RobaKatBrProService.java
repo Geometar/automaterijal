@@ -10,7 +10,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional(readOnly = true)
@@ -27,7 +30,11 @@ public class RobaKatBrProService {
     }
 
     public List<RobaKatBrPro> pronadjiPoPretrazi(final String pretraga) {
-        return katBrProRepository.findByKatbrContainingOrKatbrproContaining(pretraga, pretraga);
+        final Set<RobaKatBrPro> svaRoba = new HashSet<>();
+        svaRoba.addAll(katBrProRepository.findByKatbrContainingOrKatbrproContaining(pretraga, pretraga));
+        final String searchTermWihoutWhiteSpaces = pretraga.replaceAll("\\s+","");
+        svaRoba.addAll(katBrProRepository.findByKatbrContainingOrKatbrproContaining(searchTermWihoutWhiteSpaces, searchTermWihoutWhiteSpaces));
+        return new ArrayList<>(svaRoba);
     }
 
     public List<RobaKatBrPro> pronadjiPoPretraziUPodGrupi(final String pretraga) {

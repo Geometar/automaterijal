@@ -78,12 +78,15 @@ public class RobaSpringBeanUtils {
 
     public List<String> vratiSveKataloskeBrojevePoTrazenojReciIPodGrupi(final String searchTerm, final List<Integer> svePodGrupeId) {
         final List<Roba> robaPoPodGrupi = robaService.pronadjuSvuRobuPodGrupomId(svePodGrupeId);
+        final String searchTermWihoutWhiteSpaces = searchTerm.replaceAll("\\s+","");
 
         final List<Roba> katBr = robaPoPodGrupi.stream()
                 .filter(roba -> roba.getKatbr().contains(searchTerm)
-                            || roba.getKatbrpro().contains(searchTerm)
-                            || roba.getKatbrpro().contains(searchTerm)
-                            || roba.getNaziv().contains(searchTerm)
+                        || roba.getKatbrpro().contains(searchTerm)
+                        || roba.getNaziv().contains(searchTerm)
+                        || roba.getKatbr().contains(searchTermWihoutWhiteSpaces)
+                        || roba.getKatbrpro().contains(searchTermWihoutWhiteSpaces)
+                        || roba.getNaziv().contains(searchTermWihoutWhiteSpaces)
                 )
                 .collect(Collectors.toList());
 

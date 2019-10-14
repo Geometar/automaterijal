@@ -55,7 +55,7 @@ public class AkumulatoriService {
                 parametri.getProizvodjac() != null ? parametri.getProizvodjac() : "-"
         );
 
-        if (parametri.getTrazenKatBroj() == null && parametri.getProizvodjac()== null) {
+        if (parametri.getTrazenKatBroj() == null && parametri.getProizvodjac() == null) {
             roba = vratiSvuRobuUZavisnostiOdTrazenogStanja(parametri.getNaStanju(), sveAkumulatorGrupeId, pageable);
         } else {
             roba = vratiRobuUZavisnostiOdKriterijuma(parametri, sveAkumulatorGrupeId, pageable);
@@ -107,8 +107,14 @@ public class AkumulatoriService {
     private List<String> vratiSveKataloskeBrojevePoTrazenojReci(final String searchTerm, final List<String> sveAkumulatorGrupeId) {
         final List<Roba> robaPoPodGrupi = robaService.pronadjuSvuRobuPoGrupiId(sveAkumulatorGrupeId);
 
+        final String searchTermWihoutWhiteSpaces = searchTerm.replaceAll("\\s+", "");
         final List<Roba> katBr = robaPoPodGrupi.stream()
-                .filter(roba -> roba.getKatbr().contains(searchTerm) || roba.getKatbrpro().contains(searchTerm) || roba.getNaziv().contains(searchTerm))
+                .filter(roba -> roba.getKatbr().contains(searchTerm)
+                        || roba.getKatbrpro().contains(searchTerm)
+                        || roba.getNaziv().contains(searchTerm)
+                        || roba.getKatbr().contains(searchTermWihoutWhiteSpaces)
+                        || roba.getKatbrpro().contains(searchTermWihoutWhiteSpaces)
+                        || roba.getNaziv().contains(searchTermWihoutWhiteSpaces))
                 .collect(Collectors.toList());
 
         final List<RobaKatBrPro> katBrProLista = robaKatBrProService.pronadjiPoPretrazi(searchTerm);

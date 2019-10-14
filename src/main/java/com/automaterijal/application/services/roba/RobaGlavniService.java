@@ -92,6 +92,10 @@ public class RobaGlavniService {
     private List<String> vratiSveKataloskeBrojevePoTrazenojReci(final String searchTerm) {
         final List<Roba> katBr = pronadjuSvuRobuPoPretrazi(searchTerm);
         final List<RobaKatBrPro> katBrProLista = robaKatBrProService.pronadjiPoPretrazi(searchTerm);
+        katBrProLista.forEach(robaKatBrPro -> {
+            katBr.addAll(pronadjuSvuRobuPoPretrazi(robaKatBrPro.getKatbr()));
+            katBr.addAll(pronadjuSvuRobuPoPretrazi(robaKatBrPro.getKatbrpro()));
+        });
         final List<String> katBrojevi = RobaStaticUtils.miksujSveKatBrojeve(katBr, katBrProLista);
         return katBrojevi.stream().filter(katBroj -> !katBroj.isEmpty()).collect(Collectors.toList());
     }
