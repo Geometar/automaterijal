@@ -25,5 +25,5 @@ public class GrupeKonstante {
     public final String TURBINSKA_ULJA = "TURBINSKA ULJA";
     public final String PNEUMATSKA_ULJA= "ULJA ZA PNEUMATSKE ALATE";
     public final String KLIZNA_ULJA = "ULJA ZA KLIZNE STAZE";
-    public final String PREONOSNA_ULJA = "ULJA ZA PRENOS TOPLOTE";
+    public final String PRENOSNA_ULJA = "ULJA ZA PRENOS TOPLOTE";
 }

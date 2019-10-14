@@ -90,7 +90,7 @@ public class RobaStaticUtils {
         } else if (VrstaUlja.KLIZNA.getFieldName().equals(vrstaUlja)) {
             grupa[0] = GrupeKonstante.KLIZNA_ULJA;
         } else if (VrstaUlja.PREONOSNA.getFieldName().equals(vrstaUlja)) {
-            grupa[0] = GrupeKonstante.PREONOSNA_ULJA;
+            grupa[0] = GrupeKonstante.PRENOSNA_ULJA;
         }
         return grupa;
     }
