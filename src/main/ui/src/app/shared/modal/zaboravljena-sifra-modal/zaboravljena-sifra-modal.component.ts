@@ -17,6 +17,7 @@ export class ZaboravljenaSifraModalComponent implements OnInit {
 
   public resetSifre: ResetSifre = new ResetSifre();
   public mailUspesnoPoslat = false;
+  public mailPoslatPartneru = false;
 
   // forme
   public zaboravljeSifraForma: FormGroup;
@@ -55,13 +56,19 @@ export class ZaboravljenaSifraModalComponent implements OnInit {
           const snackPoruka = 'E-mail ili korisničko ime ne postoji u našoj bazi.';
           this.notifikacijaServis.notify(snackPoruka, MatSnackBarKlase.Crvena);
           return EMPTY;
+        } else if (error.status === 503) {
+          this.mailUspesnoPoslat = true;
+          return EMPTY;
         }
         throwError(error);
       }),
       finalize(() => this.ucitavanje = false)
     ).subscribe(res => {
       this.mailUspesnoPoslat = true;
+      this.mailPoslatPartneru = true;
     }, error => {
+      this.mailPoslatPartneru = false;
+      console.log('Server internal error! Adminsitration is contacted.');
     });
   }
 

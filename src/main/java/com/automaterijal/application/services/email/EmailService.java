@@ -9,10 +9,14 @@ import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.mail.MailPreparationException;
 import org.springframework.mail.MailSendException;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -20,6 +24,7 @@ import java.time.format.DateTimeFormatter;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Slf4j
 public class EmailService {
 
     @NonNull
@@ -73,16 +78,47 @@ public class EmailService {
         }
 
         if (optionalPartner.isPresent()) {
-            zaboravljenaSifraPripremaISlanje(dto, optionalPartner.get(), host);
+            final Partner partner = optionalPartner.get();
+            validateEmail(partner);
+            zaboravljenaSifraPripremaISlanje(dto, partner, host);
         } else {
+            log.error("Ne postoji email ili korisinicko ime korisnika u bazi", dto.getEmail());
             throw new MailSendException("Mail not found");
         }
     }
 
+    private void validateEmail(final Partner partner) {
+        try {
+            if(partner.getEmail() == null) {throw new AddressException();}
+
+            final InternetAddress address = new InternetAddress(partner.getEmail());
+            address.validate();
+
+        } catch (final AddressException e) {
+            log.error("Partner {} nema validan mejl i ne moze da promeni sifru.", partner.getPpid());
+            nevalidanMejlPripremiIPosalji(partner);
+            throw new MailPreparationException("Email not valid");
+        }
+    }
+
+    private void nevalidanMejlPripremiIPosalji(final Partner partner) {
+        final String NASLOV = "Korisnik nema validan email";
+        final String TEMPLATE = "nevalidanEmailTemplate";
+        final Context context = popuniKontextNevalidnogMejla(partner);
+        sendEmail.pripremiIPosaljiEmail(Email.EMAIL_ZA_PRIMANJE, NASLOV, TEMPLATE, context);
+    }
+
+    private Context popuniKontextNevalidnogMejla(final Partner partner) {
+        final Context context = new Context();
+        final String naziv = partner.getNaziv() != null ? partner.getNaziv() : partner.getPpid().toString();
+        context.setVariable("naziv", naziv);
+        return context;
+    }
+
     private void zaboravljenaSifraPripremaISlanje(final ZaboravljenaSifraDto dto, final Partner partner, final String host) {
-        if(partner.getUsers() == null) {
-           final var users = usersService.sacuvajUsera(partner);
-           partner.setUsers(users);
+        if (partner.getUsers() == null) {
+            final var users = usersService.sacuvajUsera(partner);
+            partner.setUsers(users);
         }
         final Context context = popuniKontextZaborvaljeneSifreEmaila(partner, host);
         sendEmail.pripremiIPosaljiEmail(partner.getEmail(), dto.NASLOV, dto.TEMPLATE, context);

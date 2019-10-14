@@ -10,7 +10,9 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailPreparationException;
 import org.springframework.mail.MailSendException;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,8 +44,9 @@ public class EmailController {
             emailService.posaljiZaboravljenaSifraMail(dto, host);
             return ResponseEntity.ok().build();
         } catch (final MailSendException ex) {
-            log.error("Zaboravljena sifra: email ili us = {}, greska = {}", dto.getEmail(), ex.getMessage());
             return ResponseEntity.badRequest().build();
+        } catch(final MailPreparationException ex) {
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
         }
     }
 

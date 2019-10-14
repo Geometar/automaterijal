@@ -26,10 +26,20 @@
       </form>
     </section>
     <section *ngIf="mailUspesnoPoslat">
-      <h1>Mail uspešno poslat</h1>
-      <p>Uskoro će vam stići mail sa linkom gde možete promeniti vašu šifru.</p>
-      <div class="pomeri-dole">
-        <button mat-raised-button (click)="zatvoriDialog()" class="button-glavni-100">Zatvori</button>
+      <div *ngIf="mailPoslatPartneru">
+        <h1>Mail uspešno poslat</h1>
+        <p>Uskoro će vam stići mail sa linkom gde možete promeniti vašu šifru.</p>
+        <div class="pomeri-dole">
+          <button mat-raised-button (click)="zatvoriDialog()" class="button-glavni-100">Zatvori</button>
+        </div>
+      </div>
+      <div *ngIf="!mailPoslatPartneru">
+        <h1 class="boja-crvena-50">Obaveštenje</h1>
+        <p>Došlo je do greške. Administracija je obaveštena i problem će ubrzo biti rešen.</p>
+        <p>Hvala na razumevanju</p>
+        <div class="pomeri-dole">
+          <button mat-raised-button (click)="zatvoriDialog()" class="button-glavni-100">Zatvori</button>
+        </div>
       </div>
     </section>
   </main>
