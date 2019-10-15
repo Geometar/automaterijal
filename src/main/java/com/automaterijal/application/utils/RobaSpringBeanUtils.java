@@ -20,6 +20,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
@@ -72,11 +73,11 @@ public class RobaSpringBeanUtils {
             final List<String> iKategorije) {
         final Integer iPage = page.map(Integer::intValue).orElse(0);
         final Integer iPageSize = pageSize.map(Integer::intValue).orElse(10);
-        final String iProizvodjac = proizvodjac.map(String::toString).orElse(null);
+        final String iProizvodjac = proizvodjac.filter(StringUtils::hasText).map(String::toString).orElse(null);
         final Boolean iNaStanju = naStanju.map(Boolean::booleanValue).orElse(true);
         final RobaSortiranjePolja iSortiranjePolja = sortBy == null ? RobaSortiranjePolja.KATBR : sortBy;
         final Sort.Direction iDirection = sortDirection == null ? Sort.Direction.ASC : sortDirection;
-        final String iSearchTerm = searchTerm.map(trazenaRec -> trazenaRec.trim().toUpperCase()).orElse(null);
+        final String iSearchTerm = searchTerm.filter(StringUtils::hasText).map(trazenaRec -> trazenaRec.trim().toUpperCase()).orElse(null);
         return popuniParametreZaServis(iPage, iPageSize, iProizvodjac, iNaStanju, iSortiranjePolja, iDirection, iSearchTerm, vrstaRobe, vrstaUlja, iKategorije);
     }
 
