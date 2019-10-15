@@ -1,13 +1,10 @@
 package com.automaterijal.application.utils;
 
 import com.automaterijal.application.domain.constants.GrupeKonstante;
-import com.automaterijal.application.domain.constants.RobaSortiranjePolja;
 import com.automaterijal.application.domain.constants.VrstaUlja;
 import com.automaterijal.application.domain.entity.Roba;
 import com.automaterijal.application.domain.entity.RobaKatBrPro;
-import com.automaterijal.application.domain.model.UniverzalniParametri;
 import lombok.experimental.UtilityClass;
-import org.springframework.data.domain.Sort;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -17,21 +14,6 @@ import java.util.Set;
 
 @UtilityClass
 public class RobaStaticUtils {
-
-    public UniverzalniParametri popuniIVratiGenerickeParametreZaServis(final Integer page, final Integer pageSize, final RobaSortiranjePolja sortBy, final RobaSortiranjePolja sortBy1, final String proizvodjac, final Boolean naStanju, final RobaSortiranjePolja sortBy2, final Sort.Direction sortDirection, final String searchTerm) {
-        final Integer iPage = page == null ? 0 : page;
-        final Integer iPageSize = pageSize == null ? 10 : pageSize;
-        final String iProizvodjac = proizvodjac == null ? null : proizvodjac;
-        final Boolean iNaStanju = naStanju == null ? true : naStanju;
-        final RobaSortiranjePolja iSortiranjePolja = sortBy == null ? RobaSortiranjePolja.KATBR : sortBy;
-        final Sort.Direction iDirection = sortDirection == null ? Sort.Direction.ASC : sortDirection;
-        final String iSearchTerm = StringUtils.isEmpty(searchTerm) ? null : searchTerm.trim().toUpperCase();
-        return popuniParametreZaServis(iPage, iPageSize, iProizvodjac, iNaStanju, iSortiranjePolja, iDirection, iSearchTerm);
-    }
-
-    private UniverzalniParametri popuniParametreZaServis(final Integer internalPage, final Integer internalPageSize, final String internalProizvodjac, final Boolean internalNaStanju, final RobaSortiranjePolja internalSortiranjePolja, final Sort.Direction internalDirection, final String internalSearchTerm) {
-        return new UniverzalniParametri(internalPage, internalPageSize, internalProizvodjac, internalNaStanju, internalSortiranjePolja, internalDirection, internalSearchTerm);
-    }
 
     public List<String> miksujSveKatBrojeve(final List<Roba> katBr, final List<RobaKatBrPro> katBrProLista) {
         final Set<String> kataloskiBrojevi = new HashSet<>();

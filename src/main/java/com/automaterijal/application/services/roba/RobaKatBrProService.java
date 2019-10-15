@@ -25,20 +25,14 @@ public class RobaKatBrProService {
     @NonNull
     final RobaKatBrProRepository katBrProRepository;
 
-    public List<RobaKatBrPro> pronadjiSve() {
-        return katBrProRepository.findAll();
-    }
-
     public List<RobaKatBrPro> pronadjiPoPretrazi(final String pretraga) {
         final Set<RobaKatBrPro> svaRoba = new HashSet<>();
         svaRoba.addAll(katBrProRepository.findByKatbrContainingOrKatbrproContaining(pretraga, pretraga));
-        final String searchTermWihoutWhiteSpaces = pretraga.replaceAll("\\s+","");
-        svaRoba.addAll(katBrProRepository.findByKatbrContainingOrKatbrproContaining(searchTermWihoutWhiteSpaces, searchTermWihoutWhiteSpaces));
+        if(svaRoba.size() == 0) {
+            final String searchTermWihoutWhiteSpaces = pretraga.replaceAll("\\s+","");
+            svaRoba.addAll(katBrProRepository.findByKatbrContainingOrKatbrproContaining(searchTermWihoutWhiteSpaces, searchTermWihoutWhiteSpaces));
+        }
         return new ArrayList<>(svaRoba);
-    }
-
-    public List<RobaKatBrPro> pronadjiPoPretraziUPodGrupi(final String pretraga) {
-        return katBrProRepository.findByKatbrContainingOrKatbrproContaining(pretraga, pretraga);
     }
 
     public List<RobaKatBrPro> pronadjuKatBrProPoKataloskimBrojevima(final List<String> katBrPros) {

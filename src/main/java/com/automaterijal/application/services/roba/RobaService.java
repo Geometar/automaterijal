@@ -10,12 +10,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Slf4j
@@ -47,8 +45,10 @@ public class RobaService {
     public List<Roba> pronadjuSvuRobuPoPretrazi(final String searchTerm) {
         final Set<Roba> svaRoba = new HashSet<>();
         svaRoba.addAll(robaRepository.findByKatbrContainingOrKatbrproContainingOrNazivContaining(searchTerm, searchTerm, searchTerm));
-        final String searchTermWihoutWhiteSpaces = searchTerm.replaceAll("\\s+","");
-        svaRoba.addAll(robaRepository.findByKatbrContainingOrKatbrproContainingOrNazivContaining(searchTermWihoutWhiteSpaces, searchTermWihoutWhiteSpaces, searchTermWihoutWhiteSpaces));
+        if(svaRoba.size() == 0) {
+            final String searchTermWihoutWhiteSpaces = searchTerm.replaceAll("\\s+","");
+            svaRoba.addAll(robaRepository.findByKatbrContainingOrKatbrproContainingOrNazivContaining(searchTermWihoutWhiteSpaces, searchTermWihoutWhiteSpaces, searchTermWihoutWhiteSpaces));
+        }
         return new ArrayList<>(svaRoba);
     }
 
@@ -98,25 +98,28 @@ public class RobaService {
         return retVal;
     }
 
-    public Page<Roba> pronadjiSvuRobuPoPodGrupiIdNaStanju(final List<Integer> podGrupaId, final Pageable pageable) {
-        return robaRepository.findByPodgrupaidInAndStanjeGreaterThan(podGrupaId, 0, pageable);
-    }
-
-    public Page<Roba> pronadjiSvuRobuPoPodGrupiId(final List<Integer> podGrupaId, final Pageable pageable) {
-        return robaRepository.findByPodgrupaidInAndStanjeGreaterThan(podGrupaId, -1, pageable);
+    public Page<Roba> pronadjiSvuRobuPoPodGrupiId(final List<Integer> podGrupaId, final boolean naStanju, final Pageable pageable) {
+        Page<Roba> roba = null;
+        if(naStanju) {
+            roba = robaRepository.findByPodgrupaidInAndStanjeGreaterThan(podGrupaId, 0, pageable);
+        } else {
+            roba = robaRepository.findByPodgrupaidInAndStanjeGreaterThan(podGrupaId, -1, pageable);
+        }
+        return roba;
     }
 
     public List<Roba> pronadjiSvuRobuPoPodGrupiIdLista(final List<Integer> podGrupaId) {
         return robaRepository.findByPodgrupaidInAndStanjeGreaterThan(podGrupaId, 0);
     }
 
-
-    public Page<Roba> pronadjiSvuRobuPoGrupiIdNaStanju(final List<String> grupaId, final Pageable pageable) {
-        return robaRepository.findByGrupaidInAndStanjeGreaterThan(grupaId, 0, pageable);
-    }
-
-    public Page<Roba> pronadjiSvuRobuPoGrupiId(final List<String> grupaId, final Pageable pageable) {
-        return robaRepository.findByGrupaidInAndStanjeGreaterThan(grupaId, -1, pageable);
+    public Page<Roba> pronadjiSvuRobuPoGrupiIdNaStanju(final List<String> grupaId, final boolean naStanju, final Pageable pageable) {
+        Page<Roba> roba = null;
+        if (naStanju) {
+            roba = robaRepository.findByGrupaidInAndStanjeGreaterThan(grupaId, 0, pageable);
+        } else {
+            roba = robaRepository.findByGrupaidInAndStanjeGreaterThan(grupaId, -1, pageable);
+        }
+        return roba;
     }
 
     private Page<Roba> pronadjiSvuRobuNaStanju(final Set<Long> ids, final String filterProizvodjac, final Pageable pageable) {

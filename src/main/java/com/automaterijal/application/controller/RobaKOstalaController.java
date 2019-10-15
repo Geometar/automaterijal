@@ -2,12 +2,13 @@ package com.automaterijal.application.controller;
 
 import com.automaterijal.application.domain.constants.RobaKategorije;
 import com.automaterijal.application.domain.constants.RobaSortiranjePolja;
+import com.automaterijal.application.domain.constants.VrstaRobe;
 import com.automaterijal.application.domain.dto.RobaDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
-import com.automaterijal.application.services.roba.RobaKategorijeService;
+import com.automaterijal.application.services.roba.RobaGlavniService;
 import com.automaterijal.application.utils.PartnerSpringBeanUtils;
-import com.automaterijal.application.utils.RobaStaticUtils;
+import com.automaterijal.application.utils.RobaSpringBeanUtils;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -31,11 +33,13 @@ import java.util.stream.Collectors;
 public class RobaKOstalaController {
 
     @NonNull
-    final
-    RobaKategorijeService kategorijeService;
+    final PartnerSpringBeanUtils partnerSpringBeanUtils;
 
     @NonNull
-    final PartnerSpringBeanUtils partnerSpringBeanUtils;
+    final RobaSpringBeanUtils robaSpringBeanUtils;
+
+    @NonNull
+    final RobaGlavniService robaGlavniService;
 
     @GetMapping
     public List<String> vratiSveKategorije() {
@@ -45,24 +49,23 @@ public class RobaKOstalaController {
     @GetMapping(value = "/{kategorija}")
     public ResponseEntity<Page<RobaDto>> vratiRobuIzKategorije(
             @PathVariable("kategorija") final RobaKategorije kategorija,
-            @RequestParam(required = false) final Integer page,
-            @RequestParam(required = false) final Integer pageSize,
+            @RequestParam(required = false) final Optional<Integer> page,
+            @RequestParam(required = false) final  Optional<Integer> pageSize,
+            @RequestParam(required = false) final  Optional<String> proizvodjac,
+            @RequestParam(required = false) final  Optional<Boolean> naStanju,
+            @RequestParam(required = false) final  Optional<String> searchTerm,
             @RequestParam(required = false) final RobaSortiranjePolja sortBy,
             @RequestParam(required = false) final Sort.Direction sortDirection,
-            @RequestParam(required = false) final String proizvodjac,
-            @RequestParam(required = false) final Boolean naStanju,
-            @RequestParam(required = false) final String searchTerm,
             final Authentication authentication
     ) {
 
-        final UniverzalniParametri parametri = RobaStaticUtils.popuniIVratiGenerickeParametreZaServis(page, pageSize, sortBy, sortBy, proizvodjac, naStanju, sortBy, sortDirection, searchTerm);
         final List<String> iKategorije = kategorija == null ? null : kategorija.getFieldName();
+        final UniverzalniParametri univerzalniParametri = robaSpringBeanUtils.popuniIVratiGenerickeParametreZaServis(page, pageSize, sortBy, sortBy, proizvodjac, naStanju, sortBy, sortDirection, searchTerm, VrstaRobe.OSTALO, null, iKategorije);
         final Partner ulogovaniPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
 
-        final Page<RobaDto> roba = kategorijeService.pronadjiRobuIzKategorije(
-                parametri,
-                iKategorije,
-                ulogovaniPartner
+
+        final Page<RobaDto> roba = robaGlavniService.pronadjiRobuPoPretrazi(
+                univerzalniParametri, ulogovaniPartner
         );
 
         if (!CollectionUtils.isEmpty(roba.getContent())) {

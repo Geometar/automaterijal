@@ -5,6 +5,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class GrupeKonstante {
 
+    public final String ROBA = "ROBA";
     public final String FILTER = "FILTER";
 
     public final String AKUMULATOR = "AKUMULATOR";

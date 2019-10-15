@@ -22,10 +22,6 @@ public class PodGrupaService {
     @NonNull
     final PodGrupaRepository podGrupaRepository;
 
-    public List<PodGrupa> pronadjiSvePodGrupe() {
-        return podGrupaRepository.findAll();
-    }
-
     public String vratiNazivPodGrupe(final int podGrupaId, final String grupaId) {
         String retVal = null;
         final Optional<PodGrupa> podGrupa = podGrupaRepository.findByPodGrupaIdAndGrupaId(podGrupaId, grupaId);

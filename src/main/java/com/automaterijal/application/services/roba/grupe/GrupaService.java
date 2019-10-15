@@ -24,10 +24,6 @@ public class GrupaService {
     @NonNull
     final GrupaRepository grupaRepository;
 
-    public List<Grupa> pronadjiSveGrupe() {
-       return grupaRepository.findAll();
-    }
-
     public List<String> vratiSveIdGrupePoNazivu(final String naziv) {
         return grupaRepository.findByNaziv(naziv)
                 .stream()

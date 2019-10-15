@@ -12,11 +12,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PartnerSpringBeanUtils {
 
     @NonNull
-    final PartnerService partnerService;
+    PartnerService partnerService;
 
     public Partner vratiPartneraIsSesije(final Authentication authentication) {
         Partner retVal = null;

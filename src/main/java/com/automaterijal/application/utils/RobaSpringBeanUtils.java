@@ -1,15 +1,16 @@
 package com.automaterijal.application.utils;
 
 
+import com.automaterijal.application.domain.constants.GrupeKonstante;
+import com.automaterijal.application.domain.constants.RobaSortiranjePolja;
+import com.automaterijal.application.domain.constants.VrstaRobe;
 import com.automaterijal.application.domain.dto.RobaDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.Roba;
-import com.automaterijal.application.domain.entity.RobaKatBrPro;
 import com.automaterijal.application.domain.mapper.RobaMapper;
+import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.services.ProizvodjacService;
 import com.automaterijal.application.services.roba.RobaCeneService;
-import com.automaterijal.application.services.roba.RobaKatBrProService;
-import com.automaterijal.application.services.roba.RobaService;
 import com.automaterijal.application.services.roba.grupe.GrupaService;
 import com.automaterijal.application.services.roba.grupe.PodGrupaService;
 import lombok.AccessLevel;
@@ -17,39 +18,33 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
 public class RobaSpringBeanUtils {
 
     @NonNull
-    final RobaService robaService;
+    ProizvodjacService proizvodjacService;
     @NonNull
-    final ProizvodjacService proizvodjacService;
+    GrupaService grupaService;
     @NonNull
-    final GrupaService grupaService;
+    PodGrupaService podGrupaService;
     @NonNull
-    final PodGrupaService podGrupaService;
+    RobaCeneService robaCeneService;
     @NonNull
-    final RobaKatBrProService robaKatBrProService;
+    EntityManager manager;
     @NonNull
-    final RobaCeneService robaCeneService;
-    @NonNull
-    final EntityManager manager;
-
-    @NonNull
-    final RobaMapper mapper;
+    RobaMapper mapper;
 
     public RobaDto pretvoriUDTO(final Roba roba, final Partner partner) {
         manager.clear();
@@ -62,36 +57,76 @@ public class RobaSpringBeanUtils {
         return dto;
     }
 
-    public List<String> vratiSveKataloskeBrojevePoPodGrupi(final List<Integer> podGrupeId) {
-        final List<Roba> robaPoPodGrupi = robaService.pronadjuSvuRobuPodGrupomId(podGrupeId);
-        final List<String> katBrojevi = robaPoPodGrupi.stream().map(Roba::getKatbr).collect(Collectors.toList());
-        return katBrojevi.stream().filter(katBroj -> !katBroj.isEmpty()).collect(Collectors.toList());
+    public UniverzalniParametri popuniIVratiGenerickeParametreZaServis(
+            final Optional<Integer> page,
+            final Optional<Integer> pageSize,
+            final RobaSortiranjePolja sortBy,
+            final RobaSortiranjePolja sortBy1,
+            final Optional<String> proizvodjac,
+            final Optional<Boolean> naStanju,
+            final RobaSortiranjePolja sortBy2,
+            final Sort.Direction sortDirection,
+            final Optional<String> searchTerm,
+            final VrstaRobe vrstaRobe,
+            final String vrstaUlja,
+            final List<String> iKategorije) {
+        final Integer iPage = page.map(Integer::intValue).orElse(0);
+        final Integer iPageSize = pageSize.map(Integer::intValue).orElse(10);
+        final String iProizvodjac = proizvodjac.map(String::toString).orElse(null);
+        final Boolean iNaStanju = naStanju.map(Boolean::booleanValue).orElse(true);
+        final RobaSortiranjePolja iSortiranjePolja = sortBy == null ? RobaSortiranjePolja.KATBR : sortBy;
+        final Sort.Direction iDirection = sortDirection == null ? Sort.Direction.ASC : sortDirection;
+        final String iSearchTerm = searchTerm.map(trazenaRec -> trazenaRec.trim().toUpperCase()).orElse(null);
+        return popuniParametreZaServis(iPage, iPageSize, iProizvodjac, iNaStanju, iSortiranjePolja, iDirection, iSearchTerm, vrstaRobe, vrstaUlja, iKategorije);
     }
 
-    public Page<Roba> pronadjiRobuPoIzvucenimKatBrojevima(final List<String> kataloskiBrojevi, final List<Integer> sveFilterPodGrupeId, final String proizvodjacId, final Boolean naStanju, final Pageable pageable) {
-        final Set<Long> robaId = new HashSet<>();
-        robaId.addAll(robaService.pronadjiRobuPoKatBrojevima(kataloskiBrojevi).stream().map(Roba::getRobaid).collect(Collectors.toSet()));
-        robaId.addAll(robaKatBrProService.pronadjuKatBrProPoKataloskimBrojevima(kataloskiBrojevi).stream().map(RobaKatBrPro::getRobaid).collect(Collectors.toSet()));
+    private UniverzalniParametri popuniParametreZaServis(
+            final Integer internalPage,
+            final Integer internalPageSize,
+            final String internalProizvodjac,
+            final Boolean internalNaStanju,
+            final RobaSortiranjePolja internalSortiranjePolja,
+            final Sort.Direction internalDirection,
+            final String internalSearchTerm,
+            final VrstaRobe vrstaRobe,
+            final String vrstaUlja,
+            final List<String> iKategorije)
+    {
+        final UniverzalniParametri up = new UniverzalniParametri();
+        up.setPage(internalPage);
+        up.setPageSize(internalPageSize);
+        up.setProizvodjac(internalProizvodjac);
+        up.setNaStanju(internalNaStanju);
+        up.setSortiranjePolja(internalSortiranjePolja);
+        up.setDirection(internalDirection);
+        up.setTrazenaRec(internalSearchTerm);
+        up.setVrstaRobe(vrstaRobe);
+        setujFilterpPolja(up, vrstaRobe, vrstaUlja, iKategorije);
+        return up;
+         }
 
-        return robaService.pronadjiRobuPoKljucevimaIPodGrupi(robaId, sveFilterPodGrupeId, proizvodjacId, naStanju, pageable);
+    private void setujFilterpPolja(final UniverzalniParametri up, final VrstaRobe vrstaRobe, final String vrstaUlja, final List<String> iKategorije) {
+        switch (vrstaRobe) {
+            case FILTERI:
+                up.setPodGrupeId(podGrupaService.vratiSvePodGrupeIdPoNazivu(GrupeKonstante.FILTER));
+                break;
+            case AKUMULATORI:
+                up.setGrupeId(grupaService.vratiSveIdGrupePoNazivu(GrupeKonstante.AKUMULATOR));
+                break;
+            case ULJA:
+                final List<Integer> filter = new ArrayList<>();
+                pronadjiSvePodGrupeUZavisnostiOdVrste(filter, vrstaUlja);
+                up.setPodGrupeId(filter);
+                break;
+            case OSTALO:
+                up.setPodGrupeId(podGrupaService.vratiSvePodGrupePoNazivima(iKategorije));
+                break;
+        }
     }
-
-    public List<String> vratiSveKataloskeBrojevePoTrazenojReciIPodGrupi(final String searchTerm, final List<Integer> svePodGrupeId) {
-        final List<Roba> robaPoPodGrupi = robaService.pronadjuSvuRobuPodGrupomId(svePodGrupeId);
-        final String searchTermWihoutWhiteSpaces = searchTerm.replaceAll("\\s+","");
-
-        final List<Roba> katBr = robaPoPodGrupi.stream()
-                .filter(roba -> roba.getKatbr().contains(searchTerm)
-                        || roba.getKatbrpro().contains(searchTerm)
-                        || roba.getNaziv().contains(searchTerm)
-                        || roba.getKatbr().contains(searchTermWihoutWhiteSpaces)
-                        || roba.getKatbrpro().contains(searchTermWihoutWhiteSpaces)
-                        || roba.getNaziv().contains(searchTermWihoutWhiteSpaces)
-                )
-                .collect(Collectors.toList());
-
-        final List<RobaKatBrPro> katBrProLista = robaKatBrProService.pronadjiPoPretrazi(searchTerm);
-        final List<String> katBrojevi = RobaStaticUtils.miksujSveKatBrojeve(katBr, katBrProLista);
-        return katBrojevi.stream().filter(katBroj -> !katBroj.isEmpty()).collect(Collectors.toList());
+    private void pronadjiSvePodGrupeUZavisnostiOdVrste(final List<Integer> svePodGrupeUlja, final String vrstaUlja) {
+        final String[] vrsteUlja = RobaStaticUtils.pronadjiSveVrsteUlja(vrstaUlja);
+        Arrays.stream(vrsteUlja)
+                .filter(str -> str != null)
+                .forEach(vrsta -> svePodGrupeUlja.addAll(podGrupaService.vratiSvePodGrupeIdPoNazivu(vrsta)));
     }
 }
