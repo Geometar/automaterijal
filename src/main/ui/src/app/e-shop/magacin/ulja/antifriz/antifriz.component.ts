@@ -26,8 +26,6 @@ export class AntifrizComponent implements OnInit {
   public filter: Filter = new Filter();
 
   public searchValue = '';
-  public lastSearchValue = '';
-  public pocetnoPretrazivanje: boolean;
 
   public ucitavanje = false;
   public pronadjenaRoba = true;
@@ -45,7 +43,6 @@ export class AntifrizComponent implements OnInit {
 
   ngOnInit() {
     this.loginService.izbaciPartneraIzSesiseAkoJeUMemoriji();
-    this.pocetnoPretrazivanje = true;
     this.pronandjiSavAntifriz();
   }
 
@@ -81,8 +78,6 @@ export class AntifrizComponent implements OnInit {
   }
 
   pronadjiEntitetePoPretrazi(searchValue) {
-    this.pocetnoPretrazivanje = false;
-    this.lastSearchValue = searchValue;
     this.ucitavanje = true;
     this.dataSource = null;
     this.ucitavanje = true;
@@ -116,13 +111,6 @@ export class AntifrizComponent implements OnInit {
         });
   }
 
-  pronaciPoTrazenojReci(searchValue) {
-    if (this.dataSource) {
-      this.pageIndex = 0;
-    }
-    this.pronadjiEntitetePoPretrazi(searchValue);
-  }
-
   paginatorEvent(pageEvent) {
     this.dataSource = [];
     this.rowsPerPage = pageEvent.pageSize;
@@ -130,8 +118,16 @@ export class AntifrizComponent implements OnInit {
     this.pronadjiEntitetePoPretrazi(this.searchValue);
   }
 
-  toogleFilterDiv() {
-    this.otvoriFilter = !this.otvoriFilter;
+  pronaciPoTrazenojReci(searchValue) {
+    if (this.dataSource) {
+      this.pageIndex = 0;
+    }
+    this.searchValue = searchValue;
+    this.pronadjiEntitetePoPretrazi(searchValue);
+  }
+
+  toogleFilterDiv(otvoriFilter: boolean) {
+    this.otvoriFilter = otvoriFilter;
   }
 
   filtriraj(filter: Filter) {

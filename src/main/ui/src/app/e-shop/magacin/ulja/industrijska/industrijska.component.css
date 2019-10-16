@@ -1,65 +1,49 @@
 .sirina-odabira-vrste {
-    width: 450px;
-    float: right;
-}
-.forms-input-industrija {
-    display: flex;
-    border-radius: 45px;
-    padding: 1px;
-    margin-top: 5px;
-    background: white;
-    border:2px solid grey;
-    width: 40%;
-    font-weight: bold;
-    text-align: center;
+  margin-top: 10px;
+  float: right;
+  width: 450px;
 }
 
-.col-lg {
-  padding: 0px !important;
+.input-group-prepend {
+  display: block;
+}
+
+.pretraga-bar-industrijska {
+  display: block;
+  padding-top: 10px;
+}
+
+.bg-image {
+  background-image: url('/assets/slike/ui/pozadine/ulje.png');
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 .sekcija-pretraga {
-    height: 130px;
-    background-image: url('/assets/slike/ui/pozadine/ulje.png');
-    background-repeat: no-repeat;
-    background-size: contain;
+    height: 50px;
 }
 
 @media only screen and (max-device-width :1025px) { 
 
+  .sekcija-pretraga {
+      height: 60px;
+  }
+
     .mobilna-visina {
       margin-top: 10px;
-    }
-
-    .forms-input-industrija {
-      display: flex;
-      border-radius: 45px;
-      padding: 1px;
-      margin-top: 30px;
-      background: white;
-      border:2px solid grey;
-      width: 80%;
-      font-weight: bold;
-      text-align: center;
     }
   }
 
 @media only screen and (max-device-width : 640px) { 
 
-    .mobilna-visina {
-      margin-top: 10px;
-    }
+
+  .mobilna-visina {
+    margin-top: 9px;
+  }
+  .input-group-text {
+    font-size: 0.9em;
+  }
     
     .sirina-odabira-vrste {
         width: 100%;
     }
-    .forms-input-industrija {
-      border-radius: 45px;
-      background: white;
-      border:2px solid grey;
-      width:100%;
-      margin-top: 5px;
-      font-weight: bold;
-      text-align: center;
-      display: flex;
-      }  
 }

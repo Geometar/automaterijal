@@ -190,14 +190,16 @@ public class RobaGlavniService {
     private List<String> vratiSveKataloskeBrojevePoTrazenojReci(final String searchTerm) {
         final List<Roba> katBr = pronadjuSvuRobuPoPretrazi(searchTerm);
         final List<RobaKatBrPro> katBrProLista = robaKatBrProService.pronadjiPoPretrazi(searchTerm);
-        katBrProLista.forEach(robaKatBrPro -> {
-            if (!StringUtils.isEmpty(robaKatBrPro.getKatbr()) && !" ".equals(robaKatBrPro.getKatbr())) {
-                katBr.addAll(pronadjuSvuRobuPoPretrazi(robaKatBrPro.getKatbr()));
-            }
-            if (!StringUtils.isEmpty(robaKatBrPro.getKatbrpro()) && !" ".equals(robaKatBrPro.getKatbrpro())) {
-                katBr.addAll(pronadjuSvuRobuPoPretrazi(robaKatBrPro.getKatbrpro()));
-            }
-        });
+        if (katBr.size() < 100 || katBrProLista.size() < 100) {
+            katBrProLista.forEach(robaKatBrPro -> {
+                if (!StringUtils.isEmpty(robaKatBrPro.getKatbr()) && !" ".equals(robaKatBrPro.getKatbr())) {
+                    katBr.addAll(pronadjuSvuRobuPoPretrazi(robaKatBrPro.getKatbr()));
+                }
+                if (!StringUtils.isEmpty(robaKatBrPro.getKatbrpro()) && !" ".equals(robaKatBrPro.getKatbrpro())) {
+                    katBr.addAll(pronadjuSvuRobuPoPretrazi(robaKatBrPro.getKatbrpro()));
+                }
+            });
+        }
         final List<String> katBrojevi = RobaStaticUtils.miksujSveKatBrojeve(katBr, katBrProLista);
         return katBrojevi.stream().filter(katBroj -> !katBroj.isEmpty()).collect(Collectors.toList());
     }
@@ -209,7 +211,9 @@ public class RobaGlavniService {
     private Page<Roba> pronadjiRobuPoIzvucenimKatBrojevima(final List<String> katBrojevi, final UniverzalniParametri parametri, final Pageable pageable) {
         final Set<Long> robaId = new HashSet<>();
         robaId.addAll(robaService.pronadjiRobuPoKatBrojevima(katBrojevi).stream().map(Roba::getRobaid).collect(Collectors.toSet()));
-        robaId.addAll(robaKatBrProService.pronadjuKatBrProPoKataloskimBrojevima(katBrojevi).stream().map(RobaKatBrPro::getRobaid).collect(Collectors.toSet()));
+        if (robaId.size() < 100) {
+            robaId.addAll(robaKatBrProService.pronadjuKatBrProPoKataloskimBrojevima(katBrojevi).stream().map(RobaKatBrPro::getRobaid).collect(Collectors.toSet()));
+        }
 
         Page<Roba> robas = null;
         switch (parametri.getVrstaRobe()) {

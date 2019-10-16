@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Slf4j
@@ -33,7 +34,6 @@ public class UsersService {
         return usersRepository.findById(id);
     }
 
-    @Transactional
     public void logovanomUseruPovecajKolikoSePutaLogovao(final Integer id) {
        final Optional<Users> users = pronadjiUseraPoIdu(id);
        if(users.isPresent()) {

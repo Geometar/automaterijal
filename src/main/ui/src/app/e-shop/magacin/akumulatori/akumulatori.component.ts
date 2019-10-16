@@ -25,13 +25,12 @@ export class AkumulatoriComponent implements OnInit {
   public tableLength;
 
   public filter: Filter = new Filter();
-
-  public searchValue = '';
-  public lastSearchValue = '';
-  public pocetnoPretrazivanje: boolean;
-  public ucitavanje = false;
-  public pronadjenaRoba = true;
   public otvoriFilter = false;
+
+  private searchValue = '';
+  public ucitavanje = false;
+  
+  public pronadjenaRoba = true;
   public dataSource: any;
 
   private alive = true;
@@ -43,7 +42,6 @@ export class AkumulatoriComponent implements OnInit {
 
   ngOnInit() {
     this.loginService.izbaciPartneraIzSesiseAkoJeUMemoriji();
-    this.pocetnoPretrazivanje = true;
     this.pronandjiSveAkumulatore();
   }
 
@@ -78,8 +76,6 @@ export class AkumulatoriComponent implements OnInit {
   }
 
   pronadjiAkumulatorePoPretrazi(searchValue) {
-    this.pocetnoPretrazivanje = false;
-    this.lastSearchValue = searchValue;
     this.ucitavanje = true;
     this.dataSource = null;
     this.pronadjenaRoba = true;
@@ -116,6 +112,7 @@ export class AkumulatoriComponent implements OnInit {
     if (this.dataSource) {
       this.pageIndex = 0;
     }
+    this.searchValue = searchValue;
     this.pronadjiAkumulatorePoPretrazi(searchValue);
   }
 
@@ -126,8 +123,8 @@ export class AkumulatoriComponent implements OnInit {
     this.pronadjiAkumulatorePoPretrazi(this.searchValue);
   }
 
-  toogleFilterDiv() {
-    this.otvoriFilter = !this.otvoriFilter;
+  toogleFilterDiv(otvoriFilter: boolean) {
+    this.otvoriFilter = otvoriFilter;
   }
 
   filtriraj(filter: Filter) {

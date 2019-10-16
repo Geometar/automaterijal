@@ -19,6 +19,7 @@ import java.math.RoundingMode;
 import java.util.Optional;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Slf4j
@@ -32,7 +33,6 @@ public class RobaCeneService {
 
     final Long GLAVNI_MAGACIN = 1L;
 
-    @Transactional(readOnly = true)
     public BigDecimal vratiCenuRobePoRobiId(final Roba roba, final Partner partner) {
         manager.clear();
         BigDecimal retVal = null;

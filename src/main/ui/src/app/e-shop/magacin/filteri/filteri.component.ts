@@ -27,9 +27,7 @@ export class FilteriComponent implements OnInit {
 
   public filter: Filter = new Filter();
 
-  public searchValue = '';
-  public lastSearchValue = '';
-  public pocetnoPretrazivanje: boolean;
+  private searchValue = '';
 
   public ucitavanje = false;
   public pronadjenaRoba = true;
@@ -45,7 +43,6 @@ export class FilteriComponent implements OnInit {
 
   ngOnInit() {
     this.loginService.izbaciPartneraIzSesiseAkoJeUMemoriji();
-    this.pocetnoPretrazivanje = true;
     this.pronandjiSveFiltere();
   }
 
@@ -80,8 +77,6 @@ export class FilteriComponent implements OnInit {
   }
 
   pronadjiFilterePoPretrazi(searchValue) {
-    this.pocetnoPretrazivanje = false;
-    this.lastSearchValue = searchValue;
     this.ucitavanje = true;
     this.dataSource = null;
     this.ucitavanje = true;
@@ -119,6 +114,7 @@ export class FilteriComponent implements OnInit {
     if (this.dataSource) {
       this.pageIndex = 0;
     }
+    this.searchValue = searchValue;
     this.pronadjiFilterePoPretrazi(searchValue);
 
   }
@@ -130,8 +126,8 @@ export class FilteriComponent implements OnInit {
     this.pronadjiFilterePoPretrazi(this.searchValue);
   }
 
-  toogleFilterDiv() {
-    this.otvoriFilter = !this.otvoriFilter;
+  toogleFilterDiv(otvoriFilter: boolean) {
+    this.otvoriFilter = otvoriFilter;
   }
 
   filtriraj(filter: Filter) {

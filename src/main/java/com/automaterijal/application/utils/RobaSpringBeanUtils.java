@@ -20,6 +20,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
@@ -29,6 +30,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
@@ -91,8 +93,7 @@ public class RobaSpringBeanUtils {
             final String internalSearchTerm,
             final VrstaRobe vrstaRobe,
             final String vrstaUlja,
-            final List<String> iKategorije)
-    {
+            final List<String> iKategorije) {
         final UniverzalniParametri up = new UniverzalniParametri();
         up.setPage(internalPage);
         up.setPageSize(internalPageSize);
@@ -104,7 +105,7 @@ public class RobaSpringBeanUtils {
         up.setVrstaRobe(vrstaRobe);
         setujFilterpPolja(up, vrstaRobe, vrstaUlja, iKategorije);
         return up;
-         }
+    }
 
     private void setujFilterpPolja(final UniverzalniParametri up, final VrstaRobe vrstaRobe, final String vrstaUlja, final List<String> iKategorije) {
         switch (vrstaRobe) {
@@ -124,6 +125,7 @@ public class RobaSpringBeanUtils {
                 break;
         }
     }
+
     private void pronadjiSvePodGrupeUZavisnostiOdVrste(final List<Integer> svePodGrupeUlja, final String vrstaUlja) {
         final String[] vrsteUlja = RobaStaticUtils.pronadjiSveVrsteUlja(vrstaUlja);
         Arrays.stream(vrsteUlja)

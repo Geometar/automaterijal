@@ -13,7 +13,7 @@ const AKUMULATORI_URL = '/akumulatori';
 const ULJA_URL = '/ulja';
 const OSTALE_KATEGORIJE_URL = '/kategorije';
 
-const TIMEOUT = 15000;
+const TIMEOUT = 35000;
 const TIMEOUT_ERROR = 'Timeout error!';
 
 @Injectable({

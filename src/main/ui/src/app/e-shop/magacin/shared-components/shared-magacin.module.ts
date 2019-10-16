@@ -4,6 +4,7 @@ import { FilterComponent } from './filter/filter.component';
 import { TabelaComponent } from './tabela/tabela.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'src/app/shared/material/material.module';
+import { PretragaComponent } from './pretraga/pretraga.component';
 
 @NgModule({
   imports: [
@@ -14,11 +15,13 @@ import { MaterialModule } from 'src/app/shared/material/material.module';
   ],
   declarations: [
     FilterComponent,
-    TabelaComponent
+    TabelaComponent,
+    PretragaComponent
   ],
   exports: [
     FilterComponent,
-    TabelaComponent
+    TabelaComponent,
+    PretragaComponent
   ]
 })
 export class SharedMagacinModule { }

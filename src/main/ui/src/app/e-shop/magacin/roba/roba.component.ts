@@ -25,9 +25,7 @@ export class RobaComponent implements OnInit {
 
   public filter: Filter = new Filter();
 
-  public searchValue = '';
-  public lastSearchValue = '';
-  public pocetnoPretrazivanje: boolean;
+  private searchValue = '';
 
   public ucitavanje = false;
   public pronadjenaRoba = true;
@@ -43,7 +41,6 @@ export class RobaComponent implements OnInit {
 
   ngOnInit() {
     this.loginService.izbaciPartneraIzSesiseAkoJeUMemoriji();
-    this.pocetnoPretrazivanje = true;
     this.pronadjiSvuRobu();
   }
 
@@ -77,16 +74,7 @@ export class RobaComponent implements OnInit {
         });
   }
 
-  pronaciPoTrazenojReci(searchValue) {
-    if (this.dataSource) {
-      this.pageIndex = 0;
-    }
-    this.pronadjiSvuRobuPoPretrazi(searchValue);
-  }
-
   pronadjiSvuRobuPoPretrazi(searchValue) {
-    this.pocetnoPretrazivanje = false;
-    this.lastSearchValue = searchValue;
     this.dataSource = null;
     this.ucitavanje = true;
     this.pronadjenaRoba = true;
@@ -118,6 +106,14 @@ export class RobaComponent implements OnInit {
         });
   }
 
+  pronaciPoTrazenojReci(searchValue) {
+    if (this.dataSource) {
+      this.pageIndex = 0;
+    }
+    this.searchValue = searchValue;
+    this.pronadjiSvuRobuPoPretrazi(searchValue);
+  }
+
   paginatorEvent(pageEvent) {
     this.dataSource = [];
     this.rowsPerPage = pageEvent.pageSize;
@@ -125,8 +121,8 @@ export class RobaComponent implements OnInit {
     this.pronadjiSvuRobuPoPretrazi(this.searchValue);
   }
 
-  toogleFilterDiv() {
-    this.otvoriFilter = !this.otvoriFilter;
+  toogleFilterDiv(otvoriFilter: boolean) {
+    this.otvoriFilter = otvoriFilter;
   }
 
   filtriraj(filter: Filter) {

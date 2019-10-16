@@ -120,6 +120,7 @@ export class MenjackoComponent implements OnInit {
     if (this.dataSource) {
       this.pageIndex = 0;
     }
+    this.searchValue = searchValue;
     this.pronadjiEntitetePoPretrazi(searchValue);
   }
 
@@ -130,8 +131,8 @@ export class MenjackoComponent implements OnInit {
     this.pronadjiEntitetePoPretrazi(this.searchValue);
   }
 
-  toogleFilterDiv() {
-    this.otvoriFilter = !this.otvoriFilter;
+  toogleFilterDiv(otvoriFilter: boolean) {
+    this.otvoriFilter = otvoriFilter;
   }
 
   filtriraj(filter: Filter) {

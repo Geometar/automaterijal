@@ -134,6 +134,7 @@ export class IndustrijskaComponent implements OnInit {
     if (this.dataSource) {
       this.pageIndex = 0;
     }
+    this.searchValue = searchValue;
     this.pronadjiEntitetePoPretrazi(searchValue);
   }
 
@@ -144,8 +145,8 @@ export class IndustrijskaComponent implements OnInit {
     this.pronadjiEntitetePoPretrazi(this.searchValue);
   }
 
-  toogleFilterDiv() {
-    this.otvoriFilter = !this.otvoriFilter;
+  toogleFilterDiv(otvoriFilter: boolean) {
+    this.otvoriFilter = otvoriFilter;
   }
 
   filtriraj(filter: Filter) {

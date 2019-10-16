@@ -1,39 +1,22 @@
 <main>
-    <div class="margin-bottom--10 sekcija-pretraga">
-        <div class="d-flex col-lg p-2 justify-content-center sirina-odabira-vrste">
-            <div class="input-group-prepend">
-                <label class="pozadina-glavna-100 boja-siva-400 input-group-text " for="inputGroupSelect01">Izaberite
-                    vrstu
-                    maziva:</label>
-            </div>
-            <select class="custom-select mobilna-visina" (change)="onChange()" id="inputGroupSelect01"
-                [(ngModel)]="izabranaVrsta">
-                <option *ngFor="let izabranaVrsta of vrste" [value]="izabranaVrsta">{{izabranaVrsta}}</option>
-            </select>
-        </div>
-        <div class="d-flex align-items-center col-lg justify-content-center">
-            <div class="forms-input-industrija">
-                <input class="flex-grow-1 search__input" type="search" [(ngModel)]="searchValue"
-                    (keyup.enter)="pronaciPoTrazenojReci(searchValue)" />
-                <div class="p-1" (click)='pronaciPoTrazenojReci(searchValue)'>
-                    <button mat-mini-fab class=pozadina-glavna-100>
-                        <mat-icon>search</mat-icon>
-                    </button>
+    <div class="bg-image">
+        <div class="sekcija-pretraga">
+            <div class="d-flex flex-row justify-content-end col-lg sirina-odabira-vrste">
+                <div class="input-group-prepend">
+                    <label class="pozadina-glavna-100 boja-siva-400 input-group-text "
+                        for="inputGroupSelect01">Izaberite
+                        vrstu
+                        maziva:</label>
                 </div>
-                <div class="p-1" (click)='toogleFilterDiv()'>
-                    <button matTooltip="Filter" *ngIf="!otvoriFilter" class=pozadina-glavna-100 mat-mini-fab>
-                        <mat-icon>view_headline</mat-icon>
-                    </button>
-                    <button *ngIf="otvoriFilter" mat-mini-fab class="button-glavni-200">
-                        <mat-icon>view_headline</mat-icon>
-                    </button>
-                </div>
+                <select class="custom-select mobilna-visina" (change)="onChange()" id="inputGroupSelect01"
+                    [(ngModel)]="izabranaVrsta">
+                    <option *ngFor="let izabranaVrsta of vrste" [value]="izabranaVrsta">{{izabranaVrsta}}</option>
+                </select>
             </div>
         </div>
-        <div class="d-flex justify-content-center">
-            <label *ngIf="pocetnoPretrazivanje">
-                <font color="#424242"> Unesite termin za pretragu</font>
-            </label>
+        <div class="pretraga-bar-industrijska">
+            <app-pretraga (pretragaEvent)="pronaciPoTrazenojReci($event)" (filterEvent)="toogleFilterDiv($event)">
+            </app-pretraga>
         </div>
     </div>
 
