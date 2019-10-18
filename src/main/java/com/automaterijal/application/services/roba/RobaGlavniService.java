@@ -164,6 +164,13 @@ public class RobaGlavniService {
         return katBrojevi.stream().filter(katBroj -> !katBroj.isEmpty()).collect(Collectors.toList());
     }
 
+    /**
+     * Glavna privatna metoda za pretragu delova
+     */
+    private List<Roba> pronadjuSvuRobuPoPretrazi(final String searchTerm) {
+        return robaService.pronadjuSvuRobuPoPretrazi(searchTerm);
+    }
+
     private List<String> vratiSveKataloskeBrojevePoPodGrupi(final List<Integer> podGrupeId) {
         final List<Roba> robaPoPodGrupi = robaService.pronadjuSvuRobuPodGrupomId(podGrupeId);
         final List<String> katBrojevi = robaPoPodGrupi.stream().map(Roba::getKatbr).collect(Collectors.toList());
@@ -186,22 +193,6 @@ public class RobaGlavniService {
             katBrojevi = RobaStaticUtils.miksujSveKatBrojeve(katBr, new ArrayList<>());
         }
         return katBrojevi.stream().filter(katBroj -> !katBroj.isEmpty()).collect(Collectors.toList());
-    }
-
-    private List<String> vratiSveKataloskeBrojevePoProizvodjacu(final String proizvodjacId) {
-        final List<String> katBrojevi;
-        if (proizvodjacId == null) {
-            final List<Roba> katBr = robaService.pronadjiSvuRobu();
-            katBrojevi = RobaStaticUtils.miksujSveKatBrojeve(katBr, new ArrayList<>());
-        } else {
-            final List<Roba> katBr = robaService.pronadjiSvuRobuPoProId(proizvodjacId);
-            katBrojevi = RobaStaticUtils.miksujSveKatBrojeve(katBr, new ArrayList<>());
-        }
-        return katBrojevi.stream().filter(katBroj -> !katBroj.isEmpty()).collect(Collectors.toList());
-    }
-
-    private List<Roba> pronadjuSvuRobuPoPretrazi(final String searchTerm) {
-        return robaService.pronadjuSvuRobuPoPretrazi(searchTerm);
     }
 
     private Page<Roba> pronadjiRobuPoIzvucenimKatBrojevima(final List<String> katBrojevi, final UniverzalniParametri parametri, final Pageable pageable) {

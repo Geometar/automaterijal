@@ -8,8 +8,6 @@ import java.util.List;
 
 public interface RobaKatBrProRepository extends JpaRepository<RobaKatBrPro, Long> {
 
-    List<RobaKatBrPro> findByKatbrContainingOrKatbrproContaining(String katBr, String katBrPr);
-    List<RobaKatBrPro> findByKatbrproIn(List<String> katBrPr);
-
+    List<RobaKatBrPro> findByKatbrContainingOrKatbrproContainingOrKatbrContainingOrKatbrproContaining(String katBr, String katBrPr, String katBrNoSpace, String katBrPrNoSpace);
 
 }

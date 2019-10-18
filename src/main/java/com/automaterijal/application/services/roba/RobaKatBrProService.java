@@ -27,14 +27,11 @@ public class RobaKatBrProService {
 
     public List<RobaKatBrPro> pronadjiPoPretrazi(final String pretraga) {
         final Set<RobaKatBrPro> svaRoba = new HashSet<>();
-        svaRoba.addAll(katBrProRepository.findByKatbrContainingOrKatbrproContaining(pretraga, pretraga));
         final String searchTermWihoutWhiteSpaces = pretraga.replaceAll("\\s+","");
-        svaRoba.addAll(katBrProRepository.findByKatbrContainingOrKatbrproContaining(searchTermWihoutWhiteSpaces, searchTermWihoutWhiteSpaces));
+        svaRoba.addAll(
+                katBrProRepository.findByKatbrContainingOrKatbrproContainingOrKatbrContainingOrKatbrproContaining(pretraga, pretraga, searchTermWihoutWhiteSpaces, searchTermWihoutWhiteSpaces)
+        );
         return new ArrayList<>(svaRoba);
-    }
-
-    public List<RobaKatBrPro> pronadjuKatBrProPoKataloskimBrojevima(final List<String> katBrPros) {
-        return katBrProRepository.findByKatbrproIn(katBrPros);
     }
 
 }
