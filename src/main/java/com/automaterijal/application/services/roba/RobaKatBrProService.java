@@ -28,10 +28,8 @@ public class RobaKatBrProService {
     public List<RobaKatBrPro> pronadjiPoPretrazi(final String pretraga) {
         final Set<RobaKatBrPro> svaRoba = new HashSet<>();
         svaRoba.addAll(katBrProRepository.findByKatbrContainingOrKatbrproContaining(pretraga, pretraga));
-        if(svaRoba.size() == 0) {
-            final String searchTermWihoutWhiteSpaces = pretraga.replaceAll("\\s+","");
-            svaRoba.addAll(katBrProRepository.findByKatbrContainingOrKatbrproContaining(searchTermWihoutWhiteSpaces, searchTermWihoutWhiteSpaces));
-        }
+        final String searchTermWihoutWhiteSpaces = pretraga.replaceAll("\\s+","");
+        svaRoba.addAll(katBrProRepository.findByKatbrContainingOrKatbrproContaining(searchTermWihoutWhiteSpaces, searchTermWihoutWhiteSpaces));
         return new ArrayList<>(svaRoba);
     }
 

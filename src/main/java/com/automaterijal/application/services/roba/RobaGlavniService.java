@@ -126,6 +126,44 @@ public class RobaGlavniService {
                 pageable);
     }
 
+    /**
+     * Trazenje robe za sve kategorije
+     *
+     * @param searchTerm
+     * @return
+     */
+    private List<String> vratiSveKataloskeBrojevePoTrazenojReci(final String searchTerm) {
+        final List<Roba> katBr = pronadjuSvuRobuPoPretrazi(searchTerm);
+        final List<RobaKatBrPro> katBrProLista = robaKatBrProService.pronadjiPoPretrazi(searchTerm);
+
+        final List<String> pretragaPoKatProizvodjacima = new ArrayList<>();
+        katBrProLista.stream().map(RobaKatBrPro::getKatbr).filter(StringUtils::hasText).forEach(pretragaPoKatProizvodjacima::add);
+        katBrProLista.stream().map(RobaKatBrPro::getKatbrpro).filter(StringUtils::hasText).forEach(pretragaPoKatProizvodjacima::add);
+        katBr.addAll(robaService.pronadjiRobuPoKatBrojevima(pretragaPoKatProizvodjacima));
+
+        final List<String> katBrojevi = RobaStaticUtils.miksujSveKatBrojeve(katBr, katBrProLista);
+        return katBrojevi.stream().filter(katBroj -> !katBroj.isEmpty()).collect(Collectors.toList());
+    }
+
+    /**
+     * Trazenje robe za specificne katerogrije
+     */
+    private List<String> vratiSveKataloskeBrojevePoTrazenojIFilterIdu(final UniverzalniParametri parametri, final String trazenaRec) {
+        final List<Roba> filtriranaRoba = new ArrayList<>();
+        final List<Roba> svaRoba = pronadjuSvuRobuPoPretrazi(trazenaRec);
+        if (VrstaRobe.FILTERI == parametri.getVrstaRobe()
+                || VrstaRobe.ULJA == parametri.getVrstaRobe()
+                || VrstaRobe.OSTALO == parametri.getVrstaRobe()) {
+            svaRoba.stream().filter(roba -> parametri.getPodGrupeId().contains(roba.getPodgrupaid())).forEach(filtriranaRoba::add);
+        } else {
+            svaRoba.stream().filter(roba -> parametri.getGrupeId().contains(roba.getGrupaid())).forEach(filtriranaRoba::add);
+        }
+
+        final List<RobaKatBrPro> katBrProLista = robaKatBrProService.pronadjiPoPretrazi(trazenaRec);
+        final List<String> katBrojevi = RobaStaticUtils.miksujSveKatBrojeve(filtriranaRoba, katBrProLista);
+        return katBrojevi.stream().filter(katBroj -> !katBroj.isEmpty()).collect(Collectors.toList());
+    }
+
     private List<String> vratiSveKataloskeBrojevePoPodGrupi(final List<Integer> podGrupeId) {
         final List<Roba> robaPoPodGrupi = robaService.pronadjuSvuRobuPodGrupomId(podGrupeId);
         final List<String> katBrojevi = robaPoPodGrupi.stream().map(Roba::getKatbr).collect(Collectors.toList());
@@ -150,25 +188,6 @@ public class RobaGlavniService {
         return katBrojevi.stream().filter(katBroj -> !katBroj.isEmpty()).collect(Collectors.toList());
     }
 
-    /**
-     * Trazenje robe za specificne katerogrije
-     */
-    private List<String> vratiSveKataloskeBrojevePoTrazenojIFilterIdu(final UniverzalniParametri parametri, final String trazenaRec) {
-        final List<Roba> filtriranaRoba = new ArrayList<>();
-        final List<Roba> svaRoba = pronadjuSvuRobuPoPretrazi(trazenaRec);
-        if (VrstaRobe.FILTERI == parametri.getVrstaRobe()
-                || VrstaRobe.ULJA == parametri.getVrstaRobe()
-                || VrstaRobe.OSTALO == parametri.getVrstaRobe()) {
-            svaRoba.stream().filter(roba -> parametri.getPodGrupeId().contains(roba.getPodgrupaid())).forEach(filtriranaRoba::add);
-        } else {
-            svaRoba.stream().filter(roba -> parametri.getGrupeId().contains(roba.getGrupaid())).forEach(filtriranaRoba::add);
-        }
-
-        final List<RobaKatBrPro> katBrProLista = robaKatBrProService.pronadjiPoPretrazi(trazenaRec);
-        final List<String> katBrojevi = RobaStaticUtils.miksujSveKatBrojeve(filtriranaRoba, katBrProLista);
-        return katBrojevi.stream().filter(katBroj -> !katBroj.isEmpty()).collect(Collectors.toList());
-    }
-
     private List<String> vratiSveKataloskeBrojevePoProizvodjacu(final String proizvodjacId) {
         final List<String> katBrojevi;
         if (proizvodjacId == null) {
@@ -181,29 +200,6 @@ public class RobaGlavniService {
         return katBrojevi.stream().filter(katBroj -> !katBroj.isEmpty()).collect(Collectors.toList());
     }
 
-    /**
-     * Trazenje robe za sve kategorije
-     *
-     * @param searchTerm
-     * @return
-     */
-    private List<String> vratiSveKataloskeBrojevePoTrazenojReci(final String searchTerm) {
-        final List<Roba> katBr = pronadjuSvuRobuPoPretrazi(searchTerm);
-        final List<RobaKatBrPro> katBrProLista = robaKatBrProService.pronadjiPoPretrazi(searchTerm);
-        if (katBr.size() < 100 || katBrProLista.size() < 100) {
-            katBrProLista.forEach(robaKatBrPro -> {
-                if (!StringUtils.isEmpty(robaKatBrPro.getKatbr()) && !" ".equals(robaKatBrPro.getKatbr())) {
-                    katBr.addAll(pronadjuSvuRobuPoPretrazi(robaKatBrPro.getKatbr()));
-                }
-                if (!StringUtils.isEmpty(robaKatBrPro.getKatbrpro()) && !" ".equals(robaKatBrPro.getKatbrpro())) {
-                    katBr.addAll(pronadjuSvuRobuPoPretrazi(robaKatBrPro.getKatbrpro()));
-                }
-            });
-        }
-        final List<String> katBrojevi = RobaStaticUtils.miksujSveKatBrojeve(katBr, katBrProLista);
-        return katBrojevi.stream().filter(katBroj -> !katBroj.isEmpty()).collect(Collectors.toList());
-    }
-
     private List<Roba> pronadjuSvuRobuPoPretrazi(final String searchTerm) {
         return robaService.pronadjuSvuRobuPoPretrazi(searchTerm);
     }
@@ -211,9 +207,6 @@ public class RobaGlavniService {
     private Page<Roba> pronadjiRobuPoIzvucenimKatBrojevima(final List<String> katBrojevi, final UniverzalniParametri parametri, final Pageable pageable) {
         final Set<Long> robaId = new HashSet<>();
         robaId.addAll(robaService.pronadjiRobuPoKatBrojevima(katBrojevi).stream().map(Roba::getRobaid).collect(Collectors.toSet()));
-        if (robaId.size() < 100) {
-            robaId.addAll(robaKatBrProService.pronadjuKatBrProPoKataloskimBrojevima(katBrojevi).stream().map(RobaKatBrPro::getRobaid).collect(Collectors.toSet()));
-        }
 
         Page<Roba> robas = null;
         switch (parametri.getVrstaRobe()) {
