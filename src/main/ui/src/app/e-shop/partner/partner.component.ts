@@ -20,19 +20,11 @@ export class PartnerComponent implements OnInit {
 
 
   constructor(
-    private loginServis: LoginService,
-    private router: Router) { }
+    private loginServis: LoginService) { }
 
   ngOnInit() {
-    this.loginServis.vratiUlogovanogKorisnika(false)
-      .subscribe((res: Partner) => {
-        if (res !== null) {
-          this.partner = res;
-          this.daLiDuguje = this.partner.stanje < 0;
-        } else {
-          this.router.navigate(['/login']);
-          this.loginServis.izbaciPartnerIzSesije();
-        }
-      });
+    this.loginServis.izbaciPartneraIzSesiseAkoJeUMemoriji();
+    this.loginServis.ulogovaniPartner.subscribe(partner => this.partner = partner);
+    this.daLiDuguje = this.partner.stanje < 0;
   }
 }

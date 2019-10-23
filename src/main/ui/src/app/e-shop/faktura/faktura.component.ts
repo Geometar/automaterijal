@@ -33,16 +33,9 @@ export class FakturaComponent implements OnInit {
 
   ngOnInit() {
     this.ucitavanje = true;
-    this.loginServis.vratiUlogovanogKorisnika(false)
-      .subscribe((res: Partner) => {
-        if (res !== null) {
-          this.partner = res;
-          this.vratiFaktureKorisnika();
-        } else {
-          this.router.navigate(['/login']);
-          this.loginServis.izbaciPartnerIzSesije();
-        }
-      });
+    this.loginServis.izbaciPartneraIzSesiseAkoJeUMemoriji();
+    this.loginServis.ulogovaniPartner.subscribe(partner => this.partner = partner);
+    this.vratiFaktureKorisnika();
   }
 
   vratiFaktureKorisnika() {

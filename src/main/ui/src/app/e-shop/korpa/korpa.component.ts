@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 import { IzmenaKolicineModalComponent } from 'src/app/shared/modal/izmena-kolicine-modal/izmena-kolicine-modal.component';
 import { UspesnoPorucivanjeModalComponent } from 'src/app/shared/modal/uspesno-porucivanje-modal/uspesno-porucivanje-modal.component';
 import { NeuspesnoPorucivanjeModalComponent } from 'src/app/shared/modal/neuspesno-porucivanje-modal/neuspesno-porucivanje-modal.component';
+import { PrvoLogovanjeModalComponent } from 'src/app/shared/modal/prvo-logovanje-modal/prvo-logovanje-modal.component';
 
 @Component({
   selector: 'app-korpa',
@@ -25,6 +26,7 @@ export class KorpaComponent implements OnInit {
   public partner: Partner;
   public bezPdv: string;
   public pdv: string;
+
   public ukupno: string;
   public dataSource: any;
   public nacinPlacanja: ValueHelp[];
@@ -62,16 +64,9 @@ export class KorpaComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
-    this.loginServis.vratiUlogovanogKorisnika(false)
-      .subscribe((res: Partner) => {
-        if (res !== null) {
-          this.partner = res;
-          this.inicijalizujKorpu();
-        } else {
-          this.router.navigate(['/login']);
-          this.loginServis.izbaciPartnerIzSesije();
-        }
-      });
+    this.loginServis.izbaciPartneraIzSesiseAkoJeUMemoriji();
+    this.loginServis.ulogovaniPartner.subscribe(partner => this.partner = partner);
+    this.inicijalizujKorpu();
   }
 
   inicijalizujKorpu() {
@@ -230,14 +225,14 @@ export class KorpaComponent implements OnInit {
       catchError((error: Response) => throwError(error)),
       finalize(() => this.ucitavanje = false))
       .subscribe((res: Roba[]) => {
-      if (res.length === 0) {
-        this.otvoriDialogUspesnoPorucivanje();
-        this.dataService.ocistiKorpu();
-        this.router.navigate(['/naslovna']);
-      } else {
-        this.otvoriDialogNeuspesnoPorucivanje(res, this.faktura);
-      }
-    });
+        if (res.length === 0) {
+          this.otvoriDialogUspesnoPorucivanje();
+          this.dataService.ocistiKorpu();
+          this.router.navigate(['/naslovna']);
+        } else {
+          this.otvoriDialogNeuspesnoPorucivanje(res, this.faktura);
+        }
+      });
   }
 
   korpaUFakturu() {

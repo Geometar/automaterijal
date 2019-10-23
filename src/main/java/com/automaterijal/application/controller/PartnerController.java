@@ -63,7 +63,7 @@ public class PartnerController {
             return ResponseEntity.badRequest().build();
         }
 
-        final var uspesnaPromena = partnerService.promeniSifruPartnera(dto);
+        final var uspesnaPromena = partnerService.promeniSifruPartnera(dto, isPrvaPromena);
         if (uspesnaPromena) {
             log.info("Partner sa id {} je promenio sifru", dto.getPpid());
             return ResponseEntity.ok().build();

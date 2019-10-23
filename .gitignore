@@ -44,6 +44,3 @@ testem.log
 
 # e2e
 /e2e/*.js
-
-#my ignore
-/src/main/resources/static/*

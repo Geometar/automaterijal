@@ -11,6 +11,7 @@ import { MatDialog } from '@angular/material';
 import { SesijaIsteklaModalComponent } from 'src/app/shared/modal/sesija-istekla-modal/sesija-istekla-modal.component';
 import { environment } from 'src/environments/environment';
 import { PartnerService } from './partner.service';
+import { PrvoLogovanjeModalComponent } from 'src/app/shared/modal/prvo-logovanje-modal/prvo-logovanje-modal.component';
 
 const TIMEOUT = 15000;
 const TIMEOUT_ERROR = 'Timeout error!';
@@ -81,35 +82,44 @@ export class LoginService {
       .subscribe((res: Partner) => {
         const partner = res;
         if (partner === null) {
+          this.router.navigate(['/login']);
           const partnerStorage = this.storageServis.procitajPartneraIzMemorije();
           if (partnerStorage !== null && partnerStorage.ppid) {
             this.izbaciPartnerIzSesije();
           }
+        } else if (partner.loginCount === 0) {
+          this.router.navigate(['/naslovna']);
+          this.dialog.open(PrvoLogovanjeModalComponent, {
+            width: '600px',
+            data: this.partner,
+            disableClose: true
+          });
         }
       });
-  }
+    }
+
 
   public izbaciPartnerIzSesije() {
-    this.storageServis.logout();
-    this.logovanjeSubjekat.next(false);
-    this.partnerSubjekat.next(null);
-    this.dialog.open(SesijaIsteklaModalComponent, {
-      width: '400px'
-    });
-  }
+  this.storageServis.logout();
+  this.logovanjeSubjekat.next(false);
+  this.partnerSubjekat.next(null);
+  this.dialog.open(SesijaIsteklaModalComponent, {
+    width: '400px'
+  });
+}
 
   public logout() {
-    const fullUrl = LOGOUT_URL;
-    this.http.post(fullUrl, {}, { responseType: 'text' })
-      .pipe(
-        timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
-        catchError((error: any) => throwError(error))
-      )
-      .subscribe(() => {
-        this.logovanjeSubjekat.next(false);
-        this.partnerSubjekat.next(null);
-        this.storageServis.logout();
-        this.router.navigateByUrl('naslovna');
-      });
-  }
+  const fullUrl = LOGOUT_URL;
+  this.http.post(fullUrl, {}, { responseType: 'text' })
+    .pipe(
+      timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
+      catchError((error: any) => throwError(error))
+    )
+    .subscribe(() => {
+      this.logovanjeSubjekat.next(false);
+      this.partnerSubjekat.next(null);
+      this.storageServis.logout();
+      this.router.navigateByUrl('naslovna');
+    });
+}
 }

@@ -4,6 +4,7 @@ import com.automaterijal.application.domain.dto.ResetovanjeSifreDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.Users;
 import com.automaterijal.application.domain.repository.PartnerRepository;
+import com.automaterijal.application.services.security.UsersService;
 import com.automaterijal.application.utils.LoginStaticUtils;
 import lombok.AccessLevel;
 import lombok.NonNull;
@@ -23,18 +24,22 @@ public class PartnerService {
     @NonNull
     final PartnerRepository partnerRepository;
 
-    public boolean promeniSifruPartnera(final ResetovanjeSifreDto resetovanjeSifreDto) {
+    @NonNull
+    final UsersService usersService;
+
+    public boolean promeniSifruPartnera(final ResetovanjeSifreDto resetovanjeSifreDto, final boolean isPrvaPromena) {
         boolean uspesnaPromenaSifre = false;
         final Optional<Partner> partnerOptinal = partnerRepository.findByPpid(resetovanjeSifreDto.getPpid());
         if (partnerOptinal.isPresent()) {
             final Partner partner = partnerOptinal.get();
+            if(isPrvaPromena) {
+                partner.setUsers(usersService.sacuvajUsera(partner));
+            }
             partner.getUsers().setPassword(LoginStaticUtils.md5Password(resetovanjeSifreDto.getSifra()));
             if (partner.getUsers().getLoginCount() == 0) {
                 partner.getUsers().setLoginCount(1);
             }
             uspesnaPromenaSifre = true;
-        } else {
-            uspesnaPromenaSifre = false;
         }
         return uspesnaPromenaSifre;
     }

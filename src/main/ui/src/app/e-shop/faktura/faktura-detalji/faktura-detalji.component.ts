@@ -32,18 +32,10 @@ export class FakturaDetaljiComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
+    this.loginServis.izbaciPartneraIzSesiseAkoJeUMemoriji();
+    this.loginServis.ulogovaniPartner.subscribe(partner => this.partner = partner);
     this.ucitavanje = true;
-    this.loginServis.vratiUlogovanogKorisnika(false)
-      .subscribe((res: Partner) => {
-        if (res !== null) {
-          this.partner = res;
-          this.vratiFakturu();
-        } else {
-          this.router.navigate(['/login']);
-          this.loginServis.izbaciPartnerIzSesije();
-        }
-      });
-      this.loginServis.ulogovaniPartner.subscribe(partner => this.partner = partner);
+    this.vratiFakturu();
   }
 
   vratiFakturu() {
