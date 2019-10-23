@@ -6,11 +6,9 @@ import { HttpClient } from '@angular/common/http';
 import { AppUtilsService } from '../utils/app-utils.service';
 import { Router } from '@angular/router';
 import { LocalStorageService } from './data/local-storage.service';
-import { DataService } from './data/data.service';
 import { MatDialog } from '@angular/material';
 import { SesijaIsteklaModalComponent } from 'src/app/shared/modal/sesija-istekla-modal/sesija-istekla-modal.component';
 import { environment } from 'src/environments/environment';
-import { PartnerService } from './partner.service';
 import { PrvoLogovanjeModalComponent } from 'src/app/shared/modal/prvo-logovanje-modal/prvo-logovanje-modal.component';
 
 const TIMEOUT = 15000;
@@ -35,7 +33,6 @@ export class LoginService {
     private http: HttpClient,
     private router: Router,
     private utils: AppUtilsService,
-    private korpaServis: DataService,
     private storageServis: LocalStorageService,
     public dialog: MatDialog) { }
 

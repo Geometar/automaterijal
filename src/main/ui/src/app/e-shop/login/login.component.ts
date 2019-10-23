@@ -61,16 +61,16 @@ export class LoginComponent implements OnInit {
             this.router.navigateByUrl('naslovna');
             this.loginServis.setDaLiJeUserLogovan(true);
             this.loginServis.setUlogovanogPartner(this.partner);
-            if (this.partner.loginCount === 0) {
-              this.dialog.open(PrvoLogovanjeModalComponent, {
-                width: '600px',
-                data: this.partner,
-                disableClose: true
-              });
-            }
           } else {
             this.loginServis.setDaLiJeUserLogovan(false);
             this.dataService.logout();
+          }
+          if (this.partner.loginCount === 0 && this.dialog.openDialogs.length === 0) {
+            this.dialog.open(PrvoLogovanjeModalComponent, {
+              width: '600px',
+              data: this.partner,
+              disableClose: true
+            });
           }
         } else {
           this.uspesnoLogovanje = false;

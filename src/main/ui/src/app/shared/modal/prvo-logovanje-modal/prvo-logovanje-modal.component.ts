@@ -5,6 +5,7 @@ import { PartnerService } from 'src/app/e-shop/service/partner.service';
 import { PromenaSifre, Partner } from 'src/app/e-shop/model/dto';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-prvo-logovanje-modal',
@@ -24,10 +25,12 @@ export class PrvoLogovanjeModalComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<PrvoLogovanjeModalComponent>,
     private partnerServis: PartnerService,
+    public router: Router,
     private formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data) { }
 
   ngOnInit() {
+    this.router.navigateByUrl('naslovna');
     this.partner = this.data;
     this.inicijalizujForme();
   }

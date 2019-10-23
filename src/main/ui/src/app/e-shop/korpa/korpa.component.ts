@@ -13,7 +13,6 @@ import { Router } from '@angular/router';
 import { IzmenaKolicineModalComponent } from 'src/app/shared/modal/izmena-kolicine-modal/izmena-kolicine-modal.component';
 import { UspesnoPorucivanjeModalComponent } from 'src/app/shared/modal/uspesno-porucivanje-modal/uspesno-porucivanje-modal.component';
 import { NeuspesnoPorucivanjeModalComponent } from 'src/app/shared/modal/neuspesno-porucivanje-modal/neuspesno-porucivanje-modal.component';
-import { PrvoLogovanjeModalComponent } from 'src/app/shared/modal/prvo-logovanje-modal/prvo-logovanje-modal.component';
 
 @Component({
   selector: 'app-korpa',
