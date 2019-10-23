@@ -44,3 +44,6 @@ testem.log
 
 # e2e
 /e2e/*.js
+
+# moj ignore
+static/
