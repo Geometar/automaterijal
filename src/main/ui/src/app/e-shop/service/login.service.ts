@@ -79,9 +79,9 @@ export class LoginService {
       .subscribe((res: Partner) => {
         const partner = res;
         if (partner === null) {
-          this.router.navigate(['/login']);
           const partnerStorage = this.storageServis.procitajPartneraIzMemorije();
           if (partnerStorage !== null && partnerStorage.ppid) {
+            this.router.navigate(['/login']);
             this.izbaciPartnerIzSesije();
           }
         } else if (partner.loginCount === 0) {
