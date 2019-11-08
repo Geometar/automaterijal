@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { Partner, FakturaDetalji, Fakutra } from '../../model/dto';
 import { LoginService } from '../../service/login.service';
 import { FakturaService } from '../../service/faktura.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-faktura-detalji',
@@ -29,7 +30,7 @@ export class FakturaDetaljiComponent implements OnInit {
     private loginServis: LoginService,
     private route: ActivatedRoute,
     private fakturaServis: FakturaService,
-    private router: Router) { }
+    private location: Location) { }
 
   ngOnInit() {
     this.loginServis.izbaciPartneraIzSesiseAkoJeUMemoriji();
@@ -56,7 +57,6 @@ export class FakturaDetaljiComponent implements OnInit {
   }
 
   idiNazad() {
-    this.router.navigate(['/porudzbenice']);
+    this.location.back();
   }
-
 }

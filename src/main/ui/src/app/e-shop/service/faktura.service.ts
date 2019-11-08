@@ -18,10 +18,18 @@ export class FakturaService {
 
   constructor(private http: HttpClient, private utils: AppUtilsService) { }
 
-  public vratiFaktureKorisnika(page: number, pageSize: number, ppid: number) {
+  public vratiFaktureKorisnika(page: number, pageSize: number, ppid: number, datumOd: Date, datumDo: Date) {
     const parameterObject = {};
     parameterObject['page'] = page;
     parameterObject['pageSize'] = pageSize;
+
+    if (datumOd) {
+      parameterObject['dateFrom'] = datumOd.getTime();
+    }
+    if (datumDo) {
+      parameterObject['dateTo'] = datumDo.getTime();
+    }
+
     const parametersString = this.utils.vratiKveriParametre(parameterObject);
     const fullUrl = DOMAIN_URL + FAKTURA_URL + '/' + ppid + parametersString;
     return this.http

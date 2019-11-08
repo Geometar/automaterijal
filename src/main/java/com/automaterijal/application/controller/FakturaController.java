@@ -4,6 +4,7 @@ import com.automaterijal.application.domain.dto.FakturaDto;
 import com.automaterijal.application.domain.dto.RobaDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.services.FakturaService;
+import com.automaterijal.application.utils.GeneralUtil;
 import com.automaterijal.application.utils.PartnerSpringBeanUtils;
 import lombok.AccessLevel;
 import lombok.NonNull;
@@ -16,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -28,7 +31,7 @@ public class FakturaController {
 
     @NonNull
     final FakturaService fakturaService;
-    
+
     @NonNull
     final PartnerSpringBeanUtils partnerSpringBeanUtils;
 
@@ -36,20 +39,23 @@ public class FakturaController {
     public ResponseEntity<Page<FakturaDto>> vratiSveFaktureKorisnika(
             @RequestParam(required = false) final Integer page,
             @RequestParam(required = false) final Integer pageSize,
+            @RequestParam(required = false) final BigDecimal dateFrom,
+            @RequestParam(required = false) final BigDecimal dateTo,
             @PathVariable(name = "ppid") final Integer ppid,
             final Authentication authentication
     ) {
-            final Integer iPage = page == null ? 0 : page;
-        final Integer iPageSize = pageSize == null ? 10 : pageSize;
-
         final Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
-        if(partner == null) {
+        final var iPage = page == null ? 0 : page;
+        final var iPageSize = pageSize == null ? 10 : pageSize;
+        final var iVremeOd = dateFrom == null ? LocalDate.now().minusYears(5).atStartOfDay(): GeneralUtil.timestampToLDT(dateFrom.longValue()).atStartOfDay();
+        final var iVremeDo = dateTo == null ? LocalDate.now().atStartOfDay().plusDays(1) : GeneralUtil.timestampToLDT(dateTo.longValue()).atStartOfDay().plusDays(1);
+        if (partner == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } else if (ppid != null && ppid.intValue() != partner.getPpid().intValue()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
-        final Page<FakturaDto> fakture = fakturaService.vratiSveFaktureUlogovanogKorisnika(partner, iPage, iPageSize);
+        final Page<FakturaDto> fakture = fakturaService.vratiSveFaktureUlogovanogKorisnika(partner, iPage, iPageSize, iVremeOd, iVremeDo);
         return ResponseEntity.ok(fakture);
     }
 
@@ -57,7 +63,7 @@ public class FakturaController {
     public ResponseEntity<List<RobaDto>> podnesiFakturu(@RequestBody final FakturaDto fakturaDto, final Authentication authentication) {
         final Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
 
-        if(partner == null) {
+        if (partner == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
@@ -78,7 +84,7 @@ public class FakturaController {
     ) {
         final Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
 
-        if(partner == null) {
+        if (partner == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } else if (ppid != null && ppid.intValue() != partner.getPpid().intValue()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

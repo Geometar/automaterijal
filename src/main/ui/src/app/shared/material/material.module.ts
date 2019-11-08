@@ -6,7 +6,8 @@ import {MatButtonModule, MatCheckboxModule, MatTableModule, MatTabsModule,
     MatFormFieldModule,
     MatChipsModule, MatSelectModule, MatAutocompleteModule, MatTooltipModule,
     MatRadioModule, MatSnackBarModule, MatBadgeModule,
-    MatDialogModule, MatProgressSpinnerModule, MatInputModule, MatStepperModule} from '@angular/material';
+    MatDialogModule, MatProgressSpinnerModule, MatInputModule, MatStepperModule,
+     MatDatepickerModule, MatNativeDateModule} from '@angular/material';
 import { LayoutModule } from '@angular/cdk/layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -14,6 +15,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   imports: [
     MatButtonModule,
     MatTooltipModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     MatCheckboxModule,
     MatExpansionModule,
     MatStepperModule,
@@ -50,6 +53,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatCheckboxModule,
     MatTooltipModule,
     MatProgressSpinnerModule,
+    MatDatepickerModule,
     MatExpansionModule,
     ReactiveFormsModule,
     MatStepperModule,
@@ -58,6 +62,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatBadgeModule,
     MatRadioModule,
     MatFormFieldModule,
+    MatNativeDateModule,
     FormsModule,
     MatDialogModule,
     MatChipsModule,

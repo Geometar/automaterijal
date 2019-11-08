@@ -16,6 +16,7 @@ import com.automaterijal.application.domain.repository.valuehelp.NacinPrevozaRep
 import com.automaterijal.application.domain.repository.valuehelp.StatusRepository;
 import com.automaterijal.application.services.roba.RobaCeneService;
 import com.automaterijal.application.services.roba.RobaService;
+import com.automaterijal.application.utils.GeneralUtil;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -99,11 +101,18 @@ public class FakturaService {
     public Page<FakturaDto> vratiSveFaktureUlogovanogKorisnika(
             final Partner partner,
             final Integer page,
-            final Integer pageSize) {
+            final Integer pageSize,
+            final LocalDateTime vremeOd,
+            final LocalDateTime vremeDo) {
         final var pageRequest = PageRequest.of(page, pageSize, new Sort(Sort.Direction.ASC, "orderId"));
-        return fakturaRepository.findByPpidOrderByDataSentDesc(partner.getPpid(), pageRequest)
-                .map(mapper::map)
-                .map(fakturaDto -> obogatiDto(fakturaDto, partner));
+        return fakturaRepository.findByPpidAndDataSentGreaterThanAndDataSentLessThanOrderByDataSentDesc(
+                partner.getPpid(),
+                pageRequest,
+                GeneralUtil.LDTToTimestamp(vremeOd),
+                GeneralUtil.LDTToTimestamp(vremeDo)
+
+        ).map(mapper::map)
+         .map(fakturaDto -> obogatiDto(fakturaDto, partner));
     }
 
     private FakturaDto obogatiDto(final FakturaDto fakturaDto, final Partner partner) {
