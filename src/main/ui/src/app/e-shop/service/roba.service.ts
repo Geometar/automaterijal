@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { timeoutWith, catchError } from 'rxjs/operators';
 import { Sort } from '@angular/material';
 import { AppUtilsService } from '../utils/app-utils.service';
 import { environment } from 'src/environments/environment';
+import { Roba, RobaPage } from '../model/dto';
 
 const DOMAIN_URL = environment.baseUrl + '/api';
 const ROBA_URL = '/roba';
@@ -24,7 +25,7 @@ export class RobaService {
 
   constructor(private http: HttpClient, private utils: AppUtilsService) { }
 
-  public pronadjiSvuRobu(sort: Sort, pageSize, page, searchValue, naStanju, proizvodjacId): Observable<any> {
+  public pronadjiSvuRobu(sort: Sort, pageSize, page, searchValue, naStanju, proizvodjacId): Observable<HttpResponse<Object>> {
     const parameterObject = {};
     parameterObject['pageSize'] = pageSize;
     parameterObject['page'] = page;
@@ -39,7 +40,7 @@ export class RobaService {
     const fullUrl = DOMAIN_URL + ROBA_URL + parametersString;
 
     return this.http
-      .get(fullUrl)
+      .get(fullUrl, {observe: 'response'})
       .pipe(
         timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
         catchError((error: any) => throwError(error))

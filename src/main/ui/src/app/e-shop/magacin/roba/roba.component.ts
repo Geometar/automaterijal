@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { RobaService } from '../../service/roba.service';
-import { Roba } from '../../model/dto';
+import { Roba, RobaPage } from '../../model/dto';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY } from 'rxjs';
 import { DataService } from '../../service/data/data.service';
 import { VrstaRobe } from '../../model/roba.enum';
 import { Filter } from '../../model/filter';
 import { LoginService } from '../../service/login.service';
+import { HttpResponse } from '@angular/common/http';
 @Component({
   selector: 'app-roba',
   templateUrl: './roba.component.html',
@@ -40,7 +41,6 @@ export class RobaComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.loginService.izbaciPartneraIzSesiseAkoJeUMemoriji();
     this.pronadjiSvuRobu();
   }
 
@@ -60,14 +60,16 @@ export class RobaComponent implements OnInit {
         finalize(() => this.ucitavanje = false)
       )
       .subscribe(
-        res => {
+        (response: HttpResponse<RobaPage>) => {
+          this.loginService.obavesiPartneraAkoJeSesijaIstekla(response.headers.get('AuthenticatedUser'));
+          const body = response.body;
           this.pronadjenaRoba = true;
-          this.roba = res.content;
+          this.roba = body.content;
           this.roba = this.dataService.skiniSaStanjaUkolikoJeUKorpi(this.roba);
           this.dataSource = this.roba;
-          this.rowsPerPage = res.size;
-          this.pageIndex = res.number;
-          this.tableLength = res.totalElements;
+          this.rowsPerPage = body.size;
+          this.pageIndex = body.number;
+          this.tableLength = body.totalElements;
         },
         error => {
           this.roba = null;
@@ -92,14 +94,16 @@ export class RobaComponent implements OnInit {
         finalize(() => this.ucitavanje = false)
       )
       .subscribe(
-        res => {
+        (response: HttpResponse<RobaPage>) => {
+          this.loginService.obavesiPartneraAkoJeSesijaIstekla(response.headers.get('AuthenticatedUser'));
           this.pronadjenaRoba = true;
-          this.roba = res.content;
+          const body = response.body;
+          this.roba = body.content;
           this.roba = this.dataService.skiniSaStanjaUkolikoJeUKorpi(this.roba);
           this.dataSource = this.roba;
-          this.rowsPerPage = res.size;
-          this.pageIndex = res.number;
-          this.tableLength = res.totalElements;
+          this.rowsPerPage = body.size;
+          this.pageIndex = body.number;
+          this.tableLength = body.totalElements;
         },
         error => {
           this.roba = null;

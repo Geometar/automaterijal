@@ -15,11 +15,13 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -52,16 +54,16 @@ public class RobaController {
         final var univerzalniParametri = robaSpringBeanUtils.popuniIVratiGenerickeParametreZaServis(
                 page, pageSize, sortBy, sortBy, proizvodjac, naStanju, sortBy, sortDirection, searchTerm, VrstaRobe.SVE, null, null
         );
-        final var ulogovaniPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+        final var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
 
         final Page<RobaDto> roba = robaGlavniService.pronadjiRobuPoPretrazi(
-                univerzalniParametri, ulogovaniPartner
+                univerzalniParametri, uPartner
         );
 
         if (!CollectionUtils.isEmpty(roba.getContent())) {
-            return ResponseEntity.ok(roba);
+            return ResponseEntity.ok().headers(createHeaders(uPartner)).body(roba);
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.notFound().headers(createHeaders(uPartner)).build();
     }
 
     @GetMapping(value = "/filteri")
@@ -142,5 +144,12 @@ public class RobaController {
             return ResponseEntity.ok(roba);
         }
         return ResponseEntity.notFound().build();
+    }
+
+    private HttpHeaders createHeaders(Partner partner) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("AuthenticatedUser", partner != null ? "true" : "false");
+        headers.add("Access-Control-Expose-Headers", "AuthenticatedUser");
+        return headers;
     }
 }

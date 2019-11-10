@@ -74,6 +74,13 @@ export class LoginService {
     this.storageServis.sacuvajPartneraUMemoriju(partner);
   }
 
+  public obavesiPartneraAkoJeSesijaIstekla(userId: string) {
+    if (userId === 'false' && this.storageServis.procitajPartneraIzMemorije()) {
+      this.router.navigate(['/login']);
+      this.izbaciPartnerIzSesije();
+    }
+  }
+
   public izbaciPartneraIzSesiseAkoJeUMemoriji() {
     this.vratiUlogovanogKorisnika(false)
       .subscribe((res: Partner) => {
