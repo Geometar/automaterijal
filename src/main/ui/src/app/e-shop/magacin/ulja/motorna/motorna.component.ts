@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY } from 'rxjs';
 import { Roba, RobaPage } from 'src/app/e-shop/model/dto';
-import { Korpa } from 'src/app/e-shop/model/porudzbenica';
 import { RobaService } from 'src/app/e-shop/service/roba.service';
-import { AppUtilsService } from 'src/app/e-shop/utils/app-utils.service';
 import { DataService } from 'src/app/e-shop/service/data/data.service';
 import { VrstaRobe } from 'src/app/e-shop/model/roba.enum';
 import { Filter } from 'src/app/e-shop/model/filter';
@@ -30,7 +28,6 @@ export class MotornaComponent implements OnInit {
   public filter: Filter = new Filter();
 
   public searchValue = '';
-  public lastSearchValue = '';
   public pocetnoPretrazivanje: boolean;
 
   public ucitavanje = false;
@@ -53,49 +50,13 @@ export class MotornaComponent implements OnInit {
   }
 
   pronandjiSvoMotornoUlje() {
-    this.ucitavanje = true;
-    this.pronadjenaRoba = true;
-
-    this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, null, null, null, this.vrstaUlja)
-      .pipe(
-        takeWhile(() => this.alive),
-        catchError((error: Response) => {
-          if (error.status === 404) {
-            this.pronadjenaRoba = false;
-            this.loginService.obavesiPartneraAkoJeSesijaIstekla(error.headers.get('AuthenticatedUser'));
-            return EMPTY;
-          }
-          return throwError(error);
-        }),
-        finalize(() => this.ucitavanje = false)
-      )
-      .subscribe(
-        (response: HttpResponse<RobaPage>) => {
-          this.loginService.obavesiPartneraAkoJeSesijaIstekla(response.headers.get('AuthenticatedUser'));
-          const body = response.body;
-          this.pronadjenaRoba = true;
-          this.roba = body.content;
-          this.roba = this.dataService.skiniSaStanjaUkolikoJeUKorpi(this.roba);
-          this.dataSource = this.roba;
-          this.dataSource = this.roba;
-          this.rowsPerPage = body.size;
-          this.pageIndex = body.number;
-          this.tableLength = body.totalElements;
-        },
-        error => {
-          this.roba = null;
-        });
-  }
-
-  pronadjiEntitetePoPretrazi(searchValue) {
     this.pocetnoPretrazivanje = false;
-    this.lastSearchValue = searchValue;
     this.ucitavanje = true;
     this.dataSource = null;
-    this.ucitavanje = true;
     this.pronadjenaRoba = true;
     this.robaService.pronadjiUlje(
-      this.sort, this.rowsPerPage, this.pageIndex, searchValue, this.filter.naStanju, this.filter.proizvodjacId, this.vrstaUlja)
+      this.sort, this.rowsPerPage, this.pageIndex, this.searchValue, this.filter.naStanju, this.filter.proizvodjacId, this.vrstaUlja
+      )
       .pipe(
         takeWhile(() => this.alive),
         catchError((error: Response) => {
@@ -115,6 +76,7 @@ export class MotornaComponent implements OnInit {
           this.pronadjenaRoba = true;
           this.roba = body.content;
           this.roba = this.dataService.skiniSaStanjaUkolikoJeUKorpi(this.roba);
+          this.dataSource = this.roba;
           this.dataSource = this.roba;
           this.rowsPerPage = body.size;
           this.pageIndex = body.number;
@@ -130,14 +92,14 @@ export class MotornaComponent implements OnInit {
       this.pageIndex = 0;
     }
     this.searchValue = searchValue;
-    this.pronadjiEntitetePoPretrazi(searchValue);
+    this.pronandjiSvoMotornoUlje();
   }
 
   paginatorEvent(pageEvent) {
     this.dataSource = [];
     this.rowsPerPage = pageEvent.pageSize;
     this.pageIndex = pageEvent.pageIndex;
-    this.pronadjiEntitetePoPretrazi(this.searchValue);
+    this.pronandjiSvoMotornoUlje();
   }
 
   toogleFilterDiv(otvoriFilter: boolean) {
@@ -149,6 +111,6 @@ export class MotornaComponent implements OnInit {
       this.pageIndex = 0;
     }
     this.filter = filter;
-    this.pronadjiEntitetePoPretrazi(this.searchValue);
+    this.pronandjiSvoMotornoUlje();
   }
 }

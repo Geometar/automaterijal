@@ -7,7 +7,6 @@ import { DataService } from '../../service/data/data.service';
 import { VrstaRobe } from '../../model/roba.enum';
 import { Filter } from '../../model/filter';
 import { LoginService } from '../../service/login.service';
-import { PartnerService } from '../../service/partner.service';
 import { HttpResponse } from '@angular/common/http';
 
 @Component({
@@ -47,45 +46,11 @@ export class FilteriComponent implements OnInit {
   }
 
   pronandjiSveFiltere() {
-    this.ucitavanje = true;
-    this.pronadjenaRoba = true;
-    this.robaService.pronadjiFiltere(this.sort, this.rowsPerPage, this.pageIndex, null, null, null)
-      .pipe(
-        takeWhile(() => this.alive),
-        catchError((error: Response) => {
-          if (error.status === 404) {
-            this.pronadjenaRoba = false;
-            this.loginService.obavesiPartneraAkoJeSesijaIstekla(error.headers.get('AuthenticatedUser'));
-            return EMPTY;
-          }
-          return throwError(error);
-        }),
-        finalize(() => this.ucitavanje = false)
-      )
-      .subscribe(
-        (response: HttpResponse<RobaPage>) => {
-          this.loginService.obavesiPartneraAkoJeSesijaIstekla(response.headers.get('AuthenticatedUser'));
-          const body = response.body;
-          this.pronadjenaRoba = true;
-          this.roba = body.content;
-          this.roba = this.dataService.skiniSaStanjaUkolikoJeUKorpi(this.roba);
-          this.dataSource = this.roba;
-          this.rowsPerPage = body.size;
-          this.pageIndex = body.number;
-          this.tableLength = body.totalElements;
-        },
-        error => {
-          this.roba = null;
-        });
-  }
-
-  pronadjiFilterePoPretrazi(searchValue) {
-    this.ucitavanje = true;
     this.dataSource = null;
     this.ucitavanje = true;
     this.pronadjenaRoba = true;
     this.robaService.pronadjiFiltere(
-      this.sort, this.rowsPerPage, this.pageIndex, searchValue, this.filter.naStanju, this.filter.proizvodjacId
+      this.sort, this.rowsPerPage, this.pageIndex, this.searchValue, this.filter.naStanju, this.filter.proizvodjacId
     )
       .pipe(
         takeWhile(() => this.alive),
@@ -121,7 +86,7 @@ export class FilteriComponent implements OnInit {
       this.pageIndex = 0;
     }
     this.searchValue = searchValue;
-    this.pronadjiFilterePoPretrazi(searchValue);
+    this.pronandjiSveFiltere();
 
   }
 
@@ -129,7 +94,7 @@ export class FilteriComponent implements OnInit {
     this.dataSource = [];
     this.rowsPerPage = pageEvent.pageSize;
     this.pageIndex = pageEvent.pageIndex;
-    this.pronadjiFilterePoPretrazi(this.searchValue);
+    this.pronandjiSveFiltere();
   }
 
   toogleFilterDiv(otvoriFilter: boolean) {
@@ -141,6 +106,6 @@ export class FilteriComponent implements OnInit {
       this.pageIndex = 0;
     }
     this.filter = filter;
-    this.pronadjiFilterePoPretrazi(this.searchValue);
+    this.pronandjiSveFiltere();
   }
 }

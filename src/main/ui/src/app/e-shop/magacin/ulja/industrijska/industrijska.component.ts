@@ -28,7 +28,6 @@ export class IndustrijskaComponent implements OnInit {
   public vrstaIndustijskihUlja: Subject<string> = new Subject<string>();
 
   public searchValue = '';
-  public lastSearchValue = '';
   public pocetnoPretrazivanje: boolean;
 
   public ucitavanje = false;
@@ -66,47 +65,13 @@ export class IndustrijskaComponent implements OnInit {
   }
 
   pronandjiUlja() {
-    this.dataSource = null;
-    this.ucitavanje = true;
-    this.pronadjenaRoba = true;
-    this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, null, null, null, this.vrstaUlja)
-      .pipe(
-        takeWhile(() => this.alive),
-        catchError((error: Response) => {
-          if (error.status === 404) {
-            this.pronadjenaRoba = false;
-            this.loginService.obavesiPartneraAkoJeSesijaIstekla(error.headers.get('AuthenticatedUser'));
-            return EMPTY;
-          }
-          return throwError(error);
-        }),
-        finalize(() => this.ucitavanje = false)
-      )
-      .subscribe(
-        (response: HttpResponse<RobaPage>) => {
-          this.loginService.obavesiPartneraAkoJeSesijaIstekla(response.headers.get('AuthenticatedUser'));
-          const body = response.body;
-          this.pronadjenaRoba = true;
-          this.roba = body.content;
-          this.roba = this.dataService.skiniSaStanjaUkolikoJeUKorpi(this.roba);
-          this.dataSource = this.roba;
-          this.rowsPerPage = body.size;
-          this.pageIndex = body.number;
-          this.tableLength = body.totalElements;
-        },
-        error => {
-          this.roba = null;
-        });
-  }
-
-  pronadjiEntitetePoPretrazi(searchValue) {
     this.pocetnoPretrazivanje = false;
-    this.lastSearchValue = searchValue;
     this.dataSource = null;
     this.ucitavanje = true;
     this.pronadjenaRoba = true;
     this.robaService.pronadjiUlje(
-      this.sort, this.rowsPerPage, this.pageIndex, searchValue, this.filter.naStanju, this.filter.proizvodjacId, this.vrstaUlja)
+      this.sort, this.rowsPerPage, this.pageIndex, this.searchValue, this.filter.naStanju, this.filter.proizvodjacId, this.vrstaUlja
+      )
       .pipe(
         takeWhile(() => this.alive),
         catchError((error: Response) => {
@@ -141,14 +106,14 @@ export class IndustrijskaComponent implements OnInit {
       this.pageIndex = 0;
     }
     this.searchValue = searchValue;
-    this.pronadjiEntitetePoPretrazi(searchValue);
+    this.pronandjiUlja();
   }
 
   paginatorEvent(pageEvent) {
     this.dataSource = [];
     this.rowsPerPage = pageEvent.pageSize;
     this.pageIndex = pageEvent.pageIndex;
-    this.pronadjiEntitetePoPretrazi(this.searchValue);
+    this.pronandjiUlja();
   }
 
   toogleFilterDiv(otvoriFilter: boolean) {
@@ -160,7 +125,7 @@ export class IndustrijskaComponent implements OnInit {
       this.pageIndex = 0;
     }
     this.filter = filter;
-    this.pronadjiEntitetePoPretrazi(this.searchValue);
+    this.pronandjiUlja();
   }
 
   onChange() {

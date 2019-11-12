@@ -48,45 +48,10 @@ export class AntifrizComponent implements OnInit {
 
   pronandjiSavAntifriz() {
     this.ucitavanje = true;
-    this.pronadjenaRoba = true;
-
-    this.robaService.pronadjiUlje(this.sort, this.rowsPerPage, this.pageIndex, null, null, null, this.vrstaUlja)
-      .pipe(
-        takeWhile(() => this.alive),
-        catchError((error: Response) => {
-          if (error.status === 404) {
-            this.pronadjenaRoba = false;
-            this.loginService.obavesiPartneraAkoJeSesijaIstekla(error.headers.get('AuthenticatedUser'));
-            return EMPTY;
-          }
-          return throwError(error);
-        }),
-        finalize(() => this.ucitavanje = false)
-      )
-      .subscribe(
-        (response: HttpResponse<RobaPage>) => {
-          this.loginService.obavesiPartneraAkoJeSesijaIstekla(response.headers.get('AuthenticatedUser'));
-          const body = response.body;
-          this.pronadjenaRoba = true;
-          this.roba = body.content;
-          this.roba = this.dataService.skiniSaStanjaUkolikoJeUKorpi(this.roba);
-          this.dataSource = this.roba;
-          this.rowsPerPage = body.size;
-          this.pageIndex = body.number;
-          this.tableLength = body.totalElements;
-        },
-        error => {
-          this.roba = null;
-        });
-  }
-
-  pronadjiEntitetePoPretrazi(searchValue) {
-    this.ucitavanje = true;
     this.dataSource = null;
-    this.ucitavanje = true;
     this.pronadjenaRoba = true;
     this.robaService.pronadjiUlje(
-      this.sort, this.rowsPerPage, this.pageIndex, searchValue, this.filter.naStanju, this.filter.proizvodjacId, this.vrstaUlja
+      this.sort, this.rowsPerPage, this.pageIndex, this.searchValue, this.filter.naStanju, this.filter.proizvodjacId, this.vrstaUlja
     )
       .pipe(
         takeWhile(() => this.alive),
@@ -121,7 +86,7 @@ export class AntifrizComponent implements OnInit {
     this.dataSource = [];
     this.rowsPerPage = pageEvent.pageSize;
     this.pageIndex = pageEvent.pageIndex;
-    this.pronadjiEntitetePoPretrazi(this.searchValue);
+    this.pronandjiSavAntifriz();
   }
 
   pronaciPoTrazenojReci(searchValue) {
@@ -129,7 +94,7 @@ export class AntifrizComponent implements OnInit {
       this.pageIndex = 0;
     }
     this.searchValue = searchValue;
-    this.pronadjiEntitetePoPretrazi(searchValue);
+    this.pronandjiSavAntifriz();
   }
 
   toogleFilterDiv(otvoriFilter: boolean) {
@@ -141,6 +106,6 @@ export class AntifrizComponent implements OnInit {
       this.pageIndex = 0;
     }
     this.filter = filter;
-    this.pronadjiEntitetePoPretrazi(this.searchValue);
+    this.pronandjiSavAntifriz();
   }
 }

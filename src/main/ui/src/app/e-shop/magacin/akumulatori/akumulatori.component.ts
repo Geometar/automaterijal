@@ -30,7 +30,7 @@ export class AkumulatoriComponent implements OnInit {
 
   private searchValue = '';
   public ucitavanje = false;
-  
+
   public pronadjenaRoba = true;
   public dataSource: any;
 
@@ -47,43 +47,10 @@ export class AkumulatoriComponent implements OnInit {
 
   pronandjiSveAkumulatore() {
     this.ucitavanje = true;
-    this.pronadjenaRoba = true;
-    this.robaService.pronadjiAkumulatore(this.sort, this.rowsPerPage, this.pageIndex, null, null, null)
-      .pipe(
-        takeWhile(() => this.alive),
-        catchError((error: Response) => {
-          if (error.status === 404) {
-            this.pronadjenaRoba = false;
-            this.loginService.obavesiPartneraAkoJeSesijaIstekla(error.headers.get('AuthenticatedUser'));
-            return EMPTY;
-          }
-          return throwError(error);
-        }),
-        finalize(() => this.ucitavanje = false)
-      )
-      .subscribe(
-        (response: HttpResponse<RobaPage>) => {
-          this.loginService.obavesiPartneraAkoJeSesijaIstekla(response.headers.get('AuthenticatedUser'));
-          const body = response.body;
-          this.pronadjenaRoba = true;
-          this.roba = body.content;
-          this.roba = this.dataService.skiniSaStanjaUkolikoJeUKorpi(this.roba);
-          this.dataSource = this.roba;
-          this.rowsPerPage = body.size;
-          this.pageIndex = body.number;
-          this.tableLength = body.totalElements;
-        },
-        error => {
-          this.roba = null;
-        });
-  }
-
-  pronadjiAkumulatorePoPretrazi(searchValue) {
-    this.ucitavanje = true;
     this.dataSource = null;
     this.pronadjenaRoba = true;
     this.robaService.pronadjiAkumulatore(
-      this.sort, this.rowsPerPage, this.pageIndex, searchValue, this.filter.naStanju, this.filter.proizvodjacId
+      this.sort, this.rowsPerPage, this.pageIndex, this.searchValue, this.filter.naStanju, this.filter.proizvodjacId
       )
       .pipe(
         takeWhile(() => this.alive),
@@ -119,14 +86,14 @@ export class AkumulatoriComponent implements OnInit {
       this.pageIndex = 0;
     }
     this.searchValue = searchValue;
-    this.pronadjiAkumulatorePoPretrazi(searchValue);
+    this.pronandjiSveAkumulatore();
   }
 
   paginatorEvent(pageEvent) {
     this.dataSource = [];
     this.rowsPerPage = pageEvent.pageSize;
     this.pageIndex = pageEvent.pageIndex;
-    this.pronadjiAkumulatorePoPretrazi(this.searchValue);
+    this.pronandjiSveAkumulatore();
   }
 
   toogleFilterDiv(otvoriFilter: boolean) {
@@ -139,6 +106,6 @@ export class AkumulatoriComponent implements OnInit {
     }
     this.filter = filter;
 
-    this.pronadjiAkumulatorePoPretrazi(this.searchValue);
+    this.pronandjiSveAkumulatore();
   }
 }
