@@ -110,7 +110,9 @@ export class RobaService {
       );
   }
 
-  public pronadjiPoKategoriji(sort: Sort, pageSize, page, searchValue, naStanju, proizvodjacId, kategorija: string): Observable<any> {
+  public pronadjiPoKategoriji(
+    sort: Sort, pageSize, page, searchValue, naStanju, proizvodjacId, kategorija: string
+    ): Observable<HttpResponse<Object>> {
     const parameterObject = {};
     parameterObject['pageSize'] = pageSize;
     parameterObject['page'] = page;
@@ -124,7 +126,7 @@ export class RobaService {
     const parametersString = this.utils.vratiKveriParametre(parameterObject);
     const fullUrl = DOMAIN_URL + OSTALE_KATEGORIJE_URL + '/' + kategorija.toUpperCase() + parametersString;
     return this.http
-      .get(fullUrl)
+      .get(fullUrl, {observe: 'response'})
       .pipe(
         timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
         catchError((error: any) => throwError(error))
