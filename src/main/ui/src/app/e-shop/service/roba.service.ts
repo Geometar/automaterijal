@@ -47,7 +47,7 @@ export class RobaService {
       );
   }
 
-  public pronadjiFiltere(sort: Sort, pageSize, page, searchValue, naStanju, proizvodjacId): Observable<any> {
+  public pronadjiFiltere(sort: Sort, pageSize, page, searchValue, naStanju, proizvodjacId): Observable<HttpResponse<Object>> {
     const parameterObject = {};
     parameterObject['pageSize'] = pageSize;
     parameterObject['page'] = page;
@@ -61,14 +61,14 @@ export class RobaService {
     const parametersString = this.utils.vratiKveriParametre(parameterObject);
     const fullUrl = DOMAIN_URL + ROBA_URL + FILTERI_URL + parametersString;
     return this.http
-      .get(fullUrl)
+      .get(fullUrl, {observe: 'response'})
       .pipe(
         timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
         catchError((error: any) => throwError(error))
       );
   }
 
-  public pronadjiAkumulatore(sort: Sort, pageSize, page, searchValue, naStanju, proizvodjacId): Observable<any> {
+  public pronadjiAkumulatore(sort: Sort, pageSize, page, searchValue, naStanju, proizvodjacId): Observable<HttpResponse<Object>> {
     const parameterObject = {};
     parameterObject['pageSize'] = pageSize;
     parameterObject['page'] = page;
@@ -82,14 +82,14 @@ export class RobaService {
     const parametersString = this.utils.vratiKveriParametre(parameterObject);
     const fullUrl = DOMAIN_URL + ROBA_URL + AKUMULATORI_URL + parametersString;
     return this.http
-      .get(fullUrl)
+      .get(fullUrl, {observe: 'response'})
       .pipe(
         timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
         catchError((error: any) => throwError(error))
       );
   }
 
-  public pronadjiUlje(sort: Sort, pageSize, page, searchValue, naStanju, proizvodjacId, vrstaUlja): Observable<any> {
+  public pronadjiUlje(sort: Sort, pageSize, page, searchValue, naStanju, proizvodjacId, vrstaUlja): Observable<HttpResponse<Object>> {
     const parameterObject = {};
     parameterObject['pageSize'] = pageSize;
     parameterObject['page'] = page;
@@ -103,7 +103,7 @@ export class RobaService {
     const parametersString = this.utils.vratiKveriParametre(parameterObject);
     const fullUrl = DOMAIN_URL + ROBA_URL + ULJA_URL + this.utils.vratiPutDoResursaZaUlje(vrstaUlja) + parametersString;
     return this.http
-      .get(fullUrl)
+      .get(fullUrl, {observe: 'response'})
       .pipe(
         timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
         catchError((error: any) => throwError(error))

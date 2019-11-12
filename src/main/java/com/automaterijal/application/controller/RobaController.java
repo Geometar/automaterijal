@@ -21,7 +21,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -80,17 +79,17 @@ public class RobaController {
         final UniverzalniParametri univerzalniParametri = robaSpringBeanUtils.popuniIVratiGenerickeParametreZaServis(
                 page, pageSize, sortBy, sortBy, proizvodjac, naStanju, sortBy, sortDirection, searchTerm, VrstaRobe.FILTERI, null, null
         );
-        final Partner ulogovaniPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+        final Partner uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
 
         final Page<RobaDto> roba = robaGlavniService.pronadjiRobuPoPretrazi(
-                univerzalniParametri, ulogovaniPartner
+                univerzalniParametri, uPartner
         );
 
         if (!CollectionUtils.isEmpty(roba.getContent())) {
-            return ResponseEntity.ok(roba);
+            return ResponseEntity.ok().headers(createHeaders(uPartner)).body(roba);
         }
 
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.notFound().headers(createHeaders(uPartner)).build();
     }
 
     @GetMapping(value = "/akumulatori")
@@ -108,17 +107,17 @@ public class RobaController {
         final var univerzalniParametri = robaSpringBeanUtils.popuniIVratiGenerickeParametreZaServis(
                 page, pageSize, sortBy, sortBy, proizvodjac, naStanju, sortBy, sortDirection, searchTerm, VrstaRobe.AKUMULATORI, null, null
         );
-        final var ulogovaniPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+        final var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
 
 
         final Page<RobaDto> roba = robaGlavniService.pronadjiRobuPoPretrazi(
-                univerzalniParametri, ulogovaniPartner
+                univerzalniParametri, uPartner
         );
 
         if (!CollectionUtils.isEmpty(roba.getContent())) {
-            return ResponseEntity.ok(roba);
+            return ResponseEntity.ok().headers(createHeaders(uPartner)).body(roba);
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.notFound().headers(createHeaders(uPartner)).build();
     }
 
     @GetMapping(value = "/ulja/{vrsta}")
@@ -134,20 +133,20 @@ public class RobaController {
             final Authentication authentication
     ) {
         final var univerzalniParametri = robaSpringBeanUtils.popuniIVratiGenerickeParametreZaServis(page, pageSize, sortBy, sortBy, proizvodjac, naStanju, sortBy, sortDirection, searchTerm, VrstaRobe.ULJA, vrstaUlja, null);
-        final var ulogovaniPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+        final var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
 
         final Page<RobaDto> roba = robaGlavniService.pronadjiRobuPoPretrazi(
-                univerzalniParametri, ulogovaniPartner
+                univerzalniParametri, uPartner
         );
 
         if (!CollectionUtils.isEmpty(roba.getContent())) {
-            return ResponseEntity.ok(roba);
+            return ResponseEntity.ok().headers(createHeaders(uPartner)).body(roba);
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.notFound().headers(createHeaders(uPartner)).build();
     }
 
-    private HttpHeaders createHeaders(Partner partner) {
-        HttpHeaders headers = new HttpHeaders();
+    private HttpHeaders createHeaders(final Partner partner) {
+        final HttpHeaders headers = new HttpHeaders();
         headers.add("AuthenticatedUser", partner != null ? "true" : "false");
         headers.add("Access-Control-Expose-Headers", "AuthenticatedUser");
         return headers;

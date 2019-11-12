@@ -53,6 +53,7 @@ export class RobaComponent implements OnInit {
         catchError((error: Response) => {
           if (error.status === 404) {
             this.pronadjenaRoba = false;
+            this.loginService.obavesiPartneraAkoJeSesijaIstekla(error.headers.get('AuthenticatedUser'));
             return EMPTY;
           }
           return throwError(error);
@@ -87,6 +88,7 @@ export class RobaComponent implements OnInit {
         catchError((error: Response) => {
           if (error.status === 404) {
             this.pronadjenaRoba = false;
+            this.loginService.obavesiPartneraAkoJeSesijaIstekla(error.headers.get('AuthenticatedUser'));
             return EMPTY;
           }
           return throwError(error);

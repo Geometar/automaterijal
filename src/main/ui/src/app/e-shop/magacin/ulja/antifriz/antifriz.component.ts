@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY } from 'rxjs';
-import { Roba, Partner } from 'src/app/e-shop/model/dto';
+import { Roba, Partner, RobaPage } from 'src/app/e-shop/model/dto';
 import { RobaService } from 'src/app/e-shop/service/roba.service';
 import { DataService } from 'src/app/e-shop/service/data/data.service';
 import { VrstaRobe } from 'src/app/e-shop/model/roba.enum';
 import { Filter } from 'src/app/e-shop/model/filter';
 import { LoginService } from 'src/app/e-shop/service/login.service';
+import { HttpResponse } from '@angular/common/http';
 @Component({
   selector: 'app-antifriz',
   templateUrl: './antifriz.component.html',
@@ -42,7 +43,6 @@ export class AntifrizComponent implements OnInit {
     private loginService: LoginService) { }
 
   ngOnInit() {
-    this.loginService.izbaciPartneraIzSesiseAkoJeUMemoriji();
     this.pronandjiSavAntifriz();
   }
 
@@ -56,6 +56,7 @@ export class AntifrizComponent implements OnInit {
         catchError((error: Response) => {
           if (error.status === 404) {
             this.pronadjenaRoba = false;
+            this.loginService.obavesiPartneraAkoJeSesijaIstekla(error.headers.get('AuthenticatedUser'));
             return EMPTY;
           }
           return throwError(error);
@@ -63,14 +64,16 @@ export class AntifrizComponent implements OnInit {
         finalize(() => this.ucitavanje = false)
       )
       .subscribe(
-        res => {
+        (response: HttpResponse<RobaPage>) => {
+          this.loginService.obavesiPartneraAkoJeSesijaIstekla(response.headers.get('AuthenticatedUser'));
+          const body = response.body;
           this.pronadjenaRoba = true;
-          this.roba = res.content;
+          this.roba = body.content;
           this.roba = this.dataService.skiniSaStanjaUkolikoJeUKorpi(this.roba);
           this.dataSource = this.roba;
-          this.rowsPerPage = res.size;
-          this.pageIndex = res.number;
-          this.tableLength = res.totalElements;
+          this.rowsPerPage = body.size;
+          this.pageIndex = body.number;
+          this.tableLength = body.totalElements;
         },
         error => {
           this.roba = null;
@@ -90,6 +93,7 @@ export class AntifrizComponent implements OnInit {
         catchError((error: Response) => {
           if (error.status === 404) {
             this.pronadjenaRoba = false;
+            this.loginService.obavesiPartneraAkoJeSesijaIstekla(error.headers.get('AuthenticatedUser'));
             return EMPTY;
           }
           return throwError(error);
@@ -97,14 +101,16 @@ export class AntifrizComponent implements OnInit {
         finalize(() => this.ucitavanje = false)
       )
       .subscribe(
-        res => {
+        (response: HttpResponse<RobaPage>) => {
+          this.loginService.obavesiPartneraAkoJeSesijaIstekla(response.headers.get('AuthenticatedUser'));
+          const body = response.body;
           this.pronadjenaRoba = true;
-          this.roba = res.content;
+          this.roba = body.content;
           this.roba = this.dataService.skiniSaStanjaUkolikoJeUKorpi(this.roba);
           this.dataSource = this.roba;
-          this.rowsPerPage = res.size;
-          this.pageIndex = res.number;
-          this.tableLength = res.totalElements;
+          this.rowsPerPage = body.size;
+          this.pageIndex = body.number;
+          this.tableLength = body.totalElements;
         },
         error => {
           this.roba = null;
