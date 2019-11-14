@@ -10,25 +10,33 @@
             <ng-template mat-tab-label>
                 <img width="200" [src]="slike.menjacka_ulja">
             </ng-template>
-            <app-menjacko></app-menjacko>
+            <ng-template matTabContent>
+                <app-menjacko></app-menjacko>
+            </ng-template>
         </mat-tab>
         <mat-tab label="Kočiona ulja">
             <ng-template mat-tab-label>
                 <img width="200" [src]="slike.kociona_ulja">
             </ng-template>
-            <app-kociona></app-kociona>
+            <ng-template matTabContent>
+                <app-kociona></app-kociona>
+            </ng-template>
         </mat-tab>
         <mat-tab label="Antifiriz">
             <ng-template mat-tab-label>
                 <img width="200" [src]="slike.antifriz">
             </ng-template>
-            <app-antifriz></app-antifriz>
+            <ng-template matTabContent>
+                <app-antifriz></app-antifriz>
+            </ng-template>
         </mat-tab>
         <mat-tab label="Industrijska ulja">
             <ng-template mat-tab-label>
                 <img width="200" [src]="slike.industrijska_ulja">
             </ng-template>
-            <app-industrijska></app-industrijska>
+            <ng-template matTabContent>
+                <app-industrijska></app-industrijska>
+            </ng-template>
         </mat-tab>
     </mat-tab-group>
 </main>
