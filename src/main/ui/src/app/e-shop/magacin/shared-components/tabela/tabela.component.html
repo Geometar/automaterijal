@@ -70,7 +70,7 @@
       <th mat-header-cell *matHeaderCellDef>Količina </th>
       <td class="visina-div-kolicine" data-label="Količina" mat-cell *matCellDef="let roba">
         <div *ngIf="roba.stanje > 0">
-          <input type="number" min="0" placeholder="0" max="{{roba.stanje}}" class="kolicina-labela"
+          <input type="number" min="0" (keyup.enter)="dodajUKorpu(roba)" placeholder="0" max="{{roba.stanje}}" class="kolicina-labela"
             [(ngModel)]="roba.kolicina" />
         </div>
     </ng-container>

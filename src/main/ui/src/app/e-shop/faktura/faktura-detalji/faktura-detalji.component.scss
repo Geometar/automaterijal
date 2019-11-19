@@ -15,6 +15,13 @@ i {
     margin-bottom: 15px;
 }
 
+    .header-porduzbenice {
+        background-image: url('/assets/slike/ui/pozadine/fdetalji.png');
+        /* background-image: url('/assets/slike/ui/pozadine/roba.png'); */
+        background-repeat: no-repeat;
+        background-position: top;
+        background-size: 120%;
+    }
 .granica-informacije {
     border-right: 1px solid $automaterijal-grey-300;
     border-left: 1px solid $automaterijal-grey-300;
@@ -72,6 +79,10 @@ table {
 
 
 @media only screen and (max-device-width : 640px) {
+
+    .header-porduzbenice {
+        background-image: none;
+    }
     
 
 .header {

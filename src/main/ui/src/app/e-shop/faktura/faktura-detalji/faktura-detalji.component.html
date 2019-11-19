@@ -1,6 +1,6 @@
-<div class="container-fluid">
-    <main>
-        <div *ngIf="!ucitavanje && dataSource != null && dataSource.length > 0">
+<main>
+    <div *ngIf="!ucitavanje && dataSource != null && dataSource.length > 0">
+        <div class="header-porduzbenice">
             <div class="d-flex flex-row-reverse bd-highlight">
                 <button class="button-glavni-100 nazad-button" mat-raised-button (click)="idiNazad()">
                     <mat-icon>keyboard_arrow_left</mat-icon> Nazad
@@ -53,132 +53,131 @@
                     </div>
                 </div>
             </div>
-            <div class="tabela-div" *ngIf="dataSource != null && dataSource.length > 0">
-                <p class="pdv"><i>Sve cene su prikazane sa pdv-om</i></p>
-                <table mat-table [dataSource]="dataSource">
+        </div>
+        <div class="tabela-div" *ngIf="dataSource != null && dataSource.length > 0">
+            <p class="pdv"><i>Sve cene su prikazane sa pdv-om</i></p>
+            <table mat-table [dataSource]="dataSource">
 
-                    <!-- Kataloski broj Column -->
-                    <ng-container matColumnDef="robaId">
-                        <th mat-header-cell *matHeaderCellDef> Kataloški broj </th>
-                        <td data-label="Kataloški broj" mat-cell *matCellDef="let faktura">
-                            <p class="mat-body-2">
-                                {{faktura.kataloskiBroj}}
-                            </p>
-                        </td>
-                    </ng-container>
+                <!-- Kataloski broj Column -->
+                <ng-container matColumnDef="robaId">
+                    <th mat-header-cell *matHeaderCellDef> Kataloški broj </th>
+                    <td data-label="Kataloški broj" mat-cell *matCellDef="let faktura">
+                        <p class="mat-body-2">
+                            {{faktura.kataloskiBroj}}
+                        </p>
+                    </td>
+                </ng-container>
 
-                    <!-- Kataloski broj Column -->
-                    <ng-container matColumnDef="proizvodjac">
-                        <th mat-header-cell *matHeaderCellDef> Proizvodjač </th>
-                        <td data-label="Proizvodjač" mat-cell *matCellDef="let faktura">
-                            <p>
-                                {{faktura.proizvodjac.naziv}}
-                            </p>
-                        </td>
-                    </ng-container>
+                <!-- Kataloski broj Column -->
+                <ng-container matColumnDef="proizvodjac">
+                    <th mat-header-cell *matHeaderCellDef> Proizvodjač </th>
+                    <td data-label="Proizvodjač" mat-cell *matCellDef="let faktura">
+                        <p>
+                            {{faktura.proizvodjac.naziv}}
+                        </p>
+                    </td>
+                </ng-container>
 
-                    <!-- Narucena Kolicina Column -->
-                    <ng-container matColumnDef="kolicina">
-                        <th mat-header-cell *matHeaderCellDef> Narucena Količina</th>
-                        <td data-label="Narucena Količina" mat-cell *matCellDef="let faktura">
-                            <p>
-                                {{faktura.kolicina}}
-                            </p>
-                        </td>
-                    </ng-container>
+                <!-- Narucena Kolicina Column -->
+                <ng-container matColumnDef="kolicina">
+                    <th mat-header-cell *matHeaderCellDef> Narucena Količina</th>
+                    <td data-label="Narucena Količina" mat-cell *matCellDef="let faktura">
+                        <p>
+                            {{faktura.kolicina}}
+                        </p>
+                    </td>
+                </ng-container>
 
-                    <!-- Potvrdjena Kolicina Column -->
-                    <ng-container matColumnDef="potvrdjenaKolicina">
-                        <th mat-header-cell *matHeaderCellDef> Potvrdjena količina </th>
-                        <td data-label="Potvrdjena količina" mat-cell *matCellDef="let faktura">
-                            <p>
-                                {{faktura.potvrdjenaKolicina}}
-                            </p>
-                        </td>
-                    </ng-container>
+                <!-- Potvrdjena Kolicina Column -->
+                <ng-container matColumnDef="potvrdjenaKolicina">
+                    <th mat-header-cell *matHeaderCellDef> Potvrdjena količina </th>
+                    <td data-label="Potvrdjena količina" mat-cell *matCellDef="let faktura">
+                        <p>
+                            {{faktura.potvrdjenaKolicina}}
+                        </p>
+                    </td>
+                </ng-container>
 
-                    <!-- Rabat Column -->
-                    <ng-container matColumnDef="rabat">
-                        <th mat-header-cell *matHeaderCellDef> Rabat </th>
-                        <td data-label="Rabat" mat-cell *matCellDef="let faktura">
-                            <p>
-                                {{faktura.rabat}}%
-                            </p>
-                        </td>
-                    </ng-container>
+                <!-- Rabat Column -->
+                <ng-container matColumnDef="rabat">
+                    <th mat-header-cell *matHeaderCellDef> Rabat </th>
+                    <td data-label="Rabat" mat-cell *matCellDef="let faktura">
+                        <p>
+                            {{faktura.rabat}}%
+                        </p>
+                    </td>
+                </ng-container>
 
-                    <!-- Cena Column -->
-                    <ng-container matColumnDef="cena">
-                        <th mat-header-cell *matHeaderCellDef class="text-center"> Cena </th>
-                        <td data-label="Cena" mat-cell *matCellDef="let faktura">
-                            <p class="mat-body-1 text-right iznos-margin">
-                                {{faktura.cena | currency:" "}} RSD
-                            </p>
-                        </td>
-                    </ng-container>
+                <!-- Cena Column -->
+                <ng-container matColumnDef="cena">
+                    <th mat-header-cell *matHeaderCellDef class="text-center"> Cena </th>
+                    <td data-label="Cena" mat-cell *matCellDef="let faktura">
+                        <p class="mat-body-1 text-right iznos-margin">
+                            {{faktura.cena | currency:" "}} RSD
+                        </p>
+                    </td>
+                </ng-container>
 
-                    <!-- tatus Column -->
-                    <ng-container matColumnDef="status">
-                        <th mat-header-cell *matHeaderCellDef class="text-center">Status</th>
-                        <td data-label="Status" mat-cell *matCellDef="let faktura">
-                            <p class="text-center tabela-u-korpi mat-body-1">
-                                {{faktura.status.naziv}}
-                            </p>
-                        </td>
-                    </ng-container>
+                <!-- tatus Column -->
+                <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef class="text-center">Status</th>
+                    <td data-label="Status" mat-cell *matCellDef="let faktura">
+                        <p class="text-center tabela-u-korpi mat-body-1">
+                            {{faktura.status.naziv}}
+                        </p>
+                    </td>
+                </ng-container>
 
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                </table>
-                <div class="d-flex flex-column flex-sm-row">
-                    <div class="d-flex flex-fill justify-content-end">
-                    </div>
-                    <div class="d-flex flex-fill justify-content-end">
-                        <table class="table sirina-cena">
-                            <tbody>
-                                    <tr>
-                                        <td class="pozadina-glavna-50 boja-siva-400">Poručen iznos: </td>
-                                        <td class="text-right"><b>{{faktura.iznosNarucen | currency:" "}} RSD</b></td>
-                                    </tr>
-                                <tr>
-                                    <td class="pozadina-glavna-50 boja-siva-400">Potvrdjen iznos: </td>
-                                    <td class="text-right"><b>{{faktura.iznosPotvrdjen | currency:" "}} RSD</b></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            <div class="d-flex flex-column flex-sm-row">
+                <div class="d-flex flex-fill justify-content-end">
+                </div>
+                <div class="d-flex flex-fill justify-content-end">
+                    <table class="table sirina-cena">
+                        <tbody>
+                            <tr>
+                                <td class="pozadina-glavna-50 boja-siva-400">Poručen iznos: </td>
+                                <td class="text-right"><b>{{faktura.iznosNarucen | currency:" "}} RSD</b></td>
+                            </tr>
+                            <tr>
+                                <td class="pozadina-glavna-50 boja-siva-400">Potvrdjen iznos: </td>
+                                <td class="text-right"><b>{{faktura.iznosPotvrdjen | currency:" "}} RSD</b></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-        <div *ngIf="!ucitavanje && (dataSource == null || dataSource.length == 0)">
-            <div class="d-flex flex-row-reverse bd-highlight">
-                <button class="button-glavni-100 nazad-button nazad-dugme-dole" mat-raised-button (click)="idiNazad()">
-                    <mat-icon>keyboard_arrow_left</mat-icon> Nazad
-                </button>
-            </div>
-            <div class="d-flex flex-column prazna-tabela" *ngIf="!pronadjenaRoba">
-                <i class="material-icons icon-size">
-                    error_outline
-                </i>
-                <h1 class="h1-faktura-upozorenje">Porudzbenica je prazna</h1>
-            </div>
+    </div>
+    <div *ngIf="!ucitavanje && (dataSource == null || dataSource.length == 0)">
+        <div class="d-flex flex-row-reverse bd-highlight">
+            <button class="button-glavni-100 nazad-button nazad-dugme-dole" mat-raised-button (click)="idiNazad()">
+                <mat-icon>keyboard_arrow_left</mat-icon> Nazad
+            </button>
         </div>
-        <div *ngIf="!ucitavanje && error">
-            <div class="d-flex flex-row-reverse bd-highlight">
-                <button class="button-glavni-100 nazad-button greska-dugme-pozicija" mat-raised-button
-                    (click)="idiNazad()">
-                    <mat-icon>keyboard_arrow_left</mat-icon> Nazad
-                </button>
-            </div>
-            <div class="d-flex flex-column prazna-tabela">
-                <i class="material-icons icon-size">
-                    error_outline
-                </i>
-                <h1 class="h1-faktura-upozorenje">Porudzbenica ne postoji</h1>
-            </div>
+        <div class="d-flex flex-column prazna-tabela" *ngIf="!pronadjenaRoba">
+            <i class="material-icons icon-size">
+                error_outline
+            </i>
+            <h1 class="h1-faktura-upozorenje">Porudzbenica je prazna</h1>
         </div>
-        <div class="d-flex justify-content-center prazna-tabela" *ngIf="ucitavanje">
-            <mat-spinner></mat-spinner>
+    </div>
+    <div *ngIf="!ucitavanje && error">
+        <div class="d-flex flex-row-reverse bd-highlight">
+            <button class="button-glavni-100 nazad-button greska-dugme-pozicija" mat-raised-button (click)="idiNazad()">
+                <mat-icon>keyboard_arrow_left</mat-icon> Nazad
+            </button>
         </div>
-    </main>
-</div>
+        <div class="d-flex flex-column prazna-tabela">
+            <i class="material-icons icon-size">
+                error_outline
+            </i>
+            <h1 class="h1-faktura-upozorenje">Porudzbenica ne postoji</h1>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center prazna-tabela" *ngIf="ucitavanje">
+        <mat-spinner></mat-spinner>
+    </div>
+</main>
