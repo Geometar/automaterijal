@@ -34,4 +34,18 @@ export class PartnerService {
         catchError((error: any) => throwError(error))
       );
   }
+
+  public updejtujPartnera(partner: Partner, vrstaPromene: string): Observable<Partner> {
+    const parameterObject = {};
+    parameterObject['vrstaPromene'] = vrstaPromene;
+    const parametersString = this.utils.vratiKveriParametre(parameterObject);
+    const fullUrl = PARTNER_URL + parametersString;
+
+    return this.http
+      .put(fullUrl, partner)
+      .pipe(
+        timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
+        catchError((error: any) => throwError(error))
+      );
+  }
 }

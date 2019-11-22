@@ -5,8 +5,9 @@ import com.automaterijal.application.domain.entity.Partner;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValueCheckStrategy;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public abstract class PartnerMapper {
 
     @Mapping(target = "noviPassword", ignore = true)

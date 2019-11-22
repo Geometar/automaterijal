@@ -45,7 +45,6 @@ export class FakturaComponent implements OnInit {
 
   ngOnInit() {
     this.adapter.setLocale('sr');
-    this.ucitavanje = true;
     this.loginServis.izbaciPartneraIzSesiseAkoJeUMemoriji();
     this.loginServis.ulogovaniPartner.subscribe(partner => this.partner = partner);
     this.uzmiParametreIzUrla();
@@ -101,6 +100,7 @@ export class FakturaComponent implements OnInit {
   }
 
   vratiFaktureKorisnika() {
+    this.ucitavanje = true;
     this.fakturaService.vratiFaktureKorisnika(this.pageIndex, this.rowsPerPage, this.partner.ppid, this.datumOd, this.datumDo)
       .subscribe((res: FakturaPage) => {
         this.error = false;

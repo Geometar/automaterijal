@@ -1,7 +1,14 @@
 .flex-login {
-    margin-top: 10%;
+    padding-top: 9%;
     display: flex;
     justify-content: center;
+}
+.header-login {
+    background-image: url('/assets/slike/ui/pozadine/roba.png');
+    /* background-image: url('/assets/slike/ui/pozadine/roba.png'); */
+    background-repeat: no-repeat;
+    background-position: top;
+    background-size: 120%;
 }
 .login-form {
     width: 400px;
@@ -30,4 +37,10 @@ p {
     font-size: 0.8em;
     margin:0px !important;
     color: red;
+}
+
+@media only screen and (max-device-width : 800px) { 
+    .header-login {
+        background-image: none;
+     }
 }

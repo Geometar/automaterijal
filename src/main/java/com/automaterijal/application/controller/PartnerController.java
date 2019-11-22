@@ -1,5 +1,6 @@
 package com.automaterijal.application.controller;
 
+import com.automaterijal.application.domain.constants.PartnerAkcije;
 import com.automaterijal.application.domain.dto.PartnerDto;
 import com.automaterijal.application.domain.dto.ResetovanjeSifreDto;
 import com.automaterijal.application.services.PartnerService;
@@ -11,6 +12,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +39,9 @@ public class PartnerController {
     @NonNull
     final PartnerSpringBeanUtils partnerSpringBeanUtils;
 
+    /**
+     * Kontroler za vracanje ulogovanog partnera iz spring security-ja
+     */
     @GetMapping
     public ResponseEntity<PartnerDto> vratiUlogovanogPartnera(
             final Authentication authentication,
@@ -50,6 +55,31 @@ public class PartnerController {
         return ResponseEntity.ok(dto);
     }
 
+    /**
+     * Kontroler za updejtovanje informacija o partneru
+     */
+    @PutMapping
+    public ResponseEntity<PartnerDto> updejtujPartnera(
+            @RequestBody final PartnerDto partnerDto,
+            @RequestParam final PartnerAkcije vrstaPromene,
+            final Authentication authentication) {
+        final var partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+
+        if (partner.getPpid().intValue() != partnerDto.getPpid().intValue()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        final var response = partnerService.updejtPartnera(partnerDto, partner, vrstaPromene);
+
+        if (response == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     * Kontroler za promenu izgubljene sifre partnera ili kod prvog logovanja
+     */
     @PutMapping(value = "/promena-sifre")
     public ResponseEntity promeniSifruPartnera(
             final Authentication authentication,

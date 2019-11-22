@@ -50,8 +50,9 @@ public class RobaGlavniService {
                 parametri.getPage(), parametri.getPageSize(), new Sort(parametri.getDirection(), parametri.getSortiranjePolja().getFieldName())
         );
         final Page<Roba> roba;
-        log.info("Partner {} trazi sve artikle po kataloskom broju {} i prozivodjacu {}",
+        log.info("Partner {} trazi robu na stranici {} po kataloskom broju {} i prozivodjacu {}",
                 ulogovaniPartner != null ? ulogovaniPartner.getNaziv() : "anoniman",
+                parametri.getVrstaRobe() != null ? parametri.getVrstaRobe().toString().toLowerCase() : " - ",
                 parametri.getTrazenaRec() != null ? parametri.getTrazenaRec() : "-",
                 parametri.getProizvodjac() != null ? parametri.getProizvodjac() : "-"
         );

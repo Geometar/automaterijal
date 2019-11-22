@@ -1,9 +1,11 @@
 package com.automaterijal.application.services.email;
 
+import com.automaterijal.application.domain.constants.PartnerAkcije;
 import com.automaterijal.application.domain.dto.FakturaDto;
+import com.automaterijal.application.domain.dto.PartnerDto;
 import com.automaterijal.application.domain.dto.email.*;
 import com.automaterijal.application.domain.entity.Partner;
-import com.automaterijal.application.services.PartnerService;
+import com.automaterijal.application.domain.repository.PartnerRepository;
 import com.automaterijal.application.services.security.UsersService;
 import lombok.AccessLevel;
 import lombok.NonNull;
@@ -28,7 +30,7 @@ import java.time.format.DateTimeFormatter;
 public class EmailService {
 
     @NonNull
-    final PartnerService partnerService;
+    final PartnerRepository partnerRepository;
 
     @NonNull
     final UsersService usersService;
@@ -36,6 +38,49 @@ public class EmailService {
     @NonNull
     final SendEmail sendEmail;
 
+    /**
+     * Kad partner promeni informaciju saljemo administratoru mejl da bi sinkovao sa
+     * Automaterijalom glavnim
+     */
+    public void posaljiPromenaInformacijaMail(final PartnerDto partner, final PartnerAkcije partnerAkcije) {
+        log.info("Slanje mejla za promenu informacije {} od strane korisnika {}", partnerAkcije.getOpis(), partner.getNaziv());
+
+        final var naslov = "Obavestenje o promeni informacija korisnika";
+        final var template = "promenaInformacija";
+
+        final Context context = popuniKontextRegistracionogEmaila(partner, partnerAkcije);
+        sendEmail.pripremiIPosaljiEmail(Email.RADOV_EMAIL, naslov, template, context);
+
+    }
+
+    private Context popuniKontextRegistracionogEmaila(final PartnerDto partner, final PartnerAkcije partnerAkcije) {
+        final Context context = new Context();
+        context.setVariable("partner", partner);
+        context.setVariable("akcija", partnerAkcije.getOpis());
+        switch (partnerAkcije) {
+            case PROMENA_ADRESE:
+                context.setVariable("informacija", partner.getAdresa());
+                break;
+            case PROMENA_SIFRE:
+                context.setVariable("informacija", "nova-sifra");
+                break;
+            case PROMENA_MEJLA:
+                context.setVariable("informacija", partner.getEmail());
+                break;
+            case PROMENA_IMENA:
+                context.setVariable("informacija", partner.getWebKorisnik());
+                break;
+            default:
+                log.error("Nepoznata promena informacije za korisnika!");
+                context.setVariable("informacija", "Greska pogledaj logove!");
+
+        }
+        return context;
+    }
+
+    /**
+     * Servis za slanje mejla pri zahtevu za registraciju korisnika
+     */
     public void posaljiRegistracioniEmail(final RegistracijaDto dto) {
         final Context context = popuniKontextRegistracionogEmaila(dto);
         sendEmail.pripremiIPosaljiEmail(dto.EMAIL_ZA_PRIMANJE, dto.NASLOV, dto.TEMPLATE, context);
@@ -61,20 +106,27 @@ public class EmailService {
         return context;
     }
 
+    /**
+     * Servis za obavestavanja kupca o nedovoljnim kolicinama u magacinu
+     */
+    @Deprecated
     public void posaljiMailONedovoljnimKolicinama(final FakturaDto faktura, final Partner partner) {
         final var context = new Context();
+        context.setVariable("faktura", faktura);
         final var naslov = "Obavestenje o potvrdjenoj robi";
         final var template = "fakturaFaliRoba";
 
-        context.setVariable("faktura", faktura);
         sendEmail.pripremiIPosaljiEmail(partner.getEmail(), naslov, template, context);
 
     }
 
+    /**
+     * Servis za slanje mejla sa linkom za promenu sifre
+     */
     public void posaljiZaboravljenaSifraMail(final ZaboravljenaSifraDto dto, final String host) {
-        var optionalPartner = partnerService.pronadjiPartneraPoMejlu(dto.getEmail());
+        var optionalPartner = partnerRepository.findByEmail(dto.getEmail());
         if (!optionalPartner.isPresent()) {
-            optionalPartner = partnerService.vratiPartneraPomocuKorisnickogImena(dto.getEmail());
+            optionalPartner = partnerRepository.findByWebKorisnik(dto.getEmail());
         }
 
         if (optionalPartner.isPresent()) {
@@ -89,7 +141,9 @@ public class EmailService {
 
     private void validateEmail(final Partner partner) {
         try {
-            if(partner.getEmail() == null) {throw new AddressException();}
+            if (partner.getEmail() == null) {
+                throw new AddressException();
+            }
 
             final InternetAddress address = new InternetAddress(partner.getEmail());
             address.validate();
