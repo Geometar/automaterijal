@@ -41,7 +41,6 @@ export class PartnerComponent implements OnInit {
     private loginServis: LoginService) { }
 
   ngOnInit() {
-    this.loginServis.izbaciPartneraIzSesiseAkoJeUMemoriji();
     this.loginServis.ulogovaniPartner.subscribe(partner => this.partner = partner);
     this.daLiDuguje = this.partner.stanje < 0;
     this.inicijalizujSveRegistracioneForme();
@@ -128,8 +127,7 @@ export class PartnerComponent implements OnInit {
 
   promeniSifru(staraSifra: string, novaSifra: string, novaSifra2: string) {
     this.passwordSubmited = true;
-    if (this.passwordForm.invalid ||
-      novaSifra === staraSifra) {
+    if (this.passwordForm.invalid) {
       const a = this.s.staraSifra.errors.minLength;
       return;
     } else if (novaSifra !== novaSifra2) {

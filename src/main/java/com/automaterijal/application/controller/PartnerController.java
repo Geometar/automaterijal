@@ -42,7 +42,7 @@ public class PartnerController {
     /**
      * Kontroler za vracanje ulogovanog partnera iz spring security-ja
      */
-    @GetMapping
+    @GetMapping(value = "/read")
     public ResponseEntity<PartnerDto> vratiUlogovanogPartnera(
             final Authentication authentication,
             @RequestParam final boolean prviRequest) {
@@ -58,14 +58,14 @@ public class PartnerController {
     /**
      * Kontroler za updejtovanje informacija o partneru
      */
-    @PutMapping
+    @PutMapping(value = "/update")
     public ResponseEntity<PartnerDto> updejtujPartnera(
             @RequestBody final PartnerDto partnerDto,
             @RequestParam final PartnerAkcije vrstaPromene,
             final Authentication authentication) {
         final var partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
 
-        if (partner.getPpid().intValue() != partnerDto.getPpid().intValue()) {
+        if (partner == null || partner.getPpid().intValue() != partnerDto.getPpid().intValue()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 

@@ -11,11 +11,13 @@ li {
     margin-top: 12px;
 }
 .header-partner {
-    background-image: url('/assets/slike/ui/pozadine/roba.png');
+    background-color: #FDFDFD;
+    background-image: url('/assets/slike/ui/pozadine/licna-karta.png');
     /* background-image: url('/assets/slike/ui/pozadine/roba.png'); */
     background-repeat: no-repeat;
-    background-position: top;
-    background-size: 120%;
+    background-position: bottom;
+    background-size: 100% 50%;
+    height: calc(100vh - 220px);
 }
 
 .exp-panel{
@@ -89,7 +91,7 @@ li {
     background-color: white;
 }
 
-@media only screen and (max-width : 1200px) { 
+@media screen and (max-width: 1200px) { 
     .mat-expansion-panel-header {
         font-size: 14px;
     }
@@ -97,18 +99,29 @@ li {
         width: 100%;
         margin-bottom: 50px;
     }
-.header-partner {
-    background-image: none;
+    .header-partner {
+     background-image: none;
+     background-color: $automaterijal-grey-400;
+     height: calc(100vh - 100px);
+    }
 }
+@media screen and (max-device-width: 1199px) { 
+    .header-partner {
+     background-image: url('/assets/slike/ui/pozadine/licna-karta.png');
+     background-color: $automaterijal-grey-400;
+     height: 100%;
+    }
 }
-@media only screen and (max-device-width : 800px) { 
+
+@media only screen and (max-device-width: 850px) { 
     .header-partner {
         background-image: none;
+        height: 100%;
      }
 }
 
 
-@media only screen and (max-device-width : 640px) { 
+@media only screen and (max-device-width: 640px) { 
     
 .header-partner {
     background-image: none;

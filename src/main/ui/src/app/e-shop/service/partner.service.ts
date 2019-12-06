@@ -6,7 +6,8 @@ import { Partner, PromenaSifre } from '../model/dto';
 import { AppUtilsService } from '../utils/app-utils.service';
 import { environment } from 'src/environments/environment';
 
-const PARTNER_URL = environment.baseUrl + '/api/partner';
+const PARTNER_CITANJE_URL = environment.baseUrl + '/api/partner';
+const PARTNER_UPDATE_URL = environment.baseUrl + '/api/partner/update';
 const RESETOVANJE_SIFRE_URL = '/promena-sifre';
 
 const TIMEOUT = 15000;
@@ -25,7 +26,7 @@ export class PartnerService {
     const parameterObject = {};
     parameterObject['isPrvaPromena'] = isPrvaPromena;
     const parametersString = this.utils.vratiKveriParametre(parameterObject);
-    const fullUrl = PARTNER_URL + RESETOVANJE_SIFRE_URL + parametersString;
+    const fullUrl = PARTNER_CITANJE_URL + RESETOVANJE_SIFRE_URL + parametersString;
 
     return this.http
       .put(fullUrl, reset)
@@ -39,7 +40,7 @@ export class PartnerService {
     const parameterObject = {};
     parameterObject['vrstaPromene'] = vrstaPromene;
     const parametersString = this.utils.vratiKveriParametre(parameterObject);
-    const fullUrl = PARTNER_URL + parametersString;
+    const fullUrl = PARTNER_UPDATE_URL + parametersString;
 
     return this.http
       .put(fullUrl, partner)

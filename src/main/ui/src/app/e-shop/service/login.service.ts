@@ -57,7 +57,7 @@ export class LoginService {
     parameterObject['prviRequest'] = daLiJePrviRequest;
     const parametersString = this.utils.vratiKveriParametre(parameterObject);
 
-    const fullUrl = PARTNER_URL + parametersString;
+    const fullUrl = PARTNER_URL + '/read' + parametersString;
 
     return this.http.get(fullUrl)
       .pipe(
@@ -83,7 +83,7 @@ export class LoginService {
 
   public izbaciPartneraIzSesiseAkoJeUMemoriji() {
     this.vratiUlogovanogKorisnika(false)
-      .subscribe((res: Partner) => {
+      .subscribe(res => {
         const partner = res;
         if (partner === null) {
           const partnerStorage = this.storageServis.procitajPartneraIzMemorije();

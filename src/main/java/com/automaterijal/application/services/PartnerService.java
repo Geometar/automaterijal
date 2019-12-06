@@ -66,7 +66,9 @@ public class PartnerService {
         switch (akcije) {
             case PROMENA_SIFRE:
                 retVal = promenaSifrePrekoAkcija(partnerDto, partner);
-                emailService.posaljiPromenaInformacijaMail(partnerDto, akcije);
+                if(retVal != null) {
+                    emailService.posaljiPromenaInformacijaMail(partnerDto, akcije);
+                }
                 break;
             case PROMENA_IMENA:
                 if ( partnerDto.getWebKorisnik() != null && !daLiPostojiVecZauzetaRegistracije(partnerDto)) {

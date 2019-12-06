@@ -149,7 +149,7 @@
             <form role="form" [formGroup]="passwordForm">
               <div>
                 <mat-form-field>
-                  <input matInput type="password" #staraSifra formControlName="staraSifra" placeholder="Stara šifra">
+                  <input matInput type="password" #staraSifra (keyup)="losaSifra = false;"formControlName="staraSifra" placeholder="Stara šifra">
                 </mat-form-field>
                 <div *ngIf="passwordSubmited && !s.staraSifra.errors && losaSifra">
                   <p class="upozorenje">Stara šifra nije tačna</p>

@@ -63,7 +63,6 @@ export class KorpaComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
-    this.loginServis.izbaciPartneraIzSesiseAkoJeUMemoriji();
     this.loginServis.ulogovaniPartner.subscribe(partner => this.partner = partner);
     this.inicijalizujKorpu();
   }
@@ -193,6 +192,7 @@ export class KorpaComponent implements OnInit {
 
   // glavna metoda
   posaljiPorudzbinu() {
+    this.loginServis.izbaciPartneraIzSesiseAkoJeUMemoriji();
     this.dugmeZaPorucivanjeStisnuto = true;
     if (this.izabraneAdresaDostave === this.adresaDostave[1]) {
       if (this.adresaForm.invalid) {

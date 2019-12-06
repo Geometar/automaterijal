@@ -4,11 +4,13 @@
     justify-content: center;
 }
 .header-login {
-    background-image: url('/assets/slike/ui/pozadine/roba.png');
+    background-color: #FDFDFD;
+    background-image: url('/assets/slike/ui/pozadine/login.png');
     /* background-image: url('/assets/slike/ui/pozadine/roba.png'); */
     background-repeat: no-repeat;
-    background-position: top;
-    background-size: 120%;
+    background-position: bottom;
+    background-size: 100%;
+    height: calc(100vh - 220px);
 }
 .login-form {
     width: 400px;
@@ -39,8 +41,18 @@ p {
     color: red;
 }
 
-@media only screen and (max-device-width : 800px) { 
+@media only screen and (max-device-width : 1000px) { 
     .header-login {
-        background-image: none;
+        background-size: 100%;
+        height: calc(100vh - 560px);
+    }
+}
+
+@media only screen and (max-device-width : 850px) { 
+    .flex-login {
+    padding-top: 6%;
+    }
+    .header-login {
+        height: calc(100vh - 64px);
      }
 }

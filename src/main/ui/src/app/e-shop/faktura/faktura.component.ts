@@ -45,7 +45,6 @@ export class FakturaComponent implements OnInit {
 
   ngOnInit() {
     this.adapter.setLocale('sr');
-    this.loginServis.izbaciPartneraIzSesiseAkoJeUMemoriji();
     this.loginServis.ulogovaniPartner.subscribe(partner => this.partner = partner);
     this.uzmiParametreIzUrla();
   }

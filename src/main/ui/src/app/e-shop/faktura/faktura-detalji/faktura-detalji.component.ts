@@ -33,7 +33,6 @@ export class FakturaDetaljiComponent implements OnInit {
     private location: Location) { }
 
   ngOnInit() {
-    this.loginServis.izbaciPartneraIzSesiseAkoJeUMemoriji();
     this.loginServis.ulogovaniPartner.subscribe(partner => this.partner = partner);
     this.ucitavanje = true;
     this.vratiFakturu();
