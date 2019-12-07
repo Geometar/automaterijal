@@ -51,7 +51,7 @@ public class RobaController {
     ) {
 
         final var univerzalniParametri = robaSpringBeanUtils.popuniIVratiGenerickeParametreZaServis(
-                page, pageSize, sortBy, sortBy, proizvodjac, naStanju, sortBy, sortDirection, searchTerm, VrstaRobe.SVE, null, null
+                page, pageSize, proizvodjac, naStanju, sortBy, sortDirection, searchTerm, VrstaRobe.SVE, null, null
         );
         final var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
 
@@ -77,7 +77,7 @@ public class RobaController {
             final Authentication authentication
     ) {
         final UniverzalniParametri univerzalniParametri = robaSpringBeanUtils.popuniIVratiGenerickeParametreZaServis(
-                page, pageSize, sortBy, sortBy, proizvodjac, naStanju, sortBy, sortDirection, searchTerm, VrstaRobe.FILTERI, null, null
+                page, pageSize, proizvodjac, naStanju, sortBy, sortDirection, searchTerm, VrstaRobe.FILTERI, null, null
         );
         final Partner uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
 
@@ -105,7 +105,7 @@ public class RobaController {
     ) {
 
         final var univerzalniParametri = robaSpringBeanUtils.popuniIVratiGenerickeParametreZaServis(
-                page, pageSize, sortBy, sortBy, proizvodjac, naStanju, sortBy, sortDirection, searchTerm, VrstaRobe.AKUMULATORI, null, null
+                page, pageSize, proizvodjac, naStanju, sortBy, sortDirection, searchTerm, VrstaRobe.AKUMULATORI, null, null
         );
         final var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
 
@@ -132,7 +132,7 @@ public class RobaController {
             @RequestParam(required = false) final Sort.Direction sortDirection,
             final Authentication authentication
     ) {
-        final var univerzalniParametri = robaSpringBeanUtils.popuniIVratiGenerickeParametreZaServis(page, pageSize, sortBy, sortBy, proizvodjac, naStanju, sortBy, sortDirection, searchTerm, VrstaRobe.ULJA, vrstaUlja, null);
+        final var univerzalniParametri = robaSpringBeanUtils.popuniIVratiGenerickeParametreZaServis(page, pageSize, proizvodjac, naStanju, sortBy, sortDirection, searchTerm, VrstaRobe.ULJA, vrstaUlja, null);
         final var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
 
         final Page<RobaDto> roba = robaGlavniService.pronadjiRobuPoPretrazi(

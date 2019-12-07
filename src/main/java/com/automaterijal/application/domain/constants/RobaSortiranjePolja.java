@@ -12,7 +12,8 @@ import lombok.experimental.FieldDefaults;
 public enum RobaSortiranjePolja {
 
     KATBR("katbr"),
-    KATBRPRO("katbrpro");
+    KATBRPRO("katbrpro"),
+    STANJE("stanje");
 
     @NonNull
     final String fieldName;

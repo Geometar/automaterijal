@@ -63,22 +63,20 @@ public class RobaSpringBeanUtils {
     public UniverzalniParametri popuniIVratiGenerickeParametreZaServis(
             final Optional<Integer> page,
             final Optional<Integer> pageSize,
-            final RobaSortiranjePolja sortBy,
-            final RobaSortiranjePolja sortBy1,
             final Optional<String> proizvodjac,
             final Optional<Boolean> naStanju,
-            final RobaSortiranjePolja sortBy2,
+            final RobaSortiranjePolja sortBy,
             final Sort.Direction sortDirection,
             final Optional<String> searchTerm,
             final VrstaRobe vrstaRobe,
             final String vrstaUlja,
             final List<String> iKategorije) {
-        final Integer iPage = page.map(Integer::intValue).orElse(0);
-        final Integer iPageSize = pageSize.map(Integer::intValue).orElse(10);
+        final Integer iPage = page.isPresent() ? page.get() : 10;
+        final Integer iPageSize = pageSize.isPresent() ? pageSize.get() : 10;
         final String iProizvodjac = proizvodjac.filter(StringUtils::hasText).map(String::toString).orElse(null);
-        final Boolean iNaStanju = naStanju.map(Boolean::booleanValue).orElse(true);
-        final RobaSortiranjePolja iSortiranjePolja = sortBy == null ? RobaSortiranjePolja.KATBR : sortBy;
-        final Sort.Direction iDirection = sortDirection == null ? Sort.Direction.ASC : sortDirection;
+        final Boolean iNaStanju = naStanju.isPresent() ? naStanju.get() : false;
+        final RobaSortiranjePolja iSortiranjePolja = sortBy == null ? RobaSortiranjePolja.STANJE : sortBy;
+        final Sort.Direction iDirection = sortDirection == null ? Sort.Direction.DESC : sortDirection;
         final String iSearchTerm = searchTerm.filter(StringUtils::hasText).map(trazenaRec -> trazenaRec.trim().toUpperCase()).orElse(null);
         return popuniParametreZaServis(iPage, iPageSize, iProizvodjac, iNaStanju, iSortiranjePolja, iDirection, iSearchTerm, vrstaRobe, vrstaUlja, iKategorije);
     }

@@ -25,10 +25,10 @@ export class AppUtilsService {
   }
 
   public daLiRobaTrebaDaBudeNaStanju(raspolozivost: string[], izabranaRaspolozivost: string): boolean {
-    if (raspolozivost && izabranaRaspolozivost === raspolozivost[1]) {
-      return null;
-    } else {
+    if (raspolozivost && izabranaRaspolozivost === raspolozivost[0]) {
       return false;
+    } else {
+      return true;
     }
   }
 

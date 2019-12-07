@@ -38,11 +38,9 @@ export class FilterComponent implements OnInit {
     if (this.industrijkoUljeEvent) {
       this.industrijkoUljeEvent.subscribe((vrstaUlja: string) => {
         this.vrstaUlja = vrstaUlja;
-        this.filter.raspolozivost = this.raspolozivost[1];
-        this.pronadjiProizvodjace();
       });
     }
-    this.filter.raspolozivost = this.raspolozivost[1];
+    this.filter.raspolozivost = this.raspolozivost[0];
     this.pronadjiProizvodjace();
   }
 

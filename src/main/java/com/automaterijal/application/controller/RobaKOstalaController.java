@@ -61,7 +61,7 @@ public class RobaKOstalaController {
     ) {
 
         final List<String> iKategorije = kategorija == null ? null : kategorija.getFieldName();
-        final UniverzalniParametri univerzalniParametri = robaSpringBeanUtils.popuniIVratiGenerickeParametreZaServis(page, pageSize, sortBy, sortBy, proizvodjac, naStanju, sortBy, sortDirection, searchTerm, VrstaRobe.OSTALO, null, iKategorije);
+        final UniverzalniParametri univerzalniParametri = robaSpringBeanUtils.popuniIVratiGenerickeParametreZaServis(page, pageSize, proizvodjac, naStanju, sortBy, sortDirection, searchTerm, VrstaRobe.OSTALO, null, iKategorije);
         final Partner uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
 
 

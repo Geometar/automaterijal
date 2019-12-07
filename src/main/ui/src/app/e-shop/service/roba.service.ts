@@ -33,7 +33,9 @@ export class RobaService {
       parameterObject['sortBy'] = sort.active.toLocaleUpperCase();
       parameterObject['sortDirection'] = sort.direction.toLocaleUpperCase();
     }
-    parameterObject['searchTerm'] = searchValue;
+    if (searchValue) {
+      parameterObject['searchTerm'] = searchValue;
+    }
     parameterObject['proizvodjac'] = proizvodjacId;
     parameterObject['naStanju'] = naStanju;
     const parametersString = this.utils.vratiKveriParametre(parameterObject);
@@ -55,7 +57,9 @@ export class RobaService {
       parameterObject['sortBy'] = sort.active.toLocaleUpperCase();
       parameterObject['sortDirection'] = sort.direction.toLocaleUpperCase();
     }
-    parameterObject['searchTerm'] = searchValue;
+    if (searchValue) {
+      parameterObject['searchTerm'] = searchValue;
+    }
     parameterObject['proizvodjac'] = proizvodjacId;
     parameterObject['naStanju'] = naStanju;
     const parametersString = this.utils.vratiKveriParametre(parameterObject);
@@ -76,7 +80,9 @@ export class RobaService {
       parameterObject['sortBy'] = sort.active.toLocaleUpperCase();
       parameterObject['sortDirection'] = sort.direction.toLocaleUpperCase();
     }
-    parameterObject['searchTerm'] = searchValue;
+    if (searchValue) {
+      parameterObject['searchTerm'] = searchValue;
+    }
     parameterObject['proizvodjac'] = proizvodjacId;
     parameterObject['naStanju'] = naStanju;
     const parametersString = this.utils.vratiKveriParametre(parameterObject);
@@ -97,7 +103,9 @@ export class RobaService {
       parameterObject['sortBy'] = sort.active.toLocaleUpperCase();
       parameterObject['sortDirection'] = sort.direction.toLocaleUpperCase();
     }
-    parameterObject['searchTerm'] = searchValue;
+    if (searchValue) {
+      parameterObject['searchTerm'] = searchValue;
+    }
     parameterObject['proizvodjac'] = proizvodjacId;
     parameterObject['naStanju'] = naStanju;
     const parametersString = this.utils.vratiKveriParametre(parameterObject);
@@ -120,7 +128,9 @@ export class RobaService {
       parameterObject['sortBy'] = sort.active.toLocaleUpperCase();
       parameterObject['sortDirection'] = sort.direction.toLocaleUpperCase();
     }
-    parameterObject['searchTerm'] = searchValue;
+    if (searchValue) {
+      parameterObject['searchTerm'] = searchValue;
+    }
     parameterObject['proizvodjac'] = proizvodjacId;
     parameterObject['naStanju'] = naStanju;
     const parametersString = this.utils.vratiKveriParametre(parameterObject);
