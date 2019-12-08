@@ -12,6 +12,10 @@
   padding-bottom: 220px;
 }
 .sidenav {
+  background-image: url('/assets/slike/ui/pozadine/navigacija.png');
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: 90%;
   width: 200px;
   height: 100%;
 }
@@ -27,7 +31,7 @@
 }
 
 .header-sirina {
-  width: 200px !important;
+  width: 183px !important;
 }
 
 p {
@@ -47,7 +51,7 @@ mat-divider {
 
 .side-toolbar {
   height: 75px;
-  width: 200px;
+  width: 180px;
   padding: 0px 0px !important;
 }
 
