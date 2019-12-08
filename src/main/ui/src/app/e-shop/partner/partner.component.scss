@@ -11,12 +11,11 @@ li {
     margin-top: 12px;
 }
 .header-partner {
-    background-color: #FDFDFD;
+    background-color: $automaterijal-grey-400;
     background-image: url('/assets/slike/ui/pozadine/licna-karta.png');
-    /* background-image: url('/assets/slike/ui/pozadine/roba.png'); */
     background-repeat: no-repeat;
-    background-position: bottom;
-    background-size: 100% 50%;
+    background-position: center;
+    background-size: 100%;
     height: calc(100vh - 220px);
 }
 

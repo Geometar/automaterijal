@@ -4,9 +4,8 @@
     justify-content: center;
 }
 .header-login {
-    background-color: #FDFDFD;
+    background-color: rgb(246, 246, 246);
     background-image: url('/assets/slike/ui/pozadine/login.png');
-    /* background-image: url('/assets/slike/ui/pozadine/roba.png'); */
     background-repeat: no-repeat;
     background-position: bottom;
     background-size: 100%;
