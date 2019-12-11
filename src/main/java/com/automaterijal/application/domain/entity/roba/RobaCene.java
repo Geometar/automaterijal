@@ -1,4 +1,4 @@
-package com.automaterijal.application.domain.entity;
+package com.automaterijal.application.domain.entity.roba;
 
 
 import lombok.AccessLevel;

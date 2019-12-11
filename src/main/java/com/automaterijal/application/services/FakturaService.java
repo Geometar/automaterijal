@@ -5,7 +5,7 @@ import com.automaterijal.application.domain.dto.FakturaDto;
 import com.automaterijal.application.domain.dto.RobaDto;
 import com.automaterijal.application.domain.entity.Faktura;
 import com.automaterijal.application.domain.entity.Partner;
-import com.automaterijal.application.domain.entity.Roba;
+import com.automaterijal.application.domain.entity.roba.Roba;
 import com.automaterijal.application.domain.mapper.FakturaMapper;
 import com.automaterijal.application.domain.mapper.RobaMapper;
 import com.automaterijal.application.domain.repository.FakturaDetaljiRepository;

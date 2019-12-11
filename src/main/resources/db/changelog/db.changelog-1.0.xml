@@ -1,17 +1,17 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-1">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-1">
         <createTable tableName="admins">
             <column defaultValue="" name="username" type="VARCHAR(20)">
                 <constraints nullable="false"/>
             </column>
-            <column name="password" type="TEXT">
+            <column name="password" type="MEDIUMTEXT">
                 <constraints nullable="false"/>
             </column>
             <column name="last_login" type="datetime(6)"/>
         </createTable>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-2">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-2">
         <createTable tableName="artikal_slika">
             <column autoIncrement="true" name="id" type="INT">
                 <constraints primaryKey="true"/>
@@ -24,7 +24,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-3">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-3">
         <createTable tableName="dokument">
             <column name="vrdok" type="SMALLINT">
                 <constraints nullable="false"/>
@@ -35,9 +35,7 @@
             <column name="ppid" type="INT">
                 <constraints nullable="false"/>
             </column>
-            <column name="datum" type="date">
-                <constraints nullable="false"/>
-            </column>
+            <column name="datum" type="date"/>
             <column name="datroka" type="date">
                 <constraints nullable="false"/>
             </column>
@@ -53,7 +51,7 @@
             <column name="opis" type="VARCHAR(50)"/>
         </createTable>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-4">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-4">
         <createTable tableName="eksp_stanje">
             <column name="ekspid" type="INT">
                 <constraints nullable="false"/>
@@ -64,7 +62,7 @@
             <column name="stanje" type="DECIMAL(15, 3)"/>
         </createTable>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-5">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-5">
         <createTable tableName="ekspozitura">
             <column defaultValueNumeric="0" name="ekspid" type="INT">
                 <constraints nullable="false"/>
@@ -76,7 +74,7 @@
             <column name="sn" type="VARCHAR(3)"/>
         </createTable>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-6">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-6">
         <createTable tableName="grupa">
             <column defaultValue="" name="grupaid" type="VARCHAR(6)">
                 <constraints nullable="false"/>
@@ -85,7 +83,7 @@
             <column defaultValueNumeric="0" name="nikadpopust" type="TINYINT(3)"/>
         </createTable>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-7">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-7">
         <createTable tableName="grupa_pp">
             <column name="gppid" type="INT">
                 <constraints nullable="false"/>
@@ -119,7 +117,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-8">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-8">
         <createTable tableName="istupl">
             <column name="istuplid" type="INT">
                 <constraints nullable="false"/>
@@ -154,7 +152,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-9">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-9">
         <createTable tableName="kursnalista">
             <column defaultValue="" name="valuta" type="CHAR(3)">
                 <constraints nullable="false"/>
@@ -166,7 +164,7 @@
             <column name="kurs3" type="DECIMAL(15, 4)"/>
         </createTable>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-10">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-10">
         <createTable tableName="kursnalistaist">
             <column defaultValue="" name="valuta" type="CHAR(3)">
                 <constraints nullable="false"/>
@@ -180,7 +178,7 @@
             <column name="kurs3" type="DECIMAL(15, 4)"/>
         </createTable>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-11">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-11">
         <createTable tableName="magacin">
             <column defaultValueNumeric="0" name="magacinid" type="INT">
                 <constraints nullable="false"/>
@@ -190,7 +188,7 @@
             <column defaultValueNumeric="0" name="vrsta" type="SMALLINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-12">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-12">
         <createTable tableName="markavozila">
             <column name="id" type="INT">
                 <constraints nullable="false"/>
@@ -198,7 +196,7 @@
             <column name="naziv" type="VARCHAR(40)"/>
         </createTable>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-13">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-13">
         <createTable tableName="mesta_isporuke">
             <column name="ppid" type="INT">
                 <constraints nullable="false"/>
@@ -212,7 +210,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-14">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-14">
         <createTable tableName="nacisp">
             <column defaultValueNumeric="0" name="niid" type="SMALLINT">
                 <constraints nullable="false"/>
@@ -220,7 +218,7 @@
             <column name="naziv" type="VARCHAR(50)"/>
         </createTable>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-15">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-15">
         <createTable tableName="nacisp_prevoz">
             <column name="nipid" type="INT">
                 <constraints nullable="false"/>
@@ -234,9 +232,10 @@
             <column name="cena_sa_pdv" type="DECIMAL(15, 2)">
                 <constraints nullable="false"/>
             </column>
+            <column name="zid" type="SMALLINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-16">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-16">
         <createTable tableName="nacupl">
             <column defaultValueNumeric="0" name="nuid" type="SMALLINT">
                 <constraints nullable="false"/>
@@ -244,7 +243,7 @@
             <column name="naziv" type="VARCHAR(50)"/>
         </createTable>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-17">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-17">
         <createTable tableName="nacupl_mag">
             <column name="magacinid" type="INT">
                 <constraints nullable="false"/>
@@ -254,7 +253,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-18">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-18">
         <createTable tableName="order_headers">
             <column autoIncrement="true" name="id" type="INT">
                 <constraints primaryKey="true"/>
@@ -265,7 +264,7 @@
             <column defaultValueNumeric="0" name="order_id" type="INT">
                 <constraints nullable="false"/>
             </column>
-            <column defaultValueComputed="CURRENT_TIMESTAMP" name="last_update" type="TIMESTAMP(19)">
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="last_update" type="TIMESTAMP(26)">
                 <constraints nullable="false"/>
             </column>
             <column defaultValue="0000-00-00 00:00:00" name="date_sent" type="datetime(6)">
@@ -298,7 +297,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-19">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-19">
         <createTable tableName="orders">
             <column autoIncrement="true" name="id" type="INT">
                 <constraints primaryKey="true"/>
@@ -334,13 +333,13 @@
             <column defaultValueNumeric="0.00" name="pdv" type="DECIMAL(15, 2)">
                 <constraints nullable="false"/>
             </column>
-            <column defaultValueComputed="CURRENT_TIMESTAMP" name="insert_datetime" type="TIMESTAMP(19)">
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="insert_datetime" type="TIMESTAMP(26)">
                 <constraints nullable="false"/>
             </column>
             <column name="napomena" type="VARCHAR(50)"/>
         </createTable>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-20">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-20">
         <createTable tableName="orders_eksp_stanje">
             <column name="orderid" type="INT">
                 <constraints nullable="false"/>
@@ -356,7 +355,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-21">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-21">
         <createTable tableName="partner">
             <column defaultValueNumeric="0" name="ppid" type="INT">
                 <constraints nullable="false"/>
@@ -395,9 +394,10 @@
             <column defaultValueNumeric="0" name="audit" type="TINYINT(3)"/>
             <column name="dozvoljeniminus" type="DECIMAL(15, 2)"/>
             <column name="dozvoljeniminus_rok" type="DECIMAL(15, 2)"/>
+            <column defaultValueNumeric="1" name="zid" type="SMALLINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-22">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-22">
         <createTable tableName="partner_web_exp_order">
             <column name="ppid" type="INT">
                 <constraints nullable="false"/>
@@ -408,7 +408,7 @@
             <column name="redosled" type="VARCHAR(5)"/>
         </createTable>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-23">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-23">
         <createTable tableName="podgrupa">
             <column defaultValueNumeric="0" name="podgrupaid" type="INT">
                 <constraints nullable="false"/>
@@ -419,7 +419,15 @@
             <column name="naziv" type="VARCHAR(50)"/>
         </createTable>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-24">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-24">
+        <createTable tableName="pp_zona">
+            <column defaultValueNumeric="1" name="zid" type="SMALLINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="naziv" type="VARCHAR(50)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-25">
         <createTable tableName="ppgrupavpc">
             <column name="ppgvpcid" type="INT">
                 <constraints nullable="false"/>
@@ -440,7 +448,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-25">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-26">
         <createTable tableName="prioritet">
             <column defaultValueNumeric="0" name="prid" type="SMALLINT">
                 <constraints nullable="false"/>
@@ -448,7 +456,7 @@
             <column name="naziv" type="VARCHAR(100)"/>
         </createTable>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-26">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-27">
         <createTable tableName="proizvodjac">
             <column defaultValue="" name="proid" type="VARCHAR(5)">
                 <constraints nullable="false"/>
@@ -456,7 +464,7 @@
             <column name="naziv" type="VARCHAR(50)"/>
         </createTable>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-27">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-28">
         <createTable tableName="roba">
             <column defaultValueNumeric="0" name="robaid" type="INT">
                 <constraints nullable="false"/>
@@ -476,10 +484,10 @@
             <column name="komentar" type="TEXT"/>
             <column defaultValueNumeric="0" name="vpcid" type="SMALLINT"/>
             <column name="procpc" type="DECIMAL(15, 2)"/>
-            <column name="datum_dostup" type="date"/>
+            <column name="datum_dostup" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-28">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-29">
         <createTable tableName="roba_aplikacija">
             <column name="raid" type="INT">
                 <constraints nullable="false"/>
@@ -497,7 +505,7 @@
             <column name="odid" type="INT"/>
         </createTable>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-29">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-30">
         <createTable tableName="roba_katbr_old">
             <column name="robaid" type="INT">
                 <constraints nullable="false"/>
@@ -510,7 +518,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-30">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-31">
         <createTable tableName="robaumagacinu">
             <column defaultValueNumeric="0" name="magacinid" type="INT">
                 <constraints nullable="false"/>
@@ -529,7 +537,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-31">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-32">
         <createTable tableName="settings">
             <column defaultValue="" name="param" type="VARCHAR(30)">
                 <constraints nullable="false"/>
@@ -539,7 +547,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-32">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-33">
         <createTable tableName="status">
             <column defaultValueNumeric="0" name="id" type="INT">
                 <constraints nullable="false"/>
@@ -547,7 +555,100 @@
             <column name="opis" type="VARCHAR(50)"/>
         </createTable>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-33">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-34">
+        <createTable tableName="td_aplikacija">
+            <column name="robaid" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fabrbroj" type="VARCHAR(25)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="opisvozila" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tipvozila" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="proizod" type="VARCHAR(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="proizdo" type="VARCHAR(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="kw" type="VARCHAR(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="hp" type="VARCHAR(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ccm" type="VARCHAR(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="karoserija" type="VARCHAR(30)"/>
+            <column name="vesanje" type="VARCHAR(30)"/>
+            <column name="maxtezina" type="VARCHAR(30)"/>
+            <column name="karoserijaid" type="INT"/>
+            <column name="opismotoraid" type="INT"/>
+            <column name="modelid" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tipvozilaid" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="flag_id" type="INT"/>
+            <column name="mod_pc" type="SMALLINT"/>
+            <column name="mod_cv" type="SMALLINT"/>
+            <column name="proizvodjacid" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="proizvodjacnaziv" type="VARCHAR(50)"/>
+            <column name="modelnaziv" type="VARCHAR(50)"/>
+            <column name="aplikacijaid" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-35">
+        <createTable tableName="td_brojevi">
+            <column name="robaid" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fabrbroj" type="VARCHAR(25)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="broj" type="VARCHAR(25)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="opis" type="VARCHAR(50)"/>
+            <column name="brojsrch" type="VARCHAR(25)"/>
+            <column name="naziv" type="VARCHAR(50)"/>
+            <column name="idpro" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nazivpro" type="VARCHAR(50)"/>
+            <column name="vrsta" type="SMALLINT"/>
+            <column name="nadjenpreko" type="VARCHAR(25)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-36">
+        <createTable tableName="td_teh_opis">
+            <column defaultValueNumeric="0" name="teh_opis_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="robaid" type="INT"/>
+            <column name="oznaka" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="vrednost" type="VARCHAR(50)"/>
+            <column name="jedinica" type="VARCHAR(5)"/>
+            <column name="cri_id" type="INT"/>
+            <column name="sort" type="SMALLINT"/>
+            <column name="cri_is_interval" type="SMALLINT"/>
+            <column name="cri_seccessor" type="SMALLINT"/>
+            <column name="nazivid" type="INT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-37">
         <createTable tableName="tipvozila">
             <column name="id" type="INT">
                 <constraints nullable="false"/>
@@ -558,7 +659,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-34">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-38">
         <createTable tableName="tv_et">
             <column name="etid" type="INT">
                 <constraints nullable="false"/>
@@ -569,7 +670,7 @@
             <column name="naziv" type="VARCHAR(50)"/>
         </createTable>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-35">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-39">
         <createTable tableName="tv_kw">
             <column name="kwid" type="INT">
                 <constraints nullable="false"/>
@@ -580,7 +681,7 @@
             <column name="naziv" type="VARCHAR(50)"/>
         </createTable>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-36">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-40">
         <createTable tableName="tv_mc">
             <column name="mcid" type="INT">
                 <constraints nullable="false"/>
@@ -591,7 +692,7 @@
             <column name="naziv" type="VARCHAR(50)"/>
         </createTable>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-37">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-41">
         <createTable tableName="tv_od">
             <column name="odid" type="INT">
                 <constraints nullable="false"/>
@@ -602,12 +703,12 @@
             <column name="naziv" type="VARCHAR(50)"/>
         </createTable>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-38">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-42">
         <createTable tableName="users">
             <column defaultValueNumeric="0" name="ppid" type="INT">
                 <constraints nullable="false"/>
             </column>
-            <column name="password" type="TEXT">
+            <column name="password" type="MEDIUMTEXT">
                 <constraints nullable="false"/>
             </column>
             <column defaultValueNumeric="0" name="order_count" type="INT">
@@ -627,249 +728,267 @@
                 <constraints nullable="false"/>
             </column>
             <column name="user_status" type="INT"/>
+            <column defaultValueNumeric="1" name="srch_type" type="SMALLINT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="1" name="gen_srch" type="SMALLINT">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-39">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-43">
         <addPrimaryKey columnNames="username" constraintName="PRIMARY" tableName="admins"/>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-40">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-44">
         <addPrimaryKey columnNames="vrdok, brdok" constraintName="PRIMARY" tableName="dokument"/>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-41">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-45">
         <addPrimaryKey columnNames="ekspid, robaid" constraintName="PRIMARY" tableName="eksp_stanje"/>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-42">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-46">
         <addPrimaryKey columnNames="ekspid" constraintName="PRIMARY" tableName="ekspozitura"/>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-43">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-47">
         <addPrimaryKey columnNames="grupaid" constraintName="PRIMARY" tableName="grupa"/>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-44">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-48">
         <addPrimaryKey columnNames="gppid" constraintName="PRIMARY" tableName="grupa_pp"/>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-45">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-49">
         <addPrimaryKey columnNames="istuplid" constraintName="PRIMARY" tableName="istupl"/>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-46">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-50">
         <addPrimaryKey columnNames="valuta" constraintName="PRIMARY" tableName="kursnalista"/>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-47">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-51">
         <addPrimaryKey columnNames="valuta, datum" constraintName="PRIMARY" tableName="kursnalistaist"/>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-48">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-52">
         <addPrimaryKey columnNames="magacinid" constraintName="PRIMARY" tableName="magacin"/>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-49">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-53">
         <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="markavozila"/>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-50">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-54">
         <addPrimaryKey columnNames="ppid, nppid" constraintName="PRIMARY" tableName="mesta_isporuke"/>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-51">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-55">
         <addPrimaryKey columnNames="niid" constraintName="PRIMARY" tableName="nacisp"/>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-52">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-56">
         <addPrimaryKey columnNames="nipid" constraintName="PRIMARY" tableName="nacisp_prevoz"/>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-53">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-57">
         <addPrimaryKey columnNames="nuid" constraintName="PRIMARY" tableName="nacupl"/>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-54">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-58">
         <addPrimaryKey columnNames="magacinid, nuid" constraintName="PRIMARY" tableName="nacupl_mag"/>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-55">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-59">
         <addPrimaryKey columnNames="orderid, ekspid" constraintName="PRIMARY" tableName="orders_eksp_stanje"/>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-56">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-60">
         <addPrimaryKey columnNames="ppid" constraintName="PRIMARY" tableName="partner"/>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-57">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-61">
         <addPrimaryKey columnNames="ppid, ekspid" constraintName="PRIMARY" tableName="partner_web_exp_order"/>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-58">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-62">
         <addPrimaryKey columnNames="grupaid, podgrupaid" constraintName="PRIMARY" tableName="podgrupa"/>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-59">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-63">
+        <addPrimaryKey columnNames="zid" constraintName="PRIMARY" tableName="pp_zona"/>
+    </changeSet>
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-64">
         <addPrimaryKey columnNames="ppgvpcid" constraintName="PRIMARY" tableName="ppgrupavpc"/>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-60">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-65">
         <addPrimaryKey columnNames="prid" constraintName="PRIMARY" tableName="prioritet"/>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-61">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-66">
         <addPrimaryKey columnNames="proid" constraintName="PRIMARY" tableName="proizvodjac"/>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-62">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-67">
         <addPrimaryKey columnNames="robaid" constraintName="PRIMARY" tableName="roba"/>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-63">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-68">
         <addPrimaryKey columnNames="raid" constraintName="PRIMARY" tableName="roba_aplikacija"/>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-64">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-69">
         <addPrimaryKey columnNames="robaid, katbr, katbrpro" constraintName="PRIMARY" tableName="roba_katbr_old"/>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-65">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-70">
         <addPrimaryKey columnNames="robaid, magacinid" constraintName="PRIMARY" tableName="robaumagacinu"/>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-66">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-71">
         <addPrimaryKey columnNames="param" constraintName="PRIMARY" tableName="settings"/>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-67">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-72">
         <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="status"/>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-68">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-73">
+        <addPrimaryKey columnNames="aplikacijaid" constraintName="PRIMARY" tableName="td_aplikacija"/>
+    </changeSet>
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-74">
+        <addPrimaryKey columnNames="robaid, fabrbroj, broj, idpro" constraintName="PRIMARY" tableName="td_brojevi"/>
+    </changeSet>
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-75">
+        <addPrimaryKey columnNames="teh_opis_id" constraintName="PRIMARY" tableName="td_teh_opis"/>
+    </changeSet>
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-76">
         <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="tipvozila"/>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-69">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-77">
         <addPrimaryKey columnNames="etid" constraintName="PRIMARY" tableName="tv_et"/>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-70">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-78">
         <addPrimaryKey columnNames="kwid" constraintName="PRIMARY" tableName="tv_kw"/>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-71">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-79">
         <addPrimaryKey columnNames="mcid" constraintName="PRIMARY" tableName="tv_mc"/>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-72">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-80">
         <addPrimaryKey columnNames="odid" constraintName="PRIMARY" tableName="tv_od"/>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-73">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-81">
         <addPrimaryKey columnNames="ppid" constraintName="PRIMARY" tableName="users"/>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-74">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-82">
         <addUniqueConstraint columnNames="web_korisnik" constraintName="idxKorisnik" tableName="partner"/>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-75">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-83">
         <createIndex indexName="idxCene" tableName="roba">
             <column name="fabrcena"/>
             <column name="devnabcena"/>
         </createIndex>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-76">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-84">
         <createIndex indexName="idxCene" tableName="robaumagacinu">
             <column name="nabavnacena"/>
             <column name="prodajnacena"/>
             <column name="deviznacena"/>
         </createIndex>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-77">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-85">
         <createIndex indexName="idxDateSent" tableName="order_headers">
             <column name="date_sent"/>
         </createIndex>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-78">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-86">
         <createIndex indexName="idxEksp" tableName="magacin">
             <column name="ekspid"/>
         </createIndex>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-79">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-87">
         <createIndex indexName="idxEkspRoba" tableName="orders_eksp_stanje">
             <column name="ekspid"/>
             <column name="robaid"/>
         </createIndex>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-80">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-88">
         <createIndex indexName="idxGrupa2" tableName="roba">
             <column name="grupaid"/>
             <column name="podgrupaid"/>
         </createIndex>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-81">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-89">
         <createIndex indexName="idxKatBr2" tableName="roba">
             <column name="katbr"/>
             <column name="katbrpro"/>
         </createIndex>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-82">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-90">
         <createIndex indexName="idxMagacin" tableName="orders">
             <column name="magacinid"/>
         </createIndex>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-83">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-91">
         <createIndex indexName="idxMagacin" tableName="robaumagacinu">
             <column name="magacinid"/>
         </createIndex>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-84">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-92">
         <createIndex indexName="idxNPPID" tableName="mesta_isporuke">
             <column name="nppid"/>
         </createIndex>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-85">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-93">
         <createIndex indexName="idxNaziv" tableName="ekspozitura">
             <column name="naziv"/>
         </createIndex>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-86">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-94">
         <createIndex indexName="idxNaziv" tableName="grupa">
             <column name="naziv"/>
         </createIndex>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-87">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-95">
         <createIndex indexName="idxNaziv" tableName="magacin">
             <column name="naziv"/>
         </createIndex>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-88">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-96">
         <createIndex indexName="idxNaziv" tableName="partner">
             <column name="naziv"/>
         </createIndex>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-89">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-97">
         <createIndex indexName="idxNaziv" tableName="podgrupa">
             <column name="naziv"/>
         </createIndex>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-90">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-98">
         <createIndex indexName="idxNaziv" tableName="proizvodjac">
             <column name="naziv"/>
         </createIndex>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-91">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-99">
         <createIndex indexName="idxNaziv" tableName="roba">
             <column name="naziv"/>
         </createIndex>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-92">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-100">
         <createIndex indexName="idxOrder" tableName="orders">
             <column name="order_id"/>
         </createIndex>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-93">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-101">
         <createIndex indexName="idxPP" tableName="dokument">
             <column name="ppid"/>
         </createIndex>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-94">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-102">
         <createIndex indexName="idxPP" tableName="istupl">
             <column name="ppid"/>
         </createIndex>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-95">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-103">
         <createIndex indexName="idxPPID" tableName="ekspozitura">
             <column name="ppid_od"/>
             <column name="ppid_do"/>
         </createIndex>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-96">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-104">
         <createIndex indexName="idxPartner" tableName="order_headers">
             <column name="ppid"/>
         </createIndex>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-97">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-105">
         <createIndex indexName="idxPartner" tableName="orders">
             <column name="ppid"/>
         </createIndex>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-98">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-106">
         <createIndex indexName="idxPro" tableName="roba">
             <column name="proid"/>
         </createIndex>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-99">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-107">
         <createIndex indexName="idxRoba" tableName="artikal_slika">
             <column name="robaid"/>
         </createIndex>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-100">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-108">
         <createIndex indexName="idxSkoroSve" tableName="ppgrupavpc">
             <column name="ppid"/>
             <column name="magacinid"/>
@@ -877,27 +996,64 @@
             <column name="proid"/>
         </createIndex>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-101">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-109">
         <createIndex indexName="idxStanje" tableName="roba">
             <column name="stanje"/>
         </createIndex>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-102">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-110">
         <createIndex indexName="idxStanje" tableName="robaumagacinu">
             <column name="stanje"/>
         </createIndex>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-103">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-111">
         <createIndex indexName="idxStatus" tableName="orders">
             <column name="status"/>
         </createIndex>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-104">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-112">
         <createIndex indexName="idxVPC" tableName="partner">
             <column name="vpcid"/>
         </createIndex>
     </changeSet>
-    <changeSet author="r.spasojevic (generated)" id="1538054223941-105">
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-113">
+        <createIndex indexName="index1" tableName="td_aplikacija">
+            <column name="robaid"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-114">
+        <createIndex indexName="index1" tableName="td_brojevi">
+            <column name="fabrbroj"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-115">
+        <createIndex indexName="index1" tableName="td_teh_opis">
+            <column name="robaid"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-116">
+        <createIndex indexName="index2" tableName="td_aplikacija">
+            <column name="modelid"/>
+            <column name="tipvozilaid"/>
+            <column name="proizvodjacid"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-117">
+        <createIndex indexName="index2" tableName="td_brojevi">
+            <column name="broj"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-118">
+        <createIndex indexName="index3" tableName="td_brojevi">
+            <column name="brojsrch"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-119">
+        <createIndex indexName="index4" tableName="td_brojevi">
+            <column name="naziv"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="r.spasojevic (generated)" id="1576064931320-120">
         <createIndex indexName="roba_aplikacijaindex1" tableName="roba_aplikacija">
             <column name="robaid"/>
             <column name="tipid"/>

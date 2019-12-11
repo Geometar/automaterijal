@@ -1,7 +1,7 @@
 package com.automaterijal.application.domain.mapper;
 
 import com.automaterijal.application.domain.dto.RobaDto;
-import com.automaterijal.application.domain.entity.Roba;
+import com.automaterijal.application.domain.entity.roba.Roba;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.mapstruct.Mapper;

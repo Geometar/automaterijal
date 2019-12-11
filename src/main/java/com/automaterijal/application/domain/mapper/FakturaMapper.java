@@ -5,6 +5,7 @@ import com.automaterijal.application.domain.dto.FakturaDetaljiDto;
 import com.automaterijal.application.domain.dto.FakturaDto;
 import com.automaterijal.application.domain.dto.ValueHelpDto;
 import com.automaterijal.application.domain.entity.*;
+import com.automaterijal.application.domain.entity.roba.Roba;
 import com.automaterijal.application.domain.entity.valuehelp.NacinPlacanja;
 import com.automaterijal.application.domain.entity.valuehelp.NacinPrevoza;
 import com.automaterijal.application.domain.entity.valuehelp.Status;

@@ -3,7 +3,7 @@ package com.automaterijal.application.services;
 
 import com.automaterijal.application.domain.constants.GrupeKonstante;
 import com.automaterijal.application.domain.entity.Proizvodjac;
-import com.automaterijal.application.domain.entity.Roba;
+import com.automaterijal.application.domain.entity.roba.Roba;
 import com.automaterijal.application.domain.repository.ProizvodjacRepository;
 import com.automaterijal.application.services.roba.RobaService;
 import com.automaterijal.application.services.roba.grupe.GrupaService;

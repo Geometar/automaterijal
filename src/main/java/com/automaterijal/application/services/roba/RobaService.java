@@ -1,6 +1,6 @@
 package com.automaterijal.application.services.roba;
 
-import com.automaterijal.application.domain.entity.Roba;
+import com.automaterijal.application.domain.entity.roba.Roba;
 import com.automaterijal.application.domain.repository.RobaRepository;
 import lombok.AccessLevel;
 import lombok.NonNull;
