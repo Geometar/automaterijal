@@ -1,4 +1,4 @@
-package com.automaterijal.application.domain.repository;
+package com.automaterijal.application.domain.repository.roba;
 
 import com.automaterijal.application.domain.entity.roba.RobaCene;
 import org.springframework.data.jpa.repository.JpaRepository;

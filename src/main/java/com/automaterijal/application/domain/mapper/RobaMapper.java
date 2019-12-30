@@ -5,8 +5,9 @@ import com.automaterijal.application.domain.entity.roba.Roba;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.mapstruct.Mapper;
+import org.mapstruct.NullValueCheckStrategy;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public abstract class RobaMapper {
 

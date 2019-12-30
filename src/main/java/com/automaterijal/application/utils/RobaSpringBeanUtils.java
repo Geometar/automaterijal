@@ -4,13 +4,7 @@ package com.automaterijal.application.utils;
 import com.automaterijal.application.domain.constants.GrupeKonstante;
 import com.automaterijal.application.domain.constants.RobaSortiranjePolja;
 import com.automaterijal.application.domain.constants.VrstaRobe;
-import com.automaterijal.application.domain.dto.RobaDto;
-import com.automaterijal.application.domain.entity.Partner;
-import com.automaterijal.application.domain.entity.roba.Roba;
-import com.automaterijal.application.domain.mapper.RobaMapper;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
-import com.automaterijal.application.services.ProizvodjacService;
-import com.automaterijal.application.services.roba.RobaCeneService;
 import com.automaterijal.application.services.roba.grupe.GrupaService;
 import com.automaterijal.application.services.roba.grupe.PodGrupaService;
 import lombok.AccessLevel;
@@ -23,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,28 +30,9 @@ import java.util.Optional;
 public class RobaSpringBeanUtils {
 
     @NonNull
-    ProizvodjacService proizvodjacService;
-    @NonNull
     GrupaService grupaService;
     @NonNull
     PodGrupaService podGrupaService;
-    @NonNull
-    RobaCeneService robaCeneService;
-    @NonNull
-    EntityManager manager;
-    @NonNull
-    RobaMapper mapper;
-
-    public RobaDto pretvoriUDTO(final Roba roba, final Partner partner) {
-        manager.clear();
-        final RobaDto dto = mapper.map(roba);
-        dto.setProizvodjac(proizvodjacService.vrateNazivProizvodjacaPoId(roba.getProid()));
-        dto.setCena(robaCeneService.vratiCenuRobePoRobiId(roba, partner));
-        dto.setRabat(robaCeneService.vratiRabatPartneraNaArtikal(roba, partner));
-        dto.setGrupa(grupaService.vratiNazivGrupePoId(roba.getGrupaid()));
-        dto.setPodGrupa(podGrupaService.vratiNazivPodGrupe(roba.getPodgrupaid(), roba.getGrupaid()));
-        return dto;
-    }
 
     public UniverzalniParametri popuniIVratiGenerickeParametreZaServis(
             final Optional<Integer> page,

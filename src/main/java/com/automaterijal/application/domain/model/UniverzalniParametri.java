@@ -16,7 +16,7 @@ public class UniverzalniParametri {
     Integer page;
     Integer pageSize;
     String proizvodjac;
-    Boolean naStanju;
+    boolean naStanju;
     RobaSortiranjePolja sortiranjePolja;
     Sort.Direction direction;
     String trazenaRec;

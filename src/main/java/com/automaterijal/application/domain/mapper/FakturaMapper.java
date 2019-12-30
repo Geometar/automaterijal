@@ -12,11 +12,12 @@ import com.automaterijal.application.domain.entity.valuehelp.Status;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValueCheckStrategy;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public abstract class FakturaMapper {
 
     @Mapping(target = "vremePorucivanja", source = "dataSent")

@@ -151,9 +151,9 @@ public class FakturaService {
         statusRepository.findById(dto.getStatus().getId()).ifPresent(status -> mapper.map(dto, status));
         robaService.pronadjiRobuPoPrimarnomKljucu(dto.getRobaId()).ifPresent(roba -> {
             mapper.map(dto, roba);
-            proizvodjacService.vratiProizvodjacaPoPk(roba.getProid()).ifPresent(proizvodjac -> mapper.map(dto, proizvodjac));
+            proizvodjacService.vratiProizvodjacaPoPk(roba.getProizvodjac().getProid()).ifPresent(proizvodjac -> mapper.map(dto, proizvodjac));
             dto.setCena(
-                    robaCeneService.vratiCenuRobePoRobiId(roba, partner).doubleValue()
+                    robaCeneService.vratiCenuRobePoRobiId(roba.getRobaid(), roba.getGrupaid(), roba.getProizvodjac().getProid(), partner).doubleValue()
             );
         });
     }
