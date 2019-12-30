@@ -16,7 +16,7 @@ import javax.persistence.Table;
 public class RobaOpis {
 
     @Id
-    @Column(name = "td_teh_opis")
+    @Column(name = "teh_opis_id")
     Integer opisId;
 
     @Column(name = "robaid")
@@ -40,7 +40,7 @@ public class RobaOpis {
     @Column(name = "cri_is_interval")
     Integer criIsInterval;
 
-    @Column(name = "cri_seccessor")
+    @Column(name = "cri_successor")
     Integer criSeccesssor;
 
     @Column(name = "nazivid")

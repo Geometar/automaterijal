@@ -32,14 +32,16 @@ public class RobaGlavniService {
     @NonNull
     final RobaCeneService robaCeneService;
     @NonNull
+    final RobaTehnickiOpisServis tehnickiOpisServis;
+    @NonNull
     final RobaMapper mapper;
 
     /**
      * Ulazna metoda iz kontrolera
      */
-    public Page<RobaDto> pronadjiRobuPoPretrazi(final UniverzalniParametri parametri, final Partner ulogovaniPartner) {
+    public Page<RobaDto> pronadjiRobuPoPretrazi(UniverzalniParametri parametri, Partner ulogovaniPartner) {
 
-        final var pageable = PageRequest.of(
+        var pageable = PageRequest.of(
                 parametri.getPage(), parametri.getPageSize(), new Sort(parametri.getDirection(), parametri.getSortiranjePolja().getFieldName())
         );
         Page<RobaDto> roba = null;
@@ -54,17 +56,17 @@ public class RobaGlavniService {
             roba = vratiSvuRobuUZavisnostiOdTrazenogStanja(parametri, pageable, ulogovaniPartner);
         } else {
             roba = jooqRepository.pronadjiPoTrazenojReci(parametri, parametri.getTrazenaRec());
-            roba.forEach(dto -> setujCeneRobe(dto, ulogovaniPartner));
+            roba.forEach(dto -> setujCenuITehnkickiOpis(dto, ulogovaniPartner));
         }
-        return  roba;
+        return roba;
     }
 
     /**
      * Roba koja je na stanju, rezultat zavisi od vrste i od filtera da li je na stanju
      */
-    private Page<RobaDto> vratiSvuRobuUZavisnostiOdTrazenogStanja(final UniverzalniParametri parametri, final Pageable pageable, final Partner ulogovaniPartner) {
-        final Page<Roba> roba;
-        final boolean naStanju = parametri.isNaStanju();
+    private Page<RobaDto> vratiSvuRobuUZavisnostiOdTrazenogStanja(UniverzalniParametri parametri, Pageable pageable, Partner ulogovaniPartner) {
+        Page<Roba> roba;
+        boolean naStanju = parametri.isNaStanju();
         switch (parametri.getVrstaRobe()) {
             case SVE:
                 roba = robaService.pronadjiSvuRobu(naStanju, pageable);
@@ -82,17 +84,21 @@ public class RobaGlavniService {
                 log.error("Ne definisana roba!");
         }
 
-         final List<RobaDto> dto = roba.stream().map(robaEntitet -> {
-             RobaDto robaDto = mapper.map(robaEntitet);
-             setujCeneRobe(robaDto, ulogovaniPartner);
-         return robaDto;
-         }).collect(Collectors.toList());
+        List<RobaDto> dto = roba.stream().map(robaEntitet -> {
+            RobaDto robaDto = mapper.map(robaEntitet);
+            setujCenuITehnkickiOpis(robaDto, ulogovaniPartner);
+            return robaDto;
+        }).collect(Collectors.toList());
 
         return new PageImpl<>(dto, roba.getPageable(), roba.getTotalElements());
     }
 
-    private void setujCeneRobe(final RobaDto robaDto, final Partner partner) {
+    /**
+     * Metoda za setovanje cena i tehnickog opisa u dto-u
+     */
+    private void setujCenuITehnkickiOpis(RobaDto robaDto, Partner partner) {
         robaDto.setCena(robaCeneService.vratiCenuRobePoRobiId(robaDto.getRobaid(), robaDto.getGrupa(), robaDto.getProizvodjac().getProid(), partner));
         robaDto.setRabat(robaCeneService.vratiRabatPartneraNaArtikal(robaDto.getProizvodjac().getProid(), robaDto.getGrupa(), partner));
+        robaDto.setTehnickiOpis(tehnickiOpisServis.vratiTehnickiOpisPoIdRobe(robaDto.getRobaid().intValue()));
     }
 }
