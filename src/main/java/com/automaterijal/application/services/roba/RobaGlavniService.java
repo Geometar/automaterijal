@@ -100,5 +100,6 @@ public class RobaGlavniService {
         robaDto.setCena(robaCeneService.vratiCenuRobePoRobiId(robaDto.getRobaid(), robaDto.getGrupa(), robaDto.getProizvodjac().getProid(), partner));
         robaDto.setRabat(robaCeneService.vratiRabatPartneraNaArtikal(robaDto.getProizvodjac().getProid(), robaDto.getGrupa(), partner));
         robaDto.setTehnickiOpis(tehnickiOpisServis.vratiTehnickiOpisPoIdRobe(robaDto.getRobaid().intValue()));
+        robaDto.setSlika("assets/slike/ui/roba/" + robaDto.getRobaid() + ".jpg");
     }
 }

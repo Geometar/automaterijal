@@ -29,15 +29,10 @@ export class TabelaComponent implements OnInit {
 
   // Tabela
   private columnDefinitions = [
-    { def: 'katbr', ifNotAuth: true },
-    { def: 'katbrpro', ifNotAuth: true },
-    { def: 'proizvodjac', ifNotAuth: true },
-    { def: 'naziv', ifNotAuth: true },
-    { def: 'cena', ifNotAuth: true },
-    { def: 'stanje', ifNotAuth: true },
-    { def: 'kolicina', ifNotAuth: false },
-    { def: 'korpa', ifNotAuth: false },
-    { def: 'u-korpi', ifNotAuth: false },
+    { def: 'slika', ifNotAuth: true },
+    { def: 'opis', ifNotAuth: true },
+    { def: 'tehnickidetalji', ifNotAuth: true },
+    { def: 'korpa', ifNotAuth: true },
   ];
 
   constructor(

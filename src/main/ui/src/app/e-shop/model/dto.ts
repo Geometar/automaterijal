@@ -7,12 +7,11 @@ export class ValueHelp {
 
 export class Roba {
     public robaid: number;
+    public slika: string;
     public katbr: string;
     public katbrpro: string;
     public naziv: string;
     public proizvodjac: Proizvodjac;
-    public grupa: string;
-    public podGrupa: string;
     public stanje: number;
     public cena: number;
     public rabat: number;

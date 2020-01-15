@@ -14,6 +14,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RobaDto {
     Long robaid;
+    String slika;
     String katbr;
     String katbrpro;
     String naziv;
