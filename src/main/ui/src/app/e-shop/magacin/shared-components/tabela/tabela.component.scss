@@ -92,15 +92,26 @@ tr.mat-row {
     color: $automaterijal-accent-red-50;
 }
 @media screen and (max-width: 900px) {
-    .pdv {
-        float: none;    
-    }
+ 
+tr.mat-row {
+    height: 450px;
+    border-bottom: 15px solid $automaterijal-grey-400;
+}
+.roba-tabela td {
+    border: none !important;
+}
 
-    p {
-        font-size: 0.89em;
-    }
-    tr.mat-header-row {
-        height: 0px;
-    }
+.mat-column-slika {
+    height: 110px;
+    text-align: center;
+}
 
-  }
+.mat-column-opis {
+    height: 110px;
+    text-align: center;
+    font-size: 0.90rem;
+}
+.kolicina-div {
+    text-align: left;
+}
+}

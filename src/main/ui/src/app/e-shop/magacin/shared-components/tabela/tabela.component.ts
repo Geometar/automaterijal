@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, HostListener } from '@angular/core';
 import { Roba } from 'src/app/e-shop/model/dto';
 import { LoginService } from 'src/app/e-shop/service/login.service';
 import { AppUtilsService } from 'src/app/e-shop/utils/app-utils.service';
@@ -24,15 +24,17 @@ export class TabelaComponent implements OnInit {
   @Input() tableLength;
   @Output() magacinEvent = new EventEmitter<any>();
 
+  innerWidth;
   public partnerLogovan = false;
   private korpa: Korpa;
+  public jeMobilni = window.innerWidth > 900;
 
   // Tabela
   private columnDefinitions = [
-    { def: 'slika', ifNotAuth: true },
-    { def: 'opis', ifNotAuth: true },
-    { def: 'tehnickidetalji', ifNotAuth: true },
-    { def: 'korpa', ifNotAuth: true },
+    { def: 'slika', ifNotMobile: true },
+    { def: 'opis', ifNotMobile: true },
+    { def: 'tehnickidetalji', ifNotAuth: false },
+    { def: 'korpa', ifNotMobile: true },
   ];
 
   constructor(
@@ -46,6 +48,22 @@ export class TabelaComponent implements OnInit {
   ngOnInit() {
     this.dataService.trenutnaKorpa.subscribe(korpa => this.korpa = korpa);
     this.loginServis.daLiJePartnerUlogovan.subscribe(bool => this.partnerLogovan = bool);
+    this.innerWidth = window.innerWidth;
+    this.changeSlideConfiguration();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.innerWidth = window.innerWidth;
+    this.changeSlideConfiguration();
+  }
+
+  changeSlideConfiguration() {
+    if (this.innerWidth < 900) {
+      this.jeMobilni = false;
+    } else {
+      this.jeMobilni = true;
+    }
   }
 
   paginatorEvent(pageEvent) {
@@ -55,7 +73,7 @@ export class TabelaComponent implements OnInit {
 
   getDisplayedColumns(): string[] {
     const dataColumns = this.columnDefinitions
-      .filter(cd => this.partnerLogovan || cd.ifNotAuth)
+      .filter(cd => this.jeMobilni || cd.ifNotMobile)
       .map(cd => cd.def);
     return dataColumns;
   }
