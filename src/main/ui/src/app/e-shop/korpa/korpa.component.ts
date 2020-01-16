@@ -228,11 +228,14 @@ export class KorpaComponent implements OnInit {
   }
 
   promenaKolicineManuelno(roba: RobaKorpa, broj: string) {
-    if (Number(broj)) {
+    if (Number(broj) || broj === '0') {
       const novaKolicina = Number(broj);
       if (roba.stanje < novaKolicina) {
         roba.kolicina = roba.stanje;
         this.notifikacija.notify('Maksimalna količina: ' + roba.stanje, MatSnackBarKlase.Crvena);
+      } else if (novaKolicina < 1) {
+        roba.kolicina = 1;
+        this.notifikacija.notify('Minimalna količina: 1', MatSnackBarKlase.Crvena);
       } else {
         roba.kolicina = novaKolicina;
       }
