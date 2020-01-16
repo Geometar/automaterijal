@@ -1,5 +1,100 @@
 @import "src/automaterijal-theme.scss";
 
+// Deo za korpu css --------------------------------------------------------
+.table-korpa {
+  max-width: 1200px;
+}
+tr.mat-header-row {
+  display: none;
+}
+.suma-labela {
+  font-size: 0.8rem;
+}
+.suma-cena-div {
+  font-size: 1.12rem;
+  color: $automaterijal-primary-50;
+  font-weight: bold;
+}
+tr.mat-row {
+  border-bottom: 5px solid $automaterijal-grey-400;
+}
+.roba-naziv {
+  color: $automaterijal-primary-100;
+  font-weight: bold;
+}
+.roba-katbr {
+  color: $automaterijal-primary-100;
+  font-weight: bold;
+  margin-left: 7px;
+}
+.roba-proizvodjac {
+  color: $automaterijal-primary-100;
+  font-weight: bold;
+  margin-left: 20px;
+}
+.ukupna-cena-div {
+  position: relative;
+  top: 20px;
+  left: 10px;
+
+}
+.dugme-brisanje {
+  position: relative;
+  bottom: 70px;
+  left: 179px;
+}
+.dugme-brisanje:hover {
+  color: red;
+}
+.kolicina-div {
+  display: inline-block;
+  margin-left: 42px;
+  width: 120px;
+  border-width: 0.5px;
+  border-style: solid;
+  border-color:  #ebebeb;
+}
+.kolicina-div span {
+  width: 39px;
+  display: inline-block;
+  text-align: center;
+}
+.kolicina-ikona {
+  font-size: 16px;
+  position: relative;
+  top: 2px;
+}
+.izbrisi-ikona:hover {
+  cursor: pointer;
+  color: $automaterijal-accent-red-50;
+  user-select: none
+}
+.dodaj-ikona:hover {
+  cursor: pointer;
+  color: $automaterijal-primary-100;
+  user-select: none
+}
+.input-kolicina-korpa {
+  border: none;
+  text-align: center;
+  width: 42px;
+}
+  /* Chrome, Safari, Edge, Opera */
+  .input-kolicina-korpa::-webkit-outer-spin-button,
+  .input-kolicina-korpa::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.input-kolicina[type=number] {
+  -moz-appearance:textfield;
+}
+
+.mat-column-akcije { 
+  width: 220px;
+}
+// -----------------------------------------------------------------------
 .velicina-dugmeta {
   padding: 0 10px;
 }
@@ -67,6 +162,9 @@ label {
   width: 150px;
   height: 40px;
   border-radius: 5px;
+}
+.sirina-pojedinacne-cene {
+  width: 200px;
 }
 
 .granice {
