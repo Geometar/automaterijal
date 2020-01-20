@@ -253,8 +253,9 @@ label {
   }
   .dugme-brisanje {
     position: relative;
-    bottom: 50px;
-    left: 72px;
+    display: block;
+    bottom: 130px;
+    left: 300px;
   }
   .suma-cena-div {
     font-size: 1.5rem;
@@ -274,6 +275,6 @@ label {
     right: -45px;
   }
   .ukupna-cena-div {
-    left: 45px;
+    left: 63px;
   }
 }
