@@ -17,6 +17,10 @@
                     <td mat-cell *matCellDef="let roba">
                         <img height="120" width="160" src={{roba.slikaId}}
                             onError="this.src='assets/slike/ui/roba/slikanijedostupna.jpg'">
+                        <button *ngIf="jeMobilni" mat-icon-button (click)='izbaciIzKorpe(i)' class="dugme-brisanje"
+                            aria-label="Example icon-button with a heart icon">
+                            <mat-icon matTooltip="Izbaci iz korpe" class="ikona-brisanje">clear</mat-icon>
+                        </button>
                     </td>
                 </ng-container>
 
@@ -25,9 +29,11 @@
                     <th mat-header-cell *matHeaderCellDef> Roba opis</th>
                     <td mat-cell *matCellDef="let roba">
                         <div class="d-flex flex-column">
-                            <div class="p-1 bd-highlight"><b>Kataloški broj:</b> <span class="roba-katbr">
+                            <div class="p-1 bd-highlight podesi-opise-div"><b>Kataloški broj:</b> <span
+                                    class="roba-katbr">
                                     {{roba.katbr}} </span></div>
-                            <div class="p-1 bd-highlight"><b>Proizvodjač:</b> <span class="roba-proizvodjac">
+                            <div class="p-1 bd-highlight podesi-opise-div"><b>Proizvodjač:</b> <span
+                                    class="roba-proizvodjac">
                                     {{roba.proizvodjac.naziv}}</span></div>
                             <div class="p-1 bd-highlight roba-naziv">{{roba.naziv}}</div>
                         </div>
@@ -37,11 +43,12 @@
                 <!-- Cena o kolicina Column -->
                 <ng-container matColumnDef="cena">
                     <th mat-header-cell *matHeaderCellDef> cena </th>
-                    <td mat-cell data-label="Naziv" *matCellDef="let roba">
+                    <td mat-cell *matCellDef="let roba">
                         <div class="d-flex flex-column">
-                            <div class="p-1 bd-highlight"><b>Cena sa PDV-om:</b> <span class="roba-katbr">
+                            <div class="p-1 podesi-opise-div bd-highlight"><b>Cena sa PDV-om:</b> <span
+                                    class="roba-katbr">
                                     {{roba.cenaKom | currency:" "}} RSD </span></div>
-                            <div class="p-1 bd-highlight"><b>Količina:</b> 
+                            <div class="podesi-opise-div p-1 bd-highlight"><b>Količina:</b>
                                 <div class="kolicina-div">
                                     <span (click)="oduzmiOdKolicine(roba)" class="izbrisi-ikona">
                                         <i class="material-icons kolicina-ikona">
@@ -49,9 +56,11 @@
                                         </i>
                                     </span>
                                     <span>
-                                        <input (input)="promenaKolicineManuelno(roba, $event.target.value)" min="1" max="{{roba.stanje}}" class="input-kolicina-korpa" type="number" value="{{roba.kolicina}}">
+                                        <input (input)="promenaKolicineManuelno(roba, $event.target.value)" min="1"
+                                            max="{{roba.stanje}}" class="input-kolicina-korpa" type="number"
+                                            value="{{roba.kolicina}}">
                                     </span>
-                                    <span  (click)="dodajKolicini(roba)" class="dodaj-ikona">
+                                    <span (click)="dodajKolicini(roba)" class="dodaj-ikona">
                                         <i class="material-icons kolicina-ikona">
                                             add
                                         </i>
@@ -70,7 +79,7 @@
                             <label class="suma-labela">Ukupno sa PDV-om</label>
                             <div class="suma-cena-div"> {{roba.cenaUkupno | currency:" "}} RSD </div>
                         </div>
-                        <button mat-icon-button  (click)='izbaciIzKorpe(i)' class="dugme-brisanje"
+                        <button *ngIf="!jeMobilni" mat-icon-button (click)='izbaciIzKorpe(i)' class="dugme-brisanje"
                             aria-label="Example icon-button with a heart icon">
                             <mat-icon matTooltip="Izbaci iz korpe" class="ikona-brisanje">clear</mat-icon>
                         </button>

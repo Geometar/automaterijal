@@ -204,51 +204,76 @@ label {
   
 }
 
-@media only screen and (max-width : 640px) { 
-
-  .korpa-h1 {
-    margin-top: 0.5em;
-  }
-
-  
-.headerKorpa {
-  background-size: 100% 75px;
-}
-
-  .sirina-cena {
-    width: 95%;
-    margin-left: 2%;
-  }
-}
-  
 @media screen and (max-width: 900px) {
-
-    p {
-        font-size: 0.89em;
-        text-align: right !important;
-    }
-    tr.mat-header-row {
-        height: 0px;
-    }
-    .text-center {
-        text-align: none;
-    }
-    .mat-table .mat-cell:last-child {
-       margin-top: 10px;
-       padding-left: 10px;
-       padding-right: 10px;
-       height: 45px;
-    }
-    .button-align {
+ 
+  .table-korpa {
+    height: 400px;
+    border-collapse: collapse;
+    box-shadow: none;
+  }
+  .table-korpa tr.mat-row {
+      border-bottom: 10px solid $automaterijal-grey-400;
+  }
+  .table-korpa td {
+      border: none !important;
+  }
+  
+  .table-korpa {
+      max-width: 350px;
+      margin-left: auto;
+      margin-right: auto;
+  }
+  
+  .mat-column-slika {
+      height: 110px;
       text-align: center;
-    }
-    .levo-dugme {
-      padding-right: 20px !important ;
-      display: inline-block !important ;
-    }
-
-    .desno-dugme {
-      padding-left: 20px !important ;
-      display: inline-block !important ;
-    }
+  }
+  
+  .mat-column-opis {
+      height: 110px;
+      text-align: center;
+      font-size: 0.90rem;
+  }
+  .mat-column-cena {
+    height: 110px;
+    text-align: center;
+    font-size: 0.90rem;
+  }
+  .mat-column-akcije {
+    text-align: center;
+    font-size: 0.90rem;
+  }
+  .kolicina-div {
+      text-align: left;
+  }
+  .ukupna-cena-div {
+    position: relative;
+    top: -45px;
+    left: 55px;
+  }
+  .dugme-brisanje {
+    position: relative;
+    bottom: 50px;
+    left: 72px;
+  }
+  .suma-cena-div {
+    font-size: 1.5rem;
+  }
+  .podesi-opise-div {
+    position: relative;
+    right: -60px;
+    width: 300px;
+    text-align: left;
+  }
+}
+@media screen and (max-width: 330px) {
+  .dugme-brisanje {
+    left: 52px;
+  }
+  .podesi-opise-div[_ngcontent-c10] {
+    right: -45px;
+  }
+  .ukupna-cena-div {
+    left: 45px;
+  }
 }

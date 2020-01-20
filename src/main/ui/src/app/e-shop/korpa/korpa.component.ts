@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { DataService } from '../service/data/data.service';
 import { Korpa, RobaKorpa } from '../model/porudzbenica';
 import { LocalStorageService } from '../service/data/local-storage.service';
@@ -52,6 +52,10 @@ export class KorpaComponent implements OnInit {
   public napomena: string;
   public ucitavanje = false;
   private alive = true;
+
+  innerWidth;
+  public jeMobilni;
+
   @ViewChild(MatTable) table: MatTable<any>;
 
   constructor(
@@ -67,6 +71,22 @@ export class KorpaComponent implements OnInit {
   ngOnInit() {
     this.loginServis.ulogovaniPartner.subscribe(partner => this.partner = partner);
     this.inicijalizujKorpu();
+    this.innerWidth = window.innerWidth;
+    this.changeSlideConfiguration();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.innerWidth = window.innerWidth;
+    this.changeSlideConfiguration();
+  }
+
+  changeSlideConfiguration() {
+    if (this.innerWidth < 900) {
+      this.jeMobilni = true;
+    } else {
+      this.jeMobilni = false;
+    }
   }
 
   inicijalizujKorpu() {
