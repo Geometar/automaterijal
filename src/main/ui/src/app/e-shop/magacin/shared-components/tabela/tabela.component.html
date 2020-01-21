@@ -3,7 +3,7 @@
     <!--Slika dela Column -->
     <ng-container matColumnDef="slika">
       <th mat-header-cell *matHeaderCellDef> Slika </th>
-      <td  mat-cell *matCellDef="let roba">
+      <td mat-cell *matCellDef="let roba">
         <img height="120" width="160" src={{roba.slika}}
           onError="this.src='assets/slike/ui/roba/slikanijedostupna.jpg'">
       </td>
@@ -14,8 +14,8 @@
       <th mat-header-cell *matHeaderCellDef> Roba opis</th>
       <td mat-cell *matCellDef="let roba">
         <div class="d-flex flex-column">
-          <div class="p-1 bd-highlight"><b>Kataloški broj:</b> <span class="roba-katbr"> {{roba.katbr}} </span></div>
-          <div class="p-1 bd-highlight"><b>Proizvodjač:</b> <span class="roba-proizvodjac">
+          <div class="p-1 pomeranje-mob-div bd-highlight"><b>Kataloški broj:</b> <span class="roba-katbr"> {{roba.katbr}} </span></div>
+          <div class="p-1 pomeranje-mob-div bd-highlight"><b>Proizvodjač:</b> <span class="roba-proizvodjac">
               {{roba.proizvodjac.naziv}}</span></div>
           <div class="p-1 bd-highlight roba-naziv">{{roba.naziv}}</div>
         </div>
@@ -28,7 +28,8 @@
       <td mat-cell *matCellDef="let roba">
         <h3 class="text-center teh-opis-h3">Tehnički opis</h3>
         <div class="d-flex justify-content-center">
-          <i matTooltip="Nema tehničkih detalja" *ngIf="!roba.tehnickiOpis || roba.tehnickiOpis.length === 0" class="material-icons nema-opisa-ikona">
+          <i matTooltip="Nema tehničkih detalja" *ngIf="!roba.tehnickiOpis || roba.tehnickiOpis.length === 0"
+            class="material-icons nema-opisa-ikona">
             work_off
           </i>
         </div>
@@ -53,25 +54,41 @@
       <td class="poslednja-kolona" mat-cell *matCellDef="let roba">
         <div class="d-flex flex-column bd-highlight korpa mb-3">
           <div class="bd-highlight text-right roba-cena">
-            <span class="pdv-cena">Cena sa pdv-om:</span> 
-            <span class="roba-cena"> {{roba.cena | currency:" "}} RSD </span>     
-          </div>    
-            <div class="bd-highlight cena-stanje">
+            <span class="pdv-cena">Cena sa pdv-om:</span>
+            <span class="roba-cena"> {{roba.cena | currency:" "}} RSD </span>
+          </div>
+          <div class="bd-highlight cena-stanje">
             <ul class="teh-detalji-ui">
               <li class="d-flex justify-content-center bd-highlight" [class.float-right]="!partnerLogovan">
-                <div class="p-1 w-100 bd-highlight kolicina-div" *ngIf="roba.stanje > 0 && partnerLogovan">
+                <div class="p-1 w-100 bd-highlight kolicina-input-labela" *ngIf="roba.stanje > 0 && partnerLogovan">
                   <label class="labela-kolicina">Količina:</label>
-                  <input type="number" min="0" (keyup.enter)="dodajUKorpu(roba)" placeholder="0" max="{{roba.stanje}}"
-                    class="kolicina-labela" [(ngModel)]="roba.kolicina" />
+                  <div class="kolicina-div">
+                    <span (click)="oduzmiOdKolicine(roba)" class="izbrisi-ikona">
+                      <i class="material-icons kolicina-ikona">
+                        remove
+                      </i>
+                    </span>
+                    <span>
+                      <input type="number" min="1" (keyup.enter)="dodajUKorpu(roba)" placeholder="1"
+                        max="{{roba.stanje}}" class="input-kolicina-tabela" [(ngModel)]="roba.kolicina" />
+                    </span>
+                    <span (click)="dodajKolicini(roba)" class="dodaj-ikona">
+                      <i class="material-icons kolicina-ikona">
+                        add
+                      </i>
+                    </span>
+                  </div>
                 </div>
-                  <div class="lex-shrink-1 bd-highlight">
+                <div class="lex-shrink-1 bd-highlight">
                   <div *ngIf="roba.stanje > 0" class="text-center tabela-u-korpi">
                     <span *ngIf="!partnerLogovan" class="stanje-nije-ulogovan boja-zelena-50">Ima na stanju</span>
-                    <mat-icon [class.nema-na-stanju]="!partnerLogovan"  matTooltip="Ima na stanju" class="boja-zelena-50">check_circle_outline</mat-icon>
+                    <mat-icon [class.nema-na-stanju]="!partnerLogovan" matTooltip="Ima na stanju"
+                      class="boja-zelena-50">check_circle_outline</mat-icon>
                   </div>
                   <div *ngIf="roba.stanje == 0" class="text-center tabela-u-korpi">
                     <span *ngIf="!partnerLogovan" class="stanje-nije-ulogovan boja-crvena-50">Nema na stanju</span>
-                    <mat-icon matTooltip="Nema na stanju" class="boja-crvena-50 nema-na-stanju">remove_circle_outline</mat-icon>
+                    <mat-icon matTooltip="Nema na stanju" class="boja-crvena-50 nema-na-stanju">remove_circle_outline
+                    </mat-icon>
                   </div>
                 </div>
               </li>

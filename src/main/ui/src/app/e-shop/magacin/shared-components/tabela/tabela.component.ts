@@ -77,6 +77,23 @@ export class TabelaComponent implements OnInit {
       .map(cd => cd.def);
     return dataColumns;
   }
+  oduzmiOdKolicine(roba: Roba) {
+    if (!Number(roba.kolicina)) {
+      roba.kolicina = 1;
+    }
+    if (roba.kolicina > 1) {
+      roba.kolicina = roba.kolicina - 1;
+    }
+  }
+
+  dodajKolicini(roba: Roba) {
+    if (!Number(roba.kolicina)) {
+      roba.kolicina = 1;
+    }
+    if (roba.kolicina < roba.stanje) {
+      roba.kolicina = roba.kolicina + 1;
+    }
+  }
 
   dodajUKorpu(roba: Roba) {
     this.loginServis.vratiUlogovanogKorisnika(false).subscribe(partner => {

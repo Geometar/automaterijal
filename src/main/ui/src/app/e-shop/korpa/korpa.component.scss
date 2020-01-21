@@ -54,7 +54,7 @@ tr.mat-row {
   width: 120px;
   border-width: 0.5px;
   border-style: solid;
-  border-color:  #ebebeb;
+  border-color:  $automaterijal-primary-50;
 }
 .kolicina-div span {
   width: 39px;
@@ -78,9 +78,9 @@ tr.mat-row {
 }
 .input-kolicina-korpa {
   border:none;
-  border-bottom: #ebebeb 0.3px solid;
   text-align: center;
   width: 42px;
+  height: 11px;
 }
   /* Chrome, Safari, Edge, Opera */
   .input-kolicina-korpa::-webkit-outer-spin-button,
@@ -245,11 +245,12 @@ label {
   }
   .kolicina-div {
       text-align: left;
+      margin-left: 24px;
   }
   .ukupna-cena-div {
     position: relative;
     top: -45px;
-    left: 55px;
+    left: 63px;
   }
   .dugme-brisanje {
     position: relative;
