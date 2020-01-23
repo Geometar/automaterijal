@@ -27,7 +27,7 @@ public abstract class FakturaMapper {
     @Mapping(target = "adresa.id", source = "mestoIsporuke")
     public abstract FakturaDto map(Faktura faktura);
 
-    public void popuniFakuturu(final Faktura faktura, final Partner partner, final Integer orderId) {
+    public void popuniFakuturu(Faktura faktura, Partner partner, Integer orderId) {
         faktura.setOrderId(orderId);
         faktura.setDataSent(Timestamp.valueOf(LocalDateTime.now()));
         faktura.setLastUpdate(Timestamp.valueOf(LocalDateTime.now()));
@@ -43,7 +43,7 @@ public abstract class FakturaMapper {
         popuniFakturaDetalje(faktura);
     }
 
-    protected void popuniFakturaDetalje(final Faktura faktura) {
+    protected void popuniFakturaDetalje(Faktura faktura) {
         faktura.getDetalji().forEach(fakturaDetalji -> {
             fakturaDetalji.setOrderId(faktura.getOrderId());
             fakturaDetalji.setPotvrdjenaKolicina(0.0);
@@ -61,9 +61,9 @@ public abstract class FakturaMapper {
     @Mapping(target = "mestoIsporuke", source = "adresa.id")
     public abstract Faktura map(FakturaDto faktura);
 
-    public Integer map(final ValueHelpDto valueHelpDto) {
+    public Integer map(ValueHelpDto valueHelpDto) {
         Integer retVal = null;
-        if(valueHelpDto != null) {
+        if (valueHelpDto != null) {
             retVal = valueHelpDto.getId();
         }
         return retVal;
@@ -91,7 +91,7 @@ public abstract class FakturaMapper {
 
     @Mapping(target = "kolicina", source = "kolicina")
     @Mapping(target = "status.id", source = "status")
-    public abstract FakturaDetaljiDto map(final FakturaDetalji fakturaDetalji);
+    public abstract FakturaDetaljiDto map(FakturaDetalji fakturaDetalji);
 
     @Mapping(target = "status.id", source = "id")
     @Mapping(target = "status.naziv", source = "opis")
@@ -100,6 +100,8 @@ public abstract class FakturaMapper {
     @Mapping(target = "kataloskiBroj", source = "katbr")
     @Mapping(target = "kataloskiBrojProizvodjaca", source = "katbrpro")
     public abstract void map(@MappingTarget FakturaDetaljiDto fakturaDto, Roba roba);
+
+    @Mapping(target = "naziv", ignore = true)
     public abstract void map(@MappingTarget FakturaDetaljiDto fakturaDto, Proizvodjac proizvodjac);
 
 }

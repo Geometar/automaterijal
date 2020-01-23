@@ -67,8 +67,8 @@ public class FakturaService {
     @NonNull
     final RobaMapper robaMapper;
 
-    public List<RobaDto> submitujFakturu(final FakturaDto fakturaDto, final Partner partner) {
-        final List<RobaDto> dozvoljenaKolicina = new ArrayList<>();
+    public List<RobaDto> submitujFakturu(FakturaDto fakturaDto, Partner partner) {
+        List<RobaDto> dozvoljenaKolicina = new ArrayList<>();
         proveraMagacinaIKolicina(dozvoljenaKolicina, fakturaDto);
         if (dozvoljenaKolicina.isEmpty()) {
             sacuvajFakturu(fakturaDto, partner);
@@ -76,11 +76,11 @@ public class FakturaService {
         return dozvoljenaKolicina;
     }
 
-    private void proveraMagacinaIKolicina(final List<RobaDto> dozvoljenaKolicina, final FakturaDto fakturaDto) {
+    private void proveraMagacinaIKolicina(List<RobaDto> dozvoljenaKolicina, FakturaDto fakturaDto) {
         fakturaDto.getDetalji().forEach(detalji -> {
-            final Optional<Roba> robaOptional = robaService.pronadjiRobuPoPrimarnomKljucu(detalji.getRobaId());
+            Optional<Roba> robaOptional = robaService.pronadjiRobuPoPrimarnomKljucu(detalji.getRobaId());
             if (robaOptional.isPresent()) {
-                final Roba roba = robaOptional.get();
+                Roba roba = robaOptional.get();
                 if (roba.getStanje() < detalji.getKolicina()) {
                     dozvoljenaKolicina.add(robaMapper.map(roba));
                 }
@@ -88,8 +88,8 @@ public class FakturaService {
         });
     }
 
-    private void sacuvajFakturu(final FakturaDto fakturaDto, final Partner partner) {
-        final Faktura faktura = mapper.map(fakturaDto);
+    private void sacuvajFakturu(FakturaDto fakturaDto, Partner partner) {
+        Faktura faktura = mapper.map(fakturaDto);
         mapper.popuniFakuturu(faktura, partner, vratiPoslednjiIdFakturuKorisnikaPovecan(partner.getPpid()));
         faktura.getDetalji().forEach(fakturaDetalji -> fakturaDetaljiRepository.save(fakturaDetalji));
 
@@ -99,12 +99,12 @@ public class FakturaService {
 
     @Transactional(readOnly = true)
     public Page<FakturaDto> vratiSveFaktureUlogovanogKorisnika(
-            final Partner partner,
-            final Integer page,
-            final Integer pageSize,
-            final LocalDateTime vremeOd,
-            final LocalDateTime vremeDo) {
-        final var pageRequest = PageRequest.of(page, pageSize, new Sort(Sort.Direction.ASC, "orderId"));
+            Partner partner,
+            Integer page,
+            Integer pageSize,
+            LocalDateTime vremeOd,
+            LocalDateTime vremeDo) {
+        var pageRequest = PageRequest.of(page, pageSize, new Sort(Sort.Direction.ASC, "orderId"));
         return fakturaRepository.findByPpidAndDataSentGreaterThanAndDataSentLessThanOrderByDataSentDesc(
                 partner.getPpid(),
                 pageRequest,
@@ -112,10 +112,10 @@ public class FakturaService {
                 GeneralUtil.LDTToTimestamp(vremeDo)
 
         ).map(mapper::map)
-         .map(fakturaDto -> obogatiDto(fakturaDto, partner));
+                .map(fakturaDto -> obogatiDto(fakturaDto, partner));
     }
 
-    private FakturaDto obogatiDto(final FakturaDto fakturaDto, final Partner partner) {
+    private FakturaDto obogatiDto(FakturaDto fakturaDto, Partner partner) {
         statusRepository.findById(fakturaDto.getStatus().getId()).ifPresent(status -> mapper.map(fakturaDto, status));
         nacinPlacanjaRepository.findById(fakturaDto.getNacinPlacanja().getId()).ifPresent(nacinPlacanja -> mapper.map(fakturaDto, nacinPlacanja));
         nacinPrevozaRepository.findById(fakturaDto.getNacinPrevoza().getId()).ifPresent(nacinPrevoza -> mapper.map(fakturaDto, nacinPrevoza));
@@ -123,6 +123,7 @@ public class FakturaService {
         fakturaDto.setBrojStavki(
                 fakturaDetaljiRepository.findByOrderId(fakturaDto.getId()).size()
         );
+        fakturaDto.setSlikaId("assets/slike/ui/roba/" + fakturaDto.getId() + ".jpg");
         if (fakturaDto.getDetalji() != null && !fakturaDto.getDetalji().isEmpty()) {
             fakturaDto.getDetalji().stream().forEach(fakturaDetaljiDto -> obogatiDetalje(fakturaDetaljiDto, partner));
         }
@@ -130,24 +131,24 @@ public class FakturaService {
         return fakturaDto;
     }
 
-    private void formatirajCenuFakture(final FakturaDto fakturaDto) {
-        final var formater = new DecimalFormat("#.##");
+    private void formatirajCenuFakture(FakturaDto fakturaDto) {
+        var formater = new DecimalFormat("#.##");
         formater.setRoundingMode(RoundingMode.UP);
         BigDecimal bigDecimal = new BigDecimal(0);
-        for (final FakturaDetaljiDto dto : fakturaDto.getDetalji()) {
+        for (FakturaDetaljiDto dto : fakturaDto.getDetalji()) {
             if (dto.getPotvrdjenaKolicina() > 0) {
-                final double ukupnaCenaDela = dto.getPotvrdjenaKolicina() * dto.getCena();
+                double ukupnaCenaDela = dto.getPotvrdjenaKolicina() * dto.getCena();
                 bigDecimal = bigDecimal.add(new BigDecimal(ukupnaCenaDela));
             }
             dto.setCena(Double.valueOf(formater.format(dto.getCena())));
         }
 
-        final var iznosNarucen = Double.valueOf(formater.format(fakturaDto.getIznosNarucen()));
+        var iznosNarucen = Double.valueOf(formater.format(fakturaDto.getIznosNarucen()));
         fakturaDto.setIznosNarucen(iznosNarucen);
         fakturaDto.setIznosPotvrdjen(bigDecimal.doubleValue());
     }
 
-    private void obogatiDetalje(final FakturaDetaljiDto dto, final Partner partner) {
+    private void obogatiDetalje(FakturaDetaljiDto dto, Partner partner) {
         statusRepository.findById(dto.getStatus().getId()).ifPresent(status -> mapper.map(dto, status));
         robaService.pronadjiRobuPoPrimarnomKljucu(dto.getRobaId()).ifPresent(roba -> {
             mapper.map(dto, roba);
@@ -159,9 +160,9 @@ public class FakturaService {
     }
 
     @Transactional(readOnly = true)
-    public FakturaDto vratiFakuturuPojedinacno(final Partner partner, final Integer id) {
+    public FakturaDto vratiFakuturuPojedinacno(Partner partner, Integer id) {
         FakturaDto fakturaDto = null;
-        final Optional<Faktura> faktura = fakturaRepository.findByPpidAndId(partner.getPpid(), id);
+        Optional<Faktura> faktura = fakturaRepository.findByPpidAndId(partner.getPpid(), id);
         if (faktura.isPresent()) {
             fakturaDto = faktura.map(mapper::map)
                     .map(dto -> obogatiDto(dto, partner)).get();
@@ -170,9 +171,9 @@ public class FakturaService {
     }
 
     @Transactional(readOnly = true)
-    public Integer vratiPoslednjiIdFakturuKorisnikaPovecan(final Integer ppid) {
+    public Integer vratiPoslednjiIdFakturuKorisnikaPovecan(Integer ppid) {
         Integer orderId = 1;
-        final Optional<Faktura> faktura = fakturaRepository.findFirstByPpidOrderByOrderIdDesc(ppid);
+        Optional<Faktura> faktura = fakturaRepository.findFirstByPpidOrderByOrderIdDesc(ppid);
         if (faktura.isPresent()) {
             orderId = faktura.get().getOrderId();
             ++orderId;
@@ -181,7 +182,7 @@ public class FakturaService {
     }
 
     @Transactional(readOnly = true)
-    public List<Faktura> vratiUpdejtovaneFakture(final Timestamp timestamp) {
+    public List<Faktura> vratiUpdejtovaneFakture(Timestamp timestamp) {
         return fakturaRepository.findByLastUpdateGreaterThan(timestamp);
     }
 }

@@ -12,6 +12,7 @@ public class FakturaDetaljiDto {
     Long robaId;
     String kataloskiBroj;
     String kataloskiBrojProizvodjaca;
+    String naziv;
     Proizvodjac proizvodjac;
     Double kolicina;
     Double potvrdjenaKolicina;

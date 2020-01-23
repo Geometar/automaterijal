@@ -57,6 +57,8 @@ export class FakturaPage extends Page {
 
 export class FakturaDetalji {
     robaId?: number;
+    slikaId?: number;
+    naziv?: string;
     kataloskiBroj?: string;
     proizvodjac?: Proizvodjac;
     kolicina?: number;
