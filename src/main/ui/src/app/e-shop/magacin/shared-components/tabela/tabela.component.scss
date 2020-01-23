@@ -54,12 +54,11 @@ tr.mat-row {
 .pdv-cena {
   font-size: 0.8rem;
   color: $automaterijal-grey-100;
-  padding-right: 5px;
 }
 .roba-cena {
   font-weight: bold;
   font-size: 1.2rem;
-  margin-right: 7px;
+  padding-right: 3px;
 }
 .nema-na-stanju {
   font-size: 30px;
@@ -98,7 +97,7 @@ tr.mat-row {
 .kolicina-div {
   display: inline-block;
   width: 120px;
-  height: 21px;
+  height: 24px;
   border-width: 0.5px;
   border-style: solid;
   border-color: $automaterijal-primary-50;
@@ -127,7 +126,8 @@ tr.mat-row {
   border: none;
   text-align: center;
   width: 42px;
-  height: 11px;
+  font-size: 16px;
+  margin-top: 1px;
 }
 /* Chrome, Safari, Edge, Opera */
 .input-kolicina-tabela::-webkit-outer-spin-button,
@@ -135,11 +135,11 @@ tr.mat-row {
   -webkit-appearance: none;
   margin: 0;
 }
-
 /* Firefox */
-.input-kolicina[type="number"] {
+.input-kolicina-tabela[type="number"] {
   -moz-appearance: textfield;
 }
+
 @media screen and (max-width: 900px) {
   tr.mat-row {
     height: 450px;
