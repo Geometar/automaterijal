@@ -119,9 +119,10 @@ tr.mat-row {
   font-size: 1rem;
 }
 
-@media only screen and (max-width: 1049px) {
-  .nazad-button {
-    margin-top: 80px !important;
+
+@media only screen and (max-width : 1049px) { 
+  .header-porduzbenice {
+    margin-top: 65px;
   }
 }
 //------------------------------------------------------------------------------------------------------------
