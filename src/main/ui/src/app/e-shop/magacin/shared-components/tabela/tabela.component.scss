@@ -9,6 +9,10 @@ tr.mat-row {
   height: 200px;
   border-bottom: 15px solid $automaterijal-grey-400;
 }
+.nema-na-stanju-div {
+  width: 230px;
+  text-align: right !important;
+}
 .roba-katbr {
   color: $automaterijal-primary-100;
   font-weight: bold;
@@ -44,7 +48,7 @@ tr.mat-row {
   margin-top: 18px;
 }
 .cena-stanje {
-  margin-left: 15px;
+  margin-left: 10px;
 }
 .stanje-nije-ulogovan {
   top: -11px;

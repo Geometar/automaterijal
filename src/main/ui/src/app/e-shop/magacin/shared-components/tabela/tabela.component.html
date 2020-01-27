@@ -85,8 +85,8 @@
                     <mat-icon [class.nema-na-stanju]="!partnerLogovan" matTooltip="Ima na stanju"
                       class="boja-zelena-50">check_circle_outline</mat-icon>
                   </div>
-                  <div *ngIf="roba.stanje == 0" class="text-center tabela-u-korpi">
-                    <span *ngIf="!partnerLogovan" class="stanje-nije-ulogovan boja-crvena-50">Nema na stanju</span>
+                  <div *ngIf="roba.stanje == 0" class="text-center tabela-u-korpi nema-na-stanju-div">
+                    <span class="stanje-nije-ulogovan boja-crvena-50">Nema na stanju</span>
                     <mat-icon matTooltip="Nema na stanju" class="boja-crvena-50 nema-na-stanju">remove_circle_outline
                     </mat-icon>
                   </div>
@@ -104,7 +104,7 @@
                   Dodaj u korpu
                 </button>
               </div>
-              <div class="dugme-detalji dugme-mobilni">
+              <div *ngIf="roba.tehnickiOpis == null || !roba.tehnickiOpis.length < 1" class="dugme-detalji dugme-mobilni">
                 <button mat-raised-button class="dugme button-crveni-50" (click)='dodajUKorpu(roba)'>
                   <i class="material-icons">
                     library_books
