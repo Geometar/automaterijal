@@ -1,5 +1,9 @@
 @import "src/automaterijal-theme.scss";
 @import "src/css/shared/boje.scss";
+
+table {
+  margin: auto !important;
+}
 h1 {
   margin-top: 0.5em;
   font-size: 2 em;
@@ -35,9 +39,6 @@ i {
 .sirina-b-2 {
   width: 85px;
   display: inline-block;
-}
-table {
-  margin: 10px !important;
 }
 
 .header {
@@ -115,17 +116,71 @@ tr.mat-row {
   color: $automaterijal-primary-100;
   font-weight: bold;
   margin-left: 5px;
+  font-size: 1rem;
+}
+
+@media only screen and (max-width: 1049px) {
+  .nazad-button {
+    margin-top: 80px !important;
+  }
 }
 //------------------------------------------------------------------------------------------------------------
 @media screen and (max-width: 900px) {
-  p {
-    font-size: 0.89em;
+  table {
+    margin: auto !important;
   }
-  tr.mat-header-row {
-    height: 0px;
+  .faktura-tabela {
+    height: 400px;
+    border-collapse: collapse;
+    box-shadow: none;
+    max-width: 350px;
+    margin-left: auto;
+    margin-right: auto;
   }
-  .text-center {
-    text-align: none;
+  .faktura-tabela tr.mat-row {
+    border-bottom: 10px solid $automaterijal-grey-400;
+  }
+  .faktura-tabela td {
+    border: none !important;
+  }
+
+  .mat-column-slika {
+    height: 110px;
+    text-align: center;
+  }
+
+  .mat-column-opis {
+    height: 110px;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+  .mat-column-kolicina {
+    height: 60px;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+  .mat-column-cena {
+    height: 85px !important;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+  .podesi-opise-div {
+    position: relative;
+    right: -60px;
+    width: 300px;
+    text-align: left;
+  }
+  .podesi-opise-ukupno-div {
+    position: relative;
+    right: -30px;
+    width: 300px;
+    text-align: left;
+  }
+  .rabat-kol {
+    margin-left: 95px;
+  }
+  .cena-kom-kol {
+    margin-left: 26px;
   }
 }
 
