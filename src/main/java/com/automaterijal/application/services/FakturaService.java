@@ -123,7 +123,6 @@ public class FakturaService {
         fakturaDto.setBrojStavki(
                 fakturaDetaljiRepository.findByOrderId(fakturaDto.getId()).size()
         );
-        fakturaDto.setSlikaId("assets/slike/ui/roba/" + fakturaDto.getId() + ".jpg");
         if (fakturaDto.getDetalji() != null && !fakturaDto.getDetalji().isEmpty()) {
             fakturaDto.getDetalji().stream().forEach(fakturaDetaljiDto -> obogatiDetalje(fakturaDetaljiDto, partner));
         }
@@ -149,6 +148,7 @@ public class FakturaService {
     }
 
     private void obogatiDetalje(FakturaDetaljiDto dto, Partner partner) {
+        dto.setSlikaId("assets/slike/ui/roba/" + dto.getRobaId() + ".jpg");
         statusRepository.findById(dto.getStatus().getId()).ifPresent(status -> mapper.map(dto, status));
         robaService.pronadjiRobuPoPrimarnomKljucu(dto.getRobaId()).ifPresent(roba -> {
             mapper.map(dto, roba);

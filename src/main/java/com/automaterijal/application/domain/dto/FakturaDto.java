@@ -10,7 +10,6 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class FakturaDto {
     Integer id;
-    String slikaId;
     Integer orderId;
     String vremePorucivanja;
     ValueHelpDto status;
