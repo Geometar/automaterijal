@@ -24,9 +24,9 @@ export class NavigacijaComponent implements OnInit {
 
   ngOnInit() {
     this.openSideNav = window.innerWidth < 1050;
-    this.korpaServis.trenutnaKorpa.subscribe(korpa => this.korpaBadge = korpa.roba.length);
-    this.loginServis.daLiJePartnerUlogovan.subscribe(bool => this.partnerUlogovan = bool);
     this.loginServis.ulogovaniPartner.subscribe(partner => this.partner = partner);
+    this.loginServis.daLiJePartnerUlogovan.subscribe(bool => this.partnerUlogovan = bool);
+    this.korpaServis.trenutnaKorpa.subscribe(korpa => this.korpaBadge = korpa.roba.length);
   }
 
   @HostListener('window:resize', ['$event'])

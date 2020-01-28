@@ -6,6 +6,11 @@
       <td mat-cell *matCellDef="let roba">
         <img height="120" width="160" src={{roba.slika}}
           onError="this.src='assets/slike/ui/roba/slikanijedostupna.jpg'">
+        <span *ngIf="partnerLogovan && uKorpi(roba.katbr)">
+          <i matTooltip="U korpi" class="material-icons boja-glavna-100 pozicija-informacije-korpa">
+            shopping_cart
+          </i>
+        </span>
       </td>
     </ng-container>
 
@@ -14,7 +19,8 @@
       <th mat-header-cell *matHeaderCellDef> Roba opis</th>
       <td mat-cell *matCellDef="let roba">
         <div class="d-flex flex-column">
-          <div class="p-1 pomeranje-mob-div bd-highlight"><b>Kataloški broj:</b> <span class="roba-katbr"> {{roba.katbr}} </span></div>
+          <div class="p-1 pomeranje-mob-div bd-highlight"><b>Kataloški broj:</b> <span class="roba-katbr">
+              {{roba.katbr}} </span></div>
           <div class="p-1 pomeranje-mob-div bd-highlight"><b>Proizvodjač:</b> <span class="roba-proizvodjac">
               {{roba.proizvodjac.naziv}}</span></div>
           <div class="p-1 bd-highlight roba-naziv">{{roba.naziv}}</div>
@@ -81,12 +87,12 @@
                 </div>
                 <div class="lex-shrink-1 bd-highlight">
                   <div *ngIf="roba.stanje > 0" class="text-center tabela-u-korpi">
-                    <span *ngIf="!partnerLogovan" class="stanje-nije-ulogovan boja-zelena-50">Ima na stanju</span>
+                    <span *ngIf="!partnerLogovan" class="stanje-nije-ulogovan boja-zelena-50">NA STANJU</span>
                     <mat-icon [class.nema-na-stanju]="!partnerLogovan" matTooltip="Ima na stanju"
                       class="boja-zelena-50">check_circle_outline</mat-icon>
                   </div>
                   <div *ngIf="roba.stanje == 0" class="text-center tabela-u-korpi nema-na-stanju-div">
-                    <span class="stanje-nije-ulogovan boja-crvena-50">Nema na stanju</span>
+                    <span class="stanje-nije-ulogovan boja-crvena-50">NEMA NA STANJU</span>
                     <mat-icon matTooltip="Nema na stanju" class="boja-crvena-50 nema-na-stanju">remove_circle_outline
                     </mat-icon>
                   </div>
@@ -96,16 +102,17 @@
           </div>
           <div class="bd-highlight">
             <div class="d-flex flex-column justify-content-center text-center">
-              <div class="dugme-mobilni" *ngIf="roba.stanje > 0 && partnerLogovan">
+              <div class="dugme-mobilni" *ngIf="partnerLogovan">
                 <button mat-raised-button class="dugme button-glavni-100" (click)='dodajUKorpu(roba)'>
                   <i class="material-icons">
-                    add_circle_outline
+                    add_shopping_cart
                   </i>
                   Dodaj u korpu
                 </button>
               </div>
-              <div *ngIf="roba.tehnickiOpis == null || !roba.tehnickiOpis.length < 1" class="dugme-detalji dugme-mobilni">
-                <button mat-raised-button class="dugme button-crveni-50" (click)='dodajUKorpu(roba)'>
+              <div class="dugme-detalji dugme-mobilni">
+                <button mat-raised-button [disabled]="roba.tehnickiOpis == null || roba.tehnickiOpis.length < 1"
+                  class="dugme button-crveni-50" (click)='dodajUKorpu(roba)'>
                   <i class="material-icons">
                     library_books
                   </i>
