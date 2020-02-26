@@ -16,16 +16,16 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Slf4j
 public class RobaService {
 
     @NonNull
-    RobaRepository robaRepository;
+    final RobaRepository robaRepository;
 
-    public Optional<Roba> pronadjiRobuPoPrimarnomKljucu(final Long id) {
+    public Optional<Roba> pronadjiRobuPoPrimarnomKljucu(Long id) {
         return robaRepository.findById(id);
     }
 
@@ -33,7 +33,7 @@ public class RobaService {
         return robaRepository.findAll();
     }
 
-    public Page<Roba> pronadjiSvuRobu(final boolean naStanju, final Pageable pageable) {
+    public Page<Roba> pronadjiSvuRobu(boolean naStanju, Pageable pageable) {
         if (naStanju) {
             return robaRepository.findByStanjeGreaterThan(0, pageable);
         } else {
@@ -41,11 +41,11 @@ public class RobaService {
         }
     }
 
-    public List<Roba> pronadjuSvuRobuPoGrupiIdNaStanju(final List<String> grupeId) {
+    public List<Roba> pronadjuSvuRobuPoGrupiIdNaStanju(List<String> grupeId) {
         return robaRepository.findByGrupaidInAndStanjeGreaterThan(grupeId, 0);
     }
 
-    public Page<Roba> pronadjiSvuRobuPoPodGrupiId(final List<Integer> podGrupaId, final boolean naStanju, final Pageable pageable) {
+    public Page<Roba> pronadjiSvuRobuPoPodGrupiId(List<Integer> podGrupaId, boolean naStanju, Pageable pageable) {
         Page<Roba> roba = null;
         if (naStanju) {
             roba = robaRepository.findByPodgrupaidInAndStanjeGreaterThan(podGrupaId, 0, pageable);
@@ -55,11 +55,11 @@ public class RobaService {
         return roba;
     }
 
-    public List<Roba> pronadjiSvuRobuPoPodGrupiIdLista(final List<Integer> podGrupaId) {
+    public List<Roba> pronadjiSvuRobuPoPodGrupiIdLista(List<Integer> podGrupaId) {
         return robaRepository.findByPodgrupaidInAndStanjeGreaterThan(podGrupaId, 0);
     }
 
-    public Page<Roba> pronadjiSvuRobuPoGrupiIdNaStanju(final List<String> grupaId, final boolean naStanju, final Pageable pageable) {
+    public Page<Roba> pronadjiSvuRobuPoGrupiIdNaStanju(List<String> grupaId, boolean naStanju, Pageable pageable) {
         Page<Roba> roba = null;
         if (naStanju) {
             roba = robaRepository.findByGrupaidInAndStanjeGreaterThan(grupaId, 0, pageable);

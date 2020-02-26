@@ -5,10 +5,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "td_brojevi")
@@ -36,4 +33,8 @@ public class RobaBrojevi {
 
     @Column(name = "nadjenpreko")
     String nadjenPreko;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "idpro", referencedColumnName = "proizvodjacid", insertable = false, updatable = false)
+    RobaProizvodjac robaProizvodjac;
 }

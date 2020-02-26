@@ -20,7 +20,7 @@ public class RobaAplikacija {
     Integer aplikacijaId;
 
     @Column(name = "robaid")
-    Integer robaId;
+    Long robaId;
 
     @Column(name = "fabrbroj")
     String fabrBroj;

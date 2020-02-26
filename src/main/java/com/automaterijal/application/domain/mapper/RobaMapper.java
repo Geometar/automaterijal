@@ -2,11 +2,17 @@ package com.automaterijal.application.domain.mapper;
 
 import com.automaterijal.application.domain.dto.RobaDto;
 import com.automaterijal.application.domain.dto.RobaTehnickiOpisDto;
+import com.automaterijal.application.domain.dto.robadetalji.RobaAplikacijaDto;
+import com.automaterijal.application.domain.dto.robadetalji.RobaBrojeviDto;
+import com.automaterijal.application.domain.dto.robadetalji.RobaDetaljnoDto;
 import com.automaterijal.application.domain.entity.roba.Roba;
+import com.automaterijal.application.domain.entity.roba.RobaAplikacija;
+import com.automaterijal.application.domain.entity.roba.RobaBrojevi;
 import com.automaterijal.application.domain.entity.roba.RobaOpis;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
 
 import java.util.List;
@@ -19,4 +25,16 @@ public abstract class RobaMapper {
 
     public abstract List<RobaTehnickiOpisDto> map(List<RobaOpis> opisi);
 
+    @Mapping(target = "robaId", source = "robaid")
+    @Mapping(target = "grupa", source = "grupaid")
+    @Mapping(target = "podGrupa", source = "podgrupaid")
+    public abstract RobaDetaljnoDto mapujDetaljno(Roba roba);
+
+    public abstract List<RobaBrojeviDto> mapBorjeve(List<RobaBrojevi> brojevi);
+
+    @Mapping(target = "fabrBroj", source = "id.fabrBroj")
+    @Mapping(target = "proizvodjac", source = "robaProizvodjac.naziv")
+    abstract RobaBrojeviDto map(RobaBrojevi broj);
+
+    public abstract RobaAplikacijaDto mapAplikacija(RobaAplikacija aplikacija);
 }

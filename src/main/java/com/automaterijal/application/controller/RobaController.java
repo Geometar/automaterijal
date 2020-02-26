@@ -3,6 +3,7 @@ package com.automaterijal.application.controller;
 import com.automaterijal.application.domain.constants.RobaSortiranjePolja;
 import com.automaterijal.application.domain.constants.VrstaRobe;
 import com.automaterijal.application.domain.dto.RobaDto;
+import com.automaterijal.application.domain.dto.robadetalji.RobaDetaljnoDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.services.roba.RobaGlavniService;
@@ -40,22 +41,22 @@ public class RobaController {
 
     @GetMapping
     public ResponseEntity<Page<RobaDto>> pronadjiSvuRobu(
-            @RequestParam(required = false) final Optional<Integer> page,
-            @RequestParam(required = false) final  Optional<Integer> pageSize,
-            @RequestParam(required = false) final  Optional<String> proizvodjac,
-            @RequestParam(required = false) final  Optional<Boolean> naStanju,
-            @RequestParam(required = false) final  Optional<String> searchTerm,
-            @RequestParam(required = false) final RobaSortiranjePolja sortBy,
-            @RequestParam(required = false) final Sort.Direction sortDirection,
-            final Authentication authentication
+            @RequestParam(required = false) Optional<Integer> page,
+            @RequestParam(required = false) Optional<Integer> pageSize,
+            @RequestParam(required = false) Optional<String> proizvodjac,
+            @RequestParam(required = false) Optional<Boolean> naStanju,
+            @RequestParam(required = false) Optional<String> searchTerm,
+            @RequestParam(required = false) RobaSortiranjePolja sortBy,
+            @RequestParam(required = false) Sort.Direction sortDirection,
+            Authentication authentication
     ) {
 
-        final var univerzalniParametri = robaSpringBeanUtils.popuniIVratiGenerickeParametreZaServis(
+        var univerzalniParametri = robaSpringBeanUtils.popuniIVratiGenerickeParametreZaServis(
                 page, pageSize, proizvodjac, naStanju, sortBy, sortDirection, searchTerm, VrstaRobe.SVE, null, null
         );
-        final var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+        var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
 
-        final Page<RobaDto> roba = robaGlavniService.pronadjiRobuPoPretrazi(
+        Page<RobaDto> roba = robaGlavniService.pronadjiRobuPoPretrazi(
                 univerzalniParametri, uPartner
         );
 
@@ -65,23 +66,31 @@ public class RobaController {
         return ResponseEntity.notFound().headers(createHeaders(uPartner)).build();
     }
 
+    @GetMapping(value = "/{robaID}")
+    public ResponseEntity<RobaDetaljnoDto> vratiRobuPojedinacno(@PathVariable("robaID") Long robaId, Authentication authentication) {
+        var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+        return robaGlavniService.pronadjiRobuPoRobaId(robaId, uPartner)
+                .map(roba -> ResponseEntity.ok(roba))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @GetMapping(value = "/filteri")
     public ResponseEntity<Page<RobaDto>> pronadjiSveFiltere(
-            @RequestParam(required = false) final Optional<Integer> page,
-            @RequestParam(required = false) final  Optional<Integer> pageSize,
-            @RequestParam(required = false) final RobaSortiranjePolja sortBy,
-            @RequestParam(required = false) final Sort.Direction sortDirection,
-            @RequestParam(required = false) final  Optional<String> proizvodjac,
-            @RequestParam(required = false) final  Optional<Boolean> naStanju,
-            @RequestParam(required = false) final  Optional<String> searchTerm,
-            final Authentication authentication
+            @RequestParam(required = false) Optional<Integer> page,
+            @RequestParam(required = false) Optional<Integer> pageSize,
+            @RequestParam(required = false) RobaSortiranjePolja sortBy,
+            @RequestParam(required = false) Sort.Direction sortDirection,
+            @RequestParam(required = false) Optional<String> proizvodjac,
+            @RequestParam(required = false) Optional<Boolean> naStanju,
+            @RequestParam(required = false) Optional<String> searchTerm,
+            Authentication authentication
     ) {
-        final UniverzalniParametri univerzalniParametri = robaSpringBeanUtils.popuniIVratiGenerickeParametreZaServis(
+        UniverzalniParametri univerzalniParametri = robaSpringBeanUtils.popuniIVratiGenerickeParametreZaServis(
                 page, pageSize, proizvodjac, naStanju, sortBy, sortDirection, searchTerm, VrstaRobe.FILTERI, null, null
         );
-        final Partner uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+        Partner uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
 
-        final Page<RobaDto> roba = robaGlavniService.pronadjiRobuPoPretrazi(
+        Page<RobaDto> roba = robaGlavniService.pronadjiRobuPoPretrazi(
                 univerzalniParametri, uPartner
         );
 
@@ -94,23 +103,23 @@ public class RobaController {
 
     @GetMapping(value = "/akumulatori")
     public ResponseEntity<Page<RobaDto>> pronadjiSveAkumulatore(
-            @RequestParam(required = false) final Optional<Integer> page,
-            @RequestParam(required = false) final  Optional<Integer> pageSize,
-            @RequestParam(required = false) final  Optional<String> proizvodjac,
-            @RequestParam(required = false) final  Optional<Boolean> naStanju,
-            @RequestParam(required = false) final  Optional<String> searchTerm,
-            @RequestParam(required = false) final RobaSortiranjePolja sortBy,
-            @RequestParam(required = false) final Sort.Direction sortDirection,
-            final Authentication authentication
+            @RequestParam(required = false) Optional<Integer> page,
+            @RequestParam(required = false) Optional<Integer> pageSize,
+            @RequestParam(required = false) Optional<String> proizvodjac,
+            @RequestParam(required = false) Optional<Boolean> naStanju,
+            @RequestParam(required = false) Optional<String> searchTerm,
+            @RequestParam(required = false) RobaSortiranjePolja sortBy,
+            @RequestParam(required = false) Sort.Direction sortDirection,
+            Authentication authentication
     ) {
 
-        final var univerzalniParametri = robaSpringBeanUtils.popuniIVratiGenerickeParametreZaServis(
+        var univerzalniParametri = robaSpringBeanUtils.popuniIVratiGenerickeParametreZaServis(
                 page, pageSize, proizvodjac, naStanju, sortBy, sortDirection, searchTerm, VrstaRobe.AKUMULATORI, null, null
         );
-        final var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+        var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
 
 
-        final Page<RobaDto> roba = robaGlavniService.pronadjiRobuPoPretrazi(
+        Page<RobaDto> roba = robaGlavniService.pronadjiRobuPoPretrazi(
                 univerzalniParametri, uPartner
         );
 
@@ -122,20 +131,20 @@ public class RobaController {
 
     @GetMapping(value = "/ulja/{vrsta}")
     public ResponseEntity<Page<RobaDto>> pronadjiUlje(
-            @PathVariable("vrsta") final String vrstaUlja,
-            @RequestParam(required = false) final Optional<Integer> page,
-            @RequestParam(required = false) final  Optional<Integer> pageSize,
-            @RequestParam(required = false) final  Optional<String> proizvodjac,
-            @RequestParam(required = false) final  Optional<Boolean> naStanju,
-            @RequestParam(required = false) final  Optional<String> searchTerm,
-            @RequestParam(required = false) final RobaSortiranjePolja sortBy,
-            @RequestParam(required = false) final Sort.Direction sortDirection,
-            final Authentication authentication
+            @PathVariable("vrsta") String vrstaUlja,
+            @RequestParam(required = false) Optional<Integer> page,
+            @RequestParam(required = false) Optional<Integer> pageSize,
+            @RequestParam(required = false) Optional<String> proizvodjac,
+            @RequestParam(required = false) Optional<Boolean> naStanju,
+            @RequestParam(required = false) Optional<String> searchTerm,
+            @RequestParam(required = false) RobaSortiranjePolja sortBy,
+            @RequestParam(required = false) Sort.Direction sortDirection,
+            Authentication authentication
     ) {
-        final var univerzalniParametri = robaSpringBeanUtils.popuniIVratiGenerickeParametreZaServis(page, pageSize, proizvodjac, naStanju, sortBy, sortDirection, searchTerm, VrstaRobe.ULJA, vrstaUlja, null);
-        final var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+        var univerzalniParametri = robaSpringBeanUtils.popuniIVratiGenerickeParametreZaServis(page, pageSize, proizvodjac, naStanju, sortBy, sortDirection, searchTerm, VrstaRobe.ULJA, vrstaUlja, null);
+        var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
 
-        final Page<RobaDto> roba = robaGlavniService.pronadjiRobuPoPretrazi(
+        Page<RobaDto> roba = robaGlavniService.pronadjiRobuPoPretrazi(
                 univerzalniParametri, uPartner
         );
 
@@ -145,8 +154,8 @@ public class RobaController {
         return ResponseEntity.notFound().headers(createHeaders(uPartner)).build();
     }
 
-    private HttpHeaders createHeaders(final Partner partner) {
-        final HttpHeaders headers = new HttpHeaders();
+    private HttpHeaders createHeaders(Partner partner) {
+        HttpHeaders headers = new HttpHeaders();
         headers.add("AuthenticatedUser", partner != null ? "true" : "false");
         headers.add("Access-Control-Expose-Headers", "AuthenticatedUser");
         return headers;

@@ -14,14 +14,11 @@ import java.io.Serializable;
 public class RobaBrojeviId implements Serializable {
 
     @Column(name = "robaid")
-    Integer robaId;
+    Long robaId;
 
     @Column(name = "fabrbroj")
     String fabrBroj;
 
     @Column(name = "broj")
     String broj;
-
-    @Column(name = "idpro")
-    Integer idPro;
 }
