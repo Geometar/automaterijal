@@ -1,7 +1,6 @@
 package com.automaterijal.application.services.roba;
 
 import com.automaterijal.application.domain.dto.robadetalji.RobaBrojeviDto;
-import com.automaterijal.application.domain.entity.roba.RobaBrojevi;
 import com.automaterijal.application.domain.mapper.RobaMapper;
 import com.automaterijal.application.domain.repository.roba.RobaTdBrojeviRepository;
 import lombok.AccessLevel;
@@ -28,7 +27,6 @@ public class RobaBrojeviServis {
     RobaMapper mapper;
 
     public List<RobaBrojeviDto> vratiSveBrojeveZaRobudId(Long robaId) {
-        List<RobaBrojevi> brojevi = brojeviRepository.findByIdRobaId(robaId);
-        return mapper.mapBorjeve(brojevi);
+        return mapper.mapBorjeve(brojeviRepository.findByIdRobaId(robaId));
     }
 }

@@ -111,4 +111,8 @@ export class TabelaComponent implements OnInit {
   uKorpi(katBr: string): boolean {
     return this.utilsService.daLiJeRobaUKorpi(this.korpa, katBr);
   }
+
+  detaljiRobe(robaId: string) {
+    this.router.navigate(['/roba/' + robaId]);
+  }
 }
