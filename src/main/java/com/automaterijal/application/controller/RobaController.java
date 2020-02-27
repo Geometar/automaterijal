@@ -3,7 +3,7 @@ package com.automaterijal.application.controller;
 import com.automaterijal.application.domain.constants.RobaSortiranjePolja;
 import com.automaterijal.application.domain.constants.VrstaRobe;
 import com.automaterijal.application.domain.dto.RobaDto;
-import com.automaterijal.application.domain.dto.robadetalji.RobaDetaljnoDto;
+import com.automaterijal.application.domain.dto.robadetalji.RobaDetaljiDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.services.roba.RobaGlavniService;
@@ -67,7 +67,7 @@ public class RobaController {
     }
 
     @GetMapping(value = "/{robaID}")
-    public ResponseEntity<RobaDetaljnoDto> vratiRobuPojedinacno(@PathVariable("robaID") Long robaId, Authentication authentication) {
+    public ResponseEntity<RobaDetaljiDto> vratiRobuPojedinacno(@PathVariable("robaID") Long robaId, Authentication authentication) {
         var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
         return robaGlavniService.pronadjiRobuPoRobaId(robaId, uPartner)
                 .map(roba -> ResponseEntity.ok(roba))

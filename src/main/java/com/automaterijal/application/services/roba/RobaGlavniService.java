@@ -1,7 +1,7 @@
 package com.automaterijal.application.services.roba;
 
 import com.automaterijal.application.domain.dto.RobaDto;
-import com.automaterijal.application.domain.dto.robadetalji.RobaDetaljnoDto;
+import com.automaterijal.application.domain.dto.robadetalji.RobaDetaljiDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.roba.Roba;
 import com.automaterijal.application.domain.mapper.RobaMapper;
@@ -112,18 +112,18 @@ public class RobaGlavniService {
         robaDto.setSlika(SLIKE_PREFIX + robaDto.getRobaid() + SLIKE_SUFIX);
     }
 
-    public Optional<RobaDetaljnoDto> pronadjiRobuPoRobaId(Long robaId, Partner ulogovaniPartner) {
-        Optional<RobaDetaljnoDto> retVal = Optional.empty();
+    public Optional<RobaDetaljiDto> pronadjiRobuPoRobaId(Long robaId, Partner ulogovaniPartner) {
+        Optional<RobaDetaljiDto> retVal = Optional.empty();
         Optional<Roba> roba = robaService.pronadjiRobuPoPrimarnomKljucu(robaId);
         if (roba.isPresent()) {
-            RobaDetaljnoDto detaljnoDto = mapper.mapujDetaljno(roba.get());
+            RobaDetaljiDto detaljnoDto = mapper.mapujDetaljno(roba.get());
             setujDetalje(detaljnoDto, ulogovaniPartner);
             retVal = Optional.of(detaljnoDto);
         }
         return retVal;
     }
 
-    private void setujDetalje(RobaDetaljnoDto detaljnoDto, Partner partner) {
+    private void setujDetalje(RobaDetaljiDto detaljnoDto, Partner partner) {
         if (detaljnoDto != null) {
             detaljnoDto.setCena(robaCeneService.vratiCenuRobePoRobiId(detaljnoDto.getRobaId(), detaljnoDto.getGrupa(), detaljnoDto.getProizvodjac().getProid(), partner));
             detaljnoDto.setRabat(robaCeneService.vratiRabatPartneraNaArtikal(detaljnoDto.getProizvodjac().getProid(), detaljnoDto.getGrupa(), partner));

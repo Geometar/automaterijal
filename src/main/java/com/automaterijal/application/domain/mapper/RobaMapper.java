@@ -4,7 +4,7 @@ import com.automaterijal.application.domain.dto.RobaDto;
 import com.automaterijal.application.domain.dto.RobaTehnickiOpisDto;
 import com.automaterijal.application.domain.dto.robadetalji.RobaAplikacijaDto;
 import com.automaterijal.application.domain.dto.robadetalji.RobaBrojeviDto;
-import com.automaterijal.application.domain.dto.robadetalji.RobaDetaljnoDto;
+import com.automaterijal.application.domain.dto.robadetalji.RobaDetaljiDto;
 import com.automaterijal.application.domain.entity.roba.Roba;
 import com.automaterijal.application.domain.entity.roba.RobaAplikacija;
 import com.automaterijal.application.domain.entity.roba.RobaBrojevi;
@@ -28,7 +28,7 @@ public abstract class RobaMapper {
     @Mapping(target = "robaId", source = "robaid")
     @Mapping(target = "grupa", source = "grupaid")
     @Mapping(target = "podGrupa", source = "podgrupaid")
-    public abstract RobaDetaljnoDto mapujDetaljno(Roba roba);
+    public abstract RobaDetaljiDto mapujDetaljno(Roba roba);
 
     public abstract List<RobaBrojeviDto> mapBorjeve(List<RobaBrojevi> brojevi);
 

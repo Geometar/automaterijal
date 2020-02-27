@@ -12,7 +12,7 @@ import java.util.Map;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RobaDetaljnoDto {
+public class RobaDetaljiDto {
     Long robaId;
     String slika;
     String grupa;

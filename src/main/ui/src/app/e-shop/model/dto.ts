@@ -103,3 +103,37 @@ export class PromenaSifre {
     sifra?: string;
     ponovljenjaSifra?: string;
 }
+
+export class RobaDetalji {
+    robaId?: number;
+    slika?: string;
+    grupa?: string;
+    podGrupa?: string;
+    katbr?: string;
+    naziv?: string;
+    stanje?: number;
+    rabat?: number;
+    cena?: number;
+    proizvodjac?: Proizvodjac;
+    tehnickiOpis?: RobaTehnickiOpis[];
+    tdBrojevi?: RobaBrojevi[];
+    aplikacije?: Map<string, RobaAplikacija>;
+}
+export class RobaTehnickiOpis {
+    oznaka?: number;
+    vrednost?: number;
+    jedinica?: number;
+}
+export class RobaBrojevi {
+    fabrBroj?: string;
+    proizvodjac?: string;
+}
+export class RobaAplikacija {
+    proizvodjacNaziv?: string;
+    modelNaziv?: string;
+    tipVozila?: string;
+    proizOd?: string;
+    proizDo?: string;
+    hp?: string;
+    ccm?: string;
+}
