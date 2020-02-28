@@ -1,0 +1,71 @@
+@import "src/css/shared/_boje.scss";
+
+.h1-proizvdojac {
+    font-size: 1.0rem;
+    padding: 10px 0 0 10px;
+    font-weight: normal;
+    margin: 0px;
+}
+.h2-naziv {
+    font-size: 1.0rem;
+    font-weight: bold;
+    padding: 0 0 0 10px;
+}
+.h2-2-div {
+    font-size: 1.3rem;
+    text-align: center;
+}
+.h3-2-div {
+    font-size: 1.1rem;
+    border-bottom: $automaterijal-grey-300 1px solid;
+}
+.div-1 {
+    width: 200px;
+}
+.detalji-proizvodjac {
+    font-weight: bold;
+    font-size: 1.4rem;
+}
+.detalji-stranica {
+    width: 1100px;
+    box-shadow: 0 0px 15px 2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    background-color: white;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 80px;
+}
+.sirina-detalja {
+    padding: 0px;
+}
+
+.div-2 {    
+    width: 200px;
+    padding-right: 50px !important;
+    padding-left: 25px !important;
+}
+
+.roba-cena {
+    font-weight: bold;
+    font-size: 1.1rem;
+    padding-right: 3px;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    border-bottom: 1px solid black;
+  }
+  .div-3-labela {
+      margin-top: 15px;
+      margin-right: 10%;
+  }
+
+  .labela-stanje {
+    font-size: 0.7rem;
+    font-weight: bold;
+    position: relative;
+    bottom: 8px;
+    right: 10px;
+  }
+
+  .ikona-stanje {
+      font-size: 25px;
+  }
