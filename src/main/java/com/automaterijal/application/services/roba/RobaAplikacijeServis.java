@@ -28,11 +28,11 @@ public class RobaAplikacijeServis {
     @NonNull
     final RobaMapper mapper;
 
-    public Map<String, RobaAplikacijaDto> vratiAplikacijeZaDetalje(Long robaId) {
-        Map<String, RobaAplikacijaDto> retVal = new HashMap<>();
+    public Map<String, List<RobaAplikacijaDto>> vratiAplikacijeZaDetalje(Long robaId) {
+        Map<String, List<RobaAplikacijaDto>> retVal = new HashMap<>();
         List<RobaAplikacija> aplikacije = repository.findByRobaId(robaId);
         if (!aplikacije.isEmpty()) {
-            retVal = aplikacije.stream().collect(Collectors.toMap(RobaAplikacija::getProizvodjacNaziv, mapper::mapAplikacija));
+            retVal = aplikacije.stream().map(mapper::mapAplikacija).collect(Collectors.groupingBy(RobaAplikacijaDto::getProizvodjacNaziv));
         }
         return retVal;
     }

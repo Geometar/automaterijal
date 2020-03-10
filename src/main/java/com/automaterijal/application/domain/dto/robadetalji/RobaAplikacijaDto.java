@@ -12,6 +12,7 @@ public class RobaAplikacijaDto {
     String tipVozila;
     String proizOd;
     String proizDo;
+    String kw;
     String hp;
     String ccm;
 }

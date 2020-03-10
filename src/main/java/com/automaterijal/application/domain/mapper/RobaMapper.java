@@ -36,5 +36,6 @@ public abstract class RobaMapper {
     @Mapping(target = "proizvodjac", source = "robaProizvodjac.naziv")
     abstract RobaBrojeviDto map(RobaBrojevi broj);
 
+    @Mapping(target = "kw", source = "kw")
     public abstract RobaAplikacijaDto mapAplikacija(RobaAplikacija aplikacija);
 }

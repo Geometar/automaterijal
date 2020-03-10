@@ -25,5 +25,5 @@ public class RobaDetaljiDto {
     Proizvodjac proizvodjac;
     List<RobaTehnickiOpisDto> tehnickiOpis;
     List<RobaBrojeviDto> tdBrojevi;
-    Map<String, RobaAplikacijaDto> aplikacije;
+    Map<String, List<RobaAplikacijaDto>> aplikacije;
 }

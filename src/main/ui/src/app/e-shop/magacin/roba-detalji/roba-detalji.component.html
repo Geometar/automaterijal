@@ -1,5 +1,5 @@
 <main>
-  <div class="detalji-stranica detalji-prvi-div" *ngIf="robaDetalji && !ucitavanje">
+  <div class="detalji-stranica detalji-prvi-div" *ngIf="robaDetalji != null && !ucitavanje">
     <div class="d-flex">
       <div class="p-1 flex-fill div-1">
         <h1 class="h1-proizvdojac">Proizvodjač: <span
@@ -22,14 +22,32 @@
           </li>
         </ul>
       </div>
-      <div class="p-1 pozadina-siva-300 flex-fill">
-        <div class="d-flex flex-column bd-highlight korpa mb-3">
+      <div class="flex-fill div-3">
+        <div class="d-flex flex-column bd-highlight pozadina-siva-300 mb-3">
           <div class="bd-highlight text-center roba-cena">
             <div class="pdv-cena boja-glavna-50">Cena sa pdv-om</div>
             <div class="boja-crvena-10"> {{robaDetalji.cena | currency:" "}} RSD </div>
           </div>
           <div class="text-right div-3-labela">
             <div *ngIf="robaDetalji.stanje > 0">
+              <div class="kolicina-celina p-1 bd-highlight"><b>Količina:</b>
+                <div class="kolicina-div">
+                  <span (click)="oduzmiOdKolicine(robaDetalji)" class="izbrisi-ikona">
+                    <i class="material-icons kolicina-ikona">
+                      remove
+                    </i>
+                  </span>
+                  <span>
+                    <input type="number" min="1" (keyup.enter)="dodajUKorpu(robaDetalji)" placeholder="1"
+                      [(ngModel)]="robaDetalji.kolicina" class="pozadina-siva-300 input-kolicina-korpa">
+                  </span>
+                  <span (click)="dodajKolicini(robaDetalji)" class="dodaj-ikona">
+                    <i class="material-icons kolicina-ikona">
+                      add
+                    </i>
+                  </span>
+                </div>
+              </div>
               <label class="boja-glavna-50 labela-stanje">NA STANJU</label>
               <mat-icon [class.nema-na-stanju]="!partnerLogovan" matTooltip="Ima na stanju"
                 class="boja-zelena-50 ikona-stanje">check_circle_outline</mat-icon>
@@ -40,11 +58,63 @@
               </mat-icon>
             </div>
           </div>
+          <div class="dugme-dodaj dugme-mobilni" *ngIf="robaDetalji.stanje > 0 && partnerLogovan">
+            <button mat-raised-button class="dugme button-glavni-100" (click)='dodajUKorpu(robaDetalji)'>
+              <i class="material-icons">
+                add_shopping_cart
+              </i>
+              Dodaj u korpu
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex sektor-detalja-2">
+      <div class="p-2 sirina-1 flex-fill bd-highlight">
+        <div class="pozadina-glavna-100 granicnik-plavi">
+        </div>
+        <h2 class="h2-sekcija-2">OE brojevi</h2>
+      </div>
+      <div class="p-2 sirina-2 flex-fill bd-highlight">
+        <div class="pozadina-glavna-100 granicnik-plavi"></div>
+        <h2 class="h2-sekcija-2">Automobili i modeli</h2>
+        <div>
+          <mat-accordion>
+              <mat-expansion-panel *ngFor="let automobili of kljuceviAplikacija" class="pozadina-siva-400 detalji-panel">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <span class="boja-glavna-100"><b>{{automobili}}</b> </span>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Model</th>
+                        <th scope="col">Tip Vozila</th>
+                        <th scope="col">Godina proizvodnje</th>
+                        <th scope="col">KW</th>
+                        <th scope="col">Kubikaža</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let model of vratiModelePoAutomobilu(automobili)">
+                        <td>{{model.modelNaziv}}</td>
+                        <td>{{model.tipVozila}}</td>
+                        <td>{{model.proizOd | proizvodnja}} do {{model.proizDo | proizvodnja}}</td>
+                        <td>{{model.kw}}kW({{model.hp}}KS)</td>
+                        <td>{{model.ccm}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </mat-expansion-panel>
+          </mat-accordion>
         </div>
       </div>
     </div>
   </div>
   <div class="d-flex justify-content-center prazna-tabela" *ngIf="ucitavanje">
-      <mat-spinner></mat-spinner>
+    <mat-spinner></mat-spinner>
   </div>
 </main>
