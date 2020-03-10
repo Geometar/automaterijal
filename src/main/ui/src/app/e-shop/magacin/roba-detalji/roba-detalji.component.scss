@@ -1,5 +1,12 @@
 @import "src/css/shared/_boje.scss";
 
+.header-detalji-robe {
+  background-image: url('/assets/slike/ui/pozadine/roba.png');
+  /* background-image: url('/assets/slike/ui/pozadine/roba.png'); */
+  background-repeat: no-repeat;
+  background-position: top;
+  background-size: 120%;
+}
 .h1-proizvdojac {
   font-size: 1rem;
   padding: 10px 0 0 10px;
@@ -32,7 +39,11 @@
   background-color: white;
   margin-right: auto;
   margin-left: auto;
-  margin-top: 80px;
+  margin-top: 30px;
+}
+
+.nazad-button {
+  margin-right: calc(50% - 550px) !important;
 }
 .sirina-detalja {
   padding: 0px;

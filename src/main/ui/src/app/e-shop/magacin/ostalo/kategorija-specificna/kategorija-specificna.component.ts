@@ -52,39 +52,44 @@ export class KategorijaSpecificnaComponent implements OnInit {
 
   pronandjiRobu() {
     this.route.params.subscribe((params: Params) => {
-      this.dataSource = null;
-      this.ucitavanje = true;
-      this.pronadjenaRoba = true;
-      this.robaServis.pronadjiPoKategoriji(
-        this.sort, this.rowsPerPage, this.pageIndex, this.searchValue, this.filter.naStanju, this.filter.proizvodjacId, params.id
+      this.route.queryParams.subscribe(queryParams => {
+        this.dataSource = null;
+        this.ucitavanje = true;
+        this.pronadjenaRoba = true;
+        this.pageIndex = queryParams['strana'];
+        this.rowsPerPage = queryParams['brojKolona'];
+        this.robaServis.pronadjiPoKategoriji(
+          this.sort, this.rowsPerPage, this.pageIndex, this.searchValue, this.filter.naStanju, this.filter.proizvodjacId, params.id
         )
-        .pipe(
-          takeWhile(() => this.alive),
-          catchError((error: Response) => {
-            if (error.status === 404) {
-              this.pronadjenaRoba = false;
-              this.loginService.obavesiPartneraAkoJeSesijaIstekla(error.headers.get('AuthenticatedUser'));
-              return EMPTY;
-            }
-            return throwError(error);
-          }),
-          finalize(() => this.ucitavanje = false)
-        )
-        .subscribe(
-          (response: HttpResponse<RobaPage>) => {
-            this.loginService.obavesiPartneraAkoJeSesijaIstekla(response.headers.get('AuthenticatedUser'));
-            const body = response.body;
-            this.pronadjenaRoba = true;
-            this.roba = body.content;
-            this.roba = this.dataService.skiniSaStanjaUkolikoJeUKorpi(this.roba);
-            this.dataSource = this.roba;
-            this.rowsPerPage = body.size;
-            this.pageIndex = body.number;
-            this.tableLength = body.totalElements;
-          },
-          error => {
-            this.roba = null;
-          });
+          .pipe(
+            takeWhile(() => this.alive),
+            catchError((error: Response) => {
+              if (error.status === 404) {
+                this.pronadjenaRoba = false;
+                this.loginService.obavesiPartneraAkoJeSesijaIstekla(error.headers.get('AuthenticatedUser'));
+                return EMPTY;
+              }
+              return throwError(error);
+            }),
+            finalize(() => this.ucitavanje = false)
+          )
+          .subscribe(
+            (response: HttpResponse<RobaPage>) => {
+              this.loginService.obavesiPartneraAkoJeSesijaIstekla(response.headers.get('AuthenticatedUser'));
+              const body = response.body;
+              this.pronadjenaRoba = true;
+              this.roba = body.content;
+              this.roba = this.dataService.skiniSaStanjaUkolikoJeUKorpi(this.roba);
+              this.dataSource = this.roba;
+              this.rowsPerPage = body.size;
+              this.pageIndex = body.number;
+              this.tableLength = body.totalElements;
+            },
+            error => {
+              this.roba = null;
+            });
+
+      });
     });
   }
 
@@ -100,7 +105,17 @@ export class KategorijaSpecificnaComponent implements OnInit {
     this.dataSource = [];
     this.rowsPerPage = pageEvent.pageSize;
     this.pageIndex = pageEvent.pageIndex;
-    this.pronandjiRobu();
+    this.dodajParametreUURL();
+  }
+
+  dodajParametreUURL() {
+    this.route.params.subscribe((params: Params) => {
+      const parameterObject = {};
+      parameterObject['strana'] = this.pageIndex;
+      parameterObject['brojKolona'] = this.rowsPerPage;
+      const idUrl = params.id.toLowerCase();
+      this.router.navigate(['/ostalo', idUrl], { queryParams: parameterObject });
+    });
   }
 
   toogleFilterDiv(otvoriFilter: boolean) {

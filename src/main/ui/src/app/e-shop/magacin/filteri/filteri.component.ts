@@ -8,6 +8,7 @@ import { VrstaRobe } from '../../model/roba.enum';
 import { Filter } from '../../model/filter';
 import { LoginService } from '../../service/login.service';
 import { HttpResponse } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-filteri',
@@ -39,10 +40,20 @@ export class FilteriComponent implements OnInit {
   constructor(
     private robaService: RobaService,
     private dataService: DataService,
-    private loginService: LoginService) { }
+    private loginService: LoginService,
+    private aktivnaRuta: ActivatedRoute,
+    private router: Router) { }
 
   ngOnInit() {
-    this.pronandjiSveFiltere();
+    this.uzmiParametreIzUrla();
+  }
+
+  uzmiParametreIzUrla() {
+    this.aktivnaRuta.queryParams.subscribe(params => {
+        this.pageIndex = params['strana'];
+        this.rowsPerPage = params['brojKolona'];
+        this.pronandjiSveFiltere();
+    });
   }
 
   pronandjiSveFiltere() {
@@ -94,9 +105,16 @@ export class FilteriComponent implements OnInit {
     this.dataSource = [];
     this.rowsPerPage = pageEvent.pageSize;
     this.pageIndex = pageEvent.pageIndex;
-    this.pronandjiSveFiltere();
+    this.dodajParametreUURL();
   }
 
+  dodajParametreUURL() {
+    const parameterObject = {};
+    parameterObject['strana'] = this.pageIndex;
+    parameterObject['brojKolona'] = this.rowsPerPage;
+
+    this.router.navigate(['/filteri'], { queryParams: parameterObject });
+  }
   toogleFilterDiv(otvoriFilter: boolean) {
     this.otvoriFilter = otvoriFilter;
   }

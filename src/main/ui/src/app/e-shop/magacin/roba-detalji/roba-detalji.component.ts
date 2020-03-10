@@ -10,8 +10,7 @@ import { DataService } from '../../service/data/data.service';
 import { AppUtilsService } from '../../utils/app-utils.service';
 import { NotifikacijaService } from 'src/app/shared/service/notifikacija.service';
 import { MatSnackBarKlase } from 'src/app/shared/model/konstante';
-import { ArrayDataSource } from '@angular/cdk/collections';
-import { P } from '@angular/core/src/render3';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-roba-detalji',
@@ -34,6 +33,7 @@ export class RobaDetaljiComponent implements OnInit {
     private notifikacijaServis: NotifikacijaService,
     private loginServis: LoginService,
     private router: Router,
+    private location: Location,
     private route: ActivatedRoute
     ) { }
 
@@ -107,5 +107,8 @@ export class RobaDetaljiComponent implements OnInit {
     const a = this.robaDetalji.aplikacije[automobil];
     console.log(a);
     return this.robaDetalji.aplikacije[automobil];
+  }
+  idiNazad() {
+    this.location.back();
   }
 }

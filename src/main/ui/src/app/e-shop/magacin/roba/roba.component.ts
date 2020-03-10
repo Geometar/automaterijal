@@ -8,6 +8,8 @@ import { VrstaRobe } from '../../model/roba.enum';
 import { Filter } from '../../model/filter';
 import { LoginService } from '../../service/login.service';
 import { HttpResponse } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
+
 @Component({
   selector: 'app-roba',
   templateUrl: './roba.component.html',
@@ -37,11 +39,21 @@ export class RobaComponent implements OnInit {
 
   constructor(private robaService: RobaService,
     private dataService: DataService,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private aktivnaRuta: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit() {
-    this.pronadjiSvuRobu();
+    this.uzmiParametreIzUrla();
+  }
+
+  uzmiParametreIzUrla() {
+    this.aktivnaRuta.queryParams.subscribe(params => {
+        this.pageIndex = params['strana'];
+        this.rowsPerPage = params['brojKolona'];
+        this.pronadjiSvuRobu();
+    });
   }
 
   pronadjiSvuRobu() {
@@ -92,7 +104,15 @@ export class RobaComponent implements OnInit {
     this.dataSource = [];
     this.rowsPerPage = pageEvent.pageSize;
     this.pageIndex = pageEvent.pageIndex;
-    this.pronadjiSvuRobu();
+    this.dodajParametreUURL();
+  }
+
+  dodajParametreUURL() {
+    const parameterObject = {};
+    parameterObject['strana'] = this.pageIndex;
+    parameterObject['brojKolona'] = this.rowsPerPage;
+
+    this.router.navigate(['/roba'], { queryParams: parameterObject });
   }
 
   toogleFilterDiv(otvoriFilter: boolean) {
