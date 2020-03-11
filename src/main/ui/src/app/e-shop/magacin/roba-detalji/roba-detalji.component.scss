@@ -42,6 +42,12 @@
   margin-top: 30px;
 }
 
+.pozicija-informacije-korpa {
+  position: relative;
+  top: 140px;
+  right: 320px;
+}
+
 .nazad-button {
   margin-right: calc(50% - 550px) !important;
 }
@@ -175,6 +181,17 @@
   border-bottom: 1px solid $automaterijal-grey-300;
   width: 88%;
   height: 35px;
+}
+
+.oe-broj-opis {
+  padding: 5px;
+  margin-right: 1%;
+}
+
+.div-sekcija-2 {
+  margin-left: 6%;
+  font-size: 0.85rem;
+
 }
 
 .detalji-panel {

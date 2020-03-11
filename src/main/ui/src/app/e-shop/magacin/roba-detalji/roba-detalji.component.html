@@ -13,6 +13,11 @@
           <h2 class="h2-naziv">{{robaDetalji.naziv}}</h2>
           <img height="240" width="320" src={{robaDetalji.slika}}
             onError="this.src='assets/slike/ui/roba/slikanijedostupna.jpg'">
+            <span *ngIf="partnerLogovan && uKorpi(robaDetalji.katbr)">
+              <i matTooltip="U korpi" class="material-icons boja-glavna-100 pozicija-informacije-korpa">
+                shopping_cart
+              </i>
+            </span>
         </div>
         <div class="p-1 flex-fill mt-auto div-2">
           <h2 class="h2-2-div boja-glavna-50">Detalji artikla</h2>
@@ -80,6 +85,12 @@
           <div class="pozadina-glavna-100 granicnik-plavi">
           </div>
           <h2 class="h2-sekcija-2">OE brojevi</h2>
+          <div class="div-sekcija-2 d-flex flex-wrap">
+            <span class="oe-broj-opis" *ngFor="let oeBroj of originalniBrojevi">
+              <span class="boja-glavna-100">{{oeBroj.proizvodjac}} OE: &nbsp;</span>
+              <span>{{oeBroj.broj}}</span>
+            </span>
+          </div>
         </div>
         <div class="p-2 sirina-2 flex-fill bd-highlight">
           <div class="pozadina-glavna-100 granicnik-plavi"></div>
@@ -90,7 +101,7 @@
                 class="pozadina-siva-400 detalji-panel">
                 <mat-expansion-panel-header>
                   <mat-panel-title>
-                    <span class="boja-glavna-100"><b>{{automobili}}</b> </span>
+                    <span class="boja-glavna-100"><b>{{automobili | uppercase }}</b> </span>
                   </mat-panel-title>
                 </mat-expansion-panel-header>
                 <div>
