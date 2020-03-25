@@ -1,23 +1,18 @@
 <main>
   <div class="header-detalji-robe">
-    <div class="d-flex flex-row-reverse bd-highlight">
+    <div class="d-flex flex-row-reverse bd-highlight dugme-div">
       <button class="button-glavni-100 nazad-button" mat-raised-button (click)="idiNazad()">
         <mat-icon>keyboard_arrow_left</mat-icon> Nazad
       </button>
     </div>
     <div class="detalji-stranica detalji-prvi-div" *ngIf="robaDetalji != null && !ucitavanje">
-      <div class="d-flex">
+      <div class="d-flex flex-column flex-lg-row">
         <div class="p-1 flex-fill div-1">
           <h1 class="h1-proizvdojac">Proizvodjač: <span
               class="detalji-proizvodjac boja-crvena-10">{{robaDetalji.proizvodjac.naziv}}</span></h1>
           <h2 class="h2-naziv">{{robaDetalji.naziv}}</h2>
-          <img height="240" width="320" src={{robaDetalji.slika}}
+          <img class="slika-robe" src={{robaDetalji.slika}}
             onError="this.src='assets/slike/ui/roba/slikanijedostupna.jpg'">
-            <span *ngIf="partnerLogovan && uKorpi(robaDetalji.katbr)">
-              <i matTooltip="U korpi" class="material-icons boja-glavna-100 pozicija-informacije-korpa">
-                shopping_cart
-              </i>
-            </span>
         </div>
         <div class="p-1 flex-fill mt-auto div-2">
           <h2 class="h2-2-div boja-glavna-50">Detalji artikla</h2>
@@ -33,13 +28,18 @@
             </li>
           </ul>
         </div>
-        <div class="flex-fill div-3">
-          <div class="d-flex flex-column bd-highlight pozadina-siva-300 mb-3">
+        <div class="flex-fill pozadina-siva-300 div-3">
+          <div class="d-flex flex-column bd-highlight mb-3 mobilni-kolicina-labela">
             <div class="bd-highlight text-center roba-cena">
               <div class="pdv-cena boja-glavna-50">Cena sa pdv-om</div>
               <div class="boja-crvena-10"> {{robaDetalji.cena | currency:" "}} RSD </div>
             </div>
-            <div class="text-right div-3-labela">
+            <span *ngIf="partnerLogovan && uKorpi(robaDetalji.katbr)">
+              <i matTooltip="U korpi" class="material-icons boja-glavna-100 pozicija-informacije-korpa">
+                shopping_cart
+              </i>
+            </span>
+            <div [ngClass]="{ 'nije-u-korpi': !uKorpi(robaDetalji.katbr) }" class="text-right div-3-labela">
               <div *ngIf="robaDetalji.stanje > 0">
                 <div class="kolicina-celina p-1 bd-highlight"><b>Količina:</b>
                   <div class="kolicina-div">
@@ -80,7 +80,7 @@
           </div>
         </div>
       </div>
-      <div class="d-flex sektor-detalja-2">
+      <div class="d-flex flex-column flex-lg-row sektor-detalja-2">
         <div class="p-2 sirina-1 flex-fill bd-highlight">
           <div class="pozadina-glavna-100 granicnik-plavi">
           </div>
@@ -111,8 +111,8 @@
                         <th scope="col">Model</th>
                         <th scope="col">Tip Vozila</th>
                         <th scope="col">Godina proizvodnje</th>
-                        <th scope="col">KW</th>
-                        <th scope="col">Kubikaža</th>
+                        <th *ngIf="velikiEkran" scope="col">KW</th>
+                        <th *ngIf="velikiEkran" scope="col">Kubikaža</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -120,8 +120,8 @@
                         <td>{{model.modelNaziv}}</td>
                         <td>{{model.tipVozila}}</td>
                         <td>{{model.proizOd | proizvodnja}} do {{model.proizDo | proizvodnja}}</td>
-                        <td>{{model.kw}}kW({{model.hp}}KS)</td>
-                        <td>{{model.ccm}}</td>
+                        <td *ngIf="velikiEkran">{{model.kw}}kW({{model.hp}}KS)</td>
+                        <td *ngIf="velikiEkran">{{model.ccm}}</td>
                       </tr>
                     </tbody>
                   </table>

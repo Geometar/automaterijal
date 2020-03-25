@@ -23,7 +23,7 @@ export class NavigacijaComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.openSideNav = window.innerWidth < 1050;
+    this.openSideNav = window.innerWidth < 1150;
     this.loginServis.ulogovaniPartner.subscribe(partner => this.partner = partner);
     this.loginServis.daLiJePartnerUlogovan.subscribe(bool => this.partnerUlogovan = bool);
     this.korpaServis.trenutnaKorpa.subscribe(korpa => this.korpaBadge = korpa.roba.length);
@@ -31,7 +31,7 @@ export class NavigacijaComponent implements OnInit {
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
-    this.openSideNav = window.innerWidth < 1050;
+    this.openSideNav = window.innerWidth < 1150;
   }
 
   otvoriDialog(): void {

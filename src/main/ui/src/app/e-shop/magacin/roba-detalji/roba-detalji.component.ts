@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { RobaService } from '../../service/roba.service';
 import { Params, ActivatedRoute, Router } from '@angular/router';
 import { Roba, RobaBrojevi } from '../../model/dto';
@@ -29,6 +29,9 @@ export class RobaDetaljiComponent implements OnInit {
   public partnerLogovan = false;
   private alive = true;
 
+  innerWidth;
+  public velikiEkran = window.innerWidth > 650;
+
   constructor(
     private robaService: RobaService,
     private dataService: DataService,
@@ -41,9 +44,25 @@ export class RobaDetaljiComponent implements OnInit {
     ) { }
 
   ngOnInit() {
+    this.innerWidth = window.innerWidth;
     this.dataService.trenutnaKorpa.subscribe(korpa => this.korpa = korpa);
     this.loginServis.daLiJePartnerUlogovan.subscribe(bool => this.partnerLogovan = bool);
     this.uzmiDetaljeRobe();
+    this.promeniTabeluDetaljaAutomobila();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.innerWidth = window.innerWidth;
+    this.promeniTabeluDetaljaAutomobila();
+  }
+
+  promeniTabeluDetaljaAutomobila() {
+    if (this.innerWidth > 650) {
+      this.velikiEkran = true;
+    } else {
+      this.velikiEkran = false;
+    }
   }
 
   uzmiDetaljeRobe() {
