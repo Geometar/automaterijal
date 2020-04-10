@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface RobaTehnickiOpisRepository extends JpaRepository<RobaOpis, Integer> {
-    List<RobaOpis> findByRobaId(Integer robaId);
+public interface RobaTehnickiOpisRepository extends JpaRepository<RobaOpis, Long> {
+    List<RobaOpis> findByRobaId(Long robaId);
 }

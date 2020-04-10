@@ -11,8 +11,10 @@
           <h1 class="h1-proizvdojac">Proizvodjač: <span
               class="detalji-proizvodjac boja-crvena-10">{{robaDetalji.proizvodjac.naziv}}</span></h1>
           <h2 class="h2-naziv">{{robaDetalji.naziv}}</h2>
-          <img class="slika-robe" src={{robaDetalji.slika}}
+          <div class="slika-robe">
+          <img src={{robaDetalji.slika}}
             onError="this.src='assets/slike/ui/roba/slikanijedostupna.jpg'">
+          </div>
         </div>
         <div class="p-1 flex-fill mt-auto div-2">
           <h2 class="h2-2-div boja-glavna-50">Detalji artikla</h2>

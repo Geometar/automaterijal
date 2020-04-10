@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface RobaTdBrojeviRepository extends JpaRepository<RobaBrojevi, RobaBrojeviId> {
 
-    List<RobaBrojevi> findByIdRobaId(Long robaId);
+    List<RobaBrojevi> findByIdRobaIdAndVrsta(Long robaId, Integer vrsta);
 }

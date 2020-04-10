@@ -135,12 +135,23 @@ public class RobaJooqRepository {
                                 .or(ROBA.KATBRPRO.like(trazenaRecLike))
                                 .or(ROBA_KATBR_OLD.KATBR.like(trazenaRecLike))
                                 .or(ROBA_KATBR_OLD.KATBRPRO.like(trazenaRecLike))
-                                .or(TD_BROJEVI.FABRBROJ.like(trazenaRecLike)))
+                                .or(TD_BROJEVI.BROJ.like(trazenaRecLike))
+                                .or(TD_BROJEVI.BROJSRCH.like(trazenaRecLike)))
                 .fetch().stream()
                 .forEach(rekord -> {
                     procesuirajRekorde(retVal, rekord);
                 });
+        prodjiIPopraviKatBr(retVal);
         return retVal;
+    }
+
+    private void prodjiIPopraviKatBr(Set<String> retVal) {
+        Set<String> noviKatBrojevi = new HashSet<>();
+        retVal.forEach(katBrojevi -> {
+            String noviBroj = katBrojevi.replace(" ", "").toUpperCase();
+            noviKatBrojevi.add(noviBroj);
+        });
+        retVal.addAll(noviKatBrojevi);
     }
 
     /**

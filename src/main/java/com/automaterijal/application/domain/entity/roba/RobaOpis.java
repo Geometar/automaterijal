@@ -17,10 +17,10 @@ public class RobaOpis {
 
     @Id
     @Column(name = "teh_opis_id")
-    Integer opisId;
+    Long opisId;
 
     @Column(name = "robaid")
-    Integer robaId;
+    Long robaId;
 
     @Column(name = "oznaka")
     String oznaka;

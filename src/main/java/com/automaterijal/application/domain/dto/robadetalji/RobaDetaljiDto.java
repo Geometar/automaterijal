@@ -9,6 +9,7 @@ import lombok.experimental.FieldDefaults;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -23,7 +24,7 @@ public class RobaDetaljiDto {
     Double rabat;
     BigDecimal cena;
     Proizvodjac proizvodjac;
-    List<RobaTehnickiOpisDto> tehnickiOpis;
+    Set<RobaTehnickiOpisDto> tehnickiOpis;
     List<RobaBrojeviDto> tdBrojevi;
     Map<String, List<RobaAplikacijaDto>> aplikacije;
 }

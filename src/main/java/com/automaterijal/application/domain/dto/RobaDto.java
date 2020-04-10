@@ -5,7 +5,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -24,5 +24,5 @@ public class RobaDto {
     BigDecimal cena;
     Double rabat;
     double stanje;
-    List<RobaTehnickiOpisDto> tehnickiOpis;
+    Set<RobaTehnickiOpisDto> tehnickiOpis;
 }

@@ -32,8 +32,8 @@ public abstract class RobaMapper {
 
     public abstract List<RobaBrojeviDto> mapBorjeve(List<RobaBrojevi> brojevi);
 
-    @Mapping(target = "fabrBroj", source = "id.fabrBroj")
-    @Mapping(target = "proizvodjac", source = "robaProizvodjac.naziv")
+    @Mapping(target = "fabrBroj", source = "id.broj")
+    @Mapping(target = "proizvodjac", source = "proizvodjac")
     abstract RobaBrojeviDto map(RobaBrojevi broj);
 
     @Mapping(target = "kw", source = "kw")

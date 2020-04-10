@@ -26,7 +26,7 @@ public class RobaBrojeviServis {
     final
     RobaMapper mapper;
 
-    public List<RobaBrojeviDto> vratiSveBrojeveZaRobudId(Long robaId) {
-        return mapper.mapBorjeve(brojeviRepository.findByIdRobaId(robaId));
+    public List<RobaBrojeviDto> vratiSveBrojeveZaRobidIVrsti(Long robaId, Integer vrsta) {
+        return mapper.mapBorjeve(brojeviRepository.findByIdRobaIdAndVrsta(robaId, vrsta));
     }
 }

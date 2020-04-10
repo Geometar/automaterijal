@@ -1,8 +1,7 @@
 @import "src/css/shared/_boje.scss";
 
 .slika-robe {
-  height: 240px;
-  width: 320px;
+  text-align: center;
 }
 
 .header-detalji-robe {
@@ -11,6 +10,9 @@
   background-repeat: no-repeat;
   background-position: top;
   background-size: 120%;
+}
+.teh-detalji-ui {
+  font-size: 0.9rem;
 }
 .h1-proizvdojac {
   font-size: 1rem;
@@ -107,6 +109,7 @@
 
 .div-3 {
   width: 220px;
+  height: 200px;
 }
 
 //--------------------------------------------------

@@ -1,6 +1,7 @@
 package com.automaterijal.application.services.roba;
 
 import com.automaterijal.application.domain.dto.RobaDto;
+import com.automaterijal.application.domain.dto.RobaTehnickiOpisDto;
 import com.automaterijal.application.domain.dto.robadetalji.RobaDetaljiDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.roba.Roba;
@@ -12,12 +13,15 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,10 +44,18 @@ public class RobaGlavniService {
     @NonNull
     final RobaAplikacijeServis aplikacijeServis;
     @NonNull
+    final RobaSlikaService robaSlikaService;
+    @NonNull
     final RobaMapper mapper;
 
-    public static final String SLIKE_PREFIX = "assets/slike/ui/roba/";
-    public static final String SLIKE_SUFIX = ".jpg";
+    @Value("${roba.slika.prefixTabela}")
+    String prefixTabela;
+
+    @Value("${roba.slika.prefixDetalji}")
+    String prefixDetalji;
+
+    private static final Integer VRSTA_ORIGINALNI = 3;
+    private static final Integer VRSTA_PROIZVODJACI = 4;
 
     /**
      * Ulazna metoda iz kontrolera
@@ -65,7 +77,7 @@ public class RobaGlavniService {
             roba = vratiSvuRobuUZavisnostiOdTrazenogStanja(parametri, pageable, ulogovaniPartner);
         } else {
             roba = jooqRepository.pronadjiPoTrazenojReci(parametri, parametri.getTrazenaRec());
-            roba.forEach(dto -> setujCenuITehnkickiOpis(dto, ulogovaniPartner));
+            roba.forEach(dto -> setujZaTabelu(dto, ulogovaniPartner));
         }
         return roba;
     }
@@ -95,7 +107,7 @@ public class RobaGlavniService {
 
         List<RobaDto> dto = roba.stream().map(robaEntitet -> {
             RobaDto robaDto = mapper.map(robaEntitet);
-            setujCenuITehnkickiOpis(robaDto, ulogovaniPartner);
+            setujZaTabelu(robaDto, ulogovaniPartner);
             return robaDto;
         }).collect(Collectors.toList());
 
@@ -105,11 +117,20 @@ public class RobaGlavniService {
     /**
      * Metoda za setovanje cena i tehnickog opisa u dto-u
      */
-    private void setujCenuITehnkickiOpis(RobaDto robaDto, Partner partner) {
+    private void setujZaTabelu(RobaDto robaDto, Partner partner) {
         robaDto.setCena(robaCeneService.vratiCenuRobePoRobiId(robaDto.getRobaid(), robaDto.getGrupa(), robaDto.getProizvodjac().getProid(), partner));
         robaDto.setRabat(robaCeneService.vratiRabatPartneraNaArtikal(robaDto.getProizvodjac().getProid(), robaDto.getGrupa(), partner));
-        robaDto.setTehnickiOpis(tehnickiOpisServis.vratiTehnickiOpisPoIdRobe(robaDto.getRobaid().intValue()));
-        robaDto.setSlika(SLIKE_PREFIX + robaDto.getRobaid() + SLIKE_SUFIX);
+
+        Set<RobaTehnickiOpisDto> tehnickiOpisi = tehnickiOpisServis.vratiTehnickiOpisPoIdRobe(robaDto.getRobaid());
+        if (tehnickiOpisi.size() > 5) {
+            robaDto.setTehnickiOpis(tehnickiOpisi.stream().limit(4).collect(Collectors.toSet()));
+        } else {
+            robaDto.setTehnickiOpis(tehnickiOpisi);
+        }
+
+        robaSlikaService.pronadjiPutanjuSlikePoId(robaDto.getRobaid()).ifPresent(robaSlika -> {
+            robaDto.setSlika(prefixTabela + File.separator + robaSlika.getSlika());
+        });
     }
 
     public Optional<RobaDetaljiDto> pronadjiRobuPoRobaId(Long robaId, Partner ulogovaniPartner) {
@@ -117,20 +138,22 @@ public class RobaGlavniService {
         Optional<Roba> roba = robaService.pronadjiRobuPoPrimarnomKljucu(robaId);
         if (roba.isPresent()) {
             RobaDetaljiDto detaljnoDto = mapper.mapujDetaljno(roba.get());
-            setujDetalje(detaljnoDto, ulogovaniPartner);
+            setujZaDetalje(detaljnoDto, ulogovaniPartner);
             retVal = Optional.of(detaljnoDto);
         }
         return retVal;
     }
 
-    private void setujDetalje(RobaDetaljiDto detaljnoDto, Partner partner) {
+    private void setujZaDetalje(RobaDetaljiDto detaljnoDto, Partner partner) {
         if (detaljnoDto != null) {
             detaljnoDto.setCena(robaCeneService.vratiCenuRobePoRobiId(detaljnoDto.getRobaId(), detaljnoDto.getGrupa(), detaljnoDto.getProizvodjac().getProid(), partner));
             detaljnoDto.setRabat(robaCeneService.vratiRabatPartneraNaArtikal(detaljnoDto.getProizvodjac().getProid(), detaljnoDto.getGrupa(), partner));
-            detaljnoDto.setTehnickiOpis(tehnickiOpisServis.vratiTehnickiOpisPoIdRobe(detaljnoDto.getRobaId().intValue()));
-            detaljnoDto.setTdBrojevi(brojeviServis.vratiSveBrojeveZaRobudId(detaljnoDto.getRobaId()));
+            detaljnoDto.setTehnickiOpis(tehnickiOpisServis.vratiTehnickiOpisPoIdRobe(detaljnoDto.getRobaId()));
+            detaljnoDto.setTdBrojevi(brojeviServis.vratiSveBrojeveZaRobidIVrsti(detaljnoDto.getRobaId(), VRSTA_ORIGINALNI));
             detaljnoDto.setAplikacije(aplikacijeServis.vratiAplikacijeZaDetalje(detaljnoDto.getRobaId()));
-            detaljnoDto.setSlika(SLIKE_PREFIX + detaljnoDto.getRobaId() + SLIKE_SUFIX);
+            robaSlikaService.pronadjiPutanjuSlikePoId(detaljnoDto.getRobaId()).ifPresent(robaSlika -> {
+                detaljnoDto.setSlika(prefixDetalji + File.separator + robaSlika.getSlika());
+            });
         }
     }
 }

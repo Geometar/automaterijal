@@ -37,5 +37,8 @@ schedule:
   fakture:
     upadte: 600000
 
+roba:
+  slika: "item_images"
+
 logging:
   file: ../logs/arhiva/automaterijal
