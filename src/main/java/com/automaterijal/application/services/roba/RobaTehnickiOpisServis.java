@@ -10,7 +10,9 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -24,7 +26,8 @@ public class RobaTehnickiOpisServis {
     @NonNull
     RobaMapper mapper;
 
-    public List<RobaTehnickiOpisDto> vratiTehnickiOpisPoIdRobe(Integer robaId) {
-        return mapper.map(repository.findByRobaId(robaId));
+    public Set<RobaTehnickiOpisDto> vratiTehnickiOpisPoIdRobe(Long robaId) {
+        List<RobaTehnickiOpisDto> tehnickiOpisi = mapper.map(repository.findByRobaId(robaId));
+        return new HashSet<>(tehnickiOpisi);
     }
 }
