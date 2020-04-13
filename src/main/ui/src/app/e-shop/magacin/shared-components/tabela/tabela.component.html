@@ -43,7 +43,7 @@
         <div class="d-flex justify-content-center">
           <ul class="teh-detalji-ui">
             <li *ngFor="let opis of roba.tehnickiOpis" class="d-flex justify-content-center bd-highlight">
-              <div class="p-1 w-100 bd-highlight"><b>{{opis.oznaka}}</b>
+              <div class="p-1 w-100 bd-highlight"><b>{{opis.oznaka | uppercase}}</b>
                 <span *ngIf="opis.vrednost && opis.jedinica">
                   [{{opis.jedinica}}]:
                 </span>
