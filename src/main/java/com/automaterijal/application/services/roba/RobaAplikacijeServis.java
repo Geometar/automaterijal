@@ -11,9 +11,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,6 +31,7 @@ public class RobaAplikacijeServis {
         List<RobaAplikacija> aplikacije = repository.findByRobaId(robaId);
         if (!aplikacije.isEmpty()) {
             retVal = aplikacije.stream().map(mapper::mapAplikacija).collect(Collectors.groupingBy(RobaAplikacijaDto::getProizvodjacNaziv));
+            retVal = retVal.entrySet().stream().sorted(Comparator.comparing(Map.Entry::getKey)).collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue(), (e1, e2) -> e2, LinkedHashMap::new));
         }
         return retVal;
     }

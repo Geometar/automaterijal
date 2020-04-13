@@ -12,8 +12,7 @@
               class="detalji-proizvodjac boja-crvena-10">{{robaDetalji.proizvodjac.naziv}}</span></h1>
           <h2 class="h2-naziv">{{robaDetalji.naziv}}</h2>
           <div class="slika-robe">
-          <img src={{robaDetalji.slika}}
-            onError="this.src='assets/slike/ui/roba/slikanijedostupna.jpg'">
+            <img src={{robaDetalji.slika}} onError="this.src='assets/slike/ui/roba/slikanijedostupna.jpg'">
           </div>
         </div>
         <div class="p-1 flex-fill mt-auto div-2">
@@ -87,11 +86,22 @@
           <div class="pozadina-glavna-100 granicnik-plavi">
           </div>
           <h2 class="h2-sekcija-2">OE brojevi</h2>
-          <div class="div-sekcija-2 d-flex flex-wrap">
-            <span class="oe-broj-opis" *ngFor="let oeBroj of originalniBrojevi">
-              <span class="boja-glavna-100">{{oeBroj.proizvodjac}} OE: &nbsp;</span>
-              <span>{{oeBroj.broj}}</span>
-            </span>
+          <div>
+            <mat-accordion>
+              <mat-expansion-panel *ngFor="let proizvodjaci of kluceviRobe"
+                class="pozadina-siva-400 detalji-panel">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <span class="boja-glavna-100"><b>{{proizvodjaci | uppercase }}</b> </span>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="div-sekcija-2 d-flex flex-wrap">
+                  <span class="oe-broj-opis" *ngFor="let model of vratiOriginalneBrojevePoProizvodjacu(proizvodjaci)">
+                    <span>{{model.fabrBroj}}</span>
+                  </span>
+                </div>
+              </mat-expansion-panel>
+            </mat-accordion>
           </div>
         </div>
         <div class="p-2 sirina-2 flex-fill bd-highlight">

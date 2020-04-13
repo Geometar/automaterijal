@@ -99,7 +99,7 @@ export class Roba {
     public kolicina: number;
     public proizvodjac: Proizvodjac;
     public tehnickiOpis?: RobaTehnickiOpis[];
-    public tdBrojevi?: RobaBrojevi[];
+    public tdBrojevi?: Map<string, RobaBrojevi[]>;
     public aplikacije?: Map<string, RobaAplikacija[]>;
 }
 

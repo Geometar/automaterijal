@@ -41,8 +41,8 @@ schedule:
 
 roba:
   slika:
-    prefixTabela: "http://localhost/orders/item_images"
-    prefixDetalji: "http://localhost/orders/item_images/thumbs"
+    prefixTabela: "http://localhost/orders/item_images/"
+    prefixThumbs: "thumbs/"
 
 logging:
   file: ../logs/arhiva/automaterijal

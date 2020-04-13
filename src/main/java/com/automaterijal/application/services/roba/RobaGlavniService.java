@@ -18,7 +18,6 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -51,8 +50,9 @@ public class RobaGlavniService {
     @Value("${roba.slika.prefixTabela}")
     String prefixTabela;
 
-    @Value("${roba.slika.prefixDetalji}")
-    String prefixDetalji;
+    @Value("${roba.slika.prefixThumbs}")
+    String prefixThumbs;
+
 
     private static final Integer VRSTA_ORIGINALNI = 3;
     private static final Integer VRSTA_PROIZVODJACI = 4;
@@ -129,7 +129,7 @@ public class RobaGlavniService {
         }
 
         robaSlikaService.pronadjiPutanjuSlikePoId(robaDto.getRobaid()).ifPresent(robaSlika -> {
-            robaDto.setSlika(prefixTabela + File.separator + robaSlika.getSlika());
+            robaDto.setSlika(prefixTabela + prefixThumbs + robaSlika.getSlika());
         });
     }
 
@@ -152,7 +152,7 @@ public class RobaGlavniService {
             detaljnoDto.setTdBrojevi(brojeviServis.vratiSveBrojeveZaRobidIVrsti(detaljnoDto.getRobaId(), VRSTA_ORIGINALNI));
             detaljnoDto.setAplikacije(aplikacijeServis.vratiAplikacijeZaDetalje(detaljnoDto.getRobaId()));
             robaSlikaService.pronadjiPutanjuSlikePoId(detaljnoDto.getRobaId()).ifPresent(robaSlika -> {
-                detaljnoDto.setSlika(prefixDetalji + File.separator + robaSlika.getSlika());
+                detaljnoDto.setSlika(prefixTabela + robaSlika.getSlika());
             });
         }
     }

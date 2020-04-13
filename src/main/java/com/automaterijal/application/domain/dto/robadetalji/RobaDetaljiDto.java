@@ -25,6 +25,6 @@ public class RobaDetaljiDto {
     BigDecimal cena;
     Proizvodjac proizvodjac;
     Set<RobaTehnickiOpisDto> tehnickiOpis;
-    List<RobaBrojeviDto> tdBrojevi;
+    Map<String, List<RobaBrojeviDto>> tdBrojevi;
     Map<String, List<RobaAplikacijaDto>> aplikacije;
 }

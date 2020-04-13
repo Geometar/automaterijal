@@ -22,6 +22,7 @@ export class RobaDetaljiComponent implements OnInit {
 
   public robaDetalji: Roba;
   public kljuceviAplikacija: string[] = [];
+  public kluceviRobe: string[] = [];
   public originalniBrojevi: OeBrojevi[];
 
   private korpa: Korpa;
@@ -41,7 +42,7 @@ export class RobaDetaljiComponent implements OnInit {
     private router: Router,
     private location: Location,
     private route: ActivatedRoute
-    ) { }
+  ) { }
 
   ngOnInit() {
     this.innerWidth = window.innerWidth;
@@ -69,23 +70,23 @@ export class RobaDetaljiComponent implements OnInit {
     this.ucitavanje = true;
     this.route.params.subscribe((params: Params) => {
       this.robaService.pronadjiDetaljeRobe(params.id)
-      .pipe(
-        takeWhile(() => this.alive),
-        catchError((error: Response) => {
-          if (error.status === 404) {
-            console.log('404 vratili detalji');
-            return EMPTY;
-          }
-          return throwError(error);
-        }),
-        finalize(() => this.ucitavanje = false))
-      .subscribe((res: HttpResponse<Roba>) => {
-        this.robaDetalji = res.body;
-        this.robaDetalji = this.dataService.skiniSaStanjaUkolikoJeUKorpi([this.robaDetalji])[0];
-        this.popuniAplikacije();
-        this.popuniOeBrojeve();
-        console.log(this.robaDetalji);
-      });
+        .pipe(
+          takeWhile(() => this.alive),
+          catchError((error: Response) => {
+            if (error.status === 404) {
+              console.log('404 vratili detalji');
+              return EMPTY;
+            }
+            return throwError(error);
+          }),
+          finalize(() => this.ucitavanje = false))
+        .subscribe((res: HttpResponse<Roba>) => {
+          this.robaDetalji = res.body;
+          this.robaDetalji = this.dataService.skiniSaStanjaUkolikoJeUKorpi([this.robaDetalji])[0];
+          this.popuniAplikacije();
+          this.popuniOeBrojeve();
+          console.log(this.robaDetalji);
+        });
     });
   }
 
@@ -124,25 +125,23 @@ export class RobaDetaljiComponent implements OnInit {
       for (const key of Object.keys(this.robaDetalji.aplikacije)) {
         this.kljuceviAplikacija.push(key);
       }
-      console.log(this.kljuceviAplikacija);
     }
   }
 
   popuniOeBrojeve() {
-    if (this.robaDetalji.tdBrojevi.length) {
-      this.originalniBrojevi = [];
-      this.robaDetalji.tdBrojevi.forEach((brojevi: RobaBrojevi) => {
-        if (!this.originalniBrojevi.some(oeBrojevi => brojevi.fabrBroj === oeBrojevi.broj)) {
-          this.originalniBrojevi.push(new OeBrojevi(brojevi.fabrBroj, brojevi.proizvodjac));
-        }
-      });
+    if (this.robaDetalji.tdBrojevi != null) {
+      for (const key of Object.keys(this.robaDetalji.tdBrojevi)) {
+        this.kluceviRobe.push(key);
+      }
     }
   }
 
   vratiModelePoAutomobilu(automobil: string) {
-    const a = this.robaDetalji.aplikacije[automobil];
-    console.log(a);
     return this.robaDetalji.aplikacije[automobil];
+  }
+
+  vratiOriginalneBrojevePoProizvodjacu(proizvodjac: string) {
+    return this.robaDetalji.tdBrojevi[proizvodjac];
   }
 
   idiNazad() {
