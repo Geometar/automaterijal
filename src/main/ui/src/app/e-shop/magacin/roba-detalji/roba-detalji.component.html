@@ -22,7 +22,7 @@
           <ul class="teh-detalji-ui sirina-detalja">
             <li *ngFor="let opis of robaDetalji.tehnickiOpis" class="d-flex justify-content-center bd-highlight">
               <div class="p-1 w-100 bd-highlight"><b>{{opis.oznaka}}</b>
-                <span *ngIf="opis.vrednost">
+                <span *ngIf="opis.vrednost && opis.jedinica">
                   [{{opis.jedinica}}]:
                 </span>
               </div>

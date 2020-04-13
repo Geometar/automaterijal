@@ -54,6 +54,7 @@ export class RobaComponent implements OnInit {
       this.rowsPerPage = params['brojKolona'];
       this.filter.proizvodjacId = params['proizvodjac'];
       this.filter.naStanju = params['naStanju'];
+      this.searchValue = params['pretraga'];
       this.pronadjiSvuRobu();
     });
   }
@@ -99,7 +100,7 @@ export class RobaComponent implements OnInit {
       this.pageIndex = 0;
     }
     this.searchValue = searchValue;
-    this.pronadjiSvuRobu();
+    this.dodajParametreUURL();
   }
 
   paginatorEvent(pageEvent) {
@@ -122,6 +123,9 @@ export class RobaComponent implements OnInit {
     }
     if (this.filter.naStanju) {
       parameterObject['naStanju'] = this.filter.naStanju;
+    }
+    if (this.searchValue) {
+      parameterObject['pretraga'] = this.searchValue;
     }
 
     this.router.navigate(['/roba'], { queryParams: parameterObject });

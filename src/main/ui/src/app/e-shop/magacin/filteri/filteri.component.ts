@@ -54,6 +54,7 @@ export class FilteriComponent implements OnInit {
         this.rowsPerPage = params['brojKolona'];
         this.filter.proizvodjacId = params['proizvodjac'];
         this.filter.naStanju = params['naStanju'];
+        this.searchValue = params['pretraga'];
         this.pronandjiSveFiltere();
     });
   }
@@ -99,7 +100,7 @@ export class FilteriComponent implements OnInit {
       this.pageIndex = 0;
     }
     this.searchValue = searchValue;
-    this.pronandjiSveFiltere();
+    this.dodajParametreUURL();
 
   }
 
@@ -123,6 +124,9 @@ export class FilteriComponent implements OnInit {
     }
     if (this.filter.naStanju) {
       parameterObject['naStanju'] = this.filter.naStanju;
+    }
+    if (this.searchValue) {
+      parameterObject['pretraga'] = this.searchValue;
     }
 
     this.router.navigate(['/filteri'], { queryParams: parameterObject });

@@ -60,7 +60,8 @@ export class KategorijaSpecificnaComponent implements OnInit {
         this.rowsPerPage = queryParams['brojKolona'];
         this.filter.proizvodjacId = queryParams['proizvodjac'];
         this.filter.naStanju = queryParams['naStanju'];
-         this.robaServis.pronadjiPoKategoriji(
+        this.searchValue = params['pretraga'];
+        this.robaServis.pronadjiPoKategoriji(
           this.sort, this.rowsPerPage, this.pageIndex, this.searchValue, this.filter.naStanju, this.filter.proizvodjacId, params.id
         )
           .pipe(
@@ -100,7 +101,7 @@ export class KategorijaSpecificnaComponent implements OnInit {
       this.pageIndex = 0;
     }
     this.searchValue = searchValue;
-    this.pronandjiRobu();
+    this.dodajParametreUURL();
   }
 
   paginatorEvent(pageEvent) {
@@ -124,6 +125,9 @@ export class KategorijaSpecificnaComponent implements OnInit {
       }
       if (this.filter.naStanju) {
         parameterObject['naStanju'] = this.filter.naStanju;
+      }
+      if (this.searchValue) {
+        parameterObject['pretraga'] = this.searchValue;
       }
       const idUrl = params.id.toLowerCase();
       this.router.navigate(['/ostalo', idUrl], { queryParams: parameterObject });
