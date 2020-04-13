@@ -28,6 +28,14 @@
               <div class="p-1 flex-shrink-1 roba-vrednost">{{opis.vrednost}}</div>
             </li>
           </ul>
+          <div class="centriraj" *ngIf="robaDetalji.tehnickiOpis  && robaDetalji.tehnickiOpis.length === 0">
+            <div class="nema-podataka material-icons">
+              info
+            </div>
+            <div class="nema-podataka-info">
+              NEMA PODATAKA
+            </div>
+          </div>
         </div>
         <div class="flex-fill pozadina-siva-300 div-3">
           <div class="d-flex flex-column bd-highlight mb-3 mobilni-kolicina-labela">
@@ -88,8 +96,7 @@
           <h2 class="h2-sekcija-2">OE brojevi</h2>
           <div>
             <mat-accordion>
-              <mat-expansion-panel *ngFor="let proizvodjaci of kluceviRobe"
-                class="pozadina-siva-400 detalji-panel">
+              <mat-expansion-panel *ngFor="let proizvodjaci of kluceviRobe" class="pozadina-siva-400 detalji-panel">
                 <mat-expansion-panel-header>
                   <mat-panel-title>
                     <span class="boja-glavna-100"><b>{{proizvodjaci | uppercase }}</b> </span>
@@ -102,6 +109,14 @@
                 </div>
               </mat-expansion-panel>
             </mat-accordion>
+            <div class="centriraj" *ngIf="kluceviRobe  && kluceviRobe.length === 0">
+              <div class="nema-podataka material-icons">
+                info
+              </div>
+              <div class="nema-podataka-info">
+                NEMA PODATAKA
+              </div>
+            </div>
           </div>
         </div>
         <div class="p-2 sirina-2 flex-fill bd-highlight">
@@ -139,6 +154,14 @@
                   </table>
                 </div>
               </mat-expansion-panel>
+              <div class="centriraj" *ngIf="kljuceviAplikacija && kljuceviAplikacija.length === 0">
+                <div class="nema-podataka material-icons">
+                  info
+                </div>
+                <div class="nema-podataka-info">
+                  NEMA PODATAKA
+                </div>
+              </div>
             </mat-accordion>
           </div>
         </div>

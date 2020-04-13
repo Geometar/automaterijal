@@ -11,6 +11,20 @@
   background-position: top;
   background-size: 120%;
 }
+.centriraj {
+  text-align: center;
+}
+
+.nema-podataka {
+  font-size: 30px !important;
+  color: $automaterijal-primary-50;
+  margin-top: 3px;
+}
+.nema-podataka-info {
+  color: $automaterijal-primary-100; 
+  font-size: 0.89rem;
+}
+
 .teh-detalji-ui {
   font-size: 0.9rem;
 }

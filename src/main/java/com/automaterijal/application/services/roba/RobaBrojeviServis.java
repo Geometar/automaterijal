@@ -34,6 +34,5 @@ public class RobaBrojeviServis {
         List<RobaBrojevi> robaBrojevi = brojeviRepository.findByIdRobaIdAndVrsta(robaId, vrsta);
         Map<String, List<RobaBrojeviDto>> mapa = robaBrojevi.stream().map(mapper::map).collect(Collectors.groupingBy(RobaBrojeviDto::getProizvodjac));
         return mapa.entrySet().stream().sorted(Comparator.comparing(Map.Entry::getKey)).collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue(), (e1, e2) -> e2, LinkedHashMap::new));
-
     }
 }
