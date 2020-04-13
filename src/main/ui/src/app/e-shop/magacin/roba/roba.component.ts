@@ -50,9 +50,11 @@ export class RobaComponent implements OnInit {
 
   uzmiParametreIzUrla() {
     this.aktivnaRuta.queryParams.subscribe(params => {
-        this.pageIndex = params['strana'];
-        this.rowsPerPage = params['brojKolona'];
-        this.pronadjiSvuRobu();
+      this.pageIndex = params['strana'];
+      this.rowsPerPage = params['brojKolona'];
+      this.filter.proizvodjacId = params['proizvodjac'];
+      this.filter.naStanju = params['naStanju'];
+      this.pronadjiSvuRobu();
     });
   }
 
@@ -62,7 +64,7 @@ export class RobaComponent implements OnInit {
     this.pronadjenaRoba = true;
     this.robaService.pronadjiSvuRobu(
       this.sort, this.rowsPerPage, this.pageIndex, this.searchValue, this.filter.naStanju, this.filter.proizvodjacId
-      )
+    )
       .pipe(
         takeWhile(() => this.alive),
         catchError((error: Response) => {
@@ -109,8 +111,18 @@ export class RobaComponent implements OnInit {
 
   dodajParametreUURL() {
     const parameterObject = {};
-    parameterObject['strana'] = this.pageIndex;
-    parameterObject['brojKolona'] = this.rowsPerPage;
+    if (this.pageIndex) {
+      parameterObject['strana'] = this.pageIndex;
+    }
+    if (this.rowsPerPage) {
+      parameterObject['brojKolona'] = this.rowsPerPage;
+    }
+    if (this.filter.proizvodjac) {
+      parameterObject['proizvodjac'] = this.filter.proizvodjacId;
+    }
+    if (this.filter.naStanju) {
+      parameterObject['naStanju'] = this.filter.naStanju;
+    }
 
     this.router.navigate(['/roba'], { queryParams: parameterObject });
   }
@@ -124,6 +136,6 @@ export class RobaComponent implements OnInit {
       this.pageIndex = 0;
     }
     this.filter = filter;
-    this.pronadjiSvuRobu();
+    this.dodajParametreUURL();
   }
 }

@@ -52,7 +52,9 @@ export class AkumulatoriComponent implements OnInit {
     this.aktivnaRuta.queryParams.subscribe(params => {
         this.pageIndex = params['strana'];
         this.rowsPerPage = params['brojKolona'];
-        this.pronandjiSveAkumulatore();
+        this.filter.proizvodjacId = params['proizvodjac'];
+        this.filter.naStanju = params['naStanju'];
+         this.pronandjiSveAkumulatore();
     });
   }
 
@@ -109,8 +111,18 @@ export class AkumulatoriComponent implements OnInit {
 
   dodajParametreUURL() {
     const parameterObject = {};
-    parameterObject['strana'] = this.pageIndex;
-    parameterObject['brojKolona'] = this.rowsPerPage;
+    if (this.pageIndex) {
+      parameterObject['strana'] = this.pageIndex;
+    }
+    if (this.rowsPerPage) {
+      parameterObject['brojKolona'] = this.rowsPerPage;
+    }
+    if (this.filter.proizvodjac) {
+      parameterObject['proizvodjac'] = this.filter.proizvodjacId;
+    }
+    if (this.filter.naStanju) {
+      parameterObject['naStanju'] = this.filter.naStanju;
+    }
 
     this.router.navigate(['/akumulatori'], { queryParams: parameterObject });
   }
@@ -125,6 +137,6 @@ export class AkumulatoriComponent implements OnInit {
     }
     this.filter = filter;
 
-    this.pronandjiSveAkumulatore();
+    this.dodajParametreUURL();
   }
 }

@@ -6,7 +6,7 @@
     </div>
 
     <!-- Filter komponenta izdvojena -->
-    <app-filter [vrstaRobe]="vrstaRobe" [otvoriFilter]="otvoriFilter" (filterEvent)="filtriraj($event)">
+    <app-filter [vrstaRobe]="vrstaRobe" [otvoriFilter]="otvoriFilter" [filter]="filter" (filterEvent)="filtriraj($event)">
     </app-filter>
 
     <div class="d-flex flex-column prazna-tabela" *ngIf="!pronadjenaRoba">

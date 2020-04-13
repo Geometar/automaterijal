@@ -19,11 +19,10 @@ export class FilterComponent implements OnInit {
   @Input() vrstaRobe;
   @Input() vrstaUlja;
   @Input() industrijkoUljeEvent: Observable<string>;
+  @Input() filter: Filter;
   @Output() filterEvent = new EventEmitter<any>();
 
   public proizvodjaci: Proizvodjac[];
-
-  public filter = new Filter();
 
   public raspolozivost: string[] = ['Svi artikli', 'Ima na stanju'];
 
@@ -40,7 +39,12 @@ export class FilterComponent implements OnInit {
         this.vrstaUlja = vrstaUlja;
       });
     }
-    this.filter.raspolozivost = this.raspolozivost[0];
+
+    if (this.filter.naStanju) {
+      this.filter.raspolozivost = this.raspolozivost[1];
+    } else {
+      this.filter.raspolozivost = this.raspolozivost[0];
+    }
     this.pronadjiProizvodjace();
   }
 
@@ -50,7 +54,11 @@ export class FilterComponent implements OnInit {
         .pipe(takeWhile(() => this.alive))
         .subscribe(res => {
           this.proizvodjaci = res;
-          this.filter.proizvodjac = this.proizvodjaci[0].naziv;
+          if (this.filter.proizvodjacId) {
+            this.proizvodjacVecIzabran();
+          } else {
+            this.filter.proizvodjac = this.proizvodjaci[0].naziv;
+          }
         },
           error => {
             this.proizvodjaci = null;
@@ -60,7 +68,11 @@ export class FilterComponent implements OnInit {
         .pipe(takeWhile(() => this.alive))
         .subscribe(res => {
           this.proizvodjaci = res;
-          this.filter.proizvodjac = this.proizvodjaci[0].naziv;
+          if (this.filter.proizvodjacId) {
+            this.proizvodjacVecIzabran();
+          } else {
+            this.filter.proizvodjac = this.proizvodjaci[0].naziv;
+          }
         },
           error => {
             this.proizvodjaci = null;
@@ -70,7 +82,11 @@ export class FilterComponent implements OnInit {
         .pipe(takeWhile(() => this.alive))
         .subscribe(res => {
           this.proizvodjaci = res;
-          this.filter.proizvodjac = this.proizvodjaci[0].naziv;
+          if (this.filter.proizvodjacId) {
+            this.proizvodjacVecIzabran();
+          } else {
+            this.filter.proizvodjac = this.proizvodjaci[0].naziv;
+          }
         },
           error => {
             this.proizvodjaci = null;
@@ -80,7 +96,11 @@ export class FilterComponent implements OnInit {
         .pipe(takeWhile(() => this.alive))
         .subscribe(res => {
           this.proizvodjaci = res;
-          this.filter.proizvodjac = this.proizvodjaci[0].naziv;
+          if (this.filter.proizvodjacId) {
+            this.proizvodjacVecIzabran();
+          } else {
+            this.filter.proizvodjac = this.proizvodjaci[0].naziv;
+          }
         },
           error => {
             this.proizvodjaci = null;
@@ -91,13 +111,26 @@ export class FilterComponent implements OnInit {
           .pipe(takeWhile(() => this.alive))
           .subscribe(res => {
             this.proizvodjaci = res;
-            this.filter.proizvodjac = this.proizvodjaci[0].naziv;
+            if (this.filter.proizvodjacId) {
+              this.proizvodjacVecIzabran();
+            } else {
+              this.filter.proizvodjac = this.proizvodjaci[0].naziv;
+            }
           },
             error => {
               this.proizvodjaci = null;
             });
       });
     }
+  }
+
+  proizvodjacVecIzabran() {
+    this.proizvodjaci.forEach((proizvodjac: Proizvodjac) => {
+      if (proizvodjac.proid === this.filter.proizvodjacId) {
+        this.filter.proizvodjac = proizvodjac.naziv;
+        return;
+      }
+    });
   }
 
   filtriraj() {
