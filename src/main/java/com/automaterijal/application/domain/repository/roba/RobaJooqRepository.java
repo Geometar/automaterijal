@@ -101,9 +101,7 @@ public class RobaJooqRepository {
                 PROIZVODJAC.PROID, PROIZVODJAC.NAZIV.as("proizvodjacNaziv")
         )
                 .from(ROBA)
-                .leftJoin(ROBA_KATBR_OLD).using(ROBA.ROBAID)
                 .leftJoin(PROIZVODJAC).using(ROBA.PROID)
-                .leftJoin(TD_BROJEVI).using(ROBA.ROBAID)
                 .where("1=1");
     }
 
@@ -113,7 +111,7 @@ public class RobaJooqRepository {
      */
     private void standardniUslovi(SelectConditionStep<?> select, String trazenaRec) {
         String trazenaRecLike = "%" + trazenaRec + "%";
-        Set<String> sveKombinacijaKataloskihBrojeva = vratiSvePomocneKataloskeBrojeve(trazenaRecLike);
+        Set<String> sveKombinacijaKataloskihBrojeva = vratiSvePomocneKataloskeBrojeve(trazenaRec, trazenaRecLike);
         select.and(
                 ROBA.KATBRPRO.like(trazenaRecLike)
                         .or(ROBA.KATBR.in(sveKombinacijaKataloskihBrojeva))
@@ -124,7 +122,7 @@ public class RobaJooqRepository {
     /**
      * Pomocni sql kveri za pretragu svih sifara u raznim tabelama
      */
-    private Set<String> vratiSvePomocneKataloskeBrojeve(String trazenaRecLike) {
+    private Set<String> vratiSvePomocneKataloskeBrojeve(String trazenaRec, String trazenaRecLike) {
         Set<String> retVal = new HashSet<>();
         dslContext.select(ROBA.KATBR, ROBA.KATBRPRO, ROBA_KATBR_OLD.KATBR, ROBA_KATBR_OLD.KATBRPRO, TD_BROJEVI.NADJENPREKO)
                 .from(ROBA)
@@ -135,14 +133,29 @@ public class RobaJooqRepository {
                                 .or(ROBA.KATBRPRO.like(trazenaRecLike))
                                 .or(ROBA_KATBR_OLD.KATBR.like(trazenaRecLike))
                                 .or(ROBA_KATBR_OLD.KATBRPRO.like(trazenaRecLike))
-                                .or(TD_BROJEVI.BROJ.like(trazenaRecLike))
-                                .or(TD_BROJEVI.BROJSRCH.like(trazenaRecLike)))
+                                .or(TD_BROJEVI.BROJ.eq(trazenaRec))
+                                .or(TD_BROJEVI.BROJSRCH.eq(trazenaRec)))
                 .fetch().stream()
                 .forEach(rekord -> {
                     procesuirajRekorde(retVal, rekord);
                 });
         prodjiIPopraviKatBr(retVal);
+        drugiPomocniKveri(retVal);
         return retVal;
+    }
+
+    private void drugiPomocniKveri(Set<String> katalskoBrojevi) {
+        dslContext.selectDistinct(ROBA.KATBR, ROBA.KATBRPRO, ROBA_KATBR_OLD.KATBR)
+                .from(ROBA)
+                .leftJoin(ROBA_KATBR_OLD).using(ROBA.ROBAID)
+                .where(ROBA.KATBRPRO.in(katalskoBrojevi))
+                .or(ROBA_KATBR_OLD.KATBR.in(katalskoBrojevi))
+                .or(ROBA_KATBR_OLD.KATBRPRO.in(katalskoBrojevi))
+                .fetch().stream().forEach(rekordi -> {
+            katalskoBrojevi.add(rekordi.component1());
+            katalskoBrojevi.add(rekordi.component2());
+            katalskoBrojevi.add(rekordi.component3());
+        });
     }
 
     private void prodjiIPopraviKatBr(Set<String> retVal) {

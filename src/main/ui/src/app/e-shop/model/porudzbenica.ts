@@ -22,9 +22,8 @@ export class RobaKorpa {
     public cenaUkupno: number;
 
     constructor(robaid: number, katbr: string, naziv: string, proizvodjac: Proizvodjac,
-         kolicina: number, rabat: number, cena: number, stanje: number) {
+         kolicina: number, rabat: number, cena: number, stanje: number, slikaId: string) {
         this.robaid = robaid;
-        this.slikaId = 'assets/slike/ui/roba/' + robaid + '.jpg';
         this.katbr = katbr;
         this.naziv = naziv;
         this.proizvodjac = proizvodjac;
@@ -33,6 +32,7 @@ export class RobaKorpa {
         this.cenaKom = cena;
         this.cenaUkupno = cena * kolicina;
         this.stanje = stanje;
+        this.slikaId = slikaId;
     }
 }
 

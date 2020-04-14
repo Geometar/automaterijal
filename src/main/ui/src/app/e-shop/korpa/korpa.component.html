@@ -15,12 +15,14 @@
                 <ng-container matColumnDef="slika">
                     <th mat-header-cell *matHeaderCellDef> Slika </th>
                     <td mat-cell *matCellDef="let roba; let i = index;">
-                        <img height="120" width="160" src={{roba.slikaId}}
+                        <div class="centriraj">
+                        <img height="120" src={{roba.slikaId}}
                             onError="this.src='assets/slike/ui/roba/slikanijedostupna.jpg'">
                         <button *ngIf="jeMobilni" mat-icon-button (click)='izbaciIzKorpe(i)' class="dugme-brisanje"
                             aria-label="Example icon-button with a heart icon">
                             <mat-icon matTooltip="Izbaci iz korpe" class="ikona-brisanje">clear</mat-icon>
                         </button>
+                    </div>
                     </td>
                 </ng-container>
 
