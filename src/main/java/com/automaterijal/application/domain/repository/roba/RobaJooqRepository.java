@@ -145,16 +145,26 @@ public class RobaJooqRepository {
     }
 
     private void drugiPomocniKveri(Set<String> katalskoBrojevi) {
-        dslContext.selectDistinct(ROBA.KATBR, ROBA.KATBRPRO, ROBA_KATBR_OLD.KATBR)
+        dslContext.selectDistinct(ROBA.KATBR, ROBA.KATBRPRO, ROBA_KATBR_OLD.KATBR, ROBA_KATBR_OLD.KATBRPRO)
                 .from(ROBA)
                 .join(ROBA_KATBR_OLD).using(ROBA.ROBAID)
-                .where(ROBA.KATBRPRO.in(katalskoBrojevi))
-                .or(ROBA_KATBR_OLD.KATBR.in(katalskoBrojevi))
-                .or(ROBA_KATBR_OLD.KATBRPRO.in(katalskoBrojevi))
-                .fetch().stream().forEach(rekordi -> {
-            katalskoBrojevi.add(rekordi.component1());
-            katalskoBrojevi.add(rekordi.component2());
-            katalskoBrojevi.add(rekordi.component3());
+                .where(ROBA.KATBR.in(katalskoBrojevi)
+                        .or(ROBA.KATBRPRO.in(katalskoBrojevi))
+                        .or(ROBA_KATBR_OLD.KATBR.in(katalskoBrojevi))
+                        .or(ROBA_KATBR_OLD.KATBRPRO.in(katalskoBrojevi)))
+                .fetch().stream().forEach(record -> {
+            if (record.component1() != null && !StringUtils.isEmpty(record.component1().toString())) {
+                katalskoBrojevi.add(record.component1().toString());
+            }
+            if (record.component2() != null && !StringUtils.isEmpty(record.component2().toString())) {
+                katalskoBrojevi.add(record.component2().toString());
+            }
+            if (record.component3() != null && !StringUtils.isEmpty(record.component3().toString())) {
+                katalskoBrojevi.add(record.component3().toString());
+            }
+            if (record.component4() != null && !StringUtils.isEmpty(record.component4().toString())) {
+                katalskoBrojevi.add(record.component4().toString());
+            }
         });
     }
 
