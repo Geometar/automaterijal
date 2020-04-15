@@ -101,7 +101,7 @@ public class RobaJooqRepository {
                 PROIZVODJAC.PROID, PROIZVODJAC.NAZIV.as("proizvodjacNaziv")
         )
                 .from(ROBA)
-                .leftJoin(PROIZVODJAC).using(ROBA.PROID)
+                .join(PROIZVODJAC).using(ROBA.PROID)
                 .where("1=1");
     }
 
@@ -147,7 +147,7 @@ public class RobaJooqRepository {
     private void drugiPomocniKveri(Set<String> katalskoBrojevi) {
         dslContext.selectDistinct(ROBA.KATBR, ROBA.KATBRPRO, ROBA_KATBR_OLD.KATBR)
                 .from(ROBA)
-                .leftJoin(ROBA_KATBR_OLD).using(ROBA.ROBAID)
+                .join(ROBA_KATBR_OLD).using(ROBA.ROBAID)
                 .where(ROBA.KATBRPRO.in(katalskoBrojevi))
                 .or(ROBA_KATBR_OLD.KATBR.in(katalskoBrojevi))
                 .or(ROBA_KATBR_OLD.KATBRPRO.in(katalskoBrojevi))
