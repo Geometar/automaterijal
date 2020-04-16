@@ -116,7 +116,8 @@ public class RobaJooqRepository {
                 ROBA.KATBRPRO.like(trazenaRecLike)
                         .or(ROBA.KATBR.in(sveKombinacijaKataloskihBrojeva))
                         .or(ROBA.KATBRPRO.in(sveKombinacijaKataloskihBrojeva))
-                        .or(ROBA.NAZIV.like(trazenaRecLike)));
+                        .or(ROBA.NAZIV.like(trazenaRecLike))
+                        .or(PROIZVODJAC.NAZIV.like(trazenaRecLike)));
     }
 
     /**
