@@ -236,6 +236,8 @@ export class KorpaComponent implements OnInit {
   oduzmiOdKolicine(roba: RobaKorpa) {
     if (roba.kolicina > 1) {
       roba.kolicina = roba.kolicina - 1;
+    } else {
+      this.notifikacija.notify('Količina ne može biti negativna', MatSnackBarKlase.Plava);
     }
     this.preracunajSveCene(roba);
   }
@@ -243,6 +245,8 @@ export class KorpaComponent implements OnInit {
   dodajKolicini(roba: RobaKorpa) {
     if (roba.kolicina < roba.stanje) {
       roba.kolicina = roba.kolicina + 1;
+    } else {
+      this.notifikacija.notify('Maksimalna količina dostignuta', MatSnackBarKlase.Plava);
     }
     this.preracunajSveCene(roba);
   }
@@ -263,7 +267,7 @@ export class KorpaComponent implements OnInit {
     this.preracunajSveCene(roba);
   }
 
-  preracunajSveCene (roba: RobaKorpa) {
+  preracunajSveCene(roba: RobaKorpa) {
     roba.cenaUkupno = roba.cenaKom * roba.kolicina;
     this.storage.zameniArtikalSaNovim(roba);
     this.preracunajUkupno();

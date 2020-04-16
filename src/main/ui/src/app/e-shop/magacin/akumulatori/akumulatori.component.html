@@ -1,7 +1,7 @@
 <main>
 
     <div class="sekcija-pretraga pretraga-bar">
-        <app-pretraga (pretragaEvent)="pronaciPoTrazenojReci($event)" (filterEvent)="toogleFilterDiv($event)"></app-pretraga>
+        <app-pretraga [searchValue]="searchValue" (pretragaEvent)="pronaciPoTrazenojReci($event)" (filterEvent)="toogleFilterDiv($event)"></app-pretraga>
     </div>
 
     <app-filter [vrstaRobe]="vrstaRobe" [otvoriFilter]="otvoriFilter" [filter]="filter" (filterEvent)="filtriraj($event)"></app-filter>

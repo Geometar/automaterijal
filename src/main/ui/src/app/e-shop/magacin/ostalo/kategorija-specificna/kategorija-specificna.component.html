@@ -6,7 +6,7 @@
       </button>
     </div>
     <div class="kategorija-pregraga-bar">
-      <app-pretraga (pretragaEvent)="pronaciPoTrazenojReci($event)" (filterEvent)="toogleFilterDiv($event)">
+      <app-pretraga [searchValue]="searchValue" (pretragaEvent)="pronaciPoTrazenojReci($event)" (filterEvent)="toogleFilterDiv($event)">
       </app-pretraga>
     </div>
   </div>
