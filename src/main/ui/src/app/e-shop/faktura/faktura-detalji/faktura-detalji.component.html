@@ -62,7 +62,7 @@
                 <ng-container matColumnDef="slika">
                     <th mat-header-cell *matHeaderCellDef> Kataloški broj </th>
                     <td mat-cell *matCellDef="let faktura">
-                        <img height="120" width="160" src={{faktura.slikaId}}
+                        <img height="120" src={{faktura.slikaId}}
                             onError="this.src='assets/slike/ui/roba/slikanijedostupna.jpg'">
                     </td>
                 </ng-container>

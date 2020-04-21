@@ -16,11 +16,13 @@ import com.automaterijal.application.domain.repository.valuehelp.NacinPrevozaRep
 import com.automaterijal.application.domain.repository.valuehelp.StatusRepository;
 import com.automaterijal.application.services.roba.RobaCeneService;
 import com.automaterijal.application.services.roba.RobaService;
+import com.automaterijal.application.services.roba.RobaSlikaService;
 import com.automaterijal.application.utils.GeneralUtil;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -65,7 +67,15 @@ public class FakturaService {
     @NonNull
     final FakturaMapper mapper;
     @NonNull
+    final RobaSlikaService slikaService;
+    @NonNull
     final RobaMapper robaMapper;
+
+    @Value("${roba.slika.prefixTabela}")
+    String prefixTabela;
+
+    @Value("${roba.slika.prefixThumbs}")
+    String prefixThumbs;
 
     public List<RobaDto> submitujFakturu(FakturaDto fakturaDto, Partner partner) {
         List<RobaDto> dozvoljenaKolicina = new ArrayList<>();
@@ -148,7 +158,9 @@ public class FakturaService {
     }
 
     private void obogatiDetalje(FakturaDetaljiDto dto, Partner partner) {
-        dto.setSlikaId("assets/slike/ui/roba/" + dto.getRobaId() + ".jpg");
+        slikaService.pronadjiPutanjuSlikePoId(dto.getRobaId()).ifPresent(robaSlika -> {
+            dto.setSlikaId(prefixTabela + prefixThumbs + robaSlika.getSlika());
+        });
         statusRepository.findById(dto.getStatus().getId()).ifPresent(status -> mapper.map(dto, status));
         robaService.pronadjiRobuPoPrimarnomKljucu(dto.getRobaId()).ifPresent(roba -> {
             mapper.map(dto, roba);
