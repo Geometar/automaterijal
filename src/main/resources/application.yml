@@ -38,7 +38,9 @@ schedule:
     upadte: 600000
 
 roba:
-  slika: "item_images"
+  slika:
+    prefixTabela: "http://localhost/orders/item_images/"
+    prefixThumbs: "thumbs/"
 
 logging:
   file: ../logs/arhiva/automaterijal

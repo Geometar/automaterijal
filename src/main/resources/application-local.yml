@@ -39,10 +39,5 @@ schedule:
   fakture:
     upadte: 600000
 
-roba:
-  slika:
-    prefixTabela: "http://localhost/orders/item_images/"
-    prefixThumbs: "thumbs/"
-
 logging:
   file: ../logs/arhiva/automaterijal
