@@ -96,6 +96,8 @@ export class RobaDetaljiComponent implements OnInit {
     }
     if (roba.kolicina < roba.stanje) {
       roba.kolicina = roba.kolicina + 1;
+    } else {
+      this.notifikacijaServis.notify('Maksimalna količina dostignuta', MatSnackBarKlase.Plava);
     }
   }
   oduzmiOdKolicine(roba: Roba) {
@@ -104,6 +106,8 @@ export class RobaDetaljiComponent implements OnInit {
     }
     if (roba.kolicina > 1) {
       roba.kolicina = roba.kolicina - 1;
+    } else {
+      this.notifikacijaServis.notify('Količina ne može biti negativna', MatSnackBarKlase.Plava);
     }
   }
 
