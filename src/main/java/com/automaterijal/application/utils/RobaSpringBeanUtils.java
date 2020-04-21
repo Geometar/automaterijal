@@ -51,7 +51,11 @@ public class RobaSpringBeanUtils {
         Boolean iNaStanju = naStanju.isPresent() ? naStanju.get() : false;
         RobaSortiranjePolja iSortiranjePolja = sortBy == null ? RobaSortiranjePolja.STANJE : sortBy;
         Sort.Direction iDirection = sortDirection == null ? Sort.Direction.DESC : sortDirection;
-        String iSearchTerm = searchTerm.filter(StringUtils::hasText).map(trazenaRec -> trazenaRec.trim().toUpperCase()).orElse(null);
+        String iSearchTerm = searchTerm.filter(StringUtils::hasText)
+                .map(trazenaRec -> trazenaRec.trim().toUpperCase())
+                .map(trazenaRec -> GeneralUtil.cyrillicToLatinic(trazenaRec))
+                .orElse(null);
+
         return popuniParametreZaServis(iPage, iPageSize, iProizvodjac, iNaStanju, iSortiranjePolja, iDirection, iSearchTerm, vrstaRobe, vrstaUlja, iKategorije);
     }
 
