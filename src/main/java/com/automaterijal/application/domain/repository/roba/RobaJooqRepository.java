@@ -231,7 +231,7 @@ public class RobaJooqRepository {
      * Limitiranje pogodataka zbog paginacije
      */
     private void paginacijaISortiranje(SelectConditionStep<?> select, UniverzalniParametri parametri) {
-        select.limit(parametri.getPageSize()).offset(parametri.getPage());
+        select.limit(parametri.getPageSize()).offset(parametri.getPage() * parametri.getPageSize());
         select.orderBy(ROBA.STANJE.desc());
     }
 }
