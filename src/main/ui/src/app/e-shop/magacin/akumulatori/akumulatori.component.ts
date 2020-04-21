@@ -29,7 +29,7 @@ export class AkumulatoriComponent implements OnInit {
   public filter: Filter = new Filter();
   public otvoriFilter = false;
 
-  private searchValue = '';
+  public searchValue = '';
   public ucitavanje = false;
 
   public pronadjenaRoba = true;

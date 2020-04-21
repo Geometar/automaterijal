@@ -28,7 +28,7 @@ export class FilteriComponent implements OnInit {
 
   public filter: Filter = new Filter();
 
-  private searchValue = '';
+  public searchValue = '';
 
   public ucitavanje = false;
   public pronadjenaRoba = true;
