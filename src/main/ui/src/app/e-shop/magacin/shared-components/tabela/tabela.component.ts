@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, HostListener } from '@angular/core';
 import { Roba } from 'src/app/e-shop/model/dto';
 import { LoginService } from 'src/app/e-shop/service/login.service';
 import { AppUtilsService } from 'src/app/e-shop/utils/app-utils.service';
@@ -24,20 +24,17 @@ export class TabelaComponent implements OnInit {
   @Input() tableLength;
   @Output() magacinEvent = new EventEmitter<any>();
 
+  innerWidth;
   public partnerLogovan = false;
   private korpa: Korpa;
+  public jeMobilni = window.innerWidth > 900;
 
   // Tabela
   private columnDefinitions = [
-    { def: 'katbr', ifNotAuth: true },
-    { def: 'katbrpro', ifNotAuth: true },
-    { def: 'proizvodjac', ifNotAuth: true },
-    { def: 'naziv', ifNotAuth: true },
-    { def: 'cena', ifNotAuth: true },
-    { def: 'stanje', ifNotAuth: true },
-    { def: 'kolicina', ifNotAuth: false },
-    { def: 'korpa', ifNotAuth: false },
-    { def: 'u-korpi', ifNotAuth: false },
+    { def: 'slika', ifNotMobile: true },
+    { def: 'opis', ifNotMobile: true },
+    { def: 'tehnickidetalji', ifNotAuth: false },
+    { def: 'korpa', ifNotMobile: true },
   ];
 
   constructor(
@@ -51,6 +48,22 @@ export class TabelaComponent implements OnInit {
   ngOnInit() {
     this.dataService.trenutnaKorpa.subscribe(korpa => this.korpa = korpa);
     this.loginServis.daLiJePartnerUlogovan.subscribe(bool => this.partnerLogovan = bool);
+    this.innerWidth = window.innerWidth;
+    this.changeSlideConfiguration();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.innerWidth = window.innerWidth;
+    this.changeSlideConfiguration();
+  }
+
+  changeSlideConfiguration() {
+    if (this.innerWidth < 900) {
+      this.jeMobilni = false;
+    } else {
+      this.jeMobilni = true;
+    }
   }
 
   paginatorEvent(pageEvent) {
@@ -60,9 +73,30 @@ export class TabelaComponent implements OnInit {
 
   getDisplayedColumns(): string[] {
     const dataColumns = this.columnDefinitions
-      .filter(cd => this.partnerLogovan || cd.ifNotAuth)
+      .filter(cd => this.jeMobilni || cd.ifNotMobile)
       .map(cd => cd.def);
     return dataColumns;
+  }
+  oduzmiOdKolicine(roba: Roba) {
+    if (!Number(roba.kolicina)) {
+      roba.kolicina = 1;
+    }
+    if (roba.kolicina > 1) {
+      roba.kolicina = roba.kolicina - 1;
+    } else {
+      this.notifikacijaServis.notify('Količina ne može biti negativna', MatSnackBarKlase.Plava);
+    }
+  }
+
+  dodajKolicini(roba: Roba) {
+    if (!Number(roba.kolicina)) {
+      roba.kolicina = 1;
+    }
+    if (roba.kolicina < roba.stanje) {
+      roba.kolicina = roba.kolicina + 1;
+    } else {
+      this.notifikacijaServis.notify('Maksimalna količina dostignuta', MatSnackBarKlase.Plava);
+    }
   }
 
   dodajUKorpu(roba: Roba) {
@@ -80,5 +114,9 @@ export class TabelaComponent implements OnInit {
 
   uKorpi(katBr: string): boolean {
     return this.utilsService.daLiJeRobaUKorpi(this.korpa, katBr);
+  }
+
+  detaljiRobe(robaId: string) {
+    this.router.navigate(['/roba/' + robaId]);
   }
 }

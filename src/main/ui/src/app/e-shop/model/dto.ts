@@ -5,24 +5,6 @@ export class ValueHelp {
    naziv?: string;
 }
 
-export class Roba {
-    public robaid: number;
-    public katbr: string;
-    public katbrpro: string;
-    public naziv: string;
-    public proizvodjac: Proizvodjac;
-    public grupa: string;
-    public podGrupa: string;
-    public stanje: number;
-    public cena: number;
-    public rabat: number;
-    public kolicina: number;
-}
-
-export class RobaPage extends Page {
-    content: Roba[] = null;
-}
-
 export class Partner {
     ppid?: number;
     naziv?: string;
@@ -58,6 +40,8 @@ export class FakturaPage extends Page {
 
 export class FakturaDetalji {
     robaId?: number;
+    slikaId?: number;
+    naziv?: string;
     kataloskiBroj?: string;
     proizvodjac?: Proizvodjac;
     kolicina?: number;
@@ -101,4 +85,43 @@ export class PromenaSifre {
     staraSifra?: string;
     sifra?: string;
     ponovljenjaSifra?: string;
+}
+
+export class Roba {
+    public robaid: number;
+    public slika: string;
+    public katbr: string;
+    public katbrpro: string;
+    public naziv: string;
+    public stanje: number;
+    public cena: number;
+    public rabat: number;
+    public kolicina: number;
+    public proizvodjac: Proizvodjac;
+    public tehnickiOpis?: RobaTehnickiOpis[];
+    public tdBrojevi?: Map<string, RobaBrojevi[]>;
+    public aplikacije?: Map<string, RobaAplikacija[]>;
+}
+
+export class RobaPage extends Page {
+    content: Roba[] = null;
+}
+export class RobaTehnickiOpis {
+    oznaka?: number;
+    vrednost?: number;
+    jedinica?: number;
+}
+export class RobaBrojevi {
+    fabrBroj?: string;
+    proizvodjac?: string;
+}
+export class RobaAplikacija {
+    proizvodjacNaziv?: string;
+    modelNaziv?: string;
+    tipVozila?: string;
+    proizOd?: string;
+    proizDo?: string;
+    hp?: string;
+    kw?: string;
+    ccm?: string;
 }

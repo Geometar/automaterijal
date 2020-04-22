@@ -52,39 +52,47 @@ export class KategorijaSpecificnaComponent implements OnInit {
 
   pronandjiRobu() {
     this.route.params.subscribe((params: Params) => {
-      this.dataSource = null;
-      this.ucitavanje = true;
-      this.pronadjenaRoba = true;
-      this.robaServis.pronadjiPoKategoriji(
-        this.sort, this.rowsPerPage, this.pageIndex, this.searchValue, this.filter.naStanju, this.filter.proizvodjacId, params.id
+      this.route.queryParams.subscribe(queryParams => {
+        this.dataSource = null;
+        this.ucitavanje = true;
+        this.pronadjenaRoba = true;
+        this.pageIndex = queryParams['strana'];
+        this.rowsPerPage = queryParams['brojKolona'];
+        this.filter.proizvodjacId = queryParams['proizvodjac'];
+        this.filter.naStanju = queryParams['naStanju'];
+        this.searchValue = queryParams['pretraga'];
+        this.robaServis.pronadjiPoKategoriji(
+          this.sort, this.rowsPerPage, this.pageIndex, this.searchValue, this.filter.naStanju, this.filter.proizvodjacId, params.id
         )
-        .pipe(
-          takeWhile(() => this.alive),
-          catchError((error: Response) => {
-            if (error.status === 404) {
-              this.pronadjenaRoba = false;
-              this.loginService.obavesiPartneraAkoJeSesijaIstekla(error.headers.get('AuthenticatedUser'));
-              return EMPTY;
-            }
-            return throwError(error);
-          }),
-          finalize(() => this.ucitavanje = false)
-        )
-        .subscribe(
-          (response: HttpResponse<RobaPage>) => {
-            this.loginService.obavesiPartneraAkoJeSesijaIstekla(response.headers.get('AuthenticatedUser'));
-            const body = response.body;
-            this.pronadjenaRoba = true;
-            this.roba = body.content;
-            this.roba = this.dataService.skiniSaStanjaUkolikoJeUKorpi(this.roba);
-            this.dataSource = this.roba;
-            this.rowsPerPage = body.size;
-            this.pageIndex = body.number;
-            this.tableLength = body.totalElements;
-          },
-          error => {
-            this.roba = null;
-          });
+          .pipe(
+            takeWhile(() => this.alive),
+            catchError((error: Response) => {
+              if (error.status === 404) {
+                this.pronadjenaRoba = false;
+                this.loginService.obavesiPartneraAkoJeSesijaIstekla(error.headers.get('AuthenticatedUser'));
+                return EMPTY;
+              }
+              return throwError(error);
+            }),
+            finalize(() => this.ucitavanje = false)
+          )
+          .subscribe(
+            (response: HttpResponse<RobaPage>) => {
+              this.loginService.obavesiPartneraAkoJeSesijaIstekla(response.headers.get('AuthenticatedUser'));
+              const body = response.body;
+              this.pronadjenaRoba = true;
+              this.roba = body.content;
+              this.roba = this.dataService.skiniSaStanjaUkolikoJeUKorpi(this.roba);
+              this.dataSource = this.roba;
+              this.rowsPerPage = body.size;
+              this.pageIndex = body.number;
+              this.tableLength = body.totalElements;
+            },
+            error => {
+              this.roba = null;
+            });
+
+      });
     });
   }
 
@@ -93,14 +101,37 @@ export class KategorijaSpecificnaComponent implements OnInit {
       this.pageIndex = 0;
     }
     this.searchValue = searchValue;
-    this.pronandjiRobu();
+    this.dodajParametreUURL();
   }
 
   paginatorEvent(pageEvent) {
     this.dataSource = [];
     this.rowsPerPage = pageEvent.pageSize;
     this.pageIndex = pageEvent.pageIndex;
-    this.pronandjiRobu();
+    this.dodajParametreUURL();
+  }
+
+  dodajParametreUURL() {
+    this.route.params.subscribe((params: Params) => {
+      const parameterObject = {};
+      if (this.pageIndex) {
+        parameterObject['strana'] = this.pageIndex;
+      }
+      if (this.rowsPerPage) {
+        parameterObject['brojKolona'] = this.rowsPerPage;
+      }
+      if (this.filter.proizvodjac) {
+        parameterObject['proizvodjac'] = this.filter.proizvodjacId;
+      }
+      if (this.filter.naStanju) {
+        parameterObject['naStanju'] = this.filter.naStanju;
+      }
+      if (this.searchValue) {
+        parameterObject['pretraga'] = this.searchValue;
+      }
+      const idUrl = params.id.toLowerCase();
+      this.router.navigate(['/ostalo', idUrl], { queryParams: parameterObject });
+    });
   }
 
   toogleFilterDiv(otvoriFilter: boolean) {
@@ -112,7 +143,7 @@ export class KategorijaSpecificnaComponent implements OnInit {
       this.pageIndex = 0;
     }
     this.filter = filter;
-    this.pronandjiRobu();
+    this.dodajParametreUURL();
   }
 
   idiNazad() {

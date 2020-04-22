@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { DataService } from '../service/data/data.service';
 import { Korpa, RobaKorpa } from '../model/porudzbenica';
 import { LocalStorageService } from '../service/data/local-storage.service';
@@ -10,9 +10,10 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { LoginService } from '../service/login.service';
 import { FakturaService } from '../service/faktura.service';
 import { Router } from '@angular/router';
-import { IzmenaKolicineModalComponent } from 'src/app/shared/modal/izmena-kolicine-modal/izmena-kolicine-modal.component';
 import { UspesnoPorucivanjeModalComponent } from 'src/app/shared/modal/uspesno-porucivanje-modal/uspesno-porucivanje-modal.component';
 import { NeuspesnoPorucivanjeModalComponent } from 'src/app/shared/modal/neuspesno-porucivanje-modal/neuspesno-porucivanje-modal.component';
+import { NotifikacijaService } from 'src/app/shared/service/notifikacija.service';
+import { MatSnackBarKlase } from 'src/app/shared/model/konstante';
 
 @Component({
   selector: 'app-korpa',
@@ -39,8 +40,8 @@ export class KorpaComponent implements OnInit {
   public adresaForm: FormGroup;
   public dugmeZaPorucivanjeStisnuto = false;
 
-  public displayedColumns: string[] = ['katbr', 'katbrpro', 'naziv'
-    , 'proizvodjac', 'kolicina', 'cena', 'izbaciDugme'];
+  public displayedColumns: string[] = ['slika', 'opis', 'cena'
+    , 'akcije'];
 
   public treceLiceOpcije: string[] = ['Kurirske službe', 'Drugo'];
   public izabranaTrecaLiceOpcija: string;
@@ -51,6 +52,10 @@ export class KorpaComponent implements OnInit {
   public napomena: string;
   public ucitavanje = false;
   private alive = true;
+
+  innerWidth;
+  public jeMobilni;
+
   @ViewChild(MatTable) table: MatTable<any>;
 
   constructor(
@@ -60,11 +65,28 @@ export class KorpaComponent implements OnInit {
     public dialog: MatDialog,
     private formBuilder: FormBuilder,
     private fakturaServis: FakturaService,
-    private router: Router) { }
+    private router: Router,
+    private notifikacija: NotifikacijaService) { }
 
   ngOnInit() {
     this.loginServis.ulogovaniPartner.subscribe(partner => this.partner = partner);
     this.inicijalizujKorpu();
+    this.innerWidth = window.innerWidth;
+    this.changeSlideConfiguration();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.innerWidth = window.innerWidth;
+    this.changeSlideConfiguration();
+  }
+
+  changeSlideConfiguration() {
+    if (this.innerWidth < 900) {
+      this.jeMobilni = true;
+    } else {
+      this.jeMobilni = false;
+    }
   }
 
   inicijalizujKorpu() {
@@ -116,20 +138,10 @@ export class KorpaComponent implements OnInit {
 
   izbaciIzKorpe(index: number) {
     this.dataService.izbaciIzKorpe(index);
+    this.notifikacija.notify('Artikal izbačen iz korpe', MatSnackBarKlase.Plava);
     this.table.renderRows();
   }
 
-  otvoriDialog(roba: RobaKorpa): void {
-    const dialogRef = this.dialog.open(IzmenaKolicineModalComponent, {
-      width: '400px',
-      data: roba
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.promeniKolicinuArtikla(result);
-      }
-    });
-  }
   otvoriDialogUspesnoPorucivanje(): void {
     const dialogRef = this.dialog.open(UspesnoPorucivanjeModalComponent, {
       width: '400px'
@@ -165,19 +177,6 @@ export class KorpaComponent implements OnInit {
       this.dataSource = null;
       this.dataSource = this.korpa.roba;
     }
-  }
-
-  promeniKolicinuArtikla(artikal: RobaKorpa) {
-    this.korpa.roba.forEach(roba => {
-      if (roba.katbr === artikal.katbr) {
-        roba.kolicina = artikal.kolicina;
-        roba.cenaUkupno = artikal.cenaUkupno;
-      }
-    });
-    this.storage.zameniArtikalSaNovim(artikal);
-    this.preracunajUkupno();
-    this.dataSource = this.korpa.roba;
-    this.table.renderRows();
   }
 
   private preracunajUkupno() {
@@ -232,6 +231,48 @@ export class KorpaComponent implements OnInit {
           this.otvoriDialogNeuspesnoPorucivanje(res, this.faktura);
         }
       });
+  }
+
+  oduzmiOdKolicine(roba: RobaKorpa) {
+    if (roba.kolicina > 1) {
+      roba.kolicina = roba.kolicina - 1;
+    } else {
+      this.notifikacija.notify('Količina ne može biti negativna', MatSnackBarKlase.Plava);
+    }
+    this.preracunajSveCene(roba);
+  }
+
+  dodajKolicini(roba: RobaKorpa) {
+    if (roba.kolicina < roba.stanje) {
+      roba.kolicina = roba.kolicina + 1;
+    } else {
+      this.notifikacija.notify('Maksimalna količina dostignuta', MatSnackBarKlase.Plava);
+    }
+    this.preracunajSveCene(roba);
+  }
+
+  promenaKolicineManuelno(roba: RobaKorpa, broj: string) {
+    if (Number(broj) || broj === '0') {
+      const novaKolicina = Number(broj);
+      if (roba.stanje < novaKolicina) {
+        roba.kolicina = roba.stanje;
+        this.notifikacija.notify('Maksimalna količina: ' + roba.stanje, MatSnackBarKlase.Crvena);
+      } else if (novaKolicina < 1) {
+        roba.kolicina = 1;
+        this.notifikacija.notify('Minimalna količina: 1', MatSnackBarKlase.Crvena);
+      } else {
+        roba.kolicina = novaKolicina;
+      }
+    }
+    this.preracunajSveCene(roba);
+  }
+
+  preracunajSveCene(roba: RobaKorpa) {
+    roba.cenaUkupno = roba.cenaKom * roba.kolicina;
+    this.storage.zameniArtikalSaNovim(roba);
+    this.preracunajUkupno();
+    this.dataSource = this.korpa.roba;
+    this.table.renderRows();
   }
 
   korpaUFakturu() {

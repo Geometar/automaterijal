@@ -9,6 +9,7 @@ const routes: Routes = [
   {path: 'o-nama' , loadChildren: './e-commerce/o-nama/o-nama.module#ONamaModule'},
   {path: 'kontakt' , loadChildren: './e-commerce/kontakt/kontakt.module#KontaktModule'},
   {path: 'roba' , loadChildren: './e-shop/magacin/roba/roba.module#RobaModule'},
+  {path: 'roba/:id', loadChildren: './e-shop/magacin/roba/roba.module#RobaModule'},
   {path: 'filteri' , loadChildren: './e-shop/magacin/filteri/filteri.module#FilteriModule'},
   {path: 'ulja' , loadChildren: './e-shop/magacin/ulja/ulja.module#UljaModule'},
   {path: 'akumulatori', loadChildren: './e-shop/magacin/akumulatori/akumulatori.module#AkumulatoriModule'},

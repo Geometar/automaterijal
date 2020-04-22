@@ -8,6 +8,7 @@ import { VrstaRobe } from '../../model/roba.enum';
 import { Filter } from '../../model/filter';
 import { LoginService } from '../../service/login.service';
 import { HttpResponse } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-akumulatori',
@@ -28,7 +29,7 @@ export class AkumulatoriComponent implements OnInit {
   public filter: Filter = new Filter();
   public otvoriFilter = false;
 
-  private searchValue = '';
+  public searchValue = '';
   public ucitavanje = false;
 
   public pronadjenaRoba = true;
@@ -39,10 +40,23 @@ export class AkumulatoriComponent implements OnInit {
   constructor(
     private robaService: RobaService,
     private dataService: DataService,
-    private loginService: LoginService) { }
+    private loginService: LoginService,
+    private aktivnaRuta: ActivatedRoute,
+    private router: Router) { }
 
   ngOnInit() {
-    this.pronandjiSveAkumulatore();
+    this.uzmiParametreIzUrla();
+  }
+
+  uzmiParametreIzUrla() {
+    this.aktivnaRuta.queryParams.subscribe(params => {
+        this.pageIndex = params['strana'];
+        this.rowsPerPage = params['brojKolona'];
+        this.filter.proizvodjacId = params['proizvodjac'];
+        this.filter.naStanju = params['naStanju'];
+        this.searchValue = params['pretraga'];
+        this.pronandjiSveAkumulatore();
+    });
   }
 
   pronandjiSveAkumulatore() {
@@ -86,14 +100,35 @@ export class AkumulatoriComponent implements OnInit {
       this.pageIndex = 0;
     }
     this.searchValue = searchValue;
-    this.pronandjiSveAkumulatore();
+    this.dodajParametreUURL();
   }
 
   paginatorEvent(pageEvent) {
     this.dataSource = [];
     this.rowsPerPage = pageEvent.pageSize;
     this.pageIndex = pageEvent.pageIndex;
-    this.pronandjiSveAkumulatore();
+    this.dodajParametreUURL();
+  }
+
+  dodajParametreUURL() {
+    const parameterObject = {};
+    if (this.pageIndex) {
+      parameterObject['strana'] = this.pageIndex;
+    }
+    if (this.rowsPerPage) {
+      parameterObject['brojKolona'] = this.rowsPerPage;
+    }
+    if (this.filter.proizvodjac) {
+      parameterObject['proizvodjac'] = this.filter.proizvodjacId;
+    }
+    if (this.filter.naStanju) {
+      parameterObject['naStanju'] = this.filter.naStanju;
+    }
+    if (this.searchValue) {
+      parameterObject['pretraga'] = this.searchValue;
+    }
+
+    this.router.navigate(['/akumulatori'], { queryParams: parameterObject });
   }
 
   toogleFilterDiv(otvoriFilter: boolean) {
@@ -106,6 +141,6 @@ export class AkumulatoriComponent implements OnInit {
     }
     this.filter = filter;
 
-    this.pronandjiSveAkumulatore();
+    this.dodajParametreUURL();
   }
 }

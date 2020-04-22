@@ -4,8 +4,9 @@ import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.Users;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.NullValueCheckStrategy;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public abstract class UsersMapper {
 
     @Mapping(target = "ppid", source = "ppid")

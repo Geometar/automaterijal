@@ -23,8 +23,7 @@ export class FakturaDetaljiComponent implements OnInit {
   public rowsPerPage = 10;
   public pageIndex = 0;
 
-  public displayedColumns: string[] = ['robaId', 'proizvodjac', 'kolicina', 'potvrdjenaKolicina'
-    , 'rabat', 'cena', 'status'];
+  public displayedColumns: string[] = ['slika', 'opis', 'kolicina', 'cena'];
 
   constructor(
     private loginServis: LoginService,

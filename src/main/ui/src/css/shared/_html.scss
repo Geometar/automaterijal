@@ -63,9 +63,14 @@ body {
     list-style-type: none;
     color: $automaterijal-primary-50;
     font: 1em 'Work Sans', sans-serif;
+
+
   }
 
   @media only screen and (max-width : 960px) { 
+    body {
+      padding-top: 0px;
+    }
     body {
       width: 100%;
     }

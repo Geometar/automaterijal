@@ -1,34 +1,30 @@
 package com.automaterijal.application.services.roba;
 
-import com.automaterijal.application.domain.constants.VrstaRobe;
 import com.automaterijal.application.domain.dto.RobaDto;
+import com.automaterijal.application.domain.dto.RobaTehnickiOpisDto;
+import com.automaterijal.application.domain.dto.robadetalji.RobaDetaljiDto;
 import com.automaterijal.application.domain.entity.Partner;
-import com.automaterijal.application.domain.entity.Roba;
-import com.automaterijal.application.domain.entity.RobaKatBrPro;
+import com.automaterijal.application.domain.entity.roba.Roba;
+import com.automaterijal.application.domain.mapper.RobaMapper;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
-import com.automaterijal.application.utils.RobaSpringBeanUtils;
-import com.automaterijal.application.utils.RobaStaticUtils;
+import com.automaterijal.application.domain.repository.roba.RobaJooqRepository;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Slf4j
@@ -37,19 +33,39 @@ public class RobaGlavniService {
     @NonNull
     final RobaService robaService;
     @NonNull
-    final RobaKatBrProService robaKatBrProService;
+    final RobaJooqRepository jooqRepository;
     @NonNull
-    final RobaSpringBeanUtils robaSpringBeanUtils;
+    final RobaCeneService robaCeneService;
+    @NonNull
+    final RobaTehnickiOpisServis tehnickiOpisServis;
+    @NonNull
+    final RobaBrojeviServis brojeviServis;
+    @NonNull
+    final RobaAplikacijeServis aplikacijeServis;
+    @NonNull
+    final RobaSlikaService robaSlikaService;
+    @NonNull
+    final RobaMapper mapper;
+
+    @Value("${roba.slika.prefixTabela}")
+    String prefixTabela;
+
+    @Value("${roba.slika.prefixThumbs}")
+    String prefixThumbs;
+
+
+    private static final Integer VRSTA_ORIGINALNI = 3;
+    private static final Integer VRSTA_PROIZVODJACI = 4;
 
     /**
      * Ulazna metoda iz kontrolera
      */
-    public Page<RobaDto> pronadjiRobuPoPretrazi(final UniverzalniParametri parametri, final Partner ulogovaniPartner) {
+    public Page<RobaDto> pronadjiRobuPoPretrazi(UniverzalniParametri parametri, Partner ulogovaniPartner) {
 
-        final var pageable = PageRequest.of(
+        var pageable = PageRequest.of(
                 parametri.getPage(), parametri.getPageSize(), new Sort(parametri.getDirection(), parametri.getSortiranjePolja().getFieldName())
         );
-        final Page<Roba> roba;
+        Page<RobaDto> roba = null;
         log.info("Partner {} trazi robu na stranici {} po kataloskom broju {} i prozivodjacu {}",
                 ulogovaniPartner != null ? ulogovaniPartner.getNaziv() : "anoniman",
                 parametri.getVrstaRobe() != null ? parametri.getVrstaRobe().toString().toLowerCase() : " - ",
@@ -58,20 +74,20 @@ public class RobaGlavniService {
         );
 
         if (parametri.getTrazenaRec() == null && parametri.getProizvodjac() == null) {
-            roba = vratiSvuRobuUZavisnostiOdTrazenogStanja(parametri, pageable);
+            roba = vratiSvuRobuUZavisnostiOdTrazenogStanja(parametri, pageable, ulogovaniPartner);
         } else {
-            roba = vratiRobuUZavisnostiOdKriterijuma(parametri, pageable);
+            roba = jooqRepository.pronadjiPoTrazenojReci(parametri, parametri.getTrazenaRec());
+            roba.forEach(dto -> setujZaTabelu(dto, ulogovaniPartner));
         }
-
-        return roba.map(artikli -> robaSpringBeanUtils.pretvoriUDTO(artikli, ulogovaniPartner));
+        return roba;
     }
 
     /**
      * Roba koja je na stanju, rezultat zavisi od vrste i od filtera da li je na stanju
      */
-    private Page<Roba> vratiSvuRobuUZavisnostiOdTrazenogStanja(final UniverzalniParametri parametri, final Pageable pageable) {
-        final Page<Roba> roba;
-        final boolean naStanju = parametri.getNaStanju();
+    private Page<RobaDto> vratiSvuRobuUZavisnostiOdTrazenogStanja(UniverzalniParametri parametri, Pageable pageable, Partner ulogovaniPartner) {
+        Page<Roba> roba;
+        boolean naStanju = parametri.isNaStanju();
         switch (parametri.getVrstaRobe()) {
             case SVE:
                 roba = robaService.pronadjiSvuRobu(naStanju, pageable);
@@ -89,132 +105,55 @@ public class RobaGlavniService {
                 log.error("Ne definisana roba!");
         }
 
-        return roba;
+        List<RobaDto> dto = roba.stream().map(robaEntitet -> {
+            RobaDto robaDto = mapper.map(robaEntitet);
+            setujZaTabelu(robaDto, ulogovaniPartner);
+            return robaDto;
+        }).collect(Collectors.toList());
+
+        return new PageImpl<>(dto, roba.getPageable(), roba.getTotalElements());
     }
 
     /**
-     * Filtriraj po trazenoj reci ili partneru
+     * Metoda za setovanje cena i tehnickog opisa u dto-u
      */
-    private Page<Roba> vratiRobuUZavisnostiOdKriterijuma(final UniverzalniParametri parametri, final Pageable pageable) {
-        final List<String> kataloskiBrojevi;
-        if (!StringUtils.isEmpty(parametri.getTrazenaRec())) {
-            final String trazenaRec = parametri.getTrazenaRec();
-            if (VrstaRobe.SVE == parametri.getVrstaRobe()) {
-                kataloskiBrojevi = vratiSveKataloskeBrojevePoTrazenojReci(parametri.getTrazenaRec());
-            } else {
-                kataloskiBrojevi = vratiSveKataloskeBrojevePoTrazenojIFilterIdu(parametri, trazenaRec);
-            }
+    private void setujZaTabelu(RobaDto robaDto, Partner partner) {
+        robaDto.setCena(robaCeneService.vratiCenuRobePoRobiId(robaDto.getRobaid(), robaDto.getGrupa(), robaDto.getProizvodjac().getProid(), partner));
+        robaDto.setRabat(robaCeneService.vratiRabatPartneraNaArtikal(robaDto.getProizvodjac().getProid(), robaDto.getGrupa(), partner));
+
+        Set<RobaTehnickiOpisDto> tehnickiOpisi = tehnickiOpisServis.vratiTehnickiOpisPoIdRobe(robaDto.getRobaid());
+        if (tehnickiOpisi.size() > 5) {
+            robaDto.setTehnickiOpis(tehnickiOpisi.stream().limit(4).collect(Collectors.toSet()));
         } else {
-            switch (parametri.getVrstaRobe()) {
-                case SVE:
-                    kataloskiBrojevi = vratiSveKataloskeBrojeveZaProizvodjaca(parametri.getProizvodjac());
-                    break;
-                case FILTERI:
-                case ULJA:
-                case OSTALO:
-                    kataloskiBrojevi = vratiSveKataloskeBrojevePoPodGrupi(parametri.getPodGrupeId());
-                    break;
-                case AKUMULATORI:
-                    kataloskiBrojevi = vratiSveKataloskeBrojevePoGrupiId(parametri.getGrupeId());
-                    break;
-                default:
-                    kataloskiBrojevi = vratiSveKataloskeBrojeveZaProizvodjaca(parametri.getProizvodjac());
-            }
-        }
-        return pronadjiRobuPoIzvucenimKatBrojevima(
-                kataloskiBrojevi,
-                parametri,
-                pageable);
-    }
-
-    /**
-     * Trazenje robe za sve kategorije
-     *
-     * @param searchTerm
-     * @return
-     */
-    private List<String> vratiSveKataloskeBrojevePoTrazenojReci(final String searchTerm) {
-        final List<Roba> katBr = pronadjuSvuRobuPoPretrazi(searchTerm);
-        final List<RobaKatBrPro> katBrProLista = robaKatBrProService.pronadjiPoPretrazi(searchTerm);
-
-        final List<String> pretragaPoKatProizvodjacima = new ArrayList<>();
-        katBrProLista.stream().map(RobaKatBrPro::getKatbr).filter(StringUtils::hasText).forEach(pretragaPoKatProizvodjacima::add);
-        katBrProLista.stream().map(RobaKatBrPro::getKatbrpro).filter(StringUtils::hasText).forEach(pretragaPoKatProizvodjacima::add);
-        katBr.addAll(robaService.pronadjiRobuPoKatBrojevima(pretragaPoKatProizvodjacima));
-
-        final List<String> katBrojevi = RobaStaticUtils.miksujSveKatBrojeve(katBr, katBrProLista);
-        return katBrojevi.stream().filter(katBroj -> !katBroj.isEmpty()).collect(Collectors.toList());
-    }
-
-    /**
-     * Trazenje robe za specificne katerogrije
-     */
-    private List<String> vratiSveKataloskeBrojevePoTrazenojIFilterIdu(final UniverzalniParametri parametri, final String trazenaRec) {
-        final List<Roba> filtriranaRoba = new ArrayList<>();
-        final List<Roba> svaRoba = pronadjuSvuRobuPoPretrazi(trazenaRec);
-        if (VrstaRobe.FILTERI == parametri.getVrstaRobe()
-                || VrstaRobe.ULJA == parametri.getVrstaRobe()
-                || VrstaRobe.OSTALO == parametri.getVrstaRobe()) {
-            svaRoba.stream().filter(roba -> parametri.getPodGrupeId().contains(roba.getPodgrupaid())).forEach(filtriranaRoba::add);
-        } else {
-            svaRoba.stream().filter(roba -> parametri.getGrupeId().contains(roba.getGrupaid())).forEach(filtriranaRoba::add);
+            robaDto.setTehnickiOpis(tehnickiOpisi);
         }
 
-        final List<RobaKatBrPro> katBrProLista = robaKatBrProService.pronadjiPoPretrazi(trazenaRec);
-        final List<String> katBrojevi = RobaStaticUtils.miksujSveKatBrojeve(filtriranaRoba, katBrProLista);
-        return katBrojevi.stream().filter(katBroj -> !katBroj.isEmpty()).collect(Collectors.toList());
+        robaSlikaService.pronadjiPutanjuSlikePoId(robaDto.getRobaid()).ifPresent(robaSlika -> {
+            robaDto.setSlika(prefixTabela + prefixThumbs + robaSlika.getSlika());
+        });
     }
 
-    /**
-     * Glavna privatna metoda za pretragu delova
-     */
-    private List<Roba> pronadjuSvuRobuPoPretrazi(final String searchTerm) {
-        return robaService.pronadjuSvuRobuPoPretrazi(searchTerm);
-    }
-
-    private List<String> vratiSveKataloskeBrojevePoPodGrupi(final List<Integer> podGrupeId) {
-        final List<Roba> robaPoPodGrupi = robaService.pronadjuSvuRobuPodGrupomId(podGrupeId);
-        final List<String> katBrojevi = robaPoPodGrupi.stream().map(Roba::getKatbr).collect(Collectors.toList());
-        return katBrojevi.stream().filter(katBroj -> !katBroj.isEmpty()).collect(Collectors.toList());
-    }
-
-    private List<String> vratiSveKataloskeBrojevePoGrupiId(final List<String> sveAkumulatorGrupeId) {
-        final List<Roba> robaPoPodGrupi = robaService.pronadjuSvuRobuPoGrupiId(sveAkumulatorGrupeId);
-        final List<String> katBrojevi = robaPoPodGrupi.stream().map(Roba::getKatbr).collect(Collectors.toList());
-        return katBrojevi.stream().filter(katBroj -> !katBroj.isEmpty()).collect(Collectors.toList());
-    }
-
-    private List<String> vratiSveKataloskeBrojeveZaProizvodjaca(final String proizvodjacId) {
-        final List<String> katBrojevi;
-        if (proizvodjacId == null) {
-            final List<Roba> katBr = robaService.pronadjiSvuRobu();
-            katBrojevi = RobaStaticUtils.miksujSveKatBrojeve(katBr, new ArrayList<>());
-        } else {
-            final List<Roba> katBr = robaService.pronadjiSvuRobuPoProId(proizvodjacId);
-            katBrojevi = RobaStaticUtils.miksujSveKatBrojeve(katBr, new ArrayList<>());
+    public Optional<RobaDetaljiDto> pronadjiRobuPoRobaId(Long robaId, Partner ulogovaniPartner) {
+        Optional<RobaDetaljiDto> retVal = Optional.empty();
+        Optional<Roba> roba = robaService.pronadjiRobuPoPrimarnomKljucu(robaId);
+        if (roba.isPresent()) {
+            RobaDetaljiDto detaljnoDto = mapper.mapujDetaljno(roba.get());
+            setujZaDetalje(detaljnoDto, ulogovaniPartner);
+            retVal = Optional.of(detaljnoDto);
         }
-        return katBrojevi.stream().filter(katBroj -> !katBroj.isEmpty()).collect(Collectors.toList());
+        return retVal;
     }
 
-    private Page<Roba> pronadjiRobuPoIzvucenimKatBrojevima(final List<String> katBrojevi, final UniverzalniParametri parametri, final Pageable pageable) {
-        final Set<Long> robaId = new HashSet<>();
-        robaId.addAll(robaService.pronadjiRobuPoKatBrojevima(katBrojevi).stream().map(Roba::getRobaid).collect(Collectors.toSet()));
-
-        Page<Roba> robas = null;
-        switch (parametri.getVrstaRobe()) {
-            case AKUMULATORI:
-                robas = robaService.pronadjiRobuPoKljucevimaIGrupiId(robaId, parametri.getGrupeId(), parametri.getProizvodjac(), parametri.getNaStanju(), pageable);
-                break;
-            case FILTERI:
-            case ULJA:
-            case OSTALO:
-                robas = robaService.pronadjiRobuPoKljucevimaIPodGrupi(robaId, parametri.getPodGrupeId(), parametri.getProizvodjac(), parametri.getNaStanju(), pageable);
-                break;
-            case SVE:
-            default:
-                robas = robaService.pronadjiRobuPoKljucevima(robaId, parametri.getProizvodjac(), parametri.getNaStanju(), pageable);
-                break;
+    private void setujZaDetalje(RobaDetaljiDto detaljnoDto, Partner partner) {
+        if (detaljnoDto != null) {
+            detaljnoDto.setCena(robaCeneService.vratiCenuRobePoRobiId(detaljnoDto.getRobaId(), detaljnoDto.getGrupa(), detaljnoDto.getProizvodjac().getProid(), partner));
+            detaljnoDto.setRabat(robaCeneService.vratiRabatPartneraNaArtikal(detaljnoDto.getProizvodjac().getProid(), detaljnoDto.getGrupa(), partner));
+            detaljnoDto.setTehnickiOpis(tehnickiOpisServis.vratiTehnickiOpisPoIdRobe(detaljnoDto.getRobaId()));
+            detaljnoDto.setTdBrojevi(brojeviServis.vratiSveBrojeveZaRobidIVrsti(detaljnoDto.getRobaId(), VRSTA_ORIGINALNI));
+            detaljnoDto.setAplikacije(aplikacijeServis.vratiAplikacijeZaDetalje(detaljnoDto.getRobaId()));
+            robaSlikaService.pronadjiPutanjuSlikePoId(detaljnoDto.getRobaId()).ifPresent(robaSlika -> {
+                detaljnoDto.setSlika(prefixTabela + robaSlika.getSlika());
+            });
         }
-        return robas;
     }
 }

@@ -3,7 +3,6 @@ package com.automaterijal.application.services;
 
 import com.automaterijal.application.domain.constants.GrupeKonstante;
 import com.automaterijal.application.domain.entity.Proizvodjac;
-import com.automaterijal.application.domain.entity.Roba;
 import com.automaterijal.application.domain.repository.ProizvodjacRepository;
 import com.automaterijal.application.services.roba.RobaService;
 import com.automaterijal.application.services.roba.grupe.GrupaService;
@@ -48,7 +47,7 @@ public class ProizvodjacService {
         final List<Integer> podGrupeId = podGrupaService.vratiSvePodGrupeIdPoNazivu(GrupeKonstante.FILTER);
         final Set<String> filterRoba = robaService.pronadjiSvuRobuPoPodGrupiIdLista(podGrupeId)
                 .stream()
-                .map(Roba::getProid)
+                .map(robaEnitet -> robaEnitet.getProizvodjac().getProid())
                 .collect(Collectors.toSet());
         final List<Proizvodjac> proizvodjaci = pronadjiSveProizvodjace().stream().filter(proizvodjac -> filterRoba.contains(proizvodjac.getProid())).collect(Collectors.toList());
         proizvodjaci.add(0, new Proizvodjac("-99", SVI_PROIZVODJACI));
@@ -59,7 +58,7 @@ public class ProizvodjacService {
         final List<String> grupeId = grupaService.vratiSveIdGrupePoNazivu(GrupeKonstante.AKUMULATOR);
         final Set<String> filterRoba = robaService.pronadjuSvuRobuPoGrupiIdNaStanju(grupeId)
                 .stream()
-                .map(Roba::getProid)
+                .map(robaEnitet -> robaEnitet.getProizvodjac().getProid())
                 .collect(Collectors.toSet());
         final List<Proizvodjac> proizvodjaci = proizvodjacRepository.findAllByOrderByNazivAsc().stream().filter(proizvodjac -> filterRoba.contains(proizvodjac.getProid())).collect(Collectors.toList());
         proizvodjaci.add(0, new Proizvodjac("-99", SVI_PROIZVODJACI));
@@ -71,7 +70,7 @@ public class ProizvodjacService {
         pronadjiSvePodGrupeUZavisnostiOdVrste(svePodGrupeUlja, vrstaUlja);
         final Set<String> filterRoba = robaService.pronadjiSvuRobuPoPodGrupiIdLista(svePodGrupeUlja)
                 .stream()
-                .map(Roba::getProid)
+                .map(robaEnitet -> robaEnitet.getProizvodjac().getProid())
                 .collect(Collectors.toSet());
         final List<Proizvodjac> proizvodjaci = pronadjiSveProizvodjace().stream().filter(proizvodjac -> filterRoba.contains(proizvodjac.getProid())).collect(Collectors.toList());
         proizvodjaci.add(0, new Proizvodjac("-99", SVI_PROIZVODJACI));
@@ -83,7 +82,7 @@ public class ProizvodjacService {
         podVrsta.forEach(naziv -> svePodGrupeUlja.addAll(podGrupaService.vratiSvePodGrupeIdPoNazivu(naziv)));
         final Set<String> roba = robaService.pronadjiSvuRobuPoPodGrupiIdLista(svePodGrupeUlja)
                 .stream()
-                .map(Roba::getProid)
+                .map(robaEnitet -> robaEnitet.getProizvodjac().getProid())
                 .collect(Collectors.toSet());
         final List<Proizvodjac> proizvodjaci = pronadjiSveProizvodjace().stream().filter(proizvodjac -> roba.contains(proizvodjac.getProid())).collect(Collectors.toList());
         proizvodjaci.add(0, new Proizvodjac("-99", SVI_PROIZVODJACI));

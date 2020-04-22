@@ -10,5 +10,4 @@ import java.util.List;
 public interface FakturaDetaljiRepository extends JpaRepository<FakturaDetalji, Integer> {
 
     List<FakturaDetalji> findByOrderId(Integer orderId);
-    List<FakturaDetalji> findByPpidAndOrderId(Integer ppid, Integer orderId);
 }

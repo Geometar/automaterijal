@@ -2,7 +2,7 @@ package com.automaterijal.application.utils;
 
 import com.automaterijal.application.domain.constants.GrupeKonstante;
 import com.automaterijal.application.domain.constants.VrstaUlja;
-import com.automaterijal.application.domain.entity.Roba;
+import com.automaterijal.application.domain.entity.roba.Roba;
 import com.automaterijal.application.domain.entity.RobaKatBrPro;
 import lombok.experimental.UtilityClass;
 import org.springframework.util.StringUtils;

@@ -1,12 +1,11 @@
-package com.automaterijal.application.domain.entity;
+package com.automaterijal.application.domain.entity.roba;
 
+import com.automaterijal.application.domain.entity.Proizvodjac;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Data
@@ -26,8 +25,6 @@ public class Roba {
     String grupaid;
     @Column(name = "podgrupaid")
     int podgrupaid;
-    @Column(name = "proid")
-    String proid;
     @Column(name = "stanje")
     double stanje;
     @Column(name = "fabrcena")
@@ -40,5 +37,8 @@ public class Roba {
     String komentar;
     @Column(name = "vpcid")
     int vpcid;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "proid", insertable = false, updatable = false)
+    Proizvodjac proizvodjac;
 
 }

@@ -5,6 +5,8 @@ server:
       timeout: 180m
 
 spring:
+  jooq:
+    sql-dialect: MYSQL
   jpa:
     open-in-view: false
   autoconfigure:

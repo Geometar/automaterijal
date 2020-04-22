@@ -67,10 +67,16 @@ mat-divider {
   z-index: 999 !important;
 }
 
-@media screen and (max-width :991px) { 
+@media screen and (max-width :1150px) { 
+  .pozicija {
+    margin-top: 60px;
+  }
+}
+@media screen and (max-width: 991px) {
   .pozicija {
     padding-bottom: 490px;
   }
+
 }
 
 @media screen and (max-width: 950px) {

@@ -25,6 +25,16 @@ export class RobaService {
 
   constructor(private http: HttpClient, private utils: AppUtilsService) { }
 
+  public pronadjiDetaljeRobe(robaId: number): Observable<HttpResponse<Object>> {
+    const fullUrl = DOMAIN_URL + ROBA_URL + '/' + robaId;
+    return this.http
+      .get(fullUrl, {observe: 'response'})
+      .pipe(
+        timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
+        catchError((error: any) => throwError(error))
+      );
+  }
+
   public pronadjiSvuRobu(sort: Sort, pageSize, page, searchValue, naStanju, proizvodjacId): Observable<HttpResponse<Object>> {
     const parameterObject = {};
     parameterObject['pageSize'] = pageSize;

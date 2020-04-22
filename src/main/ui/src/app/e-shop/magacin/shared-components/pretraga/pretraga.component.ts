@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-pretraga',
@@ -9,8 +9,8 @@ export class PretragaComponent implements OnInit {
 
   @Output() pretragaEvent = new EventEmitter<any>();
   @Output() filterEvent = new EventEmitter<any>();
+  @Input() searchValue;
 
-  public searchValue = '';
   public otvoriFilter = false;
   public pocetnoPretrazivanje = true;
   public validnaPretaga = true;

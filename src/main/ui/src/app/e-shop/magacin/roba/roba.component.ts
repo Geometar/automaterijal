@@ -8,6 +8,8 @@ import { VrstaRobe } from '../../model/roba.enum';
 import { Filter } from '../../model/filter';
 import { LoginService } from '../../service/login.service';
 import { HttpResponse } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
+
 @Component({
   selector: 'app-roba',
   templateUrl: './roba.component.html',
@@ -26,7 +28,7 @@ export class RobaComponent implements OnInit {
 
   public filter: Filter = new Filter();
 
-  private searchValue = '';
+  public searchValue = '';
 
   public ucitavanje = false;
   public pronadjenaRoba = true;
@@ -37,11 +39,24 @@ export class RobaComponent implements OnInit {
 
   constructor(private robaService: RobaService,
     private dataService: DataService,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private aktivnaRuta: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit() {
-    this.pronadjiSvuRobu();
+    this.uzmiParametreIzUrla();
+  }
+
+  uzmiParametreIzUrla() {
+    this.aktivnaRuta.queryParams.subscribe(params => {
+      this.pageIndex = params['strana'];
+      this.rowsPerPage = params['brojKolona'];
+      this.filter.proizvodjacId = params['proizvodjac'];
+      this.filter.naStanju = params['naStanju'];
+      this.searchValue = params['pretraga'];
+      this.pronadjiSvuRobu();
+    });
   }
 
   pronadjiSvuRobu() {
@@ -50,7 +65,7 @@ export class RobaComponent implements OnInit {
     this.pronadjenaRoba = true;
     this.robaService.pronadjiSvuRobu(
       this.sort, this.rowsPerPage, this.pageIndex, this.searchValue, this.filter.naStanju, this.filter.proizvodjacId
-      )
+    )
       .pipe(
         takeWhile(() => this.alive),
         catchError((error: Response) => {
@@ -85,14 +100,35 @@ export class RobaComponent implements OnInit {
       this.pageIndex = 0;
     }
     this.searchValue = searchValue;
-    this.pronadjiSvuRobu();
+    this.dodajParametreUURL();
   }
 
   paginatorEvent(pageEvent) {
     this.dataSource = [];
     this.rowsPerPage = pageEvent.pageSize;
     this.pageIndex = pageEvent.pageIndex;
-    this.pronadjiSvuRobu();
+    this.dodajParametreUURL();
+  }
+
+  dodajParametreUURL() {
+    const parameterObject = {};
+    if (this.pageIndex) {
+      parameterObject['strana'] = this.pageIndex;
+    }
+    if (this.rowsPerPage) {
+      parameterObject['brojKolona'] = this.rowsPerPage;
+    }
+    if (this.filter.proizvodjac) {
+      parameterObject['proizvodjac'] = this.filter.proizvodjacId;
+    }
+    if (this.filter.naStanju) {
+      parameterObject['naStanju'] = this.filter.naStanju;
+    }
+    if (this.searchValue) {
+      parameterObject['pretraga'] = this.searchValue;
+    }
+
+    this.router.navigate(['/roba'], { queryParams: parameterObject });
   }
 
   toogleFilterDiv(otvoriFilter: boolean) {
@@ -104,6 +140,6 @@ export class RobaComponent implements OnInit {
       this.pageIndex = 0;
     }
     this.filter = filter;
-    this.pronadjiSvuRobu();
+    this.dodajParametreUURL();
   }
 }

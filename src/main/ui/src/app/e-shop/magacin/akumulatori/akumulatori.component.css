@@ -1,8 +1,12 @@
-
 .sekcija-pretraga {
-    height: 150px;
-    background-image: url('/assets/slike/ui/pozadine/akumulatori.png');
-    /* background-image: url('/assets/slike/ui/pozadine/akumulatori.png'); */
-    background-repeat: no-repeat;
-    background-size: contain;
+  height: 140px;
+  background-image: url("/assets/slike/ui/pozadine/akumulatori.png");
+  /* background-image: url('/assets/slike/ui/pozadine/akumulatori.png'); */
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+@media screen and (max-width: 1000px) {
+  .sekcija-pretraga {
+    background-image: none;
+  }
 }

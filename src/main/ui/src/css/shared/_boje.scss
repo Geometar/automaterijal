@@ -8,12 +8,24 @@
     color: $automaterijal-primary-100 !important;
 }
   
+.boja-glavna-200 {
+    color: $automaterijal-primary-200 !important;
+}
+  
 .boja-zelena-50 {
       color: $automaterijal-accent-green-50;
 }
   
+.boja-zelena-100 {
+      color: $automaterijal-accent-green-100;
+}
+  
 .boja-siva-50 {
     color: $automaterijal-grey-50 !important;
+}
+  
+.boja-siva-100 {
+    color: $automaterijal-grey-100 !important;
 }
   
 .boja-siva-200 {
@@ -29,7 +41,11 @@
 }
 
 .boja-crvena-50 {
-    color: $automaterijal-accent-red-50;
+    color: $automaterijal-accent-red-50 !important;
+}
+
+.boja-crvena-10 {
+    color: $automaterijal-accent-red-100 !important;
 }
   
 .pozadina-glavna-50 {

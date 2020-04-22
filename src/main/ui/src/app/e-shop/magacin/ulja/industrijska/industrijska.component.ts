@@ -35,13 +35,13 @@ export class IndustrijskaComponent implements OnInit {
   public otvoriFilter = false;
   public dataSource: any;
 
-  public vrste: string[] = ['Hidraulično ulje', 'Kompresorkso ulje', 'Reduktorsko ulje',
+  public vrste: string[] = ['Hidraulično ulje', 'Kompresorsko ulje', 'Reduktorsko ulje',
     'Transformatorsko ulje', 'Turbinska ulja', 'Ulja za pneumatske alate', 'Ulja za klizne staze', 'Ulja za prenos toplote'];
   public izabranaVrsta: string = this.vrste[0];
 
   public vrsteUlja = [
     { 'url': 'hidraulicna', 'naziv': 'Hidraulično ulje' },
-    { 'url': 'kompresorska', 'naziv': 'Kompresorkso ulje' },
+    { 'url': 'kompresorska', 'naziv': 'Kompresorsko ulje' },
     { 'url': 'redutktorska', 'naziv': 'Reduktorsko ulje' },
     { 'url': 'transformatorska', 'naziv': 'Transformatorsko ulje' },
     { 'url': 'turbinska', 'naziv': 'Turbinska ulja' },

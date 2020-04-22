@@ -8,6 +8,7 @@ import { ZaboravljenaSifraModalComponent } from 'src/app/shared/modal/zaboravlje
 import { Router } from '@angular/router';
 import { LocalStorageService } from '../service/data/local-storage.service';
 import { PrvoLogovanjeModalComponent } from 'src/app/shared/modal/prvo-logovanje-modal/prvo-logovanje-modal.component';
+import { DataService } from '../service/data/data.service';
 
 @Component({
   selector: 'app-login',
@@ -27,6 +28,7 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     public dataService: LocalStorageService,
     public router: Router,
+    private korpaServis: DataService,
     public dialog: MatDialog) { }
 
   ngOnInit() {
@@ -61,6 +63,7 @@ export class LoginComponent implements OnInit {
             this.router.navigateByUrl('naslovna');
             this.loginServis.setDaLiJeUserLogovan(true);
             this.loginServis.setUlogovanogPartner(this.partner);
+            this.korpaServis.inicijalizujKorpu();
           } else {
             this.loginServis.setDaLiJeUserLogovan(false);
             this.dataService.logout();
