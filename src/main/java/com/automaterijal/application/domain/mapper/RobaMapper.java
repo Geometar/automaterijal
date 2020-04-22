@@ -25,7 +25,6 @@ public abstract class RobaMapper {
 
     public abstract List<RobaTehnickiOpisDto> map(List<RobaOpis> opisi);
 
-    @Mapping(target = "robaId", source = "robaid")
     @Mapping(target = "grupa", source = "grupaid")
     @Mapping(target = "podGrupa", source = "podgrupaid")
     public abstract RobaDetaljiDto mapujDetaljno(Roba roba);

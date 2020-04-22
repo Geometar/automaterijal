@@ -14,7 +14,7 @@ import java.util.Set;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RobaDetaljiDto {
-    Long robaId;
+    Long robaid;
     String slika;
     String grupa;
     String podGrupa;
