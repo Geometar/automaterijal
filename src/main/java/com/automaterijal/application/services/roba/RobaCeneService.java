@@ -31,14 +31,14 @@ public class RobaCeneService {
 
     final Long GLAVNI_MAGACIN = 1L;
 
-    public BigDecimal vratiCenuRobePoRobiId(final Long robaId, final String grupaId, final String proID, final Partner partner) {
+    public BigDecimal vratiCenuRobePoRobiId(Long robaId, String grupaId, String proID, Partner partner) {
         manager.clear();
         BigDecimal retVal = null;
         Double popust = 1.0;
         if (partner != null) {
             popust = preracunajPopustNaArtkalZaUlogovanogPartnera(grupaId, proID, partner);
         }
-        final Optional<RobaCene> robaCene = robaCeneRepository.findByMagacinidAndRobaid(GLAVNI_MAGACIN, robaId);
+        Optional<RobaCene> robaCene = robaCeneRepository.findByMagacinidAndRobaid(GLAVNI_MAGACIN, robaId);
         if (robaCene.isPresent()) {
             if (partner == null) {
                 retVal = robaCene.get().getDeviznacena()
@@ -54,7 +54,7 @@ public class RobaCeneService {
         return retVal;
     }
 
-    public Double vratiRabatPartneraNaArtikal(final String proId, final String grupaId, final Partner partner) {
+    public Double vratiRabatPartneraNaArtikal(String proId, String grupaId, Partner partner) {
         manager.clear();
         Double popust = 0.0;
         if (partner != null) {
@@ -66,19 +66,19 @@ public class RobaCeneService {
         return Math.abs(popust);
     }
 
-    private Double preracunajPopustNaArtkalZaUlogovanogPartnera(final String proId, final String grupaId, final Partner partner) {
+    private Double preracunajPopustNaArtkalZaUlogovanogPartnera(String proId, String grupaId, Partner partner) {
         Optional<Double> retVal = Optional.empty();
         if (partner.getPopustiList() != null) {
             retVal = partner.getPopustiList().stream()
                     .filter(
-                            popusti -> grupaId.equals(popusti.getGrupaid()) && proId.equals(popusti.getProid())
+                            popusti -> (grupaId != null && grupaId.equals(popusti.getGrupaid()) || (proId != null && proId.equals(popusti.getProid())))
                     )
                     .map(Popusti::getProcenat)
                     .findFirst();
             if (!retVal.isPresent()) {
                 retVal = partner.getPopustiList().stream()
                         .filter(
-                                popusti -> grupaId.equals(popusti.getGrupaid()) || proId.equals(popusti.getProid())
+                                popusti -> (grupaId != null && grupaId.equals(popusti.getGrupaid()) || (proId != null && proId.equals(popusti.getProid())))
                         )
                         .map(Popusti::getProcenat)
                         .findFirst();

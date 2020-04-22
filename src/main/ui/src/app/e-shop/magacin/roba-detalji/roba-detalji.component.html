@@ -50,7 +50,7 @@
             </span>
             <div [ngClass]="{ 'nije-u-korpi': !uKorpi(robaDetalji.katbr) }" class="text-right div-3-labela">
               <div *ngIf="robaDetalji.stanje > 0">
-                <div class="kolicina-celina p-1 bd-highlight"><b>Količina:</b>
+                <div *ngIf="partnerLogovan" class="kolicina-celina p-1 bd-highlight"><b>Količina:</b>
                   <div class="kolicina-div">
                     <span (click)="oduzmiOdKolicine(robaDetalji)" class="izbrisi-ikona">
                       <i class="material-icons kolicina-ikona">
