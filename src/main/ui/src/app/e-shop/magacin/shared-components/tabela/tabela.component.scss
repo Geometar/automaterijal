@@ -17,6 +17,10 @@ tr.mat-row {
   width: 200px;
   text-align: right !important;
 }
+.prazan-div-ikona {
+  height: 24px;
+  margin-top: -10px;
+}
 .roba-katbr {
   color: $automaterijal-primary-100;
   font-weight: bold;
@@ -179,7 +183,7 @@ tr.mat-row {
   }
 
   .pozicija-informacije-korpa {
-    top: -160px;
+    top: -155px;
     right: 20px;
     float: right;
   }

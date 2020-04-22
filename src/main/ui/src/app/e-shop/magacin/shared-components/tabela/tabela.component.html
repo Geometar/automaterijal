@@ -7,11 +7,13 @@
         <div class="centriraj">
           <img height="160" src={{roba.slika}} onError="this.src='assets/slike/ui/roba/slikanijedostupna.jpg'">
         </div>
-        <span *ngIf="partnerLogovan && uKorpi(roba.katbr)">
+        <div class="prazan-div-ikona" *ngIf="partnerLogovan && !uKorpi(roba.katbr)">
+        </div>
+        <div class="prazan-div-ikona" *ngIf="partnerLogovan && uKorpi(roba.katbr)">
           <i matTooltip="U korpi" class="material-icons boja-glavna-100 pozicija-informacije-korpa">
             shopping_cart
           </i>
-        </span>
+        </div>
       </td>
     </ng-container>
 
@@ -112,7 +114,8 @@
                 </button>
               </div>
               <div class="dugme-detalji dugme-mobilni">
-                <button mat-raised-button [disabled]="roba.tehnickiOpis == null || roba.tehnickiOpis.length < 1 && roba.slika == null"
+                <button mat-raised-button
+                  [disabled]="roba.tehnickiOpis == null || roba.tehnickiOpis.length < 1 && roba.slika == null"
                   class="dugme button-crveni-50" (click)='detaljiRobe(roba.robaid)'>
                   <i class="material-icons">
                     library_books
