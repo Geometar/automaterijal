@@ -16,7 +16,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -39,9 +38,10 @@ public class RobaJooqRepository {
      * Ulazna metoda iz glavnog servisa
      */
     public Page<RobaDto> pronadjiPoTrazenojReci(UniverzalniParametri parametri, String trazenaRec) {
-        long ukupnoArtikala = brojPogodaka(parametri, trazenaRec);
-        List<RobaDto> roba = ukupnoArtikala > 0 ? vratiArtikleSaPaginacijom(parametri, trazenaRec) : new ArrayList<>();
-        return new PageImpl<>(roba, PageRequest.of(parametri.getPage(), parametri.getPageSize()), ukupnoArtikala);
+        List<RobaDto> roba = vratiArtikleSaPaginacijom(parametri, trazenaRec);
+        int start = parametri.getPageSize() * parametri.getPage();
+        int end = (start + parametri.getPageSize()) > roba.size() ? roba.size() : (start + parametri.getPageSize());
+        return new PageImpl<RobaDto>(roba.subList(start, end), PageRequest.of(parametri.getPage(), parametri.getPageSize()), roba.size());
     }
 
     /**
@@ -55,21 +55,9 @@ public class RobaJooqRepository {
         }
 
         filtrirajPoParametrima(select, parametri);
-        paginacijaISortiranje(select, parametri);
+        sortiranje(select, parametri);
 
         return robaDtoMapper(select.fetch());
-    }
-
-    /**
-     * Metoda sluzi za racunanje broja pogodaka sql kverija
-     */
-    private long brojPogodaka(UniverzalniParametri parametri, String trazenaRec) {
-        SelectConditionStep<?> select = kreirajSelect();
-        if (!StringUtils.isEmpty(trazenaRec)) {
-            standardniUslovi(select, trazenaRec);
-        }
-        filtrirajPoParametrima(select, parametri);
-        return dslContext.fetchCount(select);
     }
 
     /**
@@ -230,8 +218,7 @@ public class RobaJooqRepository {
     /**
      * Limitiranje pogodataka zbog paginacije
      */
-    private void paginacijaISortiranje(SelectConditionStep<?> select, UniverzalniParametri parametri) {
-        select.limit(parametri.getPageSize()).offset(parametri.getPage() * parametri.getPageSize());
+    private void sortiranje(SelectConditionStep<?> select, UniverzalniParametri parametri) {
         select.orderBy(ROBA.STANJE.desc());
     }
 }
