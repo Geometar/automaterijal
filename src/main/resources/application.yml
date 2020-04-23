@@ -39,7 +39,7 @@ schedule:
 
 roba:
   slika:
-    prefixTabela: "http://localhost/orders/item_images/"
+    prefixTabela: "/assets/slike/item_images/"
     prefixThumbs: "thumbs/"
 
 logging:
