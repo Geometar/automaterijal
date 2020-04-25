@@ -35,6 +35,8 @@ export class FilteriComponent implements OnInit {
   public otvoriFilter = false;
   public dataSource: any;
 
+  private treutniParametri = {};
+
   private alive = true;
 
   constructor(
@@ -50,12 +52,13 @@ export class FilteriComponent implements OnInit {
 
   uzmiParametreIzUrla() {
     this.aktivnaRuta.queryParams.subscribe(params => {
-        this.pageIndex = params['strana'];
-        this.rowsPerPage = params['brojKolona'];
-        this.filter.proizvodjacId = params['proizvodjac'];
-        this.filter.naStanju = params['naStanju'];
-        this.searchValue = params['pretraga'];
-        this.pronandjiSveFiltere();
+      this.treutniParametri = params;
+      this.pageIndex = params['strana'];
+      this.rowsPerPage = params['brojKolona'];
+      this.filter.proizvodjacId = params['proizvodjac'];
+      this.filter.naStanju = params['naStanju'];
+      this.searchValue = params['pretraga'];
+      this.pronandjiSveFiltere();
     });
   }
 
@@ -128,8 +131,16 @@ export class FilteriComponent implements OnInit {
     if (this.searchValue) {
       parameterObject['pretraga'] = this.searchValue;
     }
+    if (
+      parameterObject['pretraga'] &&
+      this.treutniParametri['pretraga'] &&
+      parameterObject['pretraga'] === this.treutniParametri['pretraga']
+    ) {
+      this.pronandjiSveFiltere();
+    } else {
+      this.router.navigate(['/filteri'], { queryParams: parameterObject });
+    }
 
-    this.router.navigate(['/filteri'], { queryParams: parameterObject });
   }
   toogleFilterDiv(otvoriFilter: boolean) {
     this.otvoriFilter = otvoriFilter;

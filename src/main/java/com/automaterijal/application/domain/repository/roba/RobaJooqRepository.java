@@ -34,6 +34,7 @@ public class RobaJooqRepository {
     @Autowired
     DSLContext dslContext;
 
+    private static final Short PROIZVODJAC_ID = 4;
     /**
      * Ulazna metoda iz glavnog servisa
      */
@@ -100,20 +101,19 @@ public class RobaJooqRepository {
     private void standardniUslovi(SelectConditionStep<?> select, String trazenaRec) {
         String trazenaRecLike = "%" + trazenaRec + "%";
         Set<String> sveKombinacijaKataloskihBrojeva = vratiSvePomocneKataloskeBrojeve(trazenaRec, trazenaRecLike);
-        select.and(
-                ROBA.KATBRPRO.like(trazenaRecLike)
-                        .or(ROBA.KATBR.in(sveKombinacijaKataloskihBrojeva))
+        select.and(ROBA.KATBR.in(sveKombinacijaKataloskihBrojeva))
                         .or(ROBA.KATBRPRO.in(sveKombinacijaKataloskihBrojeva))
                         .or(ROBA.NAZIV.like(trazenaRecLike))
-                        .or(PROIZVODJAC.NAZIV.like(trazenaRecLike)));
+                        .or(PROIZVODJAC.NAZIV.like(trazenaRecLike));
     }
 
     /**
      * Pomocni sql kveri za pretragu svih sifara u raznim tabelama
      */
     private Set<String> vratiSvePomocneKataloskeBrojeve(String trazenaRec, String trazenaRecLike) {
-        Set<String> retVal = new HashSet<>();
-        dslContext.select(ROBA.KATBR, ROBA.KATBRPRO, ROBA_KATBR_OLD.KATBR, ROBA_KATBR_OLD.KATBRPRO, TD_BROJEVI.NADJENPREKO)
+        Set<String> kataloskiBrojevi = new HashSet<>();
+        Set<Integer> robaId = new HashSet<>();
+        dslContext.selectDistinct(ROBA.KATBR, ROBA.KATBRPRO, ROBA.ROBAID)
                 .from(ROBA)
                 .leftJoin(ROBA_KATBR_OLD).using(ROBA.ROBAID)
                 .leftJoin(TD_BROJEVI).using(ROBA.ROBAID)
@@ -123,36 +123,40 @@ public class RobaJooqRepository {
                                 .or(ROBA_KATBR_OLD.KATBR.like(trazenaRecLike))
                                 .or(ROBA_KATBR_OLD.KATBRPRO.like(trazenaRecLike))
                                 .or(TD_BROJEVI.BROJ.eq(trazenaRec))
-                                .or(TD_BROJEVI.BROJSRCH.eq(trazenaRec)))
+                                .or(TD_BROJEVI.BROJSRCH.eq(trazenaRec))
+                                .or(TD_BROJEVI.FABRBROJ.eq(trazenaRec))
+                                .or(TD_BROJEVI.NADJENPREKO.eq(trazenaRec)))
                 .fetch().stream()
                 .forEach(rekord -> {
-                    procesuirajRekorde(retVal, rekord);
+
+                    if (rekord.component1() != null && !StringUtils.isEmpty(rekord.component1())) {
+                        kataloskiBrojevi.add(rekord.component1());
+                    }
+
+                    if (rekord.component2() != null && !StringUtils.isEmpty(rekord.component2())) {
+                        kataloskiBrojevi.add(rekord.component2());
+                    }
+
+                    if (rekord.component3() != null && !StringUtils.isEmpty(rekord.component3().toString())) {
+                        robaId.add(rekord.component3());
+                    }
                 });
-        prodjiIPopraviKatBr(retVal);
-        drugiPomocniKveri(retVal);
-        return retVal;
+        prodjiIPopraviKatBr(kataloskiBrojevi);
+        drugiPomocniKveri(kataloskiBrojevi, robaId);
+        return kataloskiBrojevi;
     }
 
-    private void drugiPomocniKveri(Set<String> katalskoBrojevi) {
-        dslContext.selectDistinct(ROBA.KATBR, ROBA.KATBRPRO, ROBA_KATBR_OLD.KATBR, ROBA_KATBR_OLD.KATBRPRO)
-                .from(ROBA)
-                .join(ROBA_KATBR_OLD).using(ROBA.ROBAID)
-                .where(ROBA.KATBR.in(katalskoBrojevi)
-                        .or(ROBA.KATBRPRO.in(katalskoBrojevi))
-                        .or(ROBA_KATBR_OLD.KATBR.in(katalskoBrojevi))
-                        .or(ROBA_KATBR_OLD.KATBRPRO.in(katalskoBrojevi)))
+    private void drugiPomocniKveri(Set<String> katalskoBrojevi, Set<Integer> robaIds) {
+        dslContext.selectDistinct(TD_BROJEVI.BROJ, TD_BROJEVI.BROJSRCH)
+                .from(TD_BROJEVI)
+                .where(TD_BROJEVI.ROBAID.in(robaIds))
+                .and(TD_BROJEVI.VRSTA.eq(PROIZVODJAC_ID))
                 .fetch().stream().forEach(record -> {
-            if (record.component1() != null && !StringUtils.isEmpty(record.component1().toString())) {
-                katalskoBrojevi.add(record.component1().toString());
+            if (record.component1() != null && !StringUtils.isEmpty(record.component1())) {
+                katalskoBrojevi.add(record.component1());
             }
-            if (record.component2() != null && !StringUtils.isEmpty(record.component2().toString())) {
-                katalskoBrojevi.add(record.component2().toString());
-            }
-            if (record.component3() != null && !StringUtils.isEmpty(record.component3().toString())) {
-                katalskoBrojevi.add(record.component3().toString());
-            }
-            if (record.component4() != null && !StringUtils.isEmpty(record.component4().toString())) {
-                katalskoBrojevi.add(record.component4().toString());
+            if (record.component2() != null && !StringUtils.isEmpty(record.component2())) {
+                katalskoBrojevi.add(record.component2());
             }
         });
     }
@@ -164,27 +168,6 @@ public class RobaJooqRepository {
             noviKatBrojevi.add(noviBroj);
         });
         retVal.addAll(noviKatBrojevi);
-    }
-
-    /**
-     * Procesuiramo pomocni kveri i stavljamo samo razlicite kataloske brojeve
-     */
-    private void procesuirajRekorde(Set<String> lista, Record5 record) {
-        if (record.component1() != null && !StringUtils.isEmpty(record.component1().toString())) {
-            lista.add(record.component1().toString());
-        }
-        if (record.component2() != null && !StringUtils.isEmpty(record.component2().toString())) {
-            lista.add(record.component2().toString());
-        }
-        if (record.component3() != null && !StringUtils.isEmpty(record.component3().toString())) {
-            lista.add(record.component3().toString());
-        }
-        if (record.component4() != null && !StringUtils.isEmpty(record.component4().toString())) {
-            lista.add(record.component4().toString());
-        }
-        if (record.component5() != null && !StringUtils.isEmpty(record.component5().toString())) {
-            lista.add(record.component5().toString());
-        }
     }
 
     /**

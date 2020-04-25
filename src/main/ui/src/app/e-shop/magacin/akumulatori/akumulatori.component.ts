@@ -34,6 +34,7 @@ export class AkumulatoriComponent implements OnInit {
 
   public pronadjenaRoba = true;
   public dataSource: any;
+  private treutniParametri = {};
 
   private alive = true;
 
@@ -50,12 +51,13 @@ export class AkumulatoriComponent implements OnInit {
 
   uzmiParametreIzUrla() {
     this.aktivnaRuta.queryParams.subscribe(params => {
-        this.pageIndex = params['strana'];
-        this.rowsPerPage = params['brojKolona'];
-        this.filter.proizvodjacId = params['proizvodjac'];
-        this.filter.naStanju = params['naStanju'];
-        this.searchValue = params['pretraga'];
-        this.pronandjiSveAkumulatore();
+      this.treutniParametri = params;
+      this.pageIndex = params['strana'];
+      this.rowsPerPage = params['brojKolona'];
+      this.filter.proizvodjacId = params['proizvodjac'];
+      this.filter.naStanju = params['naStanju'];
+      this.searchValue = params['pretraga'];
+      this.pronandjiSveAkumulatore();
     });
   }
 
@@ -65,7 +67,7 @@ export class AkumulatoriComponent implements OnInit {
     this.pronadjenaRoba = true;
     this.robaService.pronadjiAkumulatore(
       this.sort, this.rowsPerPage, this.pageIndex, this.searchValue, this.filter.naStanju, this.filter.proizvodjacId
-      )
+    )
       .pipe(
         takeWhile(() => this.alive),
         catchError((error: Response) => {
@@ -127,8 +129,15 @@ export class AkumulatoriComponent implements OnInit {
     if (this.searchValue) {
       parameterObject['pretraga'] = this.searchValue;
     }
-
-    this.router.navigate(['/akumulatori'], { queryParams: parameterObject });
+    if (
+      parameterObject['pretraga'] &&
+      this.treutniParametri['pretraga'] &&
+      parameterObject['pretraga'] === this.treutniParametri['pretraga']
+    ) {
+      this.pronandjiSveAkumulatore();
+    } else {
+      this.router.navigate(['/akumulatori'], { queryParams: parameterObject });
+    }
   }
 
   toogleFilterDiv(otvoriFilter: boolean) {

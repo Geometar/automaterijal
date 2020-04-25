@@ -117,6 +117,7 @@ export class TabelaComponent implements OnInit {
   }
 
   detaljiRobe(robaId: string) {
-    this.router.navigate(['/roba/' + robaId]);
+    const url = this.router.parseUrl(this.router.url);
+    this.router.navigate(['/roba/' + robaId], { queryParams: { prosliUrl: url.root.children.primary.segments[0].path}});
   }
 }

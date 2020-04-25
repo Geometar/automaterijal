@@ -104,7 +104,7 @@
                 </mat-expansion-panel-header>
                 <div class="div-sekcija-2 d-flex flex-wrap">
                   <span class="oe-broj-opis" *ngFor="let model of vratiOriginalneBrojevePoProizvodjacu(proizvodjaci)">
-                    <span>{{model.fabrBroj}}</span>
+                    <span class="originalni-broj" (click)="traziPoBroju(model.fabrBroj)">{{model.fabrBroj}}</span>
                   </span>
                 </div>
               </mat-expansion-panel>

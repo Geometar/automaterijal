@@ -15,6 +15,15 @@
   text-align: center;
 }
 
+.originalni-broj {
+  cursor: pointer;
+  color: $automaterijal-primary-100;
+}
+
+.originalni-broj:hover{
+  font-weight: bold;
+}
+
 .nema-podataka {
   font-size: 30px !important;
   color: $automaterijal-primary-50;

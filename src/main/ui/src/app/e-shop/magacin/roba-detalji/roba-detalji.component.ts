@@ -156,6 +156,13 @@ export class RobaDetaljiComponent implements OnInit {
     return this.utilsService.daLiJeRobaUKorpi(this.korpa, katBr);
   }
 
+  traziPoBroju(katBr) {
+    this.route.queryParams.subscribe(params => {
+      const url = '/' + params['prosliUrl'] + '/';
+      this.router.navigate([url], { queryParams: { pretraga: katBr}});
+    });
+  }
+
 }
 class OeBrojevi {
   broj: string;

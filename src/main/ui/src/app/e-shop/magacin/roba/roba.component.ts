@@ -34,6 +34,7 @@ export class RobaComponent implements OnInit {
   public pronadjenaRoba = true;
   public otvoriFilter = false;
   public dataSource: any;
+  private treutniParametri = {};
 
   private alive = true;
 
@@ -50,6 +51,7 @@ export class RobaComponent implements OnInit {
 
   uzmiParametreIzUrla() {
     this.aktivnaRuta.queryParams.subscribe(params => {
+      this.treutniParametri = params;
       this.pageIndex = params['strana'];
       this.rowsPerPage = params['brojKolona'];
       this.filter.proizvodjacId = params['proizvodjac'];
@@ -127,8 +129,15 @@ export class RobaComponent implements OnInit {
     if (this.searchValue) {
       parameterObject['pretraga'] = this.searchValue;
     }
-
-    this.router.navigate(['/roba'], { queryParams: parameterObject });
+    if (
+      parameterObject['pretraga'] &&
+      this.treutniParametri['pretraga'] &&
+      parameterObject['pretraga'] === this.treutniParametri['pretraga']
+      ) {
+        this.pronadjiSvuRobu();
+    } else {
+      this.router.navigate(['/roba'], { queryParams: parameterObject });
+    }
   }
 
   toogleFilterDiv(otvoriFilter: boolean) {
