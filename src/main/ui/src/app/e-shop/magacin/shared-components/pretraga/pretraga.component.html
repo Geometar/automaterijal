@@ -2,6 +2,9 @@
   <div class="forms-input">
     <input class="p-1 flex-grow-1 search__input" type="search" [(ngModel)]="searchValue"
       (keyup.enter)="pronaciPoTrazenojReci(searchValue)" />
+    <span *ngIf="searchValue" (click)="searchValue = ''; pronaciPoTrazenojReci(searchValue)" class="brisanje-pretrage boja-crvena-10 material-icons">
+      clear
+    </span>
     <div class="p-1" (click)='pronaciPoTrazenojReci(searchValue)'>
       <button mat-mini-fab class=pozadina-glavna-100>
         <mat-icon>search</mat-icon>
@@ -21,7 +24,8 @@
   <label *ngIf="pocetnoPretrazivanje">
     <font color="#424242"> Unesite termin za pretragu</font>
   </label>
-  <label *ngIf="!pocetnoPretrazivanje && !validnaPretaga && (searchValue.trim().length > 0 && searchValue.trim().length < 3)">
+  <label
+    *ngIf="!pocetnoPretrazivanje && !validnaPretaga && (searchValue.trim().length > 0 && searchValue.trim().length < 3)">
     <font class="boja-crvena-50">Morate uneti bar tri karaktera</font>
   </label>
 </div>
