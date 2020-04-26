@@ -39,7 +39,7 @@ schedule:
 
 roba:
   slika:
-    prefixTabela: "/assets/slike/item_images/"
+    prefixTabela: "http://automaterijal.com:8081/orders/item_images/"
     prefixThumbs: "thumbs/"
 
 logging:
