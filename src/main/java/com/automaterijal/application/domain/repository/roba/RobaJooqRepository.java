@@ -113,7 +113,7 @@ public class RobaJooqRepository {
     private Set<String> vratiSvePomocneKataloskeBrojeve(String trazenaRec, String trazenaRecLike) {
         Set<String> kataloskiBrojevi = new HashSet<>();
         Set<Integer> robaId = new HashSet<>();
-        dslContext.selectDistinct(ROBA.KATBR, ROBA.KATBRPRO, ROBA.ROBAID)
+        dslContext.selectDistinct(ROBA.KATBR, ROBA.KATBRPRO, ROBA_KATBR_OLD.KATBRPRO, ROBA.ROBAID)
                 .from(ROBA)
                 .leftJoin(ROBA_KATBR_OLD).using(ROBA.ROBAID)
                 .leftJoin(TD_BROJEVI).using(ROBA.ROBAID)
@@ -137,8 +137,12 @@ public class RobaJooqRepository {
                         kataloskiBrojevi.add(rekord.component2());
                     }
 
-                    if (rekord.component3() != null && !StringUtils.isEmpty(rekord.component3().toString())) {
-                        robaId.add(rekord.component3());
+                    if (rekord.component3() != null && !StringUtils.isEmpty(rekord.component3())) {
+                        kataloskiBrojevi.add(rekord.component3());
+                    }
+
+                    if (rekord.component4() != null ) {
+                        robaId.add(rekord.component4());
                     }
                 });
         prodjiIPopraviKatBr(kataloskiBrojevi);

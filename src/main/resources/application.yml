@@ -24,7 +24,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: webshop.automaterijal@gmail.com
-    password: tfvxwhdivvkujswd
+    password: hjaqamkpzuzbtcyl
     protocol: smtp
     defaultEncoding: UTF-8 # Default message encoding
     properties:
