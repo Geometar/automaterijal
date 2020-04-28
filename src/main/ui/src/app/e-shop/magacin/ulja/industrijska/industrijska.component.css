@@ -11,39 +11,42 @@
 .pretraga-bar-industrijska {
   display: block;
   padding-top: 10px;
+  margin-bottom: 20px;
 }
 
 .bg-image {
-  background-image: url('/assets/slike/ui/pozadine/ulje.png');
+  background-image: url("/assets/slike/ui/pozadine/ulje.png");
   background-repeat: no-repeat;
   background-size: contain;
 }
 .sekcija-pretraga {
-    height: 50px;
+  height: 50px;
 }
 
-@media only screen and (max-device-width :1025px) { 
-
+@media only screen and (max-device-width: 1025px) {
   .sekcija-pretraga {
-      height: 60px;
+    height: 60px;
   }
 
-    .mobilna-visina {
-      margin-top: 10px;
-    }
+  .mobilna-visina {
+    margin-top: 10px;
   }
+}
 
-@media only screen and (max-device-width : 640px) { 
-
-
+@media only screen and (max-device-width: 900px) {
+  .pretraga-bar-industrijska {
+    margin-bottom: 40px;
+  }
+}
+@media only screen and (max-device-width: 640px) {
   .mobilna-visina {
     margin-top: 9px;
   }
   .input-group-text {
     font-size: 0.9em;
   }
-    
-    .sirina-odabira-vrste {
-        width: 100%;
-    }
+
+  .sirina-odabira-vrste {
+    width: 100%;
+  }
 }
