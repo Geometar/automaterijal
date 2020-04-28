@@ -122,7 +122,7 @@ export class FilteriComponent implements OnInit {
     if (this.rowsPerPage) {
       parameterObject['brojKolona'] = this.rowsPerPage;
     }
-    if (this.filter.proizvodjac) {
+    if (this.filter.proizvodjacId) {
       parameterObject['proizvodjac'] = this.filter.proizvodjacId;
     }
     if (this.filter.naStanju) {

@@ -40,7 +40,7 @@ export class FilterComponent implements OnInit {
       });
     }
 
-    if (this.filter && this.filter.naStanju) {
+    if (this.filter) {
       this.filter.raspolozivost = this.raspolozivost[1];
     } else {
       this.filter = new Filter();
