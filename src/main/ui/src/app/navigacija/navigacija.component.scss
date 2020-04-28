@@ -27,7 +27,7 @@
 
 .header-navigacija {
   font-size: 0.6em !important;
-  width: 200pxpx;
+  width: 200px;
 }
 
 .header-sirina {
@@ -59,6 +59,10 @@ mat-divider {
   top: 0px;
   position: fixed;
   z-index: 999 !important;
+  background-image: url('/assets/slike/logo/automaterijal-header.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 25%;
 }
 
 .header-glavni {
@@ -70,6 +74,9 @@ mat-divider {
 @media screen and (max-width :1150px) { 
   .pozicija {
     margin-top: 60px;
+  }
+  .header-pozicija {
+    background-size: 15%;
   }
 }
 @media screen and (max-width: 991px) {
@@ -83,5 +90,18 @@ mat-divider {
   .pozicija {
     margin-top: 66px;
     padding-bottom: 490px;
+  }
+  .header-pozicija {
+    background-size: 20%;
+  }
+}
+@media screen and (max-width: 700px) {
+  .header-pozicija {
+    background-size: 25%;
+  }
+}
+@media screen and (max-width: 450px) {
+  .header-pozicija {
+    background-size: 29%;
   }
 }
