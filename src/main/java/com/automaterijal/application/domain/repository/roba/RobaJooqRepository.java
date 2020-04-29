@@ -7,7 +7,10 @@ import com.automaterijal.application.domain.model.UniverzalniParametri;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.jooq.*;
+import org.jooq.DSLContext;
+import org.jooq.Record8;
+import org.jooq.Result;
+import org.jooq.SelectConditionStep;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -35,6 +38,7 @@ public class RobaJooqRepository {
     DSLContext dslContext;
 
     private static final Short PROIZVODJAC_ID = 4;
+
     /**
      * Ulazna metoda iz glavnog servisa
      */
@@ -102,9 +106,9 @@ public class RobaJooqRepository {
         String trazenaRecLike = "%" + trazenaRec + "%";
         Set<String> sveKombinacijaKataloskihBrojeva = vratiSvePomocneKataloskeBrojeve(trazenaRec, trazenaRecLike);
         select.and(ROBA.KATBR.in(sveKombinacijaKataloskihBrojeva))
-                        .or(ROBA.KATBRPRO.in(sveKombinacijaKataloskihBrojeva))
-                        .or(ROBA.NAZIV.like(trazenaRecLike))
-                        .or(PROIZVODJAC.NAZIV.like(trazenaRecLike));
+                .or(ROBA.KATBRPRO.in(sveKombinacijaKataloskihBrojeva))
+                .or(ROBA.NAZIV.like(trazenaRecLike))
+                .or(PROIZVODJAC.NAZIV.like(trazenaRecLike));
     }
 
     /**
@@ -141,7 +145,7 @@ public class RobaJooqRepository {
                         kataloskiBrojevi.add(rekord.component3());
                     }
 
-                    if (rekord.component4() != null ) {
+                    if (rekord.component4() != null) {
                         robaId.add(rekord.component4());
                     }
                 });
@@ -197,8 +201,6 @@ public class RobaJooqRepository {
 
         if (parametri.isNaStanju()) {
             select.and(ROBA.STANJE.greaterThan(new BigDecimal(0)));
-        } else {
-            select.and(ROBA.STANJE.greaterOrEqual(new BigDecimal(0)));
         }
     }
 
