@@ -145,7 +145,7 @@ export class FilterComponent implements OnInit {
   }
 
   resetujFilter() {
-    this.filter.raspolozivost = this.raspolozivost[1];
+    this.filter.raspolozivost = this.raspolozivost[0];
     this.filter.proizvodjac = this.proizvodjaci[0].naziv;
     this.filter.naStanju = this.utilsService.daLiRobaTrebaDaBudeNaStanju(this.raspolozivost, this.filter.raspolozivost);
     this.filter.proizvodjacId = this.utilsService.vratiIdProizvodjacaAkoPostoji(this.filter.proizvodjac, this.proizvodjaci);

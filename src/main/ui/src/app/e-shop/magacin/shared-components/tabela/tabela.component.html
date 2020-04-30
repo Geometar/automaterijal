@@ -115,7 +115,7 @@
               </div>
               <div class="dugme-detalji dugme-mobilni">
                 <button mat-raised-button
-                  [disabled]="roba.tehnickiOpis == null || roba.tehnickiOpis.length < 1 && roba.slika == null"
+                  [disabled]="roba.slika == 'assets/slike/ui/roba/slikanijedostupna.jpg'"
                   class="dugme button-crveni-50" (click)='detaljiRobe(roba.robaid)'>
                   <i class="material-icons">
                     library_books

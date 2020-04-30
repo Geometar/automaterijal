@@ -5,9 +5,11 @@ import com.automaterijal.application.domain.dto.RobaTehnickiOpisDto;
 import com.automaterijal.application.domain.dto.robadetalji.RobaDetaljiDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.roba.Roba;
+import com.automaterijal.application.domain.entity.roba.RobaSlika;
 import com.automaterijal.application.domain.mapper.RobaMapper;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.domain.repository.roba.RobaJooqRepository;
+import com.automaterijal.application.services.ProizvodjacService;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +47,8 @@ public class RobaGlavniService {
     @NonNull
     final RobaSlikaService robaSlikaService;
     @NonNull
+    final ProizvodjacService proizvodjacService;
+    @NonNull
     final RobaMapper mapper;
 
     @Value("${roba.slika.prefixTabela}")
@@ -52,6 +56,8 @@ public class RobaGlavniService {
 
     @Value("${roba.slika.prefixThumbs}")
     String prefixThumbs;
+
+    private static final String SLIKA_NIJE_DOSTUPNA_URL = "assets/slike/ui/roba/slikanijedostupna.jpg";
 
 
     private static final Integer VRSTA_ORIGINALNI = 3;
@@ -120,7 +126,7 @@ public class RobaGlavniService {
     private void setujZaTabelu(RobaDto robaDto, Partner partner) {
         robaDto.setCena(robaCeneService.vratiCenuRobePoRobiId(robaDto.getRobaid(), robaDto.getGrupa(), robaDto.getProizvodjac().getProid(), partner));
         robaDto.setRabat(robaCeneService.vratiRabatPartneraNaArtikal(robaDto.getProizvodjac().getProid(), robaDto.getGrupa(), partner));
-
+        proizvodjacService.vratiProizvodjacaPoPk(robaDto.getProizvodjac().getProid()).ifPresent(proizvodjac -> robaDto.setProizvodjac(proizvodjac));
         Set<RobaTehnickiOpisDto> tehnickiOpisi = tehnickiOpisServis.vratiTehnickiOpisPoIdRobe(robaDto.getRobaid());
         if (tehnickiOpisi.size() > 5) {
             robaDto.setTehnickiOpis(tehnickiOpisi.stream().limit(4).collect(Collectors.toSet()));
@@ -128,9 +134,12 @@ public class RobaGlavniService {
             robaDto.setTehnickiOpis(tehnickiOpisi);
         }
 
-        robaSlikaService.pronadjiPutanjuSlikePoId(robaDto.getRobaid()).ifPresent(robaSlika -> {
-            robaDto.setSlika(prefixTabela + prefixThumbs + robaSlika.getSlika());
-        });
+        Optional<RobaSlika> robaSlika = robaSlikaService.pronadjiPutanjuSlikePoId(robaDto.getRobaid());
+        if (robaSlika.isPresent()) {
+            robaDto.setSlika(prefixTabela + prefixThumbs + robaSlika.get().getSlika());
+        } else {
+            robaDto.setSlika(SLIKA_NIJE_DOSTUPNA_URL);
+        }
     }
 
     public Optional<RobaDetaljiDto> pronadjiRobuPoRobaId(Long robaId, Partner ulogovaniPartner) {
@@ -151,9 +160,12 @@ public class RobaGlavniService {
             detaljnoDto.setTehnickiOpis(tehnickiOpisServis.vratiTehnickiOpisPoIdRobe(detaljnoDto.getRobaid()));
             detaljnoDto.setTdBrojevi(brojeviServis.vratiSveBrojeveZaRobidIVrsti(detaljnoDto.getRobaid(), VRSTA_ORIGINALNI));
             detaljnoDto.setAplikacije(aplikacijeServis.vratiAplikacijeZaDetalje(detaljnoDto.getRobaid()));
-            robaSlikaService.pronadjiPutanjuSlikePoId(detaljnoDto.getRobaid()).ifPresent(robaSlika -> {
-                detaljnoDto.setSlika(prefixTabela + robaSlika.getSlika());
-            });
+            Optional<RobaSlika> robaSlika = robaSlikaService.pronadjiPutanjuSlikePoId(detaljnoDto.getRobaid());
+            if (robaSlika.isPresent()) {
+                detaljnoDto.setSlika(prefixTabela + prefixThumbs + robaSlika.get().getSlika());
+            } else {
+                detaljnoDto.setSlika(SLIKA_NIJE_DOSTUPNA_URL);
+            }
         }
     }
 }
