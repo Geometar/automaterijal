@@ -2,12 +2,9 @@ package com.automaterijal.application.domain.mapper;
 
 import com.automaterijal.application.domain.dto.PartnerDto;
 import com.automaterijal.application.domain.entity.Partner;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValueCheckStrategy;
+import org.mapstruct.*;
 
-@Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
+@Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS, nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public abstract class PartnerMapper {
 
     @Mapping(target = "noviPassword", ignore = true)
