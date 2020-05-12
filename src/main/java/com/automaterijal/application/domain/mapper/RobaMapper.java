@@ -9,6 +9,7 @@ import com.automaterijal.application.domain.entity.roba.Roba;
 import com.automaterijal.application.domain.entity.roba.RobaAplikacija;
 import com.automaterijal.application.domain.entity.roba.RobaBrojevi;
 import com.automaterijal.application.domain.entity.roba.RobaOpis;
+import com.automaterijal.db.tables.records.RobaRecord;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.mapstruct.Mapper;
@@ -37,4 +38,7 @@ public abstract class RobaMapper {
 
     @Mapping(target = "kw", source = "kw")
     public abstract RobaAplikacijaDto mapAplikacija(RobaAplikacija aplikacija);
+
+    @Mapping(target = "proizvodjac.proid", source = "proid")
+    public abstract Roba map(RobaRecord robaRecord);
 }

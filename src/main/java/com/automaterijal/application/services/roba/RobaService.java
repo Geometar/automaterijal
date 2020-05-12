@@ -45,16 +45,6 @@ public class RobaService {
         return robaRepository.findByGrupaidInAndStanjeGreaterThan(grupeId, 0);
     }
 
-    public Page<Roba> pronadjiSvuRobuPoPodGrupiId(List<Integer> podGrupaId, boolean naStanju, Pageable pageable) {
-        Page<Roba> roba = null;
-        if (naStanju) {
-            roba = robaRepository.findByPodgrupaidInAndStanjeGreaterThan(podGrupaId, 0, pageable);
-        } else {
-            roba = robaRepository.findByPodgrupaidInAndStanjeGreaterThan(podGrupaId, -1, pageable);
-        }
-        return roba;
-    }
-
     public List<Roba> pronadjiSvuRobuPoPodGrupiIdLista(List<Integer> podGrupaId) {
         return robaRepository.findByPodgrupaidInAndStanjeGreaterThan(podGrupaId, 0);
     }

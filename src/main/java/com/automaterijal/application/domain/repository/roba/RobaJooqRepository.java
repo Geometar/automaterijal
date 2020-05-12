@@ -4,17 +4,22 @@ import com.automaterijal.application.domain.constants.VrstaRobe;
 import com.automaterijal.application.domain.dto.MagacinDto;
 import com.automaterijal.application.domain.dto.RobaDto;
 import com.automaterijal.application.domain.entity.Proizvodjac;
+import com.automaterijal.application.domain.entity.roba.Roba;
+import com.automaterijal.application.domain.mapper.RobaMapper;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.services.ProizvodjacService;
 import com.automaterijal.application.services.roba.grupe.PodGrupaService;
 import com.automaterijal.application.utils.GeneralUtil;
+import com.automaterijal.db.tables.records.RobaRecord;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
@@ -40,6 +45,9 @@ public class RobaJooqRepository {
 
     @Autowired
     ProizvodjacService proizvodjacService;
+
+    @Autowired
+    RobaMapper mapper;
 
     private static final Short PROIZVODJAC_ID = 4;
 
@@ -329,15 +337,34 @@ public class RobaJooqRepository {
         }
     }
 
-    private void pronadjiSveKljucevePodgrupe(SelectConditionStep<?> select, UniverzalniParametri parametri) {
-        List<Integer> podgrupeKljucevi = podGrupaService.vratiSvePodGrupeIdPoNazivu(parametri.getGrupa());
-        select.and(ROBA.PODGRUPAID.in(podgrupeKljucevi));
-    }
-
     /**
      * Limitiranje pogodataka zbog paginacije
      */
     private void sortiranje(SelectConditionStep<?> select, UniverzalniParametri parametri) {
         select.orderBy(ROBA.STANJE.desc());
+    }
+
+    /**
+     * Zbog n+1 u hibernate koristimo jooq da vrati svu robu u zavisnosti od podgrupe
+     */
+    public Page<Roba> pronadjiSvuRobuPoPodgrupama(List<Integer> podGrupaId, boolean naStanju, Pageable pageable) {
+        SelectConditionStep<RobaRecord> select = dslContext
+                .selectFrom(ROBA)
+                .where(ROBA.PODGRUPAID.in(podGrupaId));
+        if (naStanju) {
+            select.and(ROBA.STANJE.greaterThan(BigDecimal.ZERO));
+        }
+        select.orderBy(ROBA.STANJE.desc());
+
+        List<Roba> roba = select.fetch().stream().map(mapper::map).collect(Collectors.toList());
+        int start = pageable.getPageSize() * pageable.getPageNumber();
+        int end = (start + pageable.getPageSize()) > roba.size() ? roba.size() : (start + pageable.getPageSize());
+        List<Roba> retVal = roba.subList(start, end);
+
+        retVal.forEach(rekord -> {
+            proizvodjacService.vratiProizvodjacaPoPk(rekord.getProizvodjac().getProid()).ifPresent(proizvodjac -> rekord.setProizvodjac(proizvodjac));
+        });
+
+        return new PageImpl<>(retVal, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()), roba.size());
     }
 }

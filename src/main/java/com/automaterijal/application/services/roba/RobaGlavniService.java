@@ -124,7 +124,7 @@ public class RobaGlavniService {
             case OSTALO:
             case ULJA:
             case FILTERI:
-                roba = robaService.pronadjiSvuRobuPoPodGrupiId(parametri.getPodGrupeId(), naStanju, pageable);
+                roba = jooqRepository.pronadjiSvuRobuPoPodgrupama(parametri.getPodGrupeId(), naStanju, pageable);
                 break;
             case AKUMULATORI:
                 roba = robaService.pronadjiSvuRobuPoGrupiIdNaStanju(parametri.getGrupeId(), naStanju, pageable);
