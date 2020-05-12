@@ -17,10 +17,13 @@ public class UniverzalniParametri {
     Integer pageSize;
     String proizvodjac;
     boolean naStanju;
+    String grupa;
     RobaSortiranjePolja sortiranjePolja;
     Sort.Direction direction;
     String trazenaRec;
     VrstaRobe vrstaRobe;
+    String vrstaUlja;
+    List<String> naziviGrupe;
     List<Integer> podGrupeId;
     List<String> grupeId;
 }

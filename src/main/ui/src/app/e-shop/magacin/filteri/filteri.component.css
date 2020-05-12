@@ -1,9 +1,11 @@
+
 .sekcija-pretraga {
-  height: 140px;
   background-image: url("/assets/slike/ui/pozadine/filteri.png");
   background-repeat: no-repeat;
   background-size: contain;
+  background-color: 
 }
+
 @media only screen and (max-device-width: 1025px) {
   .mobilna-duzina {
     width: 100%;
@@ -11,10 +13,5 @@
   .input-group-prepend {
     margin-top: 10px;
     margin-left: 0px;
-  }
-}
-@media screen and (max-width: 1000px) {
-  .sekcija-pretraga {
-    background-image: none;
   }
 }

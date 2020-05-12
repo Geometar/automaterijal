@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY } from 'rxjs';
-import { Roba, RobaPage } from '../../model/dto';
+import { Roba, RobaPage, Magacin } from '../../model/dto';
 import { RobaService } from '../../service/roba.service';
 import { DataService } from '../../service/data/data.service';
 import { VrstaRobe } from '../../model/roba.enum';
@@ -27,13 +27,15 @@ export class AkumulatoriComponent implements OnInit {
   public tableLength;
 
   public filter: Filter = new Filter();
-  public otvoriFilter = false;
+  public filterGrupe = [];
+  public proizvodjaci = [];
 
   public searchValue = '';
   public ucitavanje = false;
 
   public pronadjenaRoba = true;
   public dataSource: any;
+  public otvoriFilter = false;
   private treutniParametri = {};
 
   private alive = true;
@@ -81,16 +83,18 @@ export class AkumulatoriComponent implements OnInit {
         finalize(() => this.ucitavanje = false)
       )
       .subscribe(
-        (response: HttpResponse<RobaPage>) => {
+        (response: HttpResponse<Magacin>) => {
           this.loginService.obavesiPartneraAkoJeSesijaIstekla(response.headers.get('AuthenticatedUser'));
           const body = response.body;
+          this.filterGrupe = body.podgrupe;
+          this.proizvodjaci = body.proizvodjaci;
           this.pronadjenaRoba = true;
-          this.roba = body.content;
+          this.roba = body.robaDto.content;
           this.roba = this.dataService.skiniSaStanjaUkolikoJeUKorpi(this.roba);
           this.dataSource = this.roba;
-          this.rowsPerPage = body.size;
-          this.pageIndex = body.number;
-          this.tableLength = body.totalElements;
+          this.rowsPerPage = body.robaDto.size;
+          this.pageIndex = body.robaDto.number;
+          this.tableLength = body.robaDto.totalElements;
         },
         error => {
           this.roba = null;

@@ -3,6 +3,8 @@ export class Filter {
     proizvodjac?: string;
     raspolozivost?: string;
     naStanju?: boolean;
+    grupa?: string;
+    pretrazitiGrupe?: boolean;
 
     Filter() {
         this.proizvodjac = '';

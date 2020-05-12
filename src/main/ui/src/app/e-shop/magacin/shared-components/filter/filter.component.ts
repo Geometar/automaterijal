@@ -15,22 +15,19 @@ import { Proizvodjac } from 'src/app/e-shop/model/dto';
 })
 export class FilterComponent implements OnInit {
 
-  @Input() otvoriFilter;
   @Input() vrstaRobe;
   @Input() vrstaUlja;
+  @Input() filterGrupe;
+  @Input() proizvodjaci;
   @Input() industrijkoUljeEvent: Observable<string>;
   @Input() filter: Filter;
   @Output() filterEvent = new EventEmitter<any>();
-
-  public proizvodjaci: Proizvodjac[];
 
   public raspolozivost: string[] = ['Svi artikli', 'Ima na stanju'];
 
   private alive = true;
 
   constructor(
-    private route: ActivatedRoute,
-    private proizvodjacService: ProizvodjacService,
     private utilsService: AppUtilsService) { }
 
   ngOnInit() {
@@ -43,89 +40,26 @@ export class FilterComponent implements OnInit {
     if (this.filter) {
       if (this.filter.naStanju) {
         this.filter.raspolozivost = this.raspolozivost[1];
+        if (!this.filter.proizvodjac) {
+          this.filter.proizvodjac = 'Svi proizvodjači';
+        }
+        if (!this.filter.grupa) {
+          this.filter.grupa = 'Sve grupe';
+        }
       } else {
+        if (!this.filter.proizvodjac) {
+          this.filter.proizvodjac = 'Svi proizvodjači';
+        }
+        if (!this.filter.grupa) {
+          this.filter.grupa = 'Sve grupe';
+        }
         this.filter.raspolozivost = this.raspolozivost[0];
       }
     } else {
       this.filter = new Filter();
       this.filter.raspolozivost = this.raspolozivost[0];
-    }
-    this.pronadjiProizvodjace();
-  }
-
-  pronadjiProizvodjace() {
-    if (this.vrstaRobe === VrstaRobe.AKUMULATORI) {
-      this.proizvodjacService.pronadjiSveProizvodjaceAkumulatora()
-        .pipe(takeWhile(() => this.alive))
-        .subscribe(res => {
-          this.proizvodjaci = res;
-          if (this.filter.proizvodjacId) {
-            this.proizvodjacVecIzabran();
-          } else {
-            this.filter.proizvodjac = this.proizvodjaci[0].naziv;
-          }
-        },
-          error => {
-            this.proizvodjaci = null;
-          });
-    } else if (this.vrstaRobe === VrstaRobe.FILTERI) {
-      this.proizvodjacService.pronadjiSveProizvodjaceFiltera()
-        .pipe(takeWhile(() => this.alive))
-        .subscribe(res => {
-          this.proizvodjaci = res;
-          if (this.filter.proizvodjacId) {
-            this.proizvodjacVecIzabran();
-          } else {
-            this.filter.proizvodjac = this.proizvodjaci[0].naziv;
-          }
-        },
-          error => {
-            this.proizvodjaci = null;
-          });
-    } else if (this.vrstaRobe === VrstaRobe.SVE) {
-      this.proizvodjacService.pronadjiSveProizvodjace()
-        .pipe(takeWhile(() => this.alive))
-        .subscribe(res => {
-          this.proizvodjaci = res;
-          if (this.filter.proizvodjacId) {
-            this.proizvodjacVecIzabran();
-          } else {
-            this.filter.proizvodjac = this.proizvodjaci[0].naziv;
-          }
-        },
-          error => {
-            this.proizvodjaci = null;
-          });
-    } else if (this.vrstaRobe === VrstaRobe.ULJA) {
-      this.proizvodjacService.pronadjiSveProizvodjaceUljaPoVrsti(this.vrstaUlja)
-        .pipe(takeWhile(() => this.alive))
-        .subscribe(res => {
-          this.proizvodjaci = res;
-          if (this.filter.proizvodjacId) {
-            this.proizvodjacVecIzabran();
-          } else {
-            this.filter.proizvodjac = this.proizvodjaci[0].naziv;
-          }
-        },
-          error => {
-            this.proizvodjaci = null;
-          });
-    } else if (this.vrstaRobe === VrstaRobe.OSTALO) {
-      this.route.params.subscribe((params: Params) => {
-        this.proizvodjacService.pronadjiSveProizvodjaceKategorije(params.id)
-          .pipe(takeWhile(() => this.alive))
-          .subscribe(res => {
-            this.proizvodjaci = res;
-            if (this.filter.proizvodjacId) {
-              this.proizvodjacVecIzabran();
-            } else {
-              this.filter.proizvodjac = this.proizvodjaci[0].naziv;
-            }
-          },
-            error => {
-              this.proizvodjaci = null;
-            });
-      });
+      this.filter.proizvodjac = 'Svi proizvodjači';
+      this.filter.grupa = 'Sve grupe';
     }
   }
 

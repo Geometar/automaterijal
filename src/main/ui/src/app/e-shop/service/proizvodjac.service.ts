@@ -32,48 +32,4 @@ export class ProizvodjacService {
           catchError((error: any) => throwError(error))
         );
   }
-
-  public pronadjiSveProizvodjaceFiltera(): Observable<any> {
-    const fullUrl = DOMAIN_URL + ROBA_URL + FILTERI_URL;
-
-    return this.http
-        .get(fullUrl)
-        .pipe(
-          timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
-          catchError((error: any) => throwError(error))
-        );
-  }
-
-  public pronadjiSveProizvodjaceKategorije(kategorija: string): Observable<any> {
-    const fullUrl = DOMAIN_URL + ROBA_URL + KATEGORIJA_URL + '/' + kategorija.toUpperCase();
-
-    return this.http
-        .get(fullUrl)
-        .pipe(
-          timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
-          catchError((error: any) => throwError(error))
-        );
-  }
-
-  public pronadjiSveProizvodjaceAkumulatora(): Observable<any> {
-    const fullUrl = DOMAIN_URL + ROBA_URL + AKUMULATORI_URL;
-
-    return this.http
-        .get(fullUrl)
-        .pipe(
-          timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
-          catchError((error: any) => throwError(error))
-        );
-  }
-
-  public pronadjiSveProizvodjaceUljaPoVrsti(vrstaUlja): Observable<any> {
-    const fullUrl = DOMAIN_URL + ROBA_URL + ULJA_URL + this.utils.vratiPutDoResursaZaUlje(vrstaUlja);
-
-    return this.http
-        .get(fullUrl)
-        .pipe(
-          timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
-          catchError((error: any) => throwError(error))
-        );
-  }
 }

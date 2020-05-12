@@ -1,26 +1,26 @@
 package com.automaterijal.application.domain.repository.roba;
 
 import com.automaterijal.application.domain.constants.VrstaRobe;
+import com.automaterijal.application.domain.dto.MagacinDto;
 import com.automaterijal.application.domain.dto.RobaDto;
 import com.automaterijal.application.domain.entity.Proizvodjac;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
+import com.automaterijal.application.services.ProizvodjacService;
+import com.automaterijal.application.services.roba.grupe.PodGrupaService;
 import com.automaterijal.application.utils.GeneralUtil;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.Comparator;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.automaterijal.db.tables.Roba.ROBA;
@@ -35,22 +35,53 @@ public class RobaJooqRepository {
     @Autowired
     DSLContext dslContext;
 
+    @Autowired
+    PodGrupaService podGrupaService;
+
+    @Autowired
+    ProizvodjacService proizvodjacService;
+
     private static final Short PROIZVODJAC_ID = 4;
 
     /**
      * Ulazna metoda iz glavnog servisa
      */
-    public Page<RobaDto> pronadjiPoTrazenojReci(UniverzalniParametri parametri, String trazenaRec) {
-        List<RobaDto> roba = vratiArtikleSaPaginacijom(parametri, trazenaRec);
+    public MagacinDto pronadjiPoTrazenojReci(UniverzalniParametri parametri, String trazenaRec) {
+        MagacinDto magacinDto = new MagacinDto();
+
+        List<RobaDto> roba = vratiArtikle(parametri, trazenaRec);
+        podGrupaService.popuniPodgrupe(magacinDto, parametri, roba);
+        proizvodjacService.popuniProizvodjace(roba, magacinDto, parametri);
+        if (parametri.getProizvodjac() != null && parametri.getGrupa() != null) {
+            roba = filtriIVratiRobu(parametri, magacinDto, roba);
+        }
+
+        if (VrstaRobe.SVE == parametri.getVrstaRobe()) {
+            roba = sortirajPoGrupi(roba);
+        }
         int start = parametri.getPageSize() * parametri.getPage();
         int end = (start + parametri.getPageSize()) > roba.size() ? roba.size() : (start + parametri.getPageSize());
-        return new PageImpl<>(roba.subList(start, end), PageRequest.of(parametri.getPage(), parametri.getPageSize()), roba.size());
+        magacinDto.setRobaDto(new PageImpl<>(roba.subList(start, end), PageRequest.of(parametri.getPage(), parametri.getPageSize()), roba.size()));
+
+        return magacinDto;
+    }
+
+    private List<RobaDto> sortirajPoGrupi(List<RobaDto> roba) {
+        List<RobaDto> retVal = roba.stream().filter(robaDto -> robaDto.getStanje() > 0).sorted(Comparator.comparing(RobaDto::getPodGrupaNaziv)).collect(Collectors.toList());
+        roba.stream().filter(robaDto -> robaDto.getStanje() == 0).sorted(Comparator.comparing(RobaDto::getPodGrupaNaziv)).forEach(retVal::add);
+        return retVal;
+    }
+
+    private List<RobaDto> filtriIVratiRobu(UniverzalniParametri parametri, MagacinDto magacinDto, List<RobaDto> roba) {
+        return roba.stream()
+                .filter(robaDto -> robaDto.getProizvodjac().getProid().equals(parametri.getProizvodjac()))
+                .collect(Collectors.toList());
     }
 
     /**
      * Vrati sve artikle po trazenoj reci
      */
-    private List<RobaDto> vratiArtikleSaPaginacijom(UniverzalniParametri parametri, String trazenaRec) {
+    private List<RobaDto> vratiArtikle(UniverzalniParametri parametri, String trazenaRec) {
         SelectConditionStep<Record7<Integer, String, String, BigDecimal, String, Integer, String>> select = kreirajSelect(trazenaRec);
 
         if (!StringUtils.isEmpty(trazenaRec)) {
@@ -284,13 +315,23 @@ public class RobaJooqRepository {
             }
         }
 
-        if (!StringUtils.isEmpty(parametri.getProizvodjac())) {
+        if (!StringUtils.isEmpty(parametri.getProizvodjac()) && parametri.getGrupa() == null) {
             select.and(ROBA.PROID.eq(parametri.getProizvodjac()));
+        }
+
+        if (!StringUtils.isEmpty(parametri.getGrupa())) {
+            List<Integer> kljuceviPodgrupa = podGrupaService.vratiSvePodGrupeIdPoNazivu(parametri.getGrupa());
+            select.and(ROBA.PODGRUPAID.in(kljuceviPodgrupa));
         }
 
         if (parametri.isNaStanju()) {
             select.and(ROBA.STANJE.greaterThan(new BigDecimal(0)));
         }
+    }
+
+    private void pronadjiSveKljucevePodgrupe(SelectConditionStep<?> select, UniverzalniParametri parametri) {
+        List<Integer> podgrupeKljucevi = podGrupaService.vratiSvePodGrupeIdPoNazivu(parametri.getGrupa());
+        select.and(ROBA.PODGRUPAID.in(podgrupeKljucevi));
     }
 
     /**

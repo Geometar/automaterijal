@@ -1,8 +1,15 @@
 @import "src/automaterijal-theme.scss";
 
 .pretraga-bar {
-  padding-top: 50px;
+  padding-top: 20px;
 }
+
+.sekcina-pretraga-filteri {
+  max-width: 1150px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .ulje-pretraga-bar {
   padding-top: 35px;
 }
@@ -10,11 +17,10 @@
 .forms-input {
   display: flex;
   border-radius: 45px;
-  width: 30%;
   padding: 1px;
   background: white;
   border: 2px solid grey;
-  width: 40%;
+  width: 80%;
   font-weight: bold;
   text-align: center;
 }
@@ -28,14 +34,20 @@
   margin-left: 5%;
 }
 
+.input-group-text {
+  display: inline-block;
+  width: 140px;
+  font-size: 0.9rem;
+}
+.custom-select {
+  width: 200px;
+  font-size: 0.9rem;
+}
+
 .filter-div-test {
   display: flex;
   padding: 10px;
-  margin: 5px;
-  margin-top: -13px;
-  background: white;
-  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
-  width: 550px;
+  width: 420px;
 }
 
 .tabela-div {
@@ -65,27 +77,6 @@ input[type="number"]::-webkit-inner-spin-button {
   float: right;
   color: $automaterijal-grey-50;
 }
-
-@media only screen and (max-device-width: 1025px) {
-  .mobilna-duzina {
-    width: 100% !important;
-  }
-  .input-group-prepend {
-    margin-top: 10px;
-    margin-left: 0px;
-  }
-
-  .forms-input {
-    display: flex;
-    border-radius: 45px;
-    padding: 1px;
-    background: white;
-    border: 2px solid grey;
-    width: 80%;
-    font-weight: bold;
-    text-align: center;
-  }
-}
 @media only screen and (max-device-width: 900px) {
   .ulje-pretraga-bar {
     margin-bottom: 20px;
@@ -93,9 +84,6 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 @media only screen and (max-device-width: 640px) {
-  .filter-div-test {
-    margin-top: -35px;
-  }
 
   .forms-input {
     border-radius: 45px;
@@ -126,12 +114,23 @@ input[type="number"]::-webkit-inner-spin-button {
     overflow-x: auto;
     justify-content: center;
   }
-
-  .mobilna-duzina {
-    width: 100% !important;
-  }
   .input-group-prepend {
     margin-top: 10px;
     margin-left: 0px;
   }
+}
+
+@media only screen and (max-width :992px) { 
+    .mobilni {
+        width: 80%;
+    }
+    .filter-div-test {
+      text-align: center;
+    }
+}
+
+@media only screen and (max-width :650px) { 
+    .mobilni {
+        width: 90%;
+    }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY, Subject } from 'rxjs';
-import { Roba, RobaPage } from 'src/app/e-shop/model/dto';
+import { Roba, RobaPage, Magacin } from 'src/app/e-shop/model/dto';
 import { RobaService } from 'src/app/e-shop/service/roba.service';
 import { DataService } from 'src/app/e-shop/service/data/data.service';
 import { VrstaRobe } from 'src/app/e-shop/model/roba.enum';
@@ -16,7 +16,7 @@ import { HttpResponse } from '@angular/common/http';
 export class IndustrijskaComponent implements OnInit {
 
   public roba: Roba[];
-  public vrstaRobe = VrstaRobe.ULJA;
+  public vrstaRobe = VrstaRobe.INDUSTRIJSKA_ULJA;
 
   // Paging and Sorting elements
   public rowsPerPage = 10;
@@ -25,6 +25,8 @@ export class IndustrijskaComponent implements OnInit {
   public tableLength;
 
   public filter: Filter = new Filter();
+  public proizvodjaci = [];
+
   public vrstaIndustijskihUlja: Subject<string> = new Subject<string>();
 
   public searchValue = '';
@@ -35,11 +37,12 @@ export class IndustrijskaComponent implements OnInit {
   public otvoriFilter = false;
   public dataSource: any;
 
-  public vrste: string[] = ['Hidraulično ulje', 'Kompresorsko ulje', 'Reduktorsko ulje',
+  public filterGrupe: string[] = ['Sve grupe', 'Hidraulično ulje', 'Kompresorsko ulje', 'Reduktorsko ulje',
     'Transformatorsko ulje', 'Turbinska ulja', 'Ulja za pneumatske alate', 'Ulja za klizne staze', 'Ulja za prenos toplote'];
-  public izabranaVrsta: string = this.vrste[0];
+  public izabranaVrsta: string = this.filterGrupe[0];
 
   public vrsteUlja = [
+    { 'url': 'industrija', 'naziv': 'Sve grupe' },
     { 'url': 'hidraulicna', 'naziv': 'Hidraulično ulje' },
     { 'url': 'kompresorska', 'naziv': 'Kompresorsko ulje' },
     { 'url': 'redutktorska', 'naziv': 'Reduktorsko ulje' },
@@ -61,6 +64,7 @@ export class IndustrijskaComponent implements OnInit {
 
   ngOnInit() {
     this.pocetnoPretrazivanje = true;
+    console.log(this.vrstaRobe);
     this.pronandjiUlja();
   }
 
@@ -85,16 +89,17 @@ export class IndustrijskaComponent implements OnInit {
         finalize(() => this.ucitavanje = false)
       )
       .subscribe(
-        (response: HttpResponse<RobaPage>) => {
+        (response: HttpResponse<Magacin>) => {
           this.loginService.obavesiPartneraAkoJeSesijaIstekla(response.headers.get('AuthenticatedUser'));
           const body = response.body;
           this.pronadjenaRoba = true;
-          this.roba = body.content;
+          this.roba = body.robaDto.content;
+          this.proizvodjaci = body.proizvodjaci;
           this.roba = this.dataService.skiniSaStanjaUkolikoJeUKorpi(this.roba);
           this.dataSource = this.roba;
-          this.rowsPerPage = body.size;
-          this.pageIndex = body.number;
-          this.tableLength = body.totalElements;
+          this.rowsPerPage = body.robaDto.size;
+          this.pageIndex = body.robaDto.number;
+          this.tableLength = body.robaDto.totalElements;
         },
         error => {
           this.roba = null;
@@ -125,6 +130,14 @@ export class IndustrijskaComponent implements OnInit {
       this.pageIndex = 0;
     }
     this.filter = filter;
+    if (this.filter.grupa) {
+      this.vrsteUlja.forEach(vrsta => {
+        if (vrsta.naziv === this.filter.grupa) {
+          this.vrstaUlja = vrsta.url;
+          this.vrstaIndustijskihUlja.next(this.vrstaUlja);
+        }
+      });
+    }
     this.pronandjiUlja();
   }
 

@@ -2,7 +2,10 @@ package com.automaterijal.application.services;
 
 
 import com.automaterijal.application.domain.constants.GrupeKonstante;
+import com.automaterijal.application.domain.dto.MagacinDto;
+import com.automaterijal.application.domain.dto.RobaDto;
 import com.automaterijal.application.domain.entity.Proizvodjac;
+import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.domain.repository.ProizvodjacRepository;
 import com.automaterijal.application.services.roba.RobaService;
 import com.automaterijal.application.services.roba.grupe.GrupaService;
@@ -16,7 +19,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,70 +41,119 @@ public class ProizvodjacService {
     @NonNull
     final RobaService robaService;
 
-    static final String SVI_PROIZVODJACI = "SVI";
+    static final String SVI_PROIZVODJACI = "Svi proizvodjači";
 
-    public List<Proizvodjac> pronadjiSveProizvodjace() {
-        final List<Proizvodjac> proizvodjaci = proizvodjacRepository.findAllByOrderByNazivAsc();
+    /**
+     * Popunjavanje proizvodjaca u zavistosti od kriterijuma
+     */
+    public void popuniProizvodjace(List<RobaDto> robaDtos, MagacinDto magacinDto, UniverzalniParametri parametri) {
+        List<Proizvodjac> proizvodjaci;
+        if (parametri.getGrupa() == null && parametri.getTrazenaRec() == null) {
+            proizvodjaci = pronadjiSveProizvodjaceZaVrstu(parametri);
+        } else {
+            Set<String> proizKljuc = robaDtos.stream().map(RobaDto::getProizvodjac).map(Proizvodjac::getProid).collect(Collectors.toSet());
+            proizvodjaci = proizvodjacRepository.findByProidIn(proizKljuc);
+        }
+        getPopuniProizvodjaceURobi(robaDtos, proizvodjaci);
+
+        if (parametri.getProizvodjac() != null) {
+            boolean trazeniProizvodjacPostoji = proizvodjaci.stream().filter(proizvodjac -> proizvodjac.getProid().equals(parametri.getProizvodjac())).findFirst().isPresent();
+            if (!trazeniProizvodjacPostoji) {
+                proizvodjacRepository.findById(parametri.getProizvodjac()).ifPresent(proizvodjac -> proizvodjaci.add(0, proizvodjac));
+            }
+        }
         proizvodjaci.add(0, new Proizvodjac("-99", SVI_PROIZVODJACI));
+        magacinDto.setProizvodjaci(proizvodjaci);
+    }
+
+    private void getPopuniProizvodjaceURobi(List<RobaDto> robaDtos, List<Proizvodjac> proizvodjaci) {
+        for (RobaDto roba : robaDtos) {
+            proizvodjaci.stream().filter(proizvodjac -> proizvodjac.getProid().equals(roba.getProizvodjac().getProid())).findFirst().ifPresent(proizvodjac -> {
+                roba.setProizvodjac(proizvodjac);
+            });
+        }
+    }
+
+    public List<Proizvodjac> pronadjiSveProizvodjaceZaVrstu(UniverzalniParametri parametri) {
+        List<Proizvodjac> proizvodjaci;
+        switch (parametri.getVrstaRobe()) {
+            case SVE:
+                proizvodjaci = pronadjiSve();
+                break;
+            case ULJA:
+                proizvodjaci = proizvodjaciUlja(parametri.getVrstaUlja());
+                break;
+            case FILTERI:
+                proizvodjaci = proizvodjaciFiltera();
+                break;
+            case AKUMULATORI:
+                proizvodjaci = proizvodjaciAkumulatora();
+                break;
+            case OSTALO:
+                proizvodjaci = porizvodjacZaKategoriju(parametri.getNaziviGrupe());
+                break;
+            default:
+                proizvodjaci = new ArrayList<>();
+        }
         return proizvodjaci;
     }
 
-    public List<Proizvodjac> proizvodjaciFiltera() {
-        final List<Integer> podGrupeId = podGrupaService.vratiSvePodGrupeIdPoNazivu(GrupeKonstante.FILTER);
-        final Set<String> filterRoba = robaService.pronadjiSvuRobuPoPodGrupiIdLista(podGrupeId)
+    private List<Proizvodjac> pronadjiSve() {
+        List<Proizvodjac> proizvodjaci = proizvodjacRepository.findAllByOrderByNazivAsc();
+        return proizvodjaci;
+    }
+
+    private List<Proizvodjac> proizvodjaciFiltera() {
+        List<Integer> podGrupeId = podGrupaService.vratiSvePodGrupeIdPoNazivu(GrupeKonstante.FILTER);
+        Set<String> filterRoba = robaService.pronadjiSvuRobuPoPodGrupiIdLista(podGrupeId)
                 .stream()
                 .map(robaEnitet -> robaEnitet.getProizvodjac().getProid())
                 .collect(Collectors.toSet());
-        final List<Proizvodjac> proizvodjaci = pronadjiSveProizvodjace().stream().filter(proizvodjac -> filterRoba.contains(proizvodjac.getProid())).collect(Collectors.toList());
-        proizvodjaci.add(0, new Proizvodjac("-99", SVI_PROIZVODJACI));
+        List<Proizvodjac> proizvodjaci = pronadjiSve().stream().filter(proizvodjac -> filterRoba.contains(proizvodjac.getProid())).collect(Collectors.toList());
         return proizvodjaci;
     }
 
-    public List<Proizvodjac> proizvodjaciAkumulatora() {
-        final List<String> grupeId = grupaService.vratiSveIdGrupePoNazivu(GrupeKonstante.AKUMULATOR);
-        final Set<String> filterRoba = robaService.pronadjuSvuRobuPoGrupiIdNaStanju(grupeId)
+    private List<Proizvodjac> proizvodjaciAkumulatora() {
+        List<String> grupeId = grupaService.vratiSveIdGrupePoNazivu(GrupeKonstante.AKUMULATOR);
+        Set<String> filterRoba = robaService.pronadjuSvuRobuPoGrupiIdNaStanju(grupeId)
                 .stream()
                 .map(robaEnitet -> robaEnitet.getProizvodjac().getProid())
                 .collect(Collectors.toSet());
-        final List<Proizvodjac> proizvodjaci = proizvodjacRepository.findAllByOrderByNazivAsc().stream().filter(proizvodjac -> filterRoba.contains(proizvodjac.getProid())).collect(Collectors.toList());
-        proizvodjaci.add(0, new Proizvodjac("-99", SVI_PROIZVODJACI));
+        List<Proizvodjac> proizvodjaci = proizvodjacRepository.findAllByOrderByNazivAsc().stream().filter(proizvodjac -> filterRoba.contains(proizvodjac.getProid())).collect(Collectors.toList());
         return proizvodjaci;
     }
 
-    public List<Proizvodjac> proizvodjaciUlja(final String vrstaUlja) {
-        final List<Integer> svePodGrupeUlja = new ArrayList<>();
+    public List<Proizvodjac> proizvodjaciUlja(String vrstaUlja) {
+        List<Integer> svePodGrupeUlja = new ArrayList<>();
         pronadjiSvePodGrupeUZavisnostiOdVrste(svePodGrupeUlja, vrstaUlja);
-        final Set<String> filterRoba = robaService.pronadjiSvuRobuPoPodGrupiIdLista(svePodGrupeUlja)
+        Set<String> filterRoba = robaService.pronadjiSvuRobuPoPodGrupiIdListaSvaStanja(svePodGrupeUlja)
                 .stream()
                 .map(robaEnitet -> robaEnitet.getProizvodjac().getProid())
                 .collect(Collectors.toSet());
-        final List<Proizvodjac> proizvodjaci = pronadjiSveProizvodjace().stream().filter(proizvodjac -> filterRoba.contains(proizvodjac.getProid())).collect(Collectors.toList());
-        proizvodjaci.add(0, new Proizvodjac("-99", SVI_PROIZVODJACI));
+        List<Proizvodjac> proizvodjaci = pronadjiSve().stream().filter(proizvodjac -> filterRoba.contains(proizvodjac.getProid())).collect(Collectors.toList());
         return proizvodjaci;
     }
 
-    public List<Proizvodjac> porizvodjacZaKategoriju(final List<String> podVrsta) {
-        final List<Integer> svePodGrupeUlja = new ArrayList<>();
+    private List<Proizvodjac> porizvodjacZaKategoriju(List<String> podVrsta) {
+        List<Integer> svePodGrupeUlja = new ArrayList<>();
         podVrsta.forEach(naziv -> svePodGrupeUlja.addAll(podGrupaService.vratiSvePodGrupeIdPoNazivu(naziv)));
-        final Set<String> roba = robaService.pronadjiSvuRobuPoPodGrupiIdLista(svePodGrupeUlja)
+        Set<String> roba = robaService.pronadjiSvuRobuPoPodGrupiIdLista(svePodGrupeUlja)
                 .stream()
                 .map(robaEnitet -> robaEnitet.getProizvodjac().getProid())
                 .collect(Collectors.toSet());
-        final List<Proizvodjac> proizvodjaci = pronadjiSveProizvodjace().stream().filter(proizvodjac -> roba.contains(proizvodjac.getProid())).collect(Collectors.toList());
-        proizvodjaci.add(0, new Proizvodjac("-99", SVI_PROIZVODJACI));
+        List<Proizvodjac> proizvodjaci = pronadjiSve().stream().filter(proizvodjac -> roba.contains(proizvodjac.getProid())).collect(Collectors.toList());
         return proizvodjaci;
     }
 
-    private void pronadjiSvePodGrupeUZavisnostiOdVrste(final List<Integer> svePodGrupeUlja, final String vrstaUlja) {
-        final String[] vrsteUlja = RobaStaticUtils.pronadjiSveVrsteUlja(vrstaUlja);
-        Arrays.stream(vrsteUlja)
-                .filter(str ->  str != null)
+    private void pronadjiSvePodGrupeUZavisnostiOdVrste(List<Integer> svePodGrupeUlja, String vrstaUlja) {
+        RobaStaticUtils.pronadjiSveVrsteUlja(vrstaUlja).stream()
+                .filter(str -> str != null)
                 .forEach(vrsta -> svePodGrupeUlja.addAll(podGrupaService.vratiSvePodGrupeIdPoNazivu(vrsta)));
     }
 
-    public Proizvodjac vrateNazivProizvodjacaPoId(final String id) {
+    public Proizvodjac vrateNazivProizvodjacaPoId(String id) {
         Proizvodjac retVal = null;
-        final Optional<Proizvodjac> naziv = pronadjiSveProizvodjace().stream()
+        Optional<Proizvodjac> naziv = pronadjiSve().stream()
                 .filter(grupa -> grupa.getProid().equals(id))
                 .findFirst();
         if (naziv.isPresent()) {
@@ -107,7 +162,7 @@ public class ProizvodjacService {
         return retVal;
     }
 
-    public Optional<Proizvodjac> vratiProizvodjacaPoPk(final String id) {
+    public Optional<Proizvodjac> vratiProizvodjacaPoPk(String id) {
         return proizvodjacRepository.findById(id);
     }
 }

@@ -3,7 +3,7 @@ package com.automaterijal.application.controller;
 import com.automaterijal.application.domain.constants.RobaKategorije;
 import com.automaterijal.application.domain.constants.RobaSortiranjePolja;
 import com.automaterijal.application.domain.constants.VrstaRobe;
-import com.automaterijal.application.domain.dto.RobaDto;
+import com.automaterijal.application.domain.dto.MagacinDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.services.roba.RobaGlavniService;
@@ -13,7 +13,6 @@ import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -48,35 +47,35 @@ public class RobaKOstalaController {
     }
 
     @GetMapping(value = "/{kategorija}")
-    public ResponseEntity<Page<RobaDto>> vratiRobuIzKategorije(
-            @PathVariable("kategorija") final RobaKategorije kategorija,
-            @RequestParam(required = false) final Optional<Integer> page,
-            @RequestParam(required = false) final  Optional<Integer> pageSize,
-            @RequestParam(required = false) final  Optional<String> proizvodjac,
-            @RequestParam(required = false) final  Optional<Boolean> naStanju,
-            @RequestParam(required = false) final  Optional<String> searchTerm,
-            @RequestParam(required = false) final RobaSortiranjePolja sortBy,
-            @RequestParam(required = false) final Sort.Direction sortDirection,
-            final Authentication authentication
+    public ResponseEntity<MagacinDto> vratiRobuIzKategorije(
+            @PathVariable("kategorija") RobaKategorije kategorija,
+            @RequestParam(required = false) Optional<Integer> page,
+            @RequestParam(required = false) Optional<Integer> pageSize,
+            @RequestParam(required = false) Optional<String> proizvodjac,
+            @RequestParam(required = false) Optional<Boolean> naStanju,
+            @RequestParam(required = false) Optional<String> searchTerm,
+            @RequestParam(required = false) RobaSortiranjePolja sortBy,
+            @RequestParam(required = false) Sort.Direction sortDirection,
+            Authentication authentication
     ) {
 
-        final List<String> iKategorije = kategorija == null ? null : kategorija.getFieldName();
-        final UniverzalniParametri univerzalniParametri = robaSpringBeanUtils.popuniIVratiGenerickeParametreZaServis(page, pageSize, proizvodjac, naStanju, sortBy, sortDirection, searchTerm, VrstaRobe.OSTALO, null, iKategorije);
-        final Partner uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+        List<String> iKategorije = kategorija == null ? null : kategorija.getFieldName();
+        UniverzalniParametri univerzalniParametri = robaSpringBeanUtils.popuniIVratiGenerickeParametreZaServis(page, pageSize, proizvodjac, naStanju, Optional.empty(), sortBy, sortDirection, searchTerm, VrstaRobe.OSTALO, null, iKategorije);
+        Partner uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
 
 
-        final Page<RobaDto> roba = robaGlavniService.pronadjiRobuPoPretrazi(
+        MagacinDto magacinDto = robaGlavniService.pronadjiRobuPoPretrazi(
                 univerzalniParametri, uPartner
         );
 
-        if (!CollectionUtils.isEmpty(roba.getContent())) {
-            return ResponseEntity.ok().headers(createHeaders(uPartner)).body(roba);
+        if (!CollectionUtils.isEmpty(magacinDto.getRobaDto().getContent())) {
+            return ResponseEntity.ok().headers(createHeaders(uPartner)).body(magacinDto);
         }
         return ResponseEntity.notFound().headers(createHeaders(uPartner)).build();
     }
 
-    private HttpHeaders createHeaders(final Partner partner) {
-        final HttpHeaders headers = new HttpHeaders();
+    private HttpHeaders createHeaders(Partner partner) {
+        HttpHeaders headers = new HttpHeaders();
         headers.add("AuthenticatedUser", partner != null ? "true" : "false");
         headers.add("Access-Control-Expose-Headers", "AuthenticatedUser");
         return headers;

@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,6 +38,7 @@ public class RobaSpringBeanUtils {
             Optional<Integer> pageSize,
             Optional<String> proizvodjac,
             Optional<Boolean> naStanju,
+            Optional<String> grupa,
             RobaSortiranjePolja sortBy,
             Sort.Direction sortDirection,
             Optional<String> searchTerm,
@@ -47,8 +47,9 @@ public class RobaSpringBeanUtils {
             List<String> iKategorije) {
         Integer iPage = page.isPresent() ? page.get() : 0;
         Integer iPageSize = pageSize.isPresent() ? pageSize.get() : 10;
-        String iProizvodjac = proizvodjac.filter(StringUtils::hasText).map(String::toString).orElse(null);
+        String iProizvodjac = proizvodjac.filter(StringUtils::hasText).filter(naziv -> !naziv.equals("Svi proizvodjači")).map(String::toString).orElse(null);
         Boolean iNaStanju = naStanju.isPresent() ? naStanju.get() : false;
+        String iGrupa = grupa.filter(StringUtils::hasText).filter(naziv -> !naziv.equals("Sve grupe")).map(String::toString).orElse(null);
         RobaSortiranjePolja iSortiranjePolja = sortBy == null ? RobaSortiranjePolja.STANJE : sortBy;
         Sort.Direction iDirection = sortDirection == null ? Sort.Direction.DESC : sortDirection;
         String iSearchTerm = searchTerm.filter(StringUtils::hasText)
@@ -56,7 +57,7 @@ public class RobaSpringBeanUtils {
                 .map(trazenaRec -> GeneralUtil.cyrillicToLatinic(trazenaRec))
                 .orElse(null);
 
-        return popuniParametreZaServis(iPage, iPageSize, iProizvodjac, iNaStanju, iSortiranjePolja, iDirection, iSearchTerm, vrstaRobe, vrstaUlja, iKategorije);
+        return popuniParametreZaServis(iPage, iPageSize, iProizvodjac, iNaStanju, iGrupa, iSortiranjePolja, iDirection, iSearchTerm, vrstaRobe, vrstaUlja, iKategorije);
     }
 
     private UniverzalniParametri popuniParametreZaServis(
@@ -64,6 +65,7 @@ public class RobaSpringBeanUtils {
             Integer internalPageSize,
             String internalProizvodjac,
             Boolean internalNaStanju,
+            String internaGrupa,
             RobaSortiranjePolja internalSortiranjePolja,
             Sort.Direction internalDirection,
             String internalSearchTerm,
@@ -75,10 +77,13 @@ public class RobaSpringBeanUtils {
         up.setPageSize(internalPageSize);
         up.setProizvodjac(internalProizvodjac);
         up.setNaStanju(internalNaStanju);
+        up.setGrupa(internaGrupa);
         up.setSortiranjePolja(internalSortiranjePolja);
         up.setDirection(internalDirection);
         up.setTrazenaRec(internalSearchTerm);
         up.setVrstaRobe(vrstaRobe);
+        up.setVrstaUlja(vrstaUlja);
+        up.setNaziviGrupe(iKategorije);
         setujFilterpPolja(up, vrstaRobe, vrstaUlja, iKategorije);
         return up;
     }
@@ -103,8 +108,7 @@ public class RobaSpringBeanUtils {
     }
 
     private void pronadjiSvePodGrupeUZavisnostiOdVrste(List<Integer> svePodGrupeUlja, String vrstaUlja) {
-        String[] vrsteUlja = RobaStaticUtils.pronadjiSveVrsteUlja(vrstaUlja);
-        Arrays.stream(vrsteUlja)
+        RobaStaticUtils.pronadjiSveVrsteUlja(vrstaUlja).stream()
                 .filter(str -> str != null)
                 .forEach(vrsta -> svePodGrupeUlja.addAll(podGrupaService.vratiSvePodGrupeIdPoNazivu(vrsta)));
     }

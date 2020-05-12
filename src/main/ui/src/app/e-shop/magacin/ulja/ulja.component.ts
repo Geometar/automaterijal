@@ -11,11 +11,11 @@ export class UljaComponent {
   baseUrl = environment.baseUrl;
 
   slike = {
-    motorna_ulja: this.baseUrl + '/assets/slike/ui/tabovi/mu.png',
-    menjacka_ulja: this.baseUrl + '/assets/slike/ui/tabovi/MEU.png',
-    kociona_ulja: this.baseUrl + '/assets/slike/ui/tabovi/KU.png',
-    antifriz: this.baseUrl + '/assets/slike/ui/tabovi/ANTI.png',
-    industrijska_ulja: this.baseUrl + '/assets/slike/ui/tabovi/INDUSTR.png',
+    motorna_ulja: '/assets/slike/ui/tabovi/mu.png',
+    menjacka_ulja: '/assets/slike/ui/tabovi/MEU.png',
+    kociona_ulja: '/assets/slike/ui/tabovi/KU.png',
+    antifriz: '/assets/slike/ui/tabovi/ANTI.png',
+    industrijska_ulja: '/assets/slike/ui/tabovi/INDUSTR.png',
   };
   changeTab(tabIndex: number) {
     this.selectedTab = tabIndex;

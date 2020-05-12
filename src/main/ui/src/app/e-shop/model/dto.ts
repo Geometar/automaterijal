@@ -87,6 +87,12 @@ export class PromenaSifre {
     ponovljenjaSifra?: string;
 }
 
+export class Magacin {
+    public robaDto: RobaPage;
+    public podgrupe: string[];
+    public proizvodjaci: Proizvodjac[];
+}
+
 export class Roba {
     public robaid: number;
     public slika: string;

@@ -11,7 +11,7 @@ export class PretragaComponent implements OnInit {
   @Output() filterEvent = new EventEmitter<any>();
   @Input() searchValue;
 
-  public otvoriFilter = false;
+  public otvoriFilter = true;
   public pocetnoPretrazivanje = true;
   public validnaPretaga = true;
 

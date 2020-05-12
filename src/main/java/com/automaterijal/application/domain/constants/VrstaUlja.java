@@ -22,7 +22,8 @@ public enum VrstaUlja {
     TURBINSKA("turbinska"),
     PNEUMATSKA("pneumatska"),
     KLIZNA("klizna"),
-    PREONOSNA("prenosna");
+    PREONOSNA("prenosna"),
+    INDUSTRIJA("industrija");
 
     @NonNull
     final String fieldName;

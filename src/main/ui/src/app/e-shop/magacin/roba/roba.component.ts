@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RobaService } from '../../service/roba.service';
-import { Roba, RobaPage } from '../../model/dto';
+import { Roba, RobaPage, Magacin } from '../../model/dto';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY } from 'rxjs';
 import { DataService } from '../../service/data/data.service';
@@ -27,6 +27,8 @@ export class RobaComponent implements OnInit {
   public tableLength;
 
   public filter: Filter = new Filter();
+  public filterGrupe = [];
+  public proizvodjaci = [];
 
   public searchValue = '';
 
@@ -56,6 +58,10 @@ export class RobaComponent implements OnInit {
       this.rowsPerPage = params['brojKolona'];
       this.filter.proizvodjacId = params['proizvodjac'];
       this.filter.naStanju = params['naStanju'];
+      this.filter.grupa = params['grupa'];
+      if (this.searchValue && this.searchValue !== params['pretraga']) {
+        this.filter.pretrazitiGrupe = true;
+      }
       this.searchValue = params['pretraga'];
       this.pronadjiSvuRobu();
     });
@@ -66,7 +72,7 @@ export class RobaComponent implements OnInit {
     this.ucitavanje = true;
     this.pronadjenaRoba = true;
     this.robaService.pronadjiSvuRobu(
-      this.sort, this.rowsPerPage, this.pageIndex, this.searchValue, this.filter.naStanju, this.filter.proizvodjacId
+      this.sort, this.rowsPerPage, this.pageIndex, this.searchValue, this.filter
     )
       .pipe(
         takeWhile(() => this.alive),
@@ -81,16 +87,22 @@ export class RobaComponent implements OnInit {
         finalize(() => this.ucitavanje = false)
       )
       .subscribe(
-        (response: HttpResponse<RobaPage>) => {
+        (response: HttpResponse<Magacin>) => {
           this.loginService.obavesiPartneraAkoJeSesijaIstekla(response.headers.get('AuthenticatedUser'));
           const body = response.body;
-          this.pronadjenaRoba = true;
-          this.roba = body.content;
+          this.filterGrupe = body.podgrupe;
+          this.proizvodjaci = body.proizvodjaci;
+          this.roba = body.robaDto.content;
+          if (this.roba && this.roba.length > 0) {
+            this.pronadjenaRoba = true;
+          } else {
+            this.pronadjenaRoba = false;
+          }
           this.roba = this.dataService.skiniSaStanjaUkolikoJeUKorpi(this.roba);
           this.dataSource = this.roba;
-          this.rowsPerPage = body.size;
-          this.pageIndex = body.number;
-          this.tableLength = body.totalElements;
+          this.rowsPerPage = body.robaDto.size;
+          this.pageIndex = body.robaDto.number;
+          this.tableLength = body.robaDto.totalElements;
         },
         error => {
           this.roba = null;
@@ -126,6 +138,9 @@ export class RobaComponent implements OnInit {
     if (this.filter.naStanju) {
       parameterObject['naStanju'] = this.filter.naStanju;
     }
+    if (this.filter.grupa) {
+      parameterObject['grupa'] = this.filter.grupa;
+    }
     if (this.searchValue) {
       parameterObject['pretraga'] = this.searchValue;
     }
@@ -133,8 +148,8 @@ export class RobaComponent implements OnInit {
       parameterObject['pretraga'] &&
       this.treutniParametri['pretraga'] &&
       parameterObject['pretraga'] === this.treutniParametri['pretraga']
-      ) {
-        this.pronadjiSvuRobu();
+    ) {
+      this.pronadjiSvuRobu();
     } else {
       this.router.navigate(['/roba'], { queryParams: parameterObject });
     }

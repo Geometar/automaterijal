@@ -6,6 +6,7 @@ import { Sort } from '@angular/material';
 import { AppUtilsService } from '../utils/app-utils.service';
 import { environment } from 'src/environments/environment';
 import { Roba, RobaPage } from '../model/dto';
+import { Filter } from '../model/filter';
 
 const DOMAIN_URL = environment.baseUrl + '/api';
 const ROBA_URL = '/roba';
@@ -35,7 +36,7 @@ export class RobaService {
       );
   }
 
-  public pronadjiSvuRobu(sort: Sort, pageSize, page, searchValue, naStanju, proizvodjacId): Observable<HttpResponse<Object>> {
+  public pronadjiSvuRobu(sort: Sort, pageSize, page, searchValue, filter: Filter): Observable<HttpResponse<Object>> {
     const parameterObject = {};
     parameterObject['pageSize'] = pageSize;
     parameterObject['page'] = page;
@@ -46,8 +47,14 @@ export class RobaService {
     if (searchValue) {
       parameterObject['searchTerm'] = searchValue;
     }
-    parameterObject['proizvodjac'] = proizvodjacId;
-    parameterObject['naStanju'] = naStanju;
+    parameterObject['proizvodjac'] = filter.proizvodjacId;
+    parameterObject['naStanju'] = filter.naStanju;
+    if (filter.grupa) {
+      parameterObject['grupa'] = filter.grupa;
+    }
+    if (filter.pretrazitiGrupe) {
+      parameterObject['pretrazitiGrupe'] = filter.pretrazitiGrupe;
+    }
     const parametersString = this.utils.vratiKveriParametre(parameterObject);
     const fullUrl = DOMAIN_URL + ROBA_URL + parametersString;
 

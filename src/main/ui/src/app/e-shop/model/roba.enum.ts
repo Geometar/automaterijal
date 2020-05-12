@@ -3,5 +3,6 @@ export enum VrstaRobe {
     FILTERI,
     AKUMULATORI,
     ULJA,
+    INDUSTRIJSKA_ULJA,
     OSTALO
 }

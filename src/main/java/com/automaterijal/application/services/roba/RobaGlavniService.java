@@ -1,5 +1,7 @@
 package com.automaterijal.application.services.roba;
 
+import com.automaterijal.application.domain.constants.VrstaRobe;
+import com.automaterijal.application.domain.dto.MagacinDto;
 import com.automaterijal.application.domain.dto.RobaDto;
 import com.automaterijal.application.domain.dto.RobaTehnickiOpisDto;
 import com.automaterijal.application.domain.dto.robadetalji.RobaDetaljiDto;
@@ -10,6 +12,7 @@ import com.automaterijal.application.domain.mapper.RobaMapper;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.domain.repository.roba.RobaJooqRepository;
 import com.automaterijal.application.services.ProizvodjacService;
+import com.automaterijal.application.services.roba.grupe.PodGrupaService;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -49,6 +52,8 @@ public class RobaGlavniService {
     @NonNull
     final ProizvodjacService proizvodjacService;
     @NonNull
+    final PodGrupaService podGrupaService;
+    @NonNull
     final RobaMapper mapper;
 
     @Value("${roba.slika.prefixTabela}")
@@ -66,12 +71,8 @@ public class RobaGlavniService {
     /**
      * Ulazna metoda iz kontrolera
      */
-    public Page<RobaDto> pronadjiRobuPoPretrazi(UniverzalniParametri parametri, Partner ulogovaniPartner) {
-
-        var pageable = PageRequest.of(
-                parametri.getPage(), parametri.getPageSize(), new Sort(parametri.getDirection(), parametri.getSortiranjePolja().getFieldName())
-        );
-        Page<RobaDto> roba = null;
+    public MagacinDto pronadjiRobuPoPretrazi(UniverzalniParametri parametri, Partner ulogovaniPartner) {
+        MagacinDto magacinDto;
         log.info("Partner {} trazi robu na stranici {} po kataloskom broju {} i prozivodjacu {}",
                 ulogovaniPartner != null ? ulogovaniPartner.getNaziv() : "anoniman",
                 parametri.getVrstaRobe() != null ? parametri.getVrstaRobe().toString().toLowerCase() : " - ",
@@ -79,13 +80,35 @@ public class RobaGlavniService {
                 parametri.getProizvodjac() != null ? parametri.getProizvodjac() : "-"
         );
 
-        if (parametri.getTrazenaRec() == null && parametri.getProizvodjac() == null) {
-            roba = vratiSvuRobuUZavisnostiOdTrazenogStanja(parametri, pageable, ulogovaniPartner);
+        if (parametri.getTrazenaRec() == null && parametri.getProizvodjac() == null && parametri.getGrupa() == null) {
+            magacinDto = logikaZaMagacinBezFiltera(parametri, ulogovaniPartner);
         } else {
-            roba = jooqRepository.pronadjiPoTrazenojReci(parametri, parametri.getTrazenaRec());
-            roba.forEach(dto -> setujZaTabelu(dto, ulogovaniPartner));
+            magacinDto = logikaZaMagacinSaFilterom(parametri, ulogovaniPartner);
         }
-        return roba;
+        return magacinDto;
+    }
+
+    private MagacinDto logikaZaMagacinBezFiltera(UniverzalniParametri parametri, Partner ulogovaniPartner) {
+        var magacinDto = new MagacinDto();
+        var pageable = PageRequest.of(
+                parametri.getPage(), parametri.getPageSize(), new Sort(parametri.getDirection(), parametri.getSortiranjePolja().getFieldName())
+        );
+
+        Page<RobaDto> robaDto = vratiSvuRobuUZavisnostiOdTrazenogStanja(parametri, pageable, ulogovaniPartner);
+        if (VrstaRobe.SVE == parametri.getVrstaRobe()) {
+            magacinDto.setPodgrupe(podGrupaService.vratiSveGrupe());
+        }
+        magacinDto.setProizvodjaci(proizvodjacService.pronadjiSveProizvodjaceZaVrstu(parametri));
+        magacinDto.setRobaDto(robaDto);
+
+        return magacinDto;
+    }
+
+    private MagacinDto logikaZaMagacinSaFilterom(UniverzalniParametri parametri, Partner ulogovaniPartner) {
+        var magacinDto = new MagacinDto();
+        magacinDto = jooqRepository.pronadjiPoTrazenojReci(parametri, parametri.getTrazenaRec());
+        magacinDto.getRobaDto().forEach(dto -> setujZaTabelu(dto, ulogovaniPartner));
+        return magacinDto;
     }
 
     /**
@@ -126,7 +149,6 @@ public class RobaGlavniService {
     private void setujZaTabelu(RobaDto robaDto, Partner partner) {
         robaDto.setCena(robaCeneService.vratiCenuRobePoRobiId(robaDto.getRobaid(), robaDto.getGrupa(), robaDto.getProizvodjac().getProid(), partner));
         robaDto.setRabat(robaCeneService.vratiRabatPartneraNaArtikal(robaDto.getProizvodjac().getProid(), robaDto.getGrupa(), partner));
-        proizvodjacService.vratiProizvodjacaPoPk(robaDto.getProizvodjac().getProid()).ifPresent(proizvodjac -> robaDto.setProizvodjac(proizvodjac));
         Set<RobaTehnickiOpisDto> tehnickiOpisi = tehnickiOpisServis.vratiTehnickiOpisPoIdRobe(robaDto.getRobaid());
         if (tehnickiOpisi.size() > 5) {
             robaDto.setTehnickiOpis(tehnickiOpisi.stream().limit(4).collect(Collectors.toSet()));

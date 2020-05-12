@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY } from 'rxjs';
-import { Roba, RobaPage } from 'src/app/e-shop/model/dto';
+import { Roba, RobaPage, Magacin } from 'src/app/e-shop/model/dto';
 import { RobaService } from 'src/app/e-shop/service/roba.service';
 import { DataService } from 'src/app/e-shop/service/data/data.service';
 import { VrstaRobe } from 'src/app/e-shop/model/roba.enum';
@@ -25,6 +25,8 @@ export class KocionaComponent implements OnInit {
   public tableLength;
 
   public filter: Filter = new Filter();
+  public filterGrupe = [];
+  public proizvodjaci = [];
 
   public searchValue = '';
   public pocetnoPretrazivanje: boolean;
@@ -69,16 +71,18 @@ export class KocionaComponent implements OnInit {
         finalize(() => this.ucitavanje = false)
       )
       .subscribe(
-        (response: HttpResponse<RobaPage>) => {
+        (response: HttpResponse<Magacin>) => {
           this.loginService.obavesiPartneraAkoJeSesijaIstekla(response.headers.get('AuthenticatedUser'));
           const body = response.body;
+          this.filterGrupe = body.podgrupe;
+          this.proizvodjaci = body.proizvodjaci;
           this.pronadjenaRoba = true;
-          this.roba = body.content;
+          this.roba = body.robaDto.content;
           this.roba = this.dataService.skiniSaStanjaUkolikoJeUKorpi(this.roba);
           this.dataSource = this.roba;
-          this.rowsPerPage = body.size;
-          this.pageIndex = body.number;
-          this.tableLength = body.totalElements;
+          this.rowsPerPage = body.robaDto.size;
+          this.pageIndex = body.robaDto.number;
+          this.tableLength = body.robaDto.totalElements;
         },
         error => {
           this.roba = null;

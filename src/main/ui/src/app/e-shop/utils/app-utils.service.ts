@@ -12,7 +12,7 @@ export class AppUtilsService {
 
   public vratiIdProizvodjacaAkoPostoji(izabraniProizvodjac: string, proizvodjaci: Proizvodjac[]): string {
     let proId = null;
-    if (izabraniProizvodjac && izabraniProizvodjac === 'SVI') {
+    if (izabraniProizvodjac && izabraniProizvodjac === 'Svi proizvodjači') {
       proId = null;
     } else {
       proizvodjaci.forEach(pr => {
@@ -113,6 +113,8 @@ export class AppUtilsService {
       url = '/klizna';
     } else if (vrstaUlja === 'prenosna') {
       url = '/prenosna';
+    } else if (vrstaUlja === 'industrija') {
+      url = '/industrija';
     }
     return url;
   }

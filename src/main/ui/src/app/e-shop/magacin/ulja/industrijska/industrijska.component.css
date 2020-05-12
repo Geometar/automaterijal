@@ -3,7 +3,6 @@
   float: right;
   width: 450px;
 }
-
 .input-group-prepend {
   display: block;
 }
@@ -20,13 +19,12 @@
   background-size: contain;
 }
 .sekcija-pretraga {
-  height: 50px;
+  background-image: url('/assets/slike/ui/pozadine/ulje.png');
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 
 @media only screen and (max-device-width: 1025px) {
-  .sekcija-pretraga {
-    height: 60px;
-  }
 
   .mobilna-visina {
     margin-top: 10px;
