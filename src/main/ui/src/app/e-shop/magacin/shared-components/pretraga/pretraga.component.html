@@ -30,4 +30,10 @@
     *ngIf="!pocetnoPretrazivanje && !validnaPretaga && searchValue && (searchValue.trim().length > 0 && searchValue.trim().length < 3)">
     <font class="boja-crvena-50">Morate uneti bar tri karaktera</font>
   </label>
+  <label
+    *ngIf="!pocetnoPretrazivanje && validnaPretaga" class="defaultna-visina">
+  </label>
+  <label
+    *ngIf="!pocetnoPretrazivanje && !validnaPretaga && !searchValue" class="defaultna-visina">
+  </label>
 </div>

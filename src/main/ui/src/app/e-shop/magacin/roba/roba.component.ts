@@ -109,6 +109,11 @@ export class RobaComponent implements OnInit {
         });
   }
 
+  podesiFiltereNaDefaultVrednost() {
+    if(this.filter.grupa) {
+    }
+  }
+
   pronaciPoTrazenojReci(searchValue) {
     if (this.dataSource) {
       this.pageIndex = 0;

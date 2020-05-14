@@ -222,7 +222,7 @@ public class RobaJooqRepository {
 
     private void drugiPomocniKveri(Set<String> katalskoBrojevi, Set<Integer> robaIds, String trazenaRec) {
         Set<Integer> robaIdIzTd = new HashSet<>();
-        SelectConditionStep<Record3<String, String, Integer>> selectConditionStep = dslContext.selectDistinct(TD_BROJEVI.BROJ, TD_BROJEVI.BROJSRCH, TD_BROJEVI.ROBAID)
+        SelectConditionStep<Record1<String>> selectConditionStep = dslContext.selectDistinct(TD_BROJEVI.BROJSRCH)
                 .from(TD_BROJEVI)
                 .where(TD_BROJEVI.NADJENPREKO.eq(trazenaRec))
                 .or(TD_BROJEVI.BROJ.eq(trazenaRec))
@@ -248,12 +248,6 @@ public class RobaJooqRepository {
             if (record.component1() != null && !StringUtils.isEmpty(record.component1())) {
                 katalskoBrojevi.add(record.component1());
             }
-            if (record.component2() != null && !StringUtils.isEmpty(record.component2())) {
-                katalskoBrojevi.add(record.component2());
-            }
-            if (record.component3() != null) {
-                robaIdIzTd.add(record.component3());
-            }
         });
         boolean robaPostojalaUTD = false;
         for (Integer id : robaIdIzTd) {
@@ -270,7 +264,7 @@ public class RobaJooqRepository {
 
     private void pomocniKveri3(Set<Integer> robaIds, Set<String> katalskoBrojevi) {
         List<Condition> conditions = new ArrayList<>();
-        SelectJoinStep<Record2<String, String>> select = dslContext.selectDistinct(TD_BROJEVI.BROJSRCH, TD_BROJEVI.BROJ)
+        SelectJoinStep<Record1<String>> select = dslContext.selectDistinct(TD_BROJEVI.BROJSRCH)
                 .from(TD_BROJEVI);
         robaIds.forEach(robaId -> {
             Condition condition1 = TD_BROJEVI.ROBAID.eq(robaId);
@@ -280,7 +274,7 @@ public class RobaJooqRepository {
         });
 
         if (!conditions.isEmpty()) {
-            SelectConditionStep<Record2<String, String>> select2 = select.where(conditions.get(0));
+            SelectConditionStep<Record1<String>> select2 = select.where(conditions.get(0));
             for (int i = 1; i < conditions.size(); i++) {
                 select2.or(conditions.get(i));
             }
@@ -289,9 +283,6 @@ public class RobaJooqRepository {
         select.fetch().forEach(record -> {
             if (record.component1() != null && !StringUtils.isEmpty(record.component1())) {
                 katalskoBrojevi.add(record.component1());
-            }
-            if (record.component2() != null && !StringUtils.isEmpty(record.component2())) {
-                katalskoBrojevi.add(record.component2());
             }
         });
     }
