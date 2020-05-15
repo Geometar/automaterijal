@@ -222,7 +222,7 @@ public class RobaJooqRepository {
 
     private void drugiPomocniKveri(Set<String> katalskoBrojevi, Set<Integer> robaIds, String trazenaRec) {
         Set<Integer> robaIdIzTd = new HashSet<>();
-        SelectConditionStep<Record1<String>> selectConditionStep = dslContext.selectDistinct(TD_BROJEVI.BROJSRCH)
+        SelectConditionStep<Record2<String, Integer>> selectConditionStep = dslContext.selectDistinct(TD_BROJEVI.BROJSRCH, TD_BROJEVI.ROBAID)
                 .from(TD_BROJEVI)
                 .where(TD_BROJEVI.NADJENPREKO.eq(trazenaRec))
                 .or(TD_BROJEVI.BROJ.eq(trazenaRec))
@@ -247,6 +247,9 @@ public class RobaJooqRepository {
         selectConditionStep.fetch().stream().forEach(record -> {
             if (record.component1() != null && !StringUtils.isEmpty(record.component1())) {
                 katalskoBrojevi.add(record.component1());
+            }
+            if (record.component2() != null) {
+                robaIdIzTd.add(record.component2());
             }
         });
         boolean robaPostojalaUTD = false;
