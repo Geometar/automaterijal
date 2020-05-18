@@ -37,6 +37,7 @@
 .input-group-text {
   display: inline-block;
   width: 140px;
+  height: 38px;
   font-size: 0.9rem;
 }
 .custom-select {
@@ -132,5 +133,21 @@ input[type="number"]::-webkit-inner-spin-button {
 @media only screen and (max-width :650px) { 
     .mobilni {
         width: 90%;
+    }
+
+    .custom-select {
+      width: 170px;
+      font-size: 0.8rem;
+    }
+    .input-group-text {
+      width: 120px;
+      font-size: 0.8rem;
+    }
+}
+
+@media only screen and (max-width :421px) { 
+
+    .filter-div-test {
+        width: 100%;
     }
 }

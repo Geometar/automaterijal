@@ -35,16 +35,16 @@
     }
 }
 
+@media only screen and (max-width :336px) { 
+
+    .pozicija-filtera {
+        display: none;
+    }
+}
+
 @media only screen and (max-width :380px) { 
 
     .pozicija-filtera {
         left: 5px;
-    }
-}
-
-@media only screen and (max-width :365px) { 
-
-    .pozicija-filtera {
-        display: none;
     }
 }
