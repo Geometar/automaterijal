@@ -1,6 +1,22 @@
 <div class="d-flex justify-content-center">
     <div class="filter-div-test d-flex flex-column">
         <div class="d-flex flex-column input-group mb-3">
+            <div *ngIf="vrstaRobe === 0 || vrstaRobe === 4">
+                <label class="input-group-text mobilna-duzina button-glavni-50" for="inputGroupSelect01">
+                    Grupe:
+                </label>
+                <select class="custom-select mobilna-duzina" (change)="filtriraj()" id="inputGroupSelect01" [(ngModel)]="filter.grupa">
+                    <option selected hidden>Sve grupe</option>
+                    <option *ngFor="let grupe of filterGrupe" [value]="grupe">{{grupe}}</option>
+                </select>
+                <span *ngIf="filter.grupa === 'Sve grupe'" class="disejblovan-filter pozicija-filtera material-icons">
+                    remove_circle
+                </span>
+
+                <span *ngIf="filter.grupa !== 'Sve grupe'" (click) = "filter.grupa = 'Sve grupe'; filtriraj()" class="enejblovan-filter pozicija-filtera material-icons">
+                    remove_circle
+                </span>
+            </div>
             <div>
                 <label class="input-group-text mobilna-duzina button-glavni-50" for="inputGroupSelect01">
                     <p class="boja-siva-400">Proizvodjač: </p>
@@ -31,22 +47,6 @@
                 </span>
 
                 <span *ngIf="filter.raspolozivost !== 'Svi artikli'" (click) = "filter.raspolozivost = 'Svi artikli'; filtriraj()" class="enejblovan-filter pozicija-filtera material-icons">
-                    remove_circle
-                </span>
-            </div>
-            <div *ngIf="vrstaRobe === 0 || vrstaRobe === 4">
-                <label class="input-group-text mobilna-duzina button-glavni-50" for="inputGroupSelect01">
-                    Grupe:
-                </label>
-                <select class="custom-select mobilna-duzina" (change)="filtriraj()" id="inputGroupSelect01" [(ngModel)]="filter.grupa">
-                    <option selected hidden>Sve grupe</option>
-                    <option *ngFor="let grupe of filterGrupe" [value]="grupe">{{grupe}}</option>
-                </select>
-                <span *ngIf="filter.grupa === 'Sve grupe'" class="disejblovan-filter pozicija-filtera material-icons">
-                    remove_circle
-                </span>
-
-                <span *ngIf="filter.grupa !== 'Sve grupe'" (click) = "filter.grupa = 'Sve grupe'; filtriraj()" class="enejblovan-filter pozicija-filtera material-icons">
                     remove_circle
                 </span>
             </div>
