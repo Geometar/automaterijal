@@ -27,6 +27,8 @@ export class KategorijaSpecificnaComponent implements OnInit {
   public tableLength;
 
   public filter: Filter = new Filter();
+  public filterGrupe = [];
+  public proizvodjaci = [];
 
   public searchValue = '';
 
@@ -80,6 +82,8 @@ export class KategorijaSpecificnaComponent implements OnInit {
             (response: HttpResponse<Magacin>) => {
               this.loginService.obavesiPartneraAkoJeSesijaIstekla(response.headers.get('AuthenticatedUser'));
               const body = response.body;
+              this.filterGrupe = body.podgrupe;
+              this.proizvodjaci = body.proizvodjaci;
               this.pronadjenaRoba = true;
               this.roba = body.robaDto.content;
               this.roba = this.dataService.skiniSaStanjaUkolikoJeUKorpi(this.roba);
