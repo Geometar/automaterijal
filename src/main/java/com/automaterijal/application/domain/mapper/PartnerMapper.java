@@ -9,6 +9,7 @@ public abstract class PartnerMapper {
 
     @Mapping(target = "noviPassword", ignore = true)
     @Mapping(target = "stariPassword", ignore = true)
+    @Mapping(target = "privilegije", source = "privilegije")
     @Mapping(target = "naziv", source = "mestaIsporuke.naziv")
     @Mapping(target = "adresa", source = "mestaIsporuke.adresa")
     @Mapping(target = "loginCount", source = "users.loginCount", defaultValue = "0")

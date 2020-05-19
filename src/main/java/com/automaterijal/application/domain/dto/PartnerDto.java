@@ -17,6 +17,7 @@ public class PartnerDto {
     String stariPassword;
     Double stanje;
     Double stanjeporoku;
+    Integer privilegije;
     Integer loginCount;
     Integer webStatus;
 

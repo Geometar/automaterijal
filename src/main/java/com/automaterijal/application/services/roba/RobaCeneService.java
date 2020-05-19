@@ -45,10 +45,14 @@ public class RobaCeneService {
                         .multiply(new BigDecimal(popust))
                         .multiply(new BigDecimal(120))
                         .setScale(0, RoundingMode.CEILING);
-            } else {
+            } else if (partner.getVpcid() != 5) {
                 retVal = robaCene.get().getDeviznacena()
                         .multiply(new BigDecimal(popust))
                         .multiply(new BigDecimal(120));
+            } else if (partner.getVpcid() == 5) {
+//                Partner ima pravo da vidi nabavne cene BEZ PDV i stanje robe na WEB-u
+                retVal = robaCene.get().getNabavnacena()
+                        .multiply(new BigDecimal(popust));
             }
         }
         return retVal;
@@ -75,14 +79,6 @@ public class RobaCeneService {
                     )
                     .map(Popusti::getProcenat)
                     .findFirst();
-            if (!retVal.isPresent()) {
-                retVal = partner.getPopustiList().stream()
-                        .filter(
-                                popusti -> (grupaId != null && grupaId.equals(popusti.getGrupaid()) || (proId != null && proId.equals(popusti.getProid())))
-                        )
-                        .map(Popusti::getProcenat)
-                        .findFirst();
-            }
         }
 
         return retVal.isPresent() ? 1 + retVal.get() / 100 : 1 + partner.getProcpc() / 100;

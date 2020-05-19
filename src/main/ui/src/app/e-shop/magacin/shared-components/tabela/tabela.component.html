@@ -26,6 +26,8 @@
               {{roba.katbr}} </span></div>
           <div class="p-1 pomeranje-mob-div bd-highlight"><b>Proizvodjač:</b> <span class="roba-proizvodjac">
               {{roba.proizvodjac.naziv}}</span></div>
+              <div class="p-1 pomeranje-mob-div bd-highlight"><b>Stanje:</b> <span class="roba-stanje">
+                  {{roba.stanje}}</span></div>
           <div class="p-1 bd-highlight roba-naziv">{{roba.naziv}}</div>
         </div>
       </td>
@@ -63,7 +65,8 @@
       <td class="poslednja-kolona" mat-cell *matCellDef="let roba">
         <div class="d-flex flex-column bd-highlight korpa mb-3">
           <div class="bd-highlight text-right roba-cena">
-            <span class="pdv-cena">Cena sa pdv-om:</span>
+            <span *ngIf="!partner || partner.privilegije != 2047" class="pdv-cena">Cena sa pdv-om:</span>
+            <span *ngIf="partner && partner.privilegije === 2047" class="pdv-cena">Cena bez pdv-a:</span>
             <span class="roba-cena"> {{roba.cena | currency:" "}} RSD </span>
           </div>
           <div class="bd-highlight cena-stanje">
@@ -114,8 +117,7 @@
                 </button>
               </div>
               <div class="dugme-detalji dugme-mobilni">
-                <button mat-raised-button
-                  [disabled]="roba.slika == 'assets/slike/ui/roba/slikanijedostupna.jpg'"
+                <button mat-raised-button [disabled]="roba.slika == 'assets/slike/ui/roba/slikanijedostupna.jpg'"
                   class="dugme button-crveni-50" (click)='detaljiRobe(roba.robaid)'>
                   <i class="material-icons">
                     library_books

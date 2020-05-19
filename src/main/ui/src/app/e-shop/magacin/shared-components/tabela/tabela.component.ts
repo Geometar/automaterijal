@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, HostListener } from '@angular/core';
-import { Roba } from 'src/app/e-shop/model/dto';
+import { Roba, Partner } from 'src/app/e-shop/model/dto';
 import { LoginService } from 'src/app/e-shop/service/login.service';
 import { AppUtilsService } from 'src/app/e-shop/utils/app-utils.service';
 import { NotifikacijaService } from 'src/app/shared/service/notifikacija.service';
@@ -25,6 +25,7 @@ export class TabelaComponent implements OnInit {
   @Output() magacinEvent = new EventEmitter<any>();
 
   innerWidth;
+  public partner: Partner;
   public partnerLogovan = false;
   private korpa: Korpa;
   public jeMobilni = window.innerWidth > 900;
@@ -46,6 +47,7 @@ export class TabelaComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.loginServis.ulogovaniPartner.subscribe(partner => this.partner = partner);
     this.dataService.trenutnaKorpa.subscribe(korpa => this.korpa = korpa);
     this.loginServis.daLiJePartnerUlogovan.subscribe(bool => this.partnerLogovan = bool);
     this.innerWidth = window.innerWidth;

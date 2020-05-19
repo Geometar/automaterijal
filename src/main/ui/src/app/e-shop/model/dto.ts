@@ -10,6 +10,7 @@ export class Partner {
     naziv?: string;
     email?: string;
     adresa?: string;
+    privilegije?: number;
     webKorisnik?: string;
     noviPassword?: string;
     stariPassword?: string;
