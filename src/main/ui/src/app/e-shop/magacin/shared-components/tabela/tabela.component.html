@@ -26,7 +26,7 @@
               {{roba.katbr}} </span></div>
           <div class="p-1 pomeranje-mob-div bd-highlight"><b>Proizvodjač:</b> <span class="roba-proizvodjac">
               {{roba.proizvodjac.naziv}}</span></div>
-              <div class="p-1 pomeranje-mob-div bd-highlight"><b>Stanje:</b> <span class="roba-stanje">
+              <div *ngIf="partner && partner.privilegije === 2047" class="p-1 pomeranje-mob-div bd-highlight"><b>Stanje:</b> <span class="roba-stanje">
                   {{roba.stanje}}</span></div>
           <div class="p-1 bd-highlight roba-naziv">{{roba.naziv}}</div>
         </div>
@@ -65,7 +65,7 @@
       <td class="poslednja-kolona" mat-cell *matCellDef="let roba">
         <div class="d-flex flex-column bd-highlight korpa mb-3">
           <div class="bd-highlight text-right roba-cena">
-            <span *ngIf="!partner || partner.privilegije != 2047" class="pdv-cena">Cena sa pdv-om:</span>
+            <span *ngIf="!partner || partner.privilegije !== 2047" class="pdv-cena">Cena sa pdv-om:</span>
             <span *ngIf="partner && partner.privilegije === 2047" class="pdv-cena">Cena bez pdv-a:</span>
             <span class="roba-cena"> {{roba.cena | currency:" "}} RSD </span>
           </div>
