@@ -1,7 +1,7 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { RobaService } from '../../service/roba.service';
 import { Params, ActivatedRoute, Router } from '@angular/router';
-import { Roba, RobaBrojevi } from '../../model/dto';
+import { Roba, RobaBrojevi, Partner } from '../../model/dto';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
@@ -24,11 +24,14 @@ export class RobaDetaljiComponent implements OnInit {
   public kljuceviAplikacija: string[] = [];
   public kluceviRobe: string[] = [];
   public originalniBrojevi: OeBrojevi[];
+  public partner: Partner;
 
   private korpa: Korpa;
   public ucitavanje = false;
   public partnerLogovan = false;
   private alive = true;
+
+  public editTekst = false;
 
   innerWidth;
   public velikiEkran = window.innerWidth > 650;
@@ -47,6 +50,7 @@ export class RobaDetaljiComponent implements OnInit {
   ngOnInit() {
     this.innerWidth = window.innerWidth;
     this.dataService.trenutnaKorpa.subscribe(korpa => this.korpa = korpa);
+    this.loginServis.ulogovaniPartner.subscribe(partner => this.partner = partner);
     this.loginServis.daLiJePartnerUlogovan.subscribe(bool => this.partnerLogovan = bool);
     this.uzmiDetaljeRobe();
     this.promeniTabeluDetaljaAutomobila();
@@ -88,6 +92,25 @@ export class RobaDetaljiComponent implements OnInit {
           console.log(this.robaDetalji);
         });
     });
+  }
+
+  sacuvajTekst() {
+    this.editTekst = false;
+    this.robaService.sacuvajTekst(this.robaDetalji)
+      .pipe(
+        takeWhile(() => this.alive),
+        catchError((error: Response) => {
+          if (error.status === 403) {
+            this.router.navigate(['/login']);
+            this.loginServis.izbaciPartnerIzSesije();
+            return EMPTY;
+          }
+          return throwError(error);
+        }),
+        finalize(() => this.ucitavanje = false))
+      .subscribe((res: HttpResponse<Roba>) => {
+        console.log('hahaha');
+      });
   }
 
   dodajKolicini(roba: Roba) {
@@ -159,7 +182,7 @@ export class RobaDetaljiComponent implements OnInit {
   traziPoBroju(katBr) {
     this.route.queryParams.subscribe(params => {
       const url = '/' + params['prosliUrl'] + '/';
-      this.router.navigate([url], { queryParams: { pretraga: katBr}});
+      this.router.navigate([url], { queryParams: { pretraga: katBr } });
     });
   }
 

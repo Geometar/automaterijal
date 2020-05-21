@@ -100,6 +100,7 @@ export class Roba {
     public katbr: string;
     public katbrpro: string;
     public naziv: string;
+    public tekst: string;
     public stanje: number;
     public cena: number;
     public rabat: number;

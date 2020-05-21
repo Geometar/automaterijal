@@ -20,6 +20,7 @@ public class RobaDetaljiDto {
     String podGrupa;
     String katbr;
     String naziv;
+    String tekst;
     double stanje;
     Double rabat;
     BigDecimal cena;

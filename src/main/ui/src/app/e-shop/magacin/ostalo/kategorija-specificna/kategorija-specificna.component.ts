@@ -60,7 +60,7 @@ export class KategorijaSpecificnaComponent implements OnInit {
         this.pronadjenaRoba = true;
         this.pageIndex = queryParams['strana'];
         this.rowsPerPage = queryParams['brojKolona'];
-        this.filter.proizvodjacId = queryParams['proizvodjac'];
+        this.filter.proizvodjac = queryParams['proizvodjac'];
         this.filter.naStanju = queryParams['naStanju'];
         this.searchValue = queryParams['pretraga'];
         this.robaServis.pronadjiPoKategoriji(
@@ -124,8 +124,8 @@ export class KategorijaSpecificnaComponent implements OnInit {
       if (this.rowsPerPage) {
         parameterObject['brojKolona'] = this.rowsPerPage;
       }
-      if (this.filter.proizvodjacId) {
-        parameterObject['proizvodjac'] = this.filter.proizvodjacId;
+      if (this.filter.proizvodjac) {
+        parameterObject['proizvodjac'] = this.filter.proizvodjac;
       }
       if (this.filter.naStanju) {
         parameterObject['naStanju'] = this.filter.naStanju;

@@ -54,6 +54,8 @@ public class RobaGlavniService {
     @NonNull
     final PodGrupaService podGrupaService;
     @NonNull
+    final RobaTekstService robaTekstService;
+    @NonNull
     final RobaMapper mapper;
 
     @Value("${roba.slika.prefixTabela}")
@@ -188,6 +190,7 @@ public class RobaGlavniService {
             } else {
                 detaljnoDto.setSlika(SLIKA_NIJE_DOSTUPNA_URL);
             }
+            robaTekstService.pronadjiTextPoRobiId(detaljnoDto.getRobaid()).ifPresent(robaTekst -> detaljnoDto.setTekst(robaTekst.getTekst()));
         }
     }
 }

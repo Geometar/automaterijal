@@ -56,7 +56,7 @@ export class RobaComponent implements OnInit {
       this.treutniParametri = params;
       this.pageIndex = params['strana'];
       this.rowsPerPage = params['brojKolona'];
-      this.filter.proizvodjacId = params['proizvodjac'];
+      this.filter.proizvodjac = params['proizvodjac'];
       this.filter.naStanju = params['naStanju'];
       this.filter.grupa = params['grupa'];
       if (this.searchValue && this.searchValue !== params['pretraga']) {
@@ -137,8 +137,8 @@ export class RobaComponent implements OnInit {
     if (this.rowsPerPage) {
       parameterObject['brojKolona'] = this.rowsPerPage;
     }
-    if (this.filter.proizvodjacId) {
-      parameterObject['proizvodjac'] = this.filter.proizvodjacId;
+    if (this.filter.proizvodjac) {
+      parameterObject['proizvodjac'] = this.filter.proizvodjac;
     }
     if (this.filter.naStanju) {
       parameterObject['naStanju'] = this.filter.naStanju;
@@ -149,15 +149,7 @@ export class RobaComponent implements OnInit {
     if (this.searchValue) {
       parameterObject['pretraga'] = this.searchValue;
     }
-    if (
-      parameterObject['pretraga'] &&
-      this.treutniParametri['pretraga'] &&
-      parameterObject['pretraga'] === this.treutniParametri['pretraga']
-    ) {
-      this.pronadjiSvuRobu();
-    } else {
       this.router.navigate(['/roba'], { queryParams: parameterObject });
-    }
   }
 
   toogleFilterDiv(otvoriFilter: boolean) {

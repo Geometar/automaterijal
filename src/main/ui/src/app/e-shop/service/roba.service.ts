@@ -36,6 +36,16 @@ export class RobaService {
       );
   }
 
+  public sacuvajTekst(roba: Roba) {
+    const fullUrl = DOMAIN_URL + ROBA_URL + '/' + roba.robaid;
+    return this.http
+      .post(fullUrl, roba.tekst)
+      .pipe(
+        timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
+        catchError((error: any) => throwError(error))
+      );
+  }
+
   public pronadjiSvuRobu(sort: Sort, pageSize, page, searchValue, filter: Filter): Observable<HttpResponse<Object>> {
     const parameterObject = {};
     parameterObject['pageSize'] = pageSize;

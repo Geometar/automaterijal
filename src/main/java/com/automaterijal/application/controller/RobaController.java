@@ -5,8 +5,10 @@ import com.automaterijal.application.domain.constants.VrstaRobe;
 import com.automaterijal.application.domain.dto.MagacinDto;
 import com.automaterijal.application.domain.dto.robadetalji.RobaDetaljiDto;
 import com.automaterijal.application.domain.entity.Partner;
+import com.automaterijal.application.domain.entity.roba.RobaTekst;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.services.roba.RobaGlavniService;
+import com.automaterijal.application.services.roba.RobaTekstService;
 import com.automaterijal.application.utils.PartnerSpringBeanUtils;
 import com.automaterijal.application.utils.RobaSpringBeanUtils;
 import lombok.AccessLevel;
@@ -16,6 +18,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.util.CollectionUtils;
@@ -33,6 +36,8 @@ public class RobaController {
 
     @NonNull
     final RobaGlavniService robaGlavniService;
+    @NonNull
+    final RobaTekstService robaTekstService;
     @NonNull
     final PartnerSpringBeanUtils partnerSpringBeanUtils;
     @NonNull
@@ -69,6 +74,22 @@ public class RobaController {
         return robaGlavniService.pronadjiRobuPoRobaId(robaId, uPartner)
                 .map(roba -> ResponseEntity.ok(roba))
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping(value = "/{robaID}")
+    public ResponseEntity sacuvajTekst(
+            @PathVariable("robaID") Long robaId,
+            @RequestBody String tekst,
+            Authentication authentication) {
+        var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+        if (uPartner != null && uPartner.getPrivilegije() == 2047) {
+            log.info("Sacuvan tekst za robu {}", robaId);
+            robaTekstService.sacuvajTekst(new RobaTekst(robaId, tekst));
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        } else {
+            log.error("Odbijen zahtev da sacuva tekst za robu {}", robaId);
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
     }
 
     @GetMapping(value = "/filteri")
