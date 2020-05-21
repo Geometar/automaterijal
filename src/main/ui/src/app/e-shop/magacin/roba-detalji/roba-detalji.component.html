@@ -10,6 +10,7 @@
         <div class="p-1 flex-fill div-1">
           <h1 class="h1-proizvdojac">Proizvodjač: <span
               class="detalji-proizvodjac boja-crvena-10">{{robaDetalji.proizvodjac.naziv}}</span></h1>
+          <h2 *ngIf="partner && partner.privilegije === 2047" class="komercijalista-stanje">Stanje: <span>{{robaDetalji.stanje}}</span></h2>
           <h2 class="h2-naziv">{{robaDetalji.naziv}}</h2>
           <div class="slika-robe">
             <img src={{robaDetalji.slika}} height="200px"
@@ -90,7 +91,8 @@
           </div>
         </div>
       </div>
-      <div *ngIf="kluceviRobe.length !== 0 || kljuceviAplikacija.length !== 0" class="d-flex flex-column flex-lg-row sektor-detalja-2">
+      <div *ngIf="kluceviRobe.length !== 0 || kljuceviAplikacija.length !== 0"
+        class="d-flex flex-column flex-lg-row sektor-detalja-2">
         <div class="p-2 sirina-1 flex-fill bd-highlight">
           <div class="pozadina-glavna-100 granicnik-plavi">
           </div>
@@ -171,17 +173,19 @@
         <div class="pozadina-glavna-100 granicnik-plavi-opis"></div>
         <h2 class="h2-sekcija-3">Opis</h2>
         <div class="tekst-area">
-          <span *ngIf="partner && partner.privilegije === 2047 && !editTekst" class="material-icons kreiraj-tekst" (click)="editTekst=true">
+          <span *ngIf="partner && partner.privilegije === 2047 && !editTekst" class="material-icons kreiraj-tekst"
+            (click)="editTekst=true">
             create
           </span>
-          <span *ngIf="partner && partner.privilegije === 2047 && editTekst" class="material-icons kreiraj-tekst" (click)="sacuvajTekst()">
+          <span *ngIf="partner && partner.privilegije === 2047 && editTekst" class="material-icons kreiraj-tekst"
+            (click)="sacuvajTekst()">
             done_all
           </span>
-          <textarea *ngIf="!editTekst" class="input-tekst input-tekst-readonly" matInput cdkTextareaAutosize cdkAutosizeMinRows="8"
-            cdkAutosizeMaxRows="50" tabindex="-1" readonly=true [(ngModel)]="robaDetalji.tekst">
+          <textarea *ngIf="!editTekst" class="input-tekst input-tekst-readonly" matInput cdkTextareaAutosize
+            cdkAutosizeMinRows="8" cdkAutosizeMaxRows="50" tabindex="-1" readonly=true [(ngModel)]="robaDetalji.tekst">
                 </textarea>
-          <textarea *ngIf="editTekst" class="input-tekst input-tekst-edit" matInput cdkTextareaAutosize cdkAutosizeMinRows="8" cdkAutosizeMaxRows="50"
-            [(ngModel)]="robaDetalji.tekst">
+          <textarea *ngIf="editTekst" class="input-tekst input-tekst-edit" matInput cdkTextareaAutosize
+            cdkAutosizeMinRows="8" cdkAutosizeMaxRows="50" [(ngModel)]="robaDetalji.tekst">
                         </textarea>
         </div>
       </div>
