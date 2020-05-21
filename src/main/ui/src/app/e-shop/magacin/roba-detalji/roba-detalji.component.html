@@ -180,7 +180,7 @@
           <textarea *ngIf="!editTekst" class="input-tekst input-tekst-readonly" matInput cdkTextareaAutosize cdkAutosizeMinRows="8"
             cdkAutosizeMaxRows="50" tabindex="-1" readonly=true [(ngModel)]="robaDetalji.tekst">
                 </textarea>
-          <textarea *ngIf="editTekst" class="input-tekst input-tekst-edit" matInput cdkTextareaAutosize cdkAutosizeMinRows="8" cdkAutosizeMaxRows="16"
+          <textarea *ngIf="editTekst" class="input-tekst input-tekst-edit" matInput cdkTextareaAutosize cdkAutosizeMinRows="8" cdkAutosizeMaxRows="50"
             [(ngModel)]="robaDetalji.tekst">
                         </textarea>
         </div>
