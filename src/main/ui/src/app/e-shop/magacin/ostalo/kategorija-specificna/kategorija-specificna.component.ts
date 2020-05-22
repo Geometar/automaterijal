@@ -60,7 +60,7 @@ export class KategorijaSpecificnaComponent implements OnInit {
         this.pronadjenaRoba = true;
         this.pageIndex = queryParams['strana'];
         this.rowsPerPage = queryParams['brojKolona'];
-        this.filter.proizvodjac = queryParams['proizvodjac'];
+        this.filter.proizvodjacId = queryParams['proizvodjac'];
         this.filter.naStanju = queryParams['naStanju'];
         this.searchValue = queryParams['pretraga'];
         this.robaServis.pronadjiPoKategoriji(

@@ -57,7 +57,7 @@ export class FilteriComponent implements OnInit {
       this.treutniParametri = params;
       this.pageIndex = params['strana'];
       this.rowsPerPage = params['brojKolona'];
-      this.filter.proizvodjac = params['proizvodjac'];
+      this.filter.proizvodjacId = params['proizvodjac'];
       this.filter.naStanju = params['naStanju'];
       this.searchValue = params['pretraga'];
       this.pronandjiSveFiltere();
@@ -126,8 +126,8 @@ export class FilteriComponent implements OnInit {
     if (this.rowsPerPage) {
       parameterObject['brojKolona'] = this.rowsPerPage;
     }
-    if (this.filter.proizvodjac) {
-      parameterObject['proizvodjac'] = this.filter.proizvodjac;
+    if (this.filter.proizvodjacId) {
+      parameterObject['proizvodjac'] = this.filter.proizvodjacId;
     }
     if (this.filter.naStanju) {
       parameterObject['naStanju'] = this.filter.naStanju;

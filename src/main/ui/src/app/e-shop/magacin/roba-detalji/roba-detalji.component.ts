@@ -109,7 +109,7 @@ export class RobaDetaljiComponent implements OnInit {
         }),
         finalize(() => this.ucitavanje = false))
       .subscribe((res: HttpResponse<Roba>) => {
-        console.log('hahaha');
+        this.notifikacijaServis.notify('Uspesno izmenjen opis', MatSnackBarKlase.Plava);
       });
   }
 

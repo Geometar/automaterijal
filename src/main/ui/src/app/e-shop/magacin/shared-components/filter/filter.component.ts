@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { ProizvodjacService } from 'src/app/e-shop/service/proizvodjac.service';
 import { takeWhile } from 'rxjs/operators';
 import { VrstaRobe } from 'src/app/e-shop/model/roba.enum';
@@ -29,6 +29,25 @@ export class FilterComponent implements OnInit {
 
   constructor(
     private utilsService: AppUtilsService) { }
+
+  ngOnChanges(changes: SimpleChanges) {
+    changes.proizvodjaci.currentValue.forEach((proizvodjac: Proizvodjac) => {
+      if (proizvodjac.proid === this.filter.proizvodjacId) {
+        this.filter.proizvodjac = proizvodjac.naziv;
+      }
+    });
+    if (this.filter) {
+      if (!this.filter.grupa) {
+        this.filter.grupa = 'Sve grupe';
+      }
+      if (!this.filter.proizvodjacId) {
+        this.filter.proizvodjac = 'Svi proizvodjači';
+      }
+      if (!this.filter.naStanju) {
+        this.filter.raspolozivost = this.raspolozivost[0];
+      }
+    }
+  }
 
   ngOnInit() {
     if (this.industrijkoUljeEvent) {
