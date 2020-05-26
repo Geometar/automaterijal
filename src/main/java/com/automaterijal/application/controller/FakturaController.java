@@ -86,7 +86,7 @@ public class FakturaController {
 
         if (partner == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        } else if (ppid != null && ppid.intValue() != partner.getPpid().intValue() || partner.getPrivilegije() != 2047) {
+        } else if (ppid != null && ppid.intValue() != partner.getPpid().intValue() && partner.getPrivilegije() != 2047) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
