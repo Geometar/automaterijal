@@ -13,8 +13,13 @@ import java.util.Optional;
 @Repository
 public interface FakturaRepository extends JpaRepository<Faktura, Integer> {
 
+    Page<Faktura> findByDataSentGreaterThanAndDataSentLessThanOrderByDataSentDesc(Pageable pageable, Timestamp vremeOd, Timestamp vremeDo);
+
     Page<Faktura> findByPpidAndDataSentGreaterThanAndDataSentLessThanOrderByDataSentDesc(Integer ppid, Pageable pageable, Timestamp vremeOd, Timestamp vremeDo);
-    List<Faktura>  findByLastUpdateGreaterThan(Timestamp timestamp);
+
+    List<Faktura> findByLastUpdateGreaterThan(Timestamp timestamp);
+
     Optional<Faktura> findByPpidAndId(Integer ppid, Integer id);
+
     Optional<Faktura> findFirstByPpidOrderByOrderIdDesc(Integer ppid);
 }

@@ -25,6 +25,7 @@ public abstract class FakturaMapper {
     @Mapping(target = "nacinPlacanja.id", source = "nuid")
     @Mapping(target = "nacinPrevoza.id", source = "niid")
     @Mapping(target = "adresa.id", source = "mestoIsporuke")
+    @Mapping(target = "partner", source = "ppid")
     public abstract FakturaDto map(Faktura faktura);
 
     public void popuniFakuturu(Faktura faktura, Partner partner, Integer orderId) {

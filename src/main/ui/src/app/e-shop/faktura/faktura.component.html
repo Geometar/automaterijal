@@ -1,7 +1,8 @@
 <main>
     <div>
         <div class="header-porduzbenice">
-            <h1>Moje porudžbenice</h1>
+            <h1 *ngIf="partner.privilegije !== 2047" >Moje porudžbenice</h1>
+            <h1 *ngIf="partner.privilegije === 2047" >Sve porudžbenice</h1>
             <div class="d-flex justify-content-center">
                 <div class="filter-div d-flex flex-column">
                     <div class="d-flex justify-content-center">
@@ -41,10 +42,16 @@
 
                 <!-- Kataloski broj Column -->
                 <ng-container matColumnDef="orderId">
-                    <th mat-header-cell *matHeaderCellDef> Broj Fakture </th>
+                    <th mat-header-cell *matHeaderCellDef> 
+                        <span *ngIf="partner.privilegije !== 2047">Broj Fakture</span>
+                        <span *ngIf="partner.privilegije === 2047">Partner</span> 
+                    </th>
                     <td mat-cell data-label="Broj Fakture" *matCellDef="let faktura">
-                        <p class="mat-body-2">
+                        <p *ngIf="partner.privilegije !== 2047" class="mat-body-2">
                             {{faktura.orderId}}
+                        </p>
+                        <p *ngIf="partner.privilegije === 2047" class="mat-body-2">
+                            {{faktura.partner | titlecase}}
                         </p>
                     </td>
                 </ng-container>

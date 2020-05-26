@@ -37,31 +37,31 @@ public class FakturaController {
 
     @GetMapping(value = "/{ppid}")
     public ResponseEntity<Page<FakturaDto>> vratiSveFaktureKorisnika(
-            @RequestParam(required = false) final Integer page,
-            @RequestParam(required = false) final Integer pageSize,
-            @RequestParam(required = false) final BigDecimal dateFrom,
-            @RequestParam(required = false) final BigDecimal dateTo,
-            @PathVariable(name = "ppid") final Integer ppid,
-            final Authentication authentication
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer pageSize,
+            @RequestParam(required = false) BigDecimal dateFrom,
+            @RequestParam(required = false) BigDecimal dateTo,
+            @PathVariable(name = "ppid") Integer ppid,
+            Authentication authentication
     ) {
-        final Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
-        final var iPage = page == null ? 0 : page;
-        final var iPageSize = pageSize == null ? 10 : pageSize;
-        final var iVremeOd = dateFrom == null ? LocalDate.now().minusYears(5).atStartOfDay(): GeneralUtil.timestampToLDT(dateFrom.longValue()).atStartOfDay();
-        final var iVremeDo = dateTo == null ? LocalDate.now().atStartOfDay().plusDays(1) : GeneralUtil.timestampToLDT(dateTo.longValue()).atStartOfDay().plusDays(1);
+        Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+        var iPage = page == null ? 0 : page;
+        var iPageSize = pageSize == null ? 10 : pageSize;
+        var iVremeOd = dateFrom == null ? LocalDate.now().minusYears(5).atStartOfDay() : GeneralUtil.timestampToLDT(dateFrom.longValue()).atStartOfDay();
+        var iVremeDo = dateTo == null ? LocalDate.now().atStartOfDay().plusDays(1) : GeneralUtil.timestampToLDT(dateTo.longValue()).atStartOfDay().plusDays(1);
         if (partner == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } else if (ppid != null && ppid.intValue() != partner.getPpid().intValue()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
-        final Page<FakturaDto> fakture = fakturaService.vratiSveFaktureUlogovanogKorisnika(partner, iPage, iPageSize, iVremeOd, iVremeDo);
+        Page<FakturaDto> fakture = fakturaService.vratiSveFaktureUlogovanogKorisnika(partner, iPage, iPageSize, iVremeOd, iVremeDo);
         return ResponseEntity.ok(fakture);
     }
 
     @PostMapping
-    public ResponseEntity<List<RobaDto>> podnesiFakturu(@RequestBody final FakturaDto fakturaDto, final Authentication authentication) {
-        final Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+    public ResponseEntity<List<RobaDto>> podnesiFakturu(@RequestBody FakturaDto fakturaDto, Authentication authentication) {
+        Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
 
         if (partner == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -72,26 +72,26 @@ public class FakturaController {
                 fakturaDto.getIznosNarucen(),
                 fakturaDto.getDetalji().size());
 
-        final var response = fakturaService.submitujFakturu(fakturaDto, partner);
+        var response = fakturaService.submitujFakturu(fakturaDto, partner);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping(value = "/{ppid}/{id}")
     public ResponseEntity<FakturaDto> vratiFakturu(
-            @PathVariable(name = "ppid") final Integer ppid,
-            @PathVariable(name = "id") final Integer id,
-            final Authentication authentication
+            @PathVariable(name = "ppid") Integer ppid,
+            @PathVariable(name = "id") Integer id,
+            Authentication authentication
     ) {
-        final Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+        Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
 
         if (partner == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        } else if (ppid != null && ppid.intValue() != partner.getPpid().intValue()) {
+        } else if (ppid != null && ppid.intValue() != partner.getPpid().intValue() || partner.getPrivilegije() != 2047) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
         log.info("Partner {} trazi fakturu pojedinacnu sa brojem {}", partner.getNaziv(), id);
-        final FakturaDto fakture = fakturaService.vratiFakuturuPojedinacno(partner, id);
+        FakturaDto fakture = fakturaService.vratiFakuturuPojedinacno(partner, id);
         if (fakture != null) {
             return ResponseEntity.ok(fakture);
         }

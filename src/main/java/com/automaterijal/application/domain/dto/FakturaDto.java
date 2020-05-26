@@ -20,5 +20,6 @@ public class FakturaDto {
     Double iznosNarucen;
     Double iznosPotvrdjen;
     Integer brojStavki;
+    String partner;
     List<FakturaDetaljiDto> detalji;
 }

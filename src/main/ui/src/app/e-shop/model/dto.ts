@@ -32,6 +32,7 @@ export class Fakutra {
     brojStavki?: number;
     iznosNarucen?: number;
     iznosPotvrdjen?: number;
+    partner?: string;
     detalji?: FakturaDetalji[];
 }
 

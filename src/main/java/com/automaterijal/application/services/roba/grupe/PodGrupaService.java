@@ -11,6 +11,7 @@ import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,6 +46,7 @@ public class PodGrupaService {
         Set<String> podGrupe = podGrupaRepository.findAll()
                 .stream()
                 .map(PodGrupa::getNaziv)
+                .filter(StringUtils::isNotBlank)
                 .map(String::trim)
                 .map(String::toUpperCase)
                 .collect(Collectors.toSet());

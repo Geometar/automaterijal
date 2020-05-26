@@ -79,7 +79,7 @@ public class RobaController {
     @PostMapping(value = "/{robaID}")
     public ResponseEntity sacuvajTekst(
             @PathVariable("robaID") Long robaId,
-            @RequestBody String tekst,
+            @RequestBody(required = false) String tekst,
             Authentication authentication) {
         var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
         if (uPartner != null && uPartner.getPrivilegije() == 2047) {

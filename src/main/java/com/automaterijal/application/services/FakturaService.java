@@ -115,13 +115,22 @@ public class FakturaService {
             LocalDateTime vremeOd,
             LocalDateTime vremeDo) {
         var pageRequest = PageRequest.of(page, pageSize, new Sort(Sort.Direction.ASC, "orderId"));
-        return fakturaRepository.findByPpidAndDataSentGreaterThanAndDataSentLessThanOrderByDataSentDesc(
-                partner.getPpid(),
-                pageRequest,
-                GeneralUtil.LDTToTimestamp(vremeOd),
-                GeneralUtil.LDTToTimestamp(vremeDo)
-
-        ).map(mapper::map)
+        Page<Faktura> fakture;
+        if (partner.getPrivilegije() == 2047) {
+            fakture = fakturaRepository.findByDataSentGreaterThanAndDataSentLessThanOrderByDataSentDesc(
+                    pageRequest,
+                    GeneralUtil.LDTToTimestamp(vremeOd),
+                    GeneralUtil.LDTToTimestamp(vremeDo)
+            );
+        } else {
+            fakture = fakturaRepository.findByPpidAndDataSentGreaterThanAndDataSentLessThanOrderByDataSentDesc(
+                    partner.getPpid(),
+                    pageRequest,
+                    GeneralUtil.LDTToTimestamp(vremeOd),
+                    GeneralUtil.LDTToTimestamp(vremeDo)
+            );
+        }
+        return fakture.map(mapper::map)
                 .map(fakturaDto -> obogatiDto(fakturaDto, partner));
     }
 
@@ -130,6 +139,7 @@ public class FakturaService {
         nacinPlacanjaRepository.findById(fakturaDto.getNacinPlacanja().getId()).ifPresent(nacinPlacanja -> mapper.map(fakturaDto, nacinPlacanja));
         nacinPrevozaRepository.findById(fakturaDto.getNacinPrevoza().getId()).ifPresent(nacinPrevoza -> mapper.map(fakturaDto, nacinPrevoza));
         mestaIsporukeRepository.findById(fakturaDto.getAdresa().getId()).ifPresent(adresa -> mapper.map(fakturaDto, adresa));
+        fakturaDto.setPartner(partnerService.pronadjiPartneraPoId(Integer.valueOf(fakturaDto.getPartner())).getMestaIsporuke().getNaziv());
         fakturaDto.setBrojStavki(
                 fakturaDetaljiRepository.findByOrderId(fakturaDto.getId()).size()
         );
@@ -174,7 +184,12 @@ public class FakturaService {
     @Transactional(readOnly = true)
     public FakturaDto vratiFakuturuPojedinacno(Partner partner, Integer id) {
         FakturaDto fakturaDto = null;
-        Optional<Faktura> faktura = fakturaRepository.findByPpidAndId(partner.getPpid(), id);
+        Optional<Faktura> faktura;
+        if (partner.getPrivilegije() == 2047) {
+            faktura = fakturaRepository.findById(id);
+        } else {
+            faktura = fakturaRepository.findByPpidAndId(partner.getPpid(), id);
+        }
         if (faktura.isPresent()) {
             fakturaDto = faktura.map(mapper::map)
                     .map(dto -> obogatiDto(dto, partner)).get();

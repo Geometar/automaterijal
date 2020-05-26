@@ -42,7 +42,8 @@
         <div class="flex-fill pozadina-siva-300 div-3">
           <div class="d-flex flex-column bd-highlight mb-3 mobilni-kolicina-labela">
             <div class="bd-highlight text-center roba-cena">
-              <div class="pdv-cena boja-glavna-50">Cena sa pdv-om</div>
+              <div *ngIf="!partner || partner.privilegije !== 2047" class="pdv-cena boja-glavna-50">Cena sa pdv-om</div>
+              <div *ngIf="partner && partner.privilegije === 2047" class="pdv-cena boja-glavna-50">Cena bez pdv-a</div>
               <div class="boja-crvena-10"> {{robaDetalji.cena | currency:" "}} RSD </div>
             </div>
             <span *ngIf="partnerLogovan && uKorpi(robaDetalji.katbr)">
