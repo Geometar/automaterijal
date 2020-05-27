@@ -10,6 +10,8 @@ import { ModalModule } from './shared/modal/modal.module';
 import { NavigacijaModule } from './navigacija/navigacija.module';
 import { AuthGuard } from './shared/guard/auth-guard';
 import { HttpErrorInterceptor } from './shared/interceptor/error-interceptor';
+import { AdminComponent } from './e-shop/admin/admin.component';
+import { AdminGuard } from './shared/guard/admin-guard';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,7 @@ import { HttpErrorInterceptor } from './shared/interceptor/error-interceptor';
   ],
   providers: [
     AuthGuard,
+    AdminGuard,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpErrorInterceptor,

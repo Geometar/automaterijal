@@ -1,6 +1,7 @@
 import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { AuthGuard } from './shared/guard/auth-guard';
+import { AdminGuard } from './shared/guard/admin-guard';
 
 const routes: Routes = [
   {path: '', redirectTo: '/naslovna', pathMatch: 'full' },
@@ -16,6 +17,7 @@ const routes: Routes = [
   {path: 'ostalo' , loadChildren: './e-shop/magacin/ostalo/ostalo.module#OstaloModule'},
   {path: 'ostalo/:id', loadChildren: './e-shop/magacin/ostalo/ostalo.module#OstaloModule'},
   {path: 'login' , loadChildren: './e-shop/login/login.module#LoginModule'},
+  {path: 'admin' , loadChildren: './e-shop/admin/admin.module#AdminModule', canActivate: [AdminGuard]},
   {path: 'reset-sifre/:id', loadChildren: './e-shop/resetovanje-sfire/reset-sifre.module#ResetSifreModule'},
   {path: 'licni-podaci' , loadChildren: './e-shop/partner/partner.module#PartnerModule', canActivate: [AuthGuard]},
   {path: 'porudzbenice', loadChildren: './e-shop/faktura/fakture.module#FaktureModule', canActivate: [AuthGuard]},

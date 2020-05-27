@@ -1,8 +1,11 @@
 package com.automaterijal.application.domain.mapper;
 
 import com.automaterijal.application.domain.dto.PartnerDto;
+import com.automaterijal.application.domain.dto.PartnerLogovanjeDto;
 import com.automaterijal.application.domain.entity.Partner;
 import org.mapstruct.*;
+
+import java.time.format.DateTimeFormatter;
 
 @Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS, nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public abstract class PartnerMapper {
@@ -23,4 +26,15 @@ public abstract class PartnerMapper {
     @Mapping(target = "mestaIsporuke.adresa", source = "adresa")
     @Mapping(target = "users.password", source = "noviPassword")
     public abstract void map(@MappingTarget Partner partner, PartnerDto partnerDto);
+
+    @Mapping(target = "naziv", source = "mestaIsporuke.naziv")
+    public abstract PartnerLogovanjeDto mapLogovanje(Partner partner);
+
+    @AfterMapping
+    public void afterMaper(@MappingTarget PartnerLogovanjeDto logovanjeDto, Partner partner) {
+        logovanjeDto.setPoslednjeLogovanje(
+                DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
+                        .format(partner.getUsers().getLastLogin().toLocalDateTime())
+        );
+    }
 }

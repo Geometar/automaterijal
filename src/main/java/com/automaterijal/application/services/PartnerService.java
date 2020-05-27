@@ -2,6 +2,7 @@ package com.automaterijal.application.services;
 
 import com.automaterijal.application.domain.constants.PartnerAkcije;
 import com.automaterijal.application.domain.dto.PartnerDto;
+import com.automaterijal.application.domain.dto.PartnerLogovanjeDto;
 import com.automaterijal.application.domain.dto.ResetovanjeSifreDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.Users;
@@ -15,6 +16,9 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,11 +43,11 @@ public class PartnerService {
     @NonNull
     final EmailService emailService;
 
-    public boolean promeniSifruPartnera(final ResetovanjeSifreDto resetovanjeSifreDto, final boolean isPrvaPromena) {
+    public boolean promeniSifruPartnera(ResetovanjeSifreDto resetovanjeSifreDto, boolean isPrvaPromena) {
         boolean uspesnaPromenaSifre = false;
-        final Optional<Partner> partnerOptinal = partnerRepository.findByPpid(resetovanjeSifreDto.getPpid());
+        Optional<Partner> partnerOptinal = partnerRepository.findByPpid(resetovanjeSifreDto.getPpid());
         if (partnerOptinal.isPresent()) {
-            final Partner partner = partnerOptinal.get();
+            Partner partner = partnerOptinal.get();
             if (isPrvaPromena) {
                 partner.setUsers(usersService.sacuvajUsera(partner));
             }
@@ -59,19 +63,19 @@ public class PartnerService {
     /**
      * Servis za gde partner updejtuje informacije o sebi
      */
-    public PartnerDto updejtPartnera(final PartnerDto partnerDto, final Partner partner, final PartnerAkcije akcije) {
+    public PartnerDto updejtPartnera(PartnerDto partnerDto, Partner partner, PartnerAkcije akcije) {
         PartnerDto retVal = null;
         log.info("Partner {} trazio promenu {}", partner.getNaziv(), akcije);
         partnerDto.setNaziv(partner.getNaziv());
         switch (akcije) {
             case PROMENA_SIFRE:
                 retVal = promenaSifrePrekoAkcija(partnerDto, partner);
-                if(retVal != null) {
+                if (retVal != null) {
                     emailService.posaljiPromenaInformacijaMail(partnerDto, akcije);
                 }
                 break;
             case PROMENA_IMENA:
-                if ( partnerDto.getWebKorisnik() != null && !daLiPostojiVecZauzetaRegistracije(partnerDto)) {
+                if (partnerDto.getWebKorisnik() != null && !daLiPostojiVecZauzetaRegistracije(partnerDto)) {
                     mapper.map(partner, partnerDto);
                     retVal = mapper.map(partner);
                     partnerRepository.saveAndFlush(partner);
@@ -91,7 +95,7 @@ public class PartnerService {
         return retVal;
     }
 
-    private PartnerDto promenaSifrePrekoAkcija(final PartnerDto partnerDto, final Partner partner) {
+    private PartnerDto promenaSifrePrekoAkcija(PartnerDto partnerDto, Partner partner) {
         PartnerDto retVal = null;
         if (partnerDto.getStariPassword() != null || partnerDto.getNoviPassword() != null) {
             if (LoginStaticUtils.md5Password(partnerDto.getStariPassword()).equals(partner.getUsers().getPassword())) {
@@ -104,14 +108,14 @@ public class PartnerService {
         return retVal;
     }
 
-    private boolean daLiPostojiVecZauzetaRegistracije(final PartnerDto partnerDto) {
+    private boolean daLiPostojiVecZauzetaRegistracije(PartnerDto partnerDto) {
         return partnerRepository.findByWebKorisnik(partnerDto.getWebKorisnik()).isPresent();
     }
 
     @Transactional(readOnly = true)
-    public Partner pronadjiPartneraPoId(final Integer id) {
+    public Partner pronadjiPartneraPoId(Integer id) {
         Partner retVal = null;
-        final Optional<Partner> optionalPartner = partnerRepository.findById(id);
+        Optional<Partner> optionalPartner = partnerRepository.findById(id);
         if (optionalPartner.isPresent()) {
             retVal = optionalPartner.get();
         }
@@ -121,11 +125,18 @@ public class PartnerService {
     /**
      * Servis za povecavanje broja logovanja korisnika
      */
-    public void povecanPartnerovOrderCount(final Partner partner) {
-        final Optional<Partner> partnerHibernate = partnerRepository.findById(partner.getPpid());
+    public void povecanPartnerovOrderCount(Partner partner) {
+        Optional<Partner> partnerHibernate = partnerRepository.findById(partner.getPpid());
         partnerHibernate.ifPresent(partnerBaza -> {
-            final Users users = partnerBaza.getUsers();
+            Users users = partnerBaza.getUsers();
             users.setOrderCount(users.getOrderCount() + 1);
         });
+    }
+
+    public Page<PartnerLogovanjeDto> vratiLogovanjePartnera(Integer page, Integer pageSize) {
+        Page<Partner> partneri = partnerRepository.findAll(
+                PageRequest.of(page, pageSize, Sort.by(Sort.Direction.DESC, "users.lastLogin"))
+        );
+        return partneri.map(partner -> mapper.mapLogovanje(partner));
     }
 }

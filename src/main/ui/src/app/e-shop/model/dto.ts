@@ -40,6 +40,17 @@ export class FakturaPage extends Page {
     content: Fakutra[] = null;
 }
 
+export class LogovanjaPage extends Page {
+    content: Logovanja[] = null;
+
+}
+
+export class Logovanja {
+  ppid?: number;
+  naziv?: string;
+  poslednjeLogovanje?: string;
+}
+
 export class FakturaDetalji {
     robaId?: number;
     slikaId?: number;

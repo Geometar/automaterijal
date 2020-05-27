@@ -81,6 +81,11 @@
         <mat-icon class="boja-siva-300" mat-list-icon>list</mat-icon>
         <p mat-line>Porudzbine</p>
       </mat-list-item>
+      <mat-list-item *ngIf="partner.privilegije === 2047" class="material-icons" [routerLink]="['admin']"
+        [routerLinkActive]="['pozadina-glavna-200']">
+        <mat-icon class="boja-siva-300" mat-list-icon>work</mat-icon>
+        <p mat-line>Admin</p>
+      </mat-list-item>
     </mat-nav-list>
     <mat-divider></mat-divider>
     <mat-nav-list>
