@@ -99,7 +99,10 @@ public class ProizvodjacService {
     }
 
     private List<Proizvodjac> pronadjiSve() {
-        List<Proizvodjac> proizvodjaci = proizvodjacRepository.findAllByOrderByNazivAsc();
+        List<Proizvodjac> proizvodjaci = proizvodjacRepository.findAllByOrderByNazivAsc()
+                .stream()
+                .filter(proizvodjac -> !proizvodjac.getNaziv().equals("0"))
+                .collect(Collectors.toList());
         return proizvodjaci;
     }
 

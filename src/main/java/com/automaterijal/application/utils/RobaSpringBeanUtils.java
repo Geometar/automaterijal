@@ -49,7 +49,7 @@ public class RobaSpringBeanUtils {
         Integer iPageSize = pageSize.isPresent() ? pageSize.get() : 10;
         String iProizvodjac = proizvodjac.filter(StringUtils::hasText).filter(naziv -> !naziv.equals("Svi proizvodjači")).map(String::toString).orElse(null);
         Boolean iNaStanju = naStanju.isPresent() ? naStanju.get() : false;
-        String iGrupa = grupa.filter(StringUtils::hasText).filter(naziv -> !naziv.equals("Sve grupe")).map(String::toString).orElse(null);
+        String iGrupa = grupa.filter(StringUtils::hasText).filter(naziv -> !naziv.equals("Sve Kategorije")).map(String::toString).orElse(null);
         RobaSortiranjePolja iSortiranjePolja = sortBy == null ? RobaSortiranjePolja.STANJE : sortBy;
         Sort.Direction iDirection = sortDirection == null ? Sort.Direction.DESC : sortDirection;
         String iSearchTerm = searchTerm.filter(StringUtils::hasText)

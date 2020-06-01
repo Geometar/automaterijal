@@ -16,6 +16,13 @@
   background-position: top;
   background-size: 120%;
 }
+
+.kategorija {
+  font-size: 1rem;
+  margin-left: 11px;
+  color: $automaterijal-primary-100;
+}
+
 .centriraj {
   text-align: center;
 }
@@ -47,6 +54,11 @@
   padding: 10px 0 0 10px;
   font-weight: normal;
   margin: 0px;
+}
+.h2-kategorije {
+  font-size: 1rem;
+  padding: 4px 0 0 10px;
+  font-weight: normal;
 }
 .h2-naziv {
   font-size: 1rem;

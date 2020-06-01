@@ -31,6 +31,13 @@ tr.mat-row {
   font-weight: bold;
   margin-left: 20px;
 }
+
+.roba-kategorija {
+  color: $automaterijal-primary-100;
+  font-weight: bold;
+  margin-left: 28px;
+}
+
 .roba-stanje {
   color: $automaterijal-primary-100;
   font-weight: bold;
@@ -77,7 +84,7 @@ tr.mat-row {
 .stanje-nije-ulogovan {
   top: -11px;
   left: -10px;
-  font-size: 0.7REM;
+  font-size: 0.7rem;
   position: relative;
 }
 .pdv-cena {

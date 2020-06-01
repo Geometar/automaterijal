@@ -37,12 +37,12 @@ export class IndustrijskaComponent implements OnInit, OnDestroy {
   public otvoriFilter = false;
   public dataSource: any;
 
-  public filterGrupe: string[] = ['Sve grupe', 'Hidraulično ulje', 'Kompresorsko ulje', 'Reduktorsko ulje',
+  public filterGrupe: string[] = ['Sve Kategorije', 'Hidraulično ulje', 'Kompresorsko ulje', 'Reduktorsko ulje',
     'Transformatorsko ulje', 'Turbinska ulja', 'Ulja za pneumatske alate', 'Ulja za klizne staze', 'Ulja za prenos toplote'];
   public izabranaVrsta: string = this.filterGrupe[0];
 
   public vrsteUlja = [
-    { 'url': 'industrija', 'naziv': 'Sve grupe' },
+    { 'url': 'industrija', 'naziv': 'Sve Kategorije' },
     { 'url': 'hidraulicna', 'naziv': 'Hidraulično ulje' },
     { 'url': 'kompresorska', 'naziv': 'Kompresorsko ulje' },
     { 'url': 'redutktorska', 'naziv': 'Reduktorsko ulje' },
@@ -64,6 +64,7 @@ export class IndustrijskaComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.pocetnoPretrazivanje = true;
+    this.filter.grupa = this.filterGrupe[0];
     this.pronandjiUlja();
   }
 

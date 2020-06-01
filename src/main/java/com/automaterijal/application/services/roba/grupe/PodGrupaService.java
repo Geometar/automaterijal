@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -32,7 +33,7 @@ public class PodGrupaService {
     @NonNull
     final PodrgrupaMapper mapper;
 
-    public static final String SVE = "Sve grupe";
+    public static final String SVE = "Sve Kategorije";
     public static final String NEBITNA_GRUPA = "ZZZ";
 
     public List<PodgrupaDto> vratiSvePodgrupeZaKljuceve(Set<Integer> podgrupe) {
@@ -47,6 +48,7 @@ public class PodGrupaService {
                 .stream()
                 .map(PodGrupa::getNaziv)
                 .filter(StringUtils::isNotBlank)
+                .filter(naziv -> !naziv.equals("0"))
                 .map(String::trim)
                 .map(String::toUpperCase)
                 .collect(Collectors.toSet());
@@ -75,7 +77,10 @@ public class PodGrupaService {
     public void popuniPodgrupe(MagacinDto magacinDto, UniverzalniParametri parametri, List<RobaDto> roba) {
         List<PodgrupaDto> podgrupaDtos;
         if (parametri.getTrazenaRec() == null && parametri.getProizvodjac() == null) {
-            podgrupaDtos = podGrupaRepository.findAll().stream().map(mapper::map).collect(Collectors.toList());
+            podgrupaDtos = podGrupaRepository.findAll().stream()
+                    .filter(podGrupa -> StringUtils.isNotBlank(podGrupa.getNaziv()))
+                    .map(mapper::map)
+                    .collect(Collectors.toList());
         } else {
             Set<Integer> sviKljucevi = roba.stream().map(RobaDto::getPodGrupa).map(stringKljuc -> Integer.valueOf(stringKljuc)).collect(Collectors.toSet());
             podgrupaDtos = vratiSvePodgrupeZaKljuceve(sviKljucevi);
@@ -106,5 +111,9 @@ public class PodGrupaService {
                 }
             });
         }
+    }
+
+    public Optional<PodGrupa> vratiPodgrupuPoKljucu(String kljuc) {
+        return podGrupaRepository.findById(Integer.valueOf(kljuc));
     }
 }

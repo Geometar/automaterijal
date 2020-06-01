@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Repository
-public interface PodGrupaRepository extends JpaRepository<PodGrupa, Long> {
+public interface PodGrupaRepository extends JpaRepository<PodGrupa, Integer> {
 
     List<PodGrupa> findByPodGrupaIdIn(Collection<Integer> podGrupaKljucevi);
 

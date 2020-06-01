@@ -22,6 +22,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public abstract class RobaMapper {
 
+    @Mapping(target = "podGrupa", source = "podgrupaid")
     public abstract RobaDto map(Roba roba);
 
     public abstract List<RobaTehnickiOpisDto> map(List<RobaOpis> opisi);

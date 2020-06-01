@@ -164,6 +164,7 @@ public class RobaGlavniService {
         } else {
             robaDto.setSlika(SLIKA_NIJE_DOSTUPNA_URL);
         }
+        podGrupaService.vratiPodgrupuPoKljucu(robaDto.getPodGrupa()).ifPresent(podGrupa -> robaDto.setPodGrupaNaziv(podGrupa.getNaziv()));
     }
 
     public Optional<RobaDetaljiDto> pronadjiRobuPoRobaId(Long robaId, Partner ulogovaniPartner) {
@@ -191,6 +192,7 @@ public class RobaGlavniService {
                 detaljnoDto.setSlika(SLIKA_NIJE_DOSTUPNA_URL);
             }
             robaTekstService.pronadjiTextPoRobiId(detaljnoDto.getRobaid()).ifPresent(robaTekst -> detaljnoDto.setTekst(robaTekst.getTekst()));
+            podGrupaService.vratiPodgrupuPoKljucu(detaljnoDto.getPodGrupa()).ifPresent(podGrupa -> detaljnoDto.setPodGrupa(podGrupa.getNaziv()));
         }
     }
 }

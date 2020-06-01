@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, OnDestroy, OnChanges } from '@angular/core';
 import { ProizvodjacService } from 'src/app/e-shop/service/proizvodjac.service';
 import { takeWhile } from 'rxjs/operators';
 import { VrstaRobe } from 'src/app/e-shop/model/roba.enum';
@@ -13,7 +13,7 @@ import { Proizvodjac } from 'src/app/e-shop/model/dto';
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.scss']
 })
-export class FilterComponent implements OnInit, OnDestroy {
+export class FilterComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input() vrstaRobe;
   @Input() vrstaUlja;
@@ -38,7 +38,7 @@ export class FilterComponent implements OnInit, OnDestroy {
     });
     if (this.filter) {
       if (!this.filter.grupa) {
-        this.filter.grupa = 'Sve grupe';
+        this.filter.grupa = 'Sve Kategorije';
       }
       if (!this.filter.proizvodjacId) {
         this.filter.proizvodjac = 'Svi proizvodjači';
@@ -50,6 +50,7 @@ export class FilterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    console.log(this.filterGrupe);
     if (this.industrijkoUljeEvent) {
       this.industrijkoUljeEvent
       .pipe(takeWhile(() => this.alive))
@@ -65,14 +66,14 @@ export class FilterComponent implements OnInit, OnDestroy {
           this.filter.proizvodjac = 'Svi proizvodjači';
         }
         if (!this.filter.grupa) {
-          this.filter.grupa = 'Sve grupe';
+          this.filter.grupa = 'Sve Kategorije';
         }
       } else {
         if (!this.filter.proizvodjac) {
           this.filter.proizvodjac = 'Svi proizvodjači';
         }
         if (!this.filter.grupa) {
-          this.filter.grupa = 'Sve grupe';
+          this.filter.grupa = 'Sve Kategorije';
         }
         this.filter.raspolozivost = this.raspolozivost[0];
       }
@@ -80,7 +81,7 @@ export class FilterComponent implements OnInit, OnDestroy {
       this.filter = new Filter();
       this.filter.raspolozivost = this.raspolozivost[0];
       this.filter.proizvodjac = 'Svi proizvodjači';
-      this.filter.grupa = 'Sve grupe';
+      this.filter.grupa = 'Sve Kategorije';
     }
   }
 
