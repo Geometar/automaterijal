@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY } from 'rxjs';
 import { Roba, RobaPage, Magacin } from '../../model/dto';
@@ -15,7 +15,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './akumulatori.component.html',
   styleUrls: ['./akumulatori.component.css']
 })
-export class AkumulatoriComponent implements OnInit {
+export class AkumulatoriComponent implements OnInit, OnDestroy {
 
   public roba: Roba[];
   public vrstaRobe = VrstaRobe.AKUMULATORI;
@@ -38,6 +38,7 @@ export class AkumulatoriComponent implements OnInit {
   public otvoriFilter = false;
   private treutniParametri = {};
 
+  // boolean za unistavanje observera
   private alive = true;
 
   constructor(
@@ -52,7 +53,9 @@ export class AkumulatoriComponent implements OnInit {
   }
 
   uzmiParametreIzUrla() {
-    this.aktivnaRuta.queryParams.subscribe(params => {
+    this.aktivnaRuta.queryParams
+    .pipe(takeWhile(() => this.alive))
+    .subscribe(params => {
       this.treutniParametri = params;
       this.pageIndex = params['strana'];
       this.rowsPerPage = params['brojKolona'];
@@ -148,4 +151,9 @@ export class AkumulatoriComponent implements OnInit {
 
     this.dodajParametreUURL();
   }
+
+  ngOnDestroy() {
+    this.alive = false;
+  }
+
 }

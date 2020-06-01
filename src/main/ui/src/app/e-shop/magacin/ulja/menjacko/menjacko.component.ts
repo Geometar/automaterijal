@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY } from 'rxjs';
 import { Roba, RobaPage, Magacin } from 'src/app/e-shop/model/dto';
@@ -13,7 +13,7 @@ import { HttpResponse } from '@angular/common/http';
   templateUrl: './menjacko.component.html',
   styleUrls: ['./menjacko.component.css']
 })
-export class MenjackoComponent implements OnInit {
+export class MenjackoComponent implements OnInit, OnDestroy {
 
   public roba: Roba[];
   public vrstaRobe = VrstaRobe.ULJA;
@@ -116,5 +116,9 @@ export class MenjackoComponent implements OnInit {
     }
     this.filter = filter;
     this.pronandjiSvaMenjackaUlja();
+  }
+  
+  ngOnDestroy() {
+    this.alive = false;
   }
 }

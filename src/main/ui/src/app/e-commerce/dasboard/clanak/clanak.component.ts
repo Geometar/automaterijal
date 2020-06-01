@@ -1,15 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { VestiNaslovna, Vest } from '../../model/dto';
+import { takeWhile } from 'rxjs/operators';
 
 @Component({
   selector: 'app-clanak',
   templateUrl: './clanak.component.html',
   styleUrls: ['./clanak.component.scss']
 })
-export class ClanakComponent implements OnInit {
+export class ClanakComponent implements OnInit, OnDestroy {
 
   public vest: Vest;
+
+  // boolean za unistavanje observera
+  private alive = true;
 
   constructor(
     private router: Router,
@@ -17,7 +21,9 @@ export class ClanakComponent implements OnInit {
 
   ngOnInit() {
     let urlParam;
-    this.route.params.subscribe((params: Params) => {
+    this.route.params
+    .pipe(takeWhile(() => this.alive))
+    .subscribe((params: Params) => {
       urlParam = params.id;
     });
     this.vest = this.objediniSveVesti()
@@ -90,6 +96,10 @@ export class ClanakComponent implements OnInit {
     mahleKompresoriVesti.slika = 'assets/slike/novouponudi/velika/kompresori.png';
     mahleKompresoriVesti.tekst = '<p>Kompanija MAHLE ulazi na tržište kompresora klima uređaja. Sinonim kvaliteta i pouzdanosti kompanije MAHLE  ovi kompresori opravdavaju.</p> <p>Nivo klimatskog komfora definisan u današnjim vozilima je već na visokom nivou i nastaviće da raste u budućnosti. Međutim, klima uređaji imaju više uloga nego što je  udobna vožnja. Oni takođe igraju ključnu ulogu u pogledu bezbednosti. Pored održavanja vozača udobnim i opreznim, klima uređaj takođe odvlažuje vazduh u kabini i na taj način sprečava zamagljivanje prozora.</p> <p>U svom portfoliu MAHLE nudi veliki broj kompresora za veliki broj renomiranih proizvođača vozila, kao što su VW, AUDI, BMW, Mercedes, Opel...</p>';
     return mahleKompresoriVesti;
+  }
+
+  ngOnDestroy() {
+    this.alive = false;
   }
 
 }

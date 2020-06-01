@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY, Subject } from 'rxjs';
 import { Roba, RobaPage, Magacin } from 'src/app/e-shop/model/dto';
@@ -13,7 +13,7 @@ import { HttpResponse } from '@angular/common/http';
   templateUrl: './industrijska.component.html',
   styleUrls: ['./industrijska.component.css']
 })
-export class IndustrijskaComponent implements OnInit {
+export class IndustrijskaComponent implements OnInit, OnDestroy {
 
   public roba: Roba[];
   public vrstaRobe = VrstaRobe.INDUSTRIJSKA_ULJA;
@@ -75,7 +75,7 @@ export class IndustrijskaComponent implements OnInit {
     this.pronadjenaRoba = true;
     this.robaService.pronadjiUlje(
       this.sort, this.rowsPerPage, this.pageIndex, this.searchValue, this.filter.naStanju, this.filter.proizvodjacId, this.vrstaUlja
-      )
+    )
       .pipe(
         takeWhile(() => this.alive),
         catchError((error: Response) => {
@@ -149,5 +149,8 @@ export class IndustrijskaComponent implements OnInit {
       }
     });
     this.pronandjiUlja();
+  }
+  ngOnDestroy() {
+    this.alive = false;
   }
 }

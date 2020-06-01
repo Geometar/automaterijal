@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RobaService } from '../../service/roba.service';
 import { Roba, RobaPage, Magacin } from '../../model/dto';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
@@ -15,7 +15,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './roba.component.html',
   styleUrls: ['./roba.component.css']
 })
-export class RobaComponent implements OnInit {
+export class RobaComponent implements OnInit, OnDestroy {
 
   public roba: Roba[];
   public vrstaRobe = VrstaRobe.SVE;
@@ -52,7 +52,9 @@ export class RobaComponent implements OnInit {
   }
 
   uzmiParametreIzUrla() {
-    this.aktivnaRuta.queryParams.subscribe(params => {
+    this.aktivnaRuta.queryParams
+    .pipe(takeWhile(() => this.alive))
+    .subscribe(params => {
       this.treutniParametri = params;
       this.pageIndex = params['strana'];
       this.rowsPerPage = params['brojKolona'];
@@ -162,5 +164,9 @@ export class RobaComponent implements OnInit {
     }
     this.filter = filter;
     this.dodajParametreUURL();
+  }
+
+  ngOnDestroy() {
+    this.alive = false;
   }
 }

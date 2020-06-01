@@ -32,9 +32,11 @@ public abstract class PartnerMapper {
 
     @AfterMapping
     public void afterMaper(@MappingTarget PartnerLogovanjeDto logovanjeDto, Partner partner) {
-        logovanjeDto.setPoslednjeLogovanje(
-                DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
-                        .format(partner.getUsers().getLastLogin().toLocalDateTime())
-        );
+        if (partner.getUsers() != null && partner.getUsers().getLastLogin() != null) {
+            logovanjeDto.setPoslednjeLogovanje(
+                    DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
+                            .format(partner.getUsers().getLastLogin().toLocalDateTime())
+            );
+        }
     }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Credentials, Partner } from '../model/dto';
 import { LoginService } from '../service/login.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -9,19 +9,23 @@ import { Router } from '@angular/router';
 import { LocalStorageService } from '../service/data/local-storage.service';
 import { PrvoLogovanjeModalComponent } from 'src/app/shared/modal/prvo-logovanje-modal/prvo-logovanje-modal.component';
 import { DataService } from '../service/data/data.service';
+import { takeWhile } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
   public registerForm: FormGroup;
   public submitted = false;
   public credentials: Credentials = {};
   public partner: Partner;
   public uspesnoLogovanje = true;
+
+  // boolean za unistavanje observera
+  private alive = true;
 
   constructor(
     private loginServis: LoginService,
@@ -48,13 +52,16 @@ export class LoginComponent implements OnInit {
     if (this.registerForm.invalid) {
       return;
     }
-    this.loginServis.ulogujSe(this.credentials).subscribe(() => {
-      this.vratiKorisnika();
-    });
+    this.loginServis.ulogujSe(this.credentials)
+      .pipe(takeWhile(() => this.alive))
+      .subscribe(() => {
+        this.vratiKorisnika();
+      });
   }
 
   vratiKorisnika() {
     this.loginServis.vratiUlogovanogKorisnika(true)
+      .pipe(takeWhile(() => this.alive))
       .subscribe((res: Partner) => {
         if (res !== null) {
           this.partner = res;
@@ -99,5 +106,9 @@ export class LoginComponent implements OnInit {
     if (event.keyCode === 13) {
       this.login();
     }
+  }
+
+  ngOnDestroy() {
+    this.alive = false;
   }
 }

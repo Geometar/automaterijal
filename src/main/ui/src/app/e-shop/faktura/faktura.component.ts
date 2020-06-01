@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LoginService } from '../service/login.service';
 import { Partner, Fakutra, FakturaPage } from '../model/dto';
 import { FakturaService } from '../service/faktura.service';
@@ -6,13 +6,14 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { DateAdapter, MatDatepickerInputEvent } from '@angular/material';
 import { NotifikacijaService } from 'src/app/shared/service/notifikacija.service';
 import { MatSnackBarKlase } from 'src/app/shared/model/konstante';
+import { takeWhile } from 'rxjs/operators';
 
 @Component({
   selector: 'app-faktura',
   templateUrl: './faktura.component.html',
   styleUrls: ['./faktura.component.scss']
 })
-export class FakturaComponent implements OnInit {
+export class FakturaComponent implements OnInit, OnDestroy {
 
   public partner: Partner;
   public fakure: Fakutra[];
@@ -33,6 +34,9 @@ export class FakturaComponent implements OnInit {
   private prosliDatumOd: Date = null;
   private prosliDatumDo: Date = null;
 
+  // boolean za unistavanje observera
+  private alive = true;
+
   public displayedColumns: string[] = ['orderId', 'brojStavki', 'iznosNarucen', 'iznosPotvrdjen', 'vremePorucivanja', 'status', 'ackije'];
 
   constructor(
@@ -45,12 +49,16 @@ export class FakturaComponent implements OnInit {
 
   ngOnInit() {
     this.adapter.setLocale('sr');
-    this.loginServis.ulogovaniPartner.subscribe(partner => this.partner = partner);
+    this.loginServis.ulogovaniPartner
+      .pipe(takeWhile(() => this.alive))
+      .subscribe(partner => this.partner = partner);
     this.uzmiParametreIzUrla();
   }
 
   uzmiParametreIzUrla() {
-    this.aktivnaRuta.queryParams.subscribe(params => {
+    this.aktivnaRuta.queryParams
+      .pipe(takeWhile(() => this.alive))
+      .subscribe(params => {
         this.pageIndex = params['strana'];
         this.rowsPerPage = params['brojKolona'];
         if (!isNaN(params['od'])) {
@@ -66,7 +74,7 @@ export class FakturaComponent implements OnInit {
           this.prosliDatumDo = new Date(parseInt(params['do']));
         }
         this.vratiFaktureKorisnika();
-    });
+      });
   }
 
   periodPromenjen(type: string, event: MatDatepickerInputEvent<Date>) {
@@ -101,6 +109,7 @@ export class FakturaComponent implements OnInit {
   vratiFaktureKorisnika() {
     this.ucitavanje = true;
     this.fakturaService.vratiFaktureKorisnika(this.pageIndex, this.rowsPerPage, this.partner.ppid, this.datumOd, this.datumDo)
+      .pipe(takeWhile(() => this.alive))
       .subscribe((res: FakturaPage) => {
         this.error = false;
         this.fakure = res.content;
@@ -145,5 +154,9 @@ export class FakturaComponent implements OnInit {
 
   detaljiFakture(id: number) {
     this.router.navigate(['/porudzbenice/' + id]);
+  }
+
+  ngOnDestroy() {
+    this.alive = false;
   }
 }

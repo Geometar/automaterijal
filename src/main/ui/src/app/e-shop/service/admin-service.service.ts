@@ -25,7 +25,7 @@ export class AdminServiceService {
     parameterObject['pageSize'] = pageSize;
 
     const parametersString = this.utils.vratiKveriParametre(parameterObject);
-    const fullUrl = DOMAIN_URL + ADMIN_UTL + '/logovanja' + '/' + parametersString;
+    const fullUrl = DOMAIN_URL + ADMIN_UTL + '/logovanja' + parametersString;
     return this.http
       .get(fullUrl)
       .pipe(

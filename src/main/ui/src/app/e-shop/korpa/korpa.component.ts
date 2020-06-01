@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener, OnDestroy } from '@angular/core';
 import { DataService } from '../service/data/data.service';
 import { Korpa, RobaKorpa } from '../model/porudzbenica';
 import { LocalStorageService } from '../service/data/local-storage.service';
@@ -20,7 +20,7 @@ import { MatSnackBarKlase } from 'src/app/shared/model/konstante';
   templateUrl: './korpa.component.html',
   styleUrls: ['./korpa.component.scss']
 })
-export class KorpaComponent implements OnInit {
+export class KorpaComponent implements OnInit, OnDestroy {
 
   public korpa: Korpa;
   public partner: Partner;
@@ -69,7 +69,9 @@ export class KorpaComponent implements OnInit {
     private notifikacija: NotifikacijaService) { }
 
   ngOnInit() {
-    this.loginServis.ulogovaniPartner.subscribe(partner => this.partner = partner);
+    this.loginServis.ulogovaniPartner
+      .pipe(takeWhile(() => this.alive))
+      .subscribe(partner => this.partner = partner);
     this.inicijalizujKorpu();
     this.innerWidth = window.innerWidth;
     this.changeSlideConfiguration();
@@ -91,11 +93,13 @@ export class KorpaComponent implements OnInit {
 
   inicijalizujKorpu() {
     this.vratiOpsteInformacije();
-    this.dataService.trenutnaKorpa.subscribe(korpa => {
-      this.korpa = korpa;
-      this.preracunajUkupno();
-      this.dataSource = this.korpa.roba;
-    });
+    this.dataService.trenutnaKorpa
+      .pipe(takeWhile(() => this.alive))
+      .subscribe(korpa => {
+        this.korpa = korpa;
+        this.preracunajUkupno();
+        this.dataSource = this.korpa.roba;
+      });
     this.izabranaTrecaLiceOpcija = this.treceLiceOpcije[0];
     this.izabraneKurirskeSluzbe = this.kurirskeSluzbe[0];
     this.izabraneAdresaDostave = this.adresaDostave[0];
@@ -146,18 +150,22 @@ export class KorpaComponent implements OnInit {
     const dialogRef = this.dialog.open(UspesnoPorucivanjeModalComponent, {
       width: '400px'
     });
-    dialogRef.afterClosed().subscribe(() => {
-      this.router.navigate(['/naslovna']);
-    });
+    dialogRef.afterClosed()
+      .pipe(takeWhile(() => this.alive))
+      .subscribe(() => {
+        this.router.navigate(['/naslovna']);
+      });
   }
   otvoriDialogNeuspesnoPorucivanje(roba: Roba[], faktura: Fakutra): void {
     const dialogRef = this.dialog.open(NeuspesnoPorucivanjeModalComponent, {
       width: '400px',
       data: { faktura: faktura, roba: roba }
     });
-    dialogRef.afterClosed().subscribe(() => {
-      this.zatvaranjeNeuspesnogDiloga(roba);
-    });
+    dialogRef.afterClosed()
+      .pipe(takeWhile(() => this.alive))
+      .subscribe(() => {
+        this.zatvaranjeNeuspesnogDiloga(roba);
+      });
   }
 
   zatvaranjeNeuspesnogDiloga(roba: Roba[]) {
@@ -207,14 +215,16 @@ export class KorpaComponent implements OnInit {
     this.korpa.nacinPlacanja = this.izabranNacinPlacanja.id;
     this.popuniNapomenu();
     this.korpaUFakturu();
-    this.loginServis.vratiUlogovanogKorisnika(false).subscribe(partner => {
-      if (partner) {
-        this.submitujFakturu();
-      } else {
-        this.router.navigate(['/login']);
-        this.loginServis.izbaciPartnerIzSesije();
-      }
-    });
+    this.loginServis.vratiUlogovanogKorisnika(false)
+      .pipe(takeWhile(() => this.alive))
+      .subscribe(partner => {
+        if (partner) {
+          this.submitujFakturu();
+        } else {
+          this.router.navigate(['/login']);
+          this.loginServis.izbaciPartnerIzSesije();
+        }
+      });
   }
 
   submitujFakturu() {
@@ -324,6 +334,10 @@ export class KorpaComponent implements OnInit {
     if (this.napomena) {
       this.korpa.napomena = this.korpa.napomena + 'Napomena: ' + this.napomena;
     }
+  }
+
+  ngOnDestroy() {
+    this.alive = false;
   }
 
   // convenience getter for easy access to form fields

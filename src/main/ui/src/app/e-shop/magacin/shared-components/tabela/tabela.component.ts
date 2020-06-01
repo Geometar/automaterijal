@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, HostListener } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, HostListener, OnDestroy } from '@angular/core';
 import { Roba, Partner } from 'src/app/e-shop/model/dto';
 import { LoginService } from 'src/app/e-shop/service/login.service';
 import { AppUtilsService } from 'src/app/e-shop/utils/app-utils.service';
@@ -7,13 +7,14 @@ import { MatSnackBarKlase } from 'src/app/shared/model/konstante';
 import { DataService } from 'src/app/e-shop/service/data/data.service';
 import { Korpa } from 'src/app/e-shop/model/porudzbenica';
 import { Router } from '@angular/router';
+import { takeWhile } from 'rxjs/operators';
 
 @Component({
   selector: 'app-tabela',
   templateUrl: './tabela.component.html',
   styleUrls: ['./tabela.component.scss']
 })
-export class TabelaComponent implements OnInit {
+export class TabelaComponent implements OnInit, OnDestroy {
 
   @Input() dataSource: any[];
   @Input() roba: Roba[];
@@ -29,6 +30,9 @@ export class TabelaComponent implements OnInit {
   public partnerLogovan = false;
   private korpa: Korpa;
   public jeMobilni = window.innerWidth > 900;
+
+  // boolean za unistavanje observera
+  private alive = true;
 
   // Tabela
   private columnDefinitions = [
@@ -47,9 +51,15 @@ export class TabelaComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.loginServis.ulogovaniPartner.subscribe(partner => this.partner = partner);
-    this.dataService.trenutnaKorpa.subscribe(korpa => this.korpa = korpa);
-    this.loginServis.daLiJePartnerUlogovan.subscribe(bool => this.partnerLogovan = bool);
+    this.loginServis.ulogovaniPartner
+      .pipe(takeWhile(() => this.alive))
+      .subscribe(partner => this.partner = partner);
+    this.dataService.trenutnaKorpa
+      .pipe(takeWhile(() => this.alive))
+      .subscribe(korpa => this.korpa = korpa);
+    this.loginServis.daLiJePartnerUlogovan
+      .pipe(takeWhile(() => this.alive))
+      .subscribe(bool => this.partnerLogovan = bool);
     this.innerWidth = window.innerWidth;
     this.changeSlideConfiguration();
   }
@@ -102,7 +112,9 @@ export class TabelaComponent implements OnInit {
   }
 
   dodajUKorpu(roba: Roba) {
-    this.loginServis.vratiUlogovanogKorisnika(false).subscribe(partner => {
+    this.loginServis.vratiUlogovanogKorisnika(false)
+    .pipe(takeWhile(() => this.alive))
+    .subscribe(partner => {
       if (partner) {
         const snackBarPoruka = this.utilsService.dodajUKorpu(roba);
         this.notifikacijaServis.notify(snackBarPoruka, MatSnackBarKlase.Zelena);
@@ -120,6 +132,10 @@ export class TabelaComponent implements OnInit {
 
   detaljiRobe(robaId: string) {
     const url = this.router.parseUrl(this.router.url);
-    this.router.navigate(['/roba/' + robaId], { queryParams: { prosliUrl: url.root.children.primary.segments[0].path}});
+    this.router.navigate(['/roba/' + robaId], { queryParams: { prosliUrl: url.root.children.primary.segments[0].path } });
+  }
+
+  ngOnDestroy() {
+    this.alive = false;
   }
 }

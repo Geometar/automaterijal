@@ -18,10 +18,10 @@ public class PartnerSpringBeanUtils {
     @NonNull
     PartnerService partnerService;
 
-    public Partner vratiPartneraIsSesije(final Authentication authentication) {
+    public Partner vratiPartneraIsSesije(Authentication authentication) {
         Partner retVal = null;
-        if(authentication != null && authentication.isAuthenticated() && authentication.getPrincipal() instanceof CurrentUser) {
-            final Integer ppid = ((CurrentUser) authentication.getPrincipal()).vratiPartnera().getPpid();
+        if (authentication != null && authentication.isAuthenticated() && authentication.getPrincipal() instanceof CurrentUser) {
+            Integer ppid = ((CurrentUser) authentication.getPrincipal()).vratiPartnera().getPpid();
             retVal = partnerService.pronadjiPartneraPoId(ppid);
         }
         return retVal;

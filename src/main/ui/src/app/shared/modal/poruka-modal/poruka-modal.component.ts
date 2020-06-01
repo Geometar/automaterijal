@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Poruka } from 'src/app/e-commerce/model/dto';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
@@ -13,7 +13,7 @@ import { MatSnackBarKlase } from '../../model/konstante';
   templateUrl: './poruka-modal.component.html',
   styleUrls: ['./poruka-modal.component.scss']
 })
-export class PorukaModalComponent implements OnInit {
+export class PorukaModalComponent implements OnInit, OnDestroy {
   public porukaForm: FormGroup;
   public porukaSubmited = false;
   public porukaPoslata = false;
@@ -82,4 +82,7 @@ export class PorukaModalComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  ngOnDestroy() {
+    this.alive = false;
+  }
 }

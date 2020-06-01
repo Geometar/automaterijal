@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { throwError, BehaviorSubject, Observable } from 'rxjs';
+import { throwError, BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { Credentials, Partner } from '../model/dto';
-import { timeoutWith, catchError } from 'rxjs/operators';
+import { timeoutWith, catchError, takeWhile } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { AppUtilsService } from '../utils/app-utils.service';
 import { Router } from '@angular/router';
@@ -25,6 +25,8 @@ export class LoginService {
   private partner: Partner = this.storageServis.procitajPartneraIzMemorije() || null;
   private partnerSubjekat = new BehaviorSubject(this.partner);
   public ulogovaniPartner = this.partnerSubjekat.asObservable();
+
+  private listaSubskripcija: Subscription[] = [];
 
   private logovanjeSubjekat = new BehaviorSubject(this.partner !== null);
   public daLiJePartnerUlogovan = this.logovanjeSubjekat.asObservable();
@@ -82,7 +84,7 @@ export class LoginService {
   }
 
   public izbaciPartneraIzSesiseAkoJeUMemoriji() {
-    this.vratiUlogovanogKorisnika(false)
+   const izbacenKorisnik =  this.vratiUlogovanogKorisnika(false)
       .subscribe(res => {
         const partner = res;
         if (partner === null) {
@@ -98,32 +100,42 @@ export class LoginService {
             data: this.partner,
             disableClose: true
           });
+          this.unistiSubskripcije();
         }
       });
-    }
+      this.listaSubskripcija.push(izbacenKorisnik);
+  }
+
+  private unistiSubskripcije() {
+    this.listaSubskripcija.forEach((sub: Subscription) => {
+      sub.unsubscribe();
+    });
+  }
 
 
   public izbaciPartnerIzSesije() {
-  this.storageServis.logout();
-  this.logovanjeSubjekat.next(false);
-  this.partnerSubjekat.next(null);
-  this.dialog.open(SesijaIsteklaModalComponent, {
-    width: '400px'
-  });
-}
+    this.storageServis.logout();
+    this.logovanjeSubjekat.next(false);
+    this.partnerSubjekat.next(null);
+    this.dialog.open(SesijaIsteklaModalComponent, {
+      width: '400px'
+    });
+  }
 
   public logout() {
-  const fullUrl = LOGOUT_URL;
-  this.http.post(fullUrl, {}, { responseType: 'text' })
-    .pipe(
-      timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
-      catchError((error: any) => throwError(error))
-    )
-    .subscribe(() => {
-      this.logovanjeSubjekat.next(false);
-      this.partnerSubjekat.next(null);
-      this.storageServis.logout();
-      this.router.navigateByUrl('naslovna');
-    });
-}
+    const fullUrl = LOGOUT_URL;
+    const logaoutSubskripcija = this.http.post(fullUrl, {}, { responseType: 'text' })
+      .pipe(
+        timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
+        catchError((error: any) => throwError(error))
+      )
+      .subscribe(() => {
+        this.logovanjeSubjekat.next(false);
+        this.partnerSubjekat.next(null);
+        this.storageServis.logout();
+        this.router.navigateByUrl('naslovna');
+        this.unistiSubskripcije();
+      });
+    this.listaSubskripcija.push(logaoutSubskripcija);
+  }
 }

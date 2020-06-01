@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
 import { RobaService } from '../../service/roba.service';
 import { Params, ActivatedRoute, Router } from '@angular/router';
 import { Roba, RobaBrojevi, Partner } from '../../model/dto';
@@ -18,7 +18,7 @@ import { Korpa } from 'src/app/e-shop/model/porudzbenica';
   templateUrl: './roba-detalji.component.html',
   styleUrls: ['./roba-detalji.component.scss']
 })
-export class RobaDetaljiComponent implements OnInit {
+export class RobaDetaljiComponent implements OnInit, OnDestroy {
 
   public robaDetalji: Roba;
   public kljuceviAplikacija: string[] = [];
@@ -49,9 +49,15 @@ export class RobaDetaljiComponent implements OnInit {
 
   ngOnInit() {
     this.innerWidth = window.innerWidth;
-    this.dataService.trenutnaKorpa.subscribe(korpa => this.korpa = korpa);
-    this.loginServis.ulogovaniPartner.subscribe(partner => this.partner = partner);
-    this.loginServis.daLiJePartnerUlogovan.subscribe(bool => this.partnerLogovan = bool);
+    this.dataService.trenutnaKorpa
+      .pipe(takeWhile(() => this.alive))
+      .subscribe(korpa => this.korpa = korpa);
+    this.loginServis.ulogovaniPartner
+      .pipe(takeWhile(() => this.alive))
+      .subscribe(partner => this.partner = partner);
+    this.loginServis.daLiJePartnerUlogovan
+      .pipe(takeWhile(() => this.alive))
+      .subscribe(bool => this.partnerLogovan = bool);
     this.uzmiDetaljeRobe();
     this.promeniTabeluDetaljaAutomobila();
   }
@@ -72,26 +78,27 @@ export class RobaDetaljiComponent implements OnInit {
 
   uzmiDetaljeRobe() {
     this.ucitavanje = true;
-    this.route.params.subscribe((params: Params) => {
-      this.robaService.pronadjiDetaljeRobe(params.id)
-        .pipe(
-          takeWhile(() => this.alive),
-          catchError((error: Response) => {
-            if (error.status === 404) {
-              console.log('404 vratili detalji');
-              return EMPTY;
-            }
-            return throwError(error);
-          }),
-          finalize(() => this.ucitavanje = false))
-        .subscribe((res: HttpResponse<Roba>) => {
-          this.robaDetalji = res.body;
-          this.robaDetalji = this.dataService.skiniSaStanjaUkolikoJeUKorpi([this.robaDetalji])[0];
-          this.popuniAplikacije();
-          this.popuniOeBrojeve();
-          console.log(this.robaDetalji);
-        });
-    });
+    this.route.params
+      .pipe(takeWhile(() => this.alive)).subscribe((params: Params) => {
+        this.robaService.pronadjiDetaljeRobe(params.id)
+          .pipe(
+            takeWhile(() => this.alive),
+            catchError((error: Response) => {
+              if (error.status === 404) {
+                console.log('404 vratili detalji');
+                return EMPTY;
+              }
+              return throwError(error);
+            }),
+            finalize(() => this.ucitavanje = false))
+          .subscribe((res: HttpResponse<Roba>) => {
+            this.robaDetalji = res.body;
+            this.robaDetalji = this.dataService.skiniSaStanjaUkolikoJeUKorpi([this.robaDetalji])[0];
+            this.popuniAplikacije();
+            this.popuniOeBrojeve();
+            console.log(this.robaDetalji);
+          });
+      });
   }
 
   sacuvajTekst() {
@@ -135,16 +142,18 @@ export class RobaDetaljiComponent implements OnInit {
   }
 
   dodajUKorpu(roba: Roba) {
-    this.loginServis.vratiUlogovanogKorisnika(false).subscribe(partner => {
-      if (partner) {
-        const snackBarPoruka = this.utilsService.dodajUKorpu(roba);
-        this.notifikacijaServis.notify(snackBarPoruka, MatSnackBarKlase.Zelena);
-        this.utilsService.izbrisiRobuSaStanja([this.robaDetalji], roba);
-      } else {
-        this.router.navigate(['/login']);
-        this.loginServis.izbaciPartnerIzSesije();
-      }
-    });
+    this.loginServis.vratiUlogovanogKorisnika(false)
+      .pipe(takeWhile(() => this.alive))
+      .subscribe(partner => {
+        if (partner) {
+          const snackBarPoruka = this.utilsService.dodajUKorpu(roba);
+          this.notifikacijaServis.notify(snackBarPoruka, MatSnackBarKlase.Zelena);
+          this.utilsService.izbrisiRobuSaStanja([this.robaDetalji], roba);
+        } else {
+          this.router.navigate(['/login']);
+          this.loginServis.izbaciPartnerIzSesije();
+        }
+      });
   }
 
   popuniAplikacije() {
@@ -180,10 +189,14 @@ export class RobaDetaljiComponent implements OnInit {
   }
 
   traziPoBroju(katBr) {
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.pipe(takeWhile(() => this.alive)).subscribe(params => {
       const url = '/' + params['prosliUrl'] + '/';
       this.router.navigate([url], { queryParams: { pretraga: katBr } });
     });
+  }
+
+  ngOnDestroy() {
+    this.alive = false;
   }
 
 }

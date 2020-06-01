@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmailService } from 'src/app/shared/service/email.service';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
@@ -12,11 +12,13 @@ import { MatSnackBarKlase } from 'src/app/shared/model/konstante';
   templateUrl: './kontakt.component.html',
   styleUrls: ['./kontakt.component.scss']
 })
-export class KontaktComponent implements OnInit {
+export class KontaktComponent implements OnInit, OnDestroy {
   public porukaForm: FormGroup;
   public porukaSubmited = false;
 
+  // boolean za unistavanje observera
   private alive = true;
+
   public ucitavanje = false;
 
   ngOnInit() {
@@ -73,4 +75,7 @@ export class KontaktComponent implements OnInit {
   // convenience getter for easy access to form fields
   get p() { return this.porukaForm.controls; }
 
+  ngOnDestroy() {
+    this.alive = false;
+  }
 }

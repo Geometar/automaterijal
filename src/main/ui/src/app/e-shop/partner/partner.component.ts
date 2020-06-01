@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LoginService } from '../service/login.service';
 import { Partner } from '../model/dto';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
@@ -13,7 +13,7 @@ import { MatSnackBarKlase } from 'src/app/shared/model/konstante';
   templateUrl: './partner.component.html',
   styleUrls: ['./partner.component.scss']
 })
-export class PartnerComponent implements OnInit {
+export class PartnerComponent implements OnInit, OnDestroy {
 
   public partner: Partner;
   public daLiDuguje = false;
@@ -41,7 +41,9 @@ export class PartnerComponent implements OnInit {
     private loginServis: LoginService) { }
 
   ngOnInit() {
-    this.loginServis.ulogovaniPartner.subscribe(partner => this.partner = partner);
+    this.loginServis.ulogovaniPartner
+      .pipe(takeWhile(() => this.alive))
+      .subscribe(partner => this.partner = partner);
     this.daLiDuguje = this.partner.stanje < 0;
     this.inicijalizujSveRegistracioneForme();
   }
@@ -176,6 +178,10 @@ export class PartnerComponent implements OnInit {
         },
         error => {
         });
+  }
+
+  ngOnDestroy() {
+    this.alive = false;
   }
 
   // convenience getter for easy access to form fields

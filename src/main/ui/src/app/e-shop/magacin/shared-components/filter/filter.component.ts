@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, OnDestroy } from '@angular/core';
 import { ProizvodjacService } from 'src/app/e-shop/service/proizvodjac.service';
 import { takeWhile } from 'rxjs/operators';
 import { VrstaRobe } from 'src/app/e-shop/model/roba.enum';
@@ -13,7 +13,7 @@ import { Proizvodjac } from 'src/app/e-shop/model/dto';
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.scss']
 })
-export class FilterComponent implements OnInit {
+export class FilterComponent implements OnInit, OnDestroy {
 
   @Input() vrstaRobe;
   @Input() vrstaUlja;
@@ -51,7 +51,9 @@ export class FilterComponent implements OnInit {
 
   ngOnInit() {
     if (this.industrijkoUljeEvent) {
-      this.industrijkoUljeEvent.subscribe((vrstaUlja: string) => {
+      this.industrijkoUljeEvent
+      .pipe(takeWhile(() => this.alive))
+      .subscribe((vrstaUlja: string) => {
         this.vrstaUlja = vrstaUlja;
       });
     }
@@ -104,5 +106,9 @@ export class FilterComponent implements OnInit {
     this.filter.proizvodjacId = this.utilsService.vratiIdProizvodjacaAkoPostoji(this.filter.proizvodjac, this.proizvodjaci);
 
     this.filterEvent.emit(this.filter);
+  }
+  
+  ngOnDestroy() {
+    this.alive = false;
   }
 }

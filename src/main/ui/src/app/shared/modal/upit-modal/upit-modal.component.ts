@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Upit } from 'src/app/e-commerce/model/dto';
 import { Validators, FormBuilder, FormGroup, RequiredValidator } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
@@ -13,7 +13,7 @@ import { MatSnackBarKlase } from '../../model/konstante';
   templateUrl: './upit-modal.component.html',
   styleUrls: ['./upit-modal.component.scss']
 })
-export class UpitModalComponent implements OnInit {
+export class UpitModalComponent implements OnInit, OnDestroy {
 
   public upitForm: FormGroup;
   public upitSubmited = false;
@@ -109,4 +109,7 @@ export class UpitModalComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  ngOnDestroy() {
+    this.alive = false;
+  }
 }

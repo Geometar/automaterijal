@@ -1,28 +1,34 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
 import { LoginService } from 'src/app/e-shop/service/login.service';
+import { takeWhile } from 'rxjs/operators';
 
 @Component({
   selector: 'app-logout-modal',
   templateUrl: './logout-modal.component.html',
   styleUrls: ['./logout-modal.component.scss']
 })
-export class LogoutModalComponent implements OnInit {
+export class LogoutModalComponent implements OnInit, OnDestroy {
+
+  // boolean za unistavanje observera
+  private alive = true;
 
   constructor(
     public dialogRef: MatDialogRef<LogoutModalComponent>,
     private router: Router,
-    private loginServis: LoginService) {}
+    private loginServis: LoginService) { }
 
   ngOnInit() {
-    this.loginServis.vratiUlogovanogKorisnika(false).subscribe(partner => {
-      if (partner === null) {
-        this.dialogRef.close();
-        this.router.navigateByUrl('naslovna');
-        this.loginServis.izbaciPartnerIzSesije();
-      }
-    });
+    this.loginServis.vratiUlogovanogKorisnika(false)
+      .pipe(takeWhile(() => this.alive))
+      .subscribe(partner => {
+        if (partner === null) {
+          this.dialogRef.close();
+          this.router.navigateByUrl('naslovna');
+          this.loginServis.izbaciPartnerIzSesije();
+        }
+      });
   }
 
   logout() {
@@ -34,4 +40,9 @@ export class LogoutModalComponent implements OnInit {
   ostaniUlogovan() {
     this.dialogRef.close();
   }
+
+  ngOnDestroy() {
+    this.alive = false;
+  }
+
 }

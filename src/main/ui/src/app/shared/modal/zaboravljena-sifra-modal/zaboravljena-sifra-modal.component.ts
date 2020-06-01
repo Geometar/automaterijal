@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
@@ -13,7 +13,7 @@ import { MatSnackBarKlase } from '../../model/konstante';
   templateUrl: './zaboravljena-sifra-modal.component.html',
   styleUrls: ['./zaboravljena-sifra-modal.component.scss']
 })
-export class ZaboravljenaSifraModalComponent implements OnInit {
+export class ZaboravljenaSifraModalComponent implements OnInit, OnDestroy {
 
   public resetSifre: ResetSifre = new ResetSifre();
   public mailUspesnoPoslat = false;
@@ -74,6 +74,10 @@ export class ZaboravljenaSifraModalComponent implements OnInit {
 
   zatvoriDialog() {
     this.dialogRef.close();
+  }
+  
+  ngOnDestroy() {
+    this.alive = false;
   }
 
   // convenience getter for easy access to form fields

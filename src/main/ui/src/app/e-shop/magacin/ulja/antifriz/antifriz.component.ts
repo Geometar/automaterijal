@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY } from 'rxjs';
 import { Roba, Partner, RobaPage, Magacin } from 'src/app/e-shop/model/dto';
@@ -13,7 +13,7 @@ import { HttpResponse } from '@angular/common/http';
   templateUrl: './antifriz.component.html',
   styleUrls: ['./antifriz.component.css']
 })
-export class AntifrizComponent implements OnInit {
+export class AntifrizComponent implements OnInit, OnDestroy {
 
   public roba: Roba[];
   public vrstaRobe = VrstaRobe.ULJA;
@@ -111,5 +111,9 @@ export class AntifrizComponent implements OnInit {
     }
     this.filter = filter;
     this.pronandjiSavAntifriz();
+  }
+
+  ngOnDestroy() {
+    this.alive = false;
   }
 }

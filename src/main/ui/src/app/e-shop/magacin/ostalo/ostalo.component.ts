@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { RobaService } from '../../service/roba.service';
@@ -8,7 +8,7 @@ import { RobaService } from '../../service/roba.service';
   templateUrl: './ostalo.component.html',
   styleUrls: ['./ostalo.component.scss']
 })
-export class OstaloComponent implements OnInit {
+export class OstaloComponent implements OnInit, OnDestroy {
 
   public kategorije: string[];
   private alive = true;
@@ -39,6 +39,11 @@ export class OstaloComponent implements OnInit {
       }
     });
     return kategorije;
+  }
+
+
+  ngOnDestroy() {
+    this.alive = false;
   }
 
 }

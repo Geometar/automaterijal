@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { PartnerService } from 'src/app/e-shop/service/partner.service';
@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   templateUrl: './prvo-logovanje-modal.component.html',
   styleUrls: ['./prvo-logovanje-modal.component.scss']
 })
-export class PrvoLogovanjeModalComponent implements OnInit {
+export class PrvoLogovanjeModalComponent implements OnInit, OnDestroy {
 
   public promenaSifreForm: FormGroup;
   public submitted = false;
@@ -90,6 +90,10 @@ export class PrvoLogovanjeModalComponent implements OnInit {
     dto.ponovljenjaSifra = this.r.pass2.value;
     dto.ppid = this.partner.ppid;
     return dto;
+  }
+  
+  ngOnDestroy() {
+    this.alive = false;
   }
 
   get r() { return this.promenaSifreForm.controls; }

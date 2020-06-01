@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { PromenaSifre } from '../model/dto';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
@@ -14,7 +14,7 @@ import { MatSnackBarKlase } from 'src/app/shared/model/konstante';
   templateUrl: './resetovanje-sfire.component.html',
   styleUrls: ['./resetovanje-sfire.component.scss']
 })
-export class ResetovanjeSfireComponent implements OnInit {
+export class ResetovanjeSfireComponent implements OnInit, OnDestroy {
   public promenaSifreForm: FormGroup;
   public submitted = false;
   public uspesnoLogovanje = true;
@@ -38,12 +38,16 @@ export class ResetovanjeSfireComponent implements OnInit {
       pass1: ['', [Validators.required, Validators.minLength(3)]],
       pass2: ['', [Validators.required, Validators.minLength(3)]]
     });
-    this.route.params.subscribe((params: Params) => {
-      this.staraSifra = params.id;
-    });
-    this.route.queryParams.subscribe((params: Params) => {
-      this.ppid = params.id;
-    });
+    this.route.params
+      .pipe(takeWhile(() => this.alive))
+      .subscribe((params: Params) => {
+        this.staraSifra = params.id;
+      });
+    this.route.queryParams
+      .pipe(takeWhile(() => this.alive))
+      .subscribe((params: Params) => {
+        this.ppid = params.id;
+      });
   }
 
   // convenience getter for easy access to form fields
@@ -67,15 +71,15 @@ export class ResetovanjeSfireComponent implements OnInit {
       }),
       finalize(() => this.ucitavanje = false)
     )
-    .subscribe(
-      res => {
-        this.uspesnaPromena = true;
-        this.notifikacijaServis.notify('Šifra uspešno promenjena', MatSnackBarKlase.Zelena);
-        this.router.navigate(['/login']);
-      },
-      error => {
-        this.uspesnaPromena = false;
-      });
+      .subscribe(
+        res => {
+          this.uspesnaPromena = true;
+          this.notifikacijaServis.notify('Šifra uspešno promenjena', MatSnackBarKlase.Zelena);
+          this.router.navigate(['/login']);
+        },
+        error => {
+          this.uspesnaPromena = false;
+        });
   }
 
   private napraviDto(): PromenaSifre {
@@ -85,5 +89,9 @@ export class ResetovanjeSfireComponent implements OnInit {
     dto.ppid = this.ppid;
     dto.staraSifra = this.staraSifra;
     return dto;
+  }
+
+  ngOnDestroy() {
+    this.alive = false;
   }
 }

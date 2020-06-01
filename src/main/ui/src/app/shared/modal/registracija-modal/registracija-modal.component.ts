@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
@@ -11,7 +11,7 @@ import { EmailService } from 'src/app/shared/service/email.service';
   templateUrl: './registracija-modal.component.html',
   styleUrls: ['./registracija-modal.component.scss']
 })
-export class RegistracijaModalComponent implements OnInit {
+export class RegistracijaModalComponent implements OnInit, OnDestroy {
 
   registracije: string[] = ['Fizičko lice', 'Pravno lice'];
   public vrstaRegistracije: string;
@@ -112,6 +112,10 @@ export class RegistracijaModalComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  ngOnDestroy() {
+    this.alive = false;
+  }
+  
   // convenience getter for easy access to form fields
   get privatno() { return this.privatnoLiceForm.controls; }
   get pravno() { return this.parvnoLiceForm.controls; }
