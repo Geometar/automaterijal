@@ -7,9 +7,9 @@
         <div class="centriraj">
           <img height="160" src={{roba.slika}} onError="this.src='assets/slike/ui/roba/slikanijedostupna.jpg'">
         </div>
-        <div class="prazan-div-ikona" *ngIf="partnerLogovan && !uKorpi(roba.katbr)">
+        <div class="prazan-div-ikona" *ngIf="partnerLogovan && !roba.uKorpi">
         </div>
-        <div class="prazan-div-ikona" *ngIf="partnerLogovan && uKorpi(roba.katbr)">
+        <div class="prazan-div-ikona" *ngIf="partnerLogovan  && roba.uKorpi">
           <i matTooltip="U korpi" class="material-icons boja-glavna-100 pozicija-informacije-korpa">
             shopping_cart
           </i>

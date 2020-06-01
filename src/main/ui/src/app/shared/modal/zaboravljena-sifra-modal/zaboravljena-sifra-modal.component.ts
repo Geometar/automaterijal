@@ -68,7 +68,6 @@ export class ZaboravljenaSifraModalComponent implements OnInit, OnDestroy {
       this.mailPoslatPartneru = true;
     }, error => {
       this.mailPoslatPartneru = false;
-      console.log('Server internal error! Adminsitration is contacted.');
     });
   }
 

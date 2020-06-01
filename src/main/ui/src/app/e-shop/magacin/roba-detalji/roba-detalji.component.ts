@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RobaService } from '../../service/roba.service';
 import { Params, ActivatedRoute, Router } from '@angular/router';
 import { Roba, RobaBrojevi, Partner } from '../../model/dto';
@@ -62,12 +62,6 @@ export class RobaDetaljiComponent implements OnInit, OnDestroy {
     this.promeniTabeluDetaljaAutomobila();
   }
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event) {
-    this.innerWidth = window.innerWidth;
-    this.promeniTabeluDetaljaAutomobila();
-  }
-
   promeniTabeluDetaljaAutomobila() {
     if (this.innerWidth > 650) {
       this.velikiEkran = true;
@@ -85,7 +79,6 @@ export class RobaDetaljiComponent implements OnInit, OnDestroy {
             takeWhile(() => this.alive),
             catchError((error: Response) => {
               if (error.status === 404) {
-                console.log('404 vratili detalji');
                 return EMPTY;
               }
               return throwError(error);
@@ -94,9 +87,9 @@ export class RobaDetaljiComponent implements OnInit, OnDestroy {
           .subscribe((res: HttpResponse<Roba>) => {
             this.robaDetalji = res.body;
             this.robaDetalji = this.dataService.skiniSaStanjaUkolikoJeUKorpi([this.robaDetalji])[0];
+            this.utilsService.daLiJeRobaUKorpi(this.korpa, [this.robaDetalji]);
             this.popuniAplikacije();
             this.popuniOeBrojeve();
-            console.log(this.robaDetalji);
           });
       });
   }
@@ -182,10 +175,6 @@ export class RobaDetaljiComponent implements OnInit, OnDestroy {
 
   idiNazad() {
     this.location.back();
-  }
-
-  uKorpi(katBr: string): boolean {
-    return this.utilsService.daLiJeRobaUKorpi(this.korpa, katBr);
   }
 
   traziPoBroju(katBr) {

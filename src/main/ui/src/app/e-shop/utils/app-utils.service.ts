@@ -34,6 +34,7 @@ export class AppUtilsService {
 
   public dodajUKorpu(roba: Roba): string {
     let snackBarPoruka = 'Artikal je ubacen u korpu.';
+    roba.uKorpi = true;
     if (roba.kolicina == null || roba.kolicina <= 0) {
       roba.kolicina = 1;
     }
@@ -48,22 +49,22 @@ export class AppUtilsService {
     return snackBarPoruka;
   }
 
+  public daLiJeRobaUKorpi(korpa: Korpa, roba: Roba[]) {
+    roba.forEach((artikal: Roba) => {
+      korpa.roba.forEach(r => {
+        if (r.katbr === artikal.katbr) {
+          artikal.uKorpi  = true;
+        }
+      });
+    });
+  }
+
   public izbrisiRobuSaStanja(roba: Roba[], robaUKorpi: Roba) {
     roba.forEach(robaBaza => {
       if (robaBaza.katbr === robaUKorpi.katbr) {
         robaBaza.stanje = robaBaza.stanje - robaUKorpi.kolicina;
       }
     });
-  }
-
-  public daLiJeRobaUKorpi(korpa: Korpa, katBr: string) {
-    let uKorpi = false;
-    korpa.roba.forEach(r => {
-      if (r.katbr === katBr) {
-        uKorpi = true;
-      }
-    });
-    return uKorpi;
   }
 
   public vratiKveriParametre(map) {

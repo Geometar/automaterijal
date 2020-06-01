@@ -117,6 +117,7 @@ export class Roba {
     public cena: number;
     public rabat: number;
     public kolicina: number;
+    public uKorpi = false;
     public proizvodjac: Proizvodjac;
     public tehnickiOpis?: RobaTehnickiOpis[];
     public tdBrojevi?: Map<string, RobaBrojevi[]>;

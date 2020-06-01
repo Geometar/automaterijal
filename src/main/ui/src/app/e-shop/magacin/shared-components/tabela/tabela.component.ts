@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, HostListener, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
 import { Roba, Partner } from 'src/app/e-shop/model/dto';
 import { LoginService } from 'src/app/e-shop/service/login.service';
 import { AppUtilsService } from 'src/app/e-shop/utils/app-utils.service';
@@ -14,7 +14,7 @@ import { takeWhile } from 'rxjs/operators';
   templateUrl: './tabela.component.html',
   styleUrls: ['./tabela.component.scss']
 })
-export class TabelaComponent implements OnInit, OnDestroy {
+export class TabelaComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input() dataSource: any[];
   @Input() roba: Roba[];
@@ -48,7 +48,14 @@ export class TabelaComponent implements OnInit, OnDestroy {
     private notifikacijaServis: NotifikacijaService,
     private dataService: DataService,
     private router: Router
-  ) { }
+  ) {
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.roba && changes.roba.currentValue) {
+      this.utilsService.daLiJeRobaUKorpi(this.korpa, changes.roba.currentValue);
+    }
+  }
 
   ngOnInit() {
     this.loginServis.ulogovaniPartner
@@ -60,12 +67,6 @@ export class TabelaComponent implements OnInit, OnDestroy {
     this.loginServis.daLiJePartnerUlogovan
       .pipe(takeWhile(() => this.alive))
       .subscribe(bool => this.partnerLogovan = bool);
-    this.innerWidth = window.innerWidth;
-    this.changeSlideConfiguration();
-  }
-
-  @HostListener('window:resize', ['$event'])
-  onResize(event) {
     this.innerWidth = window.innerWidth;
     this.changeSlideConfiguration();
   }
@@ -113,21 +114,17 @@ export class TabelaComponent implements OnInit, OnDestroy {
 
   dodajUKorpu(roba: Roba) {
     this.loginServis.vratiUlogovanogKorisnika(false)
-    .pipe(takeWhile(() => this.alive))
-    .subscribe(partner => {
-      if (partner) {
-        const snackBarPoruka = this.utilsService.dodajUKorpu(roba);
-        this.notifikacijaServis.notify(snackBarPoruka, MatSnackBarKlase.Zelena);
-        this.utilsService.izbrisiRobuSaStanja(this.roba, roba);
-      } else {
-        this.router.navigate(['/login']);
-        this.loginServis.izbaciPartnerIzSesije();
-      }
-    });
-  }
-
-  uKorpi(katBr: string): boolean {
-    return this.utilsService.daLiJeRobaUKorpi(this.korpa, katBr);
+      .pipe(takeWhile(() => this.alive))
+      .subscribe(partner => {
+        if (partner) {
+          const snackBarPoruka = this.utilsService.dodajUKorpu(roba);
+          this.notifikacijaServis.notify(snackBarPoruka, MatSnackBarKlase.Zelena);
+          this.utilsService.izbrisiRobuSaStanja(this.roba, roba);
+        } else {
+          this.router.navigate(['/login']);
+          this.loginServis.izbaciPartnerIzSesije();
+        }
+      });
   }
 
   detaljiRobe(robaId: string) {

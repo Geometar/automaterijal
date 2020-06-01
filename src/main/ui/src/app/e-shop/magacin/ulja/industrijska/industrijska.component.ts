@@ -64,7 +64,6 @@ export class IndustrijskaComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.pocetnoPretrazivanje = true;
-    console.log(this.vrstaRobe);
     this.pronandjiUlja();
   }
 

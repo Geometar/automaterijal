@@ -46,12 +46,12 @@
               <div *ngIf="partner && partner.privilegije === 2047" class="pdv-cena boja-glavna-50">Cena bez pdv-a</div>
               <div class="boja-crvena-10"> {{robaDetalji.cena | currency:" "}} RSD </div>
             </div>
-            <span *ngIf="partnerLogovan && uKorpi(robaDetalji.katbr)">
+            <span *ngIf="partnerLogovan && robaDetalji.uKorpi">
               <i matTooltip="U korpi" class="material-icons boja-glavna-100 pozicija-informacije-korpa">
                 shopping_cart
               </i>
             </span>
-            <div [ngClass]="{ 'nije-u-korpi': !uKorpi(robaDetalji.katbr) }" class="text-right div-3-labela">
+            <div [ngClass]="{ 'nije-u-korpi': !robaDetalji.uKorpi}" class="text-right div-3-labela">
               <div *ngIf="robaDetalji.stanje > 0">
                 <div *ngIf="partnerLogovan" class="kolicina-celina p-1 bd-highlight"><b>Količina:</b>
                   <div class="kolicina-div">
