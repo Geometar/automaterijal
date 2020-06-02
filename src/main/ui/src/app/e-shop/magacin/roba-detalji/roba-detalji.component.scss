@@ -76,6 +76,11 @@
 .div-1 {
   width: 200px;
 }
+
+.div-1-obican {
+  width: 180px;
+  padding-left: 50px !important;
+}
 .detalji-proizvodjac {
   font-weight: bold;
   font-size: 1.4rem;
@@ -161,6 +166,11 @@
   bottom: 7px;
   font-size: 0.95rem;
 }
+
+.div-2-obican-artikal {
+  margin-top: 20px !important;
+}
+
 .kolicina-div {
   display: inline-block;
   margin-left: 12px;
@@ -329,7 +339,7 @@
 
 :host ::ng-deep textarea.mat-input-element {
   padding: 0;
-  margin:  0;
+  margin: 0;
 }
 
 //--------------------------------------------------
@@ -347,6 +357,11 @@
   .div-1 {
     text-align: center;
     width: 100%;
+  }
+  .div-1-obican {
+    text-align: center;
+    width: 100%;
+    padding: 0px !important;
   }
   .div-2 {
     width: 320px !important;

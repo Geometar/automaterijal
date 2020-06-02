@@ -23,8 +23,10 @@ export class RobaDetaljiComponent implements OnInit, OnDestroy {
   public robaDetalji: Roba;
   public kljuceviAplikacija: string[] = [];
   public kluceviRobe: string[] = [];
-  public originalniBrojevi: OeBrojevi[];
+  public originalniBrojevi: OeBrojevi[] = [];
   public partner: Partner;
+
+  public tdArtikalJe = true;
 
   private korpa: Korpa;
   public ucitavanje = false;
@@ -90,6 +92,10 @@ export class RobaDetaljiComponent implements OnInit, OnDestroy {
             this.utilsService.daLiJeRobaUKorpi(this.korpa, [this.robaDetalji]);
             this.popuniAplikacije();
             this.popuniOeBrojeve();
+            this.tdArtikalJe =
+              this.kljuceviAplikacija.length > 0
+              || this.kluceviRobe.length > 0
+              || this.originalniBrojevi.length > 0;
           });
       });
   }

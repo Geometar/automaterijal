@@ -7,7 +7,7 @@
     </div>
     <div class="detalji-stranica detalji-prvi-div" *ngIf="robaDetalji != null && !ucitavanje">
       <div class="d-flex flex-column flex-lg-row">
-        <div class="p-1 flex-fill div-1">
+        <div *ngIf="!tdArtikalJe" class="align-self-center justify-content-center p-1 flex-fill div-1-obican">
           <h1 class="h1-proizvdojac">Proizvodjač: <span
               class="detalji-proizvodjac boja-crvena-10">{{robaDetalji.proizvodjac.naziv}}</span></h1>
           <h2 *ngIf="robaDetalji.podGrupa !== 'ZZZ'" class="h2-kategorije">Kategorija:
@@ -15,12 +15,29 @@
           <h2 *ngIf="partner && partner.privilegije === 2047" class="komercijalista-stanje">Stanje:
             <span>{{robaDetalji.stanje}}</span></h2>
           <h2 class="h2-naziv">{{robaDetalji.naziv}}</h2>
+        </div>
+        <div *ngIf="!tdArtikalJe" class="p-1 flex-fill mt-auto div-2-obican-artikal">
           <div class="slika-robe">
-            <img src={{robaDetalji.slika}} height="200px"
+            <img src={{robaDetalji.slika}} height="220px"
               onError="this.src='assets/slike/ui/roba/slikanijedostupna.jpg'">
           </div>
         </div>
-        <div class="p-1 flex-fill mt-auto div-2">
+        <div *ngIf="tdArtikalJe" class="p-1 flex-fill div-1">
+          <h1 class="h1-proizvdojac">Proizvodjač: <span
+              class="detalji-proizvodjac boja-crvena-10">{{robaDetalji.proizvodjac.naziv}}</span></h1>
+          <h2 *ngIf="robaDetalji.podGrupa !== 'ZZZ'" class="h2-kategorije">Kategorija:
+            <span class="kategorija">{{robaDetalji.podGrupa}}</span></h2>
+          <h2 *ngIf="partner && partner.privilegije === 2047" class="komercijalista-stanje">Stanje:
+            <span>{{robaDetalji.stanje}}</span></h2>
+          <h2 class="h2-naziv">{{robaDetalji.naziv}}</h2>
+          <div>
+            <div class="slika-robe">
+              <img src={{robaDetalji.slika}} height="200px"
+                onError="this.src='assets/slike/ui/roba/slikanijedostupna.jpg'">
+            </div>
+          </div>
+        </div>
+        <div *ngIf="tdArtikalJe" class="p-1 flex-fill mt-auto div-2">
           <h2 class="h2-2-div boja-glavna-50">Detalji artikla</h2>
           <h3 class="h3-2-div">Kataloški broj: <span class="boja-crvena-10">{{robaDetalji.katbr}}</span></h3>
           <ul class="teh-detalji-ui sirina-detalja">
