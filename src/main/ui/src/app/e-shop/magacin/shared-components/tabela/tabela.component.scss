@@ -200,6 +200,11 @@ tr.mat-row {
     height: 500px;
     border-bottom: 15px solid $automaterijal-grey-400;
   }
+
+  .admin-tabela tr.mat-row {
+    height: 530px;
+  }
+
   .teh-detalji-ui {
     margin-bottom: 25px;
   }
@@ -229,9 +234,15 @@ tr.mat-row {
     text-align: center;
     font-size: 0.9rem;
   }
+
+  .opis-admin {
+    height: 140px;
+  }
+
   .kolicina-input-labela {
     text-align: left;
   }
+
   .pomeranje-mob-div {
     position: relative;
     width: 300px;

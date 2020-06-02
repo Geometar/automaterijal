@@ -1,5 +1,5 @@
 <div class="tabela-div" *ngIf="dataSource != null && dataSource.length > 0">
-  <table class="roba-tabela" mat-table [dataSource]="dataSource">
+  <table [ngClass]="{'admin-tabela': partner && partner.privilegije === 2047}" class="roba-tabela" mat-table [dataSource]="dataSource">
     <!--Slika dela Column -->
     <ng-container matColumnDef="slika">
       <th mat-header-cell *matHeaderCellDef> Slika </th>
@@ -20,7 +20,7 @@
     <!-- Opis dela Column -->
     <ng-container matColumnDef="opis">
       <th mat-header-cell *matHeaderCellDef> Roba opis</th>
-      <td mat-cell *matCellDef="let roba">
+      <td mat-cell [ngClass]="{'opis-admin': partner && partner.privilegije === 2047}" *matCellDef="let roba">
         <div class="d-flex flex-column">
           <div class="p-1 pomeranje-mob-div bd-highlight"><b>Kataloški broj:</b> <span class="roba-katbr">
               {{roba.katbr}} </span></div>

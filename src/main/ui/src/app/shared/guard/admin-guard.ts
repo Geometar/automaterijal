@@ -22,6 +22,10 @@ export class AdminGuard implements CanActivate {
                 if (partner != null && partner.ppid && partner.privilegije === 2047) {
                     return true;
                 } else {
+                    const partnerStorage = this.storageServis.procitajPartneraIzMemorije();
+                    if (partnerStorage !== null && partnerStorage.ppid) {
+                        this.loginServis.izbaciPartnerIzSesije();
+                    }
                     this.router.navigate(['/naslovna']);
                     return false;
                 }
