@@ -75,8 +75,26 @@ public class RobaJooqRepository {
     }
 
     private List<RobaDto> sortirajPoGrupi(List<RobaDto> roba) {
-        List<RobaDto> retVal = roba.stream().filter(robaDto -> robaDto.getStanje() > 0).sorted(Comparator.comparing(RobaDto::getPodGrupaNaziv)).collect(Collectors.toList());
-        roba.stream().filter(robaDto -> robaDto.getStanje() == 0).sorted(Comparator.comparing(RobaDto::getPodGrupaNaziv)).forEach(retVal::add);
+        List<RobaDto> retVal = roba.stream()
+                .filter(robaDto -> robaDto.getStanje() > 0)
+                .map(robaDto -> {
+                    if (robaDto.getPodGrupaNaziv() == null) {
+                        robaDto.setPodGrupaNaziv("ZZZ");
+                    }
+                    return robaDto;
+                })
+                .sorted(Comparator.comparing(RobaDto::getPodGrupaNaziv))
+                .collect(Collectors.toList());
+
+        roba.stream()
+                .filter(robaDto -> robaDto.getStanje() == 0)
+                .map(robaDto -> {
+                    if (robaDto.getPodGrupaNaziv() == null) {
+                        robaDto.setPodGrupaNaziv("ZZZ");
+                    }
+                    return robaDto;
+                })
+                .sorted(Comparator.comparing(RobaDto::getPodGrupaNaziv)).forEach(retVal::add);
         return retVal;
     }
 

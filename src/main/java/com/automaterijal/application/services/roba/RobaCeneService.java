@@ -70,7 +70,7 @@ public class RobaCeneService {
         return Math.abs(popust);
     }
 
-    private Double preracunajPopustNaArtkalZaUlogovanogPartnera(String proId, String grupaId, Partner partner) {
+    private Double preracunajPopustNaArtkalZaUlogovanogPartnera(String grupaId, String proId, Partner partner) {
         Optional<Double> retVal = Optional.empty();
         if (partner.getPopustiList() != null) {
             retVal = partner.getPopustiList().stream()
