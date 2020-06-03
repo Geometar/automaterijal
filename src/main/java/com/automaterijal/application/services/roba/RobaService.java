@@ -53,6 +53,10 @@ public class RobaService {
         return robaRepository.findByPodgrupaidIn(podGrupaId);
     }
 
+    public Roba pronadjiPoPretaziIProizvodjacima(String katBr, List<String> proizvodjaci) {
+        return robaRepository.findByKatbrAndProizvodjacProidInAndStanjeGreaterThan(katBr, proizvodjaci, 0);
+    }
+
     public Page<Roba> pronadjiSvuRobuPoGrupiIdNaStanju(List<String> grupaId, boolean naStanju, Pageable pageable) {
         Page<Roba> roba = null;
         if (naStanju) {
