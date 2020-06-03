@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -57,12 +58,12 @@ public class PartnerExternalService {
         List<PartnerB2bProizvodjac> listaProizvodjaca = b2bProizvodjacRepository.findByProizvodjacKljuceviPpid(ppid);
         Partner partner = partnerService.pronadjiPartneraPoId(ppid);
         List<String> kljuceviProizvodjaca = listaProizvodjaca.stream().map(b2bProizvodjac -> b2bProizvodjac.getProizvodjacKljucevi().getProid()).collect(Collectors.toList());
-
         Roba roba = robaService.pronadjiPoPretaziIProizvodjacima(itemNo, kljuceviProizvodjaca);
         if (roba != null) {
             log.info("B2B: Partneru {} vracena roba sa katBr {}", partner.getMestaIsporuke().getNaziv(), itemNo);
             BigDecimal cena = robaCeneService.vratiCenuRobePoRobiId(roba.getRobaid(), roba.getGrupaid(), roba.getProizvodjac().getProid(), partner)
-                    .divide(BigDecimal.valueOf(1.2));
+                    .setScale(2, RoundingMode.CEILING)
+                    .divide(BigDecimal.valueOf(1.2), 2, RoundingMode.CEILING);
             retVal = mapper.map(roba, cena.doubleValue());
         } else {
             log.info("B2B: Partneru {} nije nadjena roba sa katBr {}", partner.getMestaIsporuke().getNaziv(), itemNo);
