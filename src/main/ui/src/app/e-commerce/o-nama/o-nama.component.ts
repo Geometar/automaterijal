@@ -2,7 +2,6 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { Brend } from '../model/dto';
 import { MatDialog } from '@angular/material';
 import { BrendoviModalComponent } from 'src/app/shared/modal/brendovi-modal/brendovi-modal.component';
-import { e } from '@angular/core/src/render3';
 
 @Component({
   selector: 'app-o-nama',

@@ -3,14 +3,12 @@ import { NgModule } from '@angular/core';
 import { StorageServiceModule } from 'angular-webstorage-service';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpModule } from '@angular/http';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ModalModule } from './shared/modal/modal.module';
 import { NavigacijaModule } from './navigacija/navigacija.module';
 import { AuthGuard } from './shared/guard/auth-guard';
 import { HttpErrorInterceptor } from './shared/interceptor/error-interceptor';
-import { AdminComponent } from './e-shop/admin/admin.component';
 import { AdminGuard } from './shared/guard/admin-guard';
 
 @NgModule({
@@ -20,7 +18,6 @@ import { AdminGuard } from './shared/guard/admin-guard';
   imports: [
     BrowserModule,
     ModalModule,
-    HttpModule,
     HttpClientModule,
     NavigacijaModule,
     StorageServiceModule,
