@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { LoginService } from 'src/app/e-shop/service/login.service';
 import { takeWhile } from 'rxjs/operators';

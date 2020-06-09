@@ -4,7 +4,7 @@ import { Poruka } from 'src/app/e-commerce/model/dto';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY } from 'rxjs';
 import { EmailService } from 'src/app/shared/service/email.service';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 import { NotifikacijaService } from '../../service/notifikacija.service';
 import { MatSnackBarKlase } from '../../model/konstante';
 

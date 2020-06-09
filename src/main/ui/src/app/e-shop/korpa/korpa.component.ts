@@ -2,7 +2,8 @@ import { Component, OnInit, ViewChild, HostListener, OnDestroy } from '@angular/
 import { DataService } from '../service/data/data.service';
 import { Korpa, RobaKorpa } from '../model/porudzbenica';
 import { LocalStorageService } from '../service/data/local-storage.service';
-import { MatTable, MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTable } from '@angular/material/table';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { ValueHelp, Partner, Fakutra, FakturaDetalji, Roba } from '../model/dto';

@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PartnerService } from 'src/app/e-shop/service/partner.service';
 import { PromenaSifre, Partner } from 'src/app/e-shop/model/dto';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';

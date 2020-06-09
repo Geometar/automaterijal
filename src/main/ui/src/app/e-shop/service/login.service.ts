@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { AppUtilsService } from '../utils/app-utils.service';
 import { Router } from '@angular/router';
 import { LocalStorageService } from './data/local-storage.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { SesijaIsteklaModalComponent } from 'src/app/shared/modal/sesija-istekla-modal/sesija-istekla-modal.component';
 import { environment } from 'src/environments/environment';
 import { PrvoLogovanjeModalComponent } from 'src/app/shared/modal/prvo-logovanje-modal/prvo-logovanje-modal.component';

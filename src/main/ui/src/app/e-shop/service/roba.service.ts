@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { timeoutWith, catchError } from 'rxjs/operators';
-import { Sort } from '@angular/material';
+import { Sort } from '@angular/material/sort';
 import { AppUtilsService } from '../utils/app-utils.service';
 import { environment } from 'src/environments/environment';
 import { Roba, RobaPage } from '../model/dto';

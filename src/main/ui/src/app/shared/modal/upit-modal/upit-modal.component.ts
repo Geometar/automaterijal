@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Upit } from 'src/app/e-commerce/model/dto';
 import { Validators, FormBuilder, FormGroup, RequiredValidator } from '@angular/forms';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 import { EmailService } from 'src/app/shared/service/email.service';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';

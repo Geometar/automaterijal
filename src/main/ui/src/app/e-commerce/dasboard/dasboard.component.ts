@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Brend } from '../model/dto';
 import { Router } from '@angular/router';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { UpitModalComponent } from 'src/app/shared/modal/upit-modal/upit-modal.component';
 
 @Component({

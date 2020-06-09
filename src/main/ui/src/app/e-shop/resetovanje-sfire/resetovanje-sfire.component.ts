@@ -5,7 +5,7 @@ import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY } from 'rxjs';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { PartnerService } from '../service/partner.service';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { NotifikacijaService } from 'src/app/shared/service/notifikacija.service';
 import { MatSnackBarKlase } from 'src/app/shared/model/konstante';
 

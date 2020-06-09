@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { RegistracijaModalComponent } from '../shared/modal/registracija-modal/registracija-modal.component';
 import { ZaboravljenaSifraModalComponent } from '../shared/modal/zaboravljena-sifra-modal/zaboravljena-sifra-modal.component';
 import { PorukaModalComponent } from '../shared/modal/poruka-modal/poruka-modal.component';

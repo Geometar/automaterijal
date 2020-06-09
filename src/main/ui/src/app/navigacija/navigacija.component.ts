@@ -1,5 +1,5 @@
 import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { Partner } from '../e-shop/model/dto';
 import { LoginService } from '../e-shop/service/login.service';
 import { DataService } from '../e-shop/service/data/data.service';

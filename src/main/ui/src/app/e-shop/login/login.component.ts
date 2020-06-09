@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Credentials, Partner } from '../model/dto';
 import { LoginService } from '../service/login.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { RegistracijaModalComponent } from 'src/app/shared/modal/registracija-modal/registracija-modal.component';
 import { ZaboravljenaSifraModalComponent } from 'src/app/shared/modal/zaboravljena-sifra-modal/zaboravljena-sifra-modal.component';
 import { Router } from '@angular/router';
