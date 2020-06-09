@@ -8,14 +8,12 @@
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
 }
-@-webkit-keyframes fadeIn {
+
+@keyframes fadeIn {
   0% {opacity: 0;}
   100% {opacity: 1;}
 }
-@Keyframes fadeIn {
-  0% {opacity: 0;}
-  100% {opacity: 1;}
-}
+
 .fadeIn {
   -webkit-animation-name: fadeIn;
   animation-name: fadeIn;
