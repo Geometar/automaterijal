@@ -56,7 +56,7 @@ export class KorpaComponent implements OnInit, OnDestroy {
   innerWidth;
   public jeMobilni;
 
-  @ViewChild(MatTable, { static: false }) table: MatTable<any>;
+  @ViewChild(MatTable) table: MatTable<any>;
 
   constructor(
     private dataService: DataService,

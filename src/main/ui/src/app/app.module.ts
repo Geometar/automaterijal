@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { StorageServiceModule } from 'angular-webstorage-service';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
@@ -10,6 +9,7 @@ import { NavigacijaModule } from './navigacija/navigacija.module';
 import { AuthGuard } from './shared/guard/auth-guard';
 import { HttpErrorInterceptor } from './shared/interceptor/error-interceptor';
 import { AdminGuard } from './shared/guard/admin-guard';
+import { StorageServiceModule } from 'ngx-webstorage-service';
 
 @NgModule({
   declarations: [
@@ -18,9 +18,9 @@ import { AdminGuard } from './shared/guard/admin-guard';
   imports: [
     BrowserModule,
     ModalModule,
+    StorageServiceModule,
     HttpClientModule,
     NavigacijaModule,
-    StorageServiceModule,
     BrowserAnimationsModule,
     AppRoutingModule,
   ],

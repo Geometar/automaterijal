@@ -13,6 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "aot": true,
             "outputPath": "../resources/static",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -38,6 +39,12 @@
           },
           "configurations": {
             "production": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -138,7 +145,10 @@
   "defaultProject": "automaterijal-web",
   "schematics": {
     "@schematics/angular:component": {
-      "styleext": "scss"
+      "style": "scss"
     }
+  },
+  "cli": {
+    "analytics": "8dfd3f3c-2221-4e78-bd87-61f3081f12c5"
   }
 }

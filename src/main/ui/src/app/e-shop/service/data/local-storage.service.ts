@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
-import { LOCAL_STORAGE, StorageService } from 'angular-webstorage-service';
+import { LOCAL_STORAGE, WebStorageService } from 'ngx-webstorage-service';
 import { Korpa, RobaKorpa } from '../../model/porudzbenica';
 import { Partner } from '../../model/dto';
 import * as _ from 'lodash';
@@ -12,7 +12,7 @@ const PARTNER_KLJUC = 'partner_kljuc';
 })
 export class LocalStorageService {
 
-  constructor(@Inject(LOCAL_STORAGE) private storage: StorageService) { }
+  constructor(@Inject(LOCAL_STORAGE) private storage: WebStorageService) { }
 
   public sacuvajPartneraUMemoriju(partner: Partner) {
     const partnerCopy = _.cloneDeep(partner);
