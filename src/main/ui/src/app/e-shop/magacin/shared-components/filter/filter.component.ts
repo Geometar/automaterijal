@@ -31,20 +31,22 @@ export class FilterComponent implements OnInit, OnDestroy, OnChanges {
     private utilsService: AppUtilsService) { }
 
   ngOnChanges(changes: SimpleChanges) {
-    changes.proizvodjaci.currentValue.forEach((proizvodjac: Proizvodjac) => {
-      if (proizvodjac.proid === this.filter.proizvodjacId) {
-        this.filter.proizvodjac = proizvodjac.naziv;
-      }
-    });
-    if (this.filter) {
-      if (!this.filter.grupa) {
-        this.filter.grupa = 'Sve Kategorije';
-      }
-      if (!this.filter.proizvodjacId) {
-        this.filter.proizvodjac = 'Svi proizvodjači';
-      }
-      if (!this.filter.naStanju) {
-        this.filter.raspolozivost = this.raspolozivost[0];
+    if (changes.proizvodjaci && changes.proizvodjaci.currentValue) {
+      changes.proizvodjaci.currentValue.forEach((proizvodjac: Proizvodjac) => {
+        if (proizvodjac.proid === this.filter.proizvodjacId) {
+          this.filter.proizvodjac = proizvodjac.naziv;
+        }
+      });
+      if (this.filter) {
+        if (!this.filter.grupa) {
+          this.filter.grupa = 'Sve Kategorije';
+        }
+        if (!this.filter.proizvodjacId) {
+          this.filter.proizvodjac = 'Svi proizvodjači';
+        }
+        if (!this.filter.naStanju) {
+          this.filter.raspolozivost = this.raspolozivost[0];
+        }
       }
     }
   }
@@ -53,10 +55,10 @@ export class FilterComponent implements OnInit, OnDestroy, OnChanges {
     console.log(this.filterGrupe);
     if (this.industrijkoUljeEvent) {
       this.industrijkoUljeEvent
-      .pipe(takeWhile(() => this.alive))
-      .subscribe((vrstaUlja: string) => {
-        this.vrstaUlja = vrstaUlja;
-      });
+        .pipe(takeWhile(() => this.alive))
+        .subscribe((vrstaUlja: string) => {
+          this.vrstaUlja = vrstaUlja;
+        });
     }
 
     if (this.filter) {
@@ -108,7 +110,7 @@ export class FilterComponent implements OnInit, OnDestroy, OnChanges {
 
     this.filterEvent.emit(this.filter);
   }
-  
+
   ngOnDestroy() {
     this.alive = false;
   }

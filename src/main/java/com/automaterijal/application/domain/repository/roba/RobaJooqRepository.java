@@ -64,7 +64,7 @@ public class RobaJooqRepository {
             roba = filtriIVratiRobu(parametri, magacinDto, roba);
         }
 
-        if (VrstaRobe.SVE == parametri.getVrstaRobe()) {
+        if (parametri.getRobaKategorije() == null) {
             roba = sortirajPoGrupi(roba);
         }
         int start = parametri.getPageSize() * parametri.getPage();
@@ -322,26 +322,18 @@ public class RobaJooqRepository {
      * Upiti u slucaju da se trazi specificna grupa
      */
     private void filtrirajPoParametrima(SelectConditionStep<?> select, UniverzalniParametri parametri) {
-        if (!VrstaRobe.SVE.equals(parametri.getVrstaRobe())) {
-            switch (parametri.getVrstaRobe()) {
-                case OSTALO:
-                case ULJA:
-                case FILTERI:
-                    select.and(ROBA.PODGRUPAID.in(parametri.getPodGrupeId()));
-                    break;
-                case AKUMULATORI:
-                    select.and(ROBA.GRUPAID.in(parametri.getGrupeId()));
-                    break;
+            if (parametri.getRobaKategorije() != null && parametri.getRobaKategorije().isGrupaPretraga() == true) {
+                select.and(ROBA.GRUPAID.in(parametri.getRobaKategorije().getFieldName()));
+            } else if (parametri.getRobaKategorije() != null && parametri.getRobaKategorije().isPodgrupaPretraga() == true) {
+                select.and(ROBA.PODGRUPAID.in(parametri.getPodGrupe()));
             }
-        }
 
         if (!StringUtils.isEmpty(parametri.getProizvodjac()) && parametri.getGrupa() == null) {
             select.and(ROBA.PROID.eq(parametri.getProizvodjac()));
         }
 
         if (!StringUtils.isEmpty(parametri.getGrupa())) {
-            List<Integer> kljuceviPodgrupa = podGrupaService.vratiSvePodGrupeIdPoNazivu(parametri.getGrupa());
-            select.and(ROBA.PODGRUPAID.in(kljuceviPodgrupa));
+            select.and(ROBA.PODGRUPAID.in(parametri.getPodGrupe()));
         }
 
         if (parametri.isNaStanju()) {

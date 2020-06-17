@@ -54,13 +54,11 @@ public class RobaKOstalaController {
             @RequestParam(required = false) Optional<String> proizvodjac,
             @RequestParam(required = false) Optional<Boolean> naStanju,
             @RequestParam(required = false) Optional<String> searchTerm,
-            @RequestParam(required = false) RobaSortiranjePolja sortBy,
-            @RequestParam(required = false) Sort.Direction sortDirection,
+            @RequestParam(required = false) Optional<String> grupa,
             Authentication authentication
     ) {
 
-        List<String> iKategorije = kategorija == null ? null : kategorija.getFieldName();
-        UniverzalniParametri univerzalniParametri = robaSpringBeanUtils.popuniIVratiGenerickeParametreZaServis(page, pageSize, proizvodjac, naStanju, Optional.empty(), sortBy, sortDirection, searchTerm, VrstaRobe.OSTALO, null, iKategorije);
+        UniverzalniParametri univerzalniParametri = robaSpringBeanUtils.popuniIVratiGenerickeParametreZaServis(page, pageSize, proizvodjac, naStanju, searchTerm, grupa, kategorija);
         Partner uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
 
 

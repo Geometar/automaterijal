@@ -1,0 +1,84 @@
+@import "src/css/shared/boje.scss";
+
+h1 {
+  font-size: 1.25rem;
+  font-weight: 100;
+  color: white;
+}
+
+.cover {
+  background-color: $automaterijal-grey-400;
+  background-image: url("/assets/slike/ui/pozadine/licna-karta.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100%;
+  height: calc(100vh - 220px);
+}
+
+.sektor {
+  margin-right: auto;
+  margin-left: auto;
+  justify-content: center;
+}
+
+.kartica {
+  height: 265px;
+  width: 220px;
+  margin: 5px 5px 5px 5px;
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  border-top: 2px solid white;
+}
+.kartica:hover {
+  border-top: 2px solid $automaterijal-primary-100;
+}
+
+.podkategorija {
+  width: 190px;
+  color: $automaterijal-primary-100;
+  font-size: 0.93rem;
+}
+
+.podkategorija:hover .podkategorija-menu {
+  display: block;
+  margin-top: 0; // remove the gap so it doesn't close
+}
+
+.mat-card-header {
+  cursor: pointer;
+}
+.mat-card-header:focus {
+  outline: none;
+  border: 0;
+}
+
+.mat-card-image {
+  margin: 0px;
+  cursor: pointer;
+}
+
+.mat-card-footer {
+  margin: 0px;
+}
+
+.dropdown-ikona {
+  position: relative;
+  left: 33px;
+}
+
+.naslov {
+  background-color: $automaterijal-primary-50;
+  margin: 20px 0px 20px 0px;
+  max-width: 1200px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+img {
+  max-width: 180px;
+  max-height: 170px;
+}
+
+img:focus {
+  outline: none;
+  border: 0;
+}

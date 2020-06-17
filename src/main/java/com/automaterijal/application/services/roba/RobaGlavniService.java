@@ -1,6 +1,6 @@
 package com.automaterijal.application.services.roba;
 
-import com.automaterijal.application.domain.constants.VrstaRobe;
+import com.automaterijal.application.domain.constants.RobaSortiranjePolja;
 import com.automaterijal.application.domain.dto.MagacinDto;
 import com.automaterijal.application.domain.dto.RobaDto;
 import com.automaterijal.application.domain.dto.RobaTehnickiOpisDto;
@@ -13,6 +13,7 @@ import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.domain.repository.roba.RobaJooqRepository;
 import com.automaterijal.application.services.ProizvodjacService;
 import com.automaterijal.application.services.roba.grupe.PodGrupaService;
+import com.automaterijal.application.utils.RobaStaticUtils;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -77,7 +79,7 @@ public class RobaGlavniService {
         MagacinDto magacinDto;
         log.info("Partner {} trazi robu na stranici {} po kataloskom broju {} i prozivodjacu {}",
                 ulogovaniPartner != null ? ulogovaniPartner.getNaziv() : "anoniman",
-                parametri.getVrstaRobe() != null ? parametri.getVrstaRobe().toString().toLowerCase() : " - ",
+                parametri.getRobaKategorije() != null ? parametri.getRobaKategorije().getFieldName() : " - ",
                 parametri.getTrazenaRec() != null ? parametri.getTrazenaRec() : "-",
                 parametri.getProizvodjac() != null ? parametri.getProizvodjac() : "-"
         );
@@ -93,11 +95,11 @@ public class RobaGlavniService {
     private MagacinDto logikaZaMagacinBezFiltera(UniverzalniParametri parametri, Partner ulogovaniPartner) {
         var magacinDto = new MagacinDto();
         var pageable = PageRequest.of(
-                parametri.getPage(), parametri.getPageSize(), new Sort(parametri.getDirection(), parametri.getSortiranjePolja().getFieldName())
+                parametri.getPage(), parametri.getPageSize(), Sort.by(Sort.Direction.DESC, RobaSortiranjePolja.STANJE.getFieldName())
         );
 
         Page<RobaDto> robaDto = vratiSvuRobuUZavisnostiOdTrazenogStanja(parametri, pageable, ulogovaniPartner);
-        if (VrstaRobe.SVE == parametri.getVrstaRobe()) {
+        if (parametri.getRobaKategorije() == null) {
             magacinDto.setPodgrupe(podGrupaService.vratiSveGrupe());
         }
         magacinDto.setProizvodjaci(proizvodjacService.pronadjiSveProizvodjaceZaVrstu(parametri));
@@ -119,21 +121,15 @@ public class RobaGlavniService {
     private Page<RobaDto> vratiSvuRobuUZavisnostiOdTrazenogStanja(UniverzalniParametri parametri, Pageable pageable, Partner ulogovaniPartner) {
         Page<Roba> roba;
         boolean naStanju = parametri.isNaStanju();
-        switch (parametri.getVrstaRobe()) {
-            case SVE:
-                roba = robaService.pronadjiSvuRobu(naStanju, pageable);
-                break;
-            case OSTALO:
-            case ULJA:
-            case FILTERI:
-                roba = jooqRepository.pronadjiSvuRobuPoPodgrupama(parametri.getPodGrupeId(), naStanju, pageable);
-                break;
-            case AKUMULATORI:
-                roba = robaService.pronadjiSvuRobuPoGrupiIdNaStanju(parametri.getGrupeId(), naStanju, pageable);
-                break;
-            default:
-                roba = null;
-                log.error("Ne definisana roba!");
+        if (parametri.getRobaKategorije() == null) {
+            roba = robaService.pronadjiSvuRobu(naStanju, pageable);
+        } else if (parametri.getRobaKategorije().isGrupaPretraga() == true) {
+            roba = robaService.pronadjiSvuRobuPoGrupiIdNaStanju(parametri.getRobaKategorije().getFieldName(), naStanju, pageable);
+        } else if (parametri.getRobaKategorije().isPodgrupaPretraga() == true) {
+            roba = jooqRepository.pronadjiSvuRobuPoPodgrupama(parametri.getPodGrupe(), naStanju, pageable);
+        } else {
+            roba = null;
+            log.error("Ne definisana roba!");
         }
 
         List<RobaDto> dto = roba.stream().map(robaEntitet -> {

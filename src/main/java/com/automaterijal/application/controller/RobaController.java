@@ -51,13 +51,11 @@ public class RobaController {
             @RequestParam(required = false) Optional<Boolean> naStanju,
             @RequestParam(required = false) Optional<String> grupa,
             @RequestParam(required = false) Optional<String> searchTerm,
-            @RequestParam(required = false) RobaSortiranjePolja sortBy,
-            @RequestParam(required = false) Sort.Direction sortDirection,
             Authentication authentication
     ) {
 
         var univerzalniParametri = robaSpringBeanUtils.popuniIVratiGenerickeParametreZaServis(
-                page, pageSize, proizvodjac, naStanju, grupa, sortBy, sortDirection, searchTerm, VrstaRobe.SVE, null, null
+                page, pageSize, proizvodjac, naStanju, searchTerm, grupa, null
         );
         var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
 
@@ -91,86 +89,86 @@ public class RobaController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
-
-    @GetMapping(value = "/filteri")
-    public ResponseEntity<MagacinDto> pronadjiSveFiltere(
-            @RequestParam(required = false) Optional<Integer> page,
-            @RequestParam(required = false) Optional<Integer> pageSize,
-            @RequestParam(required = false) RobaSortiranjePolja sortBy,
-            @RequestParam(required = false) Sort.Direction sortDirection,
-            @RequestParam(required = false) Optional<String> proizvodjac,
-            @RequestParam(required = false) Optional<Boolean> naStanju,
-            @RequestParam(required = false) Optional<String> searchTerm,
-            Authentication authentication
-    ) {
-        UniverzalniParametri univerzalniParametri = robaSpringBeanUtils.popuniIVratiGenerickeParametreZaServis(
-                page, pageSize, proizvodjac, naStanju, Optional.empty(), sortBy, sortDirection, searchTerm, VrstaRobe.FILTERI, null, null
-        );
-        Partner uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
-
-        MagacinDto magacinDto = robaGlavniService.pronadjiRobuPoPretrazi(
-                univerzalniParametri, uPartner
-        );
-
-        if (!CollectionUtils.isEmpty(magacinDto.getRobaDto().getContent())) {
-            return ResponseEntity.ok().headers(createHeaders(uPartner)).body(magacinDto);
-        }
-
-        return ResponseEntity.notFound().headers(createHeaders(uPartner)).build();
-    }
-
-    @GetMapping(value = "/akumulatori")
-    public ResponseEntity<MagacinDto> pronadjiSveAkumulatore(
-            @RequestParam(required = false) Optional<Integer> page,
-            @RequestParam(required = false) Optional<Integer> pageSize,
-            @RequestParam(required = false) Optional<String> proizvodjac,
-            @RequestParam(required = false) Optional<Boolean> naStanju,
-            @RequestParam(required = false) Optional<String> searchTerm,
-            @RequestParam(required = false) RobaSortiranjePolja sortBy,
-            @RequestParam(required = false) Sort.Direction sortDirection,
-            Authentication authentication
-    ) {
-
-        var univerzalniParametri = robaSpringBeanUtils.popuniIVratiGenerickeParametreZaServis(
-                page, pageSize, proizvodjac, naStanju, Optional.empty(), sortBy, sortDirection, searchTerm, VrstaRobe.AKUMULATORI, null, null
-        );
-        var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
-
-
-        MagacinDto magacinDto = robaGlavniService.pronadjiRobuPoPretrazi(
-                univerzalniParametri, uPartner
-        );
-
-        if (!CollectionUtils.isEmpty(magacinDto.getRobaDto().getContent())) {
-            return ResponseEntity.ok().headers(createHeaders(uPartner)).body(magacinDto);
-        }
-        return ResponseEntity.notFound().headers(createHeaders(uPartner)).build();
-    }
-
-    @GetMapping(value = "/ulja/{vrsta}")
-    public ResponseEntity<MagacinDto> pronadjiUlje(
-            @PathVariable("vrsta") String vrstaUlja,
-            @RequestParam(required = false) Optional<Integer> page,
-            @RequestParam(required = false) Optional<Integer> pageSize,
-            @RequestParam(required = false) Optional<String> proizvodjac,
-            @RequestParam(required = false) Optional<Boolean> naStanju,
-            @RequestParam(required = false) Optional<String> searchTerm,
-            @RequestParam(required = false) RobaSortiranjePolja sortBy,
-            @RequestParam(required = false) Sort.Direction sortDirection,
-            Authentication authentication
-    ) {
-        var univerzalniParametri = robaSpringBeanUtils.popuniIVratiGenerickeParametreZaServis(page, pageSize, proizvodjac, naStanju, Optional.empty(), sortBy, sortDirection, searchTerm, VrstaRobe.ULJA, vrstaUlja, null);
-        var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
-
-        MagacinDto magacinDto = robaGlavniService.pronadjiRobuPoPretrazi(
-                univerzalniParametri, uPartner
-        );
-
-        if (!CollectionUtils.isEmpty(magacinDto.getRobaDto().getContent())) {
-            return ResponseEntity.ok().headers(createHeaders(uPartner)).body(magacinDto);
-        }
-        return ResponseEntity.notFound().headers(createHeaders(uPartner)).build();
-    }
+//
+//    @GetMapping(value = "/filteri")
+//    public ResponseEntity<MagacinDto> pronadjiSveFiltere(
+//            @RequestParam(required = false) Optional<Integer> page,
+//            @RequestParam(required = false) Optional<Integer> pageSize,
+//            @RequestParam(required = false) RobaSortiranjePolja sortBy,
+//            @RequestParam(required = false) Sort.Direction sortDirection,
+//            @RequestParam(required = false) Optional<String> proizvodjac,
+//            @RequestParam(required = false) Optional<Boolean> naStanju,
+//            @RequestParam(required = false) Optional<String> searchTerm,
+//            Authentication authentication
+//    ) {
+//        UniverzalniParametri univerzalniParametri = robaSpringBeanUtils.popuniIVratiGenerickeParametreZaServis(
+//                page, pageSize, proizvodjac, naStanju, Optional.empty(), sortBy, sortDirection, searchTerm, VrstaRobe.FILTERI, null, null
+//        );
+//        Partner uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+//
+//        MagacinDto magacinDto = robaGlavniService.pronadjiRobuPoPretrazi(
+//                univerzalniParametri, uPartner
+//        );
+//
+//        if (!CollectionUtils.isEmpty(magacinDto.getRobaDto().getContent())) {
+//            return ResponseEntity.ok().headers(createHeaders(uPartner)).body(magacinDto);
+//        }
+//
+//        return ResponseEntity.notFound().headers(createHeaders(uPartner)).build();
+//    }
+//
+//    @GetMapping(value = "/akumulatori")
+//    public ResponseEntity<MagacinDto> pronadjiSveAkumulatore(
+//            @RequestParam(required = false) Optional<Integer> page,
+//            @RequestParam(required = false) Optional<Integer> pageSize,
+//            @RequestParam(required = false) Optional<String> proizvodjac,
+//            @RequestParam(required = false) Optional<Boolean> naStanju,
+//            @RequestParam(required = false) Optional<String> searchTerm,
+//            @RequestParam(required = false) RobaSortiranjePolja sortBy,
+//            @RequestParam(required = false) Sort.Direction sortDirection,
+//            Authentication authentication
+//    ) {
+//
+//        var univerzalniParametri = robaSpringBeanUtils.popuniIVratiGenerickeParametreZaServis(
+//                page, pageSize, proizvodjac, naStanju, Optional.empty(), sortBy, sortDirection, searchTerm, VrstaRobe.AKUMULATORI, null, null
+//        );
+//        var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+//
+//
+//        MagacinDto magacinDto = robaGlavniService.pronadjiRobuPoPretrazi(
+//                univerzalniParametri, uPartner
+//        );
+//
+//        if (!CollectionUtils.isEmpty(magacinDto.getRobaDto().getContent())) {
+//            return ResponseEntity.ok().headers(createHeaders(uPartner)).body(magacinDto);
+//        }
+//        return ResponseEntity.notFound().headers(createHeaders(uPartner)).build();
+//    }
+//
+//    @GetMapping(value = "/ulja/{vrsta}")
+//    public ResponseEntity<MagacinDto> pronadjiUlje(
+//            @PathVariable("vrsta") String vrstaUlja,
+//            @RequestParam(required = false) Optional<Integer> page,
+//            @RequestParam(required = false) Optional<Integer> pageSize,
+//            @RequestParam(required = false) Optional<String> proizvodjac,
+//            @RequestParam(required = false) Optional<Boolean> naStanju,
+//            @RequestParam(required = false) Optional<String> searchTerm,
+//            @RequestParam(required = false) RobaSortiranjePolja sortBy,
+//            @RequestParam(required = false) Sort.Direction sortDirection,
+//            Authentication authentication
+//    ) {
+//        var univerzalniParametri = robaSpringBeanUtils.popuniIVratiGenerickeParametreZaServis(page, pageSize, proizvodjac, naStanju, Optional.empty(), sortBy, sortDirection, searchTerm, VrstaRobe.ULJA, vrstaUlja, null);
+//        var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+//
+//        MagacinDto magacinDto = robaGlavniService.pronadjiRobuPoPretrazi(
+//                univerzalniParametri, uPartner
+//        );
+//
+//        if (!CollectionUtils.isEmpty(magacinDto.getRobaDto().getContent())) {
+//            return ResponseEntity.ok().headers(createHeaders(uPartner)).body(magacinDto);
+//        }
+//        return ResponseEntity.notFound().headers(createHeaders(uPartner)).build();
+//    }
 
     private HttpHeaders createHeaders(Partner partner) {
         HttpHeaders headers = new HttpHeaders();
