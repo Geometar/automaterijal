@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AppRoutingModule } from './e-shop/magacin/kategorije/app-routing.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ModalModule } from './shared/modal/modal.module';
 import { NavigacijaModule } from './navigacija/navigacija.module';
@@ -10,7 +9,7 @@ import { AuthGuard } from './shared/guard/auth-guard';
 import { HttpErrorInterceptor } from './shared/interceptor/error-interceptor';
 import { AdminGuard } from './shared/guard/admin-guard';
 import { StorageServiceModule } from 'ngx-webstorage-service';
-import { KategorijeComponent } from './e-shop/magacin/kategorije/kategorije.component';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [

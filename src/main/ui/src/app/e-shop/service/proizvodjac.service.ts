@@ -7,10 +7,6 @@ import { environment } from 'src/environments/environment';
 
 const DOMAIN_URL = environment.baseUrl + '/api';
 const ROBA_URL = '/proizvodjaci';
-const FILTERI_URL = '/filteri';
-const AKUMULATORI_URL = '/akumulatori';
-const ULJA_URL = '/ulja';
-const KATEGORIJA_URL = '/kategorija';
 
 const TIMEOUT = 15000;
 const TIMEOUT_ERROR = 'Timeout error!';

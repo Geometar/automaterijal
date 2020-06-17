@@ -1,11 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, OnDestroy, OnChanges } from '@angular/core';
-import { ProizvodjacService } from 'src/app/e-shop/service/proizvodjac.service';
 import { takeWhile } from 'rxjs/operators';
-import { VrstaRobe } from 'src/app/e-shop/model/roba.enum';
 import { Filter } from 'src/app/e-shop/model/filter';
 import { AppUtilsService } from 'src/app/e-shop/utils/app-utils.service';
-import { Observable } from 'rxjs';
-import { ActivatedRoute, Params } from '@angular/router';
 import { Proizvodjac } from 'src/app/e-shop/model/dto';
 
 @Component({
@@ -15,17 +11,17 @@ import { Proizvodjac } from 'src/app/e-shop/model/dto';
 })
 export class FilterComponent implements OnInit, OnDestroy, OnChanges {
 
-  @Input() vrstaRobe;
   @Input() vrstaUlja;
-  @Input() filterGrupe;
+  @Input() filterGrupe: string[];
   @Input() proizvodjaci;
-  @Input() industrijkoUljeEvent: Observable<string>;
   @Input() filter: Filter;
   @Output() filterEvent = new EventEmitter<any>();
 
   public raspolozivost: string[] = ['Svi artikli', 'Ima na stanju'];
 
   private alive = true;
+  public pokaziKategorije = false;
+  public izborProizvodjaca: string[] = [];
 
   constructor(
     private utilsService: AppUtilsService) { }
@@ -36,6 +32,7 @@ export class FilterComponent implements OnInit, OnDestroy, OnChanges {
         if (proizvodjac.proid === this.filter.proizvodjacId) {
           this.filter.proizvodjac = proizvodjac.naziv;
         }
+        this.izborProizvodjaca.push(proizvodjac.naziv);
       });
       if (this.filter) {
         if (!this.filter.grupa) {
@@ -49,17 +46,14 @@ export class FilterComponent implements OnInit, OnDestroy, OnChanges {
         }
       }
     }
+
+    if ((changes.filterGrupe && changes.filterGrupe.currentValue && changes.filterGrupe.currentValue.length > 2)
+     || (this.filter.grupa && this.filter.grupa !== 'Sve Kategorije')) {
+      this.pokaziKategorije = true;
+    }
   }
 
   ngOnInit() {
-    console.log(this.filterGrupe);
-    if (this.industrijkoUljeEvent) {
-      this.industrijkoUljeEvent
-        .pipe(takeWhile(() => this.alive))
-        .subscribe((vrstaUlja: string) => {
-          this.vrstaUlja = vrstaUlja;
-        });
-    }
 
     if (this.filter) {
       if (this.filter.naStanju) {
@@ -85,15 +79,6 @@ export class FilterComponent implements OnInit, OnDestroy, OnChanges {
       this.filter.proizvodjac = 'Svi proizvodjači';
       this.filter.grupa = 'Sve Kategorije';
     }
-  }
-
-  proizvodjacVecIzabran() {
-    this.proizvodjaci.forEach((proizvodjac: Proizvodjac) => {
-      if (proizvodjac.proid === this.filter.proizvodjacId) {
-        this.filter.proizvodjac = proizvodjac.naziv;
-        return;
-      }
-    });
   }
 
   filtriraj() {

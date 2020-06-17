@@ -2,10 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY } from 'rxjs';
-import { Roba, RobaPage, Magacin } from 'src/app/e-shop/model/dto';
+import { Roba, Magacin } from 'src/app/e-shop/model/dto';
 import { DataService } from 'src/app/e-shop/service/data/data.service';
 import { RobaService } from 'src/app/e-shop/service/roba.service';
-import { VrstaRobe } from 'src/app/e-shop/model/roba.enum';
 import { Filter } from 'src/app/e-shop/model/filter';
 import { LoginService } from 'src/app/e-shop/service/login.service';
 import { HttpResponse } from '@angular/common/http';
@@ -18,8 +17,6 @@ import { HttpResponse } from '@angular/common/http';
 export class KategorijaSpecificnaComponent implements OnInit, OnDestroy {
 
   public roba: Roba[];
-  public vrstaRobe = VrstaRobe.OSTALO;
-
   // Paging and Sorting elements
   public rowsPerPage = 10;
   public pageIndex = 0;
@@ -66,9 +63,10 @@ export class KategorijaSpecificnaComponent implements OnInit, OnDestroy {
             this.rowsPerPage = queryParams['brojKolona'];
             this.filter.proizvodjacId = queryParams['proizvodjac'];
             this.filter.naStanju = queryParams['naStanju'];
+            this.filter.grupa = queryParams['grupa'];
             this.searchValue = queryParams['pretraga'];
             this.robaServis.pronadjiPoKategoriji(
-              this.sort, this.rowsPerPage, this.pageIndex, this.searchValue, this.filter.naStanju, this.filter.proizvodjacId, params.id
+              this.sort, this.rowsPerPage, this.pageIndex, this.searchValue, this.filter, params.id
             )
               .pipe(
                 takeWhile(() => this.alive),
@@ -131,8 +129,8 @@ export class KategorijaSpecificnaComponent implements OnInit, OnDestroy {
         if (this.rowsPerPage) {
           parameterObject['brojKolona'] = this.rowsPerPage;
         }
-        if (this.filter.proizvodjac) {
-          parameterObject['proizvodjac'] = this.filter.proizvodjac;
+        if (this.filter.proizvodjacId) {
+          parameterObject['proizvodjac'] = this.filter.proizvodjacId;
         }
         if (this.filter.naStanju) {
           parameterObject['naStanju'] = this.filter.naStanju;
@@ -140,8 +138,11 @@ export class KategorijaSpecificnaComponent implements OnInit, OnDestroy {
         if (this.searchValue) {
           parameterObject['pretraga'] = this.searchValue;
         }
+        if (this.filter.grupa) {
+          parameterObject['grupa'] = this.filter.grupa;
+        }
         const idUrl = params.id.toLowerCase();
-        this.router.navigate(['/ostalo', idUrl], { queryParams: parameterObject });
+        this.router.navigate(['/kategorije', idUrl], { queryParams: parameterObject });
       });
   }
 
@@ -158,7 +159,7 @@ export class KategorijaSpecificnaComponent implements OnInit, OnDestroy {
   }
 
   idiNazad() {
-    this.router.navigate(['/ostalo']);
+    this.router.navigate(['/kategorije']);
   }
 
   ngOnDestroy() {

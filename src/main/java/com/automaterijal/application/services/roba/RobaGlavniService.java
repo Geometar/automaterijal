@@ -6,6 +6,7 @@ import com.automaterijal.application.domain.dto.RobaDto;
 import com.automaterijal.application.domain.dto.RobaTehnickiOpisDto;
 import com.automaterijal.application.domain.dto.robadetalji.RobaDetaljiDto;
 import com.automaterijal.application.domain.entity.Partner;
+import com.automaterijal.application.domain.entity.PodGrupa;
 import com.automaterijal.application.domain.entity.roba.Roba;
 import com.automaterijal.application.domain.entity.roba.RobaSlika;
 import com.automaterijal.application.domain.mapper.RobaMapper;
@@ -13,7 +14,6 @@ import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.domain.repository.roba.RobaJooqRepository;
 import com.automaterijal.application.services.ProizvodjacService;
 import com.automaterijal.application.services.roba.grupe.PodGrupaService;
-import com.automaterijal.application.utils.RobaStaticUtils;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -100,12 +100,19 @@ public class RobaGlavniService {
 
         Page<RobaDto> robaDto = vratiSvuRobuUZavisnostiOdTrazenogStanja(parametri, pageable, ulogovaniPartner);
         if (parametri.getRobaKategorije() == null) {
-            magacinDto.setPodgrupe(podGrupaService.vratiSveGrupe());
+            magacinDto.setPodgrupe(podGrupaService.vratiSveGrupeNazive());
+        } else if(parametri.getRobaKategorije() != null) {
+            magacinDto.setPodgrupe(vratiSvePodgrupePoNazivu(parametri.getPodGrupe().stream().map(PodGrupa::getNaziv).collect(Collectors.toList())));
         }
         magacinDto.setProizvodjaci(proizvodjacService.pronadjiSveProizvodjaceZaVrstu(parametri));
         magacinDto.setRobaDto(robaDto);
 
         return magacinDto;
+    }
+
+    private List<String> vratiSvePodgrupePoNazivu(List<String> podgrupe) {
+        Set<String> podGrupeSet = podGrupaService.vratiSvePodGrupePoNazivima(podgrupe).stream().map(PodGrupa::getNaziv).map(String::toUpperCase).collect(Collectors.toSet());
+        return new ArrayList<>(podGrupeSet).stream().sorted().collect(Collectors.toList());
     }
 
     private MagacinDto logikaZaMagacinSaFilterom(UniverzalniParametri parametri, Partner ulogovaniPartner) {

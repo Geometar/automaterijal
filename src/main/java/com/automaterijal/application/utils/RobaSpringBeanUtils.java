@@ -1,10 +1,8 @@
 package com.automaterijal.application.utils;
 
 
-import com.automaterijal.application.domain.constants.GrupeKonstante;
 import com.automaterijal.application.domain.constants.RobaKategorije;
-import com.automaterijal.application.domain.constants.RobaSortiranjePolja;
-import com.automaterijal.application.domain.constants.VrstaRobe;
+import com.automaterijal.application.domain.entity.PodGrupa;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.services.roba.grupe.GrupaService;
 import com.automaterijal.application.services.roba.grupe.PodGrupaService;
@@ -13,7 +11,6 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -42,12 +39,12 @@ public class RobaSpringBeanUtils {
             Optional<String> searchTerm,
             Optional<String> grupa,
             RobaKategorije robaKategorije
-            ) {
+    ) {
         Integer iPage = page.isPresent() ? page.get() : 0;
         Integer iPageSize = pageSize.isPresent() ? pageSize.get() : 10;
         String iProizvodjac = proizvodjac.filter(StringUtils::hasText).filter(naziv -> !naziv.equals("Svi proizvodjači")).map(String::toString).orElse(null);
         Boolean iNaStanju = naStanju.isPresent() ? naStanju.get() : false;
-        String iGrupa =  grupa.filter(StringUtils::hasText).filter(naziv -> !naziv.equals("Sve Kategorije")).map(String::toString).orElse(null);
+        String iGrupa = grupa.filter(StringUtils::hasText).filter(naziv -> !naziv.equals("Sve Kategorije")).map(String::toString).orElse(null);
         String iSearchTerm = searchTerm.filter(StringUtils::hasText)
                 .map(trazenaRec -> trazenaRec.trim().toUpperCase())
                 .map(trazenaRec -> GeneralUtil.cyrillicToLatinic(trazenaRec))
@@ -72,18 +69,20 @@ public class RobaSpringBeanUtils {
         up.setGrupa(internaGrupa);
         up.setTrazenaRec(internalSearchTerm);
         up.setRobaKategorije(robaKategorije);
-        if(robaKategorije != null) {
-           up.setPodGrupe(pronadjiSvePodGrupeUZavisnostiOdVrste(robaKategorije.getFieldName()));
+        if (robaKategorije != null) {
+            up.setPodGrupe(pronadjiSvePodGrupeUZavisnostiOdVrste(robaKategorije.getFieldName()));
+        } else {
+            up.setPodGrupe(podGrupaService.vratiSvePodgrupe());
         }
         return up;
     }
 
     // iskoristi
-    private List<Integer> pronadjiSvePodGrupeUZavisnostiOdVrste(List<String> naziviPodGrupa) {
-        List<Integer> podGrupe = new ArrayList<>();
+    private List<PodGrupa> pronadjiSvePodGrupeUZavisnostiOdVrste(List<String> naziviPodGrupa) {
+        List<PodGrupa> podGrupe = new ArrayList<>();
         naziviPodGrupa.stream()
                 .filter(str -> str != null)
-                .forEach(vrsta -> podGrupe.addAll(podGrupaService.vratiSvePodGrupeIdPoNazivu(vrsta)));
+                .forEach(vrsta -> podGrupe.addAll(podGrupaService.vratiSvePodGrupePoNazivu(vrsta)));
         return podGrupe;
     }
 }

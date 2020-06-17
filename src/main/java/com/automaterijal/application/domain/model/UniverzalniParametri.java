@@ -3,6 +3,7 @@ package com.automaterijal.application.domain.model;
 import com.automaterijal.application.domain.constants.RobaKategorije;
 import com.automaterijal.application.domain.constants.RobaSortiranjePolja;
 import com.automaterijal.application.domain.constants.VrstaRobe;
+import com.automaterijal.application.domain.entity.PodGrupa;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
@@ -21,5 +22,5 @@ public class UniverzalniParametri {
     String trazenaRec;
     String grupa;
     RobaKategorije robaKategorije;
-    List<Integer> podGrupe;
+    List<PodGrupa> podGrupe;
 }

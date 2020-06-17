@@ -3,6 +3,7 @@ package com.automaterijal.application.domain.repository.roba;
 import com.automaterijal.application.domain.constants.VrstaRobe;
 import com.automaterijal.application.domain.dto.MagacinDto;
 import com.automaterijal.application.domain.dto.RobaDto;
+import com.automaterijal.application.domain.entity.PodGrupa;
 import com.automaterijal.application.domain.entity.Proizvodjac;
 import com.automaterijal.application.domain.entity.roba.Roba;
 import com.automaterijal.application.domain.mapper.RobaMapper;
@@ -325,7 +326,7 @@ public class RobaJooqRepository {
             if (parametri.getRobaKategorije() != null && parametri.getRobaKategorije().isGrupaPretraga() == true) {
                 select.and(ROBA.GRUPAID.in(parametri.getRobaKategorije().getFieldName()));
             } else if (parametri.getRobaKategorije() != null && parametri.getRobaKategorije().isPodgrupaPretraga() == true) {
-                select.and(ROBA.PODGRUPAID.in(parametri.getPodGrupe()));
+                select.and(ROBA.PODGRUPAID.in(parametri.getPodGrupe().stream().map(PodGrupa::getPodGrupaId).collect(Collectors.toList())));
             }
 
         if (!StringUtils.isEmpty(parametri.getProizvodjac()) && parametri.getGrupa() == null) {
@@ -333,9 +334,11 @@ public class RobaJooqRepository {
         }
 
         if (!StringUtils.isEmpty(parametri.getGrupa())) {
-            select.and(ROBA.PODGRUPAID.in(parametri.getPodGrupe()));
+          List<Integer> podgrupe = parametri.getPodGrupe().stream().filter(podGrupa -> podGrupa.getNaziv().equals(parametri.getGrupa())).map(PodGrupa::getPodGrupaId).collect(Collectors.toList());
+         if(!podgrupe.isEmpty()) {
+             select.and(ROBA.PODGRUPAID.in(podgrupe));
+         }
         }
-
         if (parametri.isNaStanju()) {
             select.and(ROBA.STANJE.greaterThan(new BigDecimal(0)));
         }
@@ -351,10 +354,10 @@ public class RobaJooqRepository {
     /**
      * Zbog n+1 u hibernate koristimo jooq da vrati svu robu u zavisnosti od podgrupe
      */
-    public Page<Roba> pronadjiSvuRobuPoPodgrupama(List<Integer> podGrupaId, boolean naStanju, Pageable pageable) {
+    public Page<Roba> pronadjiSvuRobuPoPodgrupama(List<PodGrupa> podGrupaId, boolean naStanju, Pageable pageable) {
         SelectConditionStep<RobaRecord> select = dslContext
                 .selectFrom(ROBA)
-                .where(ROBA.PODGRUPAID.in(podGrupaId));
+                .where(ROBA.PODGRUPAID.in(podGrupaId.stream().map(PodGrupa::getPodGrupaId).collect(Collectors.toList())));
         if (naStanju) {
             select.and(ROBA.STANJE.greaterThan(BigDecimal.ZERO));
         }

@@ -1,12 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MaterialModule } from 'src/app/shared/material/material.module';
 import { RouterModule, Routes } from '@angular/router';
 import { PipeModule } from 'src/app/shared/pipes/pipe.module';
 import { KategorijeComponent } from './kategorije.component';
 import { SharedMagacinModule } from '../shared-components/shared-magacin.module';
-import { KategorijaSpecificnaComponent } from '../ostalo/kategorija-specificna/kategorija-specificna.component';
+import { KategorijaSpecificnaComponent } from './kategorija-specificna/kategorija-specificna.component';
 
 
 const routes: Routes = [

@@ -17,7 +17,17 @@ public enum RobaKategorije {
     MOTORNA_ULJA(List.of("MOTORNO ULjE"), false, true),
     MENJACKA_ULJA(List.of("MENJAČKO ULjE"), false, true),
     KOCIONO_ULJE(List.of("KOČIONO ULjE"), false, true),
-    ANTIFRIZ(List.of("ANTIFRIZ"), false, true);
+    ANTIFRIZ(List.of("ANTIFRIZ"), false, true),
+    INDUSTRIJSKA_ULJA(List.of(
+            "HIDRAULIČNO ULjE",
+            "KOMPRESORSKO ULjE",
+            "REDUKTORSKO ULJE",
+            "TRANSFORMATORSKO ULJE",
+            "TURBINSKA ULJA",
+            "ULJA ZA PNEUMATSKE ALATE",
+            "ULJA ZA KLIZNE STAZE",
+            "ULJA ZA PRENOS TOPLOTE"
+    ),  false, true);
 
     @NonNull
     final List<String> fieldName;

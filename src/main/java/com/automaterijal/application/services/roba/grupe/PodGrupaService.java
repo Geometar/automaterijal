@@ -43,7 +43,7 @@ public class PodGrupaService {
                 .collect(Collectors.toList());
     }
 
-    public List<String> vratiSveGrupe() {
+    public List<String> vratiSveGrupeNazive() {
         Set<String> podGrupe = podGrupaRepository.findAll()
                 .stream()
                 .map(PodGrupa::getNaziv)
@@ -57,18 +57,18 @@ public class PodGrupaService {
         return grupeSortirano;
     }
 
-    public List<Integer> vratiSvePodGrupeIdPoNazivu(String naziv) {
+    public List<PodGrupa> vratiSvePodgrupe() {
+        return podGrupaRepository.findAll();
+    }
+
+    public List<PodGrupa> vratiSvePodGrupePoNazivu(String naziv) {
         return podGrupaRepository.findByNazivIn(naziv)
                 .stream()
-                .map(PodGrupa::getPodGrupaId)
                 .collect(Collectors.toList());
     }
 
-    public List<Integer> vratiSvePodGrupePoNazivima(List<String> nazivi) {
-        return podGrupaRepository.findByNazivIn(nazivi)
-                .stream()
-                .map(PodGrupa::getPodGrupaId)
-                .collect(Collectors.toList());
+    public List<PodGrupa> vratiSvePodGrupePoNazivima(List<String> nazivi) {
+        return podGrupaRepository.findByNazivIn(nazivi);
     }
 
     /**
@@ -77,10 +77,18 @@ public class PodGrupaService {
     public void popuniPodgrupe(MagacinDto magacinDto, UniverzalniParametri parametri, List<RobaDto> roba) {
         List<PodgrupaDto> podgrupaDtos;
         if (parametri.getTrazenaRec() == null && parametri.getProizvodjac() == null) {
-            podgrupaDtos = podGrupaRepository.findAll().stream()
-                    .filter(podGrupa -> StringUtils.isNotBlank(podGrupa.getNaziv()))
-                    .map(mapper::map)
-                    .collect(Collectors.toList());
+            if(parametri.getRobaKategorije() == null) {
+                podgrupaDtos = podGrupaRepository.findAll().stream()
+                        .filter(podGrupa -> StringUtils.isNotBlank(podGrupa.getNaziv()))
+                        .map(mapper::map)
+                        .collect(Collectors.toList());
+            } else {
+                podgrupaDtos = podGrupaRepository.findByPodGrupaIdIn(parametri.getPodGrupe().stream().map(PodGrupa::getPodGrupaId).collect(Collectors.toList()))
+                        .stream()
+                        .filter(podGrupa -> StringUtils.isNotBlank(podGrupa.getNaziv()))
+                        .map(mapper::map)
+                        .collect(Collectors.toList());
+            }
         } else {
             Set<Integer> sviKljucevi = roba.stream().map(RobaDto::getPodGrupa).map(stringKljuc -> Integer.valueOf(stringKljuc)).collect(Collectors.toSet());
             podgrupaDtos = vratiSvePodgrupeZaKljuceve(sviKljucevi);

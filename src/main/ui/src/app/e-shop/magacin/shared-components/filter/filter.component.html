@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-center">
     <div class="filter-div-test d-flex flex-column">
         <div class="d-flex flex-column input-group mb-3">
-            <div *ngIf="vrstaRobe === 0 || vrstaRobe === 4">
+            <div *ngIf="pokaziKategorije">
                 <label class="input-group-text mobilna-duzina button-glavni-50" for="inputGroupSelect01">
                     Kategorije:
                 </label>
@@ -23,8 +23,8 @@
                 </label>
                 <select class="custom-select mobilna-duzina" (change)="filtriraj()" id="inputGroupSelect01" [(ngModel)]="filter.proizvodjac">
                     <option selected hidden>Svi proizvodjači</option>
-                    <option *ngFor="let proizvodjac of proizvodjaci" [value]="proizvodjac.naziv">
-                        {{proizvodjac.naziv  | titlecase}}
+                    <option *ngFor="let proizvodjac of izborProizvodjaca" [value]="proizvodjac">
+                        {{proizvodjac  | titlecase}}
                     </option>
                 </select>
                 <span *ngIf="filter.proizvodjac === 'Svi proizvodjači'" class="disejblovan-filter pozicija-filtera material-icons">

@@ -76,77 +76,8 @@ export class RobaService {
       );
   }
 
-  public pronadjiFiltere(sort: Sort, pageSize, page, searchValue, naStanju, proizvodjacId): Observable<HttpResponse<Object>> {
-    const parameterObject = {};
-    parameterObject['pageSize'] = pageSize;
-    parameterObject['page'] = page;
-    if (sort) {
-      parameterObject['sortBy'] = sort.active.toLocaleUpperCase();
-      parameterObject['sortDirection'] = sort.direction.toLocaleUpperCase();
-    }
-    if (searchValue) {
-      parameterObject['searchTerm'] = searchValue;
-    }
-    parameterObject['proizvodjac'] = proizvodjacId;
-    parameterObject['naStanju'] = naStanju;
-    const parametersString = this.utils.vratiKveriParametre(parameterObject);
-    const fullUrl = DOMAIN_URL + ROBA_URL + FILTERI_URL + parametersString;
-    return this.http
-      .get(fullUrl, {observe: 'response'})
-      .pipe(
-        timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
-        catchError((error: any) => throwError(error))
-      );
-  }
-
-  public pronadjiAkumulatore(sort: Sort, pageSize, page, searchValue, naStanju, proizvodjacId): Observable<HttpResponse<Object>> {
-    const parameterObject = {};
-    parameterObject['pageSize'] = pageSize;
-    parameterObject['page'] = page;
-    if (sort) {
-      parameterObject['sortBy'] = sort.active.toLocaleUpperCase();
-      parameterObject['sortDirection'] = sort.direction.toLocaleUpperCase();
-    }
-    if (searchValue) {
-      parameterObject['searchTerm'] = searchValue;
-    }
-    parameterObject['proizvodjac'] = proizvodjacId;
-    parameterObject['naStanju'] = naStanju;
-    const parametersString = this.utils.vratiKveriParametre(parameterObject);
-    const fullUrl = DOMAIN_URL + ROBA_URL + AKUMULATORI_URL + parametersString;
-    return this.http
-      .get(fullUrl, {observe: 'response'})
-      .pipe(
-        timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
-        catchError((error: any) => throwError(error))
-      );
-  }
-
-  public pronadjiUlje(sort: Sort, pageSize, page, searchValue, naStanju, proizvodjacId, vrstaUlja): Observable<HttpResponse<Object>> {
-    const parameterObject = {};
-    parameterObject['pageSize'] = pageSize;
-    parameterObject['page'] = page;
-    if (sort) {
-      parameterObject['sortBy'] = sort.active.toLocaleUpperCase();
-      parameterObject['sortDirection'] = sort.direction.toLocaleUpperCase();
-    }
-    if (searchValue) {
-      parameterObject['searchTerm'] = searchValue;
-    }
-    parameterObject['proizvodjac'] = proizvodjacId;
-    parameterObject['naStanju'] = naStanju;
-    const parametersString = this.utils.vratiKveriParametre(parameterObject);
-    const fullUrl = DOMAIN_URL + ROBA_URL + ULJA_URL + this.utils.vratiPutDoResursaZaUlje(vrstaUlja) + parametersString;
-    return this.http
-      .get(fullUrl, {observe: 'response'})
-      .pipe(
-        timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
-        catchError((error: any) => throwError(error))
-      );
-  }
-
   public pronadjiPoKategoriji(
-    sort: Sort, pageSize, page, searchValue, naStanju, proizvodjacId, kategorija: string
+    sort: Sort, pageSize, page, searchValue, filter: Filter, kategorija: string
     ): Observable<HttpResponse<Object>> {
     const parameterObject = {};
     parameterObject['pageSize'] = pageSize;
@@ -158,8 +89,14 @@ export class RobaService {
     if (searchValue) {
       parameterObject['searchTerm'] = searchValue;
     }
-    parameterObject['proizvodjac'] = proizvodjacId;
-    parameterObject['naStanju'] = naStanju;
+    parameterObject['proizvodjac'] = filter.proizvodjacId;
+    parameterObject['naStanju'] = filter.naStanju;
+    if (filter.grupa) {
+      parameterObject['grupa'] = filter.grupa;
+    }
+    if (filter.pretrazitiGrupe) {
+      parameterObject['pretrazitiGrupe'] = filter.pretrazitiGrupe;
+    }
     const parametersString = this.utils.vratiKveriParametre(parameterObject);
     const fullUrl = DOMAIN_URL + OSTALE_KATEGORIJE_URL + '/' + kategorija.toUpperCase() + parametersString;
     return this.http

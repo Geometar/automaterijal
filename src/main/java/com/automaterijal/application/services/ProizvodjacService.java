@@ -4,6 +4,7 @@ package com.automaterijal.application.services;
 import com.automaterijal.application.domain.constants.GrupeKonstante;
 import com.automaterijal.application.domain.dto.MagacinDto;
 import com.automaterijal.application.domain.dto.RobaDto;
+import com.automaterijal.application.domain.entity.PodGrupa;
 import com.automaterijal.application.domain.entity.Proizvodjac;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.domain.repository.ProizvodjacRepository;
@@ -18,10 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -79,7 +77,7 @@ public class ProizvodjacService {
         if (parametri.getRobaKategorije() == null) {
             proizvodjaci = pronadjiSve();
         } else if (parametri.getRobaKategorije().isGrupaPretraga() == true) {
-//            proizvodjaci = proizvodjaciKateogrija(parametri.getPodGrupe());
+            proizvodjaci = proizvodjaciKateogrija(parametri.getPodGrupe());
         } else if (parametri.getRobaKategorije().isPodgrupaPretraga() == true) {
             proizvodjaci = proizvodjaciKateogrija(parametri.getPodGrupe());
         } else {
@@ -96,12 +94,15 @@ public class ProizvodjacService {
         return proizvodjaci;
     }
 
-    public List<Proizvodjac> proizvodjaciKateogrija(List<Integer> podgrupe) {
-        Set<String> filterRoba = robaService.pronadjiSvuRobuPoPodGrupiIdListaSvaStanja(podgrupe)
+    public List<Proizvodjac> proizvodjaciKateogrija(List<PodGrupa> podgrupe) {
+        Set<String> filterRoba = robaService.pronadjiSvuRobuPoPodGrupiIdListaSvaStanja(podgrupe.stream().map(PodGrupa::getPodGrupaId).collect(Collectors.toList()))
                 .stream()
                 .map(robaEnitet -> robaEnitet.getProizvodjac().getProid())
                 .collect(Collectors.toSet());
-        List<Proizvodjac> proizvodjaci = pronadjiSve().stream().filter(proizvodjac -> filterRoba.contains(proizvodjac.getProid())).collect(Collectors.toList());
+        List<Proizvodjac> proizvodjaci = proizvodjacRepository.findByProidIn(filterRoba)
+                .stream()
+                .sorted(Comparator.comparing(Proizvodjac::getNaziv))
+                .collect(Collectors.toList());
         return proizvodjaci;
     }
 

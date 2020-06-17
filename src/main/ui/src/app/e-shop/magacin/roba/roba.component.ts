@@ -4,7 +4,6 @@ import { Roba, RobaPage, Magacin } from '../../model/dto';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
 import { throwError, EMPTY } from 'rxjs';
 import { DataService } from '../../service/data/data.service';
-import { VrstaRobe } from '../../model/roba.enum';
 import { Filter } from '../../model/filter';
 import { LoginService } from '../../service/login.service';
 import { HttpResponse } from '@angular/common/http';
@@ -18,8 +17,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class RobaComponent implements OnInit, OnDestroy {
 
   public roba: Roba[];
-  public vrstaRobe = VrstaRobe.SVE;
-
   // Paging and Sorting elements
   public rowsPerPage = 10;
   public pageIndex = 0;
