@@ -44,7 +44,7 @@ public class RobaSpringBeanUtils {
         Integer iPageSize = pageSize.isPresent() ? pageSize.get() : 10;
         String iProizvodjac = proizvodjac.filter(StringUtils::hasText).filter(naziv -> !naziv.equals("Svi proizvodjači")).map(String::toString).orElse(null);
         Boolean iNaStanju = naStanju.isPresent() ? naStanju.get() : false;
-        String iGrupa = grupa.filter(StringUtils::hasText).filter(naziv -> !naziv.equals("Sve Kategorije")).map(String::toString).orElse(null);
+        String iGrupa = grupa.filter(StringUtils::hasText).map(String::toUpperCase).filter(naziv -> !naziv.equals("SVE KATEGORIJE")).map(String::toString).orElse(null);
         String iSearchTerm = searchTerm.filter(StringUtils::hasText)
                 .map(trazenaRec -> trazenaRec.trim().toUpperCase())
                 .map(trazenaRec -> GeneralUtil.cyrillicToLatinic(trazenaRec))

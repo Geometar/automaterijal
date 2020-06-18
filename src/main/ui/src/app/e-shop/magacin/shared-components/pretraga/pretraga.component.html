@@ -1,6 +1,6 @@
 <div class="d-flex align-items-center justify-content-center">
   <div class="forms-input">
-    <input class="p-1 flex-grow-1 search__input" type="search" [(ngModel)]="searchValue"
+    <input class="p-1 flex-grow-1 search__input" type="text" [(ngModel)]="searchValue"
       (keyup.enter)="pronaciPoTrazenojReci(searchValue)" />
     <span *ngIf="searchValue" (click)="searchValue = ''; pronaciPoTrazenojReci(searchValue)" class="brisanje-pretrage boja-crvena-10 material-icons">
       clear

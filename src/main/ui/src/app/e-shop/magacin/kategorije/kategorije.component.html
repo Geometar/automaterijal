@@ -18,7 +18,7 @@
                                 </span>
                             </button>
                             <mat-menu #menu="matMenu">
-                                <button mat-menu-item *ngFor="let podkategorija of kategorija.podkategorije">
+                                <button mat-menu-item (click)="izabranaPodKategorija(kategorija, podkategorija)" *ngFor="let podkategorija of kategorija.podkategorije">
                                     {{podkategorija}}
                                 </button>
                             </mat-menu>

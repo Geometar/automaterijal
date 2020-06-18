@@ -28,6 +28,7 @@ export class FilterComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.proizvodjaci && changes.proizvodjaci.currentValue) {
+      this.izborProizvodjaca = [];
       changes.proizvodjaci.currentValue.forEach((proizvodjac: Proizvodjac) => {
         if (proizvodjac.proid === this.filter.proizvodjacId) {
           this.filter.proizvodjac = proizvodjac.naziv;
@@ -47,8 +48,14 @@ export class FilterComponent implements OnInit, OnDestroy, OnChanges {
       }
     }
 
+    if (changes.filter && changes.filter.currentValue) {
+      if (changes.filter.currentValue.grupa && changes.filter.currentValue.grupa !== 'Sve Kategorije') {
+        this.filter.grupa = changes.filter.currentValue.grupa.toUpperCase();
+      }
+    }
+
     if ((changes.filterGrupe && changes.filterGrupe.currentValue && changes.filterGrupe.currentValue.length > 2)
-     || (this.filter.grupa && this.filter.grupa !== 'Sve Kategorije')) {
+      || (this.filter.grupa && this.filter.grupa !== 'Sve Kategorije')) {
       this.pokaziKategorije = true;
     }
   }

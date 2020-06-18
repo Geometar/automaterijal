@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-kategorije',
@@ -9,7 +10,7 @@ export class KategorijeComponent implements OnInit {
 
   public motornaKategorija: Kategorije[] = [];
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
     this.kategorijaUlja();
@@ -61,6 +62,11 @@ export class KategorijeComponent implements OnInit {
       'Ulja za prenos toplote'];
     this.motornaKategorija.push(industrijskaUlja);
 
+  }
+
+  izabranaPodKategorija(kategorija: Kategorije, podkategorija: string) {
+    const url = '/kategorije/' + kategorija.url;
+    this.router.navigate([url], { queryParams: { grupa: podkategorija } });
   }
 
 }

@@ -33,7 +33,7 @@ public class PodGrupaService {
     @NonNull
     final PodrgrupaMapper mapper;
 
-    public static final String SVE = "Sve Kategorije";
+    public static final String SVE = "SVE KATEGORIJE";
     public static final String NEBITNA_GRUPA = "ZZZ";
 
     public List<PodgrupaDto> vratiSvePodgrupeZaKljuceve(Set<Integer> podgrupe) {
