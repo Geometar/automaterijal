@@ -107,6 +107,10 @@ public class FakturaService {
         partnerService.povecanPartnerovOrderCount(partner);
     }
 
+    public List<Faktura> vratiSveFakture() {
+        return fakturaRepository.findAll();
+    }
+
     @Transactional(readOnly = true)
     public Page<FakturaDto> vratiSveFaktureUlogovanogKorisnika(
             Partner partner,

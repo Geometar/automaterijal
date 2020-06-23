@@ -41,6 +41,14 @@ public class RobaService {
         }
     }
 
+    public List<Roba> pronadjiSvuRobu(boolean naStanju) {
+        if (naStanju) {
+            return robaRepository.findByStanjeGreaterThan(1);
+        } else {
+            return robaRepository.findAll();
+        }
+    }
+
     public List<Roba> pronadjuSvuRobuPoGrupiIdNaStanju(List<String> grupeId) {
         return robaRepository.findByGrupaidInAndStanjeGreaterThan(grupeId, 0);
     }

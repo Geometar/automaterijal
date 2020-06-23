@@ -31,9 +31,6 @@ export class LocalStorageService {
   }
 
   public vratiKorpuIzMemorije(): Korpa {
-    if (this.procitajPartneraIzMemorije() == null) {
-       return null;
-    }
     return this.storage.get(KORPA_KLJUC);
   }
 

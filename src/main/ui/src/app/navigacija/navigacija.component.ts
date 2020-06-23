@@ -34,9 +34,12 @@ export class NavigacijaComponent implements OnInit, OnDestroy {
     this.loginServis.daLiJePartnerUlogovan
       .pipe(takeWhile(() => this.alive))
       .subscribe(bool => this.partnerUlogovan = bool);
+      this.korpaServis.inicijalizujKorpu();
     this.korpaServis.trenutnaKorpa
       .pipe(takeWhile(() => this.alive))
-      .subscribe(korpa => this.korpaBadge = korpa.roba.length);
+      .subscribe(korpa => {
+        this.korpaBadge = korpa.roba.length;
+      });
   }
 
   @HostListener('window:resize', ['$event'])

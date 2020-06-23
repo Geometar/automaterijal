@@ -1,6 +1,7 @@
 package com.automaterijal.application.services.roba;
 
 import com.automaterijal.application.domain.constants.RobaSortiranjePolja;
+import com.automaterijal.application.domain.dto.DashboardDto;
 import com.automaterijal.application.domain.dto.MagacinDto;
 import com.automaterijal.application.domain.dto.RobaDto;
 import com.automaterijal.application.domain.dto.RobaTehnickiOpisDto;
@@ -101,7 +102,7 @@ public class RobaGlavniService {
         Page<RobaDto> robaDto = vratiSvuRobuUZavisnostiOdTrazenogStanja(parametri, pageable, ulogovaniPartner);
         if (parametri.getRobaKategorije() == null) {
             magacinDto.setPodgrupe(podGrupaService.vratiSveGrupeNazive());
-        } else if(parametri.getRobaKategorije() != null) {
+        } else if (parametri.getRobaKategorije() != null) {
             magacinDto.setPodgrupe(vratiSvePodgrupePoNazivu(parametri.getPodGrupe().stream().map(PodGrupa::getNaziv).collect(Collectors.toList())));
         }
         magacinDto.setProizvodjaci(proizvodjacService.pronadjiSveProizvodjaceZaVrstu(parametri));
@@ -197,5 +198,17 @@ public class RobaGlavniService {
             robaTekstService.pronadjiTextPoRobiId(detaljnoDto.getRobaid()).ifPresent(robaTekst -> detaljnoDto.setTekst(robaTekst.getTekst()));
             podGrupaService.vratiPodgrupuPoKljucu(detaljnoDto.getPodGrupa()).ifPresent(podGrupa -> detaljnoDto.setPodGrupa(podGrupa.getNaziv()));
         }
+    }
+
+    public List<RobaDto> vratiIzdvajamoIzPonudeRobu(List<Long> robaIds, Partner partner) {
+        List<RobaDto> retVal = new ArrayList<>();
+        robaIds.forEach(robaId -> {
+            RobaDto roba = mapper.map(
+                    robaService.pronadjiRobuPoPrimarnomKljucu(robaId).get()
+            );
+            setujZaTabelu(roba, partner);
+            retVal.add(roba);
+        });
+        return retVal;
     }
 }

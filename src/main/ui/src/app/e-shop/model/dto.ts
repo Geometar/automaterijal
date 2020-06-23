@@ -42,7 +42,12 @@ export class FakturaPage extends Page {
 
 export class LogovanjaPage extends Page {
     content: Logovanja[] = null;
+}
 
+export class Dashboard {
+    brojArtikala: number;
+    brojProizvodjaca: number;
+    brojFaktura: number;
 }
 
 export class Logovanja {

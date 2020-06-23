@@ -26,7 +26,7 @@ const routes: Routes = [
     path: 'porudzbenice/:id',
     loadChildren: () => import('./e-shop/faktura/fakture.module').then(m => m.FaktureModule), canActivate: [AuthGuard]
   },
-  { path: 'korpa', loadChildren: () => import('./e-shop/korpa/korpa.module').then(m => m.KorpaModule), canActivate: [AuthGuard] },
+  { path: 'korpa', loadChildren: () => import('./e-shop/korpa/korpa.module').then(m => m.KorpaModule)},
   { path: 'kategorije', loadChildren: () => import('./e-shop/magacin/kategorije/kategorije.module').then(m => m.KategorijeModule) },
   { path: 'kategorije/:id', loadChildren: () => import('./e-shop/magacin/kategorije/kategorije.module').then(m => m.KategorijeModule) },
 ];

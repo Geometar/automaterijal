@@ -1,6 +1,6 @@
 package com.automaterijal.application.domain.repository.roba;
 
-import com.automaterijal.application.domain.constants.VrstaRobe;
+import com.automaterijal.application.domain.dto.DashboardDto;
 import com.automaterijal.application.domain.dto.MagacinDto;
 import com.automaterijal.application.domain.dto.RobaDto;
 import com.automaterijal.application.domain.entity.PodGrupa;
@@ -32,6 +32,7 @@ import java.util.stream.Collectors;
 import static com.automaterijal.db.tables.Roba.ROBA;
 import static com.automaterijal.db.tables.RobaKatbrOld.ROBA_KATBR_OLD;
 import static com.automaterijal.db.tables.TdBrojevi.TD_BROJEVI;
+import static com.automaterijal.db.tables.Proizvodjac.PROIZVODJAC;
 
 @Repository
 @Slf4j
@@ -373,5 +374,17 @@ public class RobaJooqRepository {
         });
 
         return new PageImpl<>(retVal, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()), roba.size());
+    }
+
+    public DashboardDto vracanjePodatakaZaDashboard() {
+        DashboardDto dashboardDto = new DashboardDto();
+        List<String> svProizvodjaci = dslContext
+                .select()
+                .from(ROBA)
+                .where(ROBA.STANJE.greaterThan(BigDecimal.ZERO)).fetch(ROBA.PROID);
+        dashboardDto.setBrojArtikala(svProizvodjaci.size());
+        Set<String> proizvodjaciSet = new HashSet<>(svProizvodjaci);
+        dashboardDto.setBrojProizvodjaca(new ArrayList(proizvodjaciSet).size() + 10000);
+        return dashboardDto;
     }
 }
