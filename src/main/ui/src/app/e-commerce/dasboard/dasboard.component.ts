@@ -3,12 +3,13 @@ import { DashboardService } from 'src/app/e-shop/service/dashboard.service';
 import { takeWhile } from 'rxjs/operators';
 import { Dashboard, Roba } from 'src/app/e-shop/model/dto';
 import { AppUtilsService } from 'src/app/e-shop/utils/app-utils.service';
-import { LoginService } from 'src/app/e-shop/service/login.service';
 import { NotifikacijaService } from 'src/app/shared/service/notifikacija.service';
 import { DataService } from 'src/app/e-shop/service/data/data.service';
 import { Router } from '@angular/router';
 import { MatSnackBarKlase } from 'src/app/shared/model/konstante';
-import { Korpa } from 'src/app/e-shop/model/porudzbenica';
+import { Kategorija, Konastante, Brend } from './kategorija';
+import { MatDialog } from '@angular/material/dialog';
+import { BrendoviModalComponent } from 'src/app/shared/modal/brendovi-modal/brendovi-modal.component';
 
 @Component({
   selector: 'app-dasboard',
@@ -24,17 +25,31 @@ export class DasboardComponent implements OnInit, OnDestroy {
   public brojProizvodjaca: any = '-';
   public brojFakture: any = '-';
   public robaPonuda: Roba[] = [];
-  public ponudaRobaId: number[] = [25622, 109941, 128165, 25623, 25624];
+  public robaNajbolje: Roba[] = [];
+  public kategorije: Kategorija[] = [];
+  public brendovi: Brend[] = [];
+
+  public ponudaRobaId: number[] = [25622, 109941, 128165, 25623, 107728];
+  public najboljeProdavanoRobaId: number[] = [117746, 117270, 101185, 115820, 118152];
 
   constructor(private servis: DashboardService,
     private utilsService: AppUtilsService,
     private notifikacijaServis: NotifikacijaService,
     private dataService: DataService,
+    public dialog: MatDialog,
     private router: Router) { }
 
   ngOnInit() {
     this.inicijalniPodaci();
     this.izdvajamoIzPonude();
+    this.najboljeProdavano();
+    this.inijalizujKategorije();
+  }
+
+  inijalizujKategorije() {
+    const konstanteKategorija = new Konastante();
+    this.kategorije = konstanteKategorija.kategorije;
+    this.brendovi = konstanteKategorija.brendovi;
   }
 
   inicijalniPodaci() {
@@ -55,15 +70,29 @@ export class DasboardComponent implements OnInit, OnDestroy {
       });
   }
 
+  najboljeProdavano() {
+    this.servis.vratiORobuIzdvojenuIzPonude(this.najboljeProdavanoRobaId)
+      .pipe(takeWhile(() => this.alive))
+      .subscribe((roba: Roba[]) => {
+        this.robaNajbolje = this.dataService.skiniSaStanjaUkolikoJeUKorpi(roba);
+      });
+  }
+
   detaljiRobe(robaId: string) {
     const url = this.router.parseUrl(this.router.url);
     this.router.navigate(['/roba/' + robaId], { queryParams: { prosliUrl: url.root.children.primary.segments[0].path } });
   }
 
-  dodajUKorpu(roba: Roba) {
+  dodajUKorpuPonuda(roba: Roba) {
     const snackBarPoruka = this.utilsService.dodajUKorpu(roba);
     this.notifikacijaServis.notify(snackBarPoruka, MatSnackBarKlase.Zelena);
     this.utilsService.izbrisiRobuSaStanja(this.robaPonuda, roba);
+  }
+
+  dodajUKorpuNajbolje(roba: Roba) {
+    const snackBarPoruka = this.utilsService.dodajUKorpu(roba);
+    this.notifikacijaServis.notify(snackBarPoruka, MatSnackBarKlase.Zelena);
+    this.utilsService.izbrisiRobuSaStanja(this.robaNajbolje, roba);
   }
 
   oduzmiOdKolicine(roba: Roba) {
@@ -86,6 +115,22 @@ export class DasboardComponent implements OnInit, OnDestroy {
     } else {
       this.notifikacijaServis.notify('Maksimalna količina dostignuta', MatSnackBarKlase.Plava);
     }
+  }
+
+  idiNaKategoriju(kategorija: Kategorija) {
+    if (!kategorija.param) {
+      this.router.navigate([kategorija.url]);
+    } else {
+      this.router.navigate([kategorija.url], { queryParams: { grupa: kategorija.param } });
+    }
+  }
+
+
+  otvoriDialog(brend: Brend) {
+    this.dialog.open(BrendoviModalComponent, {
+      width: '700px',
+      data: brend
+    });
   }
 
   ngOnDestroy() {

@@ -19,13 +19,6 @@ export class Upit {
     drugo?: string;
 }
 
-export class Brend {
-    ime?: string;
-    urlSlikeLogo?: string;
-    urlSlikePozadina?: string;
-    opis?: string;
-}
-
 
 export class VestiNaslovna {
     id?: string;

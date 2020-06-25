@@ -8,6 +8,7 @@
 
 .sekcija-h2 {
   font-size: 1.6rem;
+  text-align: center;
   color: $automaterijal-primary-100;
 }
 
@@ -75,6 +76,11 @@
 }
 
 // izdvajamo iz ponude
+.cekcija-ponuda {
+  max-width: 1365px;
+  margin-left: auto;
+  margin-right: auto;
+}
 .mat-card-ponuda {
   width: 250px;
   height: 365px;
@@ -82,6 +88,16 @@
   box-shadow: 2px 3px 6px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14),
     0px 1px 3px 0px rgba(0, 0, 0, 0.12);
 }
+.mat-card-content {
+  margin-bottom: 0px;
+  cursor: pointer;
+}
+
+.mat-card-ponuda:hover {
+  box-shadow: 4px 10px 17px 4px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14),
+    0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+}
+
 .slika-div {
   height: 150px;
   margin-top: 5px;
@@ -181,7 +197,7 @@ p {
 }
 .teh-detalji-ui {
   width: 220px;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   padding-inline-start: 10px;
   font-size: 0.8rem;
 }
@@ -202,3 +218,44 @@ p {
 .mt-u-korpi {
   margin-top: 6px;
 }
+
+.dugme {
+  background-color: $automaterijal-primary-100;
+  color: white;
+}
+
+// sekcija 3
+.kategorija-card {
+  width: 250px;
+  margin: 5px;
+  background-color: $automaterijal-grey-400;
+  cursor: pointer;
+}
+
+.kategorija-card:hover {
+  box-shadow: 4px 10px 17px 4px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14),
+    0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+}
+
+.kategorija-p {
+  display: inline;
+}
+
+.ikona-kategorija-leva {
+  position: relative;
+  top: 6px;
+}
+
+// sekcija 4
+.brendovi-img {
+  width: 80px;
+  margin: 10px;
+  height: 78.78px;
+  cursor: pointer;
+}
+.brendovi-img:hover {
+  box-shadow: 4px 10px 17px 4px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14),
+    0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+}
+
+

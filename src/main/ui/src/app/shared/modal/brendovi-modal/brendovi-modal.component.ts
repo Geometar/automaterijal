@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Brend } from 'src/app/e-commerce/model/dto';
+import { takeWhile } from 'rxjs/operators';
+import { HtmlService } from 'src/app/e-commerce/servis/html.service';
 
 @Component({
   selector: 'app-brendovi-modal',
@@ -9,11 +10,21 @@ import { Brend } from 'src/app/e-commerce/model/dto';
 })
 export class BrendoviModalComponent implements OnInit {
 
+  private alive = true;
+  public opis: any;
+
+
   constructor(
     public dialogRef: MatDialogRef<BrendoviModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public brend: Brend) { }
+    private htmlServis: HtmlService,
+    @Inject(MAT_DIALOG_DATA) public brend: any) { }
 
   ngOnInit() {
+    this.htmlServis.pronadjiDetaljeRobe(this.brend.url)
+    .pipe(takeWhile(() => this.alive))
+    .subscribe(text => {
+      this.opis = text.body;
+    });
   }
 
   zatvoriDialog() {
