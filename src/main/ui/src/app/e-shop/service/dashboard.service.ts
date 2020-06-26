@@ -29,15 +29,29 @@ export class DashboardService {
         catchError((error: any) => throwError(error)));
   }
 
-  public vratiORobuIzdvojenuIzPonude(robaIds: number[]) {
+  public vratiORobuIzdvojenuIzPonude(grupa: string) {
 
     const parameterObject = {};
-    parameterObject['robaIds'] = robaIds;
+    parameterObject['grupa'] = grupa;
 
     const parametersString = this.utils.vratiKveriParametre(parameterObject);
-     const fullUrl = DOMAIN_URL + DASHBOARD_URL + IZDVAJAMO_URL + parametersString;
+    const fullUrl = DOMAIN_URL + DASHBOARD_URL + IZDVAJAMO_URL + parametersString;
     return this.http
       .get(fullUrl)
+      .pipe(
+        timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
+        catchError((error: any) => throwError(error)));
+  }
+
+  public promeniDashboardRodbu(stariId: number, noviIId: number, grupa: string) {
+    const parameterObject = {};
+    parameterObject['staraRobaId'] = stariId;
+    parameterObject['novaRobaId'] = noviIId;
+    parameterObject['grupa'] = grupa;
+    const parametersString = this.utils.vratiKveriParametre(parameterObject);
+
+    const fullUrl = DOMAIN_URL + DASHBOARD_URL + IZDVAJAMO_URL + parametersString;
+    return this.http.put(fullUrl, null)
       .pipe(
         timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
         catchError((error: any) => throwError(error)));

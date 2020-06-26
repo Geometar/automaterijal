@@ -199,6 +199,55 @@ label {
   margin-left: 10%;
   width: 80%;
 }
+
+///////////////////////Anoniman kupac
+
+.anoniman-kupac {
+  background-color: white;
+  margin: 5px;
+  width: 55%;
+  padding:  10px;
+  text-align: center;
+  box-shadow: 2px 3px 6px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+}
+
+.drugi-input {
+  margin-left: 30px;
+}
+
+.anoniman-input {
+  width: 250px;
+}
+
+.anoniman-napomena {
+  width: 430px;
+}
+
+.anoniman-h2 {
+  font-size: 1.6rem;
+  color: $automaterijal-primary-100;
+}
+
+.upozorenje-anoniman {
+  border: 1px dashed $automaterijal-accent-red-50;
+  background-color: white;
+  padding: 10px;
+  text-align: center;
+}
+
+.upozorenje-p {
+  font-size: 0.95rem;
+}
+
+.telefon {
+ color: $automaterijal-primary-100
+}
+
+.upozorenje-ikona {
+  color: $automaterijal-accent-red-50;
+}
+
+
 @media only screen and (max-width: 1200px) {
   .granice {
     width: 99%;

@@ -1,7 +1,7 @@
 import { OnInit, Component, OnDestroy } from '@angular/core';
 import { DashboardService } from 'src/app/e-shop/service/dashboard.service';
 import { takeWhile } from 'rxjs/operators';
-import { Dashboard, Roba } from 'src/app/e-shop/model/dto';
+import { Dashboard, Roba, Partner } from 'src/app/e-shop/model/dto';
 import { AppUtilsService } from 'src/app/e-shop/utils/app-utils.service';
 import { NotifikacijaService } from 'src/app/shared/service/notifikacija.service';
 import { DataService } from 'src/app/e-shop/service/data/data.service';
@@ -10,6 +10,8 @@ import { MatSnackBarKlase } from 'src/app/shared/model/konstante';
 import { Kategorija, Konastante, Brend } from './kategorija';
 import { MatDialog } from '@angular/material/dialog';
 import { BrendoviModalComponent } from 'src/app/shared/modal/brendovi-modal/brendovi-modal.component';
+import { DashboardPromenaRobeComponent } from 'src/app/shared/modal/dashboard-promena-robe/dashboard-promena-robe.component';
+import { LoginService } from 'src/app/e-shop/service/login.service';
 
 @Component({
   selector: 'app-dasboard',
@@ -28,18 +30,23 @@ export class DasboardComponent implements OnInit, OnDestroy {
   public robaNajbolje: Roba[] = [];
   public kategorije: Kategorija[] = [];
   public brendovi: Brend[] = [];
+  public partner: Partner;
 
-  public ponudaRobaId: number[] = [25622, 109941, 128165, 25623, 107728];
-  public najboljeProdavanoRobaId: number[] = [117746, 117270, 101185, 115820, 118152];
+  private IZDVAJAMO_IZ_PONUDE = 'IZDVAJAMO_IZ_PONUDE';
+  private NAJBOLJE_PRODAVANO = 'NAJBOLJE_PRODAVANO';
 
   constructor(private servis: DashboardService,
     private utilsService: AppUtilsService,
     private notifikacijaServis: NotifikacijaService,
+    private loginServis: LoginService,
     private dataService: DataService,
     public dialog: MatDialog,
     private router: Router) { }
 
   ngOnInit() {
+    this.loginServis.ulogovaniPartner
+      .pipe(takeWhile(() => this.alive))
+      .subscribe(partner => this.partner = partner);
     this.inicijalniPodaci();
     this.izdvajamoIzPonude();
     this.najboljeProdavano();
@@ -63,7 +70,7 @@ export class DasboardComponent implements OnInit, OnDestroy {
   }
 
   izdvajamoIzPonude() {
-    this.servis.vratiORobuIzdvojenuIzPonude(this.ponudaRobaId)
+    this.servis.vratiORobuIzdvojenuIzPonude(this.IZDVAJAMO_IZ_PONUDE)
       .pipe(takeWhile(() => this.alive))
       .subscribe((roba: Roba[]) => {
         this.robaPonuda = this.dataService.skiniSaStanjaUkolikoJeUKorpi(roba);
@@ -71,7 +78,7 @@ export class DasboardComponent implements OnInit, OnDestroy {
   }
 
   najboljeProdavano() {
-    this.servis.vratiORobuIzdvojenuIzPonude(this.najboljeProdavanoRobaId)
+    this.servis.vratiORobuIzdvojenuIzPonude(this.NAJBOLJE_PRODAVANO)
       .pipe(takeWhile(() => this.alive))
       .subscribe((roba: Roba[]) => {
         this.robaNajbolje = this.dataService.skiniSaStanjaUkolikoJeUKorpi(roba);
@@ -130,6 +137,74 @@ export class DasboardComponent implements OnInit, OnDestroy {
     this.dialog.open(BrendoviModalComponent, {
       width: '700px',
       data: brend
+    });
+  }
+
+  otvoriDijalogPromeneRobePonuda(roba: Roba) {
+    const dialogRef = this.dialog.open(DashboardPromenaRobeComponent, {
+      width: '700px',
+      data: { staraSifra: roba.robaid, novaSifra: null }
+    });
+
+    dialogRef.afterClosed().subscribe((result: string) => {
+      if (result && Number(result)) {
+        const novaRobaId = Number(result);
+        let robaIdPostoji = false;
+        this.robaPonuda.forEach((ponuda: Roba) => {
+          if (ponuda.robaid === novaRobaId) {
+            robaIdPostoji = true;
+          }
+        });
+        this.robaNajbolje.forEach((najbolje: Roba) => {
+          if (najbolje.robaid === novaRobaId) {
+            robaIdPostoji = true;
+          }
+        });
+        if (robaIdPostoji) {
+          this.notifikacijaServis.notify(novaRobaId + ' vec postoji na stranici' , MatSnackBarKlase.Crvena);
+        } else {
+          this.servis.promeniDashboardRodbu(roba.robaid, novaRobaId, this.IZDVAJAMO_IZ_PONUDE)
+            .pipe(takeWhile(() => this.alive))
+            .subscribe(() => {
+              this.notifikacijaServis.notify('Uspesna promena', MatSnackBarKlase.Zelena);
+              this.izdvajamoIzPonude();
+            });
+        }
+      }
+    });
+  }
+
+  otvoriDijalogPromeneRobeNajbolje(roba: Roba) {
+    const dialogRef = this.dialog.open(DashboardPromenaRobeComponent, {
+      width: '700px',
+      data: { staraSifra: roba.robaid, novaSifra: null }
+    });
+
+    dialogRef.afterClosed().subscribe((result: string) => {
+      if (result && Number(result)) {
+        const novaRobaId = Number(result);
+        let robaIdPostoji = false;
+        this.robaPonuda.forEach((ponuda: Roba) => {
+          if (ponuda.robaid === novaRobaId) {
+            robaIdPostoji = true;
+          }
+        });
+        this.robaNajbolje.forEach((najbolje: Roba) => {
+          if (najbolje.robaid === novaRobaId) {
+            robaIdPostoji = true;
+          }
+        });
+        if (robaIdPostoji) {
+          this.notifikacijaServis.notify(novaRobaId + ' vec postoji na stranici' , MatSnackBarKlase.Crvena);
+        } else {
+          this.servis.promeniDashboardRodbu(roba.robaid, novaRobaId, this.NAJBOLJE_PRODAVANO)
+            .pipe(takeWhile(() => this.alive))
+            .subscribe(() => {
+              this.notifikacijaServis.notify('Uspesna promena', MatSnackBarKlase.Zelena);
+              this.najboljeProdavano();
+            });
+        }
+      }
     });
   }
 

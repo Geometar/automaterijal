@@ -4,6 +4,7 @@ import com.automaterijal.application.domain.dto.FakturaDto;
 import com.automaterijal.application.domain.dto.RobaDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.services.FakturaService;
+import com.automaterijal.application.services.PartnerService;
 import com.automaterijal.application.utils.GeneralUtil;
 import com.automaterijal.application.utils.PartnerSpringBeanUtils;
 import lombok.AccessLevel;
@@ -35,6 +36,9 @@ public class FakturaController {
     @NonNull
     final PartnerSpringBeanUtils partnerSpringBeanUtils;
 
+    @NonNull
+    PartnerService partnerService;
+
     @GetMapping(value = "/{ppid}")
     public ResponseEntity<Page<FakturaDto>> vratiSveFaktureKorisnika(
             @RequestParam(required = false) Integer page,
@@ -62,6 +66,9 @@ public class FakturaController {
     @PostMapping
     public ResponseEntity<List<RobaDto>> podnesiFakturu(@RequestBody FakturaDto fakturaDto, Authentication authentication) {
         Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+        if(partner == null) {
+            partner = partnerService.pronadjiPartneraPoId(850);
+        }
 
         if (partner == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

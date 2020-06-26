@@ -3,6 +3,9 @@ package com.automaterijal.application.services;
 import com.automaterijal.application.domain.dto.DashboardDto;
 import com.automaterijal.application.domain.dto.RobaDto;
 import com.automaterijal.application.domain.entity.Partner;
+import com.automaterijal.application.domain.entity.dashboard.DashbaordGrupa;
+import com.automaterijal.application.domain.entity.dashboard.RobaDashboard;
+import com.automaterijal.application.domain.repository.RobaDashboardRepository;
 import com.automaterijal.application.domain.repository.roba.RobaJooqRepository;
 import com.automaterijal.application.services.roba.RobaGlavniService;
 import lombok.AccessLevel;
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,6 +34,9 @@ public class DashboardService {
     final RobaGlavniService robaGlavniService;
 
     @NonNull
+    final RobaDashboardRepository dashboardRepository;
+
+    @NonNull
     final FakturaService fakturaService;
 
     public DashboardDto vracanjeSvihDashboardSpecifikacija() {
@@ -38,11 +45,19 @@ public class DashboardService {
         return dashboardDto;
     }
 
-    public List<RobaDto> vratiIzdvajamoIzPonudeRobu(List<Long> robaIds, Partner partner) {
+    public List<RobaDto> vratiIzdvajamoIzPonudeRobu(DashbaordGrupa dashbaordGrupa, Partner partner) {
+        List<Long> robaIds = vratiIzdvojenuRobu(dashbaordGrupa);
         return robaGlavniService.vratiIzdvajamoIzPonudeRobu(robaIds, partner)
                 .stream()
                 .filter(robaDto -> robaDto.getStanje() > 0)
                 .map(robaDto -> setujTextNaRazumnuDuzinu(robaDto))
+                .collect(Collectors.toList());
+    }
+
+    private List<Long> vratiIzdvojenuRobu(DashbaordGrupa dashbaordGrupa) {
+        return dashboardRepository.findByGrupa(dashbaordGrupa)
+                .stream()
+                .map(RobaDashboard::getRobaId)
                 .collect(Collectors.toList());
     }
 
@@ -59,5 +74,18 @@ public class DashboardService {
             }
         }
         return robaDto;
+    }
+
+    public void updejtuj(Long staraRobaId, Long novaRobaiD, DashbaordGrupa dashbaordGrupa) {
+        dashboardRepository.findById(staraRobaId).ifPresent(roba -> {
+            if(roba.getGrupa() == dashbaordGrupa) {
+                var robaDashboard = new RobaDashboard();
+                robaDashboard.setRobaId(novaRobaiD);
+                robaDashboard.setGrupa(dashbaordGrupa);
+                dashboardRepository.delete(roba);
+                dashboardRepository.save(robaDashboard);
+            }
+        });
+
     }
 }

@@ -14,6 +14,7 @@ import { PrvoLogovanjeModalComponent } from './prvo-logovanje-modal/prvo-logovan
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MaterialModule } from '../material/material.module';
 import { SharedMagacinModule } from 'src/app/e-shop/magacin/shared-components/shared-magacin.module';
+import { DashboardPromenaRobeComponent } from './dashboard-promena-robe/dashboard-promena-robe.component';
 
 @NgModule({
   imports: [
@@ -32,9 +33,11 @@ import { SharedMagacinModule } from 'src/app/e-shop/magacin/shared-components/sh
     NeuspesnoPorucivanjeModalComponent,
     PorukaModalComponent,
     BrendoviModalComponent,
+    DashboardPromenaRobeComponent,
     UpitModalComponent,
     SesijaIsteklaModalComponent,
-    PrvoLogovanjeModalComponent],
+    PrvoLogovanjeModalComponent,
+    DashboardPromenaRobeComponent],
   entryComponents: [
     ZaboravljenaSifraModalComponent,
     RegistracijaModalComponent,
@@ -44,6 +47,7 @@ import { SharedMagacinModule } from 'src/app/e-shop/magacin/shared-components/sh
     NeuspesnoPorucivanjeModalComponent,
     PorukaModalComponent,
     BrendoviModalComponent,
+    DashboardPromenaRobeComponent,
     UpitModalComponent,
     SesijaIsteklaModalComponent,
     PrvoLogovanjeModalComponent]

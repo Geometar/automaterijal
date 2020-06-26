@@ -52,7 +52,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(
                         "/api/roba/**", "/api/proizvodjaci/**", "/api/kategorije", "/api/kategorije/**", "/api/email/**",
                         "/api/partner/promena-sifre", "/api/partner/read", "/api/partner/update", "/api/dashboard/**").permitAll()
-                .antMatchers("/naslovna", "/o-nama", "/kontakt", "/roba", "/filteri", "/ulja", "/akumulatori", "/ostalo", "/ostalo/**", "/sitemap.xml", "/login**").permitAll()
+                .antMatchers("/naslovna", "/api/fakture", "/o-nama", "/kontakt", "/roba", "/filteri", "/ulja", "/akumulatori", "/ostalo", "/ostalo/**", "/sitemap.xml", "/login**").permitAll()
                 .antMatchers("/login", "/reset-sifre/**").permitAll()
                 .antMatchers("/api/ExternalAccess/**").permitAll()
                 .antMatchers("/resources/**").permitAll()

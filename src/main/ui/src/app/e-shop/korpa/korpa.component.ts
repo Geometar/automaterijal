@@ -39,6 +39,7 @@ export class KorpaComponent implements OnInit, OnDestroy {
   // sve forme
   public drugiNacinPrevoza: FormGroup;
   public adresaForm: FormGroup;
+  public anonimanKupacForm: FormGroup;
   public dugmeZaPorucivanjeStisnuto = false;
 
   public displayedColumns: string[] = ['slika', 'opis', 'cena'
@@ -93,7 +94,9 @@ export class KorpaComponent implements OnInit, OnDestroy {
   }
 
   inicijalizujKorpu() {
-    this.vratiOpsteInformacije();
+    if (this.partner) {
+      this.vratiOpsteInformacije();
+    }
     this.dataService.trenutnaKorpa
       .pipe(takeWhile(() => this.alive))
       .subscribe(korpa => {
@@ -108,13 +111,27 @@ export class KorpaComponent implements OnInit, OnDestroy {
   }
 
   inicijalizujSveForme() {
-    this.drugiNacinPrevoza = this.formBuilder.group({
-      prevoz: ['', [Validators.required, Validators.minLength(3)]]
-    });
-    this.adresaForm = this.formBuilder.group({
-      ulica: ['', [Validators.required, Validators.minLength(3)]],
-      grad: ['', [Validators.required, Validators.minLength(2)]]
-    });
+    if (this.partner) {
+      this.drugiNacinPrevoza = this.formBuilder.group({
+        prevoz: ['', [Validators.required, Validators.minLength(3)]]
+      });
+      this.adresaForm = this.formBuilder.group({
+        ulica: ['', [Validators.required, Validators.minLength(3)]],
+        grad: ['', [Validators.required, Validators.minLength(2)]]
+      });
+    } else {
+      this.anonimanKupacForm = this.formBuilder.group({
+        ime: ['', [Validators.required, Validators.minLength(3)]],
+        prezime: ['', [Validators.required, Validators.minLength(3)]],
+        email: ['', [Validators.required, Validators.minLength(3), Validators.email]],
+        telefon: ['', [Validators.required, Validators.minLength(3)]],
+        ulica: ['', [Validators.required, Validators.minLength(3)]],
+        stan: ['', []],
+        grad: ['', [Validators.required, Validators.minLength(3)]],
+        pbroj: ['', [Validators.required, Validators.minLength(3)]],
+        napomena: ['', []]
+      });
+    }
   }
 
   vratiOpsteInformacije() {
@@ -200,32 +217,34 @@ export class KorpaComponent implements OnInit, OnDestroy {
 
   // glavna metoda
   posaljiPorudzbinu() {
-    this.loginServis.izbaciPartneraIzSesiseAkoJeUMemoriji();
     this.dugmeZaPorucivanjeStisnuto = true;
-    if (this.izabraneAdresaDostave === this.adresaDostave[1]) {
-      if (this.adresaForm.invalid) {
-        return;
-      }
-    }
-    if (this.izabranNacinPrevoza === this.treceLiceOpcije[1]) {
-      if (this.drugiNacinPrevoza.invalid) {
-        return;
-      }
-    }
-    this.korpa.nacinIsporuke = this.izabranNacinPrevoza.id;
-    this.korpa.nacinPlacanja = this.izabranNacinPlacanja.id;
-    this.popuniNapomenu();
-    this.korpaUFakturu();
-    this.loginServis.vratiUlogovanogKorisnika(false)
-      .pipe(takeWhile(() => this.alive))
-      .subscribe(partner => {
-        if (partner) {
-          this.submitujFakturu();
-        } else {
-          this.router.navigate(['/login']);
-          this.loginServis.izbaciPartnerIzSesije();
+    if (this.partner) {
+      if (this.izabraneAdresaDostave === this.adresaDostave[1]) {
+        if (this.adresaForm.invalid) {
+          return;
         }
-      });
+      }
+      if (this.izabranNacinPrevoza === this.treceLiceOpcije[1]) {
+        if (this.drugiNacinPrevoza.invalid) {
+          return;
+        }
+      }
+    } else {
+      if (this.anonimanKupacForm.invalid) {
+        return;
+      }
+    }
+    if (this.partner) {
+      this.popuniNapomenu();
+      this.korpa.nacinIsporuke = this.izabranNacinPrevoza.id;
+      this.korpa.nacinPlacanja = this.izabranNacinPlacanja.id;
+    } else {
+      this.korpa.nacinIsporuke = 2;
+      this.korpa.nacinPlacanja = 2;
+      this.popuniNapomenuAnonimus();
+    }
+    this.korpaUFakturu();
+    this.submitujFakturu();
   }
 
   submitujFakturu() {
@@ -288,7 +307,11 @@ export class KorpaComponent implements OnInit, OnDestroy {
 
   korpaUFakturu() {
     this.faktura = new Fakutra();
-    this.faktura.adresa = this.napraviIPopuniValueHelp(this.partner.ppid);
+    if (this.partner) {
+      this.faktura.adresa = this.napraviIPopuniValueHelp(this.partner.ppid);
+    } else {
+      this.faktura.adresa = this.napraviIPopuniValueHelp(850);
+    }
     this.faktura.nacinPlacanja = this.napraviIPopuniValueHelp(this.korpa.nacinPlacanja);
     this.faktura.nacinPrevoza = this.napraviIPopuniValueHelp(this.korpa.nacinIsporuke);
     this.faktura.napomena = this.korpa.napomena;
@@ -314,6 +337,41 @@ export class KorpaComponent implements OnInit, OnDestroy {
     const valueHelp = new ValueHelp();
     valueHelp.id = id;
     return valueHelp;
+  }
+
+  popuniNapomenuAnonimus() {
+    this.korpa.napomena = '';
+    const imeIprezime = 'Ime i Prezime: '
+      + this.anonimanKupacForm.controls.ime.value
+      + ' ' + this.anonimanKupacForm.controls.prezime.value;
+    this.korpa.napomena = this.korpa.napomena + imeIprezime + ';';
+
+    const telefonIMail = 'Telefon i Mail: '
+      + this.anonimanKupacForm.controls.email.value
+      + ' ' + this.anonimanKupacForm.controls.telefon.value;
+    this.korpa.napomena = this.korpa.napomena + telefonIMail + ';';
+
+    const ulica = 'Ulica: '
+      + this.anonimanKupacForm.controls.ulica.value;
+    this.korpa.napomena = this.korpa.napomena + ulica + ';';
+
+    if (this.anonimanKupacForm.controls.stan.value) {
+      const stan = 'Stan: '
+        + this.anonimanKupacForm.controls.stan.value;
+      this.korpa.napomena = this.korpa.napomena + stan + ';';
+    }
+
+    const gradIPosta = 'Grad i Posta: '
+      + this.anonimanKupacForm.controls.grad.value
+      + ' ' + this.anonimanKupacForm.controls.pbroj.value;
+    this.korpa.napomena = this.korpa.napomena + gradIPosta + ';';
+
+    if (this.anonimanKupacForm.controls.napomena.value) {
+      const napomena = 'napomena: '
+        + this.anonimanKupacForm.controls.napomena.value;
+      this.korpa.napomena = this.korpa.napomena + napomena + ';';
+    }
+
   }
 
   popuniNapomenu() {
@@ -344,4 +402,5 @@ export class KorpaComponent implements OnInit, OnDestroy {
   // convenience getter for easy access to form fields
   get a() { return this.adresaForm.controls; }
   get d() { return this.drugiNacinPrevoza.controls; }
+  get anoniman() { return this.anonimanKupacForm.controls; }
 }

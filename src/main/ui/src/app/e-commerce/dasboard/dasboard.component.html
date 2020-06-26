@@ -70,6 +70,10 @@
     <div class="cekcija-ponuda d-flex flex-wrap justify-content-center">
       <div *ngFor="let roba of robaPonuda">
         <mat-card class="mat-card-ponuda">
+          <span *ngIf="partner && partner.privilegije === 2047" class="material-icons edit-ikona"
+            (click)="otvoriDijalogPromeneRobePonuda(roba)">
+            edit
+          </span>
           <mat-card-content (click)='detaljiRobe(roba.robaid)' class="opis">
             <div class="slika-div" (click)='detaljiRobe(roba.robaid)'>
               <img class="izdvajamo-slika" mat-card-image src="{{roba.slika}}">
@@ -174,11 +178,34 @@
       </div>
     </div>
   </section>
+
+  <section class="sekcija">
+    <h2 class="sekcija-h2">Kategorije za dodatnu opremu automobila</h2>
+    <div class="cekcija-ponuda d-flex flex-wrap justify-content-center">
+      <div *ngFor="let kategorija of kategorije">
+        <mat-card class="kategorija-card" (click)="idiNaKategoriju(kategorija)">
+          <span class="material-icons ikona-kategorija-leva">
+            {{kategorija.ikonaId}}
+          </span>
+          <p class="kategorija-p">
+            {{kategorija.naslov}}
+          </p>
+          <span class="material-icons float-right mt-u-korpi boja-glavna-100">
+            play_arrow
+          </span>
+        </mat-card>
+      </div>
+    </div>
+  </section>
   <section class="sekcija">
     <h2 class="sekcija-h2">Najbolje prodavano</h2>
     <div class="cekcija-ponuda d-flex flex-wrap justify-content-center">
       <div *ngFor="let roba of robaNajbolje">
         <mat-card class="mat-card-ponuda">
+          <span *ngIf="partner && partner.privilegije === 2047" class="material-icons edit-ikona"
+            (click)="otvoriDijalogPromeneRobeNajbolje(roba)">
+            edit
+          </span>
           <mat-card-content (click)='detaljiRobe(roba.robaid)' class="opis">
             <div class="slika-div">
               <img class="izdvajamo-slika" mat-card-image src="{{roba.slika}}">
@@ -305,7 +332,7 @@
     <h2 class="sekcija-h2">Distributeri smo brendova</h2>
     <div class="cekcija-ponuda d-flex flex-wrap justify-content-center">
       <div *ngFor="let brend of brendovi">
-        <img class="brendovi-img" (click)="otvoriDialog(brend)" src="{{brend.urlSlikeLogo}}"/>
+        <img class="brendovi-img" (click)="otvoriDialog(brend)" src="{{brend.urlSlikeLogo}}" />
       </div>
     </div>
   </section>
