@@ -23,6 +23,7 @@ import java.util.List;
 public abstract class RobaMapper {
 
     @Mapping(target = "podGrupa", source = "podgrupaid")
+    @Mapping(target = "grupa", source = "grupaid")
     public abstract RobaDto map(Roba roba);
 
     public abstract List<RobaTehnickiOpisDto> map(List<RobaOpis> opisi);

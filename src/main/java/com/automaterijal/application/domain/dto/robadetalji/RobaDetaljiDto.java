@@ -22,6 +22,7 @@ public class RobaDetaljiDto {
     String naziv;
     String tekst;
     double stanje;
+    boolean dozvoljenoZaAnonimusa;
     Double rabat;
     BigDecimal cena;
     Proizvodjac proizvodjac;

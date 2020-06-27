@@ -1,7 +1,6 @@
 package com.automaterijal.application.services.roba;
 
 import com.automaterijal.application.domain.constants.RobaSortiranjePolja;
-import com.automaterijal.application.domain.dto.DashboardDto;
 import com.automaterijal.application.domain.dto.MagacinDto;
 import com.automaterijal.application.domain.dto.RobaDto;
 import com.automaterijal.application.domain.dto.RobaTehnickiOpisDto;
@@ -13,6 +12,7 @@ import com.automaterijal.application.domain.entity.roba.RobaSlika;
 import com.automaterijal.application.domain.mapper.RobaMapper;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.domain.repository.roba.RobaJooqRepository;
+import com.automaterijal.application.services.GrupaDozvoljenaService;
 import com.automaterijal.application.services.ProizvodjacService;
 import com.automaterijal.application.services.roba.grupe.PodGrupaService;
 import lombok.AccessLevel;
@@ -58,6 +58,8 @@ public class RobaGlavniService {
     final PodGrupaService podGrupaService;
     @NonNull
     final RobaTekstService robaTekstService;
+    @NonNull
+    final GrupaDozvoljenaService grupaDozvoljenaService;
     @NonNull
     final RobaMapper mapper;
 
@@ -162,6 +164,12 @@ public class RobaGlavniService {
             robaDto.setTehnickiOpis(tehnickiOpisi);
         }
 
+        if (partner == null && !grupaDozvoljenaService.pronadjiSveDozvoljeneGrupe().contains(robaDto.getGrupa())) {
+            robaDto.setDozvoljenoZaAnonimusa(false);
+        } else {
+            robaDto.setDozvoljenoZaAnonimusa(true);
+        }
+
         Optional<RobaSlika> robaSlika = robaSlikaService.pronadjiPutanjuSlikePoId(robaDto.getRobaid());
         if (robaSlika.isPresent()) {
             robaDto.setSlika(prefixTabela + prefixThumbs + robaSlika.get().getSlika());
@@ -190,11 +198,19 @@ public class RobaGlavniService {
             detaljnoDto.setTdBrojevi(brojeviServis.vratiSveBrojeveZaRobidIVrsti(detaljnoDto.getRobaid(), VRSTA_ORIGINALNI));
             detaljnoDto.setAplikacije(aplikacijeServis.vratiAplikacijeZaDetalje(detaljnoDto.getRobaid()));
             Optional<RobaSlika> robaSlika = robaSlikaService.pronadjiPutanjuSlikePoId(detaljnoDto.getRobaid());
+
             if (robaSlika.isPresent()) {
                 detaljnoDto.setSlika(prefixTabela + prefixThumbs + robaSlika.get().getSlika());
             } else {
                 detaljnoDto.setSlika(SLIKA_NIJE_DOSTUPNA_URL);
             }
+
+            if (partner == null && !grupaDozvoljenaService.pronadjiSveDozvoljeneGrupe().contains(detaljnoDto.getGrupa())) {
+                detaljnoDto.setDozvoljenoZaAnonimusa(false);
+            } else {
+                detaljnoDto.setDozvoljenoZaAnonimusa(true);
+            }
+
             robaTekstService.pronadjiTextPoRobiId(detaljnoDto.getRobaid()).ifPresent(robaTekst -> detaljnoDto.setTekst(robaTekst.getTekst()));
             podGrupaService.vratiPodgrupuPoKljucu(detaljnoDto.getPodGrupa()).ifPresent(podGrupa -> detaljnoDto.setPodGrupa(podGrupa.getNaziv()));
         }

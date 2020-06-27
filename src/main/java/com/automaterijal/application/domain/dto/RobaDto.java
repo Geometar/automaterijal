@@ -25,5 +25,6 @@ public class RobaDto {
     BigDecimal cena;
     Double rabat;
     double stanje;
+    boolean dozvoljenoZaAnonimusa;
     Set<RobaTehnickiOpisDto> tehnickiOpis;
 }
