@@ -36,9 +36,6 @@ public class AdminController {
     final GrupaDozvoljenaService grupaDozvoljenaService;
 
     @NonNull
-    final GrupaService grupaService;
-
-    @NonNull
     final PartnerSpringBeanUtils partnerSpringBeanUtils;
 
     @GetMapping(value = "/logovanja")
@@ -88,6 +85,6 @@ public class AdminController {
         if (partner.getPrivilegije() != 2047) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        return ResponseEntity.ok(grupaService.vratiSveGrupe());
+        return ResponseEntity.ok(grupaDozvoljenaService.vratiSveGrupeKojeNisuDozvoljene());
     }
 }

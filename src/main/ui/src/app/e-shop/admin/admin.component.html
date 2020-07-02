@@ -5,13 +5,14 @@
     <div class="ceo-div d-flex flex-column flex-lg-row bd-highlight">
       <div class="p-2 flex-fill bd-highlight">
         <h2>Dozvoljene grupe za anonimnog korisnika</h2>
-        <div class="d-flex flex-row" *ngFor="let grupa of dozvoljeneGrupe">
+        <div class="d-flex flex-row d-grupa-glavni-div" *ngFor="let grupa of dozvoljeneGrupe">
           <p class="p-partner">{{grupa.naziv}}</p>
           <div class="dozvoljena-grupa-div">
-            <button mat-raised-button color="warn" (click)="izbrisiGrupu(grupa)">Izbrisi</button>
+            <button mat-raised-button class="izbrisi-dugme-div" color="warn" (click)="izbrisiGrupu(grupa)">Izbrisi</button>
           </div>
         </div>
-        <div> <button mat-raised-button color="primary" (click)="dodajGrupu()">Dodaj grupu</button>
+        <div class="centriraj"> 
+          <button mat-raised-button class="button-glavni-100 dugme-dodaj" (click)="dodajGrupu()">Dodaj grupu</button>
         </div>
         <div class="d-flex justify-content-center prazna-tabela" *ngIf="ucitavanjeSesija">
           <mat-spinner></mat-spinner>

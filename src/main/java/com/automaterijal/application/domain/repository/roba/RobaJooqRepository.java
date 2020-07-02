@@ -169,8 +169,8 @@ public class RobaJooqRepository {
         boolean daLiJePetragaPoReci = false;
         Set<String> kataloskiBrojevi = new HashSet<>();
         Set<Integer> robaId = new HashSet<>();
-        pomocniKveriPoRobi(trazenaRecLike, pregragaPoTacnojReciLike, kataloskiBrojevi, robaId);
-        if (kataloskiBrojevi.size() < 30) {
+        boolean pretragaJePoRecima = pomocniKveriPoRobi(trazenaRecLike, pregragaPoTacnojReciLike, kataloskiBrojevi, robaId);
+        if (kataloskiBrojevi.size() < 20 && !pretragaJePoRecima) {
             pomocniKveriPoRobiOld(trazenaRec, kataloskiBrojevi);
             drugiPomocniKveri(kataloskiBrojevi, robaId, trazenaRec);
         } else {
@@ -193,8 +193,9 @@ public class RobaJooqRepository {
         }
     }
 
-    private void pomocniKveriPoRobi(String trazenaRecLike, String tacnaRecLike, Set<String> kataloskiBrojevi, Set<Integer> robaId) {
-        dslContext.selectDistinct(ROBA.KATBR, ROBA.KATBRPRO, ROBA.ROBAID)
+    private boolean pomocniKveriPoRobi(String trazenaRecLike, String tacnaRecLike, Set<String> kataloskiBrojevi, Set<Integer> robaId) {
+        List<String> nazivi = new ArrayList<>();
+        dslContext.selectDistinct(ROBA.KATBR, ROBA.KATBRPRO, ROBA.ROBAID, ROBA.NAZIV)
                 .from(ROBA)
                 .where(
                         ROBA.KATBR.like(trazenaRecLike)
@@ -214,9 +215,20 @@ public class RobaJooqRepository {
                     if (rekord.component3() != null) {
                         robaId.add(rekord.component3());
                     }
+
+                    if(rekord.component4() != null) {
+                        nazivi.add(rekord.component4());
+                    }
                 });
         prodjiIPopraviKatBr(kataloskiBrojevi);
-
+        boolean pretragaJePoRecima = true;
+        String pretragaNaziv = tacnaRecLike.replace("%", "");
+        for(String naziv: nazivi) {
+            if(!naziv.contains(pretragaNaziv)) {
+                pretragaJePoRecima = false;
+            }
+        }
+        return pretragaJePoRecima;
     }
 
     private void pomocniKveriPoRobiOld(String trazenaRec, Set<String> kataloskiBrojevi) {

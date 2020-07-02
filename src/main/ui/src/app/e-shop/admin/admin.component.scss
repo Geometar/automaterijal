@@ -1,4 +1,5 @@
 @import "src/automaterijal-theme.scss";
+@import "src/css/shared/dugme.scss";
 .header-porduzbenice {
     background-image: url("/assets/slike/ui/pozadine/ffascikla.png");
     /* background-image: url('/assets/slike/ui/pozadine/roba.png'); */
@@ -23,6 +24,7 @@ h2 {
     font-weight: bold;
     width: 190px;
     text-align: left;
+    padding-top: 17px;
 }
 
 .ceo-div {
@@ -38,4 +40,26 @@ h2 {
 .dozvoljena-grupa-div {
     width: 100%;
     text-align: right;
+    padding-top: 9px;
+}
+.d-grupa-glavni-div:hover {
+    color: $automaterijal-accent-green-50;
+}
+
+.d-grupa-glavni-div {
+    height: 55px;
+    border-bottom: 1px solid black;
+}
+
+.izbrisi-dugme-div {
+    background-color: $automaterijal-accent-red-50;
+    width: 90px;
+}
+
+.dugme-dodaj {
+    margin-top: 10px;
+}
+
+.centriraj {
+    text-align: center;
 }
