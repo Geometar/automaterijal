@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { AppUtilsService } from '../utils/app-utils.service';
 import { timeoutWith, catchError, map } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { Grupa } from '../model/dto';
 
 
 const DOMAIN_URL = environment.baseUrl + '/api';
@@ -33,13 +34,41 @@ export class AdminServiceService {
         catchError((error: any) => throwError(error)));
   }
 
-  public vratiSveUlogovanePartnere() {
-    const fullUrl = DOMAIN_URL + ADMIN_UTL + '/sesije';
+  public vratiSveDozvoljeneGrupe() {
+    const fullUrl = DOMAIN_URL + ADMIN_UTL + '/dozvoljene_grupe';
     return this.http
       .get(fullUrl)
       .pipe(
         timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
         catchError((error: any) => throwError(error)));
+  }
+
+  public izbrisiDozvoljenuGrupu(grupaId: string) {
+    const fullUrl = DOMAIN_URL + ADMIN_UTL + '/dozvoljene_grupe' + '/' + grupaId;
+    return this.http
+      .delete(fullUrl)
+      .pipe(
+        timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
+        catchError((error: any) => throwError(error)));
+  }
+
+  public vratiSveGrupe() {
+    const fullUrl = DOMAIN_URL + ADMIN_UTL + '/grupe';
+    return this.http
+      .get(fullUrl)
+      .pipe(
+        timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
+        catchError((error: any) => throwError(error)));
+  }
+
+  public dodajGrupu(grupa: Grupa) {
+    const fullUrl = DOMAIN_URL + ADMIN_UTL + '/dozvoljene_grupe';
+    return this.http
+      .post(fullUrl, grupa)
+      .pipe(
+        timeoutWith(TIMEOUT, throwError(TIMEOUT_ERROR)),
+        catchError((error: any) => throwError(error)));
+
   }
 
 }

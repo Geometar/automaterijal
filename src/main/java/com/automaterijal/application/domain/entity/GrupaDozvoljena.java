@@ -15,7 +15,8 @@ import javax.persistence.Table;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class GrupaDozvoljena {
     @Id
-    String grupaId;
+    @Column(name = "grupaId")
+    String grupaid;
     @Column
     String naziv;
 }

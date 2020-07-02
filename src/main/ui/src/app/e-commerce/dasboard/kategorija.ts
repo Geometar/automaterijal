@@ -112,26 +112,19 @@ export class Konastante {
         vr.urlSlikePozadina = slikePozadine + 'victor-reinz.png';
         this.brendovi.push(vr);
 
-        const ks = new Brend();
-        ks.ime = 'Kolbenschmidt';
-        ks.url = txtUrl + 'kolb.txt';
-        ks.urlSlikeLogo = slikeLogo + 'ks.png';
-        ks.urlSlikePozadina = slikePozadine + 'ks.png';
-        this.brendovi.push(ks);
-
         const pier = new Brend();
-        pier.ime = 'Pierburg';
+        pier.ime = 'Motor Service';
         pier.url = txtUrl + 'pier.txt';
         pier.urlSlikeLogo = slikeLogo + 'pirb.png';
         pier.urlSlikePozadina = slikePozadine + 'pb.png';
         this.brendovi.push(pier);
 
-        const mm = new Brend();
-        mm.ime = 'Magneti Marreli';
-        mm.url = txtUrl + 'mm.txt';
-        mm.urlSlikeLogo = slikeLogo + 'mm.png';
-        mm.urlSlikePozadina = slikePozadine + 'magneti-marelli.png';
-        this.brendovi.push(mm);
+        const bottari = new Brend();
+        bottari.ime = 'Magneti Marreli';
+        bottari.url = txtUrl + 'mm.txt';
+        bottari.urlSlikeLogo = slikeLogo + 'bottari.png';
+        bottari.urlSlikePozadina = slikePozadine + 'magneti-marelli.png';
+        this.brendovi.push(bottari);
 
         const bp = new Brend();
         bp.ime = 'Blue Print';
@@ -139,5 +132,12 @@ export class Konastante {
         bp.urlSlikeLogo = slikeLogo + 'bp.png';
         bp.urlSlikePozadina = slikePozadine + 'blueprint.png';
         this.brendovi.push(bp);
+
+        const wix = new Brend();
+        wix.ime = 'Wix';
+        wix.url = txtUrl + 'bp.txt';
+        wix.urlSlikeLogo = slikeLogo + 'wix.png';
+        wix.urlSlikePozadina = slikePozadine + 'wix.png';
+        this.brendovi.push(wix);
     }
 }

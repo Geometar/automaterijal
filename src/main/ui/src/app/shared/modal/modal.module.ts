@@ -15,6 +15,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MaterialModule } from '../material/material.module';
 import { SharedMagacinModule } from 'src/app/e-shop/magacin/shared-components/shared-magacin.module';
 import { DashboardPromenaRobeComponent } from './dashboard-promena-robe/dashboard-promena-robe.component';
+import { ZabranjenaRobaModalComponent } from './zabranjena-roba-modal/zabranjena-roba-modal.component';
+import { GrupeModalComponent } from './grupe-modal/grupe-modal.component';
 
 @NgModule({
   imports: [
@@ -30,16 +32,21 @@ import { DashboardPromenaRobeComponent } from './dashboard-promena-robe/dashboar
     IzmenaKolicineModalComponent,
     LogoutModalComponent,
     UspesnoPorucivanjeModalComponent,
+    ZabranjenaRobaModalComponent,
     NeuspesnoPorucivanjeModalComponent,
     PorukaModalComponent,
     BrendoviModalComponent,
     DashboardPromenaRobeComponent,
+    GrupeModalComponent,
     UpitModalComponent,
     SesijaIsteklaModalComponent,
     PrvoLogovanjeModalComponent,
-    DashboardPromenaRobeComponent],
+    DashboardPromenaRobeComponent,
+    ZabranjenaRobaModalComponent,
+    GrupeModalComponent],
   entryComponents: [
     ZaboravljenaSifraModalComponent,
+    ZabranjenaRobaModalComponent,
     RegistracijaModalComponent,
     IzmenaKolicineModalComponent,
     LogoutModalComponent,
@@ -48,6 +55,7 @@ import { DashboardPromenaRobeComponent } from './dashboard-promena-robe/dashboar
     PorukaModalComponent,
     BrendoviModalComponent,
     DashboardPromenaRobeComponent,
+    GrupeModalComponent,
     UpitModalComponent,
     SesijaIsteklaModalComponent,
     PrvoLogovanjeModalComponent]

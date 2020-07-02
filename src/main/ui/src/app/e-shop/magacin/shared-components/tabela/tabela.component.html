@@ -111,8 +111,8 @@
           </div>
           <div class="bd-highlight">
             <div class="d-flex flex-column justify-content-center text-center">
-              <div class="dugme-mobilni" *ngIf="roba.stanje > 0 && partnerLogovan">
-                <button mat-raised-button class="dugme button-glavni-100" (click)='dodajUKorpu(roba)'>
+              <div class="dugme-mobilni" *ngIf="roba.stanje > 0">
+                <button mat-raised-button [class.button-zuto-10]="!partner && !roba.dozvoljenoZaAnonimusa" class="dugme button-glavni-100" (click)='dodajUKorpu(roba)'>
                   <i class="material-icons">
                     add_shopping_cart
                   </i>

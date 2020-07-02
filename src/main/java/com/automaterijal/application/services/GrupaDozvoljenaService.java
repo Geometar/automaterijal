@@ -23,10 +23,15 @@ public class GrupaDozvoljenaService {
     @NonNull
     final GrupaDozvoljenaRepository repository;
 
-    public List<String> pronadjiSveDozvoljeneGrupe() {
-        return repository.findAll()
-                .stream()
-                .map(GrupaDozvoljena::getGrupaId)
-                .collect(Collectors.toList());
+    public List<GrupaDozvoljena> pronadjiSveDozvoljeneGrupe() {
+        return repository.findAll();
+    }
+
+    public void izbrisiGrupu(String grupaId) {
+        repository.deleteById(grupaId);
+    }
+
+    public void dodajGrupu(GrupaDozvoljena grupaDozvoljena) {
+        repository.save(grupaDozvoljena);
     }
 }

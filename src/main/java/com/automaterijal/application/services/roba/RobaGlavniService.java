@@ -5,6 +5,7 @@ import com.automaterijal.application.domain.dto.MagacinDto;
 import com.automaterijal.application.domain.dto.RobaDto;
 import com.automaterijal.application.domain.dto.RobaTehnickiOpisDto;
 import com.automaterijal.application.domain.dto.robadetalji.RobaDetaljiDto;
+import com.automaterijal.application.domain.entity.GrupaDozvoljena;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.PodGrupa;
 import com.automaterijal.application.domain.entity.roba.Roba;
@@ -164,7 +165,11 @@ public class RobaGlavniService {
             robaDto.setTehnickiOpis(tehnickiOpisi);
         }
 
-        if (partner == null && !grupaDozvoljenaService.pronadjiSveDozvoljeneGrupe().contains(robaDto.getGrupa())) {
+        List<String> dozvoljeneGrupeKljucevi = grupaDozvoljenaService.pronadjiSveDozvoljeneGrupe().stream()
+                .map(GrupaDozvoljena::getGrupaid)
+                .collect(Collectors.toList());
+
+        if (!dozvoljeneGrupeKljucevi.contains(robaDto.getGrupa())) {
             robaDto.setDozvoljenoZaAnonimusa(false);
         } else {
             robaDto.setDozvoljenoZaAnonimusa(true);
@@ -205,7 +210,11 @@ public class RobaGlavniService {
                 detaljnoDto.setSlika(SLIKA_NIJE_DOSTUPNA_URL);
             }
 
-            if (partner == null && !grupaDozvoljenaService.pronadjiSveDozvoljeneGrupe().contains(detaljnoDto.getGrupa())) {
+            List<String> dozvoljeneGrupeKljucevi = grupaDozvoljenaService.pronadjiSveDozvoljeneGrupe().stream()
+                    .map(GrupaDozvoljena::getGrupaid)
+                    .collect(Collectors.toList());
+
+            if (partner == null && !dozvoljeneGrupeKljucevi.contains(detaljnoDto.getGrupa())) {
                 detaljnoDto.setDozvoljenoZaAnonimusa(false);
             } else {
                 detaljnoDto.setDozvoljenoZaAnonimusa(true);

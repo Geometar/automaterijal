@@ -24,6 +24,7 @@ public class AdminService {
 
     @NonNull
     final PartnerService partnerService;
+
     @NonNull
     final
     SessionRegistry sessionRegistry;
@@ -32,7 +33,7 @@ public class AdminService {
         return partnerService.vratiLogovanjePartnera(page, pageSize);
     }
 
-    public List<String> uzmiKorisnikeIzSesije() {
+    public List<String> uzmiSveDozvoljeneGrupe() {
         List<String> ulogovaniPartneri = new ArrayList<>();
         sessionRegistry.getAllPrincipals()
                 .stream()

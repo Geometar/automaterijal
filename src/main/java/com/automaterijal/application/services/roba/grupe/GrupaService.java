@@ -39,4 +39,8 @@ public class GrupaService {
         }
         return retVal;
     }
+
+    public List<Grupa> vratiSveGrupe() {
+        return grupaRepository.findAllByOrderByNaziv();
+    }
 }

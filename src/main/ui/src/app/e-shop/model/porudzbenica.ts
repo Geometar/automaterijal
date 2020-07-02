@@ -20,9 +20,10 @@ export class RobaKorpa {
     public cenaKom: number;
     public stanje: number;
     public cenaUkupno: number;
+    public zaAnonimusa: boolean;
 
     constructor(robaid: number, katbr: string, naziv: string, proizvodjac: Proizvodjac,
-         kolicina: number, rabat: number, cena: number, stanje: number, slikaId: string) {
+         kolicina: number, rabat: number, cena: number, stanje: number, slikaId: string, zaAnonimusa: boolean) {
         this.robaid = robaid;
         this.katbr = katbr;
         this.naziv = naziv;
@@ -33,6 +34,7 @@ export class RobaKorpa {
         this.cenaUkupno = cena * kolicina;
         this.stanje = stanje;
         this.slikaId = slikaId;
+        this.zaAnonimusa = zaAnonimusa;
     }
 }
 

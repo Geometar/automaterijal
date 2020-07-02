@@ -44,7 +44,7 @@ export class AppUtilsService {
     }
     const robaKorpa =
       new RobaKorpa(roba.robaid, roba.katbr, roba.naziv, roba.proizvodjac,
-        roba.kolicina, roba.rabat, roba.cena, roba.stanje, roba.slika);
+        roba.kolicina, roba.rabat, roba.cena, roba.stanje, roba.slika, roba.dozvoljenoZaAnonimusa);
     this.dataService.ubaciUKorpu(robaKorpa);
     return snackBarPoruka;
   }

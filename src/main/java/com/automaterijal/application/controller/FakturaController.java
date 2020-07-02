@@ -70,10 +70,6 @@ public class FakturaController {
             partner = partnerService.pronadjiPartneraPoId(850);
         }
 
-        if (partner == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-
         log.info("Porudzbenica podneta: korisnik {}, iznos narucen = {}, broj stavki = {}",
                 partner.getNaziv(),
                 fakturaDto.getIznosNarucen(),

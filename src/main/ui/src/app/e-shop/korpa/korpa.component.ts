@@ -234,17 +234,34 @@ export class KorpaComponent implements OnInit, OnDestroy {
         return;
       }
     }
-    if (this.partner) {
-      this.popuniNapomenu();
-      this.korpa.nacinIsporuke = this.izabranNacinPrevoza.id;
-      this.korpa.nacinPlacanja = this.izabranNacinPlacanja.id;
-    } else {
-      this.korpa.nacinIsporuke = 2;
-      this.korpa.nacinPlacanja = 2;
-      this.popuniNapomenuAnonimus();
-    }
-    this.korpaUFakturu();
-    this.submitujFakturu();
+
+    this.loginServis.vratiUlogovanogKorisnika(false)
+      .pipe(takeWhile(() => this.alive))
+      .subscribe(partner => {
+        let posaljiPorudzbenicu = true;
+        if (this.partner != null && partner == null) {
+          posaljiPorudzbenicu = false;
+        }
+        if (partner) {
+          this.popuniNapomenu();
+          this.korpa.nacinIsporuke = this.izabranNacinPrevoza.id;
+          this.korpa.nacinPlacanja = this.izabranNacinPlacanja.id;
+        } else {
+          this.korpa.roba.filter((robaKorpa: RobaKorpa) => !robaKorpa.zaAnonimusa).forEach((roba: RobaKorpa) => {
+            posaljiPorudzbenicu = false;
+            this.router.navigate(['/login']);
+            this.loginServis.izbaciPartnerIzSesije();
+            return;
+          });
+          this.korpa.nacinIsporuke = 2;
+          this.korpa.nacinPlacanja = 2;
+          this.popuniNapomenuAnonimus();
+        }
+        if (posaljiPorudzbenicu) {
+          this.korpaUFakturu();
+          this.submitujFakturu();
+        }
+      });
   }
 
   submitujFakturu() {

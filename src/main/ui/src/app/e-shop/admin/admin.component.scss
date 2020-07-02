@@ -1,3 +1,4 @@
+@import "src/automaterijal-theme.scss";
 .header-porduzbenice {
     background-image: url("/assets/slike/ui/pozadine/ffascikla.png");
     /* background-image: url('/assets/slike/ui/pozadine/roba.png'); */
@@ -17,8 +18,11 @@ h2 {
 }
 
 .p-partner {
-    text-align: center;
-    color: blue;
+    color: $automaterijal-primary-100;
+    font-size: 0.9rem;
+    font-weight: bold;
+    width: 190px;
+    text-align: left;
 }
 
 .ceo-div {
@@ -29,4 +33,9 @@ h2 {
 
 .tabela-div {
     max-width: 472px;
+}
+
+.dozvoljena-grupa-div {
+    width: 100%;
+    text-align: right;
 }

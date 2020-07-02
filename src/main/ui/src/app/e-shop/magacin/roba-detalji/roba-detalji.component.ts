@@ -12,6 +12,8 @@ import { NotifikacijaService } from 'src/app/shared/service/notifikacija.service
 import { MatSnackBarKlase } from 'src/app/shared/model/konstante';
 import { Location } from '@angular/common';
 import { Korpa } from 'src/app/e-shop/model/porudzbenica';
+import { MatDialog } from '@angular/material/dialog';
+import { ZabranjenaRobaModalComponent } from 'src/app/shared/modal/zabranjena-roba-modal/zabranjena-roba-modal.component';
 
 @Component({
   selector: 'app-roba-detalji',
@@ -45,6 +47,7 @@ export class RobaDetaljiComponent implements OnInit, OnDestroy {
     private notifikacijaServis: NotifikacijaService,
     private loginServis: LoginService,
     private router: Router,
+    public dialog: MatDialog,
     private location: Location,
     private route: ActivatedRoute
   ) { }
@@ -141,18 +144,24 @@ export class RobaDetaljiComponent implements OnInit, OnDestroy {
   }
 
   dodajUKorpu(roba: Roba) {
-    this.loginServis.vratiUlogovanogKorisnika(false)
-      .pipe(takeWhile(() => this.alive))
-      .subscribe(partner => {
-        if (partner) {
-          const snackBarPoruka = this.utilsService.dodajUKorpu(roba);
-          this.notifikacijaServis.notify(snackBarPoruka, MatSnackBarKlase.Zelena);
-          this.utilsService.izbrisiRobuSaStanja([this.robaDetalji], roba);
-        } else {
-          this.router.navigate(['/login']);
-          this.loginServis.izbaciPartnerIzSesije();
-        }
+    if (this.partner || roba.dozvoljenoZaAnonimusa) {
+      this.loginServis.vratiUlogovanogKorisnika(false)
+        .pipe(takeWhile(() => this.alive))
+        .subscribe(partner => {
+          if (partner == null && this.partner != null) {
+            this.router.navigate(['/login']);
+            this.loginServis.izbaciPartnerIzSesije();
+          } else {
+            const snackBarPoruka = this.utilsService.dodajUKorpu(roba);
+            this.notifikacijaServis.notify(snackBarPoruka, MatSnackBarKlase.Zelena);
+            this.utilsService.izbrisiRobuSaStanja([this.robaDetalji], roba);
+          }
+        });
+    } else {
+      this.dialog.open(ZabranjenaRobaModalComponent, {
+        width: '700px'
       });
+    }
   }
 
   popuniAplikacije() {

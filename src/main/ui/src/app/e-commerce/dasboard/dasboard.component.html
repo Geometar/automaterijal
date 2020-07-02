@@ -1,5 +1,5 @@
 <main>
-  <section class="d-flex flex-xl-row-reverse flex-column centar skecija-mala">
+  <section class="d-flex flex-xl-row-reverse flex-column centar sekcija-mala">
     <div class="pomeri-levo">
       <i class="material-icons velicina-ikone">
         place
@@ -152,7 +152,7 @@
             <div class="bd-highlight">
               <div *ngIf="roba.stanje > 0" class="d-flex flex-row justify-content-center text-center">
                 <div class="dugme-mobilni">
-                  <button mat-raised-button class="dugme button-glavni-100" (click)='dodajUKorpuPonuda(roba)'>
+                  <button mat-raised-button [class.button-zuto-10]="!partner && !roba.dozvoljenoZaAnonimusa"  class="dugme button-glavni-100" (click)='dodajUKorpuPonuda(roba)'>
                     Dodaj u korpu
                     <i class="material-icons">
                       add_shopping_cart
@@ -285,7 +285,7 @@
             <div class="bd-highlight">
               <div *ngIf="roba.stanje > 0" class="d-flex flex-row justify-content-center text-center">
                 <div class="dugme-mobilni">
-                  <button mat-raised-button class="dugme" (click)='dodajUKorpuNajbolje(roba)'>
+                  <button mat-raised-button class="dugme" [class.button-zuto-10]="!partner && !roba.dozvoljenoZaAnonimusa"  (click)='dodajUKorpuNajbolje(roba)'>
                     Dodaj u korpu
                     <i class="material-icons">
                       add_shopping_cart

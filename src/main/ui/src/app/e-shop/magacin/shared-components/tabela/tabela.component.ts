@@ -8,6 +8,9 @@ import { DataService } from 'src/app/e-shop/service/data/data.service';
 import { Korpa } from 'src/app/e-shop/model/porudzbenica';
 import { Router } from '@angular/router';
 import { takeWhile } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { ZaboravljenaSifraModalComponent } from 'src/app/shared/modal/zaboravljena-sifra-modal/zaboravljena-sifra-modal.component';
+import { ZabranjenaRobaModalComponent } from 'src/app/shared/modal/zabranjena-roba-modal/zabranjena-roba-modal.component';
 
 @Component({
   selector: 'app-tabela',
@@ -47,6 +50,7 @@ export class TabelaComponent implements OnInit, OnDestroy, OnChanges {
     private loginServis: LoginService,
     private notifikacijaServis: NotifikacijaService,
     private dataService: DataService,
+    public dialog: MatDialog,
     private router: Router
   ) {
   }
@@ -113,18 +117,24 @@ export class TabelaComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   dodajUKorpu(roba: Roba) {
-    this.loginServis.vratiUlogovanogKorisnika(false)
-      .pipe(takeWhile(() => this.alive))
-      .subscribe(partner => {
-        if (partner) {
-          const snackBarPoruka = this.utilsService.dodajUKorpu(roba);
-          this.notifikacijaServis.notify(snackBarPoruka, MatSnackBarKlase.Zelena);
-          this.utilsService.izbrisiRobuSaStanja(this.roba, roba);
-        } else {
-          this.router.navigate(['/login']);
-          this.loginServis.izbaciPartnerIzSesije();
-        }
+    if (this.partner || roba.dozvoljenoZaAnonimusa) {
+      this.loginServis.vratiUlogovanogKorisnika(false)
+        .pipe(takeWhile(() => this.alive))
+        .subscribe(partner => {
+          if (partner == null && this.partner != null) {
+            this.router.navigate(['/login']);
+            this.loginServis.izbaciPartnerIzSesije();
+          } else {
+            const snackBarPoruka = this.utilsService.dodajUKorpu(roba);
+            this.notifikacijaServis.notify(snackBarPoruka, MatSnackBarKlase.Zelena);
+            this.utilsService.izbrisiRobuSaStanja(this.roba, roba);
+          }
+        });
+    } else {
+      this.dialog.open(ZabranjenaRobaModalComponent, {
+        width: '700px'
       });
+    }
   }
 
   detaljiRobe(robaId: string) {

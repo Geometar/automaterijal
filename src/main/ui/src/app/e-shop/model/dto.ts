@@ -111,11 +111,17 @@ export class Magacin {
     public proizvodjaci: Proizvodjac[];
 }
 
+export class Grupa {
+    grupaid: string;
+    naziv: string;
+}
+
 export class Roba {
     public robaid: number;
     public slika: string;
     public katbr: string;
     public katbrpro: string;
+    public dozvoljenoZaAnonimusa: boolean;
     public naziv: string;
     public tekst: string;
     public stanje: number;

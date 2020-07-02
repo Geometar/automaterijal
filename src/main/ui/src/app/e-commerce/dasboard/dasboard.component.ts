@@ -12,6 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { BrendoviModalComponent } from 'src/app/shared/modal/brendovi-modal/brendovi-modal.component';
 import { DashboardPromenaRobeComponent } from 'src/app/shared/modal/dashboard-promena-robe/dashboard-promena-robe.component';
 import { LoginService } from 'src/app/e-shop/service/login.service';
+import { ZabranjenaRobaModalComponent } from 'src/app/shared/modal/zabranjena-roba-modal/zabranjena-roba-modal.component';
 
 @Component({
   selector: 'app-dasboard',
@@ -91,15 +92,27 @@ export class DasboardComponent implements OnInit, OnDestroy {
   }
 
   dodajUKorpuPonuda(roba: Roba) {
-    const snackBarPoruka = this.utilsService.dodajUKorpu(roba);
-    this.notifikacijaServis.notify(snackBarPoruka, MatSnackBarKlase.Zelena);
-    this.utilsService.izbrisiRobuSaStanja(this.robaPonuda, roba);
+    if (this.partner || roba.dozvoljenoZaAnonimusa) {
+      const snackBarPoruka = this.utilsService.dodajUKorpu(roba);
+      this.notifikacijaServis.notify(snackBarPoruka, MatSnackBarKlase.Zelena);
+      this.utilsService.izbrisiRobuSaStanja(this.robaPonuda, roba);
+    } else {
+      this.dialog.open(ZabranjenaRobaModalComponent, {
+        width: '700px'
+      });
+    }
   }
 
   dodajUKorpuNajbolje(roba: Roba) {
-    const snackBarPoruka = this.utilsService.dodajUKorpu(roba);
-    this.notifikacijaServis.notify(snackBarPoruka, MatSnackBarKlase.Zelena);
-    this.utilsService.izbrisiRobuSaStanja(this.robaNajbolje, roba);
+    if (this.partner || roba.dozvoljenoZaAnonimusa) {
+      const snackBarPoruka = this.utilsService.dodajUKorpu(roba);
+      this.notifikacijaServis.notify(snackBarPoruka, MatSnackBarKlase.Zelena);
+      this.utilsService.izbrisiRobuSaStanja(this.robaNajbolje, roba);
+    } else {
+      this.dialog.open(ZabranjenaRobaModalComponent, {
+        width: '700px'
+      });
+    }
   }
 
   oduzmiOdKolicine(roba: Roba) {
@@ -161,7 +174,7 @@ export class DasboardComponent implements OnInit, OnDestroy {
           }
         });
         if (robaIdPostoji) {
-          this.notifikacijaServis.notify(novaRobaId + ' vec postoji na stranici' , MatSnackBarKlase.Crvena);
+          this.notifikacijaServis.notify(novaRobaId + ' vec postoji na stranici', MatSnackBarKlase.Crvena);
         } else {
           this.servis.promeniDashboardRodbu(roba.robaid, novaRobaId, this.IZDVAJAMO_IZ_PONUDE)
             .pipe(takeWhile(() => this.alive))
@@ -195,7 +208,7 @@ export class DasboardComponent implements OnInit, OnDestroy {
           }
         });
         if (robaIdPostoji) {
-          this.notifikacijaServis.notify(novaRobaId + ' vec postoji na stranici' , MatSnackBarKlase.Crvena);
+          this.notifikacijaServis.notify(novaRobaId + ' vec postoji na stranici', MatSnackBarKlase.Crvena);
         } else {
           this.servis.promeniDashboardRodbu(roba.robaid, novaRobaId, this.NAJBOLJE_PRODAVANO)
             .pipe(takeWhile(() => this.alive))
