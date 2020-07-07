@@ -70,7 +70,7 @@ img:focus {
   cursor: pointer;
 }
 
-.mat-card-footer { 
+.mat-card-footer {
   width: 239px;
 }
 
@@ -85,4 +85,90 @@ img:focus {
   max-width: 1200px;
   margin-right: auto;
   margin-left: auto;
+}
+
+.slika-okvir {
+  
+  height: 150px;
+  padding-top: 10px;
+}
+
+@media screen and (max-width: 1480px) {
+  .cover {
+    background-size: 140%;
+    height: 100%;
+  }
+
+  img {
+    max-width: 145px;
+  }
+
+  .mat-card-footer {
+    width: 100%;
+  }
+
+  .kartica {
+    width: 175px;
+  }
+  .podkategorija {
+    width: 170px;
+  }
+
+  .slika-okvir {
+    height: 150px;
+    padding-top: 15px;
+  }
+  .naslov-kartice {
+    font-size: 0.95rem;
+  }
+}
+
+@media screen and (max-width: 1150px) {
+  .naslov {
+    max-width: 900px;
+  }
+
+  .prva-kategorija {
+    margin-top: 100px;
+  }
+
+  .kartica {
+    width: 150px;
+  }
+
+  img {
+    max-width: 120px;
+  }
+
+  .podkategorija {
+    width: 150px;
+  }
+
+  .dropdown-ikona {
+    left: 10px;
+  }
+
+  .naslov-kartice {
+    font-size: 0.9rem !important;
+    width: 150px;
+  }
+
+  .mat-card-footer {
+    width: 155px;
+  }
+
+  .slika-okvir {
+    height: 150px;
+    padding-top: 15px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .prva-kategorija {
+    margin-top: 80px;
+  }
+
+  .cover {
+    background-image: none;
+  }
 }
