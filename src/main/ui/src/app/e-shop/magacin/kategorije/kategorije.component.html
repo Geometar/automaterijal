@@ -1,77 +1,79 @@
 <main>
-    <div  class="cover">
-    <div class="sektor prva-kategorija">
-        <mat-card class="naslov">
-            <h1>Maziva</h1>
-        </mat-card>
-        <div class="d-flex sektor flex-wrap">
-            <div *ngFor="let kategorija of motornaKategorija">
-                <mat-card class="kartica" mat-button>
-                    <mat-card-header [routerLink]="[kategorija.url | lowercase]">
-                        <mat-card-title class="naslov-kartice">{{kategorija.naslov}}</mat-card-title>
-                    </mat-card-header>
-                    <div class="slika-okvir">
-                        <img [routerLink]="[kategorija.url | lowercase]" mat-card-image src="{{kategorija.slikaId}}">
-                    </div>
-                    <mat-card-footer>
-                        <div *ngIf="kategorija.podkategorije">
-                            <button mat-button class="podkategorija" [matMenuTriggerFor]="menu">Podkategorija
-                                <span class="dropdown-ikona material-icons">
-                                    arrow_drop_down
-                                </span>
-                            </button>
-                            <mat-menu #menu="matMenu">
-                                <button mat-menu-item (click)="izabranaPodKategorija(kategorija, podkategorija)"
-                                    *ngFor="let podkategorija of kategorija.podkategorije">
-                                    {{podkategorija}}
+    <div class="cover">
+        <div class="sektor prva-kategorija">
+            <mat-card class="naslov">
+                <h1>Maziva</h1>
+            </mat-card>
+            <div class="d-flex sektor flex-wrap">
+                <div *ngFor="let kategorija of motornaKategorija">
+                    <mat-card class="kartica" mat-button>
+                        <mat-card-header [routerLink]="[kategorija.url | lowercase]">
+                            <mat-card-title class="naslov-kartice">{{kategorija.naslov}}</mat-card-title>
+                        </mat-card-header>
+                        <div class="slika-okvir">
+                            <img [routerLink]="[kategorija.url | lowercase]" mat-card-image
+                                src="{{kategorija.slikaId}}">
+                        </div>
+                        <mat-card-footer>
+                            <div *ngIf="kategorija.podkategorije">
+                                <button mat-button class="podkategorija" [matMenuTriggerFor]="menu">Podkategorija
+                                    <span class="dropdown-ikona material-icons">
+                                        arrow_drop_down
+                                    </span>
                                 </button>
-                            </mat-menu>
+                                <mat-menu #menu="matMenu">
+                                    <button mat-menu-item (click)="izabranaPodKategorija(kategorija, podkategorija)"
+                                        *ngFor="let podkategorija of kategorija.podkategorije">
+                                        {{podkategorija}}
+                                    </button>
+                                </mat-menu>
+                            </div>
+                            <div [routerLink]="[kategorija.url | lowercase]" *ngIf="!kategorija.podkategorije">
+                                <button disabled mat-button class="podkategorija">Podkategorija
+                                </button>
+                            </div>
+                        </mat-card-footer>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+
+        <div class="sektor">
+            <mat-card class="naslov">
+                <h1>Maziva</h1>
+            </mat-card>
+            <div class="d-flex sektor flex-wrap">
+                <div *ngFor="let kategorija of motornaKategorija">
+                    <mat-card class="kartica" mat-button>
+                        <mat-card-header [routerLink]="[kategorija.url | lowercase]">
+                            <mat-card-title class="naslov-kartice">{{kategorija.naslov}}</mat-card-title>
+                        </mat-card-header>
+                        <div class="slika-okvir">
+                            <img [routerLink]="[kategorija.url | lowercase]" mat-card-image
+                                src="{{kategorija.slikaId}}">
                         </div>
-                        <div [routerLink]="[kategorija.url | lowercase]" *ngIf="!kategorija.podkategorije">
-                            <button disabled mat-button class="podkategorija">Podkategorija
-                            </button>
-                        </div>
-                    </mat-card-footer>
-                </mat-card>
+                        <mat-card-footer>
+                            <div *ngIf="kategorija.podkategorije">
+                                <button mat-button class="podkategorija" [matMenuTriggerFor]="menu">Podkategorija
+                                    <span class="dropdown-ikona material-icons">
+                                        arrow_drop_down
+                                    </span>
+                                </button>
+                                <mat-menu #menu="matMenu">
+                                    <button mat-menu-item (click)="izabranaPodKategorija(kategorija, podkategorija)"
+                                        *ngFor="let podkategorija of kategorija.podkategorije">
+                                        {{podkategorija}}
+                                    </button>
+                                </mat-menu>
+                            </div>
+                            <div [routerLink]="[kategorija.url | lowercase]" *ngIf="!kategorija.podkategorije">
+                                <button disabled mat-button class="podkategorija">Podkategorija
+                                </button>
+                            </div>
+                        </mat-card-footer>
+                    </mat-card>
+                </div>
             </div>
         </div>
     </div>
-    
-    <div class="sektor">
-        <mat-card class="naslov">
-            <h1>Maziva</h1>
-        </mat-card>
-        <div class="d-flex sektor flex-wrap">
-            <div *ngFor="let kategorija of motornaKategorija">
-                <mat-card class="kartica" mat-button>
-                    <mat-card-header [routerLink]="[kategorija.url | lowercase]">
-                        <mat-card-title class="naslov-kartice">{{kategorija.naslov}}</mat-card-title>
-                    </mat-card-header>
-                    <div class="slika-okvir">
-                        <img [routerLink]="[kategorija.url | lowercase]" mat-card-image src="{{kategorija.slikaId}}">
-                    </div>
-                    <mat-card-footer>
-                        <div *ngIf="kategorija.podkategorije">
-                            <button mat-button class="podkategorija" [matMenuTriggerFor]="menu">Podkategorija
-                                <span class="dropdown-ikona material-icons">
-                                    arrow_drop_down
-                                </span>
-                            </button>
-                            <mat-menu #menu="matMenu">
-                                <button mat-menu-item (click)="izabranaPodKategorija(kategorija, podkategorija)"
-                                    *ngFor="let podkategorija of kategorija.podkategorije">
-                                    {{podkategorija}}
-                                </button>
-                            </mat-menu>
-                        </div>
-                        <div [routerLink]="[kategorija.url | lowercase]" *ngIf="!kategorija.podkategorije">
-                            <button disabled mat-button class="podkategorija">Podkategorija
-                            </button>
-                        </div>
-                    </mat-card-footer>
-                </mat-card>
-            </div>
-        </div>
-    </div>
-</div>
 </main>

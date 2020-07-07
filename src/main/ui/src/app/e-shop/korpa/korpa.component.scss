@@ -206,9 +206,10 @@ label {
   background-color: white;
   margin: 5px;
   width: 55%;
-  padding:  10px;
+  padding: 10px;
   text-align: center;
-  box-shadow: 2px 3px 6px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: 2px 3px 6px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14),
+    0px 1px 3px 0px rgba(0, 0, 0, 0.12);
 }
 
 .drugi-input {
@@ -240,17 +241,32 @@ label {
 }
 
 .telefon {
- color: $automaterijal-primary-100
+  color: $automaterijal-primary-100;
 }
 
 .upozorenje-ikona {
   color: $automaterijal-accent-red-50;
 }
 
-
 @media only screen and (max-width: 1200px) {
   .granice {
     width: 99%;
+  }
+
+  .anoniman-kupac {
+    width: 90%;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  .upozorenje-anoniman {
+    width: 90%;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  .sirina-cena {
+    width: 90%;
+    margin-right: auto;
+    margin-left: auto;
   }
 }
 
@@ -315,6 +331,24 @@ label {
     right: -60px;
     width: 300px;
     text-align: left;
+  }
+}
+@media screen and (max-width: 670px) {
+  .anoniman-kupac {
+    width: 95%;
+    margin-right: auto;
+    margin-left: auto;
+  }
+}
+@media screen and (max-width: 576px) {
+  .anoniman-kupac {
+    max-width: 350px;
+  }
+  .drugi-input {
+    margin-left: 0px;
+  }
+  .anoniman-napomena {
+    width: 90%;
   }
 }
 @media screen and (max-width: 330px) {
