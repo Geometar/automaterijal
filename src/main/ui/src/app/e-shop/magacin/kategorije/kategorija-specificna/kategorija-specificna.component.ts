@@ -41,11 +41,24 @@ export class KategorijaSpecificnaComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private dataService: DataService,
     private robaServis: RobaService,
+    private loginServis: LoginService,
     private router: Router,
     private loginService: LoginService
   ) { }
 
   ngOnInit() {
+    this.loginServis.ulogovaniPartner
+      .pipe(takeWhile(() => this.alive))
+      .subscribe(partnerFE => {
+        this.loginServis.vratiUlogovanogKorisnika(false)
+          .pipe(takeWhile(() => this.alive))
+          .subscribe(partnerBE => {
+            if (partnerFE != null && partnerBE == null) {
+              this.loginServis.izbaciPartnerIzSesije();
+              this.router.navigate(['/login']);
+            }
+          });
+      });
     this.pronandjiRobu();
   }
 

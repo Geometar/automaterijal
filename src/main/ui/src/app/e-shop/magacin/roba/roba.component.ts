@@ -45,6 +45,18 @@ export class RobaComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.loginService.ulogovaniPartner
+      .pipe(takeWhile(() => this.alive))
+      .subscribe(partnerFE => {
+        this.loginService.vratiUlogovanogKorisnika(false)
+          .pipe(takeWhile(() => this.alive))
+          .subscribe(partnerBE => {
+            if (partnerFE != null && partnerBE == null) {
+              this.loginService.izbaciPartnerIzSesije();
+              this.router.navigate(['/login']);
+            }
+          });
+      });
     this.uzmiParametreIzUrla();
   }
 

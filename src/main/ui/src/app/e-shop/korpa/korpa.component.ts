@@ -71,9 +71,20 @@ export class KorpaComponent implements OnInit, OnDestroy {
     private notifikacija: NotifikacijaService) { }
 
   ngOnInit() {
+
     this.loginServis.ulogovaniPartner
       .pipe(takeWhile(() => this.alive))
-      .subscribe(partner => this.partner = partner);
+      .subscribe(partnerFE => {
+        this.partner = partnerFE;
+        this.loginServis.vratiUlogovanogKorisnika(false)
+          .pipe(takeWhile(() => this.alive))
+          .subscribe(partnerBE => {
+            if (partnerFE != null && partnerBE == null) {
+              this.loginServis.izbaciPartnerIzSesije();
+              this.router.navigate(['/login']);
+            }
+          });
+      });
     this.inicijalizujKorpu();
     this.innerWidth = window.innerWidth;
     this.changeSlideConfiguration();
@@ -94,9 +105,7 @@ export class KorpaComponent implements OnInit, OnDestroy {
   }
 
   inicijalizujKorpu() {
-    if (this.partner) {
-      this.vratiOpsteInformacije();
-    }
+    this.vratiOpsteInformacije();
     this.dataService.trenutnaKorpa
       .pipe(takeWhile(() => this.alive))
       .subscribe(korpa => {

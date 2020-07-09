@@ -1,4 +1,4 @@
-import { OnInit, Component, OnDestroy } from '@angular/core';
+import { OnInit, Component, OnDestroy, HostListener } from '@angular/core';
 import { DashboardService } from 'src/app/e-shop/service/dashboard.service';
 import { takeWhile } from 'rxjs/operators';
 import { Dashboard, Roba, Partner } from 'src/app/e-shop/model/dto';
@@ -32,6 +32,7 @@ export class DasboardComponent implements OnInit, OnDestroy {
   public kategorije: Kategorija[] = [];
   public brendovi: Brend[] = [];
   public partner: Partner;
+  public innerWidth: any;
 
   private IZDVAJAMO_IZ_PONUDE = 'IZDVAJAMO_IZ_PONUDE';
   private NAJBOLJE_PRODAVANO = 'NAJBOLJE_PRODAVANO';
@@ -45,13 +46,29 @@ export class DasboardComponent implements OnInit, OnDestroy {
     private router: Router) { }
 
   ngOnInit() {
+    this.innerWidth = window.innerWidth;
     this.loginServis.ulogovaniPartner
       .pipe(takeWhile(() => this.alive))
-      .subscribe(partner => this.partner = partner);
+      .subscribe(partnerFE => {
+        this.partner = partnerFE;
+        this.loginServis.vratiUlogovanogKorisnika(false)
+          .pipe(takeWhile(() => this.alive))
+          .subscribe(partnerBE => {
+            if (partnerFE != null && partnerBE == null) {
+              this.loginServis.izbaciPartnerIzSesije();
+              this.router.navigate(['/login']);
+            }
+          });
+      });
     this.inicijalniPodaci();
     this.izdvajamoIzPonude();
     this.najboljeProdavano();
     this.inijalizujKategorije();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.innerWidth = window.innerWidth;
   }
 
   inijalizujKategorije() {
@@ -75,6 +92,9 @@ export class DasboardComponent implements OnInit, OnDestroy {
       .pipe(takeWhile(() => this.alive))
       .subscribe((roba: Roba[]) => {
         this.robaPonuda = this.dataService.skiniSaStanjaUkolikoJeUKorpi(roba);
+        if (this.innerWidth < 657 || (this.innerWidth < 1058 && this.innerWidth > 857)) {
+          this.robaPonuda.splice(-1, 1);
+        }
       });
   }
 
@@ -83,6 +103,9 @@ export class DasboardComponent implements OnInit, OnDestroy {
       .pipe(takeWhile(() => this.alive))
       .subscribe((roba: Roba[]) => {
         this.robaNajbolje = this.dataService.skiniSaStanjaUkolikoJeUKorpi(roba);
+        if (this.innerWidth < 657 || (this.innerWidth < 1058 && this.innerWidth > 857)) {
+          this.robaNajbolje.splice(-1, 1);
+        }
       });
   }
 

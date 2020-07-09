@@ -396,7 +396,7 @@ public class RobaJooqRepository {
                 .where(ROBA.STANJE.greaterThan(BigDecimal.ZERO)).fetch(ROBA.PROID);
         dashboardDto.setBrojArtikala(svProizvodjaci.size());
         Set<String> proizvodjaciSet = new HashSet<>(svProizvodjaci);
-        dashboardDto.setBrojProizvodjaca(new ArrayList(proizvodjaciSet).size() + 10000);
+        dashboardDto.setBrojProizvodjaca(new ArrayList(proizvodjaciSet).size());
         return dashboardDto;
     }
 }

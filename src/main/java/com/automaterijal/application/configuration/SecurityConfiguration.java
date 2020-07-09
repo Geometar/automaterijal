@@ -50,7 +50,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/static/**", "/").permitAll()
                 .antMatchers(
-                        "/api/roba/**", "/api/admin/**", "/api/proizvodjaci/**", "/api/kategorije", "/api/kategorije/**", "/api/email/**",
+                        "/api/roba/**", "/api/informacije/**", "/api/admin/**", "/api/proizvodjaci/**", "/api/kategorije", "/api/kategorije/**", "/api/email/**",
                         "/api/partner/promena-sifre", "/api/partner/read", "/api/partner/update", "/api/dashboard/**").permitAll()
                 .antMatchers("/naslovna", "/api/fakture", "/o-nama", "/kontakt", "/roba", "/filteri", "/ulja", "/akumulatori", "/ostalo", "/ostalo/**", "/sitemap.xml", "/login**").permitAll()
                 .antMatchers("/login", "/reset-sifre/**").permitAll()
