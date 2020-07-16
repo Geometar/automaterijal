@@ -128,7 +128,7 @@ img:focus {
   }
 
   .slika-okvir {
-    height: 150px;
+    height: 130px;
     padding-top: 15px;
   }
   .naslov-kartice {
@@ -137,6 +137,10 @@ img:focus {
 }
 
 @media screen and (max-width: 1150px) {
+
+  .slika-okvir {
+    height: 130px !important;
+  }
   .naslov {
     max-width: 900px;
   }
