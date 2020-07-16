@@ -3,7 +3,11 @@
 h1 {
   font-size: 1.25rem;
   font-weight: 100;
-  color: white;
+  color: $automaterijal-primary-50;
+}
+
+.main-klasa {
+  height: 100%;
 }
 
 .cover {
@@ -12,18 +16,18 @@ h1 {
   background-repeat: no-repeat;
   background-position: center;
   background-size: 100%;
-  height: calc(100vh - 220px);
 }
 
 .sektor {
+  max-width: 1260px;
   margin-right: auto;
   margin-left: auto;
   justify-content: center;
 }
 
 .kartica {
-  height: 239px;
-  width: 200px;
+  height: 220px;
+  width: 185px;
   margin: 5px 5px 5px 5px;
   box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
   border-top: 2px solid white;
@@ -67,6 +71,7 @@ img:focus {
 
 .mat-card-image {
   margin: 0px;
+  vertical-align: middle;
   cursor: pointer;
 }
 
@@ -79,17 +84,26 @@ img:focus {
   left: 33px;
 }
 
+:host ::ng-deep .mat-card-header-text {
+  margin: 0px !important;
+}
+
 .naslov {
-  background-color: $automaterijal-primary-50;
+  background: linear-gradient(45deg, $automaterijal-primary-50 0%, $automaterijal-primary-50 0%, transparent 33%), linear-gradient(-45deg, $automaterijal-primary-50 0%, $automaterijal-primary-50 0%, transparent 33%);
   margin: 20px 0px 20px 0px;
   max-width: 1200px;
+  color: $automaterijal-primary-50;
+  text-align: center;
   margin-right: auto;
   margin-left: auto;
 }
 
 .slika-okvir {
-  height: 150px;
+  height: 135px;
   padding-top: 10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
 @media screen and (max-width: 1480px) {

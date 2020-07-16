@@ -54,7 +54,7 @@ export class FilterComponent implements OnInit, OnDestroy, OnChanges {
       }
     }
 
-    if ((changes.filterGrupe && changes.filterGrupe.currentValue && changes.filterGrupe.currentValue.length > 2)
+    if ((changes.filterGrupe && changes.filterGrupe.currentValue && changes.filterGrupe.currentValue.length > 1)
       || (this.filter.grupa && this.filter.grupa !== 'Sve Kategorije')) {
       this.pokaziKategorije = true;
     }

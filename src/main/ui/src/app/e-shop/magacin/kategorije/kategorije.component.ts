@@ -8,44 +8,237 @@ import { Router } from '@angular/router';
 })
 export class KategorijeComponent implements OnInit {
 
-  public motornaKategorija: Kategorije[] = [];
+  public kategorijeV: KategorijaVraper[] = [];
 
   constructor(private router: Router) { }
 
   ngOnInit(): void {
+    this.unDodaciPumpa();
+    this.univerzalno();
+    this.odrzavanje();
+    this.unutrasnjostVozilaPunjac();
     this.kategorijaUlja();
   }
 
+  odrzavanje() {
+    const odrzavanjeVraper = new KategorijaVraper();
+
+    const samponi = new Kategorije();
+    samponi.naslov = 'Šamponi';
+    samponi.slikaId = 'assets/slike/kategorije/shampoo.png';
+    samponi.url = 'šamponi';
+    odrzavanjeVraper.kategorije.push(samponi);
+
+    const paste = new Kategorije();
+    paste.naslov = 'Polir paste';
+    paste.slikaId = 'assets/slike/kategorije/polir.png';
+    paste.url = 'polir_paste';
+    odrzavanjeVraper.kategorije.push(paste);
+
+    const sundjeri = new Kategorije();
+    sundjeri.naslov = 'Sundjeri';
+    sundjeri.slikaId = 'assets/slike/kategorije/sudnjeri.jpg';
+    sundjeri.url = 'sundjeri';
+    odrzavanjeVraper.kategorije.push(sundjeri);
+
+    const krpe = new Kategorije();
+    krpe.naslov = 'Krpe';
+    krpe.slikaId = 'assets/slike/kategorije/krpe.jpg';
+    krpe.url = 'krpe';
+    odrzavanjeVraper.kategorije.push(krpe);
+
+    const pk = new Kategorije();
+    pk.naslov = 'Pokrivači';
+    pk.slikaId = 'assets/slike/kategorije/pokrivka.jpg';
+    pk.url = 'pokrivači';
+    odrzavanjeVraper.kategorije.push(pk);
+    odrzavanjeVraper.naslov = 'Odrzavanje vozila';
+    this.kategorijeV.push(odrzavanjeVraper);
+
+  }
+
+  univerzalno() {
+    const univerzalno = new KategorijaVraper();
+
+    const aditivi = new Kategorije();
+    aditivi.naslov = 'Aditivi';
+    aditivi.slikaId = 'assets/slike/kategorije/aditivi.jpg';
+    aditivi.url = 'adtivi';
+    univerzalno.kategorije.push(aditivi);
+
+    const brisaci = new Kategorije();
+    brisaci.naslov = 'Brisači';
+    brisaci.slikaId = 'assets/slike/kategorije/brisaci.jpg';
+    brisaci.url = 'brisači';
+    univerzalno.kategorije.push(brisaci);
+
+    const kozmetika = new Kategorije();
+    kozmetika.naslov = 'Kozmetika';
+    kozmetika.slikaId = 'assets/slike/kategorije/jelkice.jpg';
+    kozmetika.url = 'kozmetika';
+    kozmetika.podkategorije = ['JELKICE', 'KONZERVE', 'IGRAČKE'];
+    univerzalno.kategorije.push(kozmetika);
+
+    const antifriz = new Kategorije();
+    antifriz.naslov = 'Antifriz';
+    antifriz.slikaId = 'assets/slike/kategorije/antifriz.jpg';
+    antifriz.url = 'antifriz';
+    univerzalno.kategorije.push(antifriz);
+
+    const hemija = new Kategorije();
+    hemija.naslov = 'Hemija';
+    hemija.slikaId = 'assets/slike/kategorije/hemija.jpg';
+    hemija.url = 'Hemija';
+    univerzalno.kategorije.push(hemija);
+
+    univerzalno.naslov = 'Univerzalno';
+    this.kategorijeV.push(univerzalno);
+  }
+
+  unutrasnjostVozilaPunjac() {
+    const unutrasnjojstVraper = new KategorijaVraper();
+    const patosnice = new Kategorije();
+    patosnice.naslov = 'Patosnice';
+    patosnice.slikaId = 'assets/slike/kategorije/patosnice.jpg';
+    patosnice.url = 'patosnice';
+    unutrasnjojstVraper.kategorije.push(patosnice);
+
+    const presvlake = new Kategorije();
+    presvlake.naslov = 'Presvlake';
+    presvlake.slikaId = 'assets/slike/kategorije/presvlake.jpg';
+    presvlake.url = 'presvlake';
+    unutrasnjojstVraper.kategorije.push(presvlake);
+
+    const obloge = new Kategorije();
+    obloge.naslov = 'Obloge';
+    obloge.slikaId = 'assets/slike/kategorije/obloge.jpg';
+    obloge.url = 'OBLOGE';
+    unutrasnjojstVraper.kategorije.push(obloge);
+
+    const drzac = new Kategorije();
+    drzac.naslov = 'Drzac';
+    drzac.slikaId = 'assets/slike/kategorije/drzac.jpg';
+    drzac.url = 'drzac';
+    unutrasnjojstVraper.kategorije.push(drzac);
+
+    const punajc = new Kategorije();
+    punajc.naslov = 'Punjaci';
+    punajc.slikaId = 'assets/slike/kategorije/punjac.jpg';
+    punajc.url = 'punjaci';
+    unutrasnjojstVraper.kategorije.push(punajc);
+
+    const jastuci = new Kategorije();
+    jastuci.naslov = 'Jastuci';
+    jastuci.slikaId = 'assets/slike/kategorije/jastuci.jpg';
+    jastuci.url = 'jastuci';
+    unutrasnjojstVraper.kategorije.push(jastuci);
+
+    const pOgledala = new Kategorije();
+    pOgledala.naslov = 'Pomočna ogledala';
+    pOgledala.slikaId = 'assets/slike/kategorije/ogledala.jpg';
+    pOgledala.url = 'pomoćna_ogledala';
+    unutrasnjojstVraper.kategorije.push(pOgledala);
+
+
+    const orkGepek = new Kategorije();
+    orkGepek.naslov = 'Pregrade za gepek';
+    orkGepek.slikaId = 'assets/slike/kategorije/o-gepek.jpg';
+    orkGepek.url = 'organizatori_za_gepek';
+    unutrasnjojstVraper.kategorije.push(orkGepek);
+
+    const univerzalno = new Kategorije();
+    univerzalno.naslov = 'Univerzalno';
+    univerzalno.slikaId = 'assets/slike/kategorije/univerzalno.jpg';
+    univerzalno.url = 'univerzalno';
+    unutrasnjojstVraper.kategorije.push(univerzalno);
+
+    unutrasnjojstVraper.naslov = 'Unutrasnjost';
+    this.kategorijeV.push(unutrasnjojstVraper);
+  }
+
+  unDodaciPumpa() {
+    const unDodaci = new KategorijaVraper();
+
+    const kNosaci = new Kategorije();
+    kNosaci.naslov = 'Krovi nosači';
+    kNosaci.slikaId = 'assets/slike/kategorije/k-nosac.jpg';
+    kNosaci.url = 'krovni_nosači';
+    unDodaci.kategorije.push(kNosaci);
+
+    const pumpe = new Kategorije();
+    pumpe.naslov = 'Pumpe za gume';
+    pumpe.slikaId = 'assets/slike/kategorije/p-guna.jpg';
+    pumpe.url = 'pumpe_za_gume';
+    pumpe.podkategorije = [
+      'Električna pumpa',
+      'Nožna pumpa'];
+    unDodaci.kategorije.push(pumpe);
+
+    const reparacija = new Kategorije();
+    reparacija.naslov = 'Reparacije gume';
+    reparacija.slikaId = 'assets/slike/kategorije/rep-gume.jpg';
+    reparacija.url = 'reparacija_gume';
+    unDodaci.kategorije.push(reparacija);
+
+    const oTereta = new Kategorije();
+    oTereta.naslov = 'Španer za teret';
+    oTereta.slikaId = 'assets/slike/kategorije/s-teret.jpg';
+    oTereta.url = 'španer_za_osiguravanje_tereta';
+    unDodaci.kategorije.push(oTereta);
+
+    const levak = new Kategorije();
+    levak.naslov = 'Levak';
+    levak.slikaId = 'assets/slike/kategorije/levak.jpeg';
+    levak.url = 'levak';
+    unDodaci.kategorije.push(levak);
+
+    const kantice = new Kategorije();
+    kantice.naslov = 'Kantice';
+    kantice.slikaId = 'assets/slike/kategorije/kantice.jpg';
+    kantice.url = 'kantica';
+    unDodaci.kategorije.push(kantice);
+
+    const traka = new Kategorije();
+    traka.naslov = 'Traka za vuču';
+    traka.slikaId = 'assets/slike/kategorije/t-vuca.jpg';
+    traka.url = 'traka';
+    unDodaci.kategorije.push(traka);
+
+    unDodaci.naslov = 'Univerzalni dodaci';
+    this.kategorijeV.push(unDodaci);
+  }
+
   kategorijaUlja() {
+    const uljaVraper = new KategorijaVraper();
     const motornaUlja = new Kategorije();
     motornaUlja.naslov = 'Motorna ulja';
     motornaUlja.slikaId = 'assets/slike/kategorije/m-ulje.jpg';
     motornaUlja.url = 'motorna_ulja';
-    this.motornaKategorija.push(motornaUlja);
+    uljaVraper.kategorije.push(motornaUlja);
 
     const menjackoUlje = new Kategorije();
     menjackoUlje.naslov = 'Menjačko ulje';
     menjackoUlje.slikaId = 'assets/slike/kategorije/menjacko-ulje.png';
     menjackoUlje.url = 'menjacka_ulja';
-    this.motornaKategorija.push(menjackoUlje);
+    uljaVraper.kategorije.push(menjackoUlje);
 
     const antifrim = new Kategorije();
     antifrim.naslov = 'Antifriz';
     antifrim.slikaId = 'assets/slike/kategorije/a-ulje.jpg';
     antifrim.url = 'antifriz';
-    this.motornaKategorija.push(antifrim);
+    uljaVraper.kategorije.push(antifrim);
 
     const kocionoUlje = new Kategorije();
     kocionoUlje.naslov = 'Kociono ulje';
     kocionoUlje.slikaId = 'assets/slike/kategorije/k-ulje.jpg';
     kocionoUlje.url = 'kociono_ulje';
-    this.motornaKategorija.push(kocionoUlje);
+    uljaVraper.kategorije.push(kocionoUlje);
 
     const motocikliUlje = new Kategorije();
     motocikliUlje.naslov = 'Dvotaktol ulje';
     motocikliUlje.slikaId = 'assets/slike/kategorije/d-ulje.jpg';
     motocikliUlje.url = 'dvotaktol';
-    this.motornaKategorija.push(motocikliUlje);
+    uljaVraper.kategorije.push(motocikliUlje);
 
     const industrijskaUlja = new Kategorije();
     industrijskaUlja.naslov = 'Industrijska ulja';
@@ -60,8 +253,9 @@ export class KategorijeComponent implements OnInit {
       'Ulja za pneumatske alate',
       'Ulja za klizne staze',
       'Ulja za prenos toplote'];
-    this.motornaKategorija.push(industrijskaUlja);
-
+    uljaVraper.kategorije.push(industrijskaUlja);
+    uljaVraper.naslov = 'Maziva';
+    this.kategorijeV.push(uljaVraper);
   }
 
   izabranaPodKategorija(kategorija: Kategorije, podkategorija: string) {
@@ -69,6 +263,13 @@ export class KategorijeComponent implements OnInit {
     this.router.navigate([url], { queryParams: { grupa: podkategorija } });
   }
 
+}
+
+class KategorijaVraper {
+  kategorije?: Kategorije[] = [];
+  naslov?: string;
+  KategorijaVraper() {
+  }
 }
 
 class Kategorije {

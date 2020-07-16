@@ -22,6 +22,7 @@ export class KategorijaSpecificnaComponent implements OnInit, OnDestroy {
   public pageIndex = 0;
   public sort = null;
   public tableLength;
+  public naslov = '';
 
   public filter: Filter = new Filter();
   public filterGrupe = [];
@@ -78,6 +79,9 @@ export class KategorijaSpecificnaComponent implements OnInit, OnDestroy {
             this.filter.naStanju = queryParams['naStanju'];
             this.filter.grupa = queryParams['grupa'];
             this.searchValue = queryParams['pretraga'];
+            this.naslov = '';
+            const naslovArray: string[] = params.id.split('_');
+            naslovArray.forEach(rec => this.naslov = this.naslov + rec + ' ');
             this.robaServis.pronadjiPoKategoriji(
               this.sort, this.rowsPerPage, this.pageIndex, this.searchValue, this.filter, params.id
             )

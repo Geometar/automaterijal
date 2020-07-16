@@ -27,7 +27,34 @@ public enum RobaKategorije {
             "ULJA ZA PNEUMATSKE ALATE",
             "ULJA ZA KLIZNE STAZE",
             "ULJA ZA PRENOS TOPLOTE"
-    ),  false, true);
+    ),  false, true),
+    ŠAMPONI(List.of("SAMPON"), false, true),
+    POLIR_PASTE(List.of("POLIR PASTA"), false, true),
+    SUDNJERI(List.of("SUNĐER"), false, true),
+    KRPE(List.of("KRPA"),  false, true),
+    POKRIVAČI(List.of("POKRIVKA ZA AUTO"), false, true),
+    PATOSNICE(List.of("PATOSNICE"),  false, true),
+    PRESVLAKE(List.of("PRESVLAKE"),  false, true),
+    OBLOGE(List.of("OBLOGE"),  false, true),
+    DRZAC(List.of("DRŽAČ"),  false, true),
+    PUNJACI(List.of("PUNJAČI"),  false, true),
+    JASTUCI(List.of("JASTUCI"),  false, true),
+    POMOĆNA_OGLEDALA(List.of("POMOĆNA OGLEDALA"),  false, true),
+    ORGANIZATORI_ZA_GEPEK(List.of("ORGANIZATORI ZA GEPEK"),  false, true),
+    UNIVERZALNO(List.of("UNIVERZALNO"),  false, true),
+    KROVNI_NOSAČI(List.of("KROVNI NOSAČI"),  false, true),
+    PUMPE_ZA_GUME(List.of(
+            "ELEKTRIČNA PUMPA",
+            "NOŽNA PUMPA"
+    ), false, true),
+    REPARACIJA_GUME(List.of("SET ZA REPARACIJU GUME"),  false, true),
+    ŠPANER_ZA_OSIGURAVANJE_TERETA(List.of("ŠPANERI ZA OSIGURANJE TERETA"),  false, true),
+    LEVAK(List.of("LEVAK"),  false, true),
+    KANTICA(List.of("KANTICE"),  false, true),
+    ADTIVI(List.of("ADITIV"),  false, true),
+    BRISAČI(List.of("BRISAČ"),  false, true),
+    KOZMETIKA(List.of("JELKICE", "KONZERVE", "IGRAČKE"),  false, true),
+    HEMIJA(List.of("HEMIJA"),  false, true);
 
     @NonNull
     final List<String> fieldName;
