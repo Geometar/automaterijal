@@ -7,7 +7,7 @@
                 </label>
                 <select class="custom-select mobilna-duzina" (change)="filtriraj()" id="inputGroupSelect01" [(ngModel)]="filter.grupa">
                     <option selected hidden>Sve Kategorije</option>
-                    <option *ngFor="let grupe of filterGrupe" [value]="grupe">{{grupe | titlecase}}</option>
+                    <option class="velicina-selekta" *ngFor="let grupe of filterGrupe" [value]="grupe">{{grupe}}</option>
                 </select>
                 <span *ngIf="filter.grupa === 'Sve Kategorije'" class="disejblovan-filter pozicija-filtera material-icons">
                     remove_circle

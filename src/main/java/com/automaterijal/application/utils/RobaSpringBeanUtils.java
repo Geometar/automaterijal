@@ -66,11 +66,16 @@ public class RobaSpringBeanUtils {
         up.setPageSize(internalPageSize);
         up.setProizvodjac(internalProizvodjac);
         up.setNaStanju(internalNaStanju);
-        up.setGrupa(internaGrupa);
         up.setTrazenaRec(internalSearchTerm);
-        up.setRobaKategorije(robaKategorije);
+        up.setPodgrupaZaPretragu(internaGrupa);
         if (robaKategorije != null) {
-            up.setPodGrupe(pronadjiSvePodGrupeUZavisnostiOdVrste(robaKategorije.getFieldName()));
+            if(robaKategorije.isPodgrupaPretraga()) {
+                up.setPodGrupe(pronadjiSvePodGrupeUZavisnostiOdVrste(robaKategorije.getFieldName()));
+            } else {
+                up.setGrupa(robaKategorije.getFieldName().get(0));
+                up.setPodGrupe(podGrupaService.vratiSvePodGrupePoGrupi(up.getGrupa()));
+            }
+            up.setRobaKategorije(robaKategorije);
         } else {
             up.setPodGrupe(podGrupaService.vratiSvePodgrupe());
         }

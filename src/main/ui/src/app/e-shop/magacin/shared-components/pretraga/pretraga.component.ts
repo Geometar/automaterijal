@@ -25,7 +25,7 @@ export class PretragaComponent implements OnInit {
   pronaciPoTrazenojReci(searchValue: string) {
     this.pocetnoPretrazivanje = false;
     if (searchValue == null
-      || (searchValue.trim().length > 0 && searchValue.trim().length < 3)) {
+      || (searchValue.trim().length > 0 && searchValue.trim().length < 2)) {
       this.validnaPretaga = false;
       return;
     } else {

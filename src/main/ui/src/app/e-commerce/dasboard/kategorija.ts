@@ -15,70 +15,130 @@ export class Brend {
 
 export class Konastante {
     kategorije: Kategorija[] = [];
+    grupe: Kategorija[] = [];
     brendovi: Brend[] = [];
     constructor() {
-        const motornaUlja = new Kategorija();
-        motornaUlja.ikonaId = 'invert_colors';
-        motornaUlja.url = '/kategorije/motorna_ulja';
-        motornaUlja.naslov = 'Motorna ulja';
-        this.kategorije.push(motornaUlja);
-        const aditiv = new Kategorija();
+        const maziva = new Kategorija();
+        maziva.ikonaId = 'list';
+        maziva.url = '/kategorije/maziva';
+        maziva.naslov = 'Maziva';
+        this.kategorije.push(maziva);
 
-        aditiv.ikonaId = 'eco';
-        aditiv.url = '/roba';
-        aditiv.param = 'ADITIV';
-        aditiv.naslov = 'Aditivi';
-        this.kategorije.push(aditiv);
+        const filteri = new Kategorija();
+        filteri.ikonaId = 'list';
+        filteri.url = '/kategorije/filteri';
+        filteri.naslov = 'Filteri';
+        this.kategorije.push(filteri);
+
+        const oVozila = new Kategorija();
+        oVozila.ikonaId = 'list';
+        oVozila.url = '/kategorije/održavanje_vozila';
+        oVozila.naslov = 'Održavanje vozila';
+        this.kategorije.push(oVozila);
 
         const komzetika = new Kategorija();
-        komzetika.ikonaId = 'eco';
-        komzetika.url = '';
-        komzetika.naslov = 'Komzetika';
+        komzetika.ikonaId = 'list';
+        komzetika.url = '/kategorije/kozmetika';
+        komzetika.naslov = 'Kozmetika';
         this.kategorije.push(komzetika);
 
+        const aditivi = new Kategorija();
+        aditivi.ikonaId = 'list';
+        aditivi.url = '/kategorije/aditiivi';
+        aditivi.naslov = 'Aditivi';
+        this.kategorije.push(aditivi);
+
+
+        const elektrika = new Kategorija();
+        elektrika.ikonaId = 'list';
+        elektrika.url = '/kategorije/elektrika';
+        elektrika.naslov = 'Elektrika';
+        this.kategorije.push(elektrika);
+
+        const uVozila = new Kategorija();
+        uVozila.ikonaId = 'list';
+        uVozila.url = '/kategorije/unutrašnjost_vozila';
+        uVozila.naslov = 'Unutrašnjost vozila';
+        this.kategorije.push(uVozila);
+
         const hemija = new Kategorija();
-        hemija.ikonaId = 'brightness_1';
-        hemija.url = '';
+        hemija.ikonaId = 'list';
+        hemija.url = '/kategorije/hemija';
         hemija.naslov = 'Hemija';
         this.kategorije.push(hemija);
 
+        const iUlja = new Kategorija();
+        iUlja.ikonaId = 'list';
+        iUlja.url = '/kategorije/industrijska_ulja';
+        iUlja.naslov = 'Industrijska ulja';
+        this.kategorije.push(iUlja);
+
+        const obradaMetala = new Kategorija();
+        obradaMetala.ikonaId = 'list';
+        obradaMetala.url = '/kategorije/obrada_metala';
+        obradaMetala.naslov = 'Obrada metala';
+        this.kategorije.push(obradaMetala);
+
+        ///////////////////////
+        const mUlja = new Kategorija();
+        mUlja.ikonaId = 'label';
+        mUlja.url = '/kategorije/MOTORNA_ULJA';
+        mUlja.naslov = 'Motorna ulja';
+        this.grupe.push(mUlja);
+
+        const kUlje = new Kategorija();
+        kUlje.ikonaId = 'label';
+        kUlje.url = '/kategorije/KOCIONO_ULJE';
+        kUlje.naslov = 'Kočiono ulje';
+        this.grupe.push(kUlje);
+
         const dvotaktol = new Kategorija();
-        dvotaktol.ikonaId = 'invert_colors';
-        dvotaktol.url = '';
+        dvotaktol.ikonaId = 'label';
+        dvotaktol.url = '/kategorije/DVOTAKTOL';
         dvotaktol.naslov = 'Dvotaktol';
-        this.kategorije.push(dvotaktol);
+        this.grupe.push(dvotaktol);
 
+        const pPaste = new Kategorija();
+        pPaste.ikonaId = 'label';
+        pPaste.url = '/kategorije/POLIR_PASTE';
+        pPaste.naslov = 'Polir paste';
+        this.grupe.push(pPaste);
 
-        const motornaUlja1 = new Kategorija();
-        motornaUlja1.ikonaId = 'invert_colors';
-        motornaUlja1.url = '/kategorije/motorna_ulja';
-        motornaUlja1.naslov = 'Motorna ulja';
-        this.kategorije.push(motornaUlja1);
+        const akumulatori = new Kategorija();
+        akumulatori.ikonaId = 'label';
+        akumulatori.url = '/kategorije/AKUMULATORI';
+        akumulatori.naslov = 'Akumulatori';
+        this.grupe.push(akumulatori);
 
-        const aditiv1 = new Kategorija();
-        aditiv1.ikonaId = 'eco';
-        aditiv1.url = '/roba';
-        aditiv1.param = 'ADITIV';
-        aditiv1.naslov = 'Aditivi';
-        this.kategorije.push(aditiv1);
+        const sijalice = new Kategorija();
+        sijalice.ikonaId = 'label';
+        sijalice.url = '/kategorije/SIJALICE';
+        sijalice.naslov = 'Sijalice';
+        this.grupe.push(sijalice);
 
-        const komzetika1 = new Kategorija();
-        komzetika1.ikonaId = 'eco';
-        komzetika1.url = '';
-        komzetika1.naslov = 'Komzetika';
-        this.kategorije.push(komzetika1);
+        const patosnice = new Kategorija();
+        patosnice.ikonaId = 'label';
+        patosnice.url = '/kategorije/PATOSNICE';
+        patosnice.naslov = 'Patosnice';
+        this.grupe.push(patosnice);
 
-        const hemija1 = new Kategorija();
-        hemija1.ikonaId = 'brightness_1';
-        hemija1.url = '';
-        hemija1.naslov = 'Hemija';
-        this.kategorije.push(hemija1);
+        const pTelefon = new Kategorija();
+        pTelefon.ikonaId = 'label';
+        pTelefon.url = '/kategorije/PUNJACI';
+        pTelefon.naslov = 'Punjači za telefon';
+        this.grupe.push(pTelefon);
 
-        const dvotaktol1 = new Kategorija();
-        dvotaktol1.ikonaId = 'invert_colors';
-        dvotaktol1.url = '';
-        dvotaktol1.naslov = 'Dvotaktol';
-        this.kategorije.push(dvotaktol1);
+        const brisači = new Kategorija();
+        brisači.ikonaId = 'label';
+        brisači.url = '/kategorije/BRISAČI';
+        brisači.naslov = 'Brisači';
+        this.grupe.push(brisači);
+
+        const jelkice = new Kategorija();
+        jelkice.ikonaId = 'label';
+        jelkice.url = '/kategorije/JELKICE';
+        jelkice.naslov = 'Jelkice';
+        this.grupe.push(jelkice);
 
         ///////////////////////
         const slikeLogo = 'assets/slike/brendovi/logo/';

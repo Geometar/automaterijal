@@ -21,6 +21,7 @@ public class UniverzalniParametri {
     boolean naStanju;
     String trazenaRec;
     String grupa;
+    String podgrupaZaPretragu;
     RobaKategorije robaKategorije;
     List<PodGrupa> podGrupe;
 }

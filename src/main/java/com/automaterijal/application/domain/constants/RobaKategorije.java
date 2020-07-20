@@ -54,7 +54,27 @@ public enum RobaKategorije {
     ADTIVI(List.of("ADITIV"),  false, true),
     BRISAČI(List.of("BRISAČ"),  false, true),
     KOZMETIKA(List.of("JELKICE", "KONZERVE", "IGRAČKE"),  false, true),
-    HEMIJA(List.of("HEMIJA"),  false, true);
+    HEMIJA(List.of("HEMIJA"),  false, true),
+    MAZIVA(
+            List.of("MOTORNO ULjE", "MENJAČKO ULjE", "KOČIONO ULjE",
+                    "ANTIFRIZ", "DVOTAKTOL"
+                    ),  false, true),
+    FILTERI(List.of("FILTER"),  false, true),
+    ODRŽAVANJE_VOZILA(
+            List.of("SAMPON", "PRESVLAKE", "PRESVLAKE",
+                    "OBLOGE", "POKRIVKA ZA AUTO"
+            ),  false, true),
+    UNUTRAŠNJOST_VOZILA(
+            List.of("PATOSNICE", "PRESVLAKE", "OBLOGE",
+                    "DRŽAČ", "PUNJAČI", "JASTUCI", "POMOĆNA OGLEDALA",
+                    "ORGANIZATORI ZA GEPEK", "UNIVERZALNO"
+            ),  false, true),
+    AKUMULATORI(List.of("AKUMULATOR"),  false, true),
+    SIJALICE(List.of("SIJALICE"),  false, true),
+    JELKICE(List.of("JELKICE"),  false, true),
+    OBRADA_METALA(
+            List.of("FOM"
+            ),  true, false);
 
     @NonNull
     final List<String> fieldName;

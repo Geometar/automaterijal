@@ -71,6 +71,10 @@ public class PodGrupaService {
         return podGrupaRepository.findByNazivIn(nazivi);
     }
 
+    public List<PodGrupa> vratiSvePodGrupePoGrupi(String grupaId) {
+        return podGrupaRepository.findByGrupaId(grupaId).stream().filter(podGrupa -> !podGrupa.getNaziv().isEmpty()).collect(Collectors.toList());
+    }
+
     /**
      * Metoda za popunjavanje svih grupa u zavisnosti od kriterijuma
      */
@@ -98,12 +102,12 @@ public class PodGrupaService {
         Set<String> podGrupe = podgrupaDtos.stream().map(PodgrupaDto::getNaziv).map(String::trim).map(String::toUpperCase).collect(Collectors.toSet());
         List<String> sveGrupe = new ArrayList<>(podGrupe).stream().sorted().collect(Collectors.toList());
 
-        if (parametri.getGrupa() != null) {
-            boolean trazenaGrupaPostoji = sveGrupe.stream().filter(grupa -> grupa.equals(parametri.getGrupa())).findFirst().isPresent();
-            if (!trazenaGrupaPostoji) {
-                sveGrupe.add(0, parametri.getGrupa());
-            }
-        }
+//        if (parametri.getGrupa() != null) {
+//            boolean trazenaGrupaPostoji = sveGrupe.stream().filter(grupa -> grupa.equals(parametri.getGrupa())).findFirst().isPresent();
+//            if (!trazenaGrupaPostoji) {
+//                sveGrupe.add(0, parametri.getGrupa());
+//            }
+//        }
         sveGrupe.add(0, PodGrupaService.SVE);
         magacinDto.setPodgrupe(sveGrupe);
     }

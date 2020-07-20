@@ -260,7 +260,7 @@
     </section>
 
     <section class="sekcija">
-      <h2 class="sekcija-h2">Kategorije za dodatnu opremu automobila</h2>
+      <h2 class="sekcija-h2">Popularne kategorije</h2>
       <div class="cekcija-ponuda d-flex flex-wrap justify-content-center">
         <div *ngFor="let kategorija of kategorije">
           <mat-card class="kategorija-card" (click)="idiNaKategoriju(kategorija)">
@@ -404,9 +404,9 @@
       </div>
     </section>
     <section class="sekcija">
-      <h2 class="sekcija-h2">Popularne kateogije</h2>
+      <h2 class="sekcija-h2">Popularne grupe</h2>
       <div class="cekcija-ponuda d-flex flex-wrap justify-content-center">
-        <div *ngFor="let kategorija of kategorije">
+        <div *ngFor="let kategorija of grupe">
           <mat-card class="kategorija-card" (click)="idiNaKategoriju(kategorija)">
             <span class="material-icons ikona-kategorija-leva">
               {{kategorija.ikonaId}}

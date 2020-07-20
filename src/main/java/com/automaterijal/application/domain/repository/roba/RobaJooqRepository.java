@@ -342,12 +342,12 @@ public class RobaJooqRepository {
                 select.and(ROBA.PODGRUPAID.in(parametri.getPodGrupe().stream().map(PodGrupa::getPodGrupaId).collect(Collectors.toList())));
             }
 
-        if (!StringUtils.isEmpty(parametri.getProizvodjac()) && parametri.getGrupa() == null) {
+        if (!StringUtils.isEmpty(parametri.getProizvodjac())) {
             select.and(ROBA.PROID.eq(parametri.getProizvodjac()));
         }
 
-        if (!StringUtils.isEmpty(parametri.getGrupa())) {
-          List<Integer> podgrupe = parametri.getPodGrupe().stream().filter(podGrupa -> podGrupa.getNaziv().equals(parametri.getGrupa())).map(PodGrupa::getPodGrupaId).collect(Collectors.toList());
+        if (!StringUtils.isEmpty(parametri.getPodgrupaZaPretragu())) {
+          List<Integer> podgrupe = parametri.getPodGrupe().stream().filter(podGrupa -> podGrupa.getNaziv().equalsIgnoreCase(parametri.getPodgrupaZaPretragu())).map(PodGrupa::getPodGrupaId).collect(Collectors.toList());
          if(!podgrupe.isEmpty()) {
              select.and(ROBA.PODGRUPAID.in(podgrupe));
          }

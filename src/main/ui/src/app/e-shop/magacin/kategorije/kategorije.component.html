@@ -7,11 +7,11 @@
             <div class="d-flex sektor flex-wrap">
                 <div *ngFor="let kategorija of wraper.kategorije">
                     <mat-card class="kartica" mat-button>
-                        <mat-card-header [routerLink]="[kategorija.url | lowercase]">
+                        <mat-card-header (click)="izabranaPodKategorija(kategorija, podkategorija)">
                             <mat-card-title class="naslov-kartice title-card">{{kategorija.naslov}}</mat-card-title>
                         </mat-card-header>
                         <div class="slika-okvir">
-                            <img [routerLink]="[kategorija.url | lowercase]" mat-card-image
+                            <img (click)="izabranaPodKategorija(kategorija, podkategorija)" mat-card-image
                                 src="{{kategorija.slikaId}}">
                         </div>
                         <mat-card-footer>

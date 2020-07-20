@@ -5,10 +5,12 @@ import { TabelaComponent } from './tabela/tabela.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'src/app/shared/material/material.module';
 import { PretragaComponent } from './pretraga/pretraga.component';
+import { PipeModule } from 'src/app/shared/pipes/pipe.module';
 
 @NgModule({
   imports: [
     CommonModule,
+    PipeModule,
     FormsModule,
     MaterialModule,
     ReactiveFormsModule

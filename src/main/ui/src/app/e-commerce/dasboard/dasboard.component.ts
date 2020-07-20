@@ -30,6 +30,7 @@ export class DasboardComponent implements OnInit, OnDestroy {
   public robaPonuda: Roba[] = [];
   public robaNajbolje: Roba[] = [];
   public kategorije: Kategorija[] = [];
+  public grupe: Kategorija[] = [];
   public brendovi: Brend[] = [];
   public partner: Partner;
   public innerWidth: any;
@@ -74,6 +75,7 @@ export class DasboardComponent implements OnInit, OnDestroy {
   inijalizujKategorije() {
     const konstanteKategorija = new Konastante();
     this.kategorije = konstanteKategorija.kategorije;
+    this.grupe = konstanteKategorija.grupe;
     this.brendovi = konstanteKategorija.brendovi;
   }
 
@@ -162,9 +164,9 @@ export class DasboardComponent implements OnInit, OnDestroy {
 
   idiNaKategoriju(kategorija: Kategorija) {
     if (!kategorija.param) {
-      this.router.navigate([kategorija.url]);
+      this.router.navigate([kategorija.url],  { queryParams: { prosliUrl: 'naslovna' }});
     } else {
-      this.router.navigate([kategorija.url], { queryParams: { grupa: kategorija.param } });
+      this.router.navigate([kategorija.url], { queryParams: { grupa: kategorija.param, prosliUrl: 'naslovna' } });
     }
   }
 

@@ -254,13 +254,29 @@ export class KategorijeComponent implements OnInit {
       'Ulja za klizne staze',
       'Ulja za prenos toplote'];
     uljaVraper.kategorije.push(industrijskaUlja);
+
+    const oMetala = new Kategorije();
+    oMetala.naslov = 'Obrada metala';
+    oMetala.slikaId = 'assets/slike/kategorije/o-metala.jpg';
+    oMetala.url = 'obrada_metala';
+    oMetala.podkategorije = [
+      'ANTIKOROZIONA ZAŠTITA',
+      'EMULZIJE I RASTVORI',
+      'REZNO ULJE',
+      'SREDSTVA ZA ČIŠĆENJE I ODMAŠĆIVANJE',
+      'ULJE ZA OBRADU DEFORMACIJOM',
+      'ULJE ZA ELEKTROEROZIJU',
+      'ULJE ZA TERMIČKU OBRADU'];
+    uljaVraper.kategorije.push(oMetala);
+
     uljaVraper.naslov = 'Maziva';
     this.kategorijeV.push(uljaVraper);
   }
 
   izabranaPodKategorija(kategorija: Kategorije, podkategorija: string) {
     const url = '/kategorije/' + kategorija.url;
-    this.router.navigate([url], { queryParams: { grupa: podkategorija } });
+    const prethodniUrl = this.router.parseUrl(this.router.url);
+    this.router.navigate([url], { queryParams: { grupa: podkategorija, prosliUrl: prethodniUrl.root.children.primary.segments[0].path } });
   }
 
 }

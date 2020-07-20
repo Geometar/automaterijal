@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { takeWhile, finalize, catchError } from 'rxjs/operators';
+import {Location} from '@angular/common';
 import { throwError, EMPTY } from 'rxjs';
 import { Roba, Magacin } from 'src/app/e-shop/model/dto';
 import { DataService } from 'src/app/e-shop/service/data/data.service';
@@ -37,6 +38,7 @@ export class KategorijaSpecificnaComponent implements OnInit, OnDestroy {
   public dataSource: any;
 
   private alive = true;
+  private prosliUrl;
 
   constructor(
     private route: ActivatedRoute,
@@ -44,10 +46,16 @@ export class KategorijaSpecificnaComponent implements OnInit, OnDestroy {
     private robaServis: RobaService,
     private loginServis: LoginService,
     private router: Router,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private _location: Location
   ) { }
 
   ngOnInit() {
+    this.route.queryParams
+      .pipe(takeWhile(() => this.alive))
+      .subscribe((params: Params) => {
+        this.prosliUrl = '/' + params.prosliUrl;
+      });
     this.loginServis.ulogovaniPartner
       .pipe(takeWhile(() => this.alive))
       .subscribe(partnerFE => {
@@ -158,6 +166,10 @@ export class KategorijaSpecificnaComponent implements OnInit, OnDestroy {
         if (this.filter.grupa) {
           parameterObject['grupa'] = this.filter.grupa;
         }
+        if (params.prosliUrl) {
+          parameterObject['prosliUrl'] = params.prosliUrl;
+        }
+        parameterObject['prosliUrl'] = this.prosliUrl;
         const idUrl = params.id.toLowerCase();
         this.router.navigate(['/kategorije', idUrl], { queryParams: parameterObject });
       });
@@ -176,7 +188,11 @@ export class KategorijaSpecificnaComponent implements OnInit, OnDestroy {
   }
 
   idiNazad() {
-    this.router.navigate(['/kategorije']);
+    this.route.queryParams
+      .pipe(takeWhile(() => this.alive))
+      .subscribe((params: Params) => {
+        this.router.navigate([this.prosliUrl]);
+      });
   }
 
   ngOnDestroy() {

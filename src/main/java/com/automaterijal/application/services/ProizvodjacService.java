@@ -45,7 +45,7 @@ public class ProizvodjacService {
      */
     public void popuniProizvodjace(List<RobaDto> robaDtos, MagacinDto magacinDto, UniverzalniParametri parametri) {
         List<Proizvodjac> proizvodjaci;
-        if (parametri.getGrupa() == null && parametri.getTrazenaRec() == null) {
+        if (parametri.getPodgrupaZaPretragu() == null && parametri.getTrazenaRec() == null) {
             proizvodjaci = pronadjiSveProizvodjaceZaVrstu(parametri);
         } else {
             Set<String> proizKljuc = robaDtos.stream().map(RobaDto::getProizvodjac).map(Proizvodjac::getProid).collect(Collectors.toSet());

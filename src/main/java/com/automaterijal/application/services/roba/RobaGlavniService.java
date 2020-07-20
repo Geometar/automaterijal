@@ -26,10 +26,7 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -88,7 +85,7 @@ public class RobaGlavniService {
                 parametri.getProizvodjac() != null ? parametri.getProizvodjac() : "-"
         );
 
-        if (parametri.getTrazenaRec() == null && parametri.getProizvodjac() == null && parametri.getGrupa() == null) {
+        if (parametri.getTrazenaRec() == null && parametri.getProizvodjac() == null && parametri.getGrupa() == null && parametri.getPodgrupaZaPretragu() == null) {
             magacinDto = logikaZaMagacinBezFiltera(parametri, ulogovaniPartner);
         } else {
             magacinDto = logikaZaMagacinSaFilterom(parametri, ulogovaniPartner);
@@ -106,7 +103,7 @@ public class RobaGlavniService {
         if (parametri.getRobaKategorije() == null) {
             magacinDto.setPodgrupe(podGrupaService.vratiSveGrupeNazive());
         } else if (parametri.getRobaKategorije() != null) {
-            magacinDto.setPodgrupe(vratiSvePodgrupePoNazivu(parametri.getPodGrupe().stream().map(PodGrupa::getNaziv).collect(Collectors.toList())));
+            magacinDto.setPodgrupe(vratiSvePodgrupePoNazivu(parametri));
         }
         magacinDto.setProizvodjaci(proizvodjacService.pronadjiSveProizvodjaceZaVrstu(parametri));
         magacinDto.setRobaDto(robaDto);
@@ -114,8 +111,14 @@ public class RobaGlavniService {
         return magacinDto;
     }
 
-    private List<String> vratiSvePodgrupePoNazivu(List<String> podgrupe) {
-        Set<String> podGrupeSet = podGrupaService.vratiSvePodGrupePoNazivima(podgrupe).stream().map(PodGrupa::getNaziv).map(String::toUpperCase).collect(Collectors.toSet());
+    private List<String> vratiSvePodgrupePoNazivu(UniverzalniParametri parametri) {
+        Set<String> podGrupeSet = new HashSet<>();
+        if(!parametri.getPodGrupe().isEmpty()) {
+        List<String> podGrupe = parametri.getPodGrupe().stream().map(PodGrupa::getNaziv).collect(Collectors.toList());
+        podGrupeSet = podGrupaService.vratiSvePodGrupePoNazivima(podGrupe).stream().map(PodGrupa::getNaziv).map(String::toUpperCase).collect(Collectors.toSet());
+        } else {
+            podGrupaService.vratiSvePodGrupePoGrupi(parametri.getGrupa());
+        }
         return new ArrayList<>(podGrupeSet).stream().sorted().collect(Collectors.toList());
     }
 
@@ -137,7 +140,12 @@ public class RobaGlavniService {
         } else if (parametri.getRobaKategorije().isGrupaPretraga() == true) {
             roba = robaService.pronadjiSvuRobuPoGrupiIdNaStanju(parametri.getRobaKategorije().getFieldName(), naStanju, pageable);
         } else if (parametri.getRobaKategorije().isPodgrupaPretraga() == true) {
-            roba = jooqRepository.pronadjiSvuRobuPoPodgrupama(parametri.getPodGrupe(), naStanju, pageable);
+            if(parametri.getPodgrupaZaPretragu() != null) {
+                List<PodGrupa> podGrupaList = parametri.getPodGrupe().stream().filter(podGrupa -> podGrupa.getNaziv().equals(parametri.getPodgrupaZaPretragu())).collect(Collectors.toList());
+                roba = jooqRepository.pronadjiSvuRobuPoPodgrupama(podGrupaList, naStanju, pageable);
+            } else {
+                roba = jooqRepository.pronadjiSvuRobuPoPodgrupama(parametri.getPodGrupe(), naStanju, pageable);
+            }
         } else {
             roba = null;
             log.error("Ne definisana roba!");

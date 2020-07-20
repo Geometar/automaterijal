@@ -15,4 +15,7 @@ public interface PodGrupaRepository extends JpaRepository<PodGrupa, Integer> {
     List<PodGrupa> findByNazivIn(String naziv);
 
     List<PodGrupa> findByNazivIn(List<String> naziv);
+
+    List<PodGrupa> findByGrupaId(String grupaId);
+
 }
