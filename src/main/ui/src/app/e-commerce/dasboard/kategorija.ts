@@ -180,10 +180,10 @@ export class Konastante {
         this.brendovi.push(pier);
 
         const bottari = new Brend();
-        bottari.ime = 'Magneti Marreli';
-        bottari.url = txtUrl + 'mm.txt';
+        bottari.ime = 'Bottari';
+        bottari.url = txtUrl + 'bottari.txt';
         bottari.urlSlikeLogo = slikeLogo + 'bottari.png';
-        bottari.urlSlikePozadina = slikePozadine + 'magneti-marelli.png';
+        bottari.urlSlikePozadina = slikePozadine + 'bottari.png';
         this.brendovi.push(bottari);
 
         const bp = new Brend();
@@ -195,9 +195,9 @@ export class Konastante {
 
         const wix = new Brend();
         wix.ime = 'Wix';
-        wix.url = txtUrl + 'bp.txt';
+        wix.url = txtUrl + 'wix.txt';
         wix.urlSlikeLogo = slikeLogo + 'wix.png';
-        wix.urlSlikePozadina = slikePozadine + 'wix.png';
+        wix.urlSlikePozadina = slikePozadine + 'wix.jpg';
         this.brendovi.push(wix);
     }
 }

@@ -49,6 +49,13 @@ public class DashboardService {
         List<Long> robaIds = vratiIzdvojenuRobu(dashbaordGrupa);
         return robaGlavniService.vratiIzdvajamoIzPonudeRobu(robaIds, partner)
                 .stream()
+                .filter(robaDto -> {
+                    if(partner == null || partner.getPrivilegije() != 2047) {
+                        return robaDto.getStanje() != 0;
+                    } else {
+                        return true;
+                    }
+                })
                 .map(robaDto -> setujTextNaRazumnuDuzinu(robaDto))
                 .collect(Collectors.toList());
     }
