@@ -44,7 +44,7 @@ export class Konastante {
 
         const aditivi = new Kategorija();
         aditivi.ikonaId = 'list';
-        aditivi.url = '/kategorije/aditiivi';
+        aditivi.url = '/kategorije/aditivi';
         aditivi.naslov = 'Aditivi';
         this.kategorije.push(aditivi);
 

@@ -1,5 +1,8 @@
 server:
   port: ${PORT:8080}
+  tomcat:
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+    compression: on
   servlet:
     session:
       timeout: 180m
@@ -44,3 +47,5 @@ roba:
 
 logging:
   file: ../logs/arhiva/automaterijal
+
+# Enable response compression

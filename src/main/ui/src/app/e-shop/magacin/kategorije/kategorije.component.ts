@@ -63,7 +63,7 @@ export class KategorijeComponent implements OnInit {
     const aditivi = new Kategorije();
     aditivi.naslov = 'Aditivi';
     aditivi.slikaId = 'assets/slike/kategorije/aditivi.jpg';
-    aditivi.url = 'adtivi';
+    aditivi.url = 'aditivi';
     univerzalno.kategorije.push(aditivi);
 
     const brisaci = new Kategorije();
@@ -201,7 +201,7 @@ export class KategorijeComponent implements OnInit {
     const traka = new Kategorije();
     traka.naslov = 'Traka za vuču';
     traka.slikaId = 'assets/slike/kategorije/t-vuca.jpg';
-    traka.url = 'traka';
+    traka.url = 'TRAKE_ZA_VUČU';
     unDodaci.kategorije.push(traka);
 
     unDodaci.naslov = 'Univerzalni dodaci';

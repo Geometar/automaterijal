@@ -51,7 +51,7 @@ public enum RobaKategorije {
     ŠPANER_ZA_OSIGURAVANJE_TERETA(List.of("ŠPANERI ZA OSIGURANJE TERETA"),  false, true),
     LEVAK(List.of("LEVAK"),  false, true),
     KANTICA(List.of("KANTICE"),  false, true),
-    ADTIVI(List.of("ADITIV"),  false, true),
+    ADITIVI(List.of("ADITIV"),  false, true),
     BRISAČI(List.of("BRISAČ"),  false, true),
     KOZMETIKA(List.of("JELKICE", "KONZERVE", "IGRAČKE"),  false, true),
     HEMIJA(List.of("HEMIJA"),  false, true),
@@ -72,6 +72,7 @@ public enum RobaKategorije {
     AKUMULATORI(List.of("AKUMULATOR"),  false, true),
     SIJALICE(List.of("SIJALICE"),  false, true),
     JELKICE(List.of("JELKICE"),  false, true),
+    TRAKE_ZA_VUČU(List.of("TRAKE"),  false, true),
     OBRADA_METALA(
             List.of("FOM"
             ),  true, false);
