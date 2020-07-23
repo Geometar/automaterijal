@@ -67,17 +67,17 @@ export class Konastante {
         hemija.naslov = 'Hemija';
         this.kategorije.push(hemija);
 
+        const pumpeZaGume = new Kategorija();
+        pumpeZaGume.ikonaId = 'list';
+        pumpeZaGume.url = '/kategorije/pumpe_za_gume';
+        pumpeZaGume.naslov = 'Pumpe za gume';
+        this.kategorije.push(pumpeZaGume);
+
         const iUlja = new Kategorija();
         iUlja.ikonaId = 'list';
         iUlja.url = '/kategorije/industrijska_ulja';
         iUlja.naslov = 'Industrijska ulja';
         this.kategorije.push(iUlja);
-
-        const obradaMetala = new Kategorija();
-        obradaMetala.ikonaId = 'list';
-        obradaMetala.url = '/kategorije/obrada_metala';
-        obradaMetala.naslov = 'Obrada metala';
-        this.kategorije.push(obradaMetala);
 
         ///////////////////////
         const mUlja = new Kategorija();

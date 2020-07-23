@@ -13,11 +13,11 @@ export class KategorijeComponent implements OnInit {
   constructor(private router: Router) { }
 
   ngOnInit(): void {
+    this.kategorijaUlja();
     this.unDodaciPumpa();
     this.univerzalno();
     this.odrzavanje();
     this.unutrasnjostVozilaPunjac();
-    this.kategorijaUlja();
   }
 
   odrzavanje() {
@@ -52,7 +52,7 @@ export class KategorijeComponent implements OnInit {
     pk.slikaId = 'assets/slike/kategorije/pokrivka.jpg';
     pk.url = 'pokrivači';
     odrzavanjeVraper.kategorije.push(pk);
-    odrzavanjeVraper.naslov = 'Odrzavanje vozila';
+    odrzavanjeVraper.naslov = 'Održavanje vozila';
     this.kategorijeV.push(odrzavanjeVraper);
 
   }
@@ -90,6 +90,12 @@ export class KategorijeComponent implements OnInit {
     hemija.slikaId = 'assets/slike/kategorije/hemija.jpg';
     hemija.url = 'Hemija';
     univerzalno.kategorije.push(hemija);
+
+    const sijalice = new Kategorije();
+    sijalice.naslov = 'Sijalice';
+    sijalice.slikaId = 'assets/slike/kategorije/sijalice.jpg';
+    sijalice.url = 'SIJALICE';
+    univerzalno.kategorije.push(sijalice);
 
     univerzalno.naslov = 'Univerzalno';
     this.kategorijeV.push(univerzalno);
@@ -134,7 +140,7 @@ export class KategorijeComponent implements OnInit {
     unutrasnjojstVraper.kategorije.push(jastuci);
 
     const pOgledala = new Kategorije();
-    pOgledala.naslov = 'Pomočna ogledala';
+    pOgledala.naslov = 'Pomoćna ogledala';
     pOgledala.slikaId = 'assets/slike/kategorije/ogledala.jpg';
     pOgledala.url = 'pomoćna_ogledala';
     unutrasnjojstVraper.kategorije.push(pOgledala);
@@ -152,7 +158,7 @@ export class KategorijeComponent implements OnInit {
     univerzalno.url = 'univerzalno';
     unutrasnjojstVraper.kategorije.push(univerzalno);
 
-    unutrasnjojstVraper.naslov = 'Unutrasnjost';
+    unutrasnjojstVraper.naslov = 'Dodaci za enterijer';
     this.kategorijeV.push(unutrasnjojstVraper);
   }
 
@@ -160,7 +166,7 @@ export class KategorijeComponent implements OnInit {
     const unDodaci = new KategorijaVraper();
 
     const kNosaci = new Kategorije();
-    kNosaci.naslov = 'Krovi nosači';
+    kNosaci.naslov = 'Krovni nosači';
     kNosaci.slikaId = 'assets/slike/kategorije/k-nosac.jpg';
     kNosaci.url = 'krovni_nosači';
     unDodaci.kategorije.push(kNosaci);
@@ -204,7 +210,7 @@ export class KategorijeComponent implements OnInit {
     traka.url = 'TRAKE_ZA_VUČU';
     unDodaci.kategorije.push(traka);
 
-    unDodaci.naslov = 'Univerzalni dodaci';
+    unDodaci.naslov = 'Dodatna oprema';
     this.kategorijeV.push(unDodaci);
   }
 
