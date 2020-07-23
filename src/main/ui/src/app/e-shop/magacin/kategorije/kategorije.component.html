@@ -28,10 +28,12 @@
                                     </button>
                                 </mat-menu>
                             </div>
-                            <div [routerLink]="[kategorija.url | lowercase]" *ngIf="!kategorija.podkategorije">
-                                <button disabled mat-button class="podkategorija">Podkategorija
-                                </button>
-                            </div>
+                            <a href="{{kategorija.url | lowercase}}">
+                                <div *ngIf="!kategorija.podkategorije">
+                                    <button disabled mat-button class="podkategorija">Podkategorija
+                                    </button>
+                                </div>
+                            </a>
                         </mat-card-footer>
                     </mat-card>
                 </div>
