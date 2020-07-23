@@ -107,8 +107,8 @@ public class FakturaService {
         partnerService.povecanPartnerovOrderCount(partner);
     }
 
-    public List<Faktura> vratiSveFakture() {
-        return fakturaRepository.findAll();
+    public List<Faktura> vratiSveFaktureZaDasboard() {
+        return fakturaRepository.findByLastUpdateGreaterThan(Timestamp.valueOf("2020-07-22 00:00:00"));
     }
 
     @Transactional(readOnly = true)

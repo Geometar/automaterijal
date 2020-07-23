@@ -113,7 +113,7 @@
 }
 .mat-card-ponuda {
   width: 250px;
-  height: 365px;
+  height: 400px;
   margin: 5px;
   box-shadow: 2px 3px 6px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14),
     0px 1px 3px 0px rgba(0, 0, 0, 0.12);
@@ -165,6 +165,7 @@ p {
   font-size: 0.845rem;
 }
 .naziv {
+  height: 40px;
   margin-top: 5px;
   text-align: center;
   color: $automaterijal-primary-100;
@@ -363,7 +364,7 @@ p {
   }
 
   .kategorija-card {
-    width: 200px;
+    width: 205px;
   }
   .cena {
     margin-left: 0px;
@@ -373,6 +374,7 @@ p {
 @media screen and (max-width: 1310px) {
   .kategorija-card {
     width: 180px;
+    text-align: center;
   }
 }
 
@@ -430,5 +432,21 @@ p {
   }
   .izdvajamo-slika {
     max-width: 135px;
+  }
+}
+@media screen and (max-width: 369px) {
+  .mat-card-ponuda {
+    width: 150px;
+    height: 405px;
+  }
+  .stanje-ikona {
+    margin-right: 60px;
+    margin-top: 22px;
+  }
+  img {
+    max-width: 130px;
+  }
+  .izdvajamo-slika {
+    max-width: 120px;
   }
 }

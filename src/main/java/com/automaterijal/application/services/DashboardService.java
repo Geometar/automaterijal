@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,7 +40,7 @@ public class DashboardService {
 
     public DashboardDto vracanjeSvihDashboardSpecifikacija() {
         DashboardDto dashboardDto = robaJooqRepository.vracanjePodatakaZaDashboard();
-        dashboardDto.setBrojFaktura(fakturaService.vratiSveFakture().size() + 10000);
+        dashboardDto.setBrojFaktura(fakturaService.vratiSveFaktureZaDasboard().size() + 14000);
         return dashboardDto;
     }
 
@@ -56,7 +55,6 @@ public class DashboardService {
                         return true;
                     }
                 })
-                .map(robaDto -> setujTextNaRazumnuDuzinu(robaDto))
                 .collect(Collectors.toList());
     }
 
@@ -65,21 +63,6 @@ public class DashboardService {
                 .stream()
                 .map(RobaDashboard::getRobaId)
                 .collect(Collectors.toList());
-    }
-
-    private RobaDto setujTextNaRazumnuDuzinu(RobaDto robaDto) {
-        if (robaDto.getNaziv().length() > 29) {
-            StringBuilder noviText = new StringBuilder();
-            String textNiz[] = robaDto.getNaziv().split(" ");
-            for (int i = 0; i < textNiz.length - 1; i++) {
-                noviText.append(textNiz[i] + " ");
-                if (noviText.length() + textNiz[i].length() > 29) {
-                    robaDto.setNaziv(noviText.toString());
-                    break;
-                }
-            }
-        }
-        return robaDto;
     }
 
     public void updejtuj(Long staraRobaId, Long novaRobaiD, DashbaordGrupa dashbaordGrupa) {

@@ -28,9 +28,10 @@ public enum RobaKategorije {
             "ULJA ZA KLIZNE STAZE",
             "ULJA ZA PRENOS TOPLOTE"
     ),  false, true),
+    ELEKTRIKA(List.of("ELEKTRIKA"), false, true),
     ŠAMPONI(List.of("SAMPON"), false, true),
     POLIR_PASTE(List.of("POLIR PASTA"), false, true),
-    SUDNJERI(List.of("SUNĐER"), false, true),
+    SUNDJERI(List.of("SUNĐER"), false, true),
     KRPE(List.of("KRPA"),  false, true),
     POKRIVAČI(List.of("POKRIVKA ZA AUTO"), false, true),
     PATOSNICE(List.of("PATOSNICE"),  false, true),

@@ -76,13 +76,15 @@
             <div *ngIf="brojArtikala === '-'"
               class="p-1 bd-highlight broj centar m-ekran-broj boldiraj boja-glavna-100">
 
-              <span *ngIf="innerWidth > 850 || innerWidth < 576" class="material-icons ikona ikona-mali-ekran boja-zelena-50">
+              <span *ngIf="innerWidth > 850 || innerWidth < 576"
+                class="material-icons ikona ikona-mali-ekran boja-zelena-50">
                 dashboard
               </span> <span> {{brojArtikala}} </span></div>
             <div *ngIf="brojArtikala !== '-'"
               class="p-1 bd-highlight broj centar boldiraj m-ekran-broj boja-glavna-100">
 
-              <span *ngIf="innerWidth > 850 || innerWidth < 576" class="material-icons ikona ikona-mali-ekran boja-zelena-50">
+              <span *ngIf="innerWidth > 850 || innerWidth < 576"
+                class="material-icons ikona ikona-mali-ekran boja-zelena-50">
                 dashboard
               </span>{{brojArtikala | number }}</div>
             <div class="p-1 bd-highlight centar boldiraj">Razlicitih artikala</div>
@@ -93,7 +95,8 @@
           <div class="d-flex flex-column bd-highlight detalji-magacina-opis m-ekran-opis">
             <div *ngIf="brojArtikala === '-'"
               class="p-1 bd-highlight broj centar boldiraj m-ekran-broj boja-glavna-100">
-              <span *ngIf="innerWidth > 850 || innerWidth < 576" class="material-icons ikona ikona-mali-ekran pat boja-zelena-50">
+              <span *ngIf="innerWidth > 850 || innerWidth < 576"
+                class="material-icons ikona ikona-mali-ekran pat boja-zelena-50">
                 label_important
               </span>
               <span> {{brojProizvodjaca}}
@@ -101,7 +104,8 @@
             </div>
             <div *ngIf="brojArtikala !== '-'"
               class="p-1 bd-highlight broj centar boldiraj m-ekran-broj boja-glavna-100">
-              <span *ngIf="innerWidth > 850 || innerWidth < 576" class="material-icons ikona ikona-mali-ekran pat boja-zelena-50">
+              <span *ngIf="innerWidth > 850 || innerWidth < 576"
+                class="material-icons ikona ikona-mali-ekran pat boja-zelena-50">
                 label_important
               </span>
               <span>
@@ -121,7 +125,8 @@
                 {{brojFakture}}
               </span></div>
             <div *ngIf="brojFakture !== '-'" class="p-1 bd-highlight broj centar boldiraj m-ekran-broj boja-glavna-100">
-              <span *ngIf="innerWidth > 850 || innerWidth < 576" class="material-icons ikona ikona-mali-ekran boja-zelena-50">
+              <span *ngIf="innerWidth > 850 || innerWidth < 576"
+                class="material-icons ikona ikona-mali-ekran boja-zelena-50">
                 label_important
               </span>
               <span>
@@ -145,7 +150,7 @@
               <div class="slika-div" (click)='detaljiRobe(roba.robaid)'>
                 <img class="izdvajamo-slika" mat-card-image src="{{roba.slika}}">
               </div>
-              <div  *ngIf="innerWidth >= 1411">
+              <div *ngIf="innerWidth >= 1411">
                 <p>
                   Cena: <span class="cena"> {{roba.cena | currency:" "}} RSD </span>
                 </p>
@@ -214,12 +219,14 @@
                     <div class="lex-shrink-1 bd-highlight stanje-ikona">
                       <div *ngIf="roba.stanje > 0" class="text-center">
                         <span *ngIf="innerWidth > 1410">Na stanju</span>
-                        <mat-icon *ngIf="innerWidth > 440" [class.nema-na-stanju]="!partnerLogovan" class="boja-zelena-50">check_circle_outline
+                        <mat-icon *ngIf="innerWidth > 440" [class.nema-na-stanju]="!partnerLogovan"
+                          class="boja-zelena-50">check_circle_outline
                         </mat-icon>
 
                       </div>
                       <div *ngIf="roba.stanje == 0" class="text-center nema-na-stanju-div">
-                        <mat-icon *ngIf="innerWidth > 440" matTooltip="Nema na stanju" class="boja-crvena-50 nema-na-stanju">
+                        <mat-icon *ngIf="innerWidth > 440" matTooltip="Nema na stanju"
+                          class="boja-crvena-50 nema-na-stanju">
                           remove_circle_outline
                         </mat-icon>
                       </div>
@@ -263,13 +270,13 @@
       <div class="cekcija-ponuda d-flex flex-wrap justify-content-center">
         <div *ngFor="let kategorija of kategorije">
           <mat-card class="kategorija-card" (click)="idiNaKategoriju(kategorija)">
-            <span class="material-icons ikona-kategorija-leva">
+            <span *ngIf="innerWidth > 1311" class="material-icons ikona-kategorija-leva">
               {{kategorija.ikonaId}}
             </span>
             <p class="kategorija-p">
               {{kategorija.naslov}}
             </p>
-            <span class="material-icons float-right mt-u-korpi boja-glavna-100">
+            <span *ngIf="innerWidth > 1311" class="material-icons float-right mt-u-korpi boja-glavna-100">
               play_arrow
             </span>
           </mat-card>
@@ -358,12 +365,14 @@
                     <div class="lex-shrink-1 bd-highlight stanje-ikona">
                       <div *ngIf="roba.stanje > 0" class="text-center">
                         <span *ngIf="innerWidth > 1410">Na stanju</span>
-                        <mat-icon *ngIf="innerWidth > 440" [class.nema-na-stanju]="!partnerLogovan" class="boja-zelena-50">check_circle_outline
+                        <mat-icon *ngIf="innerWidth > 440" [class.nema-na-stanju]="!partnerLogovan"
+                          class="boja-zelena-50">check_circle_outline
                         </mat-icon>
 
                       </div>
                       <div *ngIf="roba.stanje == 0" class="text-center nema-na-stanju-div">
-                        <mat-icon *ngIf="innerWidth > 440" matTooltip="Nema na stanju" class="boja-crvena-50 nema-na-stanju">
+                        <mat-icon *ngIf="innerWidth > 440" matTooltip="Nema na stanju"
+                          class="boja-crvena-50 nema-na-stanju">
                           remove_circle_outline
                         </mat-icon>
                       </div>
@@ -406,13 +415,13 @@
       <div class="cekcija-ponuda d-flex flex-wrap justify-content-center">
         <div *ngFor="let kategorija of grupe">
           <mat-card class="kategorija-card" (click)="idiNaKategoriju(kategorija)">
-            <span class="material-icons ikona-kategorija-leva">
+            <span *ngIf="innerWidth > 1311" class="material-icons ikona-kategorija-leva">
               {{kategorija.ikonaId}}
             </span>
             <p class="kategorija-p">
               {{kategorija.naslov}}
             </p>
-            <span class="material-icons float-right mt-u-korpi boja-glavna-100">
+            <span *ngIf="innerWidth > 1311" class="material-icons float-right mt-u-korpi boja-glavna-100">
               play_arrow
             </span>
           </mat-card>

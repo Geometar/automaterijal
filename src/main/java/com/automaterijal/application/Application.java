@@ -11,5 +11,5 @@ public class Application {
     // You need to extend SpringBootServletInitializer for tomcat server
     public static void main(final String[] args) {
         SpringApplication.run(Application.class, args);
-    }git
+    }
 }
