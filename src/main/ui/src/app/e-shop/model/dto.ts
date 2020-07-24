@@ -77,7 +77,7 @@ export class Proizvodjac {
 
 export declare class Credentials {
     username?: string;
-    password?: boolean;
+    password?: string;
 }
 
 export class Registracija {

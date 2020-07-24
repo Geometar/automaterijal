@@ -10,6 +10,8 @@ import { LocalStorageService } from '../service/data/local-storage.service';
 import { PrvoLogovanjeModalComponent } from 'src/app/shared/modal/prvo-logovanje-modal/prvo-logovanje-modal.component';
 import { DataService } from '../service/data/data.service';
 import { takeWhile } from 'rxjs/operators';
+import { AuthService } from '../service/auth.service';
+import { TokenStorageService } from '../service/token-storage.service';
 
 @Component({
   selector: 'app-login',
@@ -33,6 +35,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     public dataService: LocalStorageService,
     public router: Router,
     private korpaServis: DataService,
+    private authServis: AuthService,
+    private tokenStorage: TokenStorageService,
     public dialog: MatDialog) { }
 
   ngOnInit() {
@@ -52,9 +56,11 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (this.registerForm.invalid) {
       return;
     }
-    this.loginServis.ulogujSe(this.credentials)
+    this.authServis.login(this.credentials)
       .pipe(takeWhile(() => this.alive))
-      .subscribe(() => {
+      .subscribe((data) => {
+        this.tokenStorage.saveToken(data.token);
+        this.tokenStorage.saveUser(data);
         this.vratiKorisnika();
       });
   }

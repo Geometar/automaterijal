@@ -10,6 +10,7 @@ import { HttpErrorInterceptor } from './shared/interceptor/error-interceptor';
 import { AdminGuard } from './shared/guard/admin-guard';
 import { StorageServiceModule } from 'ngx-webstorage-service';
 import { AppRoutingModule } from './app-routing.module';
+import { authInterceptorProviders } from './shared/interceptor/auth-interceptor';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { AppRoutingModule } from './app-routing.module';
   providers: [
     AuthGuard,
     AdminGuard,
+    authInterceptorProviders,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpErrorInterceptor,

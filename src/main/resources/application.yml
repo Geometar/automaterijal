@@ -48,4 +48,8 @@ roba:
 logging:
   file: ../logs/arhiva/automaterijal
 
+automaterijal:
+  jwtSecret: bezKoderSecretKey
+  jwtExpirationMs: 10000
+
 # Enable response compression
