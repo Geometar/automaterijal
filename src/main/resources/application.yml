@@ -50,6 +50,6 @@ logging:
 
 automaterijal:
   jwtSecret: bezKoderSecretKey
-  jwtExpirationMs: 10000
+  jwtExpirationMs: 28800000
 
 # Enable response compression
