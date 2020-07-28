@@ -62,7 +62,7 @@ public class RobaCeneService {
         manager.clear();
         Double popust = 0.0;
         if (partner != null) {
-            popust = preracunajPopustNaArtkalZaUlogovanogPartnera(proId, grupaId, partner);
+            popust = preracunajPopustNaArtkalZaUlogovanogPartnera(grupaId, proId, partner);
             if (popust > 0) {
                 popust = popust * 100 - 100;
             }
@@ -75,7 +75,7 @@ public class RobaCeneService {
         if (partner.getPopustiList() != null) {
             retVal = partner.getPopustiList().stream()
                     .filter(
-                            popusti -> (grupaId != null && grupaId.equals(popusti.getGrupaid()) || (proId != null && proId.equals(popusti.getProid())))
+                            popusti -> (grupaId != null && grupaId.equals(popusti.getGrupaid())) || (proId != null && proId.equals(popusti.getProid()))
                     )
                     .map(Popusti::getProcenat)
                     .findFirst();
