@@ -1,11 +1,16 @@
 server:
-  port: ${PORT:8080}
+  port: ${PORT:8443}
   tomcat:
     mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
     compression: on
   servlet:
     session:
       timeout: 180m
+  ssl:
+    key-store: classpath:automaterijal.p12
+    key-store-password: Crninovembar18!
+    key-store-type: PKCS12
+    key-alias: server
 
 spring:
   jpa:
@@ -42,7 +47,7 @@ schedule:
 
 roba:
   slika:
-    prefixTabela: "http://automaterijal.com:8081/orders/item_images/"
+    prefixTabela: "assets/automaterijal/"
     prefixThumbs: "thumbs/"
 
 logging:

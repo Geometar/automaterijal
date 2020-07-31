@@ -223,10 +223,14 @@ public class RobaJooqRepository {
         prodjiIPopraviKatBr(kataloskiBrojevi);
         boolean pretragaJePoRecima = true;
         String pretragaNaziv = tacnaRecLike.replace("%", "");
-        for(String naziv: nazivi) {
-            if(!naziv.contains(pretragaNaziv)) {
-                pretragaJePoRecima = false;
+        if(nazivi != null && !nazivi.isEmpty()) {
+            for(String naziv: nazivi) {
+                if(!naziv.contains(pretragaNaziv)) {
+                    pretragaJePoRecima = false;
+                }
             }
+        } else {
+            pretragaJePoRecima = false;
         }
         return pretragaJePoRecima;
     }
