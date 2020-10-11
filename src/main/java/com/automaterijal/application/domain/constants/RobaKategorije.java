@@ -6,7 +6,10 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.util.HashMap;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Getter
@@ -84,4 +87,15 @@ public enum RobaKategorije {
     final boolean grupaPretraga;
     @NonNull
     final boolean podgrupaPretraga;
+
+    private static final Map<String,RobaKategorije> map;
+    static {
+        map = new HashMap<>();
+        for (RobaKategorije v : RobaKategorije.values()) {
+            map.put(v.name(), v);
+        }
+    }
+    public static RobaKategorije pronadjiPoNazivu(String naziv) {
+        return map.get(naziv);
+    }
 }

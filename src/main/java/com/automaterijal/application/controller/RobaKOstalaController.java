@@ -48,7 +48,7 @@ public class RobaKOstalaController {
 
     @GetMapping(value = "/{kategorija}")
     public ResponseEntity<MagacinDto> vratiRobuIzKategorije(
-            @PathVariable("kategorija") RobaKategorije kategorija,
+            @PathVariable("kategorija") String nazivKategorije,
             @RequestParam(required = false) Optional<Integer> page,
             @RequestParam(required = false) Optional<Integer> pageSize,
             @RequestParam(required = false) Optional<String> proizvodjac,
@@ -57,7 +57,7 @@ public class RobaKOstalaController {
             @RequestParam(required = false) Optional<String> grupa,
             Authentication authentication
     ) {
-
+        RobaKategorije kategorija = RobaKategorije.pronadjiPoNazivu(nazivKategorije.replace(" ", "_").toUpperCase());
         UniverzalniParametri univerzalniParametri = robaSpringBeanUtils.popuniIVratiGenerickeParametreZaServis(page, pageSize, proizvodjac, naStanju, searchTerm, grupa, kategorija);
         Partner uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
 
