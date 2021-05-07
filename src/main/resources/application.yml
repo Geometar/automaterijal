@@ -42,8 +42,8 @@ spring:
           starttls:
             enable: true
 schedule:
-  fakture:
-    upadte: 600000
+  izvestaj:
+    podsetnik: 0 0 6 * * *
 
 roba:
   slika:
@@ -56,5 +56,6 @@ logging:
 automaterijal:
   jwtSecret: bezKoderSecretKey
   jwtExpirationMs: 28800000
+
 
 # Enable response compression

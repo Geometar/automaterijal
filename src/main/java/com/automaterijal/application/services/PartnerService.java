@@ -22,6 +22,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -138,5 +139,9 @@ public class PartnerService {
                 PageRequest.of(page, pageSize, Sort.by(Sort.Direction.DESC, "users.lastLogin"))
         );
         return partneri.map(partner -> mapper.mapLogovanje(partner));
+    }
+
+    public List<Partner> vratiSveKomercijaliste() {
+        return partnerRepository.findByPrivilegijeGreaterThanOrderByNazivAsc(2042);
     }
 }

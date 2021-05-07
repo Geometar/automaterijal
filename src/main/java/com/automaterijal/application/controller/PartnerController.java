@@ -3,6 +3,7 @@ package com.automaterijal.application.controller;
 import com.automaterijal.application.domain.constants.PartnerAkcije;
 import com.automaterijal.application.domain.dto.PartnerDto;
 import com.automaterijal.application.domain.dto.ResetovanjeSifreDto;
+import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.services.PartnerService;
 import com.automaterijal.application.services.security.UserDetailsService;
 import com.automaterijal.application.services.security.UsersService;
@@ -18,6 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/partner")
@@ -99,6 +101,16 @@ public class PartnerController {
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping(value = "/komercijalsti")
+    public ResponseEntity<List<Partner>> vratiSveKomercijaliste(final Authentication authentication) {
+        final var partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+        if (partner.getPrivilegije().intValue() != 2047) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        } else {
+            return ResponseEntity.ok(partnerService.vratiSveKomercijaliste());
         }
     }
 }

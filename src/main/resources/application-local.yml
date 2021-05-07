@@ -35,8 +35,8 @@ spring:
           starttls:
             enable: true
 schedule:
-  fakture:
-    upadte: 600000
+  izvestaj:
+    podsetnik: 0 0 6 * * *
 
 logging:
   file: ../logs/arhiva/automaterijal

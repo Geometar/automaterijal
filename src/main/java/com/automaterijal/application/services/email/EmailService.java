@@ -4,6 +4,7 @@ import com.automaterijal.application.domain.constants.PartnerAkcije;
 import com.automaterijal.application.domain.dto.FakturaDto;
 import com.automaterijal.application.domain.dto.PartnerDto;
 import com.automaterijal.application.domain.dto.email.*;
+import com.automaterijal.application.domain.dto.izvestaj.IzvestajDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.repository.PartnerRepository;
 import com.automaterijal.application.services.security.UsersService;
@@ -75,6 +76,29 @@ public class EmailService {
                 context.setVariable("informacija", "Greska pogledaj logove!");
 
         }
+        return context;
+    }
+
+    /**
+     * Posalji podsetnike za izvestaj
+     */
+    public void posaljiIzvestajEmail(final IzvestajDto izvestajDto) {
+        final Context context = popuniKontekstIzvestaja(izvestajDto);
+        partnerRepository.findByPpid(izvestajDto.getKomentarDto().getPpid()).ifPresent(partner -> {
+            log.info("Slanje izvestaja komercijalisti {}", partner.getNaziv());
+            sendEmail.pripremiIPosaljiEmail(partner.getEmail(), "Podsetnik za izvestaj", "slanjeIzvestajPodsetnik", context);
+        });
+
+    }
+
+    private Context popuniKontekstIzvestaja(IzvestajDto dto) {
+        final Context context = new Context();
+        context.setVariable("datumIzvestaja", dto.getKomentarDto().getDatumKreiranja());
+        context.setVariable("ime", dto.getFirmaDto().getIme());
+        context.setVariable("mesto", dto.getFirmaDto().getMesto());
+        context.setVariable("adresa", dto.getFirmaDto().getAdresa());
+        context.setVariable("kontakt", dto.getFirmaDto().getKontakt());
+        context.setVariable("komentar", dto.getKomentarDto().getKomentar());
         return context;
     }
 

@@ -6,6 +6,7 @@ import com.automaterijal.application.utils.LoginStaticUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -27,6 +28,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.List;
 
 @Configuration
+@EnableScheduling
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
@@ -41,6 +43,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService);
         auth.authenticationProvider(authenticationProvider());
     }
+
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -59,14 +62,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .maximumSessions(10)
                 .sessionRegistry(sessionRegistry());
 
-        http	.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+        http.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
                 .antMatchers("/api/auth/signin").permitAll()
                 .antMatchers("/static/**", "/").permitAll()
                 .antMatchers(
                         "/api/roba/**", "/api/auth/signin", "/api/auth/**", "/api/informacije/**", "/api/admin/**", "/api/proizvodjaci/**", "/api/kategorije", "/api/kategorije/**", "/api/email/**",
-                        "/api/partner/promena-sifre", "/api/partner/read", "/api/partner/update", "/api/dashboard/**").permitAll()
+                        "/api/partner/promena-sifre", "/api/partner/read", "/api/partner/update", "/api/dashboard/**", "/api/izvestaj", "/api/izvestaj/firme").permitAll()
                 .antMatchers("/naslovna", "/api/fakture", "/o-nama", "/kontakt", "/roba", "/filteri", "/ulja", "/akumulatori", "/ostalo", "/ostalo/**", "/sitemap.xml", "/login**").permitAll()
                 .antMatchers("/login", "/reset-sifre/**").permitAll()
                 .antMatchers("/api/ExternalAccess/**").permitAll()
