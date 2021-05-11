@@ -42,7 +42,7 @@ public class IzvestajJooqRepository {
         }
 
         if (vremeDo != null) {
-            select.and(KOMENTAR.DATUM_KREIRANJA.lessOrEqual(vremeDo));
+            select.and(KOMENTAR.DATUM_KREIRANJA.lessThan(vremeDo));
         }
         if (vremeOd != null) {
             select.and(KOMENTAR.DATUM_KREIRANJA.greaterOrEqual(vremeOd));
