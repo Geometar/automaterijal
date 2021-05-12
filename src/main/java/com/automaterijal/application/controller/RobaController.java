@@ -1,12 +1,10 @@
 package com.automaterijal.application.controller;
 
-import com.automaterijal.application.domain.constants.RobaSortiranjePolja;
-import com.automaterijal.application.domain.constants.VrstaRobe;
 import com.automaterijal.application.domain.dto.MagacinDto;
 import com.automaterijal.application.domain.dto.robadetalji.RobaDetaljiDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.roba.RobaTekst;
-import com.automaterijal.application.domain.model.UniverzalniParametri;
+import com.automaterijal.application.services.LogWebService;
 import com.automaterijal.application.services.roba.RobaGlavniService;
 import com.automaterijal.application.services.roba.RobaTekstService;
 import com.automaterijal.application.utils.PartnerSpringBeanUtils;
@@ -16,12 +14,10 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -42,6 +38,8 @@ public class RobaController {
     final PartnerSpringBeanUtils partnerSpringBeanUtils;
     @NonNull
     final RobaSpringBeanUtils robaSpringBeanUtils;
+    @NonNull
+    final LogWebService logWebService;
 
     @GetMapping
     public ResponseEntity<MagacinDto> pronadjiSvuRobu(
@@ -58,7 +56,7 @@ public class RobaController {
                 page, pageSize, proizvodjac, naStanju, searchTerm, grupa, null
         );
         var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
-
+        logWebService.log(uPartner, univerzalniParametri.getGrupa(), univerzalniParametri.getProizvodjac(), univerzalniParametri.getTrazenaRec());
         MagacinDto magacinDto = robaGlavniService.pronadjiRobuPoPretrazi(
                 univerzalniParametri, uPartner
         );

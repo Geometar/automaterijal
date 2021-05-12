@@ -1,11 +1,10 @@
 package com.automaterijal.application.controller;
 
 import com.automaterijal.application.domain.constants.RobaKategorije;
-import com.automaterijal.application.domain.constants.RobaSortiranjePolja;
-import com.automaterijal.application.domain.constants.VrstaRobe;
 import com.automaterijal.application.domain.dto.MagacinDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
+import com.automaterijal.application.services.LogWebService;
 import com.automaterijal.application.services.roba.RobaGlavniService;
 import com.automaterijal.application.utils.PartnerSpringBeanUtils;
 import com.automaterijal.application.utils.RobaSpringBeanUtils;
@@ -13,7 +12,6 @@ import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -41,6 +39,9 @@ public class RobaKOstalaController {
     @NonNull
     final RobaGlavniService robaGlavniService;
 
+    @NonNull
+    final LogWebService logWebService;
+
     @GetMapping
     public List<String> vratiSveKategorije() {
         return Arrays.stream(RobaKategorije.values()).map(RobaKategorije::name).collect(Collectors.toList());
@@ -62,6 +63,7 @@ public class RobaKOstalaController {
         Partner uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
 
 
+        logWebService.log(uPartner, kategorija.getFieldName().get(0), univerzalniParametri.getProizvodjac(), univerzalniParametri.getTrazenaRec());
         MagacinDto magacinDto = robaGlavniService.pronadjiRobuPoPretrazi(
                 univerzalniParametri, uPartner
         );

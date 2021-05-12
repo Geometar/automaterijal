@@ -1,0 +1,33 @@
+package com.automaterijal.application.domain.entity;
+
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.experimental.FieldDefaults;
+
+import javax.persistence.*;
+import java.sql.Timestamp;
+
+@Entity
+@Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class LogWeb {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
+
+    @Column
+    Integer ppid;
+
+    @Column
+    String proizvodjac;
+
+    @Column
+    String filter;
+
+    @Column
+    String pretraga;
+
+    @Column
+    Timestamp vremePretrage;
+}
