@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LogWebRepository extends JpaRepository<LogWeb, Long> {
-    
-    Page<LogWeb> findByPpid(Integer ppid, Pageable pageable);
+
+    Page<LogWeb> findByPpidOrderByVremePretrageDescIdDesc(Integer ppid, Pageable pageable);
 
 }

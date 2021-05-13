@@ -113,4 +113,9 @@ public class PartnerController {
             return ResponseEntity.ok(partnerService.vratiSveKomercijaliste());
         }
     }
+
+    @GetMapping(value = "/{ppid}")
+    public ResponseEntity<Partner> vratiPartnera(@PathVariable("ppid") Integer ppid) {
+        return ResponseEntity.ok(partnerService.vratiPartnera(ppid));
+    }
 }

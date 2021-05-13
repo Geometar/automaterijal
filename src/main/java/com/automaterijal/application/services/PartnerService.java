@@ -144,4 +144,8 @@ public class PartnerService {
     public List<Partner> vratiSveKomercijaliste() {
         return partnerRepository.findByPrivilegijeGreaterThanOrderByNazivAsc(2042);
     }
+
+    public Partner vratiPartnera(Integer ppid) {
+        return partnerRepository.findByPpid(ppid).get();
+    }
 }

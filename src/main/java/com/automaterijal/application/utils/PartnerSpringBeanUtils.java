@@ -24,7 +24,7 @@ public class PartnerSpringBeanUtils {
             Integer ppid = ((CurrentUser) authentication.getPrincipal()).vratiPartnera().getPpid();
             retVal = partnerService.pronadjiPartneraPoId(ppid);
         }
-//        retVal = partnerService.pronadjiPartneraPoId(3456);
+        retVal = partnerService.pronadjiPartneraPoId(3456);
         return retVal;
     }
 }

@@ -8,6 +8,8 @@ import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +41,10 @@ public class LogWebService {
             LogWeb logWeb = napraviLog(partner, filter, proizvodjac, pretraga, datumDanas);
             logWebJooqRepository.sacuvajLog(logWeb);
         }
+    }
+
+    public Page<LogWeb> vratiLogove(Integer ppid, Pageable pageable) {
+        return logWebRepository.findByPpidOrderByVremePretrageDescIdDesc(ppid, pageable);
     }
 
     private LogWeb napraviLog(Partner partner, String filter, String proizvodjac, String pretraga, Timestamp datumDanas) {
