@@ -115,7 +115,13 @@ public class PartnerController {
     }
 
     @GetMapping(value = "/{ppid}")
-    public ResponseEntity<Partner> vratiPartnera(@PathVariable("ppid") Integer ppid) {
+    public ResponseEntity<Partner> vratiPartnera(
+            @PathVariable("ppid") Integer ppid,
+            final Authentication authentication) {
+        Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+        if (partner.getPrivilegije() != 2047) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
         return ResponseEntity.ok(partnerService.vratiPartnera(ppid));
     }
 }
