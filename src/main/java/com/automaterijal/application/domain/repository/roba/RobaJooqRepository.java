@@ -32,7 +32,6 @@ import java.util.stream.Collectors;
 import static com.automaterijal.db.tables.Roba.ROBA;
 import static com.automaterijal.db.tables.RobaKatbrOld.ROBA_KATBR_OLD;
 import static com.automaterijal.db.tables.TdBrojevi.TD_BROJEVI;
-import static com.automaterijal.db.tables.Proizvodjac.PROIZVODJAC;
 
 @Repository
 @Slf4j
@@ -216,16 +215,16 @@ public class RobaJooqRepository {
                         robaId.add(rekord.component3());
                     }
 
-                    if(rekord.component4() != null) {
+                    if (rekord.component4() != null) {
                         nazivi.add(rekord.component4());
                     }
                 });
         prodjiIPopraviKatBr(kataloskiBrojevi);
         boolean pretragaJePoRecima = true;
         String pretragaNaziv = tacnaRecLike.replace("%", "");
-        if(nazivi != null && !nazivi.isEmpty()) {
-            for(String naziv: nazivi) {
-                if(!naziv.contains(pretragaNaziv)) {
+        if (nazivi != null && !nazivi.isEmpty()) {
+            for (String naziv : nazivi) {
+                if (!naziv.contains(pretragaNaziv)) {
                     pretragaJePoRecima = false;
                 }
             }
@@ -258,7 +257,7 @@ public class RobaJooqRepository {
 
     private void drugiPomocniKveri(Set<String> katalskoBrojevi, Set<Integer> robaIds, String trazenaRec) {
         Set<Integer> robaIdIzTd = new HashSet<>();
-        SelectConditionStep<Record2<String, Integer>> selectConditionStep = dslContext.selectDistinct(TD_BROJEVI.BROJSRCH, TD_BROJEVI.ROBAID)
+        SelectConditionStep<Record4<String, String, String, Integer>> selectConditionStep = dslContext.selectDistinct(TD_BROJEVI.BROJ, TD_BROJEVI.BROJSRCH, TD_BROJEVI.FABRBROJ, TD_BROJEVI.ROBAID)
                 .from(TD_BROJEVI)
                 .where(TD_BROJEVI.NADJENPREKO.eq(trazenaRec))
                 .or(TD_BROJEVI.BROJ.eq(trazenaRec))
@@ -284,8 +283,14 @@ public class RobaJooqRepository {
             if (record.component1() != null && !StringUtils.isEmpty(record.component1())) {
                 katalskoBrojevi.add(record.component1());
             }
-            if (record.component2() != null) {
-                robaIdIzTd.add(record.component2());
+            if (record.component2() != null && !StringUtils.isEmpty(record.component2())) {
+                katalskoBrojevi.add(record.component2());
+            }
+            if (record.component3() != null && !StringUtils.isEmpty(record.component3())) {
+                katalskoBrojevi.add(record.component3());
+            }
+            if (record.component4() != null) {
+                robaIdIzTd.add(record.component4());
             }
         });
         boolean robaPostojalaUTD = false;
@@ -340,21 +345,21 @@ public class RobaJooqRepository {
      * Upiti u slucaju da se trazi specificna grupa
      */
     private void filtrirajPoParametrima(SelectConditionStep<?> select, UniverzalniParametri parametri) {
-            if (parametri.getRobaKategorije() != null && parametri.getRobaKategorije().isGrupaPretraga() == true) {
-                select.and(ROBA.GRUPAID.in(parametri.getRobaKategorije().getFieldName()));
-            } else if (parametri.getRobaKategorije() != null && parametri.getRobaKategorije().isPodgrupaPretraga() == true) {
-                select.and(ROBA.PODGRUPAID.in(parametri.getPodGrupe().stream().map(PodGrupa::getPodGrupaId).collect(Collectors.toList())));
-            }
+        if (parametri.getRobaKategorije() != null && parametri.getRobaKategorije().isGrupaPretraga() == true) {
+            select.and(ROBA.GRUPAID.in(parametri.getRobaKategorije().getFieldName()));
+        } else if (parametri.getRobaKategorije() != null && parametri.getRobaKategorije().isPodgrupaPretraga() == true) {
+            select.and(ROBA.PODGRUPAID.in(parametri.getPodGrupe().stream().map(PodGrupa::getPodGrupaId).collect(Collectors.toList())));
+        }
 
         if (!StringUtils.isEmpty(parametri.getProizvodjac())) {
             select.and(ROBA.PROID.eq(parametri.getProizvodjac()));
         }
 
         if (!StringUtils.isEmpty(parametri.getPodgrupaZaPretragu())) {
-          List<Integer> podgrupe = parametri.getPodGrupe().stream().filter(podGrupa -> podGrupa.getNaziv().equalsIgnoreCase(parametri.getPodgrupaZaPretragu())).map(PodGrupa::getPodGrupaId).collect(Collectors.toList());
-         if(!podgrupe.isEmpty()) {
-             select.and(ROBA.PODGRUPAID.in(podgrupe));
-         }
+            List<Integer> podgrupe = parametri.getPodGrupe().stream().filter(podGrupa -> podGrupa.getNaziv().equalsIgnoreCase(parametri.getPodgrupaZaPretragu())).map(PodGrupa::getPodGrupaId).collect(Collectors.toList());
+            if (!podgrupe.isEmpty()) {
+                select.and(ROBA.PODGRUPAID.in(podgrupe));
+            }
         }
         if (parametri.isNaStanju()) {
             select.and(ROBA.STANJE.greaterThan(new BigDecimal(0)));
