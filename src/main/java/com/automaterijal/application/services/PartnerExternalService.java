@@ -49,27 +49,39 @@ public class PartnerExternalService {
     @NonNull
     final RobaCeneService robaCeneService;
 
+    @NonNull
+    final TdAutomaterijalService tdAutomaterijalService;
+
     public Optional<PartnerB2bId> pronadjiPartneraPoUuid(String uuid) {
         return b2bIdRepository.findByUuid(uuid);
     }
 
-    public ExternalRobaDto pronadjiRobu(Integer ppid, String itemNo) {
+    public ExternalRobaDto pronadjiRobu(Integer ppid, String itemNo, Integer BrandID) {
         ExternalRobaDto retVal;
+        // Pronadji sve proizvodjace koje partner moze da ima i samog partnera izvuci iz baze
         List<PartnerB2bProizvodjac> listaProizvodjaca = b2bProizvodjacRepository.findByProizvodjacKljuceviPpid(ppid);
         Partner partner = partnerService.pronadjiPartneraPoId(ppid);
         List<String> kljuceviProizvodjaca = listaProizvodjaca.stream().map(b2bProizvodjac -> b2bProizvodjac.getProizvodjacKljucevi().getProid()).collect(Collectors.toList());
+
+        // U slucaju da postoji brand id filtrirati kljuceve proizvodjaca samo da sadrzi taj ID
+        if (BrandID != null && tdAutomaterijalService.vratiNasProIdIzTecDoca(BrandID).isPresent()) {
+            String proId = tdAutomaterijalService.vratiNasProIdIzTecDoca(BrandID).get();
+            kljuceviProizvodjaca = kljuceviProizvodjaca.stream().filter(kljuc -> kljuc.equals(proId)).collect(Collectors.toList());
+        }
+
         Roba roba = robaService.pronadjiPoPretaziIProizvodjacima(itemNo, kljuceviProizvodjaca);
+
         if (roba != null) {
             log.info("B2B: Partneru {} vracena roba sa katBr {}", partner.getMestaIsporuke().getNaziv(), itemNo);
-            BigDecimal cena = robaCeneService.vratiCenuRobePoRobiId(roba.getRobaid(), roba.getGrupaid(), roba.getProizvodjac().getProid(), partner)
-                    .setScale(2, RoundingMode.CEILING)
-                    .divide(BigDecimal.valueOf(1.2), 2, RoundingMode.CEILING);
+            BigDecimal cena = robaCeneService.vratiRobuB2BKomunikacija(roba.getRobaid(), roba.getGrupaid(), roba.getProizvodjac().getProid(), partner)
+                    .setScale(2, RoundingMode.CEILING);
             retVal = mapper.map(roba, cena.doubleValue());
         } else {
             log.info("B2B: Partneru {} nije nadjena roba sa katBr {}", partner.getMestaIsporuke().getNaziv(), itemNo);
             retVal = new ExternalRobaDto();
             retVal.setSucess(true);
         }
+
         return retVal;
     }
 }

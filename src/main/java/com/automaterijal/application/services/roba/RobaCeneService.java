@@ -31,6 +31,35 @@ public class RobaCeneService {
 
     final Long GLAVNI_MAGACIN = 1L;
 
+    public BigDecimal vratiRobuB2BKomunikacija(Long robaId, String grupaId, String proID, Partner partner) {
+        manager.clear();
+        BigDecimal retVal = null;
+        Double popust = 1.0;
+        if (partner != null) {
+            popust = preracunajPopustNaArtkalZaUlogovanogPartnera(grupaId, proID, partner);
+        }
+        Optional<RobaCene> robaCene = robaCeneRepository.findByMagacinidAndRobaid(GLAVNI_MAGACIN, robaId);
+        if (robaCene.isPresent()) {
+            RobaCene cene = robaCene.get();
+            if (partner.getVpcid() != 5) {
+                String vpcid = vratiVpcid(grupaId, proID, partner);
+                if (vpcid.equals("1")) {
+                    retVal = cene.getProdajnacena()
+                            .multiply(new BigDecimal(popust));
+                } else {
+                    retVal = cene.getDeviznacena()
+                            .multiply(new BigDecimal(popust))
+                            .multiply(new BigDecimal(100));
+                }
+            } else if (partner.getVpcid() == 5) {
+//                Partner ima pravo da vidi nabavne cene BEZ PDV i stanje robe na WEB-u
+                retVal = cene.getNabavnacena()
+                        .multiply(new BigDecimal(popust));
+            }
+        }
+        return retVal;
+    }
+
     public BigDecimal vratiCenuRobePoRobiId(Long robaId, String grupaId, String proID, Partner partner) {
         manager.clear();
         BigDecimal retVal = null;
@@ -40,18 +69,26 @@ public class RobaCeneService {
         }
         Optional<RobaCene> robaCene = robaCeneRepository.findByMagacinidAndRobaid(GLAVNI_MAGACIN, robaId);
         if (robaCene.isPresent()) {
+            RobaCene cene = robaCene.get();
             if (partner == null) {
-                retVal = robaCene.get().getDeviznacena()
+                retVal = cene.getDeviznacena()
                         .multiply(new BigDecimal(popust))
                         .multiply(new BigDecimal(120))
                         .setScale(0, RoundingMode.CEILING);
             } else if (partner.getVpcid() != 5) {
-                retVal = robaCene.get().getDeviznacena()
-                        .multiply(new BigDecimal(popust))
-                        .multiply(new BigDecimal(120));
+                String vpcid = vratiVpcid(grupaId, proID, partner);
+                if (vpcid.equals("1")) {
+                    retVal = cene.getProdajnacena()
+                            .multiply(new BigDecimal(popust))
+                            .multiply(new BigDecimal(1.2));
+                } else {
+                    retVal = cene.getDeviznacena()
+                            .multiply(new BigDecimal(popust))
+                            .multiply(new BigDecimal(120));
+                }
             } else if (partner.getVpcid() == 5) {
 //                Partner ima pravo da vidi nabavne cene BEZ PDV i stanje robe na WEB-u
-                retVal = robaCene.get().getNabavnacena()
+                retVal = cene.getNabavnacena()
                         .multiply(new BigDecimal(popust));
             }
         }
@@ -82,5 +119,18 @@ public class RobaCeneService {
         }
 
         return retVal.isPresent() ? 1 + retVal.get() / 100 : 1 + partner.getProcpc() / 100;
+    }
+
+    private String vratiVpcid(String grupaId, String proId, Partner partner) {
+        Optional<String> retVal = Optional.empty();
+        if (partner.getPopustiList() != null) {
+            retVal = partner.getPopustiList().stream()
+                    .filter(
+                            popusti -> (grupaId != null && grupaId.equals(popusti.getGrupaid())) || (proId != null && proId.equals(popusti.getProid()))
+                    )
+                    .map(Popusti::getVpcid)
+                    .findFirst();
+        }
+        return retVal.isPresent() ? retVal.get() : "7";
     }
 }

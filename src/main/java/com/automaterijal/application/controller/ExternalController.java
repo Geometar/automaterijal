@@ -28,12 +28,13 @@ public class ExternalController {
     @GetMapping(value = "/GetItemDetails")
     public ExternalRobaDto pronadjiSvuRobu(
             @RequestParam(required = false) String ItemNo,
-            @RequestParam(required = false) String SecurityId
+            @RequestParam(required = false) String SecurityId,
+            @RequestParam(required = false) Integer BrandID
     ) {
         ExternalRobaDto retVal;
         Optional<PartnerB2bId> partnerB2bId = partnerExternalService.pronadjiPartneraPoUuid(SecurityId);
         if (partnerB2bId.isPresent() && ItemNo != null) {
-            retVal = partnerExternalService.pronadjiRobu(partnerB2bId.get().getPpid(), ItemNo);
+            retVal = partnerExternalService.pronadjiRobu(partnerB2bId.get().getPpid(), ItemNo, BrandID);
         } else {
             log.info("Vracena greska jer itemNo {} ili secId {} je nula", ItemNo, SecurityId);
             retVal = new ExternalRobaDto();
