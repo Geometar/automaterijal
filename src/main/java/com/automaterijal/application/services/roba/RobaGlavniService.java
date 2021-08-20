@@ -9,19 +9,18 @@ import com.automaterijal.application.domain.entity.GrupaDozvoljena;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.PodGrupa;
 import com.automaterijal.application.domain.entity.roba.Roba;
-import com.automaterijal.application.domain.entity.roba.RobaSlika;
 import com.automaterijal.application.domain.mapper.RobaMapper;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.domain.repository.roba.RobaJooqRepository;
 import com.automaterijal.application.services.GrupaDozvoljenaService;
 import com.automaterijal.application.services.ProizvodjacService;
+import com.automaterijal.application.services.SlikeService;
 import com.automaterijal.application.services.roba.grupe.PodGrupaService;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,7 +48,7 @@ public class RobaGlavniService {
     @NonNull
     final RobaAplikacijeServis aplikacijeServis;
     @NonNull
-    final RobaSlikaService robaSlikaService;
+    final SlikeService slikeService;
     @NonNull
     final ProizvodjacService proizvodjacService;
     @NonNull
@@ -60,15 +59,6 @@ public class RobaGlavniService {
     final GrupaDozvoljenaService grupaDozvoljenaService;
     @NonNull
     final RobaMapper mapper;
-
-    @Value("${roba.slika.prefixTabela}")
-    String prefixTabela;
-
-    @Value("${roba.slika.prefixThumbs}")
-    String prefixThumbs;
-
-    private static final String SLIKA_NIJE_DOSTUPNA_URL = "assets/slike/ui/roba/slikanijedostupna.jpg";
-
 
     private static final Integer VRSTA_ORIGINALNI = 3;
     private static final Integer VRSTA_PROIZVODJACI = 4;
@@ -113,9 +103,9 @@ public class RobaGlavniService {
 
     private List<String> vratiSvePodgrupePoNazivu(UniverzalniParametri parametri) {
         Set<String> podGrupeSet = new HashSet<>();
-        if(!parametri.getPodGrupe().isEmpty()) {
-        List<String> podGrupe = parametri.getPodGrupe().stream().map(PodGrupa::getNaziv).collect(Collectors.toList());
-        podGrupeSet = podGrupaService.vratiSvePodGrupePoNazivima(podGrupe).stream().map(PodGrupa::getNaziv).map(String::toUpperCase).collect(Collectors.toSet());
+        if (!parametri.getPodGrupe().isEmpty()) {
+            List<String> podGrupe = parametri.getPodGrupe().stream().map(PodGrupa::getNaziv).collect(Collectors.toList());
+            podGrupeSet = podGrupaService.vratiSvePodGrupePoNazivima(podGrupe).stream().map(PodGrupa::getNaziv).map(String::toUpperCase).collect(Collectors.toSet());
         } else {
             podGrupaService.vratiSvePodGrupePoGrupi(parametri.getGrupa());
         }
@@ -140,7 +130,7 @@ public class RobaGlavniService {
         } else if (parametri.getRobaKategorije().isGrupaPretraga() == true) {
             roba = robaService.pronadjiSvuRobuPoGrupiIdNaStanju(parametri.getRobaKategorije().getFieldName(), naStanju, pageable);
         } else if (parametri.getRobaKategorije().isPodgrupaPretraga() == true) {
-            if(parametri.getPodgrupaZaPretragu() != null) {
+            if (parametri.getPodgrupaZaPretragu() != null) {
                 List<PodGrupa> podGrupaList = parametri.getPodGrupe().stream().filter(podGrupa -> podGrupa.getNaziv().equals(parametri.getPodgrupaZaPretragu())).collect(Collectors.toList());
                 roba = jooqRepository.pronadjiSvuRobuPoPodgrupama(podGrupaList, naStanju, pageable);
             } else {
@@ -183,12 +173,7 @@ public class RobaGlavniService {
             robaDto.setDozvoljenoZaAnonimusa(true);
         }
 
-        Optional<RobaSlika> robaSlika = robaSlikaService.pronadjiPutanjuSlikePoId(robaDto.getRobaid());
-        if (robaSlika.isPresent()) {
-            robaDto.setSlika(prefixTabela + prefixThumbs + robaSlika.get().getSlika());
-        } else {
-            robaDto.setSlika(SLIKA_NIJE_DOSTUPNA_URL);
-        }
+        robaDto.setSlika(slikeService.vratiPutanjuDoSlike(robaDto.getProizvodjac().getProid(), robaDto.getKatbr(), robaDto.getRobaid()));
         podGrupaService.vratiPodgrupuPoKljucu(robaDto.getPodGrupa()).ifPresent(podGrupa -> robaDto.setPodGrupaNaziv(podGrupa.getNaziv()));
     }
 
@@ -210,13 +195,8 @@ public class RobaGlavniService {
             detaljnoDto.setTehnickiOpis(tehnickiOpisServis.vratiTehnickiOpisPoIdRobe(detaljnoDto.getRobaid()));
             detaljnoDto.setTdBrojevi(brojeviServis.vratiSveBrojeveZaRobidIVrsti(detaljnoDto.getRobaid(), VRSTA_ORIGINALNI));
             detaljnoDto.setAplikacije(aplikacijeServis.vratiAplikacijeZaDetalje(detaljnoDto.getRobaid()));
-            Optional<RobaSlika> robaSlika = robaSlikaService.pronadjiPutanjuSlikePoId(detaljnoDto.getRobaid());
 
-            if (robaSlika.isPresent()) {
-                detaljnoDto.setSlika(prefixTabela + prefixThumbs + robaSlika.get().getSlika());
-            } else {
-                detaljnoDto.setSlika(SLIKA_NIJE_DOSTUPNA_URL);
-            }
+            detaljnoDto.setSlika(slikeService.vratiPutanjuDoSlike(detaljnoDto.getProizvodjac().getProid(), detaljnoDto.getKatbr(), detaljnoDto.getRobaid()));
 
             List<String> dozvoljeneGrupeKljucevi = grupaDozvoljenaService.pronadjiSveDozvoljeneGrupe().stream()
                     .map(GrupaDozvoljena::getGrupaid)

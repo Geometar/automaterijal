@@ -25,6 +25,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/api/izvestaj")
+@CrossOrigin(origins = "http://localhost:4200")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Slf4j
