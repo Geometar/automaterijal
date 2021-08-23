@@ -49,6 +49,7 @@ roba:
   slika:
     prefixTabela: "assets/automaterijal/"
     prefixThumbs: "thumbs/"
+    tdPrefix: "http://automaterijal.com:8081/orders/item_images/products/"
 
 logging:
   file: ../logs/arhiva/automaterijal

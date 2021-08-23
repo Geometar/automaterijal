@@ -58,6 +58,7 @@ public class PartnerExternalService {
 
     public ExternalRobaDto pronadjiRobu(Integer ppid, String itemNo, Integer BrandID) {
         ExternalRobaDto retVal;
+        itemNo = itemNo.replaceAll("\\s+","");
         // Pronadji sve proizvodjace koje partner moze da ima i samog partnera izvuci iz baze
         List<PartnerB2bProizvodjac> listaProizvodjaca = b2bProizvodjacRepository.findByProizvodjacKljuceviPpid(ppid);
         Partner partner = partnerService.pronadjiPartneraPoId(ppid);
