@@ -49,6 +49,7 @@ roba:
   slika:
     prefixTabela: "assets/automaterijal/"
     prefixThumbs: "thumbs/"
+    tdPrefix: "C:/Rade/projekat/tecdoc/"
 
 logging:
   file: ../logs/arhiva/automaterijal
