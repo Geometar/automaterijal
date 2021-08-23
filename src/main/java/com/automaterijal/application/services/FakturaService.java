@@ -22,7 +22,6 @@ import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -70,12 +69,8 @@ public class FakturaService {
     final RobaSlikaService slikaService;
     @NonNull
     final RobaMapper robaMapper;
-
-    @Value("${roba.slika.prefixTabela}")
-    String prefixTabela;
-
-    @Value("${roba.slika.prefixThumbs}")
-    String prefixThumbs;
+    @NonNull
+    final SlikeService slikeService;
 
     public List<RobaDto> submitujFakturu(FakturaDto fakturaDto, Partner partner) {
         List<RobaDto> dozvoljenaKolicina = new ArrayList<>();
@@ -163,18 +158,15 @@ public class FakturaService {
                 double ukupnaCenaDela = dto.getPotvrdjenaKolicina() * dto.getCena();
                 bigDecimal = bigDecimal.add(new BigDecimal(ukupnaCenaDela));
             }
-            dto.setCena(Double.valueOf(formater.format(dto.getCena())));
+            dto.setCena(dto.getCena());
         }
 
-        var iznosNarucen = Double.valueOf(formater.format(fakturaDto.getIznosNarucen()));
+        var iznosNarucen = fakturaDto.getIznosNarucen();
         fakturaDto.setIznosNarucen(iznosNarucen);
         fakturaDto.setIznosPotvrdjen(bigDecimal.doubleValue());
     }
 
     private void obogatiDetalje(FakturaDetaljiDto dto, Partner partner) {
-        slikaService.pronadjiPutanjuSlikePoId(dto.getRobaId()).ifPresent(robaSlika -> {
-            dto.setSlikaId(prefixTabela + prefixThumbs + robaSlika.getSlika());
-        });
         statusRepository.findById(dto.getStatus().getId()).ifPresent(status -> mapper.map(dto, status));
         robaService.pronadjiRobuPoPrimarnomKljucu(dto.getRobaId()).ifPresent(roba -> {
             mapper.map(dto, roba);
@@ -183,6 +175,8 @@ public class FakturaService {
                     robaCeneService.vratiCenuRobePoRobiId(roba.getRobaid(), roba.getGrupaid(), roba.getProizvodjac().getProid(), partner).doubleValue()
             );
         });
+        
+        dto.setSlika(slikeService.vratiPutanjuDoSlike(dto.getProizvodjac().getProid(), dto.getKataloskiBroj(), dto.getRobaId()));
     }
 
     @Transactional(readOnly = true)

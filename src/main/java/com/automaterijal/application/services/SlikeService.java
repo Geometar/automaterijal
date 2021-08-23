@@ -1,6 +1,7 @@
 package com.automaterijal.application.services;
 
 import com.automaterijal.application.domain.constants.SlikeUtility;
+import com.automaterijal.application.domain.dto.SlikaDto;
 import com.automaterijal.application.domain.entity.TDBrands;
 import com.automaterijal.application.domain.entity.roba.RobaSlika;
 import com.automaterijal.application.domain.repository.TDBrandsRepository;
@@ -10,8 +11,12 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,21 +44,28 @@ public class SlikeService {
 
     private static final String SLIKA_NIJE_DOSTUPNA_URL = "assets/slike/ui/roba/slikanijedostupna.jpg";
 
-    public String vratiPutanjuDoSlike(String proid, String katBar, Long robaId) {
-        String retVal = null;
+    public SlikaDto vratiPutanjuDoSlike(String proid, String katBar, Long robaId) {
+        SlikaDto slikaDto = new SlikaDto();
         Optional<TDBrands> tdBrandsOptional = tdBrandsRepository.findByProid(proid);
         Optional<RobaSlika> robaSlika = robaSlikaService.pronadjiPutanjuSlikePoId(robaId);
         if (tdBrandsOptional.isPresent() && !robaSlika.isPresent()) {
             TDBrands tdBrands = tdBrandsOptional.get();
             boolean postojiKonstanta = false;
-            for (int i = 0; i < slikeUtilities.size(); i++) {
-                SlikeUtility slikeUtility = slikeUtilities.get(i);
-                if (slikeUtility.getProid().equals(proid) && katBar.contains(slikeUtility.getSadrzaj())) {
-                    retVal = tdPrefix + tdBrands.getBraId() + "/" + slikeUtility.getKonstanta();
-                    postojiKonstanta = true;
-                    break;
+
+            // trenutno je ovo samo za kontinental kaiseve
+            if ("CONTI".equals(proid)) {
+                for (int i = 0; i < slikeUtilities.size(); i++) {
+                    SlikeUtility slikeUtility = slikeUtilities.get(i);
+                    if (slikeUtility.getProid().equals(proid) && katBar.contains(slikeUtility.getSadrzaj())) {
+                        String url = tdPrefix + tdBrands.getBraId() + "/" + slikeUtility.getKonstanta();
+                        podesiSlikaByte(url, slikaDto);
+                        postojiKonstanta = true;
+                        break;
+                    }
                 }
             }
+
+            // Logika za zamenu URL-ova
             if (!postojiKonstanta) {
                 if (tdBrands.getRemoveChar() != null) {
                     katBar = katBar.replace(tdBrands.getRemoveChar(), "");
@@ -64,17 +76,32 @@ public class SlikeService {
                 if (tdBrands.getRemovePrefix() != null && tdBrands.getRemovePrefix().length() > 0 && katBar.indexOf(tdBrands.getRemovePrefix()) == 0) {
                     katBar = katBar.substring(katBar.length() - tdBrands.getRemovePrefix().length());
                 }
-                retVal = tdPrefix + tdBrands.getBraId() + "/" + tdBrands.getAddPrefix() + katBar + tdBrands.getAddSufix() + ".jpg";
+                String url = tdPrefix + tdBrands.getBraId() + "/" + tdBrands.getAddPrefix() + katBar + tdBrands.getAddSufix() + ".jpg";
+                podesiSlikaByte(url, slikaDto);
             }
         } else {
             if (robaSlika.isPresent()) {
-                retVal = prefixTabela + prefixThumbs + robaSlika.get().getSlika();
+                slikaDto.setSlikeUrl(prefixTabela + prefixThumbs + robaSlika.get().getSlika());
             } else {
-                retVal = SLIKA_NIJE_DOSTUPNA_URL;
+                slikaDto.setSlikeUrl(SLIKA_NIJE_DOSTUPNA_URL);
             }
+            slikaDto.setUrl(true);
         }
 
-        return retVal;
+        return slikaDto;
+    }
+
+    private void podesiSlikaByte(String url, SlikaDto slikaDto) {
+        try {
+            final ByteArrayResource inputStream = new ByteArrayResource(Files.readAllBytes(Paths.get(
+                    url
+            )));
+            slikaDto.setSlikeByte(inputStream.getByteArray());
+            slikaDto.setUrl(false);
+        } catch (IOException exception) {
+            slikaDto.setSlikeUrl(SLIKA_NIJE_DOSTUPNA_URL);
+            slikaDto.setUrl(true);
+        }
     }
 
 }

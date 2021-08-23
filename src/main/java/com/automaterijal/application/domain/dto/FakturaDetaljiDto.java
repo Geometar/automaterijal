@@ -10,7 +10,7 @@ import lombok.experimental.FieldDefaults;
 public class FakturaDetaljiDto {
 
     Long robaId;
-    String slikaId;
+    SlikaDto slika;
     String kataloskiBroj;
     String kataloskiBrojProizvodjaca;
     String naziv;

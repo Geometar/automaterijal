@@ -1,6 +1,7 @@
 package com.automaterijal.application.domain.dto.robadetalji;
 
 import com.automaterijal.application.domain.dto.RobaTehnickiOpisDto;
+import com.automaterijal.application.domain.dto.SlikaDto;
 import com.automaterijal.application.domain.entity.Proizvodjac;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -15,7 +16,7 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RobaDetaljiDto {
     Long robaid;
-    String slika;
+    SlikaDto slika;
     String grupa;
     String podGrupa;
     String katbr;
