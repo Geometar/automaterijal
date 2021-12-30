@@ -136,7 +136,7 @@ public class RobaJooqRepository {
         Condition condition2 = ROBA.KATBRPRO.in(kataloskiBrojevi);
         conditionPoslednji = condition1.or(condition2);
 
-        select.or(conditionPoslednji);
+        select.and(conditionPoslednji);
         filtrirajPoParametrima(select, parametri);
         sortiranje(select, parametri);
 
@@ -193,7 +193,7 @@ public class RobaJooqRepository {
         if (trazenaRec != null) {
             return select.where(ROBA.KATBR.like(trazenaRecLike));
         } else {
-            return select.where(ROBA.KATBR.like("Nema broja prazan broj"));
+            return select.where("1=1");
         }
     }
 
