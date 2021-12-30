@@ -1,5 +1,6 @@
 package com.automaterijal.application.services.roba;
 
+import com.automaterijal.application.client.TecDocClient;
 import com.automaterijal.application.domain.constants.RobaSortiranjePolja;
 import com.automaterijal.application.domain.dto.MagacinDto;
 import com.automaterijal.application.domain.dto.RobaDto;
@@ -16,6 +17,7 @@ import com.automaterijal.application.services.GrupaDozvoljenaService;
 import com.automaterijal.application.services.ProizvodjacService;
 import com.automaterijal.application.services.SlikeService;
 import com.automaterijal.application.services.roba.grupe.PodGrupaService;
+import com.automaterijal.application.tecdoc.ArticleDirectSearchAllNumbersWithStateRecord;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -59,6 +61,8 @@ public class RobaGlavniService {
     final GrupaDozvoljenaService grupaDozvoljenaService;
     @NonNull
     final RobaMapper mapper;
+    @NonNull
+    final TecDocClient tecDocClient;
 
     private static final Integer VRSTA_ORIGINALNI = 3;
     private static final Integer VRSTA_PROIZVODJACI = 4;
@@ -114,9 +118,42 @@ public class RobaGlavniService {
 
     private MagacinDto logikaZaMagacinSaFilterom(UniverzalniParametri parametri, Partner ulogovaniPartner) {
         var magacinDto = new MagacinDto();
-        magacinDto = jooqRepository.pronadjiPoTrazenojReci(parametri, parametri.getTrazenaRec());
-        magacinDto.getRobaDto().forEach(dto -> setujZaTabelu(dto, ulogovaniPartner));
+        if(parametri.getTrazenaRec() != null) {
+            magacinDto = logikaZaMagacinSaTrazenomRecju(parametri, ulogovaniPartner);
+        } else {
+            magacinDto = jooqRepository.pronadjiPoTrazenojReci(parametri, parametri.getTrazenaRec());
+        }
+
+        if(!magacinDto.getRobaDto().isEmpty()) {
+            magacinDto.getRobaDto().forEach(dto -> setujZaTabelu(dto, ulogovaniPartner));
+        }
         return magacinDto;
+    }
+
+    private MagacinDto logikaZaMagacinSaTrazenomRecju(UniverzalniParametri parametri, Partner ulogovaniPartner) {
+        MagacinDto retVal = new MagacinDto();
+        String pregragaPoTacnojReciLike = "%" + parametri.getTrazenaRec() + "%";
+        String trazenaRecLike = "%" + parametri.getTrazenaRec().replaceAll("\\s+", "") + "%";
+        String tacnaRec = parametri.getTrazenaRec().replaceAll("\\s+", "");
+
+        Set<String> kataloskiBrojevi = new HashSet<>();
+        Set<Integer> robaId = new HashSet<>();
+        boolean daLiJeTrazenaRecNaziv = jooqRepository.pomocniKveriPoRobi(trazenaRecLike, pregragaPoTacnojReciLike, kataloskiBrojevi, robaId);
+        if(!daLiJeTrazenaRecNaziv) {
+            kataloskiBrojevi = tecDocClient.tecDocPretraga(tacnaRec, null, 10)
+                    .stream()
+                    .map(ArticleDirectSearchAllNumbersWithStateRecord::getArticleNo)
+                    .collect(Collectors.toSet());
+            kataloskiBrojevi.add(tacnaRec);
+            jooqRepository.pomocniKveriPoRobiOld(pregragaPoTacnojReciLike, kataloskiBrojevi);
+        }
+        if(kataloskiBrojevi.isEmpty()) {
+            retVal = jooqRepository.pronadjiPoTrazenojReci(parametri, tacnaRec);
+        } else {
+            retVal = jooqRepository.vratiArtikleIzTecDoca(parametri, kataloskiBrojevi, daLiJeTrazenaRecNaziv ? pregragaPoTacnojReciLike : null);
+        }
+
+        return retVal;
     }
 
     /**
