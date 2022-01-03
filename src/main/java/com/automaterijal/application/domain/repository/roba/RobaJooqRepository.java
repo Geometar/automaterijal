@@ -214,17 +214,10 @@ public class RobaJooqRepository {
         boolean pretragaJePoRecima = pomocniKveriPoRobi(trazenaRecLike, pregragaPoTacnojReciLike, kataloskiBrojevi, robaId);
 
         if (!pretragaJePoRecima) {
-            // Ukoliko nije pretraga po recima pretrazi po tecdocu
-            List<ArticleDirectSearchAllNumbersWithStateRecord> tecDocArtikli = tecDocClient.tecDocPretraga(trazenaRec, null, 10);
-            kataloskiBrojevi = tecDocArtikli.stream().map(article -> article.getArticleNo()).collect(Collectors.toSet());
-        } else {
-            daLiJePetragaPoReci = true;
-        }
-
-        // Nema pogodaka ni u tecdocu a nije ni pretraga po recima
-        if (kataloskiBrojevi.isEmpty() && !pretragaJePoRecima) {
             pomocniKveriPoRobiOld(trazenaRec, kataloskiBrojevi);
             drugiPomocniKveri(kataloskiBrojevi, robaId, trazenaRec);
+        } else {
+            daLiJePetragaPoReci = true;
         }
 //        Kraj pomocnog kverija
 

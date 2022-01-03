@@ -2,8 +2,11 @@ package com.automaterijal.application.client;
 
 import com.automaterijal.application.tecdoc.ArticleDirectSearchAllNumbersWithStateRecord;
 import com.automaterijal.application.tecdoc.ArticleDirectSearchAllNumbersWithStateResponse;
+import com.automaterijal.application.tecdoc.ArticlesByIds6Record;
+import com.automaterijal.application.tecdoc.ArticlesByIds6Response;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -50,6 +53,35 @@ public class TecDocClient {
         } else {
             return new ArrayList<>();
         }
+    }
+
+    /**
+     * Servis za vracanje detalja artikala, poput dokumenata, OE brojeva, atributa
+     */
+    public List<ArticlesByIds6Record> vratiDetaljeArtikla(Long robaId) {
+        JSONObject request = new JSONObject();
+
+        JSONObject body = kreirajStandardniObjekat();
+        body.put("attributs", true);
+        body.put("documents", true);
+        body.put("oeNumbers", true);
+
+        JSONObject articleIds = new JSONObject();
+
+        JSONArray articleIdArray = new JSONArray();
+        articleIdArray.put(robaId);
+        articleIds.put("array", articleIdArray);
+
+        body.put("articleId", articleIds);
+
+        request.put("getDirectArticlesByIds6", body);
+
+        ResponseEntity<ArticlesByIds6Response> responseEntity = vratiOdgovor(request, ArticlesByIds6Response.class);
+        List<ArticlesByIds6Record> retVal = new ArrayList<>();
+        if(responseEntity != null) {
+            retVal = responseEntity.getBody().getData().getArray();
+        }
+        return retVal;
     }
 
     /**

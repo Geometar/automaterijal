@@ -4,6 +4,7 @@ import com.automaterijal.application.domain.constants.RobaKategorije;
 import com.automaterijal.application.domain.constants.RobaSortiranjePolja;
 import com.automaterijal.application.domain.constants.VrstaRobe;
 import com.automaterijal.application.domain.entity.PodGrupa;
+import com.automaterijal.application.tecdoc.ArticleDirectSearchAllNumbersWithStateRecord;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
@@ -24,4 +25,5 @@ public class UniverzalniParametri {
     String podgrupaZaPretragu;
     RobaKategorije robaKategorije;
     List<PodGrupa> podGrupe;
+    List<ArticleDirectSearchAllNumbersWithStateRecord> kesiranDirectArticleSearch;
 }
