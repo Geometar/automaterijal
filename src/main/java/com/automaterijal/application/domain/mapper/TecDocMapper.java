@@ -2,6 +2,7 @@ package com.automaterijal.application.domain.mapper;
 
 import com.automaterijal.application.domain.dto.RobaDto;
 import com.automaterijal.application.domain.entity.tecdoc.TecDocAtributi;
+import com.automaterijal.application.tecdoc.ArticleDocuments2Record;
 import com.automaterijal.application.tecdoc.AssignedArticleAttributs2Record;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -23,4 +24,12 @@ public abstract class TecDocMapper {
     @Mapping(target = "attrShortName", source = "record.attrShortName")
     @Mapping(target = "attrType", source = "record.attrType")
     public abstract TecDocAtributi map(AssignedArticleAttributs2Record record, RobaDto robaDto, Long tecDocArticleId, Integer tecDocPpid);
+
+    @Mapping(target = "tecDocArticleId", source = "tecDocArticleId")
+    @Mapping(target = "robaId", source = "robaDto.robaid")
+    @Mapping(target = "tecDocPpid", source = "tecDocPpid")
+    @Mapping(target = "ppid", source = "robaDto.proizvodjac.proid")
+    @Mapping(target = "katbr", source = "robaDto.katbr")
+    @Mapping(target = "dokumentId", source = "record.docId")
+    public abstract TecDocAtributi map(ArticleDocuments2Record record, RobaDto robaDto, Long tecDocArticleId, Integer tecDocPpid);
 }

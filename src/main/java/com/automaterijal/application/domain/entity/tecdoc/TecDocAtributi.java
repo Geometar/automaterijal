@@ -24,4 +24,6 @@ public class TecDocAtributi {
     String attrUnit;
     String attrShortName;
     String attrType;
+    String dokumentId;
+    byte[] dokument;
 }

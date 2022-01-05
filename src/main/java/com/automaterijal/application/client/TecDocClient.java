@@ -1,20 +1,18 @@
 package com.automaterijal.application.client;
 
-import com.automaterijal.application.tecdoc.ArticleDirectSearchAllNumbersWithStateRecord;
-import com.automaterijal.application.tecdoc.ArticleDirectSearchAllNumbersWithStateResponse;
-import com.automaterijal.application.tecdoc.ArticlesByIds6Record;
-import com.automaterijal.application.tecdoc.ArticlesByIds6Response;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
+import com.automaterijal.application.tecdoc.*;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -78,7 +76,23 @@ public class TecDocClient {
 
         ResponseEntity<ArticlesByIds6Response> responseEntity = vratiOdgovor(request, ArticlesByIds6Response.class);
         List<ArticlesByIds6Record> retVal = new ArrayList<>();
-        if(responseEntity != null) {
+        if (responseEntity != null) {
+            retVal = responseEntity.getBody().getData().getArray();
+        }
+        return retVal;
+    }
+
+    /**
+     * Vracanje TecDoc brendova i njihovih slika
+     */
+    public List<AmBrandsRecord> vrateTecDocAmBrands() {
+        JSONObject request = new JSONObject();
+        JSONObject body = kreirajStandardniObjekat();
+        request.put("getAmBrands", body);
+
+        ResponseEntity<AmBrandsResponse> responseEntity = vratiOdgovor(request, AmBrandsResponse.class);
+        List<AmBrandsRecord> retVal = new ArrayList<>();
+        if (responseEntity != null) {
             retVal = responseEntity.getBody().getData().getArray();
         }
         return retVal;
@@ -116,6 +130,26 @@ public class TecDocClient {
             response = null;
         }
         return response;
+    }
+
+    /**
+     * Vrati dokument od tec doc servisa
+     */
+    public byte[] vratiDokument(String dokumentId, Integer tipSlike) {
+        String url = "https://webservice.tecalliance.services/pegasus-3-0/documents/23009/" + dokumentId + "/" + tipSlike + "?api_key=2BeBXg6H4zCj4FxGFqKmmC3KRw6cswMmT4NP4WBu8ytLTTqzkwmw";
+
+        ResponseEntity<byte[]> response = null;
+        try {
+
+            response = restTemplate.getForEntity(
+                    url,
+                    byte[].class
+            );
+        } catch (Exception ex) {
+            response = null;
+        }
+
+        return response.getBody() != null ? response.getBody() : null;
     }
 
 }

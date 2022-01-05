@@ -1,4 +1,4 @@
-package com.automaterijal.application.domain.repository;
+package com.automaterijal.application.domain.repository.tecdoc;
 
 import com.automaterijal.application.domain.entity.tecdoc.TecDocAtributi;
 import org.springframework.data.jpa.repository.JpaRepository;

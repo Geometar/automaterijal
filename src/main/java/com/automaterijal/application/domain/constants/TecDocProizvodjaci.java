@@ -75,15 +75,24 @@ public enum TecDocProizvodjaci {
     final Integer tecDocId;
 
     private static final Map<String, TecDocProizvodjaci> map;
+    private static final Map<Integer, TecDocProizvodjaci> keyMap;
 
     static {
         map = new HashMap<>();
         for (TecDocProizvodjaci v : TecDocProizvodjaci.values()) {
             map.put(v.name(), v);
         }
+        keyMap = new HashMap<>();
+        for (TecDocProizvodjaci v : TecDocProizvodjaci.values()) {
+            keyMap.put(v.getTecDocId(), v);
+        }
     }
 
     public static TecDocProizvodjaci pronadjiPoNazivu(String proId) {
         return map.get(proId);
+    }
+
+    public static TecDocProizvodjaci pronadjiPoKljucu(Integer brandId) {
+        return keyMap.get(brandId);
     }
 }
