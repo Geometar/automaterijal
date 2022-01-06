@@ -412,6 +412,12 @@ public class RobaGlavniService {
             tecDocDetalji = tecDocClient.vratiDetaljeArtikla(tecDocArticleId);
         }
 
+        //***************** Setujemo brand tecdoca ako postoje *************************
+
+        tecDocBrandsRepository.findById(detaljiDto.getProizvodjac().getProid()).ifPresent(tecDocBrands -> {
+            detaljiDto.setProizvodjacLogo(tecDocBrands.getBrand());
+        });
+
         //***************** Setujemo atribute iz tecdoca ako postoje *************************
         List<AssignedArticleAttributs2Record> atributiRecord = tecDocDetalji.stream()
                 .map(ArticlesByIds6Record::getArticleAttributes)
