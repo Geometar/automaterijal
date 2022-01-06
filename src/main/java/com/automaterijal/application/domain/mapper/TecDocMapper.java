@@ -1,6 +1,7 @@
 package com.automaterijal.application.domain.mapper;
 
 import com.automaterijal.application.domain.dto.RobaDto;
+import com.automaterijal.application.domain.dto.tecdoc.TecDocDokumentacija;
 import com.automaterijal.application.domain.entity.tecdoc.TecDocAtributi;
 import com.automaterijal.application.tecdoc.ArticleDocuments2Record;
 import com.automaterijal.application.tecdoc.AssignedArticleAttributs2Record;
@@ -32,4 +33,6 @@ public abstract class TecDocMapper {
     @Mapping(target = "katbr", source = "robaDto.katbr")
     @Mapping(target = "dokumentId", source = "record.docId")
     public abstract TecDocAtributi map(ArticleDocuments2Record record, RobaDto robaDto, Long tecDocArticleId, Integer tecDocPpid);
+
+    public abstract TecDocDokumentacija map(ArticleDocuments2Record record);
 }

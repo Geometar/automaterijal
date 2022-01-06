@@ -25,6 +25,6 @@ public class Application {
      */
     @PostConstruct
     public void init() {
-        onStartUpService.loadTecDocAmBrands();
+//        onStartUpService.loadTecDocAmBrands();
     }
 }
