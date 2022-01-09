@@ -292,42 +292,7 @@ public class RobaGlavniService {
                 .findFirst();
 
         if (articleTecDoc.isPresent()) {
-            // Setovanje tecdoc detalja
-            List<ArticlesByIds6Record> records = tecDocClient.vratiDetaljeArtikla(articleTecDoc.get().getArticleId());
-            records.stream()
-                    .map(ArticlesByIds6Record::getArticleAttributes)
-                    .flatMap(record -> record.getArray().stream())
-                    .forEach(att -> {
-                        if (att.getAttrType().equals("N")) {
-                            RobaTehnickiOpisDto tehnickiOpisDto = new RobaTehnickiOpisDto();
-                            tehnickiOpisDto.setVrednost(att.getAttrValue());
-                            tehnickiOpisDto.setJedinica(att.getAttrUnit());
-                            tehnickiOpisDto.setOznaka(att.getAttrShortName());
-                            retVal.add(tehnickiOpisDto);
-                        }
-                        TecDocAtributi atributi = tecDocMapper.map(att, robaDto, articleTecDoc.get().getArticleId(), tecDocProizvodjaci.getTecDocId());
-                        tecDocAtributiRepository.save(atributi);
-                    });
-
-            // Setovanje slike
-            List<ArticleDocuments2Record> dokumentRekordi = records.stream()
-                    .map(ArticlesByIds6Record::getArticleDocuments)
-                    .flatMap(record -> record.getArray().stream())
-                    .collect(Collectors.toList());
-
-            for (ArticleDocuments2Record dokument : dokumentRekordi) {
-                if (dokument.getDocTypeId() == 1L) {
-                    byte[] dokumentSlike = tecDocClient.vratiDokument(dokument.getDocId(), 0);
-                    robaDto.setDokumentSlikaId(dokument.getDocId());
-                    robaDto.setDokument(dokumentSlike);
-
-                    // Kesiranje slike u bazi
-                    TecDocAtributi atributi = tecDocMapper.map(dokument, robaDto, articleTecDoc.get().getArticleId(), tecDocProizvodjaci.getTecDocId());
-                    atributi.setDokument(dokumentSlike);
-                    tecDocAtributiRepository.save(atributi);
-                    break;
-                }
-            }
+            setovanjeTecDocAtributa(articleTecDoc.get().getArticleId(), tecDocProizvodjaci, retVal, robaDto);
         } else {
             // Setuj prazar rekord, nema u tecdocu nema potrebe da se pretrazuje ponovo
             TecDocAtributi atributi = new TecDocAtributi();
@@ -336,6 +301,45 @@ public class RobaGlavniService {
             tecDocAtributiRepository.save(atributi);
         }
         return retVal;
+    }
+
+    private void setovanjeTecDocAtributa(Long articleTecDocId, TecDocProizvodjaci tecDocProizvodjaci, List<RobaTehnickiOpisDto> retVal, RobaDto robaDto) {
+        // Setovanje tecdoc detalja
+        List<ArticlesByIds6Record> records = tecDocClient.vratiDetaljeArtikla(articleTecDocId);
+        records.stream()
+                .map(ArticlesByIds6Record::getArticleAttributes)
+                .flatMap(record -> record.getArray().stream())
+                .forEach(att -> {
+                    if (att.getAttrType().equals("N")) {
+                        RobaTehnickiOpisDto tehnickiOpisDto = new RobaTehnickiOpisDto();
+                        tehnickiOpisDto.setVrednost(att.getAttrValue());
+                        tehnickiOpisDto.setJedinica(att.getAttrUnit());
+                        tehnickiOpisDto.setOznaka(att.getAttrShortName());
+                        retVal.add(tehnickiOpisDto);
+                    }
+                    TecDocAtributi atributi = tecDocMapper.map(att, robaDto, articleTecDocId, tecDocProizvodjaci.getTecDocId());
+                    tecDocAtributiRepository.save(atributi);
+                });
+
+        // Setovanje slike
+        List<ArticleDocuments2Record> dokumentRekordi = records.stream()
+                .map(ArticlesByIds6Record::getArticleDocuments)
+                .flatMap(record -> record.getArray().stream())
+                .collect(Collectors.toList());
+
+        for (ArticleDocuments2Record dokument : dokumentRekordi) {
+            if (dokument.getDocTypeId() == 1L) {
+                byte[] dokumentSlike = tecDocClient.vratiDokument(dokument.getDocId(), 0);
+                robaDto.setDokumentSlikaId(dokument.getDocId());
+                robaDto.setDokument(dokumentSlike);
+
+                // Kesiranje slike u bazi
+                TecDocAtributi atributi = tecDocMapper.map(dokument, robaDto, articleTecDocId, tecDocProizvodjaci.getTecDocId());
+                atributi.setDokument(dokumentSlike);
+                tecDocAtributiRepository.save(atributi);
+                break;
+            }
+        }
     }
 
     public List<RobaDto> vratiIzdvajamoIzPonudeRobu(List<Long> robaIds, Partner partner) {
@@ -369,7 +373,7 @@ public class RobaGlavniService {
             detaljnoDto.setRabat(robaCeneService.vratiRabatPartneraNaArtikal(detaljnoDto.getProizvodjac().getProid(), detaljnoDto.getGrupa(), partner));
             detaljnoDto.setAplikacije(aplikacijeServis.vratiAplikacijeZaDetalje(detaljnoDto.getRobaid()));
 
-            popuniDetaljePrekoTecDoca(detaljnoDto);
+            popuniDetaljePrekoTecDoca(detaljnoDto, partner);
 
             if (detaljnoDto.getSlika() == null) {
                 detaljnoDto.setSlika(slikeService.vratiPutanjuDoSlike(detaljnoDto.getProizvodjac().getProid(), detaljnoDto.getKatbr(), detaljnoDto.getRobaid()));
@@ -401,7 +405,7 @@ public class RobaGlavniService {
     /**
      * Pozivamo servise tecdoca i punimo detalje
      */
-    private void popuniDetaljePrekoTecDoca(RobaDetaljiDto detaljiDto) {
+    private void popuniDetaljePrekoTecDoca(RobaDetaljiDto detaljiDto, Partner partner) {
         TecDocProizvodjaci tecDocProizvodjaci = TecDocProizvodjaci.pronadjiPoNazivu(detaljiDto.getProizvodjac().getProid());
         if (tecDocProizvodjaci == null) {
             return;
@@ -506,6 +510,38 @@ public class RobaGlavniService {
                 }
             }
             detaljiDto.setDokumentacija(mapaDokumentacije);
+        }
+
+        //***************** Setujemo asocirane artikle *************************
+
+        final List<RobaDto> asociraniArtikli = new ArrayList<>();
+
+        tecDocDetalji.stream().filter(rekord -> rekord.getMainArticle() != null).map(ArticlesByIds6Record::getMainArticle).flatMap(record -> record.getArray().stream()).forEach(mainArticlesRecord -> {
+            robaService.pronadjiRobuPoKataloskomBroju(mainArticlesRecord.getArticleNumber()).stream()
+                    .map(mapper::map)
+                    .filter(robaDto -> TecDocProizvodjaci.pronadjiPoNazivu(robaDto.getProizvodjac().getProid()) != null)
+                    .forEach(robaDto -> {
+                        List<TecDocAtributi> tecDocAtribut = tecDocAtributiRepository.findByRobaId(robaDto.getRobaid());
+                        if (tecDocAtribut.isEmpty()) {
+                            setovanjeTecDocAtributa(mainArticlesRecord.getArticleId(), TecDocProizvodjaci.pronadjiPoNazivu(robaDto.getProizvodjac().getProid()), new ArrayList<>(), robaDto);
+                            tecDocAtribut = tecDocAtributiRepository.findByRobaId(robaDto.getRobaid());
+                        }
+                        tecDocAtribut.forEach(tdAtributi -> {
+                            if (tdAtributi.getDokument() != null) {
+                                SlikaDto slikaDto = new SlikaDto();
+                                slikaDto.setUrl(false);
+                                slikaDto.setSlikeByte(tdAtributi.getDokument());
+                                robaDto.setSlika(slikaDto);
+                            }
+                        });
+                        robaDto.setCena(robaCeneService.vratiCenuRobePoRobiId(robaDto.getRobaid(), robaDto.getGrupa(), robaDto.getProizvodjac().getProid(), partner));
+                        robaDto.setRabat(robaCeneService.vratiRabatPartneraNaArtikal(robaDto.getProizvodjac().getProid(), robaDto.getGrupa(), partner));
+                        asociraniArtikli.add(robaDto);
+                    });
+        });
+
+        if (!asociraniArtikli.isEmpty()) {
+            detaljiDto.setAsociraniArtikli(asociraniArtikli);
         }
     }
 

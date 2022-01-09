@@ -1,5 +1,6 @@
 package com.automaterijal.application.domain.dto.robadetalji;
 
+import com.automaterijal.application.domain.dto.RobaDto;
 import com.automaterijal.application.domain.dto.RobaTehnickiOpisDto;
 import com.automaterijal.application.domain.dto.SlikaDto;
 import com.automaterijal.application.domain.dto.tecdoc.TecDocDokumentacija;
@@ -32,4 +33,5 @@ public class RobaDetaljiDto {
     Map<String, List<RobaBrojeviDto>> tdBrojevi;
     Map<String, List<RobaAplikacijaDto>> aplikacije;
     Map<String, List<TecDocDokumentacija>> dokumentacija;
+    List<RobaDto> asociraniArtikli;
 }

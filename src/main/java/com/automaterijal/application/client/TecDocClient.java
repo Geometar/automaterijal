@@ -41,13 +41,11 @@ public class TecDocClient {
         request.put("getArticleDirectSearchAllNumbersWithState", body);
 
         ResponseEntity<ArticleDirectSearchAllNumbersWithStateResponse> responseEntity = vratiOdgovor(request, ArticleDirectSearchAllNumbersWithStateResponse.class);
-        if (responseEntity != null) {
+        if (responseEntity != null && responseEntity.getBody() != null && responseEntity.getBody().getData() != null) {
             return responseEntity.getBody().getData().getArray()
                     .stream()
-                    .map(record -> {
-                        record.setArticleNo(record.getArticleNo().replaceAll("\\s+", ""));
-                        return record;
-                    }).collect(Collectors.toList());
+                    .peek(record -> record.setArticleNo(record.getArticleNo().replaceAll("\\s+", "")))
+                    .collect(Collectors.toList());
         } else {
             return new ArrayList<>();
         }
@@ -63,6 +61,7 @@ public class TecDocClient {
         body.put("attributs", true);
         body.put("documents", true);
         body.put("oeNumbers", true);
+        body.put("mainArticles", true);
 
         JSONObject articleIds = new JSONObject();
 
@@ -76,7 +75,7 @@ public class TecDocClient {
 
         ResponseEntity<ArticlesByIds6Response> responseEntity = vratiOdgovor(request, ArticlesByIds6Response.class);
         List<ArticlesByIds6Record> retVal = new ArrayList<>();
-        if (responseEntity != null) {
+        if (responseEntity != null && responseEntity.getBody() != null && responseEntity.getBody().getData() != null) {
             retVal = responseEntity.getBody().getData().getArray();
         }
         return retVal;
@@ -92,7 +91,7 @@ public class TecDocClient {
 
         ResponseEntity<AmBrandsResponse> responseEntity = vratiOdgovor(request, AmBrandsResponse.class);
         List<AmBrandsRecord> retVal = new ArrayList<>();
-        if (responseEntity != null) {
+        if (responseEntity != null && responseEntity.getBody() != null && responseEntity.getBody().getData() != null) {
             retVal = responseEntity.getBody().getData().getArray();
         }
         return retVal;
