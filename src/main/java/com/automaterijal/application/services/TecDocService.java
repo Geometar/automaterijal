@@ -76,13 +76,15 @@ public class TecDocService {
         Map<String, String> zameneKatBr = new HashMap<>();
         robaDtos.forEach(robaDto -> {
             TecDocProizvodjaci tdProizvodjaci = TecDocProizvodjaci.pronadjiPoNazivu(robaDto.getProizvodjac().getProid());
-            String katBr = tdProizvodjaci.getDodatak() != null ? robaDto.getKatbr().replaceAll(tdProizvodjaci.getDodatak(), "") : robaDto.getKatbr();
             if (tdProizvodjaci != null) {
+                String katBr = tdProizvodjaci.getDodatak() != null ? robaDto.getKatbr().replaceAll(tdProizvodjaci.getDodatak(), "") : robaDto.getKatbr();
                 List<TecDocAtributi> tecDocAtributi = tecDocAtributiRepository.findByRobaId(robaDto.getRobaid());
                 if (tecDocAtributi.isEmpty()) {
                     List<ArticleDirectSearchAllNumbersWithStateRecord> directSearch = tecDocClient.tecDocPretraga(katBr, tdProizvodjaci.getTecDocId(), 0);
-                    if (directSearch.isEmpty()) {
+                    if (directSearch.isEmpty() && tdProizvodjaci != TecDocProizvodjaci.HP) {
                         directSearch = tecDocClient.tecDocPretraga(katBr, tdProizvodjaci.getTecDocId(), 2);
+                    } else if (directSearch.isEmpty()) {
+                        directSearch = tecDocClient.tecDocPretraga(katBr, tdProizvodjaci.getTecDocId(), 1);
                     }
                     if (!directSearch.isEmpty()) {
                         Long tdArticleId = directSearch.stream()
@@ -129,7 +131,7 @@ public class TecDocService {
                         Optional<RobaDto> dtoOptional = robaDtos.stream()
                                 .filter(robaDto -> {
                                     TecDocProizvodjaci tdProizvodjaci = TecDocProizvodjaci.pronadjiPoNazivu(robaDto.getProizvodjac().getProid());
-                                    String katBr = tdProizvodjaci.getDodatak() != null ? robaDto.getKatbr().replaceAll(tdProizvodjaci.getDodatak(), "") : robaDto.getKatbr();
+                                    String katBr = tdProizvodjaci != null && tdProizvodjaci.getDodatak() != null ? robaDto.getKatbr().replaceAll(tdProizvodjaci.getDodatak(), "") : robaDto.getKatbr();
                                     return katBr.equals(directArticle.getArticleNo().replaceAll("\\s+", ""));
                                 })
                                 .findFirst();
