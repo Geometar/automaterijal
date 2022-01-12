@@ -2,7 +2,6 @@ package com.automaterijal.application.client;
 
 import com.automaterijal.application.tecdoc.*;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -54,7 +53,7 @@ public class TecDocClient {
     /**
      * Servis za vracanje detalja artikala, poput dokumenata, OE brojeva, atributa
      */
-    public List<ArticlesByIds6Record> vratiDetaljeArtikla(Long robaId) {
+    public List<ArticlesByIds6Record> vratiDetaljeArtikla(List<Long> robaIds) {
         JSONObject request = new JSONObject();
 
         JSONObject body = kreirajStandardniObjekat();
@@ -62,12 +61,11 @@ public class TecDocClient {
         body.put("documents", true);
         body.put("oeNumbers", true);
         body.put("mainArticles", true);
+        body.put("basicData", true);
+        body.put("thumbnails", true);
 
         JSONObject articleIds = new JSONObject();
-
-        JSONArray articleIdArray = new JSONArray();
-        articleIdArray.put(robaId);
-        articleIds.put("array", articleIdArray);
+        articleIds.put("array", robaIds);
 
         body.put("articleId", articleIds);
 
@@ -114,7 +112,7 @@ public class TecDocClient {
     private ResponseEntity vratiOdgovor(JSONObject request, Class responseKlasa) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("x-api-key", "2BeBXg6H4zCj4FxGFqKmmC3KRw6cswMmT4NP4WBu8ytLTTqzkwmw");
-        log.info("JSON OBJECT {}", request.toString().trim());
+        log.info("Request se salje {}", request.toString().trim());
         HttpEntity<String> entityReq1 = new HttpEntity<>(request.toString().trim(), headers);
 
         ResponseEntity response = null;
@@ -128,6 +126,7 @@ public class TecDocClient {
         } catch (Exception ex) {
             response = null;
         }
+        log.info("Request je primljen {}", request.toString().trim());
         return response;
     }
 
