@@ -473,7 +473,10 @@ public class RobaGlavniService {
                             .filter(robaDto -> TecDocProizvodjaci.pronadjiPoNazivu(robaDto.getProizvodjac().getProid()) != null)
                             .forEach(robaDto -> {
                                 List<TecDocAtributi> tecDocAtribut = tecDocService.vratiTecDocAtributePrekoRobeId(robaDto.getRobaid());
-
+                                if (tecDocAtribut.isEmpty()) {
+                                    tecDocService.batchVracanjeICuvanjeTDAtributa(Arrays.asList(robaDto));
+                                }
+                                tecDocAtribut = tecDocService.vratiTecDocAtributePrekoRobeId(robaDto.getRobaid());
                                 tecDocAtribut.forEach(tdAtributi -> {
                                     if (tdAtributi.getDokument() != null) {
                                         SlikaDto slikaDto = new SlikaDto();
