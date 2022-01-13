@@ -88,13 +88,13 @@ public class TecDocService {
                     }
                     if (!directSearch.isEmpty()) {
                         Long tdArticleId = directSearch.stream()
-                                .filter(rekord -> rekord.getArticleNo().equals(katBr))
+                                .filter(rekord -> daLiSeBrojeviPodudaraju(katBr, rekord.getArticleNo(), null))
                                 .map(ArticleDirectSearchAllNumbersWithStateRecord::getArticleId)
                                 .findFirst().orElse(null);
 
                         if (tdArticleId == null) {
                             tdArticleId = directSearch.stream()
-                                    .filter(rekord -> rekord.getArticleSearchNo().replaceAll("\\s+", "").equals(katBr))
+                                    .filter(rekord -> daLiSeBrojeviPodudaraju(katBr, rekord.getArticleSearchNo(), null))
                                     .filter(rekord -> rekord.getBrandNo().intValue() == tdProizvodjaci.getTecDocId())
                                     .peek(rekord -> zameneKatBr.put(katBr, rekord.getArticleNo()))
                                     .map(ArticleDirectSearchAllNumbersWithStateRecord::getArticleId)
@@ -132,7 +132,7 @@ public class TecDocService {
                                 .filter(robaDto -> {
                                     TecDocProizvodjaci tdProizvodjaci = TecDocProizvodjaci.pronadjiPoNazivu(robaDto.getProizvodjac().getProid());
                                     String katBr = tdProizvodjaci != null && tdProizvodjaci.getDodatak() != null ? robaDto.getKatbr().replaceAll(tdProizvodjaci.getDodatak(), "") : robaDto.getKatbr();
-                                    return katBr.equals(directArticle.getArticleNo().replaceAll("\\s+", ""));
+                                    return daLiSeBrojeviPodudaraju(katBr, directArticle.getArticleNo(), tdProizvodjaci);
                                 })
                                 .findFirst();
 
@@ -140,7 +140,7 @@ public class TecDocService {
                             dtoOptional = robaDtos.stream()
                                     .filter(robaDto -> {
                                         String alternativniKataloskoBroj = zameneKatBr.get(robaDto.getKatbr());
-                                        return alternativniKataloskoBroj != null && alternativniKataloskoBroj.equals(directArticle.getArticleNo().replaceAll("\\s+", ""));
+                                        return daLiSeBrojeviPodudaraju(alternativniKataloskoBroj, directArticle.getArticleNo(), null);
                                     })
                                     .findFirst();
                         }
@@ -189,5 +189,17 @@ public class TecDocService {
                 });
             }
         }
+    }
+
+    private boolean daLiSeBrojeviPodudaraju(String katBr, String tecDocKatBr, TecDocProizvodjaci tecDocProizvodjaci) {
+        if (katBr == null || tecDocKatBr == null) {
+            return false;
+        }
+        if (tecDocProizvodjaci != null && tecDocProizvodjaci.getDodatak() != null) {
+            katBr = katBr.replaceAll(tecDocProizvodjaci.getDodatak(), "");
+        }
+        katBr = katBr.replaceAll("[-,./]", "").replaceAll("\\s+", "").replaceAll("-LUČ", "");
+        tecDocKatBr = tecDocKatBr.replaceAll("[-,./]", "").replaceAll("\\s+", "");
+        return katBr.equals(tecDocKatBr);
     }
 }

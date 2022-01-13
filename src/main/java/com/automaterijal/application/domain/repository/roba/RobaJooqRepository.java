@@ -11,7 +11,6 @@ import com.automaterijal.application.domain.mapper.RobaMapper;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.services.ProizvodjacService;
 import com.automaterijal.application.services.roba.grupe.PodGrupaService;
-import com.automaterijal.application.tecdoc.ArticleDirectSearchAllNumbersWithStateRecord;
 import com.automaterijal.application.utils.GeneralUtil;
 import com.automaterijal.db.tables.records.RobaRecord;
 import lombok.AccessLevel;
@@ -286,6 +285,7 @@ public class RobaJooqRepository {
                 .from(ROBA_KATBR_OLD)
                 .where(
                         ROBA_KATBR_OLD.KATBR.like(trazenaRec)
+                                .or(ROBA_KATBR_OLD.KATBR.in(kataloskiBrojevi))
                                 .or(ROBA_KATBR_OLD.KATBRPRO.like(trazenaRec))
                                 .or(ROBA_KATBR_OLD.KATBRPRO.in(kataloskiBrojevi)))
                 .fetch().stream()
