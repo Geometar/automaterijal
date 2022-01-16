@@ -48,7 +48,7 @@ public class SlikeService {
         SlikaDto slikaDto = new SlikaDto();
         Optional<TDBrands> tdBrandsOptional = tdBrandsRepository.findByProid(proid);
         Optional<RobaSlika> robaSlika = robaSlikaService.pronadjiPutanjuSlikePoId(robaId);
-        if (tdBrandsOptional.isPresent() && !robaSlika.isPresent()) {
+        if (tdBrandsOptional.isPresent()) {
             TDBrands tdBrands = tdBrandsOptional.get();
             boolean postojiKonstanta = false;
 

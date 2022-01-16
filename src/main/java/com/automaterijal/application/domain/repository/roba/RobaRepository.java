@@ -25,5 +25,7 @@ public interface RobaRepository extends JpaRepository<Roba, Long> {
     List<Roba> findByPodgrupaidIn(Collection<Integer> ids);
 
     Roba findByKatbrAndProizvodjacProidInAndStanjeGreaterThan(String katBr, List<String> proids, double stanje);
+
+    List<Roba> findByKatbr(String katBr);
 }
 

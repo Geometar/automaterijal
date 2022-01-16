@@ -30,7 +30,7 @@ public class IzvestajSchedulerService {
     public void saljiMejloveZaIzvestaje() {
         log.info("Provera izvestaja i slanje podsetnika.");
         List<IzvestajDto> izvestaji = izvestajService.prinadjiIzvestajNaDanasnjiDan();
-        izvestaji.forEach(izvestajDto -> emailService.posaljiIzvestajEmail(izvestajDto));
+//        izvestaji.forEach(izvestajDto -> emailService.posaljiIzvestajEmail(izvestajDto));
     }
 
 }

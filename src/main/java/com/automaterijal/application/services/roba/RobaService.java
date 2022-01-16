@@ -74,4 +74,8 @@ public class RobaService {
         }
         return roba;
     }
+
+    public List<Roba> pronadjiRobuPoKataloskomBroju(String katBr) {
+        return robaRepository.findByKatbr(katBr);
+    }
 }

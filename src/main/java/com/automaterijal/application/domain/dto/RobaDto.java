@@ -5,7 +5,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
-import java.util.Set;
+import java.util.List;
 
 @Data
 @Builder
@@ -19,12 +19,15 @@ public class RobaDto {
     String katbrpro;
     String naziv;
     Proizvodjac proizvodjac;
+    byte[] proizvodjacLogo;
     String grupa;
     String podGrupa;
     String podGrupaNaziv;
     BigDecimal cena;
     Double rabat;
+    String dokumentSlikaId;
+    byte[] dokument;
     double stanje;
     boolean dozvoljenoZaAnonimusa;
-    Set<RobaTehnickiOpisDto> tehnickiOpis;
+    List<RobaTehnickiOpisDto> tehnickiOpis;
 }

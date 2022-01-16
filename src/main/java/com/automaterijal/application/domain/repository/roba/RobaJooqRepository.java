@@ -1,5 +1,6 @@
 package com.automaterijal.application.domain.repository.roba;
 
+import com.automaterijal.application.client.TecDocClient;
 import com.automaterijal.application.domain.dto.DashboardDto;
 import com.automaterijal.application.domain.dto.MagacinDto;
 import com.automaterijal.application.domain.dto.RobaDto;
@@ -10,6 +11,7 @@ import com.automaterijal.application.domain.mapper.RobaMapper;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.services.ProizvodjacService;
 import com.automaterijal.application.services.roba.grupe.PodGrupaService;
+import com.automaterijal.application.tecdoc.ArticleDirectSearchAllNumbersWithStateRecord;
 import com.automaterijal.application.utils.GeneralUtil;
 import com.automaterijal.db.tables.records.RobaRecord;
 import lombok.AccessLevel;
@@ -49,6 +51,9 @@ public class RobaJooqRepository {
 
     @Autowired
     RobaMapper mapper;
+
+    @Autowired
+    TecDocClient tecDocClient;
 
     private static final Short PROIZVODJAC_ID = 4;
 
@@ -121,6 +126,42 @@ public class RobaJooqRepository {
         return robaDtoMapper(select.fetch());
     }
 
+    public MagacinDto vratiArtikleIzTecDoca(UniverzalniParametri parametri, Set<String> kataloskiBrojevi, String trazenaRecLike) {
+        MagacinDto magacinDto = new MagacinDto();
+        SelectConditionStep<Record7<Integer, String, String, BigDecimal, String, Integer, String>> select = kreirajSelect(null);
+
+
+        Condition conditionPoslednji;
+        Condition condition1 = ROBA.KATBR.in(kataloskiBrojevi);
+        Condition condition2 = ROBA.KATBRPRO.in(kataloskiBrojevi);
+        conditionPoslednji = condition1.or(condition2);
+
+        select.and(conditionPoslednji);
+        filtrirajPoParametrima(select, parametri);
+        sortiranje(select, parametri);
+
+        filtrirajPoParametrima(select, parametri);
+        sortiranje(select, parametri);
+
+        List<RobaDto> roba = robaDtoMapper(select.fetch());
+
+        podGrupaService.popuniPodgrupe(magacinDto, parametri, roba);
+        proizvodjacService.popuniProizvodjace(roba, magacinDto, parametri);
+        if (parametri.getProizvodjac() != null && parametri.getGrupa() != null) {
+            roba = filtriIVratiRobu(parametri, magacinDto, roba);
+        }
+
+        if (parametri.getRobaKategorije() == null) {
+            roba = sortirajPoGrupi(roba);
+        }
+        int start = parametri.getPageSize() * parametri.getPage();
+        int end = (start + parametri.getPageSize()) > roba.size() ? roba.size() : (start + parametri.getPageSize());
+        magacinDto.setRobaDto(new PageImpl<>(roba.subList(start, end), PageRequest.of(parametri.getPage(), parametri.getPageSize()), roba.size()));
+
+        return magacinDto;
+
+    }
+
     /**
      * Mapiranje u dto robe
      */
@@ -166,10 +207,13 @@ public class RobaJooqRepository {
 
 //        Pomocni kveri
         boolean daLiJePetragaPoReci = false;
+
         Set<String> kataloskiBrojevi = new HashSet<>();
         Set<Integer> robaId = new HashSet<>();
+
         boolean pretragaJePoRecima = pomocniKveriPoRobi(trazenaRecLike, pregragaPoTacnojReciLike, kataloskiBrojevi, robaId);
-        if (kataloskiBrojevi.size() < 20 && !pretragaJePoRecima) {
+
+        if (!pretragaJePoRecima) {
             pomocniKveriPoRobiOld(trazenaRec, kataloskiBrojevi);
             drugiPomocniKveri(kataloskiBrojevi, robaId, trazenaRec);
         } else {
@@ -192,7 +236,7 @@ public class RobaJooqRepository {
         }
     }
 
-    private boolean pomocniKveriPoRobi(String trazenaRecLike, String tacnaRecLike, Set<String> kataloskiBrojevi, Set<Integer> robaId) {
+    public boolean pomocniKveriPoRobi(String trazenaRecLike, String tacnaRecLike, Set<String> kataloskiBrojevi, Set<Integer> robaId) {
         List<String> nazivi = new ArrayList<>();
         dslContext.selectDistinct(ROBA.KATBR, ROBA.KATBRPRO, ROBA.ROBAID, ROBA.NAZIV)
                 .from(ROBA)
@@ -226,6 +270,9 @@ public class RobaJooqRepository {
             for (String naziv : nazivi) {
                 if (!naziv.contains(pretragaNaziv)) {
                     pretragaJePoRecima = false;
+                } else {
+                    pretragaJePoRecima = true;
+                    break;
                 }
             }
         } else {
@@ -234,7 +281,7 @@ public class RobaJooqRepository {
         return pretragaJePoRecima;
     }
 
-    private void pomocniKveriPoRobiOld(String trazenaRec, Set<String> kataloskiBrojevi) {
+    public void pomocniKveriPoRobiOld(String trazenaRec, Set<String> kataloskiBrojevi) {
         dslContext.selectDistinct(ROBA_KATBR_OLD.KATBR, ROBA_KATBR_OLD.KATBRPRO)
                 .from(ROBA_KATBR_OLD)
                 .where(
