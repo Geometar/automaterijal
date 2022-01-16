@@ -148,16 +148,29 @@ public class RobaGlavniService {
         String trazenaRecLike = "%" + parametri.getTrazenaRec().replaceAll("\\s+", "") + "%";
         String tacnaRec = parametri.getTrazenaRec().replaceAll("\\s+", "");
 
-        Set<String> kataloskiBrojevi = new HashSet<>();
+        final Set<String> kataloskiBrojevi = new HashSet<>();
         Set<Integer> robaId = new HashSet<>();
         boolean daLiJeTrazenaRecNaziv = jooqRepository.pomocniKveriPoRobi(trazenaRecLike, pregragaPoTacnojReciLike, kataloskiBrojevi, robaId);
         if (!daLiJeTrazenaRecNaziv) {
             List<ArticleDirectSearchAllNumbersWithStateRecord> response = tecDocService.tecDocPretragaPoTrazenojReci(tacnaRec, null, 10);
             parametri.setKesiranDirectArticleSearch(response);
-            kataloskiBrojevi = response
-                    .stream()
-                    .map(ArticleDirectSearchAllNumbersWithStateRecord::getArticleNo)
-                    .collect(Collectors.toSet());
+            response
+                    .stream().
+                    forEach(rekord -> {
+                        String katBr = rekord.getArticleNo();
+                        TecDocProizvodjaci tecDocProizvodjaci = TecDocProizvodjaci.pronadjiPoKljucu(rekord.getBrandNo().intValue());
+                        kataloskiBrojevi.add(katBr);
+                        if (tecDocProizvodjaci != null && tecDocProizvodjaci.getDodatak() != null) {
+                            String alternativiKatBr;
+                            if (tecDocProizvodjaci.isDodatakNaKraju()) {
+                                alternativiKatBr = katBr + tecDocProizvodjaci.getDodatak();
+                            } else {
+                                alternativiKatBr = tecDocProizvodjaci.getDodatak() + katBr;
+                            }
+                            kataloskiBrojevi.add(alternativiKatBr);
+                        }
+
+                    });
             kataloskiBrojevi.add(tacnaRec);
             jooqRepository.pomocniKveriPoRobiOld(pregragaPoTacnojReciLike, kataloskiBrojevi);
         }
