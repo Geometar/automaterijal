@@ -5,6 +5,7 @@ import com.automaterijal.application.domain.dto.tecdoc.TecDocDokumentacija;
 import com.automaterijal.application.domain.entity.tecdoc.TecDocAtributi;
 import com.automaterijal.application.tecdoc.ArticleDocuments2Record;
 import com.automaterijal.application.tecdoc.AssignedArticleAttributs2Record;
+import com.automaterijal.application.tecdoc.ThumbnailByArticleIdRecord;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.mapstruct.Mapper;
@@ -35,4 +36,12 @@ public abstract class TecDocMapper {
     public abstract TecDocAtributi map(ArticleDocuments2Record record, RobaDto robaDto, Long tecDocArticleId, Integer tecDocPpid);
 
     public abstract TecDocDokumentacija map(ArticleDocuments2Record record);
+
+    @Mapping(target = "tecDocArticleId", source = "tecDocArticleId")
+    @Mapping(target = "robaId", source = "robaDto.robaid")
+    @Mapping(target = "tecDocPpid", source = "tecDocPpid")
+    @Mapping(target = "ppid", source = "robaDto.proizvodjac.proid")
+    @Mapping(target = "katbr", source = "robaDto.katbr")
+    @Mapping(target = "dokumentId", source = "record.thumbDocId")
+    public abstract TecDocAtributi map(ThumbnailByArticleIdRecord record, RobaDto robaDto, Long tecDocArticleId, Integer tecDocPpid);
 }
