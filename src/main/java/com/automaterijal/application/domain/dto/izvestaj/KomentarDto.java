@@ -5,13 +5,14 @@ import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class KomentarDto {
     Long id;
     LocalDate podsetnik;
-    LocalDate datumKreiranja;
+    Date datumKreiranja;
     String komentar;
     Long firma;
     Integer ppid;
