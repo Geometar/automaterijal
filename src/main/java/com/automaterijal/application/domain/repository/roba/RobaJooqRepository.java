@@ -10,6 +10,7 @@ import com.automaterijal.application.domain.entity.roba.Roba;
 import com.automaterijal.application.domain.mapper.RobaMapper;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.services.ProizvodjacService;
+import com.automaterijal.application.services.roba.RobaService;
 import com.automaterijal.application.services.roba.grupe.PodGrupaService;
 import com.automaterijal.application.utils.GeneralUtil;
 import com.automaterijal.db.tables.records.RobaRecord;
@@ -41,6 +42,9 @@ public class RobaJooqRepository {
 
     @Autowired
     DSLContext dslContext;
+
+    @Autowired
+    RobaService robaService;
 
     @Autowired
     PodGrupaService podGrupaService;
@@ -152,6 +156,7 @@ public class RobaJooqRepository {
 
         if (parametri.getRobaKategorije() == null) {
             roba = sortirajPoGrupi(roba);
+            sortirajRobuTecDocPoPodgrupi(roba, parametri);
         }
         int start = parametri.getPageSize() * parametri.getPage();
         int end = (start + parametri.getPageSize()) > roba.size() ? roba.size() : (start + parametri.getPageSize());
@@ -159,6 +164,26 @@ public class RobaJooqRepository {
 
         return magacinDto;
 
+    }
+
+    private void sortirajRobuTecDocPoPodgrupi(List<RobaDto> robaDtos, UniverzalniParametri parametri) {
+        List<RobaDto> pronadjenaTacnaRoba = robaDtos.stream().filter(robaDto -> robaDto.getKatbr().equals(parametri.getTrazenaRec())).collect(Collectors.toList());
+        if (pronadjenaTacnaRoba.isEmpty()) {
+            pronadjenaTacnaRoba = robaDtos.stream().filter(robaDto -> robaDto.getKatbr().contains(parametri.getTrazenaRec())).collect(Collectors.toList());
+        }
+
+        if (!pronadjenaTacnaRoba.isEmpty()) {
+            RobaDto robaDto = pronadjenaTacnaRoba.get(0);
+            robaDtos.sort((o1, o2) -> {
+                if (o1.getStanje() > 0 && o2.getStanje() > 0 && o1.getPodGrupa().equals(robaDto.getPodGrupa()) && !o2.getPodGrupa().equals(robaDto.getPodGrupa())) {
+                    return -1;
+                } else if (o1.getStanje() == 0 && o2.getStanje() == 0 && o1.getPodGrupa().equals(robaDto.getPodGrupa()) && !o2.getPodGrupa().equals(robaDto.getPodGrupa())) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            });
+        }
     }
 
     /**
