@@ -1,8 +1,10 @@
 package com.automaterijal.application.services;
 
+import com.automaterijal.application.domain.constants.TecDocProizvodjaci;
 import com.automaterijal.application.domain.dto.FakturaDetaljiDto;
 import com.automaterijal.application.domain.dto.FakturaDto;
 import com.automaterijal.application.domain.dto.RobaDto;
+import com.automaterijal.application.domain.dto.SlikaDto;
 import com.automaterijal.application.domain.entity.Faktura;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.roba.Roba;
@@ -71,6 +73,8 @@ public class FakturaService {
     final RobaMapper robaMapper;
     @NonNull
     final SlikeService slikeService;
+    @NonNull
+    final TecDocService tecDocService;
 
     public List<RobaDto> submitujFakturu(FakturaDto fakturaDto, Partner partner) {
         List<RobaDto> dozvoljenaKolicina = new ArrayList<>();
@@ -175,8 +179,20 @@ public class FakturaService {
                     robaCeneService.vratiCenuRobePoRobiId(roba.getRobaid(), roba.getGrupaid(), roba.getProizvodjac().getProid(), partner).doubleValue()
             );
         });
-        
-        dto.setSlika(slikeService.vratiPutanjuDoSlike(dto.getProizvodjac().getProid(), dto.getKataloskiBroj(), dto.getRobaId()));
+        TecDocProizvodjaci tecDocProizvodjac = TecDocProizvodjaci.pronadjiPoNazivu(dto.getProizvodjac().getProid());
+        if (tecDocProizvodjac != null) {
+            byte[] dokument = tecDocService.vratiDokumentPoRobaId(dto.getRobaId());
+            if (dokument != null) {
+                SlikaDto slikaDto = new SlikaDto();
+                slikaDto.setUrl(false);
+                slikaDto.setSlikeByte(dokument);
+                dto.setSlika(slikaDto);
+            }
+        }
+
+        if (dto.getSlika() == null) {
+            dto.setSlika(slikeService.vratiPutanjuDoSlike(dto.getProizvodjac().getProid(), dto.getKataloskiBroj(), dto.getRobaId()));
+        }
     }
 
     @Transactional(readOnly = true)

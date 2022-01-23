@@ -6,9 +6,11 @@ import com.automaterijal.application.domain.dto.RobaDto;
 import com.automaterijal.application.domain.dto.SlikaDto;
 import com.automaterijal.application.domain.entity.tecdoc.TecDocAtributi;
 import com.automaterijal.application.domain.entity.tecdoc.TecDocBrands;
+import com.automaterijal.application.domain.mapper.RobaMapper;
 import com.automaterijal.application.domain.mapper.TecDocMapper;
 import com.automaterijal.application.domain.repository.tecdoc.TecDocAtributiRepository;
 import com.automaterijal.application.domain.repository.tecdoc.TecDocBrandsRepository;
+import com.automaterijal.application.services.roba.RobaService;
 import com.automaterijal.application.tecdoc.ArticleDirectSearchAllNumbersWithStateRecord;
 import com.automaterijal.application.tecdoc.ArticleDirectSearchById3Record;
 import com.automaterijal.application.tecdoc.ArticlesByIds6Record;
@@ -30,6 +32,12 @@ public class TecDocService {
     TecDocClient tecDocClient;
 
     @Autowired
+    RobaService robaService;
+
+    @Autowired
+    RobaMapper robaMapper;
+
+    @Autowired
     TecDocAtributiRepository tecDocAtributiRepository;
 
     @Autowired
@@ -48,15 +56,28 @@ public class TecDocService {
         return tecDocClient.vratiDetaljeArtikla(Arrays.asList(articleId));
     }
 
-    public byte[] vratiDokument(String dokumentId, Integer tipSlike) {
-        return tecDocClient.vratiDokument(dokumentId, tipSlike);
-    }
-
 
     //    ******************** TecDoc Atributi  ********************
 
     public List<TecDocAtributi> vratiTecDocAtributePrekoRobeId(Long robaId) {
         return tecDocAtributiRepository.findByRobaId(robaId);
+    }
+
+    public byte[] vratiDokument(String dokumentId, Integer tipSlike) {
+        return tecDocClient.vratiDokument(dokumentId, tipSlike);
+    }
+
+    public byte[] vratiDokumentPoRobaId(Long robaId) {
+        List<TecDocAtributi> tecDocAtributi = vratiTecDocAtributePrekoRobeId(robaId);
+        if (tecDocAtributi.isEmpty()) {
+            return null;
+        }
+        Optional<TecDocAtributi> tecDocAtribut = tecDocAtributi.stream().filter(atributi -> atributi.getDokument() != null).findFirst();
+        byte[] retVal = null;
+        if (tecDocAtribut.isPresent()) {
+            retVal = tecDocAtribut.get().getDokument();
+        }
+        return retVal;
     }
 
     public void sacuvajTecDocAtribute(TecDocAtributi atributi) {
