@@ -353,7 +353,7 @@ public class RobaGlavniService {
             }
 
             robaTekstService.pronadjiTextPoRobiId(detaljnoDto.getRobaid()).ifPresent(robaTekst -> detaljnoDto.setTekst(robaTekst.getTekst()));
-            podGrupaService.vratiPodgrupuPoKljucu(detaljnoDto.getPodGrupa()).ifPresent(podGrupa -> detaljnoDto.setPodGrupa(podGrupa.getNaziv()));
+            podGrupaService.vratiPodgrupuPoKljucu(Integer.valueOf(detaljnoDto.getPodGrupa())).ifPresent(podGrupa -> detaljnoDto.setPodGrupa(podGrupa.getNaziv()));
         }
     }
 

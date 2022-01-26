@@ -21,7 +21,7 @@ public class RobaDto {
     Proizvodjac proizvodjac;
     byte[] proizvodjacLogo;
     String grupa;
-    String podGrupa;
+    int podGrupa;
     String podGrupaNaziv;
     BigDecimal cena;
     Double rabat;
