@@ -81,7 +81,7 @@ public class PodGrupaService {
     public void popuniPodgrupe(MagacinDto magacinDto, UniverzalniParametri parametri, List<RobaDto> roba) {
         List<PodgrupaDto> podgrupaDtos;
         if (parametri.getTrazenaRec() == null && parametri.getProizvodjac() == null) {
-            if(parametri.getRobaKategorije() == null) {
+            if (parametri.getRobaKategorije() == null) {
                 podgrupaDtos = podGrupaRepository.findAll().stream()
                         .filter(podGrupa -> StringUtils.isNotBlank(podGrupa.getNaziv()))
                         .map(mapper::map)
@@ -116,16 +116,16 @@ public class PodGrupaService {
         for (RobaDto roba : robaDtos) {
             podgrupaDtos.stream().filter(podgrupa -> podgrupa.getId().intValue() == Integer.valueOf(roba.getPodGrupa()).intValue() || Integer.valueOf(roba.getPodGrupa()).intValue() == 0)
                     .findFirst().ifPresent(podgrupa -> {
-                if (Integer.valueOf(roba.getPodGrupa()).intValue() != 0) {
-                    roba.setPodGrupaNaziv(podgrupa.getNaziv());
-                } else {
-                    roba.setPodGrupaNaziv(NEBITNA_GRUPA);
-                }
-            });
+                        if (Integer.valueOf(roba.getPodGrupa()).intValue() != 0) {
+                            roba.setPodGrupaNaziv(podgrupa.getNaziv());
+                        } else {
+                            roba.setPodGrupaNaziv(NEBITNA_GRUPA);
+                        }
+                    });
         }
     }
 
-    public Optional<PodGrupa> vratiPodgrupuPoKljucu(String kljuc) {
-        return podGrupaRepository.findById(Integer.valueOf(kljuc));
+    public Optional<PodGrupa> vratiPodgrupuPoKljucu(int kljuc) {
+        return podGrupaRepository.findById(kljuc);
     }
 }

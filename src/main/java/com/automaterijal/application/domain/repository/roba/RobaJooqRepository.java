@@ -156,8 +156,8 @@ public class RobaJooqRepository {
 
         if (parametri.getRobaKategorije() == null) {
             roba = sortirajPoGrupi(roba);
-            sortirajRobuTecDocPoPodgrupi(roba, parametri);
         }
+        sortirajRobuTecDocPoPodgrupi(roba, parametri);
         int start = parametri.getPageSize() * parametri.getPage();
         int end = (start + parametri.getPageSize()) > roba.size() ? roba.size() : (start + parametri.getPageSize());
         magacinDto.setRobaDto(new PageImpl<>(roba.subList(start, end), PageRequest.of(parametri.getPage(), parametri.getPageSize()), roba.size()));
@@ -173,12 +173,24 @@ public class RobaJooqRepository {
         }
 
         if (!pronadjenaTacnaRoba.isEmpty()) {
-            RobaDto robaDto = pronadjenaTacnaRoba.get(0);
+            int podGrupa = pronadjenaTacnaRoba.get(0).getPodGrupa();
             robaDtos.sort((o1, o2) -> {
-                if (o1.getStanje() > 0 && o2.getStanje() > 0 && o1.getPodGrupa().equals(robaDto.getPodGrupa()) && !o2.getPodGrupa().equals(robaDto.getPodGrupa())) {
-                    return -1;
-                } else if (o1.getStanje() == 0 && o2.getStanje() == 0 && o1.getPodGrupa().equals(robaDto.getPodGrupa()) && !o2.getPodGrupa().equals(robaDto.getPodGrupa())) {
-                    return -1;
+                if (o1.getStanje() > 0 && o2.getStanje() > 0) {
+                    if (podGrupa == o1.getPodGrupa() && podGrupa != o2.getPodGrupa()) {
+                        return -1;
+                    } else if (podGrupa != o1.getPodGrupa() && podGrupa == o2.getPodGrupa()) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                } else if (o1.getStanje() == 0 && o2.getStanje() == 0) {
+                    if (podGrupa == o1.getPodGrupa() && podGrupa != o2.getPodGrupa()) {
+                        return -1;
+                    } else if (podGrupa != o1.getPodGrupa() && podGrupa == o2.getPodGrupa()) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
                 } else {
                     return 0;
                 }
@@ -200,7 +212,7 @@ public class RobaJooqRepository {
                         .naziv(robaRecord.component3())
                         .stanje(robaRecord.component4() != null ? robaRecord.component4().doubleValue() : 0)
                         .grupa(robaRecord.component5())
-                        .podGrupa(robaRecord.component6().toString())
+                        .podGrupa(robaRecord.component6())
                         .proizvodjac(Proizvodjac.builder().proid(robaRecord.component7()).build())
                         .build()
                 ).collect(Collectors.toList());
