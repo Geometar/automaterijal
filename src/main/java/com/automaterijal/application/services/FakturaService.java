@@ -117,7 +117,7 @@ public class FakturaService {
             Integer pageSize,
             LocalDateTime vremeOd,
             LocalDateTime vremeDo) {
-        var pageRequest = PageRequest.of(page, pageSize, new Sort(Sort.Direction.ASC, "orderId"));
+        var pageRequest = PageRequest.of(page, pageSize, Sort.by(Sort.Direction.ASC, "orderId"));
         Page<Faktura> fakture;
         if (partner.getPrivilegije() == 2047) {
             fakture = fakturaRepository.findByDataSentGreaterThanAndDataSentLessThanOrderByDataSentDesc(
