@@ -5,6 +5,7 @@ import com.automaterijal.application.domain.dto.SlikaDto;
 import com.automaterijal.application.domain.entity.TDBrands;
 import com.automaterijal.application.domain.entity.roba.RobaSlika;
 import com.automaterijal.application.domain.repository.TDBrandsRepository;
+import com.automaterijal.application.domain.repository.tecdoc.TecDocAtributiRepository;
 import com.automaterijal.application.services.roba.RobaSlikaService;
 import lombok.AccessLevel;
 import lombok.NonNull;
@@ -29,6 +30,9 @@ public class SlikeService {
     final TDBrandsRepository tdBrandsRepository;
 
     @NonNull
+    final TecDocAtributiRepository tecDocAtributiRepository;
+
+    @NonNull
     final RobaSlikaService robaSlikaService;
 
     final List<SlikeUtility> slikeUtilities = SlikeUtility.vratiSveUtilitySlike();
@@ -46,6 +50,11 @@ public class SlikeService {
 
     public SlikaDto vratiPutanjuDoSlike(String proid, String katBar, Long robaId) {
         SlikaDto slikaDto = new SlikaDto();
+        if (robaId != null && tecDocAtributiRepository.findByRobaId(robaId) != null) {
+            String url = tdPrefix + robaId + ".jpg";
+            podesiSlikaByte(url, slikaDto);
+            return slikaDto;
+        }
         Optional<TDBrands> tdBrandsOptional = tdBrandsRepository.findByProid(proid);
         Optional<RobaSlika> robaSlika = robaSlikaService.pronadjiPutanjuSlikePoId(robaId);
         if (tdBrandsOptional.isPresent() && !robaSlika.isPresent()) {

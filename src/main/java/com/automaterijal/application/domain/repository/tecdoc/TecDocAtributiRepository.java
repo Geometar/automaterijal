@@ -11,6 +11,4 @@ public interface TecDocAtributiRepository extends JpaRepository<TecDocAtributi, 
 
     List<TecDocAtributi> findByRobaId(Long robaId);
 
-    List<TecDocAtributi> findByTecDocArticleId(Integer tecDocArticleId);
-
 }

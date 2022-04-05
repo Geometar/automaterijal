@@ -3,12 +3,19 @@ package com.automaterijal.application.services.onstartup;
 import com.automaterijal.application.client.TecDocClient;
 import com.automaterijal.application.domain.constants.TecDocProizvodjaci;
 import com.automaterijal.application.domain.entity.tecdoc.TecDocBrands;
+import com.automaterijal.application.domain.repository.tecdoc.TecDocAtributiRepository;
 import com.automaterijal.application.domain.repository.tecdoc.TecDocBrandsRepository;
 import com.automaterijal.application.tecdoc.AmBrandsRecord;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -20,6 +27,12 @@ public class OnStartUpService {
 
     @Autowired
     TecDocBrandsRepository tecDocBrandsRepository;
+
+    @Autowired
+    TecDocAtributiRepository tecDocAtributiRepository;
+
+    @Value("${roba.slika.tdPrefix}")
+    String putDoSlike;
 
     public void loadTecDocAmBrands() {
         List<AmBrandsRecord> records = tecDocClient.vrateTecDocAmBrands();
@@ -33,6 +46,19 @@ public class OnStartUpService {
                 brands.setProid(tecDocProizvodjaci.name());
                 brands.setBrand(tecDocClient.vratiDokument(record.getBrandLogoID(), 0));
                 tecDocBrandsRepository.saveAndFlush(brands);
+            }
+        });
+    }
+
+    public void izvadiSlikeIzAtributaIStoruj() {
+        tecDocAtributiRepository.findAll().stream().filter(atributi -> atributi.getDokument() != null).forEach(atributi -> {
+            ByteArrayInputStream bis = new ByteArrayInputStream(atributi.getDokument());
+            BufferedImage bImage2 = null;
+            try {
+                bImage2 = ImageIO.read(bis);
+                ImageIO.write(bImage2, "jpg", new File(putDoSlike + atributi.getRobaId() + ".jpg"));
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
     }
