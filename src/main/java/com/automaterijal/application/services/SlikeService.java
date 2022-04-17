@@ -53,7 +53,9 @@ public class SlikeService {
         if (robaId != null && tecDocAtributiRepository.findByRobaId(robaId) != null) {
             String url = tdPrefix + robaId + ".jpg";
             podesiSlikaByte(url, slikaDto);
-            return slikaDto;
+            if(slikaDto.getSlikeByte() != null) {
+                return slikaDto;
+            }
         }
         Optional<TDBrands> tdBrandsOptional = tdBrandsRepository.findByProid(proid);
         Optional<RobaSlika> robaSlika = robaSlikaService.pronadjiPutanjuSlikePoId(robaId);

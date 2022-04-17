@@ -62,7 +62,7 @@ public class PodGrupaService {
     }
 
     public List<PodGrupa> vratiSvePodGrupePoNazivu(String naziv) {
-        return podGrupaRepository.findByNazivIn(naziv)
+        return podGrupaRepository.findByNazivLike(naziv)
                 .stream()
                 .collect(Collectors.toList());
     }

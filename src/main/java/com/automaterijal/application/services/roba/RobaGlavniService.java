@@ -235,9 +235,6 @@ public class RobaGlavniService {
                         tehnickiOpisDto.setJedinica(dto.getAttrUnit());
                         tehnickiOpisDto.setVrednost(dto.getAttrValue());
                         tehnickiOpisi.add(tehnickiOpisDto);
-                    } else {
-                        robaDto.setDokumentSlikaId(dto.getDokumentId());
-                        robaDto.setDokument(dto.getDokument());
                     }
                 }
             }

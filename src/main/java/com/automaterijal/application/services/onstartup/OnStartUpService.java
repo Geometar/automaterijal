@@ -6,6 +6,7 @@ import com.automaterijal.application.domain.entity.tecdoc.TecDocBrands;
 import com.automaterijal.application.domain.repository.tecdoc.TecDocAtributiRepository;
 import com.automaterijal.application.domain.repository.tecdoc.TecDocBrandsRepository;
 import com.automaterijal.application.tecdoc.AmBrandsRecord;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import java.util.List;
 
 @Service
 @Transactional
+@Slf4j
 public class OnStartUpService {
 
     @Autowired
@@ -58,7 +60,7 @@ public class OnStartUpService {
                 bImage2 = ImageIO.read(bis);
                 ImageIO.write(bImage2, "jpg", new File(putDoSlike + atributi.getRobaId() + ".jpg"));
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("Pukao bajka cuvanje slike iz nekog nepoznatog razloga.");
             }
         });
     }

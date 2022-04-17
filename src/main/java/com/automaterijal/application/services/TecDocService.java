@@ -19,8 +19,14 @@ import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -46,6 +52,9 @@ public class TecDocService {
     @Autowired
     TecDocMapper tecDocMapper;
 
+
+    @Value("${roba.slika.tdPrefix}")
+    String putDoSlike;
     //    ******************** TecDoc Pretraga  ********************
 
     public List<ArticleDirectSearchAllNumbersWithStateRecord> tecDocPretragaPoTrazenojReci(String trazenaRec, Integer brandId, Integer numbertype) {
@@ -81,7 +90,18 @@ public class TecDocService {
     }
 
     public void sacuvajTecDocAtribute(TecDocAtributi atributi) {
-        tecDocAtributiRepository.save(atributi);
+        if(atributi.getDokument() != null) {
+            ByteArrayInputStream bis = new ByteArrayInputStream(atributi.getDokument());
+            BufferedImage bImage2 = null;
+            try {
+                bImage2 = ImageIO.read(bis);
+                ImageIO.write(bImage2, "jpg", new File(putDoSlike + atributi.getRobaId() + ".jpg"));
+            } catch (IOException e) {
+                log.error("Pukao bajka cuvanje slike iz nekog nepoznatog razloga.");
+            }
+        } else {
+            tecDocAtributiRepository.save(atributi);
+        }
     }
 
     //    ******************** TecDoc Brendovi  ********************

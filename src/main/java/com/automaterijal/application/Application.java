@@ -25,6 +25,6 @@ public class Application extends SpringBootServletInitializer {
      */
     @PostConstruct
     public void init() {
-        onStartUpService.loadTecDocAmBrands();
+//        onStartUpService.loadTecDocAmBrands();
     }
 }
