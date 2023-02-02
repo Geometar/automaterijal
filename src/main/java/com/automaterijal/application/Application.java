@@ -9,6 +9,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 @SpringBootApplication
 @EnableAsync
+// Lokalno podesavanje
 public class Application extends SpringBootServletInitializer {
 
   @Autowired

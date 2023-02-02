@@ -49,8 +49,9 @@ roba:
   slika:
     prefixTabela: "assets/automaterijal/"
     prefixThumbs: "thumbs/"
-    tdPrefix: "/Users/radespasojevic/Documents/Rade/Automaterijal/TecDoc Slike/"
-#    tdPrefix: "C:/Rade/projekat/tecdoc/"
+    tdPrefix: "/var/www/html/orders/item_images/products/td/"
+    # Lokalno podesavanje
+#    tdPrefix: "/Users/radespasojevic/Documents/Rade/Automaterijal/TecDoc Slike/"
 
 logging:
   file: ../logs/arhiva/automaterijal
