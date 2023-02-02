@@ -18,7 +18,7 @@ spring:
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration
   datasource:
-    url: jdbc:mysql://localhost:3306/automate_orders?autoReconnect=true&useSSL=false&serverTimezone=Europe/Amsterdam
+    url: jdbc:mysql://localhost:3306/automate_orders?autoReconnect=true&useSSL=false
     username: root
     password: Crninovembar18!
     jpa:
@@ -49,8 +49,8 @@ roba:
   slika:
     prefixTabela: "assets/automaterijal/"
     prefixThumbs: "thumbs/"
-    tdPrefix: "/var/www/html/orders/item_images/products/td/"
-#    tdPrefix: "D:/Automaterijal/sliketd/"
+    tdPrefix: "/Users/radespasojevic/Documents/Rade/Automaterijal/TecDoc Slike/"
+#    tdPrefix: "C:/Rade/projekat/tecdoc/"
 
 logging:
   file: ../logs/arhiva/automaterijal

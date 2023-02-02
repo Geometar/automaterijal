@@ -52,9 +52,12 @@ public class TecDocService {
     @Autowired
     TecDocMapper tecDocMapper;
 
+    @Autowired
+    SlikeService slikeService;
 
     @Value("${roba.slika.tdPrefix}")
     String putDoSlike;
+
     //    ******************** TecDoc Pretraga  ********************
 
     public List<ArticleDirectSearchAllNumbersWithStateRecord> tecDocPretragaPoTrazenojReci(String trazenaRec, Integer brandId, Integer numbertype) {
@@ -81,27 +84,12 @@ public class TecDocService {
         if (tecDocAtributi.isEmpty()) {
             return null;
         }
-        Optional<TecDocAtributi> tecDocAtribut = tecDocAtributi.stream().filter(atributi -> atributi.getDokument() != null).findFirst();
-        byte[] retVal = null;
-        if (tecDocAtribut.isPresent()) {
-            retVal = tecDocAtribut.get().getDokument();
-        }
-        return retVal;
+        SlikaDto slikaDto = slikeService.vratiPutanjuDoSlike(null, null, robaId);
+        return slikaDto.getSlikeByte();
     }
 
     public void sacuvajTecDocAtribute(TecDocAtributi atributi) {
-        if(atributi.getDokument() != null) {
-            ByteArrayInputStream bis = new ByteArrayInputStream(atributi.getDokument());
-            BufferedImage bImage2 = null;
-            try {
-                bImage2 = ImageIO.read(bis);
-                ImageIO.write(bImage2, "jpg", new File(putDoSlike + atributi.getRobaId() + ".jpg"));
-            } catch (IOException e) {
-                log.error("Pukao bajka cuvanje slike iz nekog nepoznatog razloga.");
-            }
-        } else {
-            tecDocAtributiRepository.save(atributi);
-        }
+        tecDocAtributiRepository.save(atributi);
     }
 
     //    ******************** TecDoc Brendovi  ********************
@@ -206,6 +194,14 @@ public class TecDocService {
                                     ThumbnailByArticleIdRecord thumbnail = thumbnailByArticle.get(0);
                                     if (thumbnail.getThumbDocId() != null) {
                                         byte[] dokumentSlike = vratiDokument(thumbnail.getThumbDocId(), 0);
+                                        ByteArrayInputStream bis = new ByteArrayInputStream(dokumentSlike);
+                                        BufferedImage bImage2 = null;
+                                        try {
+                                            bImage2 = ImageIO.read(bis);
+                                            ImageIO.write(bImage2, "jpg", new File(putDoSlike + robaDto.getRobaid() + ".jpg"));
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
                                         robaDto.setDokumentSlikaId(thumbnail.getThumbDocId());
                                         robaDto.setDokument(dokumentSlike);
 
@@ -215,7 +211,6 @@ public class TecDocService {
                                                 robaDto,
                                                 directArticle.getArticleId(),
                                                 tecDocProizvodjaci.getTecDocId());
-                                        atributi.setDokument(dokumentSlike);
                                         sacuvajTecDocAtribute(atributi);
 
                                         SlikaDto slikaDto = new SlikaDto();
