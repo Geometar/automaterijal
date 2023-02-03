@@ -16,9 +16,9 @@ public class Application extends SpringBootServletInitializer {
   OnStartUpService onStartUpService;
 
   // You need to extend SpringBootServletInitializer for tomcat server
-//    public static void main(final String[] args) {
-//        SpringApplication.run(Application.class, args);
-//    }
+//  public static void main(final String[] args) {
+//    SpringApplication.run(Application.class, args);
+//  }
 
   /**
    * Init method to get all required data to for the application to run
