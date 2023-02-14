@@ -172,7 +172,7 @@ public class RobaGlavniService {
     final Set<String> kataloskiBrojevi = new HashSet<>();
     Set<Long> robaId = new HashSet<>();
     boolean daLiJeTrazenaRecNaziv = jooqRepository.pomocniKveriPoRobi(trazenaRecLike,
-        pregragaPoTacnojReciLike, kataloskiBrojevi, robaId);
+        pregragaPoTacnojReciLike, kataloskiBrojevi, robaId, parametri);
     if (!daLiJeTrazenaRecNaziv) {
       List<ArticleDirectSearchAllNumbersWithStateRecord> response = tecDocService.tecDocPretragaPoTrazenojReci(
           tacnaRec, null, 10);
@@ -203,15 +203,7 @@ public class RobaGlavniService {
     } else if (!daLiJeTrazenaRecNaziv) {
       retVal = jooqRepository.vratiArtikleIzTecDoca(parametri, kataloskiBrojevi);
     } else if (!robaId.isEmpty()) {
-      var pageable = PageRequest.of(
-          parametri.getPage(), parametri.getPageSize(),
-          Sort.by(Sort.Direction.DESC, RobaSortiranjePolja.STANJE.getFieldName())
-      );
-      Page<Roba> robaPage = robaService.pronadjiRobuPoRobaId(robaId, pageable);
-      List<RobaDto> robaDtos = robaPage.stream().map(mapper::map).collect(
-          Collectors.toList());
-      retVal.setRobaDto(
-          new PageImpl<>(robaDtos, robaPage.getPageable(), robaPage.getTotalElements()));
+      retVal = jooqRepository.pronadjiPoRobaId(parametri, robaId);
     }
 
     return retVal;

@@ -70,6 +70,32 @@ public class RobaJooqRepository {
   private static final Short PROIZVODJAC_ID = 4;
 
   /**
+   * Ulazna metoda iz glavnog servisa kad je pretraga po RobaId (za sad to znaci da je pretraga po
+   * reci)
+   */
+  public MagacinDto pronadjiPoRobaId(UniverzalniParametri parametri, Set<Long> robaIds) {
+    MagacinDto magacinDto = new MagacinDto();
+
+    List<RobaDto> roba = robaDtoMapper(
+        kreirajSelect(null,
+            robaIds.stream().map(robaId -> robaId.intValue()).collect(
+                Collectors.toSet())).orderBy(ROBA.STANJE.desc()
+            )
+            .fetch());
+
+    podGrupaService.popuniPodgrupe(magacinDto, parametri, roba);
+    proizvodjacService.popuniProizvodjace(roba, magacinDto, parametri);
+
+    int start = parametri.getPageSize() * parametri.getPage();
+    int end = (start + parametri.getPageSize()) > roba.size() ? roba.size()
+        : (start + parametri.getPageSize());
+    magacinDto.setRobaDto(new PageImpl<>(roba.subList(start, end),
+        PageRequest.of(parametri.getPage(), parametri.getPageSize()), roba.size()));
+
+    return magacinDto;
+  }
+
+  /**
    * Ulazna metoda iz glavnog servisa
    */
   public MagacinDto pronadjiPoTrazenojReci(UniverzalniParametri parametri, String trazenaRec) {
@@ -130,10 +156,10 @@ public class RobaJooqRepository {
    */
   private List<RobaDto> vratiArtikle(UniverzalniParametri parametri, String trazenaRec) {
     SelectConditionStep<Record7<Integer, String, String, BigDecimal, String, Integer, String>> select = kreirajSelect(
-        trazenaRec);
+        trazenaRec, null);
 
     if (!StringUtils.isEmpty(trazenaRec)) {
-      standardniUslovi(select, trazenaRec);
+      standardniUslovi(select, trazenaRec, parametri);
     }
 
     filtrirajPoParametrima(select, parametri);
@@ -146,7 +172,7 @@ public class RobaJooqRepository {
       Set<String> kataloskiBrojevi) {
     MagacinDto magacinDto = new MagacinDto();
     SelectConditionStep<Record7<Integer, String, String, BigDecimal, String, Integer, String>> select = kreirajSelect(
-        null);
+        null, null);
 
     Condition conditionPoslednji;
     Condition condition1 = ROBA.KATBR.in(kataloskiBrojevi);
@@ -243,13 +269,15 @@ public class RobaJooqRepository {
    * Keriranje selekta za robu
    */
   private SelectConditionStep<Record7<Integer, String, String, BigDecimal, String, Integer, String>> kreirajSelect(
-      String trazenaRec) {
+      String trazenaRec, Set<Integer> robaId) {
     String trazenaRecLike = "%" + trazenaRec + "%";
     SelectJoinStep<Record7<Integer, String, String, BigDecimal, String, Integer, String>> select = dslContext.selectDistinct(
         ROBA.ROBAID, ROBA.KATBR, ROBA.NAZIV, ROBA.STANJE, ROBA.GRUPAID, ROBA.PODGRUPAID, ROBA.PROID
     ).from(ROBA);
     if (trazenaRec != null) {
       return select.where(ROBA.KATBR.like(trazenaRecLike));
+    } else if (robaId != null && !robaId.isEmpty()) {
+      return select.where(ROBA.ROBAID.in(robaId));
     } else {
       return select.where("1=1");
     }
@@ -259,7 +287,8 @@ public class RobaJooqRepository {
   /**
    * Standardni uslovi
    */
-  private void standardniUslovi(SelectConditionStep<?> select, String trazenaRec) {
+  private void standardniUslovi(SelectConditionStep<?> select, String trazenaRec,
+      UniverzalniParametri parametri) {
     String pregragaPoTacnojReciLike = "%" + trazenaRec + "%";
     String trazenaRecLike = "%" + trazenaRec.replaceAll("\\s+", "") + "%";
 
@@ -270,7 +299,7 @@ public class RobaJooqRepository {
     Set<Long> robaId = new HashSet<>();
 
     boolean pretragaJePoRecima = pomocniKveriPoRobi(trazenaRecLike, pregragaPoTacnojReciLike,
-        kataloskiBrojevi, robaId);
+        kataloskiBrojevi, robaId, parametri);
 
     if (!pretragaJePoRecima) {
       pomocniKveriPoRobiOld(trazenaRec, kataloskiBrojevi);
@@ -296,15 +325,23 @@ public class RobaJooqRepository {
   }
 
   public boolean pomocniKveriPoRobi(String trazenaRecLike, String tacnaRecLike,
-      Set<String> kataloskiBrojevi, Set<Long> robaId) {
+      Set<String> kataloskiBrojevi, Set<Long> robaId, UniverzalniParametri parametri) {
     List<String> nazivi = new ArrayList<>();
-    dslContext.selectDistinct(ROBA.KATBR, ROBA.KATBRPRO, ROBA.ROBAID, ROBA.NAZIV)
+    var select = dslContext.selectDistinct(ROBA.KATBR, ROBA.KATBRPRO, ROBA.ROBAID, ROBA.NAZIV)
         .from(ROBA)
         .where(
             ROBA.KATBR.like(trazenaRecLike)
                 .or(ROBA.KATBRPRO.like(trazenaRecLike))
-                .or(ROBA.NAZIV.like(tacnaRecLike)))
-        .fetch().stream()
+                .or(ROBA.NAZIV.like(tacnaRecLike)));
+
+    if (StringUtils.hasText(parametri.getProizvodjac())) {
+      select.and(ROBA.PROID.eq(parametri.getProizvodjac()));
+    }
+
+    if (parametri.isNaStanju()) {
+      select.and(ROBA.STANJE.gt(BigDecimal.ZERO));
+    }
+    select.fetch().stream()
         .forEach(rekord -> {
 
           if (rekord.component1() != null && !StringUtils.isEmpty(rekord.component1())) {
