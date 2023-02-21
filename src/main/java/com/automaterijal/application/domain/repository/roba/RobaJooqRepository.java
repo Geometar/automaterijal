@@ -2,7 +2,6 @@ package com.automaterijal.application.domain.repository.roba;
 
 import static com.automaterijal.db.tables.Roba.ROBA;
 import static com.automaterijal.db.tables.RobaKatbrOld.ROBA_KATBR_OLD;
-import static com.automaterijal.db.tables.TdBrojevi.TD_BROJEVI;
 
 import com.automaterijal.application.client.TecDocClient;
 import com.automaterijal.application.domain.dto.DashboardDto;
@@ -30,8 +29,6 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
-import org.jooq.Record1;
-import org.jooq.Record4;
 import org.jooq.Record7;
 import org.jooq.Result;
 import org.jooq.SelectConditionStep;
@@ -303,7 +300,6 @@ public class RobaJooqRepository {
 
     if (!pretragaJePoRecima) {
       pomocniKveriPoRobiOld(trazenaRec, kataloskiBrojevi);
-      drugiPomocniKveri(kataloskiBrojevi, robaId, trazenaRec);
     } else {
       daLiJePetragaPoReci = true;
     }
@@ -398,84 +394,6 @@ public class RobaJooqRepository {
           }
         });
     prodjiIPopraviKatBr(kataloskiBrojevi);
-  }
-
-  private void drugiPomocniKveri(Set<String> katalskoBrojevi, Set<Long> robaIds,
-      String trazenaRec) {
-    Set<Integer> robaIdIzTd = new HashSet<>();
-    SelectConditionStep<Record4<String, String, String, Integer>> selectConditionStep = dslContext.selectDistinct(
-            TD_BROJEVI.BROJ, TD_BROJEVI.BROJSRCH, TD_BROJEVI.FABRBROJ, TD_BROJEVI.ROBAID)
-        .from(TD_BROJEVI)
-        .where(TD_BROJEVI.NADJENPREKO.eq(trazenaRec))
-        .or(TD_BROJEVI.BROJ.eq(trazenaRec))
-        .or(TD_BROJEVI.FABRBROJ.eq(trazenaRec))
-        .or(TD_BROJEVI.NADJENPREKO.eq(trazenaRec))
-        .or(TD_BROJEVI.BROJSRCH.eq(trazenaRec.replaceAll("\\s+", "")));
-
-    katalskoBrojevi.stream().filter(ktBr -> !ktBr.equals(trazenaRec)).forEach(kBroj -> {
-      selectConditionStep.or(TD_BROJEVI.FABRBROJ.eq(kBroj))
-          .or(TD_BROJEVI.NADJENPREKO.eq(kBroj))
-          .or(TD_BROJEVI.BROJ.eq(kBroj))
-          .or(TD_BROJEVI.BROJSRCH.eq(kBroj));
-    });
-
-    robaIds.forEach(robaId -> {
-      Condition condition1 = TD_BROJEVI.ROBAID.eq(robaId.intValue());
-      Condition condition2 = (TD_BROJEVI.VRSTA.eq(PROIZVODJAC_ID));
-      Condition conditionCombined = condition1.and(condition2);
-      selectConditionStep.or(conditionCombined);
-    });
-
-    selectConditionStep.fetch().stream().forEach(record -> {
-      if (record.component1() != null && !StringUtils.isEmpty(record.component1())) {
-        katalskoBrojevi.add(record.component1());
-      }
-      if (record.component2() != null && !StringUtils.isEmpty(record.component2())) {
-        katalskoBrojevi.add(record.component2());
-      }
-      if (record.component3() != null && !StringUtils.isEmpty(record.component3())) {
-        katalskoBrojevi.add(record.component3());
-      }
-      if (record.component4() != null) {
-        robaIdIzTd.add(record.component4());
-      }
-    });
-    boolean robaPostojalaUTD = false;
-    for (Integer id : robaIdIzTd) {
-      if (robaIds.contains(id)) {
-        robaPostojalaUTD = true;
-      }
-    }
-
-    if (!robaIdIzTd.isEmpty() && (robaIds.isEmpty() || !robaPostojalaUTD)) {
-      pomocniKveri3(robaIdIzTd, katalskoBrojevi);
-    }
-    prodjiIPopraviKatBr(katalskoBrojevi);
-  }
-
-  private void pomocniKveri3(Set<Integer> robaIds, Set<String> katalskoBrojevi) {
-    List<Condition> conditions = new ArrayList<>();
-    SelectJoinStep<Record1<String>> select = dslContext.selectDistinct(TD_BROJEVI.BROJSRCH)
-        .from(TD_BROJEVI);
-    robaIds.forEach(robaId -> {
-      Condition condition1 = TD_BROJEVI.ROBAID.eq(robaId);
-      Condition condition2 = TD_BROJEVI.VRSTA.eq(PROIZVODJAC_ID);
-      Condition combined = condition1.and(condition2);
-      conditions.add(combined);
-    });
-
-    if (!conditions.isEmpty()) {
-      SelectConditionStep<Record1<String>> select2 = select.where(conditions.get(0));
-      for (int i = 1; i < conditions.size(); i++) {
-        select2.or(conditions.get(i));
-      }
-    }
-
-    select.fetch().forEach(record -> {
-      if (record.component1() != null && !StringUtils.isEmpty(record.component1())) {
-        katalskoBrojevi.add(record.component1());
-      }
-    });
   }
 
   private void prodjiIPopraviKatBr(Set<String> retVal) {

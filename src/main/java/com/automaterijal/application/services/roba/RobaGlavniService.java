@@ -66,8 +66,6 @@ public class RobaGlavniService {
   @NonNull
   final RobaTehnickiOpisServis tehnickiOpisServis;
   @NonNull
-  final RobaBrojeviServis brojeviServis;
-  @NonNull
   final RobaAplikacijeServis aplikacijeServis;
   @NonNull
   final SlikeService slikeService;
@@ -383,11 +381,6 @@ public class RobaGlavniService {
       if (detaljnoDto.getTehnickiOpis() == null) {
         detaljnoDto.setTehnickiOpis(
             tehnickiOpisServis.vratiTehnickiOpisPoIdRobe(detaljnoDto.getRobaid()));
-      }
-
-      if (detaljnoDto.getTdBrojevi() == null) {
-        detaljnoDto.setTdBrojevi(
-            brojeviServis.vratiSveBrojeveZaRobidIVrsti(detaljnoDto.getRobaid(), VRSTA_ORIGINALNI));
       }
 
       List<String> dozvoljeneGrupeKljucevi = grupaDozvoljenaService.pronadjiSveDozvoljeneGrupe()
