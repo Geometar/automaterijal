@@ -29,6 +29,10 @@ public class RobaService {
     return robaRepository.findById(id);
   }
 
+  public List<Roba> pronadjiRobuPoPrimarnomKljucuBatch(List<Long> ids) {
+    return robaRepository.findByRobaidIn(ids);
+  }
+
   public Page<Roba> pronadjiSvuRobu(boolean naStanju, Pageable pageable) {
     if (naStanju) {
       return robaRepository.findByStanjeGreaterThan(0, pageable);

@@ -34,6 +34,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -155,7 +156,7 @@ public class RobaGlavniService {
 
     if (!magacinDto.getRobaDto().isEmpty()) {
       tecDocService.batchVracanjeICuvanjeTDAtributa(magacinDto.getRobaDto().getContent());
-      magacinDto.getRobaDto().forEach(dto -> setujZaTabelu(dto, parametri, ulogovaniPartner));
+      setujZaTabelu(magacinDto.getRobaDto().getContent(), parametri, ulogovaniPartner);
     }
     return magacinDto;
   }
@@ -239,7 +240,7 @@ public class RobaGlavniService {
       return robaDto;
     }).collect(Collectors.toList());
     tecDocService.batchVracanjeICuvanjeTDAtributa(dto);
-    dto.forEach(robaDto -> setujZaTabelu(robaDto, parametri, ulogovaniPartner));
+    setujZaTabelu(dto, parametri, ulogovaniPartner);
 
     return new PageImpl<>(dto, roba.getPageable(), roba.getTotalElements());
   }
@@ -247,18 +248,23 @@ public class RobaGlavniService {
   /**
    * Metoda za setovanje cena i tehnickog opisa u dto-u
    */
-  private void setujZaTabelu(RobaDto robaDto, UniverzalniParametri parametri, Partner partner) {
+  private void setujZaTabelu(List<RobaDto> robaDtos, UniverzalniParametri parametri,
+      Partner partner) {
+    List<Long> listaRobeId = robaDtos.stream().map(RobaDto::getRobaid).collect(Collectors.toList());
 //        ******************  Deo za dodavanje tehnickog opisa ************************************
-    List<RobaTehnickiOpisDto> tehnickiOpisi = new ArrayList<>();
-    final TecDocProizvodjaci tecDocProizvodjaci = TecDocProizvodjaci.pronadjiPoNazivu(
-        robaDto.getProizvodjac().getProid());
-    if (tecDocProizvodjaci != null) {
-      tecDocService.vratiTecDocBrendovePrekoProId(robaDto.getProizvodjac().getProid())
-          .ifPresent(tecDocBrands -> {
-            robaDto.setProizvodjacLogo(tecDocBrands.getBrand());
-          });
-      List<TecDocAtributi> tecDocAtributi = tecDocService.vratiTecDocAtributePrekoRobeId(
-          robaDto.getRobaid());
+    List<TecDocAtributi> tecDocAtributiSvi = tecDocService.vratiTecDocAtributePrekoRobeIds(
+        listaRobeId);
+
+    List<String> dozvoljeneGrupeKljucevi = grupaDozvoljenaService.pronadjiSveDozvoljeneGrupe()
+        .stream()
+        .map(GrupaDozvoljena::getGrupaid)
+        .collect(Collectors.toList());
+
+    robaDtos.forEach(robaDto -> {
+      List<RobaTehnickiOpisDto> tehnickiOpisi = new ArrayList<>();
+      List<TecDocAtributi> tecDocAtributi = tecDocAtributiSvi.stream()
+          .filter(atributi -> Objects.equals(atributi.getRobaId(), robaDto.getRobaid())).collect(
+              Collectors.toList());
       for (TecDocAtributi dto : tecDocAtributi) {
         if (dto.getTecDocArticleId() != null) {
           if (dto.getDokumentId() == null && dto.getAttrType().equals("N")) {
@@ -287,62 +293,90 @@ public class RobaGlavniService {
           }
         }
       }
-    }
-    if (tehnickiOpisi.isEmpty()) {
-      tehnickiOpisi = tehnickiOpisServis.vratiTehnickiOpisPoIdRobe(robaDto.getRobaid());
-    }
 //        *************************** Kraj dela za dodavanje tehnickog opisa ************************************
 
-    robaDto.setCena(robaCeneService.vratiCenuRobePoRobiId(robaDto.getRobaid(), robaDto.getGrupa(),
-        robaDto.getProizvodjac().getProid(), partner));
-    robaDto.setRabat(
-        robaCeneService.vratiRabatPartneraNaArtikal(robaDto.getProizvodjac().getProid(),
-            robaDto.getGrupa(), partner));
-    if (tehnickiOpisi.size() > 5) {
-      robaDto.setTehnickiOpis(tehnickiOpisi.stream().limit(4).collect(Collectors.toList()));
-    } else {
-      robaDto.setTehnickiOpis(tehnickiOpisi);
-    }
+      robaDto.setCena(robaCeneService.vratiCenuRobePoRobiId(robaDto.getRobaid(), robaDto.getGrupa(),
+          robaDto.getProizvodjac().getProid(), partner));
+      robaDto.setRabat(
+          robaCeneService.vratiRabatPartneraNaArtikal(robaDto.getProizvodjac().getProid(),
+              robaDto.getGrupa(), partner));
+      if (tehnickiOpisi.size() > 5) {
+        robaDto.setTehnickiOpis(tehnickiOpisi.stream().limit(4).collect(Collectors.toList()));
+      } else {
+        robaDto.setTehnickiOpis(tehnickiOpisi);
+      }
 
+      if (!dozvoljeneGrupeKljucevi.contains(robaDto.getGrupa())) {
+        robaDto.setDozvoljenoZaAnonimusa(false);
+      } else {
+        robaDto.setDozvoljenoZaAnonimusa(true);
+      }
+
+      // Postoji dokument u tecDocu
+      if (robaDto.getDokument() != null) {
+        SlikaDto slikaDto = new SlikaDto();
+        slikaDto.setSlikeByte(robaDto.getDokument());
+        slikaDto.setUrl(false);
+        robaDto.setSlika(slikaDto);
+      } else {
+        robaDto.setSlika(
+            slikeService.vratiPutanjuDoSlikeBatch(robaDto.getProizvodjac().getProid(),
+                robaDto.getKatbr(),
+                robaDto.getRobaid(), tecDocAtributi));
+      }
+    });
+  }
+
+
+  /**
+   * Metoda za setovanje cena i tehnickog opisa u dto-u
+   */
+  private void setujZaTabeluDashboard(List<RobaDto> robaDtos,
+      Partner partner) {
     List<String> dozvoljeneGrupeKljucevi = grupaDozvoljenaService.pronadjiSveDozvoljeneGrupe()
         .stream()
         .map(GrupaDozvoljena::getGrupaid)
         .collect(Collectors.toList());
 
-    if (!dozvoljeneGrupeKljucevi.contains(robaDto.getGrupa())) {
-      robaDto.setDozvoljenoZaAnonimusa(false);
-    } else {
-      robaDto.setDozvoljenoZaAnonimusa(true);
-    }
+    List<TecDocAtributi> tecDocAtributiSvi = tecDocService.vratiTecDocAtributePrekoRobeIds(
+        robaDtos.stream().map(RobaDto::getRobaid).collect(Collectors.toList()));
+    robaDtos.forEach(robaDto -> {
 
-    // Postoji dokument u tecDocu
-    if (robaDto.getDokument() != null) {
-      SlikaDto slikaDto = new SlikaDto();
-      slikaDto.setSlikeByte(robaDto.getDokument());
-      slikaDto.setUrl(false);
-      robaDto.setSlika(slikaDto);
-    } else {
-      robaDto.setSlika(
-          slikeService.vratiPutanjuDoSlike(robaDto.getProizvodjac().getProid(), robaDto.getKatbr(),
-              robaDto.getRobaid()));
-    }
+      List<TecDocAtributi> tecDocAtributi = tecDocAtributiSvi.stream()
+          .filter(atributi -> Objects.equals(atributi.getRobaId(), robaDto.getRobaid())).collect(
+              Collectors.toList());
+      robaDto.setCena(robaCeneService.vratiCenuRobePoRobiId(robaDto.getRobaid(), robaDto.getGrupa(),
+          robaDto.getProizvodjac().getProid(), partner));
+      robaDto.setRabat(
+          robaCeneService.vratiRabatPartneraNaArtikal(robaDto.getProizvodjac().getProid(),
+              robaDto.getGrupa(), partner));
 
-    //Set brand logo
-    podGrupaService.vratiPodgrupuPoKljucu(robaDto.getPodGrupa())
-        .ifPresent(podGrupa -> robaDto.setPodGrupaNaziv(podGrupa.getNaziv()));
+      if (!dozvoljeneGrupeKljucevi.contains(robaDto.getGrupa())) {
+        robaDto.setDozvoljenoZaAnonimusa(false);
+      } else {
+        robaDto.setDozvoljenoZaAnonimusa(true);
+      }
+
+      // Postoji dokument u tecDocu
+      if (robaDto.getDokument() != null) {
+        SlikaDto slikaDto = new SlikaDto();
+        slikaDto.setSlikeByte(robaDto.getDokument());
+        slikaDto.setUrl(false);
+        robaDto.setSlika(slikaDto);
+      } else {
+        robaDto.setSlika(
+            slikeService.vratiPutanjuDoSlikeBatch(robaDto.getProizvodjac().getProid(),
+                robaDto.getKatbr(),
+                robaDto.getRobaid(), tecDocAtributi));
+      }
+    });
   }
 
   public List<RobaDto> vratiIzdvajamoIzPonudeRobu(List<Long> robaIds, Partner partner) {
-    List<RobaDto> retVal = new ArrayList<>();
-    robaIds.forEach(robaId -> {
-      RobaDto roba = mapper.map(
-          robaService.pronadjiRobuPoPrimarnomKljucu(robaId).get()
-      );
-      setujZaTabelu(roba, null, partner);
-      retVal.add(roba);
-    });
+    List<Roba> robas = robaService.pronadjiRobuPoPrimarnomKljucuBatch(robaIds);
+    List<RobaDto> retVal = robas.stream().map(mapper::map).collect(Collectors.toList());
     if (!retVal.isEmpty()) {
-      retVal.forEach(robaDto -> setujZaTabelu(robaDto, null, partner));
+      setujZaTabeluDashboard(retVal, partner);
     }
     return retVal;
   }

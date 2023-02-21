@@ -4,6 +4,7 @@ import com.automaterijal.application.domain.constants.SlikeUtility;
 import com.automaterijal.application.domain.dto.SlikaDto;
 import com.automaterijal.application.domain.entity.TDBrands;
 import com.automaterijal.application.domain.entity.roba.RobaSlika;
+import com.automaterijal.application.domain.entity.tecdoc.TecDocAtributi;
 import com.automaterijal.application.domain.repository.TDBrandsRepository;
 import com.automaterijal.application.domain.repository.tecdoc.TecDocAtributiRepository;
 import com.automaterijal.application.services.roba.RobaSlikaService;
@@ -46,6 +47,70 @@ public class SlikeService {
   String tdPrefix;
 
   private static final String SLIKA_NIJE_DOSTUPNA_URL = "assets/slike/ui/roba/slikanijedostupna.jpg";
+
+  public SlikaDto vratiPutanjuDoSlikeBatch(String proid, String katBar, Long robaId,
+      List<TecDocAtributi> tecDocAtributis) {
+    SlikaDto slikaDto = new SlikaDto();
+    if (robaId != null && tecDocAtributis != null && !tecDocAtributis.isEmpty()) {
+      String url = tdPrefix + robaId + ".jpg";
+      podesiSlikaByte(url, slikaDto);
+      if (slikaDto.getSlikeByte() != null) {
+        return slikaDto;
+      }
+    }
+
+    if (proid == null) {
+      return slikaDto;
+    }
+
+    Optional<TDBrands> tdBrandsOptional = tdBrandsRepository.findByProid(proid);
+    Optional<RobaSlika> robaSlika = robaSlikaService.pronadjiPutanjuSlikePoId(robaId);
+    if (tdBrandsOptional.isPresent() && !robaSlika.isPresent()) {
+      TDBrands tdBrands = tdBrandsOptional.get();
+      boolean postojiKonstanta = false;
+
+      // trenutno je ovo samo za kontinental kaiseve
+      if ("CONTI".equals(proid)) {
+        for (int i = 0; i < slikeUtilities.size(); i++) {
+          SlikeUtility slikeUtility = slikeUtilities.get(i);
+          if (slikeUtility.getProid().equals(proid) && katBar.contains(slikeUtility.getSadrzaj())) {
+            String url = tdPrefix + tdBrands.getBraId() + "/" + slikeUtility.getKonstanta();
+            podesiSlikaByte(url, slikaDto);
+            postojiKonstanta = true;
+            break;
+          }
+        }
+      }
+
+      // Logika za zamenu URL-ova
+      if (!postojiKonstanta) {
+        if (tdBrands.getRemoveChar() != null) {
+          katBar = katBar.replace(tdBrands.getRemoveChar(), "");
+        }
+        if (tdBrands.getRemoveSufix() != null && tdBrands.getRemoveSufix().length() > 0
+            && katBar.indexOf(tdBrands.getRemoveSufix())
+            == katBar.length() - tdBrands.getRemoveSufix().length()) {
+          katBar = katBar.substring(0, katBar.length() - tdBrands.getRemoveSufix().length());
+        }
+        if (tdBrands.getRemovePrefix() != null && tdBrands.getRemovePrefix().length() > 0
+            && katBar.indexOf(tdBrands.getRemovePrefix()) == 0) {
+          katBar = katBar.substring(katBar.length() - tdBrands.getRemovePrefix().length());
+        }
+        String url = tdPrefix + tdBrands.getBraId() + "/" + tdBrands.getAddPrefix() + katBar
+            + tdBrands.getAddSufix() + ".jpg";
+        podesiSlikaByte(url, slikaDto);
+      }
+    } else {
+      if (robaSlika.isPresent()) {
+        slikaDto.setSlikeUrl(prefixTabela + prefixThumbs + robaSlika.get().getSlika());
+      } else {
+        slikaDto.setSlikeUrl(SLIKA_NIJE_DOSTUPNA_URL);
+      }
+      slikaDto.setUrl(true);
+    }
+
+    return slikaDto;
+  }
 
   public SlikaDto vratiPutanjuDoSlike(String proid, String katBar, Long robaId) {
     SlikaDto slikaDto = new SlikaDto();

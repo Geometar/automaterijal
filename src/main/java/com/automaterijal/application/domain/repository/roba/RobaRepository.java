@@ -26,6 +26,8 @@ public interface RobaRepository extends JpaRepository<Roba, Long> {
 
   List<Roba> findByKatbr(String katBr);
 
+  List<Roba> findByRobaidIn(List<Long> robaId);
+
   Page<Roba> findByRobaidIn(Set<Long> robaId, Pageable pageable);
 }
 
