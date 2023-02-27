@@ -3,6 +3,7 @@ package com.automaterijal.application.services.roba;
 import com.automaterijal.application.domain.constants.RobaSortiranjePolja;
 import com.automaterijal.application.domain.constants.TecDocProizvodjaci;
 import com.automaterijal.application.domain.dto.MagacinDto;
+import com.automaterijal.application.domain.dto.PodgrupaDto;
 import com.automaterijal.application.domain.dto.RobaDto;
 import com.automaterijal.application.domain.dto.RobaTehnickiOpisDto;
 import com.automaterijal.application.domain.dto.SlikaDto;
@@ -13,6 +14,7 @@ import com.automaterijal.application.domain.entity.GrupaDozvoljena;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.PodGrupa;
 import com.automaterijal.application.domain.entity.roba.Roba;
+import com.automaterijal.application.domain.entity.roba.RobaCene;
 import com.automaterijal.application.domain.entity.tecdoc.TecDocAtributi;
 import com.automaterijal.application.domain.mapper.RobaMapper;
 import com.automaterijal.application.domain.mapper.TecDocMapper;
@@ -49,10 +51,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Slf4j
@@ -240,6 +240,13 @@ public class RobaGlavniService {
       return robaDto;
     }).collect(Collectors.toList());
     tecDocService.batchVracanjeICuvanjeTDAtributa(dto);
+    List<PodgrupaDto> podgrupaDtos = podGrupaService.vratiSvePodgrupeZaKljuceve(
+        dto.stream().map(RobaDto::getPodGrupa).collect(
+            Collectors.toSet()));
+    dto.forEach(robaDto -> {
+      podgrupaDtos.stream().filter(podgrupaDto -> podgrupaDto.getId() == robaDto.getPodGrupa())
+          .findAny().ifPresent(podgrupaDto -> robaDto.setPodGrupaNaziv(podgrupaDto.getNaziv()));
+    });
     setujZaTabelu(dto, parametri, ulogovaniPartner);
 
     return new PageImpl<>(dto, roba.getPageable(), roba.getTotalElements());
@@ -259,6 +266,8 @@ public class RobaGlavniService {
         .stream()
         .map(GrupaDozvoljena::getGrupaid)
         .collect(Collectors.toList());
+
+    List<RobaCene> robaCene = robaCeneService.pronadjiCeneZaRobuBatch(listaRobeId);
 
     robaDtos.forEach(robaDto -> {
       List<RobaTehnickiOpisDto> tehnickiOpisi = new ArrayList<>();
@@ -295,7 +304,9 @@ public class RobaGlavniService {
       }
 //        *************************** Kraj dela za dodavanje tehnickog opisa ************************************
 
-      robaDto.setCena(robaCeneService.vratiCenuRobePoRobiId(robaDto.getRobaid(), robaDto.getGrupa(),
+      RobaCene cene = robaCene.stream().filter(cena -> cena.getRobaid().equals(robaDto.getRobaid()))
+          .findFirst().orElse(null);
+      robaDto.setCena(robaCeneService.vratiCenuRobeBatch(cene, robaDto.getGrupa(),
           robaDto.getProizvodjac().getProid(), partner));
       robaDto.setRabat(
           robaCeneService.vratiRabatPartneraNaArtikal(robaDto.getProizvodjac().getProid(),
@@ -338,14 +349,19 @@ public class RobaGlavniService {
         .map(GrupaDozvoljena::getGrupaid)
         .collect(Collectors.toList());
 
-    List<TecDocAtributi> tecDocAtributiSvi = tecDocService.vratiTecDocAtributePrekoRobeIds(
-        robaDtos.stream().map(RobaDto::getRobaid).collect(Collectors.toList()));
+    List<Long> robaIds = robaDtos.stream().map(RobaDto::getRobaid).collect(Collectors.toList());
+    List<TecDocAtributi> tecDocAtributiSvi = tecDocService.vratiTecDocAtributePrekoRobeIds(robaIds);
+    List<RobaCene> robaCenes = robaCeneService.pronadjiCeneZaRobuBatch(robaIds);
     robaDtos.forEach(robaDto -> {
 
       List<TecDocAtributi> tecDocAtributi = tecDocAtributiSvi.stream()
           .filter(atributi -> Objects.equals(atributi.getRobaId(), robaDto.getRobaid())).collect(
               Collectors.toList());
-      robaDto.setCena(robaCeneService.vratiCenuRobePoRobiId(robaDto.getRobaid(), robaDto.getGrupa(),
+
+      RobaCene cene = robaCenes.stream()
+          .filter(cena -> cena.getRobaid().equals(robaDto.getRobaid()))
+          .findFirst().orElse(null);
+      robaDto.setCena(robaCeneService.vratiCenuRobeBatch(cene, robaDto.getGrupa(),
           robaDto.getProizvodjac().getProid(), partner));
       robaDto.setRabat(
           robaCeneService.vratiRabatPartneraNaArtikal(robaDto.getProizvodjac().getProid(),
