@@ -84,6 +84,7 @@ public class SlikeService {
 
       // Logika za zamenu URL-ova
       if (!postojiKonstanta) {
+        katBar = katBar.replace("-LUČ", "");
         if (tdBrands.getRemoveChar() != null) {
           katBar = katBar.replace(tdBrands.getRemoveChar(), "");
         }
