@@ -9,10 +9,10 @@ import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS, nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-public abstract class PodrgrupaMapper {
+public interface PodrgrupaMapper {
 
-    @Mapping(target = "id", source = "podGrupaId")
-    @Mapping(target = "naziv", source = "naziv")
-    public abstract PodgrupaDto map(PodGrupa podgrupa);
+  @Mapping(target = "id", source = "podGrupaId")
+  @Mapping(target = "naziv", source = "naziv")
+  PodgrupaDto map(PodGrupa podgrupa);
 
 }

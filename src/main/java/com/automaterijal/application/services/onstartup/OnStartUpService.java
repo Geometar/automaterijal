@@ -37,14 +37,15 @@ public class OnStartUpService {
 
   public void loadTecDocAmBrands() {
     List<AmBrandsRecord> records = tecDocClient.vrateTecDocAmBrands();
-    records.forEach(record -> {
-      var tecDocProizvodjaci = TecDocProizvodjaci.pronadjiPoKljucu(record.getBrandId().intValue());
+    records.forEach(amBrandsRecord -> {
+      var tecDocProizvodjaci = TecDocProizvodjaci.pronadjiPoKljucu(
+          amBrandsRecord.getBrandId().intValue());
       if (tecDocProizvodjaci != null) {
         TecDocBrands brands = new TecDocBrands();
-        brands.setBrandId(record.getBrandId());
-        brands.setBrandLogoID(record.getBrandLogoID());
+        brands.setBrandId(amBrandsRecord.getBrandId());
+        brands.setBrandLogoID(amBrandsRecord.getBrandLogoID());
         brands.setProid(tecDocProizvodjaci.name());
-        brands.setBrand(tecDocClient.vratiDokument(record.getBrandLogoID(), 0));
+        brands.setBrand(tecDocClient.vratiDokument(amBrandsRecord.getBrandLogoID(), 0));
         tecDocBrandsRepository.saveAndFlush(brands);
       }
     });

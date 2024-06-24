@@ -1,29 +1,33 @@
 package com.automaterijal.application.domain.entity;
 
+import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
-
-import javax.persistence.*;
 
 @Entity
 @Table(name = "mesta_isporuke")
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class MestaIsporuke {
+public class MestaIsporuke implements Serializable {
 
-    @Id
-    @GeneratedValue
-    @Column(name = "ppid")
-    Integer ppid;
+  @Id
+  @GeneratedValue
+  @Column(name = "ppid")
+  Integer ppid;
 
-    @Column(name = "nppid")
-    String nppid;
+  @Column(name = "nppid")
+  String nppid;
 
-    @Column
-    String naziv;
+  @Column
+  String naziv;
 
-    @Column
-    String adresa;
+  @Column
+  String adresa;
 }
 

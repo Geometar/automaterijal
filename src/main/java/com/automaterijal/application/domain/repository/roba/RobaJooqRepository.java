@@ -7,6 +7,7 @@ import com.automaterijal.application.client.TecDocClient;
 import com.automaterijal.application.domain.dto.DashboardDto;
 import com.automaterijal.application.domain.dto.MagacinDto;
 import com.automaterijal.application.domain.dto.RobaDto;
+import com.automaterijal.application.domain.dto.SlikaDto;
 import com.automaterijal.application.domain.entity.PodGrupa;
 import com.automaterijal.application.domain.entity.Proizvodjac;
 import com.automaterijal.application.domain.entity.roba.Roba;
@@ -29,7 +30,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
-import org.jooq.Record7;
+import org.jooq.Record8;
 import org.jooq.Result;
 import org.jooq.SelectConditionStep;
 import org.jooq.SelectJoinStep;
@@ -64,8 +65,6 @@ public class RobaJooqRepository {
   @Autowired
   TecDocClient tecDocClient;
 
-  private static final Short PROIZVODJAC_ID = 4;
-
   /**
    * Ulazna metoda iz glavnog servisa kad je pretraga po RobaId (za sad to znaci da je pretraga po
    * reci)
@@ -75,7 +74,7 @@ public class RobaJooqRepository {
 
     List<RobaDto> roba = robaDtoMapper(
         kreirajSelect(null,
-            robaIds.stream().map(robaId -> robaId.intValue()).collect(
+            robaIds.stream().map(Long::intValue).collect(
                 Collectors.toSet())).orderBy(ROBA.STANJE.desc()
             )
             .fetch());
@@ -102,7 +101,7 @@ public class RobaJooqRepository {
     podGrupaService.popuniPodgrupe(magacinDto, parametri, roba);
     proizvodjacService.popuniProizvodjace(roba, magacinDto, parametri);
     if (parametri.getProizvodjac() != null && parametri.getGrupa() != null) {
-      roba = filtriIVratiRobu(parametri, magacinDto, roba);
+      roba = filtriIVratiRobu(parametri, roba);
     }
 
     if (parametri.getRobaKategorije() == null) {
@@ -141,8 +140,7 @@ public class RobaJooqRepository {
     return retVal;
   }
 
-  private List<RobaDto> filtriIVratiRobu(UniverzalniParametri parametri, MagacinDto magacinDto,
-      List<RobaDto> roba) {
+  private List<RobaDto> filtriIVratiRobu(UniverzalniParametri parametri, List<RobaDto> roba) {
     return roba.stream()
         .filter(robaDto -> robaDto.getProizvodjac().getProid().equals(parametri.getProizvodjac()))
         .collect(Collectors.toList());
@@ -152,7 +150,7 @@ public class RobaJooqRepository {
    * Vrati sve artikle po trazenoj reci
    */
   private List<RobaDto> vratiArtikle(UniverzalniParametri parametri, String trazenaRec) {
-    SelectConditionStep<Record7<Integer, String, String, BigDecimal, String, Integer, String>> select = kreirajSelect(
+    SelectConditionStep<Record8<Integer, String, String, BigDecimal, String, Integer, String, String>> select = kreirajSelect(
         trazenaRec, null);
 
     if (!StringUtils.isEmpty(trazenaRec)) {
@@ -160,7 +158,7 @@ public class RobaJooqRepository {
     }
 
     filtrirajPoParametrima(select, parametri);
-    sortiranje(select, parametri);
+    sortiranje(select);
 
     return robaDtoMapper(select.fetch());
   }
@@ -168,7 +166,7 @@ public class RobaJooqRepository {
   public MagacinDto vratiArtikleIzTecDoca(UniverzalniParametri parametri,
       Set<String> kataloskiBrojevi) {
     MagacinDto magacinDto = new MagacinDto();
-    SelectConditionStep<Record7<Integer, String, String, BigDecimal, String, Integer, String>> select = kreirajSelect(
+    SelectConditionStep<Record8<Integer, String, String, BigDecimal, String, Integer, String, String>> select = kreirajSelect(
         null, null);
 
     Condition conditionPoslednji;
@@ -178,17 +176,14 @@ public class RobaJooqRepository {
 
     select.and(conditionPoslednji);
     filtrirajPoParametrima(select, parametri);
-    sortiranje(select, parametri);
-
-    filtrirajPoParametrima(select, parametri);
-    sortiranje(select, parametri);
+    sortiranje(select);
 
     List<RobaDto> roba = robaDtoMapper(select.fetch());
 
     podGrupaService.popuniPodgrupe(magacinDto, parametri, roba);
     proizvodjacService.popuniProizvodjace(roba, magacinDto, parametri);
     if (parametri.getProizvodjac() != null && parametri.getGrupa() != null) {
-      roba = filtriIVratiRobu(parametri, magacinDto, roba);
+      roba = filtriIVratiRobu(parametri, roba);
     }
 
     if (parametri.getRobaKategorije() == null) {
@@ -246,7 +241,7 @@ public class RobaJooqRepository {
    * Mapiranje u dto robe
    */
   private List<RobaDto> robaDtoMapper(
-      Result<Record7<Integer, String, String, BigDecimal, String, Integer, String>> robaRecords
+      Result<Record8<Integer, String, String, BigDecimal, String, Integer, String, String>> robaRecords
   ) {
     return robaRecords.stream()
         .map(robaRecord -> RobaDto
@@ -258,6 +253,7 @@ public class RobaJooqRepository {
             .grupa(robaRecord.component5())
             .podGrupa(robaRecord.component6())
             .proizvodjac(Proizvodjac.builder().proid(robaRecord.component7()).build())
+            .slika(new SlikaDto(robaRecord.component8()))
             .build()
         ).collect(Collectors.toList());
   }
@@ -265,11 +261,12 @@ public class RobaJooqRepository {
   /**
    * Keriranje selekta za robu
    */
-  private SelectConditionStep<Record7<Integer, String, String, BigDecimal, String, Integer, String>> kreirajSelect(
+  private SelectConditionStep<Record8<Integer, String, String, BigDecimal, String, Integer, String, String>> kreirajSelect(
       String trazenaRec, Set<Integer> robaId) {
     String trazenaRecLike = "%" + trazenaRec + "%";
-    SelectJoinStep<Record7<Integer, String, String, BigDecimal, String, Integer, String>> select = dslContext.selectDistinct(
-        ROBA.ROBAID, ROBA.KATBR, ROBA.NAZIV, ROBA.STANJE, ROBA.GRUPAID, ROBA.PODGRUPAID, ROBA.PROID
+    SelectJoinStep<Record8<Integer, String, String, BigDecimal, String, Integer, String, String>> select = dslContext.selectDistinct(
+        ROBA.ROBAID, ROBA.KATBR, ROBA.NAZIV, ROBA.STANJE, ROBA.GRUPAID, ROBA.PODGRUPAID, ROBA.PROID,
+        ROBA.SLIKA
     ).from(ROBA);
     if (trazenaRec != null) {
       return select.where(ROBA.KATBR.like(trazenaRecLike));
@@ -359,7 +356,7 @@ public class RobaJooqRepository {
     prodjiIPopraviKatBr(kataloskiBrojevi);
     boolean pretragaJePoRecima = true;
     String pretragaNaziv = tacnaRecLike.replace("%", "");
-    if (nazivi != null && !nazivi.isEmpty()) {
+    if (!nazivi.isEmpty()) {
       for (String naziv : nazivi) {
         if (!naziv.contains(pretragaNaziv)) {
           pretragaJePoRecima = false;
@@ -412,10 +409,10 @@ public class RobaJooqRepository {
   private void filtrirajPoParametrima(SelectConditionStep<?> select,
       UniverzalniParametri parametri) {
     if (parametri.getRobaKategorije() != null
-        && parametri.getRobaKategorije().isGrupaPretraga() == true) {
+        && parametri.getRobaKategorije().isGrupaPretraga()) {
       select.and(ROBA.GRUPAID.in(parametri.getRobaKategorije().getFieldName()));
     } else if (parametri.getRobaKategorije() != null
-        && parametri.getRobaKategorije().isPodgrupaPretraga() == true) {
+        && parametri.getRobaKategorije().isPodgrupaPretraga()) {
       select.and(ROBA.PODGRUPAID.in(parametri.getPodGrupe().stream().map(PodGrupa::getPodGrupaId)
           .collect(Collectors.toList())));
     }
@@ -440,7 +437,7 @@ public class RobaJooqRepository {
   /**
    * Limitiranje pogodataka zbog paginacije
    */
-  private void sortiranje(SelectConditionStep<?> select, UniverzalniParametri parametri) {
+  private void sortiranje(SelectConditionStep<?> select) {
     select.orderBy(ROBA.STANJE.desc());
   }
 
@@ -464,10 +461,10 @@ public class RobaJooqRepository {
         : (start + pageable.getPageSize());
     List<Roba> retVal = roba.subList(start, end);
 
-    retVal.forEach(rekord -> {
-      proizvodjacService.vratiProizvodjacaPoPk(rekord.getProizvodjac().getProid())
-          .ifPresent(proizvodjac -> rekord.setProizvodjac(proizvodjac));
-    });
+    retVal.forEach(rekord ->
+        proizvodjacService.vratiProizvodjacaPoPk(rekord.getProizvodjac().getProid())
+            .ifPresent(rekord::setProizvodjac)
+    );
 
     return new PageImpl<>(retVal, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()),
         roba.size());

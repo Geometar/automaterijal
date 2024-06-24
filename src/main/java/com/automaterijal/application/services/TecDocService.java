@@ -88,15 +88,6 @@ public class TecDocService {
     return tecDocClient.vratiDokument(dokumentId, tipSlike);
   }
 
-  public byte[] vratiDokumentPoRobaId(Long robaId) {
-    List<TecDocAtributi> tecDocAtributi = vratiTecDocAtributePrekoRobeId(robaId);
-    if (tecDocAtributi.isEmpty()) {
-      return null;
-    }
-    SlikaDto slikaDto = slikeService.vratiPutanjuDoSlike(null, null, robaId);
-    return slikaDto.getSlikeByte();
-  }
-
   public void sacuvajTecDocAtribute(TecDocAtributi atributi) {
     tecDocAtributiRepository.save(atributi);
   }
@@ -215,7 +206,7 @@ public class TecDocService {
                   && detalji.getArticleThumbnails().getArray() != null) {
                 List<ThumbnailByArticleIdRecord> thumbnailByArticle = detalji.getArticleThumbnails()
                     .getArray();
-                if (thumbnailByArticle != null && thumbnailByArticle.size() > 0) {
+                if (!thumbnailByArticle.isEmpty()) {
                   ThumbnailByArticleIdRecord thumbnail = thumbnailByArticle.get(0);
                   if (thumbnail.getThumbDocId() != null) {
                     byte[] dokumentSlike = vratiDokument(thumbnail.getThumbDocId(), 0);
@@ -261,8 +252,8 @@ public class TecDocService {
     if (tecDocProizvodjaci != null && tecDocProizvodjaci.getDodatak() != null) {
       katBr = katBr.replaceAll(tecDocProizvodjaci.getDodatak(), "");
     }
-    katBr = katBr.replaceAll("[-,./]", "").replaceAll("\\s+", "").replaceAll("-LUČ", "");
-    tecDocKatBr = tecDocKatBr.replaceAll("[-,./]", "").replaceAll("\\s+", "");
+    katBr = katBr.replace("[-,./]", "").replace("\\s+", "").replace("-LUČ", "");
+    tecDocKatBr = tecDocKatBr.replace("[-,./]", "").replace("\\s+", "");
     return katBr.equals(tecDocKatBr);
   }
 }

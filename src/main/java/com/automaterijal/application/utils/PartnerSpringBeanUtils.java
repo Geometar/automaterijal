@@ -15,16 +15,16 @@ import org.springframework.stereotype.Component;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PartnerSpringBeanUtils {
 
-    @NonNull
-    PartnerService partnerService;
+  @NonNull
+  PartnerService partnerService;
 
-    public Partner vratiPartneraIsSesije(Authentication authentication) {
-        Partner retVal = null;
-        if (authentication != null && authentication.isAuthenticated() && authentication.getPrincipal() instanceof CurrentUser) {
-            Integer ppid = ((CurrentUser) authentication.getPrincipal()).vratiPartnera().getPpid();
-            retVal = partnerService.pronadjiPartneraPoId(ppid);
-        }
-//        retVal = partnerService.pronadjiPartneraPoId(3456);
-        return retVal;
+  public Partner vratiPartneraIsSesije(Authentication authentication) {
+    Partner retVal = null;
+    if (authentication != null && authentication.isAuthenticated()
+        && authentication.getPrincipal() instanceof CurrentUser) {
+      Integer ppid = ((CurrentUser) authentication.getPrincipal()).vratiPartnera().getPpid();
+      retVal = partnerService.pronadjiPartneraPoId(ppid);
     }
+    return retVal;
+  }
 }

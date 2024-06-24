@@ -8,6 +8,8 @@ import com.automaterijal.application.services.PartnerService;
 import com.automaterijal.application.services.security.UserDetailsService;
 import com.automaterijal.application.services.security.UsersService;
 import com.automaterijal.application.utils.PartnerSpringBeanUtils;
+import java.util.List;
+import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -16,10 +18,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.constraints.NotNull;
-import java.util.List;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/partner")
@@ -29,99 +35,99 @@ import java.util.List;
 @Slf4j
 public class PartnerController {
 
-    @NotNull
-    final UserDetailsService service;
+  @NotNull
+  final UserDetailsService service;
 
-    @NonNull
-    final UsersService usersService;
+  @NonNull
+  final UsersService usersService;
 
-    @NonNull
-    final PartnerService partnerService;
+  @NonNull
+  final PartnerService partnerService;
 
-    @NonNull
-    final PartnerSpringBeanUtils partnerSpringBeanUtils;
+  @NonNull
+  final PartnerSpringBeanUtils partnerSpringBeanUtils;
 
-    /**
-     * Kontroler za vracanje ulogovanog partnera iz spring security-ja
-     */
-    @GetMapping(value = "/read")
-    public ResponseEntity<PartnerDto> vratiUlogovanogPartnera(
-            final Authentication authentication,
-            @RequestParam final boolean prviRequest) {
+  /**
+   * Kontroler za vracanje ulogovanog partnera iz spring security-ja
+   */
+  @GetMapping(value = "/read")
+  public ResponseEntity<PartnerDto> vratiUlogovanogPartnera(
+      final Authentication authentication,
+      @RequestParam final boolean prviRequest) {
 
-        final var dto = service.vratiUlogovanogKorisnika(authentication);
-        if (dto != null && prviRequest) {
-            log.info("Ulogovao se partner: {}", dto.getNaziv());
-            usersService.logovanomUseruPovecajKolikoSePutaLogovao(dto.getPpid());
-        }
-        return ResponseEntity.ok(dto);
+    final var dto = service.vratiUlogovanogKorisnika(authentication);
+    if (dto != null && prviRequest) {
+      log.info("Ulogovao se partner: {}", dto.getNaziv());
+      usersService.logovanomUseruPovecajKolikoSePutaLogovao(dto.getPpid());
+    }
+    return ResponseEntity.ok(dto);
+  }
+
+  /**
+   * Kontroler za updejtovanje informacija o partneru
+   */
+  @PutMapping(value = "/update")
+  public ResponseEntity<PartnerDto> updejtujPartnera(
+      @RequestBody final PartnerDto partnerDto,
+      @RequestParam final PartnerAkcije vrstaPromene,
+      final Authentication authentication) {
+    final var partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+
+    if (partner == null || partner.getPpid().intValue() != partnerDto.getPpid().intValue()) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
-    /**
-     * Kontroler za updejtovanje informacija o partneru
-     */
-    @PutMapping(value = "/update")
-    public ResponseEntity<PartnerDto> updejtujPartnera(
-            @RequestBody final PartnerDto partnerDto,
-            @RequestParam final PartnerAkcije vrstaPromene,
-            final Authentication authentication) {
-        final var partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+    final var response = partnerService.updejtPartnera(partnerDto, partner, vrstaPromene);
 
-        if (partner == null || partner.getPpid().intValue() != partnerDto.getPpid().intValue()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
+    if (response == null) {
+      return ResponseEntity.badRequest().build();
+    }
+    return ResponseEntity.ok(response);
+  }
 
-        final var response = partnerService.updejtPartnera(partnerDto, partner, vrstaPromene);
+  /**
+   * Kontroler za promenu izgubljene sifre partnera ili kod prvog logovanja
+   */
+  @PutMapping(value = "/promena-sifre")
+  public ResponseEntity<Object> promeniSifruPartnera(
+      final Authentication authentication,
+      @RequestBody final ResetovanjeSifreDto dto,
+      @RequestParam final boolean isPrvaPromena) {
+    final var partnerDto = service.vratiUlogovanogKorisnika(authentication);
 
-        if (response == null) {
-            return ResponseEntity.badRequest().build();
-        }
-        return ResponseEntity.ok(response);
+    if ((!isPrvaPromena && !dto.getSifra().equals(dto.getPonovljenjaSifra())) && (
+        isPrvaPromena && partnerDto == null || !dto.getSifra()
+            .equals(dto.getPonovljenjaSifra()))) {
+      return ResponseEntity.badRequest().build();
     }
 
-    /**
-     * Kontroler za promenu izgubljene sifre partnera ili kod prvog logovanja
-     */
-    @PutMapping(value = "/promena-sifre")
-    public ResponseEntity promeniSifruPartnera(
-            final Authentication authentication,
-            @RequestBody final ResetovanjeSifreDto dto,
-            @RequestParam final boolean isPrvaPromena) {
-        final var partnerDto = service.vratiUlogovanogKorisnika(authentication);
-
-        if (!isPrvaPromena && !dto.getSifra().equals(dto.getPonovljenjaSifra())) {
-            return ResponseEntity.badRequest().build();
-        } else if (isPrvaPromena && partnerDto == null || !dto.getSifra().equals(dto.getPonovljenjaSifra())) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        final var uspesnaPromena = partnerService.promeniSifruPartnera(dto, isPrvaPromena);
-        if (uspesnaPromena) {
-            log.info("Partner sa id {} je promenio sifru", dto.getPpid());
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.badRequest().build();
-        }
+    final var uspesnaPromena = partnerService.promeniSifruPartnera(dto, isPrvaPromena);
+    if (uspesnaPromena) {
+      log.info("Partner sa id {} je promenio sifru", dto.getPpid());
+      return ResponseEntity.ok().build();
+    } else {
+      return ResponseEntity.badRequest().build();
     }
+  }
 
-    @GetMapping(value = "/komercijalsti")
-    public ResponseEntity<List<Partner>> vratiSveKomercijaliste(final Authentication authentication) {
-        final var partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
-        if (partner.getPrivilegije().intValue() != 2047) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        } else {
-            return ResponseEntity.ok(partnerService.vratiSveKomercijaliste());
-        }
+  @GetMapping(value = "/komercijalsti")
+  public ResponseEntity<List<Partner>> vratiSveKomercijaliste(final Authentication authentication) {
+    final var partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+    if (partner.getPrivilegije().intValue() != 2047) {
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    } else {
+      return ResponseEntity.ok(partnerService.vratiSveKomercijaliste());
     }
+  }
 
-    @GetMapping(value = "/{ppid}")
-    public ResponseEntity<Partner> vratiPartnera(
-            @PathVariable("ppid") Integer ppid,
-            final Authentication authentication) {
-        Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
-        if (partner.getPrivilegije() != 2047) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
-        return ResponseEntity.ok(partnerService.vratiPartnera(ppid));
+  @GetMapping(value = "/{ppid}")
+  public ResponseEntity<Partner> vratiPartnera(
+      @PathVariable("ppid") Integer ppid,
+      final Authentication authentication) {
+    Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+    if (partner.getPrivilegije() != 2047) {
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
+    return ResponseEntity.ok(partnerService.vratiPartnera(ppid));
+  }
 }

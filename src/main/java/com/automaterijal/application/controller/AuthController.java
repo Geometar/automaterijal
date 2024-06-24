@@ -6,6 +6,9 @@ import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.model.CurrentUser;
 import com.automaterijal.application.services.PartnerService;
 import com.automaterijal.application.utils.JwtUtils;
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,53 +16,56 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-    @Autowired
-    AuthenticationManager authenticationManager;
 
-    @Autowired
-    PartnerService partnerService;
+  @Autowired
+  AuthenticationManager authenticationManager;
 
-    @Autowired
-    PasswordEncoder encoder;
+  @Autowired
+  PartnerService partnerService;
 
-    @Autowired
-    JwtUtils jwtUtils;
+  @Autowired
+  PasswordEncoder encoder;
 
-    @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequestDto loginRequest) {
-        Authentication authentication;
-        try {
-            authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+  @Autowired
+  JwtUtils jwtUtils;
 
-        } catch (AuthenticationException ex) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+  @PostMapping("/signin")
+  public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequestDto loginRequest) {
+    Authentication authentication;
+    try {
+      authentication = authenticationManager.authenticate(
+          new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),
+              loginRequest.getPassword()));
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateJwtToken(authentication);
-
-        CurrentUser userDetails = (CurrentUser) authentication.getPrincipal();
-        List<String> roles = userDetails.getAuthorities().stream()
-                .map(item -> item.getAuthority())
-                .collect(Collectors.toList());
-        Partner partner = partnerService.pronadjiPartneraPoId(userDetails.getId());
-        return ResponseEntity.ok(new JwtResponse(jwt,
-                userDetails.getId(),
-                userDetails.getUsername(),
-                partner.getEmail(),
-                roles));
+    } catch (AuthenticationException ex) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
+
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+    String jwt = jwtUtils.generateJwtToken(authentication);
+
+    CurrentUser userDetails = (CurrentUser) authentication.getPrincipal();
+    List<String> roles = userDetails.getAuthorities().stream()
+        .map(GrantedAuthority::getAuthority)
+        .collect(Collectors.toList());
+    Partner partner = partnerService.pronadjiPartneraPoId(userDetails.getId());
+    return ResponseEntity.ok(new JwtResponse(jwt,
+        userDetails.getId(),
+        userDetails.getUsername(),
+        partner.getEmail(),
+        roles));
+  }
 }

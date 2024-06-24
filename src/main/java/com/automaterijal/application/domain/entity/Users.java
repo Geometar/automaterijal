@@ -1,37 +1,37 @@
 package com.automaterijal.application.domain.entity;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.experimental.FieldDefaults;
-
+import java.io.Serializable;
+import java.sql.Timestamp;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.sql.Timestamp;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.experimental.FieldDefaults;
 
 @Entity
-@Table(name = "users")
 @Data
+@Table(name = "users")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Users {
+public class Users implements Serializable {
 
-    @Id
-    Integer ppid;
-    @Column(name = "password")
-    String password;
-    @Column(name = "order_count")
-    Integer orderCount;
-    @Column(name = "accepted_orders")
-    Integer acceptedOrders;
-    @Column(name = "cancelled_orders")
-    Integer cancelleOrders;
-    @Column(name = "login_count")
-    Integer loginCount;
-    @Column(name = "last_login")
-    Timestamp lastLogin;
-    @Column(name = "user_status")
-    Integer userStatus;
-    @Column(name = "active")
-    Integer active;
+  @Id
+  Integer ppid;
+  @Column(name = "password")
+  String password;
+  @Column(name = "order_count")
+  Integer orderCount;
+  @Column(name = "accepted_orders")
+  Integer acceptedOrders;
+  @Column(name = "cancelled_orders")
+  Integer cancelleOrders;
+  @Column(name = "login_count")
+  Integer loginCount;
+  @Column(name = "last_login")
+  Timestamp lastLogin;
+  @Column(name = "user_status")
+  Integer userStatus;
+  @Column(name = "active")
+  Integer active;
 }
