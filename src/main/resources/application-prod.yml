@@ -1,39 +1,19 @@
 server:
-  port: ${PORT:8080}
+  port: ${PORT:8443}
+  tomcat:
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+    compression: on
   servlet:
     session:
       timeout: 180m
+  ssl:
+    key-store: classpath:ssl/automaterijal.p12
+    key-store-password: Cnninovembar18!
+    key-store-type: PKCS12
+    key-alias: tomcat
 
 spring:
-  autoconfigure:
-    exclude: org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration
   datasource:
-    url: jdbc:mysql://localhost:3306/automate_orders?autoReconnect=true&useSSL=false
-    username: root
-    password: ReYnG:R!s8X#
-    jpa:
-      show-sql: true
-      ddl-auto: none
-      properties.hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
-  liquibase:
-    change-log: classpath:/db/changelog/db.changelog-master.xml
-    enabled: false
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: radespasoje@gmail.com
-    password: eogoliufyhgfrtyi
-    protocol: smtp
-    defaultEncoding: UTF-8 # Default message encoding
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-schedule:
-  izvestaj:
-    podsetnik: 0 0 6 * * *
-
-logging:
-  file: ../logs/arhiva/automaterijal
+    url: jdbc:mysql://77.105.37.50:3306/automate_orders?autoReconnect=true&useSSL=false
+    username: automate
+    password: hIOe8800

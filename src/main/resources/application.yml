@@ -1,64 +1,63 @@
 server:
-  port: ${PORT:8443}
-  tomcat:
-    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
-    compression: on
-  servlet:
-    session:
-      timeout: 180m
-  ssl:
-    key-store: classpath:automaterijal.p12
-    key-store-password: Crninovembar18!
-    key-store-type: PKCS12
-    key-alias: server
+  port: ${PORT:8080} # Default port is 8080 unless specified
 
+# Spring konfiguracija
 spring:
-  jpa:
-    open-in-view: false
-  autoconfigure:
-    exclude: org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration
+  # Datasource i JPA postavke
   datasource:
-    url: jdbc:mysql://localhost:3306/automate_orders?autoReconnect=true&useSSL=false
-    username: root
-    password: Crninovembar18!
     jpa:
       show-sql: true
       ddl-auto: none
       properties.hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
+      driver-class-name: com.mysql.cj.jdbc.Driver
+
+  # Isključenje automatske Spring Security konfiguracije
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration
+
+  # JOOQ postavke
+  jooq:
+    sql-dialect: MYSQL
+
+  # JPA konfiguracije
+  jpa:
+    open-in-view: false
+
+  # Liquibase postavke
   liquibase:
     change-log: classpath:/db/changelog/db.changelog-master.xml
     enabled: false
+
+  # Mail server konfiguracija
   mail:
     host: smtp.gmail.com
     port: 587
     username: webshop.automaterijal@gmail.com
     password: hjaqamkpzuzbtcyl
     protocol: smtp
-    defaultEncoding: UTF-8 # Default message encoding
+    defaultEncoding: UTF-8
     properties:
       mail:
         smtp:
           auth: true
           starttls:
             enable: true
+
+# Podesavanje scheduler-a
 schedule:
   izvestaj:
     podsetnik: 0 0 6 * * *
 
+# Putanje za slike proizvoda
 roba:
   slika:
-    prefixTabela: "assets/automaterijal/"
-    prefixThumbs: "thumbs/"
-    tdPrefix: "/var/www/html/orders/item_images/products/td/"
-    # Lokalno podesavanje
-#    tdPrefix: "/Users/radespasojevic/Documents/Rade/Automaterijal/TecDoc Slike/"
+    tdPrefix: "/home/ftpuser/automaterijal/misc/tecdoc/slike/"
 
+# Logging konfiguracija
 logging:
   file: ../logs/arhiva/automaterijal
 
+# JWT konfiguracija
 automaterijal:
   jwtSecret: bezKoderSecretKey
   jwtExpirationMs: 28800000
-
-
-# Enable response compression

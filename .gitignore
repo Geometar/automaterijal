@@ -49,3 +49,4 @@ testem.log
 
 # moj ignore
 static/
+src/main/java/com/automaterijal/application/tecdoc/
