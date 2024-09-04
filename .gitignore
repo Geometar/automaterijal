@@ -1,52 +1,51 @@
-/target/
-!.mvn/wrapper/maven-wrapper.jar
+# Build output and dependencies
+/target/                             # Maven build output
+!.mvn/wrapper/maven-wrapper.jar       # Keep maven wrapper
+/node_modules                         # Node.js dependencies
 
-### IntelliJ IDEA ###
+# IntelliJ IDEA specific
 .idea
 *.iws
 *.iml
 *.ipr
 
-# See http://help.github.com/ignore-files/ for more about ignoring files.
+# IDE and editor settings
+/.idea                                # JetBrains settings
+.project                              # Eclipse project settings
+.classpath                            # Eclipse classpath settings
+.settings/                            # Eclipse settings folder
+*.launch                              # IDE launch configurations
+.c9/                                  # Cloud9 IDE settings
 
-# compiled output
-/dist
-/tmp
-/out-tsc
-
-# dependencies
-/node_modules
-
-/tecdoc
-
-# IDEs and editors
-/.idea
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
-
-# IDE - VSCode
+# Visual Studio Code specific
 .vscode/*
-!.vscode/settings.json
+!.vscode/settings.json                # Keep important VSCode settings
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
 
-# misc
-/.sass-cache
-/connect.lock
-/coverage
-/libpeerconnection.log
-npm-debug.log
-testem.log
-/typings
+# Temporary files and compiled output
+/tmp                                  # Temporary files
+/out-tsc                              # TypeScript compiler output
+/dist                                 # Distribution files for builds
 
-# e2e
-/e2e/*.js
+# Logs and lock files
+npm-debug.log                         # NPM debug log
+testem.log                            # Test runner log
+/libpeerconnection.log                # WebRTC connection log
+/connect.lock                         # Connect lock
 
-# moj ignore
-static/
-src/main/java/com/automaterijal/application/tecdoc/
+# Miscellaneous
+/.sass-cache                          # SASS cache
+/coverage                             # Code coverage reports
+/typings                              # TypeScript type definitions
+
+# Specific project folders
+/tecdoc                               # Ignoring TecDoc generated files
+static/                               # Static assets to be ignored
+src/main/java/com/automaterijal/application/tecdoc/  # Ignoring generated classes from TecDoc
+
+# E2E tests
+/e2e/*.js                             # End-to-end test JavaScript files
+
+# Additional ignore rules for specific tools
