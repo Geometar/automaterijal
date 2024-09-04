@@ -1,0 +1,19 @@
+server:
+  port: ${PORT:8443}
+  tomcat:
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+    compression: on
+  servlet:
+    session:
+      timeout: 180m
+  ssl:
+    key-store: classpath:ssl/automaterijal.p12
+    key-store-password: Cnninovembar18!
+    key-store-type: PKCS12
+    key-alias: tomcat
+
+spring:
+  datasource:
+    url: jdbc:mysql://77.105.37.50:3306/automate_orders?autoReconnect=true&useSSL=false
+    username: automate
+    password: hIOe8800

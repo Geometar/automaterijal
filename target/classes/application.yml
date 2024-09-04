@@ -1,0 +1,63 @@
+server:
+  port: ${PORT:8080} # Default port is 8080 unless specified
+
+# Spring konfiguracija
+spring:
+  # Datasource i JPA postavke
+  datasource:
+    jpa:
+      show-sql: true
+      ddl-auto: none
+      properties.hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
+      driver-class-name: com.mysql.cj.jdbc.Driver
+
+  # Isključenje automatske Spring Security konfiguracije
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration
+
+  # JOOQ postavke
+  jooq:
+    sql-dialect: MYSQL
+
+  # JPA konfiguracije
+  jpa:
+    open-in-view: false
+
+  # Liquibase postavke
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.xml
+    enabled: false
+
+  # Mail server konfiguracija
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: webshop.automaterijal@gmail.com
+    password: hjaqamkpzuzbtcyl
+    protocol: smtp
+    defaultEncoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+# Podesavanje scheduler-a
+schedule:
+  izvestaj:
+    podsetnik: 0 0 6 * * *
+
+# Putanje za slike proizvoda
+roba:
+  slika:
+    tdPrefix: "/home/ftpuser/automaterijal/misc/tecdoc/slike/"
+
+# Logging konfiguracija
+logging:
+  file: ../logs/arhiva/automaterijal
+
+# JWT konfiguracija
+automaterijal:
+  jwtSecret: bezKoderSecretKey
+  jwtExpirationMs: 28800000

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!--<link rel="stylesheet" type="text/css"-->
+    <!--href="css/zaboravljenaSifra.css" th:href="@{css/zaboravljenaSifra.css}"/>-->
+    <style>
+
+h1 {
+	color: rgba(10, 19, 78, 1);
+}
+
+p {
+	padding: 	0px;
+	margin:		0px;
+	color: rgba(40, 59, 78, 1);
+}
+
+.sekcija {
+	margin-top: 30px;
+}
+
+.footer-tabela-wraper {
+    display: inline-block;
+}
+
+.footer-tabela td {
+    text-align: left;
+}
+
+.footer-td {
+    width: 150px;
+}
+
+a,
+u {
+    text-decoration: none;
+    color: black;
+}
+
+    </style>
+</head>
+<body>
+<h1>Promena šifre je tražena</h1>
+<div class="sekcija">
+    <p>Ako vi niste tražili Promenu šifre možete ignorisati ovaj mail. Promenu šifre može svako da zahteva, to ne dovodi
+        u opasnost vaš nalog.</p>
+</div>
+<div class="sekcija">
+    <p>Ukoliko ste zapravo vi tražili promenu šifre, posetite ovaj link:</p>
+    <a th:href="@{${url}}">LINK ZA MENJANJE ŠIFRE</a>
+</div>
+
+<div class="sekcija">
+    <p>Hvala na ukazanom poverenju!</p>
+</div>
+
+<div class="footer">
+    <h3>Automaterijal web aplikacija</b></h3>
+</div>
+<div class="footer-tabela-wraper">
+    <table class="footer-tabela">
+        <tbody>
+            <tr>
+                <td class="footer-td">Adresa:</td>
+                <td>Prvomajska 61, Šabac</td>
+            </tr>
+            <tr>
+                <td>Sajt:</td>
+                <td><a href="http://automaterijal.com/" target="_blank">www.automaterijal.com</a></td>
+            </tr>
+            <tr>
+                <td>Tel. maloprodaja:</td>
+                <td><a href="tel:015334630">015/334-630</a></td>
+            <tr>
+                <td>Tel. Veleprodaja:</td>
+                <td><a href="tel:015319000">015/319-000</a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

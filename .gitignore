@@ -3,6 +3,7 @@
 !.mvn/wrapper/maven-wrapper.jar       # Keep maven wrapper
 /node_modules                         # Node.js dependencies
 
+
 # IntelliJ IDEA specific
 .idea
 *.iws
@@ -44,6 +45,7 @@ testem.log                            # Test runner log
 /tecdoc                               # Ignoring TecDoc generated files
 static/                               # Static assets to be ignored
 src/main/java/com/automaterijal/application/tecdoc/  # Ignoring generated classes from TecDoc
+src/main/java/META-INF/sun-jaxb.episode
 
 # E2E tests
 /e2e/*.js                             # End-to-end test JavaScript files
