@@ -147,7 +147,6 @@ public class RobaGlavniService {
         // Priprema stringova za pretragu: sa tačnom rečju i bez razmaka
         String pregragaPoTacnojReciLike = parametri.getTrazenaRec() + "%";
         String trazenaRecLike = parametri.getTrazenaRec().replaceAll("\\s+", "") + "%";
-        String trazenNazivLike = "%" + parametri.getTrazenaRec().replaceAll("\\s+", "") + "%";
 
         final Set<String> kataloskiBrojevi = new HashSet<>();
         Set<Long> robaId = new HashSet<>();
@@ -159,7 +158,7 @@ public class RobaGlavniService {
         }
 
         // Pokusaj pretrage pomocu naziva
-        if (kataloskiBrojevi.isEmpty() && jooqRepository.pronadjiPoNazivu(trazenNazivLike, parametri, kataloskiBrojevi, robaId)) {
+        if (kataloskiBrojevi.isEmpty() && jooqRepository.pronadjiPoNazivu(parametri.getTrazenaRec(), parametri, kataloskiBrojevi, robaId)) {
             return jooqRepository.pronadjiPoRobaId(parametri, robaId);
         }
 

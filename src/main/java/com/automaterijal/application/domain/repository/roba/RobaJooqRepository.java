@@ -19,6 +19,7 @@ import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.*;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -325,10 +326,20 @@ public class RobaJooqRepository {
         }
     }
 
-    public boolean pronadjiPoNazivu(String tacnaRecLike, UniverzalniParametri parametri, Set<String> kataloskiBrojevi, Set<Long> robaId) {
+    public boolean pronadjiPoNazivu(String searchTerm, UniverzalniParametri parametri, Set<String> kataloskiBrojevi, Set<Long> robaId) {
+        // Split the search term and create a list of conditions using the LIKE statement
+        List<Condition> conditions = Arrays.stream(searchTerm.trim().split("\\s+"))
+                .map(word -> ROBA.NAZIV.like("%" + word + "%"))  // Create LikeEscapeStep, which is implicitly convertible to Condition
+                .collect(Collectors.toList());
+
+        // Combine the conditions using AND
+        Condition finalCondition = conditions.stream()
+                .reduce(DSL.noCondition(), Condition::and);
+
+
         List<String> nazivi = new ArrayList<>();
-        pretragaPoRobiUtility(kataloskiBrojevi, robaId, parametri, nazivi, ROBA.NAZIV.like(tacnaRecLike));
-        return recJeZapravoNaziv(tacnaRecLike, nazivi);
+        pretragaPoRobiUtility(kataloskiBrojevi, robaId, parametri, nazivi, finalCondition);
+        return recJeZapravoNaziv(parametri.getTrazenaRec(), nazivi);
     }
 
     public void pronadjiPoKatBroju(String tacnaRecLike,
@@ -339,7 +350,7 @@ public class RobaJooqRepository {
         prodjiIPopraviKatBr(kataloskiBrojevi);
     }
 
-    private void pretragaPoRobiUtility(Set<String> kataloskiBrojevi, Set<Long> robaId, UniverzalniParametri parametri, List<String> nazivi, LikeEscapeStep condition) {
+    private void pretragaPoRobiUtility(Set<String> kataloskiBrojevi, Set<Long> robaId, UniverzalniParametri parametri, List<String> nazivi, Condition condition) {
         var select = dslContext.selectDistinct(ROBA.KATBR, ROBA.KATBRPRO, ROBA.ROBAID, ROBA.NAZIV)
                 .from(ROBA)
                 .where(condition);
@@ -414,22 +425,12 @@ public class RobaJooqRepository {
         return recJeZapravoNaziv(tacnaRecLike, nazivi);
     }
 
-    private static boolean recJeZapravoNaziv(String tacnaRecLike, List<String> nazivi) {
-        boolean pretragaJePoRecima = true;
-        String pretragaNaziv = tacnaRecLike.replace("%", "");
-        if (!nazivi.isEmpty()) {
-            for (String naziv : nazivi) {
-                if (!naziv.contains(pretragaNaziv)) {
-                    pretragaJePoRecima = false;
-                } else {
-                    pretragaJePoRecima = true;
-                    break;
-                }
-            }
-        } else {
-            pretragaJePoRecima = false;
-        }
-        return pretragaJePoRecima;
+    private static boolean recJeZapravoNaziv(String searchTerm, List<String> nazivi) {
+        // Clean up the search term by removing '%' and splitting by spaces
+        String cleanedSearchTerm = searchTerm.replace("%", "").trim();
+        List<String> trazeneReci = Arrays.asList(cleanedSearchTerm.split("\\s+"));
+
+        return nazivi.stream().anyMatch(naziv -> trazeneReci.stream().allMatch(naziv::contains));
     }
 
     public void pomocniKveriPoRobiOld(Set<String> kataloskiBrojevi) {
