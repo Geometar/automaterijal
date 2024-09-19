@@ -1,6 +1,5 @@
 package com.automaterijal.application.domain.repository.roba;
 
-import com.automaterijal.application.client.TecDocClient;
 import com.automaterijal.application.domain.dto.DashboardDto;
 import com.automaterijal.application.domain.dto.MagacinDto;
 import com.automaterijal.application.domain.dto.RobaDto;
@@ -11,7 +10,6 @@ import com.automaterijal.application.domain.entity.roba.Roba;
 import com.automaterijal.application.domain.mapper.RobaMapper;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.services.ProizvodjacService;
-import com.automaterijal.application.services.roba.RobaService;
 import com.automaterijal.application.services.roba.grupe.PodGrupaService;
 import com.automaterijal.application.utils.GeneralUtil;
 import com.automaterijal.db.tables.records.RobaRecord;
@@ -45,9 +43,6 @@ public class RobaJooqRepository {
     DSLContext dslContext;
 
     @Autowired
-    RobaService robaService;
-
-    @Autowired
     PodGrupaService podGrupaService;
 
     @Autowired
@@ -56,9 +51,6 @@ public class RobaJooqRepository {
     @Autowired
     RobaMapper mapper;
 
-    @Autowired
-    TecDocClient tecDocClient;
-
     /**
      * Ulazna metoda iz glavnog servisa kad je pretraga po RobaId (za sad to znaci da je pretraga po
      * reci)
@@ -66,19 +58,17 @@ public class RobaJooqRepository {
     public MagacinDto pronadjiPoRobaId(UniverzalniParametri parametri, Set<Long> robaIds) {
         MagacinDto magacinDto = new MagacinDto();
 
-        List<RobaDto> roba = robaDtoMapper(
-                kreirajSelect(null,
-                        robaIds.stream().map(Long::intValue).collect(
-                                Collectors.toSet())).orderBy(ROBA.STANJE.desc()
-                        )
-                        .fetch());
+        List<RobaDto> roba = kreirajSelect(null,
+                robaIds.stream().map(Long::intValue).collect(
+                        Collectors.toSet())).orderBy(ROBA.STANJE.desc()
+                )
+                .fetchStream().map(this::map).collect(Collectors.toList());
 
         podGrupaService.popuniPodgrupe(magacinDto, parametri, roba);
         proizvodjacService.popuniProizvodjace(roba, magacinDto, parametri);
 
         int start = parametri.getPageSize() * parametri.getPage();
-        int end = (start + parametri.getPageSize()) > roba.size() ? roba.size()
-                : (start + parametri.getPageSize());
+        int end = Math.min((start + parametri.getPageSize()), roba.size());
         magacinDto.setRobaDto(new PageImpl<>(roba.subList(start, end),
                 PageRequest.of(parametri.getPage(), parametri.getPageSize()), roba.size()));
 
@@ -102,8 +92,7 @@ public class RobaJooqRepository {
             roba = sortirajPoGrupi(roba);
         }
         int start = parametri.getPageSize() * parametri.getPage();
-        int end = (start + parametri.getPageSize()) > roba.size() ? roba.size()
-                : (start + parametri.getPageSize());
+        int end = Math.min((start + parametri.getPageSize()), roba.size());
         magacinDto.setRobaDto(new PageImpl<>(roba.subList(start, end),
                 PageRequest.of(parametri.getPage(), parametri.getPageSize()), roba.size()));
 
@@ -154,7 +143,7 @@ public class RobaJooqRepository {
         filtrirajPoParametrima(select, parametri);
         sortiranje(select);
 
-        return robaDtoMapper(select.fetch());
+        return select.fetchStream().map(this::map).collect(Collectors.toList());
     }
 
     public MagacinDto vratiArtikleIzTecDoca(UniverzalniParametri parametri, Set<String> kataloskiBrojevi) {
@@ -206,7 +195,7 @@ public class RobaJooqRepository {
         filtrirajPoParametrima(selectKatbr, parametri);
 
         // Fetch podaci za KATBR
-        return robaDtoMapper(selectKatbr.fetch());
+        return selectKatbr.fetchStream().map(this::map).collect(Collectors.toList());
     }
 
     private void sortirajRobuTecDocPoPodgrupi(List<RobaDto> robaDtos,
@@ -249,11 +238,10 @@ public class RobaJooqRepository {
     /**
      * Mapiranje u dto robe
      */
-    private List<RobaDto> robaDtoMapper(
-            Result<Record8<Integer, String, String, BigDecimal, String, Integer, String, String>> robaRecords
+    private RobaDto map(
+            Record8<Integer, String, String, BigDecimal, String, Integer, String, String> robaRecord
     ) {
-        return robaRecords.stream()
-                .map(robaRecord -> RobaDto
+        return  RobaDto
                         .builder()
                         .robaid(robaRecord.component1().longValue())
                         .katbr(robaRecord.component2())
@@ -263,8 +251,7 @@ public class RobaJooqRepository {
                         .podGrupa(robaRecord.component6())
                         .proizvodjac(Proizvodjac.builder().proid(robaRecord.component7()).build())
                         .slika(new SlikaDto(robaRecord.component8()))
-                        .build()
-                ).collect(Collectors.toList());
+                        .build();
     }
 
     /**
@@ -384,7 +371,7 @@ public class RobaJooqRepository {
     }
 
     private static void popuniKolekcije(Set<String> kataloskiBrojevi, Set<Long> robaId, SelectConditionStep<Record4<String, String, Integer, String>> select, List<String> nazivi) {
-        select.fetch().stream().forEach(rekord -> {
+        select.fetch().forEach(rekord -> {
             if (rekord.component1() != null && !StringUtils.isEmpty(rekord.component1())) {
                 kataloskiBrojevi.add(rekord.component1());
             }
@@ -437,7 +424,7 @@ public class RobaJooqRepository {
         dslContext.selectDistinct(ROBA_KATBR_OLD.KATBR, ROBA_KATBR_OLD.KATBRPRO)
                 .from(ROBA_KATBR_OLD)
                 .where(ROBA_KATBR_OLD.KATBR.in(kataloskiBrojevi).or(ROBA_KATBR_OLD.KATBRPRO.in(kataloskiBrojevi)))
-                .fetch().stream()
+                .fetch()
                 .forEach(rekord -> {
 
                     if (rekord.component1() != null && !StringUtils.isEmpty(rekord.component1())) {
@@ -515,8 +502,7 @@ public class RobaJooqRepository {
 
         List<Roba> roba = select.fetch().stream().map(mapper::map).collect(Collectors.toList());
         int start = pageable.getPageSize() * pageable.getPageNumber();
-        int end = (start + pageable.getPageSize()) > roba.size() ? roba.size()
-                : (start + pageable.getPageSize());
+        int end = Math.min((start + pageable.getPageSize()), roba.size());
         List<Roba> retVal = roba.subList(start, end);
 
         retVal.forEach(rekord ->

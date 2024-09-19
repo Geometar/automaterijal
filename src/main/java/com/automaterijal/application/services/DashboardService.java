@@ -6,7 +6,7 @@ import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.dashboard.DashbaordGrupa;
 import com.automaterijal.application.domain.entity.dashboard.RobaDashboard;
 import com.automaterijal.application.domain.repository.RobaDashboardRepository;
-import com.automaterijal.application.domain.repository.roba.RobaJooqRepository;
+import com.automaterijal.application.services.roba.adapter.RobaAdapterService;
 import com.automaterijal.application.services.roba.RobaGlavniService;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class DashboardService {
 
   @NonNull
-  final RobaJooqRepository robaJooqRepository;
+  final RobaAdapterService robaJooqRepository;
 
   @NonNull
   final RobaGlavniService robaGlavniService;

@@ -9,7 +9,7 @@ import com.automaterijal.application.domain.entity.PodGrupa;
 import com.automaterijal.application.domain.entity.roba.Roba;
 import com.automaterijal.application.domain.mapper.RobaMapper;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
-import com.automaterijal.application.domain.repository.roba.RobaJooqRepository;
+import com.automaterijal.application.services.roba.adapter.RobaAdapterService;
 import com.automaterijal.application.services.ProizvodjacService;
 import com.automaterijal.application.services.TecDocService;
 import com.automaterijal.application.services.roba.RobaHelper;
@@ -38,7 +38,7 @@ public class PretragaBezFilteraStrategija implements PretragaRobeStrategija {
     @NonNull
     final RobaService robaService;
     @NonNull
-    final RobaJooqRepository jooqRepository;
+    final RobaAdapterService jooqRepository;
     @NonNull
     final ProizvodjacService proizvodjacService;
     @NonNull

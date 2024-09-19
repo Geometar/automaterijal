@@ -4,7 +4,7 @@ import com.automaterijal.application.domain.constants.TecDocProizvodjaci;
 import com.automaterijal.application.domain.dto.MagacinDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
-import com.automaterijal.application.domain.repository.roba.RobaJooqRepository;
+import com.automaterijal.application.services.roba.adapter.RobaAdapterService;
 import com.automaterijal.application.services.TecDocService;
 import com.automaterijal.application.services.roba.RobaHelper;
 import com.automaterijal.application.tecdoc.ArticleDirectSearchAllNumbersWithStateRecord;
@@ -23,7 +23,7 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PretragaSaFilteromStrategija implements PretragaRobeStrategija {
     @NonNull
-    final RobaJooqRepository jooqRepository;
+    final RobaAdapterService jooqRepository;
     @NonNull
     final TecDocService tecDocService;
     @NonNull
