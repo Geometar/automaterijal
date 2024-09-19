@@ -23,7 +23,7 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PretragaSaFilteromStrategija implements PretragaRobeStrategija {
     @NonNull
-    final RobaAdapterService jooqRepository;
+    final RobaAdapterService robaAdapter;
     @NonNull
     final TecDocService tecDocService;
     @NonNull
@@ -32,17 +32,13 @@ public class PretragaSaFilteromStrategija implements PretragaRobeStrategija {
     @Override
     public MagacinDto pretrazi(UniverzalniParametri parametri, Partner ulogovaniPartner) {
 
-        MagacinDto magacinDto;
-        if (parametri.getTrazenaRec() != null) {
-            magacinDto = logikaZaMagacinSaTrazenomRecju(parametri);
-        } else {
-            magacinDto = jooqRepository.pronadjiPoTrazenojReci(parametri, parametri.getTrazenaRec());
-        }
+        MagacinDto magacinDto = parametri.getTrazenaRec() != null ? logikaZaMagacinSaTrazenomRecju(parametri) : robaAdapter.vratiRobuFiltriranuBezPretrage(parametri);
 
         if (!magacinDto.getRobaDto().isEmpty()) {
             tecDocService.batchVracanjeICuvanjeTDAtributa(magacinDto.getRobaDto().getContent());
             robaHelper.setujZaTabelu(magacinDto.getRobaDto().getContent(), ulogovaniPartner);
         }
+
         return magacinDto;
     }
 
@@ -54,21 +50,21 @@ public class PretragaSaFilteromStrategija implements PretragaRobeStrategija {
         final Set<String> kataloskiBrojevi = new HashSet<>();
         Set<Long> robaId = new HashSet<>();
 
-        jooqRepository.pronadjiPoKatBroju(pregragaPoTacnojReciLike, kataloskiBrojevi, robaId, parametri);
+        robaAdapter.pronadjiPoKatBroju(pregragaPoTacnojReciLike, kataloskiBrojevi, robaId, parametri);
         if (!kataloskiBrojevi.isEmpty()) {
-            jooqRepository.pomocniKveriPoRobiOld(kataloskiBrojevi);
-            jooqRepository.pronadjiPoKatBrojuIn(kataloskiBrojevi, robaId, parametri);
+            robaAdapter.pomocniKveriPoRobiOld(kataloskiBrojevi);
+            robaAdapter.pronadjiPoKatBrojuIn(kataloskiBrojevi, robaId, parametri);
         }
 
         // Pokusaj pretrage pomocu naziva
-        if (kataloskiBrojevi.isEmpty() && jooqRepository.pronadjiPoNazivu(parametri.getTrazenaRec(), parametri, kataloskiBrojevi, robaId)) {
-            return jooqRepository.pronadjiPoRobaId(parametri, robaId);
+        if (kataloskiBrojevi.isEmpty() && robaAdapter.pronadjiPoNazivu(parametri.getTrazenaRec(), parametri, kataloskiBrojevi, robaId)) {
+            return robaAdapter.pronadjiPoRobaId(parametri, robaId);
         }
 
         // Ukljucujemo tecdoc u pretragu
         pretragaPomocuTecDoca(parametri, kataloskiBrojevi, trazenaRecLike);
 
-        return jooqRepository.vratiArtikleIzTecDoca(parametri, kataloskiBrojevi);
+        return robaAdapter.vratiArtikleIzTecDoca(parametri, kataloskiBrojevi);
     }
 
     private void pretragaPomocuTecDoca(UniverzalniParametri parametri, Set<String> kataloskiBrojevi, String tacnaRec) {

@@ -1,22 +1,18 @@
-package com.automaterijal.application.domain.repository.roba;
+package com.automaterijal.application.services.roba.adapter;
 
 import com.automaterijal.application.domain.dto.DashboardDto;
 import com.automaterijal.application.domain.dto.MagacinDto;
 import com.automaterijal.application.domain.dto.RobaDto;
-import com.automaterijal.application.domain.dto.SlikaDto;
 import com.automaterijal.application.domain.entity.PodGrupa;
-import com.automaterijal.application.domain.entity.Proizvodjac;
 import com.automaterijal.application.domain.entity.roba.Roba;
-import com.automaterijal.application.domain.mapper.RobaMapper;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
+import com.automaterijal.application.domain.repository.roba.RobaJooqRepository;
 import com.automaterijal.application.services.ProizvodjacService;
 import com.automaterijal.application.services.roba.grupe.PodGrupaService;
 import com.automaterijal.application.utils.GeneralUtil;
-import com.automaterijal.db.tables.records.RobaRecord;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,6 +20,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
@@ -34,22 +31,19 @@ import java.util.stream.Collectors;
 import static com.automaterijal.db.tables.Roba.ROBA;
 import static com.automaterijal.db.tables.RobaKatbrOld.ROBA_KATBR_OLD;
 
-@Repository
+@Service
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RobaJooqRepository {
+public class RobaAdapterService {
 
     @Autowired
-    DSLContext dslContext;
+    RobaJooqRepository robaJooqRepository;
 
     @Autowired
     PodGrupaService podGrupaService;
 
     @Autowired
     ProizvodjacService proizvodjacService;
-
-    @Autowired
-    RobaMapper mapper;
 
     /**
      * Ulazna metoda iz glavnog servisa kad je pretraga po RobaId (za sad to znaci da je pretraga po
@@ -58,11 +52,7 @@ public class RobaJooqRepository {
     public MagacinDto pronadjiPoRobaId(UniverzalniParametri parametri, Set<Long> robaIds) {
         MagacinDto magacinDto = new MagacinDto();
 
-        List<RobaDto> roba = kreirajSelect(null,
-                robaIds.stream().map(Long::intValue).collect(
-                        Collectors.toSet())).orderBy(ROBA.STANJE.desc()
-                )
-                .fetchStream().map(this::map).collect(Collectors.toList());
+        List<RobaDto> roba = robaJooqRepository.vratiRobuPoRobiId(robaIds);
 
         podGrupaService.popuniPodgrupe(magacinDto, parametri, roba);
         proizvodjacService.popuniProizvodjace(roba, magacinDto, parametri);
@@ -78,10 +68,10 @@ public class RobaJooqRepository {
     /**
      * Ulazna metoda iz glavnog servisa
      */
-    public MagacinDto pronadjiPoTrazenojReci(UniverzalniParametri parametri, String trazenaRec) {
+    public MagacinDto vratiRobuFiltriranuBezPretrage(UniverzalniParametri parametri) {
         MagacinDto magacinDto = new MagacinDto();
 
-        List<RobaDto> roba = vratiArtikle(parametri, trazenaRec);
+        List<RobaDto> roba = robaJooqRepository.generic(parametri, DSL.noCondition());
         podGrupaService.popuniPodgrupe(magacinDto, parametri, roba);
         proizvodjacService.popuniProizvodjace(roba, magacinDto, parametri);
         if (parametri.getProizvodjac() != null && parametri.getGrupa() != null) {
@@ -91,12 +81,17 @@ public class RobaJooqRepository {
         if (parametri.getRobaKategorije() == null) {
             roba = sortirajPoGrupi(roba);
         }
-        int start = parametri.getPageSize() * parametri.getPage();
-        int end = Math.min((start + parametri.getPageSize()), roba.size());
-        magacinDto.setRobaDto(new PageImpl<>(roba.subList(start, end),
-                PageRequest.of(parametri.getPage(), parametri.getPageSize()), roba.size()));
+
+        magacinDto.setRobaDto(createPageable(roba, parametri.getPageSize(), parametri.getPage()));
 
         return magacinDto;
+    }
+
+    public static <T> Page<T> createPageable(List<T> items, int pageSize, int pageNumber) {
+        int start = pageSize * pageNumber;
+        int end = Math.min((start + pageSize), items.size());
+        return new PageImpl<>(items.subList(start, end),
+                PageRequest.of(pageNumber, pageSize), items.size());
     }
 
     private List<RobaDto> sortirajPoGrupi(List<RobaDto> roba) {
@@ -129,35 +124,18 @@ public class RobaJooqRepository {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Vrati sve artikle po trazenoj reci
-     */
-    private List<RobaDto> vratiArtikle(UniverzalniParametri parametri, String trazenaRec) {
-        SelectConditionStep<Record8<Integer, String, String, BigDecimal, String, Integer, String, String>> select = kreirajSelect(
-                trazenaRec, null);
-
-        if (!StringUtils.isEmpty(trazenaRec)) {
-            standardniUslovi(select, trazenaRec, parametri);
-        }
-
-        filtrirajPoParametrima(select, parametri);
-        sortiranje(select);
-
-        return select.fetchStream().map(this::map).collect(Collectors.toList());
-    }
-
     public MagacinDto vratiArtikleIzTecDoca(UniverzalniParametri parametri, Set<String> kataloskiBrojevi) {
         MagacinDto magacinDto = new MagacinDto();
         List<RobaDto> allRoba = new ArrayList<>();
 
-        List<RobaDto> robaKatbr = tecDocRobaUtility(parametri, ROBA.KATBR.in(kataloskiBrojevi));
+        List<RobaDto> robaKatbr = robaJooqRepository.generic(parametri, ROBA.KATBR.in(kataloskiBrojevi));
         allRoba.addAll(robaKatbr);
 
         Set<String> nadjeniBrojevi = robaKatbr.stream().map(RobaDto::getKatbr).collect(Collectors.toSet());
         nadjeniBrojevi.addAll(robaKatbr.stream().map(RobaDto::getKatbrpro).collect(Collectors.toSet()));
 
         // Fetch podaci za KATBRPRO
-        List<RobaDto> robaKatbrpro = tecDocRobaUtility(parametri, ROBA.KATBRPRO.in(nadjeniBrojevi));
+        List<RobaDto> robaKatbrpro = robaJooqRepository.generic(parametri, ROBA.KATBRPRO.in(nadjeniBrojevi));
         allRoba.addAll(robaKatbrpro);
         allRoba = new ArrayList<>(new HashSet<>(allRoba));
 
@@ -179,23 +157,9 @@ public class RobaJooqRepository {
         sortirajRobuTecDocPoPodgrupi(allRoba, parametri);
 
         // Paginacija rezultata
-        int start = parametri.getPageSize() * parametri.getPage();
-        int end = Math.min(start + parametri.getPageSize(), allRoba.size());
-        magacinDto.setRobaDto(new PageImpl<>(allRoba.subList(start, end),
-                PageRequest.of(parametri.getPage(), parametri.getPageSize()), allRoba.size()));
+
+        magacinDto.setRobaDto(createPageable(allRoba, parametri.getPageSize(), parametri.getPage()));
         return magacinDto;
-    }
-
-    private List<RobaDto> tecDocRobaUtility(UniverzalniParametri parametri, Condition in) {
-        // Kreiraj prvi upit za KATBR
-        SelectConditionStep<Record8<Integer, String, String, BigDecimal, String, Integer, String, String>> selectKatbr = kreirajSelect(null, null)
-                .and(in);
-
-        // Filtriraj i sortiraj prvi upit
-        filtrirajPoParametrima(selectKatbr, parametri);
-
-        // Fetch podaci za KATBR
-        return selectKatbr.fetchStream().map(this::map).collect(Collectors.toList());
     }
 
     private void sortirajRobuTecDocPoPodgrupi(List<RobaDto> robaDtos,
@@ -235,181 +199,50 @@ public class RobaJooqRepository {
         }
     }
 
-    /**
-     * Mapiranje u dto robe
-     */
-    private RobaDto map(
-            Record8<Integer, String, String, BigDecimal, String, Integer, String, String> robaRecord
-    ) {
-        return  RobaDto
-                        .builder()
-                        .robaid(robaRecord.component1().longValue())
-                        .katbr(robaRecord.component2())
-                        .naziv(robaRecord.component3())
-                        .stanje(robaRecord.component4() != null ? robaRecord.component4().doubleValue() : 0)
-                        .grupa(robaRecord.component5())
-                        .podGrupa(robaRecord.component6())
-                        .proizvodjac(Proizvodjac.builder().proid(robaRecord.component7()).build())
-                        .slika(new SlikaDto(robaRecord.component8()))
-                        .build();
-    }
-
-    /**
-     * Keriranje selekta za robu
-     */
-    private SelectConditionStep<Record8<Integer, String, String, BigDecimal, String, Integer, String, String>> kreirajSelect(
-            String trazenaRec, Set<Integer> robaId) {
-        String trazenaRecLike = "%" + trazenaRec + "%";
-        SelectJoinStep<Record8<Integer, String, String, BigDecimal, String, Integer, String, String>> select = dslContext.selectDistinct(
-                ROBA.ROBAID, ROBA.KATBR, ROBA.NAZIV, ROBA.STANJE, ROBA.GRUPAID, ROBA.PODGRUPAID, ROBA.PROID,
-                ROBA.SLIKA
-        ).from(ROBA);
-        if (trazenaRec != null) {
-            return select.where(ROBA.KATBR.like(trazenaRecLike));
-        } else if (robaId != null && !robaId.isEmpty()) {
-            return select.where(ROBA.ROBAID.in(robaId));
-        } else {
-            return select.where("1=1");
-        }
-    }
-
-
-    /**
-     * Standardni uslovi
-     */
-    private void standardniUslovi(SelectConditionStep<?> select, String trazenaRec,
-                                  UniverzalniParametri parametri) {
-        String pregragaPoTacnojReciLike = "%" + trazenaRec + "%";
-        String trazenaRecLike = "%" + trazenaRec.replaceAll("\\s+", "") + "%";
-
-//        Pomocni kveri
-        boolean daLiJePetragaPoReci = false;
-
-        Set<String> kataloskiBrojevi = new HashSet<>();
-        Set<Long> robaId = new HashSet<>();
-
-        boolean pretragaJePoRecima = pomocniKveriPoRobi(trazenaRecLike, pregragaPoTacnojReciLike,
-                kataloskiBrojevi, robaId, parametri);
-
-        if (!pretragaJePoRecima) {
-            pomocniKveriPoRobiOld(kataloskiBrojevi);
-        } else {
-            daLiJePetragaPoReci = true;
-        }
-//        Kraj pomocnog kverija
-
-        Condition conditionPoslednji;
-        if (daLiJePetragaPoReci) {
-            conditionPoslednji = ROBA.KATBR.in(kataloskiBrojevi);
-        } else {
-            Condition condition1 = ROBA.KATBR.in(kataloskiBrojevi);
-            Condition condition2 = ROBA.KATBRPRO.in(kataloskiBrojevi);
-            conditionPoslednji = condition1.or(condition2);
-        }
-
-        select.or(conditionPoslednji);
-        if (!daLiJePetragaPoReci) {
-            select.or(ROBA.NAZIV.like(trazenaRecLike));
-        }
-    }
-
     public boolean pronadjiPoNazivu(String searchTerm, UniverzalniParametri parametri, Set<String> kataloskiBrojevi, Set<Long> robaId) {
-        // Split the search term and create a list of conditions using the LIKE statement
-        List<Condition> conditions = Arrays.stream(searchTerm.trim().split("\\s+"))
-                .map(word -> ROBA.NAZIV.like("%" + word + "%"))  // Create LikeEscapeStep, which is implicitly convertible to Condition
-                .collect(Collectors.toList());
-
-        // Combine the conditions using AND
-        Condition finalCondition = conditions.stream()
-                .reduce(DSL.noCondition(), Condition::and);
-
+        List<RobaDto> roba = robaJooqRepository.pronadjiRobuPoNazivu(searchTerm, parametri);
 
         List<String> nazivi = new ArrayList<>();
-        pretragaPoRobiUtility(kataloskiBrojevi, robaId, parametri, nazivi, finalCondition);
+        popuniKolekcije(roba, kataloskiBrojevi, robaId, nazivi);
+
         return recJeZapravoNaziv(parametri.getTrazenaRec(), nazivi);
     }
 
     public void pronadjiPoKatBroju(String tacnaRecLike,
                                    Set<String> kataloskiBrojevi, Set<Long> robaId, UniverzalniParametri parametri) {
         List<String> nazivi = new ArrayList<>();
-        pretragaPoRobiUtility(kataloskiBrojevi, robaId, parametri, nazivi, ROBA.KATBR.like(tacnaRecLike));
-        pretragaPoRobiUtility(kataloskiBrojevi, robaId, parametri, nazivi, ROBA.KATBRPRO.like(tacnaRecLike));
+
+        List<RobaDto> robaPoKatalaskomBroju = robaJooqRepository.generic(parametri, ROBA.KATBR.like(tacnaRecLike));
+        popuniKolekcije(robaPoKatalaskomBroju, kataloskiBrojevi, robaId, nazivi);
+        List<RobaDto> robaPoKatBrojuProizvodjaca = robaJooqRepository.generic(parametri, ROBA.KATBRPRO.like(tacnaRecLike));
+        popuniKolekcije(robaPoKatBrojuProizvodjaca, kataloskiBrojevi, robaId, nazivi);
+
         prodjiIPopraviKatBr(kataloskiBrojevi);
-    }
-
-    private void pretragaPoRobiUtility(Set<String> kataloskiBrojevi, Set<Long> robaId, UniverzalniParametri parametri, List<String> nazivi, Condition condition) {
-        var select = dslContext.selectDistinct(ROBA.KATBR, ROBA.KATBRPRO, ROBA.ROBAID, ROBA.NAZIV)
-                .from(ROBA)
-                .where(condition);
-
-        if (StringUtils.hasText(parametri.getProizvodjac())) {
-            select.and(ROBA.PROID.eq(parametri.getProizvodjac()));
-        }
-
-        if (parametri.isNaStanju()) {
-            select.and(ROBA.STANJE.gt(BigDecimal.ZERO));
-        }
-        popuniKolekcije(kataloskiBrojevi, robaId, select, nazivi);
     }
 
     public void pronadjiPoKatBrojuIn(Set<String> kataloskiBrojevi, Set<Long> robaId, UniverzalniParametri parametri) {
         List<String> nazivi = new ArrayList<>();
-        var select = dslContext.selectDistinct(ROBA.KATBR, ROBA.KATBRPRO, ROBA.ROBAID, ROBA.NAZIV)
-                .from(ROBA)
-                .where(
-                        ROBA.KATBR.in(kataloskiBrojevi));
-
-        if (StringUtils.hasText(parametri.getProizvodjac())) {
-            select.and(ROBA.PROID.eq(parametri.getProizvodjac()));
-        }
-
-        if (parametri.isNaStanju()) {
-            select.and(ROBA.STANJE.gt(BigDecimal.ZERO));
-        }
-        popuniKolekcije(kataloskiBrojevi, robaId, select, nazivi);
+        List<RobaDto> roba = robaJooqRepository.generic(parametri, ROBA.KATBR.in(kataloskiBrojevi));
+        popuniKolekcije(roba, kataloskiBrojevi, robaId, nazivi);
         prodjiIPopraviKatBr(kataloskiBrojevi);
     }
 
-    private static void popuniKolekcije(Set<String> kataloskiBrojevi, Set<Long> robaId, SelectConditionStep<Record4<String, String, Integer, String>> select, List<String> nazivi) {
-        select.fetch().forEach(rekord -> {
-            if (rekord.component1() != null && !StringUtils.isEmpty(rekord.component1())) {
-                kataloskiBrojevi.add(rekord.component1());
+    private static void popuniKolekcije(List<RobaDto> roba, Set<String> kataloskiBrojevi, Set<Long> robaId, List<String> nazivi) {
+        roba.forEach(data -> {
+            if ( StringUtils.hasText(data.getKatbr())) {
+                kataloskiBrojevi.add(data.getKatbr());
+            }
+            if ( StringUtils.hasText(data.getKatbrpro())) {
+                kataloskiBrojevi.add(data.getKatbrpro());
+            }
+            if ( data.getRobaid() != null) {
+                robaId.add(data.getRobaid());
             }
 
-            if (rekord.component2() != null && !StringUtils.isEmpty(rekord.component2())) {
-                kataloskiBrojevi.add(rekord.component2());
-            }
-
-            if (rekord.component3() != null) {
-                robaId.add(rekord.component3().longValue());
-            }
-
-            if (rekord.component4() != null) {
-                nazivi.add(rekord.component4());
+            if ( StringUtils.hasText(data.getNaziv())) {
+                nazivi.add(data.getNaziv());
             }
         });
-    }
-
-    public boolean pomocniKveriPoRobi(String trazenaRecLike, String tacnaRecLike,
-                                      Set<String> kataloskiBrojevi, Set<Long> robaId, UniverzalniParametri parametri) {
-        List<String> nazivi = new ArrayList<>();
-        var select = dslContext.selectDistinct(ROBA.KATBR, ROBA.KATBRPRO, ROBA.ROBAID, ROBA.NAZIV)
-                .from(ROBA)
-                .where(
-                        ROBA.KATBR.like(trazenaRecLike)
-                                .or(ROBA.KATBRPRO.like(trazenaRecLike))
-                                .or(ROBA.NAZIV.like(tacnaRecLike)));
-
-        if (StringUtils.hasText(parametri.getProizvodjac())) {
-            select.and(ROBA.PROID.eq(parametri.getProizvodjac()));
-        }
-
-        if (parametri.isNaStanju()) {
-            select.and(ROBA.STANJE.gt(BigDecimal.ZERO));
-        }
-        popuniKolekcije(kataloskiBrojevi, robaId, select, nazivi);
-        prodjiIPopraviKatBr(kataloskiBrojevi);
-        return recJeZapravoNaziv(tacnaRecLike, nazivi);
     }
 
     private static boolean recJeZapravoNaziv(String searchTerm, List<String> nazivi) {
@@ -421,20 +254,15 @@ public class RobaJooqRepository {
     }
 
     public void pomocniKveriPoRobiOld(Set<String> kataloskiBrojevi) {
-        dslContext.selectDistinct(ROBA_KATBR_OLD.KATBR, ROBA_KATBR_OLD.KATBRPRO)
-                .from(ROBA_KATBR_OLD)
-                .where(ROBA_KATBR_OLD.KATBR.in(kataloskiBrojevi).or(ROBA_KATBR_OLD.KATBRPRO.in(kataloskiBrojevi)))
-                .fetch()
-                .forEach(rekord -> {
-
-                    if (rekord.component1() != null && !StringUtils.isEmpty(rekord.component1())) {
-                        kataloskiBrojevi.add(rekord.component1());
-                    }
-
-                    if (rekord.component2() != null && !StringUtils.isEmpty(rekord.component2())) {
-                        kataloskiBrojevi.add(rekord.component2());
-                    }
-                });
+        List<RobaDto> roba = robaJooqRepository.generic(null, ROBA_KATBR_OLD.KATBR.in(kataloskiBrojevi).or(ROBA_KATBR_OLD.KATBRPRO.in(kataloskiBrojevi)));
+        roba.forEach(data -> {
+            if(StringUtils.hasText(data.getKatbr())) {
+                kataloskiBrojevi.add(data.getKatbr());
+            }
+            if(StringUtils.hasText(data.getKatbrpro())) {
+                kataloskiBrojevi.add(data.getKatbrpro());
+            }
+        });
         prodjiIPopraviKatBr(kataloskiBrojevi);
     }
 
@@ -449,80 +277,28 @@ public class RobaJooqRepository {
     }
 
     /**
-     * Upiti u slucaju da se trazi specificna grupa
-     */
-    private void filtrirajPoParametrima(SelectConditionStep<?> select,
-                                        UniverzalniParametri parametri) {
-        if (parametri.getRobaKategorije() != null
-                && parametri.getRobaKategorije().isGrupaPretraga()) {
-            select.and(ROBA.GRUPAID.in(parametri.getRobaKategorije().getFieldName()));
-        } else if (parametri.getRobaKategorije() != null
-                && parametri.getRobaKategorije().isPodgrupaPretraga()) {
-            select.and(ROBA.PODGRUPAID.in(parametri.getPodGrupe().stream().map(PodGrupa::getPodGrupaId)
-                    .collect(Collectors.toList())));
-        }
-
-        if (!StringUtils.isEmpty(parametri.getProizvodjac())) {
-            select.and(ROBA.PROID.eq(parametri.getProizvodjac()));
-        }
-
-        if (!StringUtils.isEmpty(parametri.getPodgrupaZaPretragu())) {
-            List<Integer> podgrupe = parametri.getPodGrupe().stream().filter(
-                            podGrupa -> podGrupa.getNaziv().equalsIgnoreCase(parametri.getPodgrupaZaPretragu()))
-                    .map(PodGrupa::getPodGrupaId).collect(Collectors.toList());
-            if (!podgrupe.isEmpty()) {
-                select.and(ROBA.PODGRUPAID.in(podgrupe));
-            }
-        }
-        if (parametri.isNaStanju()) {
-            select.and(ROBA.STANJE.greaterThan(new BigDecimal(0)));
-        }
-    }
-
-    /**
-     * Limitiranje pogodataka zbog paginacije
-     */
-    private void sortiranje(SelectConditionStep<?> select) {
-        select.orderBy(ROBA.STANJE.desc());
-    }
-
-    /**
      * Zbog n+1 u hibernate koristimo jooq da vrati svu robu u zavisnosti od podgrupe
      */
     public Page<Roba> pronadjiSvuRobuPoPodgrupama(List<PodGrupa> podGrupaId, boolean naStanju,
                                                   Pageable pageable) {
-        SelectConditionStep<RobaRecord> select = dslContext
-                .selectFrom(ROBA)
-                .where(ROBA.PODGRUPAID.in(
-                        podGrupaId.stream().map(PodGrupa::getPodGrupaId).collect(Collectors.toList())));
-        if (naStanju) {
-            select.and(ROBA.STANJE.greaterThan(BigDecimal.ZERO));
-        }
-        select.orderBy(ROBA.STANJE.desc());
 
-        List<Roba> roba = select.fetch().stream().map(mapper::map).collect(Collectors.toList());
-        int start = pageable.getPageSize() * pageable.getPageNumber();
-        int end = Math.min((start + pageable.getPageSize()), roba.size());
-        List<Roba> retVal = roba.subList(start, end);
+        List<Roba> roba = robaJooqRepository.pronadjiRobuPoPodgrupama(podGrupaId, naStanju);
 
-        retVal.forEach(rekord ->
+        Page<Roba> result = createPageable(roba, pageable.getPageSize(), pageable.getPageNumber());
+        result.forEach(rekord ->
                 proizvodjacService.vratiProizvodjacaPoPk(rekord.getProizvodjac().getProid())
                         .ifPresent(rekord::setProizvodjac)
         );
-
-        return new PageImpl<>(retVal, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()),
-                roba.size());
+        return result;
     }
 
     public DashboardDto vracanjePodatakaZaDashboard() {
-        DashboardDto dashboardDto = new DashboardDto();
-        List<String> svProizvodjaci = dslContext
-                .select()
-                .from(ROBA)
-                .where(ROBA.STANJE.greaterThan(BigDecimal.ZERO)).fetch(ROBA.PROID);
-        dashboardDto.setBrojArtikala(svProizvodjaci.size());
-        Set<String> proizvodjaciSet = new HashSet<>(svProizvodjaci);
-        dashboardDto.setBrojProizvodjaca(new ArrayList(proizvodjaciSet).size());
-        return dashboardDto;
+        List<String> sviProizvodjaci = robaJooqRepository.vratiSveProzivodjace();
+        Set<String> jedinstveniProizvodjaci = new HashSet<>(sviProizvodjaci);
+
+        return DashboardDto.builder()
+                .brojArtikala(sviProizvodjaci.size())
+                .brojProizvodjaca(jedinstveniProizvodjaci.size())
+                .build();
     }
 }
