@@ -13,7 +13,6 @@ import lombok.experimental.FieldDefaults;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
@@ -24,6 +23,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.automaterijal.db.tables.Roba.ROBA;
+import static com.automaterijal.db.tables.RobaKatbrOld.ROBA_KATBR_OLD;
 
 @Repository
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -47,6 +47,19 @@ public class RobaJooqRepository {
         Condition finalCondition = conditions.stream().reduce(DSL.noCondition(), Condition::and);
 
         return generic(parametri, finalCondition);
+    }
+
+    public List<RobaDto> fetchKatBrOld(Set<String> kataloskiBrojevi) {
+       return dslContext.selectDistinct(ROBA_KATBR_OLD.KATBR, ROBA_KATBR_OLD.KATBRPRO)
+                .from(ROBA_KATBR_OLD)
+                .where(ROBA_KATBR_OLD.KATBR.in(kataloskiBrojevi).or(ROBA_KATBR_OLD.KATBRPRO.in(kataloskiBrojevi)))
+                .fetchStream().map(data ->
+                    RobaDto
+                            .builder()
+                            .katbr(data.component1())
+                            .katbrpro(data.component2())
+                            .build()
+                ).collect(Collectors.toList());
     }
 
     public List<RobaDto> generic(UniverzalniParametri parametri, Condition condition) {
@@ -85,6 +98,9 @@ public class RobaJooqRepository {
     }
 
     private void filtrirajPoParametrima(SelectConditionStep<?> select, UniverzalniParametri parametri) {
+        if(parametri == null) {
+            return;
+        }
         // Provera za Roba Kategorije
         if (parametri.getRobaKategorije() != null) {
             if (parametri.getRobaKategorije().isGrupaPretraga()) {

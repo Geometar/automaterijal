@@ -91,18 +91,28 @@ public class PretragaBezFilteraStrategija implements PretragaRobeStrategija {
     private Page<Roba> pronadjiRobu(UniverzalniParametri parametri, Pageable pageable) {
         boolean naStanju = parametri.isNaStanju();
 
+        // Return all items if no category is set
         if (parametri.getRobaKategorije() == null) {
             return robaService.pronadjiSvuRobu(naStanju, pageable);
-        } else if (parametri.getRobaKategorije().isGrupaPretraga()) {
+        }
+
+        // Search by group ID if it's a group search
+        if (parametri.getRobaKategorije().isGrupaPretraga()) {
             return robaService.pronadjiSvuRobuPoGrupiIdNaStanju(parametri.getRobaKategorije().getFieldName(), naStanju, pageable);
-        } else if (parametri.getRobaKategorije().isPodgrupaPretraga()) {
+        }
+
+        // Search by sub-group if it's a sub-group search
+        if (parametri.getRobaKategorije().isPodgrupaPretraga()) {
             List<PodGrupa> podGrupaList = parametri.getPodgrupaZaPretragu() != null
                     ? parametri.getPodGrupe().stream()
                     .filter(podGrupa -> podGrupa.getNaziv().equals(parametri.getPodgrupaZaPretragu()))
                     .collect(Collectors.toList())
                     : parametri.getPodGrupe();
+
             return jooqRepository.pronadjiSvuRobuPoPodgrupama(podGrupaList, naStanju, pageable);
         }
+
+        // Return null if none of the above conditions match
         return null;
     }
 

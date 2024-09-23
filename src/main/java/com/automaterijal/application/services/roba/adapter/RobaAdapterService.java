@@ -19,18 +19,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.automaterijal.db.tables.Roba.ROBA;
-import static com.automaterijal.db.tables.RobaKatbrOld.ROBA_KATBR_OLD;
-
 @Service
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -87,7 +83,7 @@ public class RobaAdapterService {
         return magacinDto;
     }
 
-    public static <T> Page<T> createPageable(List<T> items, int pageSize, int pageNumber) {
+    private static <T> Page<T> createPageable(List<T> items, int pageSize, int pageNumber) {
         int start = pageSize * pageNumber;
         int end = Math.min((start + pageSize), items.size());
         return new PageImpl<>(items.subList(start, end),
@@ -95,27 +91,17 @@ public class RobaAdapterService {
     }
 
     private List<RobaDto> sortirajPoGrupi(List<RobaDto> roba) {
-        List<RobaDto> retVal = roba.stream()
-                .filter(robaDto -> robaDto.getStanje() > 0)
+        return roba.stream()
                 .map(robaDto -> {
                     if (robaDto.getPodGrupaNaziv() == null) {
                         robaDto.setPodGrupaNaziv("ZZZ");
                     }
                     return robaDto;
                 })
-                .sorted(Comparator.comparing(RobaDto::getPodGrupaNaziv))
+                .sorted(Comparator
+                        .comparing(RobaDto::getPodGrupaNaziv)
+                        .thenComparing(robaDto -> robaDto.getStanje() == 0))
                 .collect(Collectors.toList());
-
-        roba.stream()
-                .filter(robaDto -> robaDto.getStanje() == 0)
-                .map(robaDto -> {
-                    if (robaDto.getPodGrupaNaziv() == null) {
-                        robaDto.setPodGrupaNaziv("ZZZ");
-                    }
-                    return robaDto;
-                })
-                .sorted(Comparator.comparing(RobaDto::getPodGrupaNaziv)).forEach(retVal::add);
-        return retVal;
     }
 
     private List<RobaDto> filtriIVratiRobu(UniverzalniParametri parametri, List<RobaDto> roba) {
@@ -163,39 +149,26 @@ public class RobaAdapterService {
     }
 
     private void sortirajRobuTecDocPoPodgrupi(List<RobaDto> robaDtos,
-                                              UniverzalniParametri parametri) {
+                                               UniverzalniParametri parametri) {
         List<RobaDto> pronadjenaTacnaRoba = robaDtos.stream()
                 .filter(robaDto -> robaDto.getKatbr().equals(parametri.getTrazenaRec()))
                 .collect(Collectors.toList());
+
+        // Ako nema tačnog rezultata, traži približne
         if (pronadjenaTacnaRoba.isEmpty()) {
             pronadjenaTacnaRoba = robaDtos.stream()
                     .filter(robaDto -> robaDto.getKatbr().contains(parametri.getTrazenaRec()))
                     .collect(Collectors.toList());
         }
 
+        // Ako su pronađeni podaci
         if (!pronadjenaTacnaRoba.isEmpty()) {
             int podGrupa = pronadjenaTacnaRoba.get(0).getPodGrupa();
-            robaDtos.sort((o1, o2) -> {
-                if (o1.getStanje() > 0 && o2.getStanje() > 0) {
-                    if (podGrupa == o1.getPodGrupa() && podGrupa != o2.getPodGrupa()) {
-                        return -1;
-                    } else if (podGrupa != o1.getPodGrupa() && podGrupa == o2.getPodGrupa()) {
-                        return 1;
-                    } else {
-                        return 0;
-                    }
-                } else if (o1.getStanje() == 0 && o2.getStanje() == 0) {
-                    if (podGrupa == o1.getPodGrupa() && podGrupa != o2.getPodGrupa()) {
-                        return -1;
-                    } else if (podGrupa != o1.getPodGrupa() && podGrupa == o2.getPodGrupa()) {
-                        return 1;
-                    } else {
-                        return 0;
-                    }
-                } else {
-                    return 0;
-                }
-            });
+
+            // Sortiranje korišćenjem Comparator-a
+            robaDtos.sort(Comparator.comparing((RobaDto robaDto) -> robaDto.getStanje() > 0)
+                    .reversed() // Da osiguramo da `stanje > 0` ide ispred
+                    .thenComparing(robaDto -> podGrupa == robaDto.getPodGrupa() ? -1 : 1)); // Podgrupa prioritet
         }
     }
 
@@ -254,7 +227,7 @@ public class RobaAdapterService {
     }
 
     public void pomocniKveriPoRobiOld(Set<String> kataloskiBrojevi) {
-        List<RobaDto> roba = robaJooqRepository.generic(null, ROBA_KATBR_OLD.KATBR.in(kataloskiBrojevi).or(ROBA_KATBR_OLD.KATBRPRO.in(kataloskiBrojevi)));
+        List<RobaDto> roba = robaJooqRepository.fetchKatBrOld(kataloskiBrojevi);
         roba.forEach(data -> {
             if(StringUtils.hasText(data.getKatbr())) {
                 kataloskiBrojevi.add(data.getKatbr());
