@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping(value = "/api/email")
@@ -51,7 +52,7 @@ public class EmailController {
     } catch (final MailSendException ex) {
       return ResponseEntity.badRequest().build();
     } catch (final MailPreparationException ex) {
-      return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
+      throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Mejl ne radi kako treba");
     }
   }
 

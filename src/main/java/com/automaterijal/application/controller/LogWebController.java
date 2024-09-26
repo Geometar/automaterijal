@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/log")
@@ -38,7 +39,7 @@ public class LogWebController {
     ) {
         Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
         if (partner.getPrivilegije() != 2047) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nije Admin");
         }
         var iPage = page == null ? 0 : page;
         var iPageSize = pageSize == null ? 10 : pageSize;

@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -51,7 +52,8 @@ public class AuthController {
               loginRequest.getPassword()));
 
     } catch (AuthenticationException ex) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+      throw new ResponseStatusException(
+              HttpStatus.BAD_REQUEST, "Los zahtev");
     }
 
     SecurityContextHolder.getContext().setAuthentication(authentication);

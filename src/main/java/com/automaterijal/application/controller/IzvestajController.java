@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -66,7 +67,8 @@ public class IzvestajController {
         if (izvestajDto.isPresent()) {
             return ResponseEntity.ok(izvestajDto.get());
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Nije pronadjen izvestaj");
         }
     }
 

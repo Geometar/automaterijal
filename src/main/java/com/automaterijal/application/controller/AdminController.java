@@ -26,7 +26,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
- 
+import org.springframework.web.server.ResponseStatusException;
+
 @RestController
 @RequestMapping("/api/admin")
 @CrossOrigin(origins = "http://localhost:4200")
@@ -49,7 +50,8 @@ public class AdminController {
       @RequestParam Integer page, @RequestParam Integer pageSize, Authentication authentication) {
     Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
     if (partner.getPrivilegije() != 2047) {
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+      throw new ResponseStatusException(
+              HttpStatus.UNAUTHORIZED, "Nije Admin");
     }
     return ResponseEntity.ok(adminService.vratiLogovanjePartnera(page, pageSize));
   }
@@ -59,7 +61,8 @@ public class AdminController {
       Authentication authentication) {
     Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
     if (partner.getPrivilegije() != 2047) {
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+      throw new ResponseStatusException(
+              HttpStatus.UNAUTHORIZED, "Nije Admin");
     }
     return ResponseEntity.ok(grupaDozvoljenaService.pronadjiSveDozvoljeneGrupe());
   }
@@ -70,7 +73,8 @@ public class AdminController {
       @RequestBody GrupaDozvoljena grupaDozvoljena) {
     Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
     if (partner.getPrivilegije() != 2047) {
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+      throw new ResponseStatusException(
+              HttpStatus.UNAUTHORIZED, "Nije Admin");
     }
     grupaDozvoljenaService.dodajGrupu(grupaDozvoljena);
     return ResponseEntity.ok(grupaDozvoljenaService.pronadjiSveDozvoljeneGrupe());
@@ -81,7 +85,8 @@ public class AdminController {
       Authentication authentication) {
     Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
     if (partner.getPrivilegije() != 2047) {
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+      throw new ResponseStatusException(
+              HttpStatus.UNAUTHORIZED, "Nije Admin");
     }
     grupaDozvoljenaService.izbrisiGrupu(grupaId);
     return ResponseEntity.ok(grupaDozvoljenaService.pronadjiSveDozvoljeneGrupe());
@@ -92,7 +97,8 @@ public class AdminController {
   public ResponseEntity<List<Grupa>> vratiSveGrupe(Authentication authentication) {
     Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
     if (partner.getPrivilegije() != 2047) {
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+      throw new ResponseStatusException(
+              HttpStatus.UNAUTHORIZED, "Nije Admin");
     }
     return ResponseEntity.ok(grupaDozvoljenaService.vratiSveGrupeKojeNisuDozvoljene());
   }

@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/partner")
@@ -74,7 +75,8 @@ public class PartnerController {
     final var partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
 
     if (partner == null || partner.getPpid().intValue() != partnerDto.getPpid().intValue()) {
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+      throw new ResponseStatusException(
+          HttpStatus.UNAUTHORIZED, "Ne mozes da updejtujes drugog partnera");
     }
 
     final var response = partnerService.updejtPartnera(partnerDto, partner, vrstaPromene);
@@ -114,7 +116,8 @@ public class PartnerController {
   public ResponseEntity<List<Partner>> vratiSveKomercijaliste(final Authentication authentication) {
     final var partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
     if (partner.getPrivilegije().intValue() != 2047) {
-      return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+      throw new ResponseStatusException(
+              HttpStatus.FORBIDDEN, "Nije Admin");
     } else {
       return ResponseEntity.ok(partnerService.vratiSveKomercijaliste());
     }
@@ -126,7 +129,7 @@ public class PartnerController {
       final Authentication authentication) {
     Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
     if (partner.getPrivilegije() != 2047) {
-      return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nije Admin");
     }
     return ResponseEntity.ok(partnerService.vratiPartnera(ppid));
   }

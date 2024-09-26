@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -54,9 +55,12 @@ public class FakturaController {
         var iVremeOd = dateFrom == null ? LocalDate.now().minusYears(5).atStartOfDay() : GeneralUtil.timestampToLDT(dateFrom.longValue()).atStartOfDay();
         var iVremeDo = dateTo == null ? LocalDate.now().atStartOfDay().plusDays(1) : GeneralUtil.timestampToLDT(dateTo.longValue()).atStartOfDay().plusDays(1);
         if (partner == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            throw new ResponseStatusException(
+                    HttpStatus.UNAUTHORIZED, "Unauthorized to update this partner");
         } else if (ppid != null && ppid.intValue() != partner.getPpid().intValue()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Los zahtev");
         }
 
         Page<FakturaDto> fakture = fakturaService.vratiSveFaktureUlogovanogKorisnika(partner, iPage, iPageSize, iVremeOd, iVremeDo);
@@ -88,9 +92,12 @@ public class FakturaController {
         Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
 
         if (partner == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            throw new ResponseStatusException(
+                    HttpStatus.UNAUTHORIZED, "Unauthorized to update this partner");
         } else if (ppid != null && ppid.intValue() != partner.getPpid().intValue() && partner.getPrivilegije() != 2047) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Los zahtev");
         }
 
         log.info("Partner {} trazi fakturu pojedinacnu sa brojem {}", partner.getNaziv(), id);
@@ -98,6 +105,7 @@ public class FakturaController {
         if (fakture != null) {
             return ResponseEntity.ok(fakture);
         }
-        return ResponseEntity.notFound().build();
+        throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND, "Nismo nasli fakturu");
     }
 }

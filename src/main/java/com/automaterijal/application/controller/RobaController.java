@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/roba")
@@ -92,7 +93,7 @@ public class RobaController {
       return ResponseEntity.status(HttpStatus.CREATED).build();
     } else {
       log.error("Odbijen zahtev da sacuva tekst za robu {}", robaId);
-      return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nije Admin");
     }
   }
 
