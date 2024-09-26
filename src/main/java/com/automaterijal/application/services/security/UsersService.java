@@ -8,7 +8,7 @@ import com.automaterijal.application.utils.LoginStaticUtils;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Optional;
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

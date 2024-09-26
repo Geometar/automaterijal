@@ -8,6 +8,7 @@ import com.automaterijal.application.domain.entity.komercijalista.izvestaj.Komen
 import com.automaterijal.db.tables.records.FirmaRecord;
 import com.automaterijal.db.tables.records.KomentarRecord;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.jooq.DSLContext;
@@ -27,7 +28,7 @@ public class IzvestajJooqRepository {
   DSLContext dslContext;
 
   public Page<Komentar> pronadjiSveKomentarePoParametrima(Partner partner, String trazenaRec,
-      Timestamp vremeOd, Timestamp vremeDo, Integer komercijalista, Pageable pageable) {
+                                                          LocalDateTime vremeOd, LocalDateTime vremeDo, Integer komercijalista, Pageable pageable) {
     SelectWhereStep<KomentarRecord> komentarRecords = dslContext.selectFrom(KOMENTAR);
     SelectConditionStep<KomentarRecord> select = null;
     if (partner.getPrivilegije() == 2047) {

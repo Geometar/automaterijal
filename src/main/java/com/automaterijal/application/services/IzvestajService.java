@@ -61,7 +61,7 @@ public class IzvestajService {
         page, pageSize
     );
     Page<Komentar> komentar = jooqRepository.pronadjiSveKomentarePoParametrima(partner, trazenaRec,
-        GeneralUtil.ldtToTimestamp(vremeOd), GeneralUtil.ldtToTimestamp(vremeDo), komercijalista,
+        vremeOd, vremeDo, komercijalista,
         pageable);
     List<IzvestajDto> izvestajiDto = map(komentar.getContent());
 

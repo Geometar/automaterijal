@@ -7,6 +7,8 @@ import com.automaterijal.application.domain.entity.komercijalista.izvestaj.Firma
 import com.automaterijal.application.domain.entity.komercijalista.izvestaj.Komentar;
 import com.automaterijal.application.domain.entity.komercijalista.izvestaj.KreirajIzvestaj;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
@@ -47,5 +49,8 @@ public interface IzvetajMapper {
 
   default Timestamp map(Long time) {
     return new Timestamp(time);
+  }
+  default LocalDateTime mapLocalDateTime(Long time) {
+    return new Timestamp(time).toLocalDateTime();
   }
 }

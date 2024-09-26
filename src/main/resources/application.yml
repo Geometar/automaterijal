@@ -53,11 +53,12 @@ roba:
   slika:
     tdPrefix: "/home/ftpuser/automaterijal/misc/tecdoc/slike/"
 
-# Logging konfiguracija
-logging:
-  file: ../logs/arhiva/automaterijal
-
 # JWT konfiguracija
 automaterijal:
   jwtSecret: bezKoderSecretKey
   jwtExpirationMs: 28800000
+
+# Logging konfiguracija
+logging:
+  file:
+    name: ../logs/arhiva/automaterijal

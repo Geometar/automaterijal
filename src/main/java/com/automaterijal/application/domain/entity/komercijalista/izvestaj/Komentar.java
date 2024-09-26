@@ -5,8 +5,9 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -23,10 +24,10 @@ public class Komentar {
     Long firma;
 
     @Column
-    Timestamp datumKreiranja;
+    LocalDateTime datumKreiranja;
 
     @Column
-    Timestamp podsetnik;
+    LocalDateTime podsetnik;
 
     @Column
     Integer ppid;

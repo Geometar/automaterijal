@@ -36,7 +36,7 @@ public class LogWebService {
         if (partner == null || partner.getPrivilegije() > 2042 || (filter == null && proizvodjac == null && pretraga == null)) {
             return;
         }
-        Timestamp datumDanas = Timestamp.valueOf(LocalDateTime.of(LocalDate.now(), LocalTime.of(0, 0, 0)));
+        LocalDateTime datumDanas = LocalDateTime.of(LocalDate.now(), LocalTime.of(0, 0, 0));
         if (!logWebJooqRepository.daLiJeVecUBaziLog(partner, proizvodjac, filter, pretraga, datumDanas)) {
             LogWeb logWeb = napraviLog(partner, filter, proizvodjac, pretraga, datumDanas);
             logWebJooqRepository.sacuvajLog(logWeb);
@@ -47,7 +47,7 @@ public class LogWebService {
         return logWebRepository.findByPpidOrderByVremePretrageDescIdDesc(ppid, pageable);
     }
 
-    private LogWeb napraviLog(Partner partner, String filter, String proizvodjac, String pretraga, Timestamp datumDanas) {
+    private LogWeb napraviLog(Partner partner, String filter, String proizvodjac, String pretraga, LocalDateTime datumDanas) {
         LogWeb logWeb = new LogWeb();
         logWeb.setPpid(partner.getPpid());
         logWeb.setFilter(filter);

@@ -62,16 +62,16 @@ public class PretragaSaFilteromStrategija implements PretragaRobeStrategija {
         }
 
         // Ukljucujemo tecdoc u pretragu
-        pretragaPomocuTecDoca(parametri, kataloskiBrojevi, trazenaRecLike);
+        pretragaPomocuTecDoca(parametri, kataloskiBrojevi);
 
         return robaAdapter.vratiArtikleIzTecDoca(parametri, kataloskiBrojevi);
     }
 
-    private void pretragaPomocuTecDoca(UniverzalniParametri parametri, Set<String> kataloskiBrojevi, String tacnaRec) {
+    private void pretragaPomocuTecDoca(UniverzalniParametri parametri, Set<String> kataloskiBrojevi) {
 
         // TecDoc pretraga na osnovu tačne reči, tip pretrage je 10 (trazimo sve)
         List<ArticleDirectSearchAllNumbersWithStateRecord> response = tecDocService.tecDocPretragaPoTrazenojReci(
-                tacnaRec, null, 10);
+                parametri.getTrazenaRec(), null, 10);
         parametri.setKesiranDirectArticleSearch(response);
 
         // Obrada rezultata TecDoc pretrage
@@ -95,6 +95,6 @@ public class PretragaSaFilteromStrategija implements PretragaRobeStrategija {
         });
 
         // Dodavanje tačne tražene reči kao kataloškog broja
-        kataloskiBrojevi.add(tacnaRec);
+        kataloskiBrojevi.add(parametri.getTrazenaRec());
     }
 }
