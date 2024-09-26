@@ -1,5 +1,6 @@
 # Build output and dependencies
 /target/                             # Maven build output
+/target/*                             # Maven build output
 !.mvn/wrapper/maven-wrapper.jar       # Keep maven wrapper
 /node_modules                         # Node.js dependencies
 
@@ -51,3 +52,5 @@ src/main/java/META-INF/sun-jaxb.episode
 /e2e/*.js                             # End-to-end test JavaScript files
 
 # Additional ignore rules for specific tools
+/src/main/java/com/automaterijal/application/tecdoc/*.java
+/target/*
