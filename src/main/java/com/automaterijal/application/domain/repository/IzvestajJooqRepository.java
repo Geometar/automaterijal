@@ -7,7 +7,6 @@ import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.komercijalista.izvestaj.Komentar;
 import com.automaterijal.db.tables.records.FirmaRecord;
 import com.automaterijal.db.tables.records.KomentarRecord;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,11 +23,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class IzvestajJooqRepository {
 
-  @Autowired
-  DSLContext dslContext;
+  @Autowired DSLContext dslContext;
 
-  public Page<Komentar> pronadjiSveKomentarePoParametrima(Partner partner, String trazenaRec,
-                                                          LocalDateTime vremeOd, LocalDateTime vremeDo, Integer komercijalista, Pageable pageable) {
+  public Page<Komentar> pronadjiSveKomentarePoParametrima(
+      Partner partner,
+      String trazenaRec,
+      LocalDateTime vremeOd,
+      LocalDateTime vremeDo,
+      Integer komercijalista,
+      Pageable pageable) {
     SelectWhereStep<KomentarRecord> komentarRecords = dslContext.selectFrom(KOMENTAR);
     SelectConditionStep<KomentarRecord> select = null;
     if (partner.getPrivilegije() == 2047) {
@@ -52,15 +55,13 @@ public class IzvestajJooqRepository {
       select.and(KOMENTAR.PPID.eq(komercijalista));
     }
     select.orderBy(KOMENTAR.DATUM_KREIRANJA.desc());
-    List<Komentar> komentari = select.fetch()
-        .stream()
-        .map(this::napraviKomentar)
-        .collect(Collectors.toList());
+    List<Komentar> komentari =
+        select.fetch().stream().map(this::napraviKomentar).collect(Collectors.toList());
     int start = pageable.getPageSize() * pageable.getPageNumber();
     int end = Math.min((start + pageable.getPageSize()), komentari.size());
     List<Komentar> retVal = komentari.subList(start, end);
-    return new PageImpl<>(retVal, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()),
-        komentari.size());
+    return new PageImpl<>(
+        retVal, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()), komentari.size());
   }
 
   private List<Integer> vratiSveIdFirme(String trazenaRec) {
@@ -83,6 +84,4 @@ public class IzvestajJooqRepository {
     komentar.setPpid(komentarRecord.getPpid());
     return komentar;
   }
-
-
 }
