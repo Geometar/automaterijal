@@ -22,15 +22,14 @@ import com.automaterijal.application.services.GrupaDozvoljenaService;
 import com.automaterijal.application.services.TecDocService;
 import com.automaterijal.application.services.roba.grupe.PodGrupaService;
 import com.automaterijal.application.tecdoc.*;
+import java.util.*;
+import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -76,7 +75,7 @@ public class RobaGlavniService {
 
     public List<RobaDto> vratiIzdvajamoIzPonudeRobu(List<Long> robaIds, Partner partner) {
         List<Roba> robas = robaService.pronadjiRobuPoPrimarnomKljucuBatch(robaIds);
-        List<RobaDto> retVal = robas.stream().map(mapper::map).collect(Collectors.toList());
+        List<RobaDto> retVal = robas.stream().map(mapper::map).toList();
         if (!retVal.isEmpty()) {
             setujZaTabeluDashboard(retVal, partner);
         }
@@ -102,9 +101,9 @@ public class RobaGlavniService {
         List<String> dozvoljeneGrupeKljucevi = grupaDozvoljenaService.pronadjiSveDozvoljeneGrupe()
                 .stream()
                 .map(GrupaDozvoljena::getGrupaid)
-                .collect(Collectors.toList());
+                .toList();
 
-        List<Long> robaIds = robaDtos.stream().map(RobaDto::getRobaid).collect(Collectors.toList());
+        List<Long> robaIds = robaDtos.stream().map(RobaDto::getRobaid).toList();
         List<RobaCene> robaCenes = robaCeneService.pronadjiCeneZaRobuBatch(robaIds);
         robaDtos.forEach(robaDto -> {
             robaHelper.setCenuRobeTabela(robaDto, robaCenes, partner);
@@ -136,7 +135,7 @@ public class RobaGlavniService {
         List<String> dozvoljeneGrupeKljucevi = grupaDozvoljenaService.pronadjiSveDozvoljeneGrupe()
                 .stream()
                 .map(GrupaDozvoljena::getGrupaid)
-                .collect(Collectors.toList());
+                .toList();
 
         detaljnoDto.setDozvoljenoZaAnonimusa(
                 !(partner == null && !dozvoljeneGrupeKljucevi.contains(detaljnoDto.getGrupa()))
@@ -250,7 +249,7 @@ public class RobaGlavniService {
                 .flatMap(recordSeq -> recordSeq.getArray().stream())
                 .filter(articleDocuments2Record -> articleDocuments2Record.getDocTypeId() != 1L)
                 .map(tecDocMapper::map)
-                .collect(Collectors.toList());
+                .toList();
         Map<String, List<TecDocDokumentacija>> mapaDokumentacije = new HashMap<>();
         for (TecDocDokumentacija dokument : dokumenta) {
             if (dokument.getDocFileTypeName().contains("PDF")) {
@@ -304,7 +303,7 @@ public class RobaGlavniService {
                 .filter(rekord -> rekord.getOenNumbers() != null)
                 .map(ArticlesByIds6Record::getOenNumbers)
                 .flatMap(recordSeq -> recordSeq.getArray().stream())
-                .collect(Collectors.toList());
+                .toList();
 
         List<RobaBrojeviDto> tdBrojevi = new ArrayList<>();
         for (ArticleOENumbersRecord rekord : oeNumbersRecords) {
@@ -329,7 +328,7 @@ public class RobaGlavniService {
                 .filter(rekord -> rekord.getArticleAttributes() != null)
                 .map(ArticlesByIds6Record::getArticleAttributes)
                 .flatMap(recordSeq -> recordSeq.getArray().stream())
-                .collect(Collectors.toList());
+                .toList();
 
         List<RobaTehnickiOpisDto> tehnickiOpis = new ArrayList<>();
         for (AssignedArticleAttributs2Record rekord : atributiRecord) {

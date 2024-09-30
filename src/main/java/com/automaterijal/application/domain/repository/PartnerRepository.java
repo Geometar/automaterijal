@@ -11,15 +11,13 @@ import java.util.Optional;
 
 @Repository
 public interface PartnerRepository extends JpaRepository<Partner, Integer> {
-    Optional<Partner> findByWebKorisnikAndWebStatusGreaterThan(String webKorisnik, Integer webStatus);
+  Optional<Partner> findByWebKorisnikAndWebStatusGreaterThan(String webKorisnik, Integer webStatus);
 
-    Optional<Partner> findByWebKorisnik(String webKorisnik);
+  Optional<Partner> findByWebKorisnik(String webKorisnik);
 
-    Optional<Partner> findByEmail(String email);
+  Optional<Partner> findByEmail(String email);
 
-    Optional<Partner> findByPpid(Integer ppid);
+  Optional<Partner> findByPpid(Integer ppid);
 
-    List<Partner> findByPrivilegijeGreaterThanOrderByNazivAsc(Integer privilergije);
-
-    Page<Partner> findAllByOrderByUsersLastLoginDesc(PageRequest pageRequest);
+  List<Partner> findByPrivilegijeGreaterThanOrderByNazivAsc(Integer privilergije);
 }

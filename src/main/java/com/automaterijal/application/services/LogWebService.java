@@ -4,6 +4,9 @@ import com.automaterijal.application.domain.entity.LogWeb;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.repository.LogWebJooqRepository;
 import com.automaterijal.application.domain.repository.LogWebRepository;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -13,11 +16,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 @Service
 @RequiredArgsConstructor

@@ -7,8 +7,8 @@ import lombok.experimental.FieldDefaults;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ResetovanjeSifreDto {
-    Integer ppid;
-    String staraSifra;
-    String sifra;
-    String ponovljenjaSifra;
+  Integer ppid;
+  String staraSifra;
+  String sifra;
+  String ponovljenjaSifra;
 }

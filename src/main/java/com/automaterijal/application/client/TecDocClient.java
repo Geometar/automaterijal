@@ -8,7 +8,6 @@ import com.automaterijal.application.tecdoc.ArticlesByIds6Record;
 import com.automaterijal.application.tecdoc.ArticlesByIds6Response;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +48,7 @@ public class TecDocClient {
         .peek(
             stateRecord ->
                 stateRecord.setArticleNo(stateRecord.getArticleNo().replaceAll("\\s+", "")))
-        .collect(Collectors.toList());
+        .toList();
   }
 
   /** Servis za vracanje detalja artikala, poput dokumenata, OE brojeva, atributa */

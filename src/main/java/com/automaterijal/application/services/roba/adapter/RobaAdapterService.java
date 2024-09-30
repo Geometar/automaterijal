@@ -1,5 +1,7 @@
 package com.automaterijal.application.services.roba.adapter;
 
+import static com.automaterijal.db.tables.Roba.ROBA;
+
 import com.automaterijal.application.domain.dto.DashboardDto;
 import com.automaterijal.application.domain.dto.MagacinDto;
 import com.automaterijal.application.domain.dto.RobaDto;
@@ -10,6 +12,9 @@ import com.automaterijal.application.domain.repository.roba.RobaJooqRepository;
 import com.automaterijal.application.services.ProizvodjacService;
 import com.automaterijal.application.services.roba.grupe.PodGrupaService;
 import com.automaterijal.application.utils.GeneralUtil;
+import java.util.*;
+import java.util.Comparator;
+import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
@@ -22,11 +27,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.Comparator;
-import java.util.*;
-import java.util.stream.Collectors;
-
-import static com.automaterijal.db.tables.Roba.ROBA;
 @Service
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -107,7 +107,7 @@ public class RobaAdapterService {
     private List<RobaDto> filtriIVratiRobu(UniverzalniParametri parametri, List<RobaDto> roba) {
         return roba.stream()
                 .filter(robaDto -> robaDto.getProizvodjac().getProid().equals(parametri.getProizvodjac()))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public MagacinDto vratiArtikleIzTecDoca(UniverzalniParametri parametri, Set<String> kataloskiBrojevi) {
@@ -152,13 +152,13 @@ public class RobaAdapterService {
                                                UniverzalniParametri parametri) {
         List<RobaDto> pronadjenaTacnaRoba = robaDtos.stream()
                 .filter(robaDto -> robaDto.getKatbr().equals(parametri.getTrazenaRec()))
-                .collect(Collectors.toList());
+                .toList();
 
         // Ako nema tačnog rezultata, traži približne
         if (pronadjenaTacnaRoba.isEmpty()) {
             pronadjenaTacnaRoba = robaDtos.stream()
                     .filter(robaDto -> robaDto.getKatbr().contains(parametri.getTrazenaRec()))
-                    .collect(Collectors.toList());
+                    .toList();
         }
 
         // Ako su pronađeni podaci

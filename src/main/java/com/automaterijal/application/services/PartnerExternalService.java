@@ -14,7 +14,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -64,13 +63,13 @@ public class PartnerExternalService {
     Partner partner = partnerService.pronadjiPartneraPoId(ppid);
     List<String> kljuceviProizvodjaca = listaProizvodjaca.stream()
         .map(b2bProizvodjac -> b2bProizvodjac.getProizvodjacKljucevi().getProid())
-        .collect(Collectors.toList());
+        .toList();
 
     // U slucaju da postoji brand id filtrirati kljuceve proizvodjaca samo da sadrzi taj ID
     if (brandID != null && tdAutomaterijalService.vratiNasProIdIzTecDoca(brandID).isPresent()) {
       String proId = tdAutomaterijalService.vratiNasProIdIzTecDoca(brandID).orElse("");
       kljuceviProizvodjaca = kljuceviProizvodjaca.stream().filter(kljuc -> kljuc.equals(proId))
-          .collect(Collectors.toList());
+          .toList();
     }
 
     Roba roba = robaService.pronadjiPoPretaziIProizvodjacima(itemNo, kljuceviProizvodjaca);

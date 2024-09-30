@@ -6,10 +6,9 @@ import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.dashboard.DashbaordGrupa;
 import com.automaterijal.application.domain.entity.dashboard.RobaDashboard;
 import com.automaterijal.application.domain.repository.RobaDashboardRepository;
-import com.automaterijal.application.services.roba.adapter.RobaAdapterService;
 import com.automaterijal.application.services.roba.RobaGlavniService;
+import com.automaterijal.application.services.roba.adapter.RobaAdapterService;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -51,14 +50,14 @@ public class DashboardService {
             return true;
           }
         })
-        .collect(Collectors.toList());
+        .toList();
   }
 
   private List<Long> vratiIzdvojenuRobu(DashbaordGrupa dashbaordGrupa) {
     return dashboardRepository.findByGrupa(dashbaordGrupa)
         .stream()
         .map(RobaDashboard::getRobaId)
-        .collect(Collectors.toList());
+        .toList();
   }
 
   public void updejtuj(Long staraRobaId, Long novaRobaiD, DashbaordGrupa dashbaordGrupa) {

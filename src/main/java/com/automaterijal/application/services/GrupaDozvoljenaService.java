@@ -5,7 +5,6 @@ import com.automaterijal.application.domain.entity.GrupaDozvoljena;
 import com.automaterijal.application.domain.repository.GrupaDozvoljenaRepository;
 import com.automaterijal.application.services.roba.grupe.GrupaService;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -21,11 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class GrupaDozvoljenaService {
 
-  @NonNull
-  final GrupaDozvoljenaRepository repository;
+  @NonNull final GrupaDozvoljenaRepository repository;
 
-  @NonNull
-  final GrupaService grupaService;
+  @NonNull final GrupaService grupaService;
 
   public List<GrupaDozvoljena> pronadjiSveDozvoljeneGrupe() {
     return repository.findAllByOrderByNaziv();
@@ -43,9 +40,10 @@ public class GrupaDozvoljenaService {
 
   public List<Grupa> vratiSveGrupeKojeNisuDozvoljene() {
     List<Grupa> grupe = grupaService.vratiSveGrupe();
-    List<String> sveDozvoljeneGrupeId = pronadjiSveDozvoljeneGrupe().stream()
-        .map(GrupaDozvoljena::getGrupaid).collect(Collectors.toList());
-    return grupe.stream().filter(grupa -> !sveDozvoljeneGrupeId.contains(grupa.getGrupaid()))
-        .collect(Collectors.toList());
+    List<String> sveDozvoljeneGrupeId =
+        pronadjiSveDozvoljeneGrupe().stream().map(GrupaDozvoljena::getGrupaid).toList();
+    return grupe.stream()
+        .filter(grupa -> !sveDozvoljeneGrupeId.contains(grupa.getGrupaid()))
+        .toList();
   }
 }

@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -131,7 +130,7 @@ public class IzvestajService {
           );
           return izvestajDto;
         })
-        .collect(Collectors.toList());
+        .toList();
   }
 
 }

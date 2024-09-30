@@ -31,20 +31,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class PartnerService {
 
-  @NonNull
-  final PartnerRepository partnerRepository;
+  @NonNull final PartnerRepository partnerRepository;
 
-  @NonNull
-  final UsersService usersService;
+  @NonNull final UsersService usersService;
 
-  @NonNull
-  final PartnerMapper mapper;
+  @NonNull final PartnerMapper mapper;
 
-  @NonNull
-  final EmailService emailService;
+  @NonNull final EmailService emailService;
 
-  public boolean promeniSifruPartnera(ResetovanjeSifreDto resetovanjeSifreDto,
-      boolean isPrvaPromena) {
+  public boolean promeniSifruPartnera(
+      ResetovanjeSifreDto resetovanjeSifreDto, boolean isPrvaPromena) {
     boolean uspesnaPromenaSifre = false;
     Optional<Partner> partnerOptinal = partnerRepository.findByPpid(resetovanjeSifreDto.getPpid());
     if (partnerOptinal.isPresent()) {
@@ -61,9 +57,7 @@ public class PartnerService {
     return uspesnaPromenaSifre;
   }
 
-  /**
-   * Servis za gde partner updejtuje informacije o sebi
-   */
+  /** Servis za gde partner updejtuje informacije o sebi */
   public PartnerDto updejtPartnera(PartnerDto partnerDto, Partner partner, PartnerAkcije akcije) {
     PartnerDto retVal = null;
     log.info("Partner {} trazio promenu {}", partner.getNaziv(), akcije);
@@ -83,8 +77,7 @@ public class PartnerService {
           emailService.posaljiPromenaInformacijaMail(partnerDto, akcije);
         }
         break;
-      case PROMENA_MEJLA:
-      case PROMENA_ADRESE:
+      case PROMENA_MEJLA, PROMENA_ADRESE:
         mapper.map(partner, partnerDto);
         retVal = mapper.map(partner);
         partnerRepository.saveAndFlush(partner);
@@ -100,7 +93,7 @@ public class PartnerService {
     PartnerDto retVal = null;
     if ((partnerDto.getStariPassword() != null || partnerDto.getNoviPassword() != null)
         && LoginStaticUtils.md5Password(partnerDto.getStariPassword())
-        .equals(partner.getUsers().getPassword())) {
+            .equals(partner.getUsers().getPassword())) {
       partnerDto.setNoviPassword(LoginStaticUtils.md5Password(partnerDto.getNoviPassword()));
       mapper.map(partner, partnerDto);
       retVal = mapper.map(partner);
@@ -123,21 +116,20 @@ public class PartnerService {
     return retVal;
   }
 
-  /**
-   * Servis za povecavanje broja logovanja korisnika
-   */
+  /** Servis za povecavanje broja logovanja korisnika */
   public void povecanPartnerovOrderCount(Partner partner) {
     Optional<Partner> partnerHibernate = partnerRepository.findById(partner.getPpid());
-    partnerHibernate.ifPresent(partnerBaza -> {
-      Users users = partnerBaza.getUsers();
-      users.setOrderCount(users.getOrderCount() + 1);
-    });
+    partnerHibernate.ifPresent(
+        partnerBaza -> {
+          Users users = partnerBaza.getUsers();
+          users.setOrderCount(users.getOrderCount() + 1);
+        });
   }
 
   public Page<PartnerLogovanjeDto> vratiLogovanjePartnera(Integer page, Integer pageSize) {
-    Page<Partner> partneri = partnerRepository.findAll(
-        PageRequest.of(page, pageSize, Sort.by(Sort.Direction.DESC, "users.lastLogin"))
-    );
+    Page<Partner> partneri =
+        partnerRepository.findAll(
+            PageRequest.of(page, pageSize, Sort.by(Sort.Direction.DESC, "users.lastLogin")));
     return partneri.map(mapper::mapLogovanje);
   }
 

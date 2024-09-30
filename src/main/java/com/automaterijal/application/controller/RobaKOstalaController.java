@@ -8,6 +8,9 @@ import com.automaterijal.application.services.LogWebService;
 import com.automaterijal.application.services.roba.RobaGlavniService;
 import com.automaterijal.application.utils.PartnerSpringBeanUtils;
 import com.automaterijal.application.utils.RobaSpringBeanUtils;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -17,11 +20,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/kategorije")
@@ -44,7 +42,7 @@ public class RobaKOstalaController {
 
     @GetMapping
     public List<String> vratiSveKategorije() {
-        return Arrays.stream(RobaKategorije.values()).map(RobaKategorije::name).collect(Collectors.toList());
+        return Arrays.stream(RobaKategorije.values()).map(RobaKategorije::name).toList();
     }
 
     @GetMapping(value = "/{kategorija}")

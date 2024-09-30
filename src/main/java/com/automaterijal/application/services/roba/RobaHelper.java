@@ -10,16 +10,15 @@ import com.automaterijal.application.domain.entity.tecdoc.TecDocAtributi;
 import com.automaterijal.application.services.GrupaDozvoljenaService;
 import com.automaterijal.application.services.SlikeService;
 import com.automaterijal.application.services.TecDocService;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -37,16 +36,17 @@ public class RobaHelper {
 
     public void setujZaTabelu(List<RobaDto> robaDtos,
                               Partner partner) {
-        List<Long> listaRobeId = robaDtos.stream().map(RobaDto::getRobaid).collect(Collectors.toList());
+        List<Long> listaRobeId = robaDtos.stream().map(RobaDto::getRobaid).toList();
         List<TecDocAtributi> tecDocAtributiSvi = tecDocService.vratiTecDocAtributePrekoRobeIds(
                 listaRobeId);
 
         List<String> dozvoljeneGrupeKljucevi = grupaDozvoljenaService.pronadjiSveDozvoljeneGrupe()
                 .stream()
                 .map(GrupaDozvoljena::getGrupaid)
-                .collect(Collectors.toList());
+                .toList();
 
         List<RobaCene> robaCene = robaCeneService.pronadjiCeneZaRobuBatch(listaRobeId);
+
 
         robaDtos.forEach(robaDto -> {
             List<TecDocAtributi> tecDocAtributi = tecDocAtributiSvi.stream()
@@ -92,7 +92,7 @@ public class RobaHelper {
         }
 
         if (tehnickiOpisi.size() > 5) {
-            robaDto.setTehnickiOpis(tehnickiOpisi.stream().limit(4).collect(Collectors.toList()));
+            robaDto.setTehnickiOpis(tehnickiOpisi.stream().limit(4).toList());
         } else {
             robaDto.setTehnickiOpis(tehnickiOpisi);
         }

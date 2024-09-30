@@ -9,7 +9,6 @@ import com.automaterijal.db.tables.records.FirmaRecord;
 import com.automaterijal.db.tables.records.KomentarRecord;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.jooq.DSLContext;
 import org.jooq.SelectConditionStep;
 import org.jooq.SelectWhereStep;
@@ -55,8 +54,7 @@ public class IzvestajJooqRepository {
       select.and(KOMENTAR.PPID.eq(komercijalista));
     }
     select.orderBy(KOMENTAR.DATUM_KREIRANJA.desc());
-    List<Komentar> komentari =
-        select.fetch().stream().map(this::napraviKomentar).collect(Collectors.toList());
+    List<Komentar> komentari = select.fetch().stream().map(this::napraviKomentar).toList();
     int start = pageable.getPageSize() * pageable.getPageNumber();
     int end = Math.min((start + pageable.getPageSize()), komentari.size());
     List<Komentar> retVal = komentari.subList(start, end);
@@ -71,7 +69,7 @@ public class IzvestajJooqRepository {
         .fetch()
         .stream()
         .map(FirmaRecord::getId)
-        .collect(Collectors.toList());
+        .toList();
   }
 
   private Komentar napraviKomentar(KomentarRecord komentarRecord) {

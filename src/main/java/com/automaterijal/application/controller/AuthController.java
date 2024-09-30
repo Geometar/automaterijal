@@ -6,9 +6,8 @@ import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.model.CurrentUser;
 import com.automaterijal.application.services.PartnerService;
 import com.automaterijal.application.utils.JwtUtils;
-import java.util.List;
-import java.util.stream.Collectors;
 import jakarta.validation.Valid;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,43 +30,38 @@ import org.springframework.web.server.ResponseStatusException;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-  @Autowired
-  AuthenticationManager authenticationManager;
+  @Autowired AuthenticationManager authenticationManager;
 
-  @Autowired
-  PartnerService partnerService;
+  @Autowired PartnerService partnerService;
 
-  @Autowired
-  PasswordEncoder encoder;
+  @Autowired PasswordEncoder encoder;
 
-  @Autowired
-  JwtUtils jwtUtils;
+  @Autowired JwtUtils jwtUtils;
 
   @PostMapping("/signin")
-  public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequestDto loginRequest) {
+  public ResponseEntity<JwtResponse> authenticateUser(
+      @Valid @RequestBody LoginRequestDto loginRequest) {
     Authentication authentication;
     try {
-      authentication = authenticationManager.authenticate(
-          new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),
-              loginRequest.getPassword()));
+      authentication =
+          authenticationManager.authenticate(
+              new UsernamePasswordAuthenticationToken(
+                  loginRequest.getUsername(), loginRequest.getPassword()));
 
     } catch (AuthenticationException ex) {
-      throw new ResponseStatusException(
-              HttpStatus.BAD_REQUEST, "Los zahtev");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Los zahtev");
     }
 
     SecurityContextHolder.getContext().setAuthentication(authentication);
     String jwt = jwtUtils.generateJwtToken(authentication);
 
     CurrentUser userDetails = (CurrentUser) authentication.getPrincipal();
-    List<String> roles = userDetails.getAuthorities().stream()
-        .map(GrantedAuthority::getAuthority)
-        .collect(Collectors.toList());
+    List<String> roles =
+        userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
     Partner partner = partnerService.pronadjiPartneraPoId(userDetails.getId());
-    return ResponseEntity.ok(new JwtResponse(jwt,
-        userDetails.getId(),
-        userDetails.getUsername(),
-        partner.getEmail(),
-        roles));
+
+    return ResponseEntity.ok(
+        new JwtResponse(
+            jwt, userDetails.getId(), userDetails.getUsername(), partner.getEmail(), roles));
   }
 }

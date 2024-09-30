@@ -1,6 +1,5 @@
 package com.automaterijal.application.domain.entity.komercijalista.izvestaj;
 
-
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
@@ -13,23 +12,17 @@ import java.time.LocalDateTime;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Komentar {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  Long id;
 
-    @Column
-    String komentar;
+  @Column String komentar;
 
-    @Column
-    Long firma;
+  @Column Long firma;
 
-    @Column
-    LocalDateTime datumKreiranja;
+  @Column LocalDateTime datumKreiranja;
 
-    @Column
-    LocalDateTime podsetnik;
+  @Column LocalDateTime podsetnik;
 
-    @Column
-    Integer ppid;
+  @Column Integer ppid;
 }
-

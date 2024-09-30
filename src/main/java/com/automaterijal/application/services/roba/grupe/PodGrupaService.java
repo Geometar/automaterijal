@@ -26,33 +26,28 @@ import org.springframework.transaction.annotation.Transactional;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PodGrupaService {
 
-  @NonNull
-  final PodGrupaRepository podGrupaRepository;
+  @NonNull final PodGrupaRepository podGrupaRepository;
 
-  @NonNull
-  final PodrgrupaMapper mapper;
+  @NonNull final PodrgrupaMapper mapper;
 
   public static final String SVE = "SVE KATEGORIJE";
   public static final String NEBITNA_GRUPA = "ZZZ";
 
   public List<PodgrupaDto> vratiSvePodgrupeZaKljuceve(Set<Integer> podgrupe) {
-    return podGrupaRepository.findByPodGrupaIdIn(podgrupe)
-        .stream()
-        .map(mapper::map)
-        .collect(Collectors.toList());
+    return podGrupaRepository.findByPodGrupaIdIn(podgrupe).stream().map(mapper::map).toList();
   }
 
   public List<String> vratiSveGrupeNazive() {
-    Set<String> podGrupe = podGrupaRepository.findAll()
-        .stream()
-        .map(PodGrupa::getNaziv)
-        .filter(StringUtils::isNotBlank)
-        .filter(naziv -> !naziv.equals("0"))
-        .map(String::trim)
-        .map(String::toUpperCase)
-        .collect(Collectors.toSet());
-    List<String> grupeSortirano = new ArrayList<>(podGrupe).stream().sorted()
-        .collect(Collectors.toList());
+    Set<String> podGrupe =
+        podGrupaRepository.findAll().stream()
+            .map(PodGrupa::getNaziv)
+            .filter(StringUtils::isNotBlank)
+            .filter(naziv -> !naziv.equals("0"))
+            .map(String::trim)
+            .map(String::toUpperCase)
+            .collect(Collectors.toSet());
+    List<String> grupeSortirano =
+        new ArrayList<>(podGrupe).stream().sorted().collect(Collectors.toList());
     grupeSortirano.add(0, SVE);
     return grupeSortirano;
   }
@@ -62,9 +57,7 @@ public class PodGrupaService {
   }
 
   public List<PodGrupa> vratiSvePodGrupePoNazivu(String naziv) {
-    return podGrupaRepository.findByNazivLike(naziv)
-        .stream()
-        .collect(Collectors.toList());
+    return podGrupaRepository.findByNazivLike(naziv).stream().toList();
   }
 
   public List<PodGrupa> vratiSvePodGrupePoNazivima(List<String> nazivi) {
@@ -73,41 +66,46 @@ public class PodGrupaService {
 
   public List<PodGrupa> vratiSvePodGrupePoGrupi(String grupaId) {
     return podGrupaRepository.findByGrupaId(grupaId).stream()
-        .filter(podGrupa -> !podGrupa.getNaziv().isEmpty()).collect(Collectors.toList());
+        .filter(podGrupa -> !podGrupa.getNaziv().isEmpty())
+        .toList();
   }
 
-  /**
-   * Metoda za popunjavanje svih grupa u zavisnosti od kriterijuma
-   */
-  public void popuniPodgrupe(MagacinDto magacinDto, UniverzalniParametri parametri,
-      List<RobaDto> roba) {
+  /** Metoda za popunjavanje svih grupa u zavisnosti od kriterijuma */
+  public void popuniPodgrupe(
+      MagacinDto magacinDto, UniverzalniParametri parametri, List<RobaDto> roba) {
     List<PodgrupaDto> podgrupaDtos;
     if (parametri.getTrazenaRec() == null && parametri.getProizvodjac() == null) {
       if (parametri.getRobaKategorije() == null) {
-        podgrupaDtos = podGrupaRepository.findAll().stream()
-            .filter(podGrupa -> StringUtils.isNotBlank(podGrupa.getNaziv()))
-            .map(mapper::map)
-            .collect(Collectors.toList());
+        podgrupaDtos =
+            podGrupaRepository.findAll().stream()
+                .filter(podGrupa -> StringUtils.isNotBlank(podGrupa.getNaziv()))
+                .map(mapper::map)
+                .toList();
       } else {
-        podgrupaDtos = podGrupaRepository.findByPodGrupaIdIn(
-                parametri.getPodGrupe().stream().map(PodGrupa::getPodGrupaId)
-                    .collect(Collectors.toList()))
-            .stream()
-            .filter(podGrupa -> StringUtils.isNotBlank(podGrupa.getNaziv()))
-            .map(mapper::map)
-            .collect(Collectors.toList());
+        podgrupaDtos =
+            podGrupaRepository
+                .findByPodGrupaIdIn(
+                    parametri.getPodGrupe().stream().map(PodGrupa::getPodGrupaId).toList())
+                .stream()
+                .filter(podGrupa -> StringUtils.isNotBlank(podGrupa.getNaziv()))
+                .map(mapper::map)
+                .toList();
       }
     } else {
-      Set<Integer> sviKljucevi = roba.stream().map(RobaDto::getPodGrupa)
-          .collect(Collectors.toSet());
+      Set<Integer> sviKljucevi =
+          roba.stream().map(RobaDto::getPodGrupa).collect(Collectors.toSet());
       podgrupaDtos = vratiSvePodgrupeZaKljuceve(sviKljucevi);
     }
 
     popuniSveNazivePodgrupa(roba, podgrupaDtos);
-    Set<String> podGrupe = podgrupaDtos.stream().map(PodgrupaDto::getNaziv).map(String::trim)
-        .map(String::toUpperCase).collect(Collectors.toSet());
-    List<String> sveGrupe = new ArrayList<>(podGrupe).stream().sorted()
-        .collect(Collectors.toList());
+    Set<String> podGrupe =
+        podgrupaDtos.stream()
+            .map(PodgrupaDto::getNaziv)
+            .map(String::trim)
+            .map(String::toUpperCase)
+            .collect(Collectors.toSet());
+    List<String> sveGrupe =
+        new ArrayList<>(podGrupe).stream().sorted().collect(Collectors.toList());
 
     sveGrupe.add(0, PodGrupaService.SVE);
     magacinDto.setPodgrupe(sveGrupe);
@@ -115,16 +113,19 @@ public class PodGrupaService {
 
   private void popuniSveNazivePodgrupa(List<RobaDto> robaDtos, List<PodgrupaDto> podgrupaDtos) {
     for (RobaDto roba : robaDtos) {
-      podgrupaDtos.stream().filter(
-              podgrupa -> podgrupa.getId().intValue() == roba.getPodGrupa()
-                  || roba.getPodGrupa() == 0)
-          .findFirst().ifPresent(podgrupa -> {
-            if (roba.getPodGrupa() != 0) {
-              roba.setPodGrupaNaziv(podgrupa.getNaziv());
-            } else {
-              roba.setPodGrupaNaziv(NEBITNA_GRUPA);
-            }
-          });
+      podgrupaDtos.stream()
+          .filter(
+              podgrupa ->
+                  podgrupa.getId().intValue() == roba.getPodGrupa() || roba.getPodGrupa() == 0)
+          .findFirst()
+          .ifPresent(
+              podgrupa -> {
+                if (roba.getPodGrupa() != 0) {
+                  roba.setPodGrupaNaziv(podgrupa.getNaziv());
+                } else {
+                  roba.setPodGrupaNaziv(NEBITNA_GRUPA);
+                }
+              });
     }
   }
 

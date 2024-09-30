@@ -4,19 +4,18 @@ import com.automaterijal.application.domain.constants.TecDocProizvodjaci;
 import com.automaterijal.application.domain.dto.MagacinDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
-import com.automaterijal.application.services.roba.adapter.RobaAdapterService;
 import com.automaterijal.application.services.TecDocService;
 import com.automaterijal.application.services.roba.RobaHelper;
+import com.automaterijal.application.services.roba.adapter.RobaAdapterService;
 import com.automaterijal.application.tecdoc.ArticleDirectSearchAllNumbersWithStateRecord;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -45,7 +44,6 @@ public class PretragaSaFilteromStrategija implements PretragaRobeStrategija {
     private MagacinDto logikaZaMagacinSaTrazenomRecju(UniverzalniParametri parametri) {
         // Priprema stringova za pretragu: sa tačnom rečju i bez razmaka
         String pregragaPoTacnojReciLike = parametri.getTrazenaRec() + "%";
-        String trazenaRecLike = parametri.getTrazenaRec().replaceAll("\\s+", "") + "%";
 
         final Set<String> kataloskiBrojevi = new HashSet<>();
         Set<Long> robaId = new HashSet<>();

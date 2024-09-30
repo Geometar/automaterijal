@@ -9,12 +9,17 @@ import com.automaterijal.application.domain.entity.PodGrupa;
 import com.automaterijal.application.domain.entity.roba.Roba;
 import com.automaterijal.application.domain.mapper.RobaMapper;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
-import com.automaterijal.application.services.roba.adapter.RobaAdapterService;
 import com.automaterijal.application.services.ProizvodjacService;
 import com.automaterijal.application.services.TecDocService;
 import com.automaterijal.application.services.roba.RobaHelper;
 import com.automaterijal.application.services.roba.RobaService;
+import com.automaterijal.application.services.roba.adapter.RobaAdapterService;
 import com.automaterijal.application.services.roba.grupe.PodGrupaService;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -22,12 +27,6 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -106,7 +105,7 @@ public class PretragaBezFilteraStrategija implements PretragaRobeStrategija {
             List<PodGrupa> podGrupaList = parametri.getPodgrupaZaPretragu() != null
                     ? parametri.getPodGrupe().stream()
                     .filter(podGrupa -> podGrupa.getNaziv().equals(parametri.getPodgrupaZaPretragu()))
-                    .collect(Collectors.toList())
+                    .toList()
                     : parametri.getPodGrupe();
 
             return jooqRepository.pronadjiSvuRobuPoPodgrupama(podGrupaList, naStanju, pageable);
@@ -117,7 +116,7 @@ public class PretragaBezFilteraStrategija implements PretragaRobeStrategija {
     }
 
     private List<RobaDto> mapirajRobu(Page<Roba> roba) {
-        return roba.stream().map(mapper::map).collect(Collectors.toList());
+        return roba.stream().map(mapper::map).toList();
     }
 
     private void postaviPodgrupuINaziv(List<RobaDto> dto) {
@@ -136,12 +135,12 @@ public class PretragaBezFilteraStrategija implements PretragaRobeStrategija {
         Set<String> podGrupeSet = new HashSet<>();
         if (!parametri.getPodGrupe().isEmpty()) {
             List<String> podGrupe = parametri.getPodGrupe().stream().map(PodGrupa::getNaziv)
-                    .collect(Collectors.toList());
+                    .toList();
             podGrupeSet = podGrupaService.vratiSvePodGrupePoNazivima(podGrupe).stream()
                     .map(PodGrupa::getNaziv).map(String::toUpperCase).collect(Collectors.toSet());
         } else {
             podGrupaService.vratiSvePodGrupePoGrupi(parametri.getGrupa());
         }
-        return new ArrayList<>(podGrupeSet).stream().sorted().collect(Collectors.toList());
+        return new ArrayList<>(podGrupeSet).stream().sorted().toList();
     }
 }
