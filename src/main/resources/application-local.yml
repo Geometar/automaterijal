@@ -1,5 +1,15 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/automate_orders?autoReconnect=true&useSSL=false&serverTimezone=Europe/Amsterdam
+    url: jdbc:mysql://localhost:3306/automate_orders?useUnicode=true&characterEncoding=utf8&autoReconnect=true&useSSL=false&serverTimezone=Europe/Amsterdam
     username: root
     password: Crninovembar18!
+
+
+# Putanje za slike proizvoda
+roba:
+  slika:
+    tdPrefix: "/Users/radespasojevic/Documents/Rade/Automaterijal/tecdoc/slike/"
+
+logging:
+  level:
+    root: ERROR

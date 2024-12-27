@@ -43,7 +43,12 @@ public class TecDocClient {
     ArticleDirectSearchAllNumbersWithStateResponse result =
         vratiOdgovor(request, ArticleDirectSearchAllNumbersWithStateResponse.class);
     List<ArticleDirectSearchAllNumbersWithStateRecord> data =
-        extractListFromResponse(result, response -> response.getData().getArray());
+        extractListFromResponse(
+            result,
+            response ->
+                response != null && response.getData() != null
+                    ? response.getData().getArray()
+                    : List.of());
     return data.stream()
         .peek(
             stateRecord ->
@@ -71,7 +76,12 @@ public class TecDocClient {
     request.put("getDirectArticlesByIds6", body);
 
     ArticlesByIds6Response result = vratiOdgovor(request, ArticlesByIds6Response.class);
-    return extractListFromResponse(result, response -> response.getData().getArray());
+    return extractListFromResponse(
+        result,
+        response ->
+            response != null && response.getData() != null
+                ? response.getData().getArray()
+                : List.of());
   }
 
   /** Vracanje TecDoc brendova i njihovih slika */
@@ -81,7 +91,12 @@ public class TecDocClient {
     request.put("getAmBrands", body);
 
     AmBrandsResponse result = vratiOdgovor(request, AmBrandsResponse.class);
-    return extractListFromResponse(result, response -> response.getData().getArray());
+    return extractListFromResponse(
+        result,
+        response ->
+            response != null && response.getData() != null
+                ? response.getData().getArray()
+                : List.of());
   }
 
   /** Setovanje standardnjih parametara poziva */

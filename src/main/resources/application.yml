@@ -4,12 +4,14 @@ server:
 # Spring konfiguracija
 spring:
   # Datasource i JPA postavke
-  datasource:
-    jpa:
-      show-sql: true
+  jpa:
+    show-sql: true
+    hibernate:
       ddl-auto: none
-      properties.hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
-      driver-class-name: com.mysql.cj.jdbc.Driver
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+    open-in-view: false
 
   # Isključenje automatske Spring Security konfiguracije
   autoconfigure:
@@ -18,10 +20,6 @@ spring:
   # JOOQ postavke
   jooq:
     sql-dialect: MYSQL
-
-  # JPA konfiguracije
-  jpa:
-    open-in-view: false
 
   # Liquibase postavke
   liquibase:
@@ -47,11 +45,6 @@ spring:
 schedule:
   izvestaj:
     podsetnik: 0 0 6 * * *
-
-# Putanje za slike proizvoda
-roba:
-  slika:
-    tdPrefix: "/home/ftpuser/automaterijal/misc/tecdoc/slike/"
 
 # JWT konfiguracija
 automaterijal:
