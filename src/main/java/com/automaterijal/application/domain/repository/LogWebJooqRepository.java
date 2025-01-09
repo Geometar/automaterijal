@@ -7,6 +7,7 @@ import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.db.tables.records.LogWebRecord;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.List;
 import org.jooq.DSLContext;
 import org.jooq.SelectConditionStep;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class LogWebJooqRepository {
   @Autowired
   DSLContext dslContext;
 
-  public boolean daLiJeVecUBaziLog(Partner partner, String proizvodjac, String filter,
+  public boolean daLiJeVecUBaziLog(Partner partner, String proizvodjac, List<String> filter,
       String pretraga, LocalDateTime datumDanas) {
     SelectConditionStep<LogWebRecord> logWebRecords = dslContext.selectFrom(LOG_WEB)
         .where(LOG_WEB.PPID.eq(partner.getPpid()));
@@ -31,7 +32,7 @@ public class LogWebJooqRepository {
       logWebRecords.and(LOG_WEB.PRETRAGA.eq(pretraga));
     }
     if (filter != null) {
-      logWebRecords.and(LOG_WEB.FILTER.eq(filter));
+      logWebRecords.and(LOG_WEB.FILTER.in(filter));
     }
     return !logWebRecords.fetch().isEmpty();
   }

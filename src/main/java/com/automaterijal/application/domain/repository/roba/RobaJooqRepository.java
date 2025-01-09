@@ -22,7 +22,6 @@ import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.StringUtils;
 
 @Repository
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -104,37 +103,6 @@ public class RobaJooqRepository {
     }
 
     CriteriaBuilder criteriaBuilder = CriteriaBuilder.init();
-
-    // Group or Subgroup search condition
-    if (parametri.getRobaKategorije() != null) {
-      boolean isGrupaPretraga = parametri.getRobaKategorije().isGrupaPretraga();
-      boolean isPodgrupaPretraga = parametri.getRobaKategorije().isPodgrupaPretraga();
-
-      criteriaBuilder.addConditionIfTrue(
-          isGrupaPretraga, ROBA.GRUPAID.in(parametri.getRobaKategorije().getFieldName()));
-
-      criteriaBuilder.addConditionIfTrue(
-          isPodgrupaPretraga,
-          ROBA.PODGRUPAID.in(
-              parametri.getPodGrupe().stream().map(PodGrupa::getPodGrupaId).toList()));
-    }
-
-    // Manufacturer condition
-    criteriaBuilder.addConditionIfNotEmpty(
-        parametri.getProizvodjac(), ROBA.PROID.eq(parametri.getProizvodjac()));
-
-    // Subgroup search condition
-    if (StringUtils.hasText(parametri.getPodgrupaZaPretragu())) {
-      List<Integer> podgrupeZaPretraguIds =
-          parametri.getPodGrupe().stream()
-              .filter(
-                  podGrupa ->
-                      podGrupa.getNaziv().equalsIgnoreCase(parametri.getPodgrupaZaPretragu()))
-              .map(PodGrupa::getPodGrupaId)
-              .toList();
-      criteriaBuilder.addConditionIfNotEmpty(
-          podgrupeZaPretraguIds, ROBA.PODGRUPAID.in(podgrupeZaPretraguIds));
-    }
 
     // Stock condition
     criteriaBuilder.addConditionIfTrue(

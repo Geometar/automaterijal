@@ -1,6 +1,5 @@
 package com.automaterijal.application.utils;
 
-
 import com.automaterijal.application.domain.constants.RobaKategorije;
 import com.automaterijal.application.domain.entity.PodGrupa;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
@@ -26,10 +25,8 @@ import org.springframework.util.StringUtils;
 @Slf4j
 public class RobaSpringBeanUtils {
 
-  @NonNull
-  GrupaService grupaService;
-  @NonNull
-  PodGrupaService podGrupaService;
+  @NonNull GrupaService grupaService;
+  @NonNull PodGrupaService podGrupaService;
 
   public UniverzalniParametri popuniIVratiGenerickeParametreZaServis(
       Optional<Integer> page,
@@ -37,23 +34,27 @@ public class RobaSpringBeanUtils {
       Optional<String> proizvodjac,
       Optional<Boolean> naStanju,
       Optional<String> searchTerm,
-      Optional<String> grupa,
-      RobaKategorije robaKategorije
-  ) {
+      List<String> grupe,
+      RobaKategorije robaKategorije) {
     Integer iPage = page.orElse(0);
     Integer iPageSize = pageSize.orElse(10);
-    String iProizvodjac = proizvodjac.filter(StringUtils::hasText)
-        .filter(naziv -> !naziv.equals("Svi proizvodjači")).map(String::toString).orElse(null);
+    String iProizvodjac =
+        proizvodjac.filter(StringUtils::hasText).map(String::toString).orElse(null);
     Boolean iNaStanju = naStanju.orElse(false);
-    String iGrupa = grupa.filter(StringUtils::hasText).map(String::toUpperCase)
-        .filter(naziv -> !naziv.equals("SVE KATEGORIJE")).map(String::toString).orElse(null);
-    String iSearchTerm = searchTerm.filter(StringUtils::hasText)
-        .map(trazenaRec -> trazenaRec.trim().toUpperCase())
-        .map(GeneralUtil::cyrillicToLatinic)
-        .orElse(null);
+    List<String> iGrupe =
+        grupe != null
+            ? grupe.stream().map(String::toUpperCase).map(String::toString).toList()
+            : new ArrayList<>();
 
-    return popuniParametreZaServis(iPage, iPageSize, iProizvodjac, iNaStanju, iGrupa, iSearchTerm,
-        robaKategorije);
+    String iSearchTerm =
+        searchTerm
+            .filter(StringUtils::hasText)
+            .map(trazenaRec -> trazenaRec.trim().toUpperCase())
+            .map(GeneralUtil::cyrillicToLatinic)
+            .orElse(null);
+
+    return popuniParametreZaServis(
+        iPage, iPageSize, iProizvodjac, iNaStanju, iGrupe, iSearchTerm, robaKategorije);
   }
 
   private UniverzalniParametri popuniParametreZaServis(
@@ -61,7 +62,7 @@ public class RobaSpringBeanUtils {
       Integer internalPageSize,
       String internalProizvodjac,
       Boolean internalNaStanju,
-      String internaGrupa,
+      List<String> internaGrupe,
       String internalSearchTerm,
       RobaKategorije robaKategorije) {
     UniverzalniParametri up = new UniverzalniParametri();
@@ -70,13 +71,13 @@ public class RobaSpringBeanUtils {
     up.setProizvodjac(internalProizvodjac);
     up.setNaStanju(internalNaStanju);
     up.setTrazenaRec(internalSearchTerm);
-    up.setPodgrupaZaPretragu(internaGrupa);
+    up.setPodgrupeZaPretragu(internaGrupe);
     if (robaKategorije != null) {
       if (robaKategorije.isPodgrupaPretraga()) {
         up.setPodGrupe(pronadjiSvePodGrupeUZavisnostiOdVrste(robaKategorije.getFieldName()));
       } else {
-        up.setGrupa(robaKategorije.getFieldName().get(0));
-        up.setPodGrupe(podGrupaService.vratiSvePodGrupePoGrupi(up.getGrupa()));
+        up.setGrupa(List.of(robaKategorije.getFieldName().get(0)));
+        up.setPodGrupe(podGrupaService.vratiSvePodGrupePoGrupeIn(up.getGrupa()));
       }
       up.setRobaKategorije(robaKategorije);
     } else {

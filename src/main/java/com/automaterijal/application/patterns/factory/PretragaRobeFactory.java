@@ -15,17 +15,18 @@ import org.springframework.stereotype.Component;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PretragaRobeFactory {
 
+  @NonNull PretragaBezFilteraStrategija pretragaBezFiltera;
+  @NonNull PretragaSaFilteromStrategija pretragaSaFilterom;
 
-    @NonNull PretragaBezFilteraStrategija pretragaBezFiltera;
-    @NonNull PretragaSaFilteromStrategija pretragaSaFilterom;
-
-    // Biranje strategije na osnovu parametara pretrage
-    public PretragaRobeStrategija getPretragaStrategija(UniverzalniParametri parametri) {
-        if (parametri.getTrazenaRec() == null && parametri.getProizvodjac() == null
-                && parametri.getGrupa() == null && parametri.getPodgrupaZaPretragu() == null) {
-            return pretragaBezFiltera;
-        } else {
-            return pretragaSaFilterom;
-        }
+  // Biranje strategije na osnovu parametara pretrage
+  public PretragaRobeStrategija getPretragaStrategija(UniverzalniParametri parametri) {
+    if (parametri.getTrazenaRec() == null
+        && parametri.getProizvodjac() == null
+        && parametri.getGrupa() == null
+        && parametri.getPodgrupeZaPretragu() == null) {
+      return pretragaBezFiltera;
+    } else {
+      return pretragaSaFilterom;
     }
+  }
 }

@@ -34,113 +34,115 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class PretragaBezFilteraStrategija implements PretragaRobeStrategija {
 
-    @NonNull
-    final RobaService robaService;
-    @NonNull
-    final RobaAdapterService jooqRepository;
-    @NonNull
-    final ProizvodjacService proizvodjacService;
-    @NonNull
-    final PodGrupaService podGrupaService;
-    @NonNull
-    final RobaMapper mapper;
-    @NonNull
-    final TecDocService tecDocService;
-    @NonNull
-    final RobaHelper robaHelper;
+  @NonNull final RobaService robaService;
+  @NonNull final RobaAdapterService jooqRepository;
+  @NonNull final ProizvodjacService proizvodjacService;
+  @NonNull final PodGrupaService podGrupaService;
+  @NonNull final RobaMapper mapper;
+  @NonNull final TecDocService tecDocService;
+  @NonNull final RobaHelper robaHelper;
 
-    @Override
-    public MagacinDto pretrazi(UniverzalniParametri parametri, Partner ulogovaniPartner) {
-        var magacinDto = new MagacinDto();
-        var pageable = PageRequest.of(
-                parametri.getPage(), parametri.getPageSize(),
-                Sort.by(Sort.Direction.DESC, RobaSortiranjePolja.STANJE.getFieldName())
-        );
+  @Override
+  public MagacinDto pretrazi(UniverzalniParametri parametri, Partner ulogovaniPartner) {
+    var magacinDto = new MagacinDto();
+    var pageable =
+        PageRequest.of(
+            parametri.getPage(),
+            parametri.getPageSize(),
+            Sort.by(Sort.Direction.DESC, RobaSortiranjePolja.STANJE.getFieldName()));
 
-        Page<RobaDto> robaDto = vratiSvuRobuUZavisnostiOdTrazenogStanja(parametri, pageable,
-                ulogovaniPartner);
-        if (parametri.getRobaKategorije() == null) {
-            magacinDto.setPodgrupe(podGrupaService.vratiSveGrupeNazive());
-        } else if (parametri.getRobaKategorije() != null) {
-            magacinDto.setPodgrupe(vratiSvePodgrupePoNazivu(parametri));
-        }
-        magacinDto.setProizvodjaci(proizvodjacService.pronadjiSveProizvodjaceZaVrstu(parametri));
-        magacinDto.setRobaDto(robaDto);
+    Page<RobaDto> robaDto =
+        vratiSvuRobuUZavisnostiOdTrazenogStanja(parametri, pageable, ulogovaniPartner);
+    if (parametri.getRobaKategorije() == null) {
+      magacinDto.setPodgrupe(podGrupaService.vratiSveGrupeNazive());
+    } else if (parametri.getRobaKategorije() != null) {
+      magacinDto.setPodgrupe(vratiSvePodgrupePoNazivu(parametri));
+    }
+    magacinDto.setProizvodjaci(proizvodjacService.pronadjiSveProizvodjaceZaVrstu(parametri));
+    magacinDto.setRobaDto(robaDto);
 
-        return magacinDto;
+    return magacinDto;
+  }
+
+  private Page<RobaDto> vratiSvuRobuUZavisnostiOdTrazenogStanja(
+      UniverzalniParametri parametri, Pageable pageable, Partner ulogovaniPartner) {
+    Page<Roba> roba = pronadjiRobu(parametri, pageable);
+
+    if (roba == null) {
+      log.error("Ne definisana roba!");
+      return Page.empty();
     }
 
-    private Page<RobaDto> vratiSvuRobuUZavisnostiOdTrazenogStanja(UniverzalniParametri parametri,
-                                                                  Pageable pageable, Partner ulogovaniPartner) {
-        Page<Roba> roba = pronadjiRobu(parametri, pageable);
+    List<RobaDto> dto = mapirajRobu(roba);
+    tecDocService.batchVracanjeICuvanjeTDAtributa(dto);
+    postaviPodgrupuINaziv(dto);
+    robaHelper.setujZaTabelu(dto, ulogovaniPartner);
 
-        if (roba == null) {
-            log.error("Ne definisana roba!");
-            return Page.empty();
-        }
+    return new PageImpl<>(dto, roba.getPageable(), roba.getTotalElements());
+  }
 
-        List<RobaDto> dto = mapirajRobu(roba);
-        tecDocService.batchVracanjeICuvanjeTDAtributa(dto);
-        postaviPodgrupuINaziv(dto);
-        robaHelper.setujZaTabelu(dto, ulogovaniPartner);
+  private Page<Roba> pronadjiRobu(UniverzalniParametri parametri, Pageable pageable) {
+    boolean naStanju = parametri.isNaStanju();
 
-        return new PageImpl<>(dto, roba.getPageable(), roba.getTotalElements());
+    // Return all items if no category is set
+    if (parametri.getRobaKategorije() == null) {
+      return robaService.pronadjiSvuRobu(naStanju, pageable);
     }
 
-    private Page<Roba> pronadjiRobu(UniverzalniParametri parametri, Pageable pageable) {
-        boolean naStanju = parametri.isNaStanju();
-
-        // Return all items if no category is set
-        if (parametri.getRobaKategorije() == null) {
-            return robaService.pronadjiSvuRobu(naStanju, pageable);
-        }
-
-        // Search by group ID if it's a group search
-        if (parametri.getRobaKategorije().isGrupaPretraga()) {
-            return robaService.pronadjiSvuRobuPoGrupiIdNaStanju(parametri.getRobaKategorije().getFieldName(), naStanju, pageable);
-        }
-
-        // Search by sub-group if it's a sub-group search
-        if (parametri.getRobaKategorije().isPodgrupaPretraga()) {
-            List<PodGrupa> podGrupaList = parametri.getPodgrupaZaPretragu() != null
-                    ? parametri.getPodGrupe().stream()
-                    .filter(podGrupa -> podGrupa.getNaziv().equals(parametri.getPodgrupaZaPretragu()))
-                    .toList()
-                    : parametri.getPodGrupe();
-
-            return jooqRepository.pronadjiSvuRobuPoPodgrupama(podGrupaList, naStanju, pageable);
-        }
-
-        // Return null if none of the above conditions match
-        return null;
+    // Search by group ID if it's a group search
+    if (parametri.getRobaKategorije().isGrupaPretraga()) {
+      return robaService.pronadjiSvuRobuPoGrupiIdNaStanju(
+          parametri.getRobaKategorije().getFieldName(), naStanju, pageable);
     }
 
-    private List<RobaDto> mapirajRobu(Page<Roba> roba) {
-        return roba.stream().map(mapper::map).toList();
+    // Search by sub-group if it's a sub-group search
+    if (parametri.getRobaKategorije().isPodgrupaPretraga()) {
+      List<PodGrupa> podGrupaList =
+          parametri.getPodgrupeZaPretragu() != null
+              ? parametri.getPodGrupe().stream()
+                  .filter(
+                      podGrupa ->
+                          parametri.getPodgrupeZaPretragu().stream()
+                              .noneMatch(value -> value.equals(podGrupa.getNaziv())))
+                  .toList()
+              : parametri.getPodGrupe();
+
+      return jooqRepository.pronadjiSvuRobuPoPodgrupama(podGrupaList, naStanju, pageable);
     }
 
-    private void postaviPodgrupuINaziv(List<RobaDto> dto) {
-        List<PodgrupaDto> podgrupaDtos = podGrupaService.vratiSvePodgrupeZaKljuceve(
-                dto.stream().map(RobaDto::getPodGrupa).collect(Collectors.toSet()));
+    // Return null if none of the above conditions match
+    return null;
+  }
 
-        dto.forEach(robaDto ->
-                podgrupaDtos.stream()
-                        .filter(podgrupaDto -> podgrupaDto.getId() == robaDto.getPodGrupa())
-                        .findAny()
-                        .ifPresent(podgrupaDto -> robaDto.setPodGrupaNaziv(podgrupaDto.getNaziv()))
-        );
-    }
+  private List<RobaDto> mapirajRobu(Page<Roba> roba) {
+    return roba.stream().map(mapper::map).toList();
+  }
 
-    private List<String> vratiSvePodgrupePoNazivu(UniverzalniParametri parametri) {
-        Set<String> podGrupeSet = new HashSet<>();
-        if (!parametri.getPodGrupe().isEmpty()) {
-            List<String> podGrupe = parametri.getPodGrupe().stream().map(PodGrupa::getNaziv)
-                    .toList();
-            podGrupeSet = podGrupaService.vratiSvePodGrupePoNazivima(podGrupe).stream()
-                    .map(PodGrupa::getNaziv).map(String::toUpperCase).collect(Collectors.toSet());
-        } else {
-            podGrupaService.vratiSvePodGrupePoGrupi(parametri.getGrupa());
-        }
-        return new ArrayList<>(podGrupeSet).stream().sorted().toList();
+  private void postaviPodgrupuINaziv(List<RobaDto> dto) {
+    List<PodgrupaDto> podgrupaDtos =
+        podGrupaService.vratiSvePodgrupeZaKljuceve(
+            dto.stream().map(RobaDto::getPodGrupa).collect(Collectors.toSet()));
+
+    dto.forEach(
+        robaDto ->
+            podgrupaDtos.stream()
+                .filter(podgrupaDto -> podgrupaDto.getId() == robaDto.getPodGrupa())
+                .findAny()
+                .ifPresent(podgrupaDto -> robaDto.setPodGrupaNaziv(podgrupaDto.getNaziv())));
+  }
+
+  private List<String> vratiSvePodgrupePoNazivu(UniverzalniParametri parametri) {
+    Set<String> podGrupeSet = new HashSet<>();
+    if (!parametri.getPodGrupe().isEmpty()) {
+      List<String> podGrupe = parametri.getPodGrupe().stream().map(PodGrupa::getNaziv).toList();
+      podGrupeSet =
+          podGrupaService.vratiSvePodGrupePoNazivima(podGrupe).stream()
+              .map(PodGrupa::getNaziv)
+              .map(String::toUpperCase)
+              .collect(Collectors.toSet());
+    } else {
+      podGrupaService.vratiSvePodGrupePoGrupeIn(parametri.getGrupa());
     }
+    return new ArrayList<>(podGrupeSet).stream().sorted().toList();
+  }
 }

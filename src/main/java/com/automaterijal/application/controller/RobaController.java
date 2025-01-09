@@ -9,6 +9,7 @@ import com.automaterijal.application.services.roba.RobaGlavniService;
 import com.automaterijal.application.services.roba.RobaTekstService;
 import com.automaterijal.application.utils.PartnerSpringBeanUtils;
 import com.automaterijal.application.utils.RobaSpringBeanUtils;
+import java.util.List;
 import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.NonNull;
@@ -54,13 +55,13 @@ public class RobaController {
       @RequestParam(required = false) Optional<Integer> pageSize,
       @RequestParam(required = false) Optional<String> proizvodjac,
       @RequestParam(required = false) Optional<Boolean> naStanju,
-      @RequestParam(required = false) Optional<String> grupa,
+      @RequestParam(required = false) List<String> grupe,
       @RequestParam(required = false) Optional<String> searchTerm,
       Authentication authentication
   ) {
 
     var univerzalniParametri = robaSpringBeanUtils.popuniIVratiGenerickeParametreZaServis(
-        page, pageSize, proizvodjac, naStanju, searchTerm, grupa, null
+        page, pageSize, proizvodjac, naStanju, searchTerm, grupe, null
     );
     var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
     logWebService.log(uPartner, univerzalniParametri.getGrupa(),

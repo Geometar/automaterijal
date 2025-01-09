@@ -31,13 +31,11 @@ public class ProizvodjacService {
   @NonNull final ProizvodjacRepository proizvodjacRepository;
   @NonNull final RobaService robaService;
 
-  static final String SVI_PROIZVODJACI = "Svi proizvodjači";
-
   /** Popunjavanje proizvodjaca u zavistosti od kriterijuma */
   public void popuniProizvodjace(
       List<RobaDto> robaDtos, MagacinDto magacinDto, UniverzalniParametri parametri) {
     List<Proizvodjac> proizvodjaci;
-    if (parametri.getPodgrupaZaPretragu() == null && parametri.getTrazenaRec() == null) {
+    if (parametri.getPodgrupeZaPretragu() == null && parametri.getTrazenaRec() == null) {
       proizvodjaci = pronadjiSveProizvodjaceZaVrstu(parametri);
     } else {
       Set<String> proizKljuc =
@@ -59,7 +57,6 @@ public class ProizvodjacService {
             .ifPresent(proizvodjac -> proizvodjaci.add(0, proizvodjac));
       }
     }
-    proizvodjaci.add(0, new Proizvodjac("-99", SVI_PROIZVODJACI));
     magacinDto.setProizvodjaci(proizvodjaci);
   }
 

@@ -9,7 +9,3 @@ spring:
 roba:
   slika:
     tdPrefix: "/Users/radespasojevic/Documents/Rade/Automaterijal/tecdoc/slike/"
-
-logging:
-  level:
-    root: ERROR

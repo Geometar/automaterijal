@@ -17,8 +17,8 @@ public class UniverzalniParametri {
   String proizvodjac;
   boolean naStanju;
   String trazenaRec;
-  String grupa;
-  String podgrupaZaPretragu;
+  List<String> grupa;
+  List<String> podgrupeZaPretragu;
   RobaKategorije robaKategorije;
   List<PodGrupa> podGrupe;
   List<ArticleDirectSearchAllNumbersWithStateRecord> kesiranDirectArticleSearch;

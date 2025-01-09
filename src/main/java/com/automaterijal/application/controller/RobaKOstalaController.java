@@ -8,6 +8,7 @@ import com.automaterijal.application.services.LogWebService;
 import com.automaterijal.application.services.roba.RobaGlavniService;
 import com.automaterijal.application.utils.PartnerSpringBeanUtils;
 import com.automaterijal.application.utils.RobaSpringBeanUtils;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -28,54 +29,60 @@ import org.springframework.web.bind.annotation.*;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RobaKOstalaController {
 
-    @NonNull
-    final PartnerSpringBeanUtils partnerSpringBeanUtils;
+  @NonNull final PartnerSpringBeanUtils partnerSpringBeanUtils;
 
-    @NonNull
-    final RobaSpringBeanUtils robaSpringBeanUtils;
+  @NonNull final RobaSpringBeanUtils robaSpringBeanUtils;
 
-    @NonNull
-    final RobaGlavniService robaGlavniService;
+  @NonNull final RobaGlavniService robaGlavniService;
 
-    @NonNull
-    final LogWebService logWebService;
+  @NonNull final LogWebService logWebService;
 
-    @GetMapping
-    public List<String> vratiSveKategorije() {
-        return Arrays.stream(RobaKategorije.values()).map(RobaKategorije::name).toList();
+  @GetMapping
+  public List<String> vratiSveKategorije() {
+    return Arrays.stream(RobaKategorije.values()).map(RobaKategorije::name).toList();
+  }
+
+  @GetMapping(value = "/{kategorija}")
+  public ResponseEntity<MagacinDto> vratiRobuIzKategorije(
+      @PathVariable("kategorija") String nazivKategorije,
+      @RequestParam(required = false) Optional<Integer> page,
+      @RequestParam(required = false) Optional<Integer> pageSize,
+      @RequestParam(required = false) Optional<String> proizvodjac,
+      @RequestParam(required = false) Optional<Boolean> naStanju,
+      @RequestParam(required = false) Optional<String> searchTerm,
+      @RequestParam(required = false) Optional<String> grupa,
+      Authentication authentication) {
+    RobaKategorije kategorija =
+        RobaKategorije.pronadjiPoNazivu(nazivKategorije.replace(" ", "_").toUpperCase());
+    UniverzalniParametri univerzalniParametri =
+        robaSpringBeanUtils.popuniIVratiGenerickeParametreZaServis(
+            page,
+            pageSize,
+            proizvodjac,
+            naStanju,
+            searchTerm,
+            grupa.map(List::of).orElse(new ArrayList<>()),
+            kategorija);
+    Partner uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+
+    logWebService.log(
+        uPartner,
+        List.of(kategorija.getFieldName().get(0)),
+        univerzalniParametri.getProizvodjac(),
+        univerzalniParametri.getTrazenaRec());
+    MagacinDto magacinDto =
+        robaGlavniService.pronadjiRobuPoPretrazi(univerzalniParametri, uPartner);
+
+    if (!CollectionUtils.isEmpty(magacinDto.getRobaDto().getContent())) {
+      return ResponseEntity.ok().headers(createHeaders(uPartner)).body(magacinDto);
     }
+    return ResponseEntity.notFound().headers(createHeaders(uPartner)).build();
+  }
 
-    @GetMapping(value = "/{kategorija}")
-    public ResponseEntity<MagacinDto> vratiRobuIzKategorije(
-            @PathVariable("kategorija") String nazivKategorije,
-            @RequestParam(required = false) Optional<Integer> page,
-            @RequestParam(required = false) Optional<Integer> pageSize,
-            @RequestParam(required = false) Optional<String> proizvodjac,
-            @RequestParam(required = false) Optional<Boolean> naStanju,
-            @RequestParam(required = false) Optional<String> searchTerm,
-            @RequestParam(required = false) Optional<String> grupa,
-            Authentication authentication
-    ) {
-        RobaKategorije kategorija = RobaKategorije.pronadjiPoNazivu(nazivKategorije.replace(" ", "_").toUpperCase());
-        UniverzalniParametri univerzalniParametri = robaSpringBeanUtils.popuniIVratiGenerickeParametreZaServis(page, pageSize, proizvodjac, naStanju, searchTerm, grupa, kategorija);
-        Partner uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
-
-
-        logWebService.log(uPartner, kategorija.getFieldName().get(0), univerzalniParametri.getProizvodjac(), univerzalniParametri.getTrazenaRec());
-        MagacinDto magacinDto = robaGlavniService.pronadjiRobuPoPretrazi(
-                univerzalniParametri, uPartner
-        );
-
-        if (!CollectionUtils.isEmpty(magacinDto.getRobaDto().getContent())) {
-            return ResponseEntity.ok().headers(createHeaders(uPartner)).body(magacinDto);
-        }
-        return ResponseEntity.notFound().headers(createHeaders(uPartner)).build();
-    }
-
-    private HttpHeaders createHeaders(Partner partner) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("AuthenticatedUser", partner != null ? "true" : "false");
-        headers.add("Access-Control-Expose-Headers", "AuthenticatedUser");
-        return headers;
-    }
+  private HttpHeaders createHeaders(Partner partner) {
+    HttpHeaders headers = new HttpHeaders();
+    headers.add("AuthenticatedUser", partner != null ? "true" : "false");
+    headers.add("Access-Control-Expose-Headers", "AuthenticatedUser");
+    return headers;
+  }
 }

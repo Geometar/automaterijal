@@ -29,8 +29,6 @@ public class PodGrupaService {
   @NonNull final PodGrupaRepository podGrupaRepository;
 
   @NonNull final PodrgrupaMapper mapper;
-
-  public static final String SVE = "SVE KATEGORIJE";
   public static final String NEBITNA_GRUPA = "ZZZ";
 
   public List<PodgrupaDto> vratiSvePodgrupeZaKljuceve(Set<Integer> podgrupe) {
@@ -46,10 +44,7 @@ public class PodGrupaService {
             .map(String::trim)
             .map(String::toUpperCase)
             .collect(Collectors.toSet());
-    List<String> grupeSortirano =
-        new ArrayList<>(podGrupe).stream().sorted().collect(Collectors.toList());
-    grupeSortirano.add(0, SVE);
-    return grupeSortirano;
+    return new ArrayList<>(podGrupe).stream().sorted().toList();
   }
 
   public List<PodGrupa> vratiSvePodgrupe() {
@@ -66,6 +61,12 @@ public class PodGrupaService {
 
   public List<PodGrupa> vratiSvePodGrupePoGrupi(String grupaId) {
     return podGrupaRepository.findByGrupaId(grupaId).stream()
+        .filter(podGrupa -> !podGrupa.getNaziv().isEmpty())
+        .toList();
+  }
+
+  public List<PodGrupa> vratiSvePodGrupePoGrupeIn(List<String> grupaId) {
+    return podGrupaRepository.findByGrupaIdIn(grupaId).stream()
         .filter(podGrupa -> !podGrupa.getNaziv().isEmpty())
         .toList();
   }
@@ -104,11 +105,7 @@ public class PodGrupaService {
             .map(String::trim)
             .map(String::toUpperCase)
             .collect(Collectors.toSet());
-    List<String> sveGrupe =
-        new ArrayList<>(podGrupe).stream().sorted().collect(Collectors.toList());
-
-    sveGrupe.add(0, PodGrupaService.SVE);
-    magacinDto.setPodgrupe(sveGrupe);
+    magacinDto.setPodgrupe(new ArrayList<>(podGrupe).stream().sorted().toList());
   }
 
   private void popuniSveNazivePodgrupa(List<RobaDto> robaDtos, List<PodgrupaDto> podgrupaDtos) {
