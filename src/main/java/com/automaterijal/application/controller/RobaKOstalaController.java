@@ -47,7 +47,7 @@ public class RobaKOstalaController {
       @PathVariable("kategorija") String nazivKategorije,
       @RequestParam(required = false) Optional<Integer> page,
       @RequestParam(required = false) Optional<Integer> pageSize,
-      @RequestParam(required = false) Optional<String> proizvodjac,
+      @RequestParam(required = false) List<String> proizvodjaci,
       @RequestParam(required = false) Optional<Boolean> naStanju,
       @RequestParam(required = false) Optional<String> searchTerm,
       @RequestParam(required = false) Optional<String> grupa,
@@ -58,7 +58,7 @@ public class RobaKOstalaController {
         robaSpringBeanUtils.popuniIVratiGenerickeParametreZaServis(
             page,
             pageSize,
-            proizvodjac,
+            proizvodjaci,
             naStanju,
             searchTerm,
             grupa.map(List::of).orElse(new ArrayList<>()),

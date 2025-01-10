@@ -69,7 +69,7 @@ public class RobaAdapterService {
     podGrupaService.popuniPodgrupe(magacinDto, parametri, roba);
     proizvodjacService.popuniProizvodjace(roba, magacinDto, parametri);
     if (parametri.getProizvodjac() != null && parametri.getGrupa() != null) {
-      roba = filtriIVratiRobu(parametri, roba);
+      roba = robaFilterPoParametrima(parametri, roba);
     }
 
     if (parametri.getRobaKategorije() == null) {
@@ -103,12 +103,16 @@ public class RobaAdapterService {
         .collect(Collectors.toList());
   }
 
-  private List<RobaDto> filtriIVratiRobu(UniverzalniParametri parametri, List<RobaDto> roba) {
-    if (parametri.getProizvodjac() != null) {
+  private List<RobaDto> robaFilterPoParametrima(
+      UniverzalniParametri parametri, List<RobaDto> roba) {
+    if (parametri.getProizvodjac() != null && !parametri.getProizvodjac().isEmpty()) {
       roba =
           roba.stream()
               .filter(
-                  robaDto -> robaDto.getProizvodjac().getProid().equals(parametri.getProizvodjac()))
+                  robaDto ->
+                      parametri.getProizvodjac().stream()
+                          .anyMatch(
+                              value -> value.equalsIgnoreCase(robaDto.getProizvodjac().getProid())))
               .toList();
     }
 
@@ -161,7 +165,7 @@ public class RobaAdapterService {
     if (parametri.getProizvodjac() != null
         || parametri.getGrupa() != null
         || parametri.getPodgrupeZaPretragu() != null) {
-      allRoba = filtriIVratiRobu(parametri, allRoba);
+      allRoba = robaFilterPoParametrima(parametri, allRoba);
     }
 
     // Sortiraj robu po grupi ako kategorija nije zadana

@@ -14,7 +14,7 @@ public class UniverzalniParametri {
 
   Integer page;
   Integer pageSize;
-  String proizvodjac;
+  List<String> proizvodjac;
   boolean naStanju;
   String trazenaRec;
   List<String> grupa;

@@ -31,15 +31,17 @@ public class RobaSpringBeanUtils {
   public UniverzalniParametri popuniIVratiGenerickeParametreZaServis(
       Optional<Integer> page,
       Optional<Integer> pageSize,
-      Optional<String> proizvodjac,
+      List<String> proizvodjac,
       Optional<Boolean> naStanju,
       Optional<String> searchTerm,
       List<String> grupe,
       RobaKategorije robaKategorije) {
     Integer iPage = page.orElse(0);
     Integer iPageSize = pageSize.orElse(10);
-    String iProizvodjac =
-        proizvodjac.filter(StringUtils::hasText).map(String::toString).orElse(null);
+    List<String> iProizvodjac =
+        proizvodjac != null
+            ? proizvodjac.stream().map(String::toUpperCase).map(String::toString).toList()
+            : new ArrayList<>();
     Boolean iNaStanju = naStanju.orElse(false);
     List<String> iGrupe =
         grupe != null
@@ -60,7 +62,7 @@ public class RobaSpringBeanUtils {
   private UniverzalniParametri popuniParametreZaServis(
       Integer internalPage,
       Integer internalPageSize,
-      String internalProizvodjac,
+      List<String> internalProizvodjac,
       Boolean internalNaStanju,
       List<String> internaGrupe,
       String internalSearchTerm,

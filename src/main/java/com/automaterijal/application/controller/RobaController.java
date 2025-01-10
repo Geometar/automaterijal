@@ -38,46 +38,43 @@ import org.springframework.web.server.ResponseStatusException;
 @Slf4j
 public class RobaController {
 
-  @NonNull
-  final RobaGlavniService robaGlavniService;
-  @NonNull
-  final RobaTekstService robaTekstService;
-  @NonNull
-  final PartnerSpringBeanUtils partnerSpringBeanUtils;
-  @NonNull
-  final RobaSpringBeanUtils robaSpringBeanUtils;
-  @NonNull
-  final LogWebService logWebService;
+  @NonNull final RobaGlavniService robaGlavniService;
+  @NonNull final RobaTekstService robaTekstService;
+  @NonNull final PartnerSpringBeanUtils partnerSpringBeanUtils;
+  @NonNull final RobaSpringBeanUtils robaSpringBeanUtils;
+  @NonNull final LogWebService logWebService;
 
   @GetMapping
   public ResponseEntity<MagacinDto> pronadjiSvuRobu(
       @RequestParam(required = false) Optional<Integer> page,
       @RequestParam(required = false) Optional<Integer> pageSize,
-      @RequestParam(required = false) Optional<String> proizvodjac,
+      @RequestParam(required = false) List<String> proizvodjaci,
       @RequestParam(required = false) Optional<Boolean> naStanju,
       @RequestParam(required = false) List<String> grupe,
       @RequestParam(required = false) Optional<String> searchTerm,
-      Authentication authentication
-  ) {
+      Authentication authentication) {
 
-    var univerzalniParametri = robaSpringBeanUtils.popuniIVratiGenerickeParametreZaServis(
-        page, pageSize, proizvodjac, naStanju, searchTerm, grupe, null
-    );
+    var univerzalniParametri =
+        robaSpringBeanUtils.popuniIVratiGenerickeParametreZaServis(
+            page, pageSize, proizvodjaci, naStanju, searchTerm, grupe, null);
     var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
-    logWebService.log(uPartner, univerzalniParametri.getGrupa(),
-        univerzalniParametri.getProizvodjac(), univerzalniParametri.getTrazenaRec());
-    MagacinDto magacinDto = robaGlavniService.pronadjiRobuPoPretrazi(
-        univerzalniParametri, uPartner
-    );
+    logWebService.log(
+        uPartner,
+        univerzalniParametri.getGrupa(),
+        univerzalniParametri.getProizvodjac(),
+        univerzalniParametri.getTrazenaRec());
+    MagacinDto magacinDto =
+        robaGlavniService.pronadjiRobuPoPretrazi(univerzalniParametri, uPartner);
 
     return ResponseEntity.ok().headers(createHeaders(uPartner)).body(magacinDto);
   }
 
   @GetMapping(value = "/{robaID}")
-  public ResponseEntity<RobaDetaljiDto> vratiRobuPojedinacno(@PathVariable("robaID") Long robaId,
-      Authentication authentication) {
+  public ResponseEntity<RobaDetaljiDto> vratiRobuPojedinacno(
+      @PathVariable("robaID") Long robaId, Authentication authentication) {
     var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
-    return robaGlavniService.pronadjiRobuPoRobaId(robaId, uPartner)
+    return robaGlavniService
+        .pronadjiRobuPoRobaId(robaId, uPartner)
         .map(ResponseEntity::ok)
         .orElse(ResponseEntity.notFound().build());
   }

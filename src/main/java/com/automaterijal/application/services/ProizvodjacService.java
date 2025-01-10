@@ -50,11 +50,15 @@ public class ProizvodjacService {
     if (parametri.getProizvodjac() != null) {
       boolean trazeniProizvodjacPostoji =
           proizvodjaci.stream()
-              .anyMatch(proizvodjac -> proizvodjac.getProid().equals(parametri.getProizvodjac()));
+              .anyMatch(
+                  proizvodjac ->
+                      parametri.getProizvodjac().stream()
+                          .anyMatch(value -> value.equals(proizvodjac.getProid())));
+
       if (!trazeniProizvodjacPostoji) {
         proizvodjacRepository
-            .findById(parametri.getProizvodjac())
-            .ifPresent(proizvodjac -> proizvodjaci.add(0, proizvodjac));
+            .findByProidIn(parametri.getProizvodjac())
+            .forEach(proizvodjaci::addFirst);
       }
     }
     magacinDto.setProizvodjaci(proizvodjaci);

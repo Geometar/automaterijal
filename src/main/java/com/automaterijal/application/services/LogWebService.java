@@ -29,7 +29,7 @@ public class LogWebService {
   @NonNull final LogWebJooqRepository logWebJooqRepository;
 
   @Async
-  public void log(Partner partner, List<String> filter, String proizvodjac, String pretraga) {
+  public void log(Partner partner, List<String> filter, List<String> proizvodjac, String pretraga) {
     if (partner == null
         || partner.getPrivilegije() > 2042
         || (filter == null && proizvodjac == null && pretraga == null)) {
@@ -50,13 +50,13 @@ public class LogWebService {
   private LogWeb napraviLog(
       Partner partner,
       List<String> filter,
-      String proizvodjac,
+      List<String> proizvodjac,
       String pretraga,
       LocalDateTime datumDanas) {
     LogWeb logWeb = new LogWeb();
     logWeb.setPpid(partner.getPpid());
     logWeb.setFilter(filter.toString());
-    logWeb.setProizvodjac(proizvodjac);
+    logWeb.setProizvodjac(proizvodjac.toString());
     logWeb.setPretraga(pretraga);
     logWeb.setVremePretrage(datumDanas);
     return logWeb;

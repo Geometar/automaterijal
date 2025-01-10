@@ -16,17 +16,20 @@ import org.springframework.stereotype.Component;
 @Component
 @Transactional
 public class LogWebJooqRepository {
- 
-  @Autowired
-  DSLContext dslContext;
 
-  public boolean daLiJeVecUBaziLog(Partner partner, String proizvodjac, List<String> filter,
-      String pretraga, LocalDateTime datumDanas) {
-    SelectConditionStep<LogWebRecord> logWebRecords = dslContext.selectFrom(LOG_WEB)
-        .where(LOG_WEB.PPID.eq(partner.getPpid()));
+  @Autowired DSLContext dslContext;
+
+  public boolean daLiJeVecUBaziLog(
+      Partner partner,
+      List<String> proizvodjac,
+      List<String> filter,
+      String pretraga,
+      LocalDateTime datumDanas) {
+    SelectConditionStep<LogWebRecord> logWebRecords =
+        dslContext.selectFrom(LOG_WEB).where(LOG_WEB.PPID.eq(partner.getPpid()));
     logWebRecords.and(LOG_WEB.VREME_PRETRAGE.eq(datumDanas));
     if (proizvodjac != null) {
-      logWebRecords.and(LOG_WEB.PROIZVODJAC.eq(proizvodjac));
+      logWebRecords.and(LOG_WEB.PROIZVODJAC.in(proizvodjac));
     }
     if (pretraga != null) {
       logWebRecords.and(LOG_WEB.PRETRAGA.eq(pretraga));
