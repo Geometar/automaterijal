@@ -28,9 +28,9 @@ public class CriteriaBuilder {
 
   // Method to add a condition if the collection is not empty (chaining)
   public CriteriaBuilder addConditionIfNotEmpty(
-      final Collection<?> collection, final Field<?> field) {
+      final Collection<?> collection, final Condition condition) {
     if (collection != null && !collection.isEmpty()) {
-      this.condition = this.condition.and(field.in(collection));
+      this.condition = this.condition.and(condition);
     }
     return this;
   }

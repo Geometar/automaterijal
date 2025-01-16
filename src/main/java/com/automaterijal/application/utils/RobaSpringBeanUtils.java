@@ -1,16 +1,10 @@
 package com.automaterijal.application.utils;
 
-import com.automaterijal.application.domain.constants.RobaKategorije;
-import com.automaterijal.application.domain.entity.PodGrupa;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
-import com.automaterijal.application.services.roba.grupe.GrupaService;
-import com.automaterijal.application.services.roba.grupe.PodGrupaService;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import lombok.AccessLevel;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
@@ -25,27 +19,28 @@ import org.springframework.util.StringUtils;
 @Slf4j
 public class RobaSpringBeanUtils {
 
-  @NonNull GrupaService grupaService;
-  @NonNull PodGrupaService podGrupaService;
-
   public UniverzalniParametri popuniIVratiGenerickeParametreZaServis(
       Optional<Integer> page,
       Optional<Integer> pageSize,
       List<String> proizvodjac,
+      List<String> mandatoryProid,
       Optional<Boolean> naStanju,
       Optional<String> searchTerm,
-      List<String> grupe,
-      RobaKategorije robaKategorije) {
+      List<String> podgrupe) {
     Integer iPage = page.orElse(0);
     Integer iPageSize = pageSize.orElse(10);
     List<String> iProizvodjac =
         proizvodjac != null
             ? proizvodjac.stream().map(String::toUpperCase).map(String::toString).toList()
             : new ArrayList<>();
+    List<String> iMProid =
+        mandatoryProid != null
+            ? mandatoryProid.stream().map(String::toUpperCase).map(String::toString).toList()
+            : new ArrayList<>();
     Boolean iNaStanju = naStanju.orElse(false);
-    List<String> iGrupe =
-        grupe != null
-            ? grupe.stream().map(String::toUpperCase).map(String::toString).toList()
+    List<String> iPodgrupe =
+        podgrupe != null
+            ? podgrupe.stream().map(String::toUpperCase).map(String::toString).toList()
             : new ArrayList<>();
 
     String iSearchTerm =
@@ -56,44 +51,25 @@ public class RobaSpringBeanUtils {
             .orElse(null);
 
     return popuniParametreZaServis(
-        iPage, iPageSize, iProizvodjac, iNaStanju, iGrupe, iSearchTerm, robaKategorije);
+        iPage, iPageSize, iProizvodjac, iMProid, iNaStanju, iPodgrupe, iSearchTerm);
   }
 
   private UniverzalniParametri popuniParametreZaServis(
       Integer internalPage,
       Integer internalPageSize,
       List<String> internalProizvodjac,
+      List<String> iMProid,
       Boolean internalNaStanju,
-      List<String> internaGrupe,
-      String internalSearchTerm,
-      RobaKategorije robaKategorije) {
+      List<String> internaPodgrupe,
+      String internalSearchTerm) {
     UniverzalniParametri up = new UniverzalniParametri();
     up.setPage(internalPage);
     up.setPageSize(internalPageSize);
     up.setProizvodjac(internalProizvodjac);
+    up.setMandatoryProid(iMProid);
     up.setNaStanju(internalNaStanju);
     up.setTrazenaRec(internalSearchTerm);
-    up.setPodgrupeZaPretragu(internaGrupe);
-    if (robaKategorije != null) {
-      if (robaKategorije.isPodgrupaPretraga()) {
-        up.setPodGrupe(pronadjiSvePodGrupeUZavisnostiOdVrste(robaKategorije.getFieldName()));
-      } else {
-        up.setGrupa(List.of(robaKategorije.getFieldName().get(0)));
-        up.setPodGrupe(podGrupaService.vratiSvePodGrupePoGrupeIn(up.getGrupa()));
-      }
-      up.setRobaKategorije(robaKategorije);
-    } else {
-      up.setPodGrupe(podGrupaService.vratiSvePodgrupe());
-    }
+    up.setPodgrupeZaPretragu(internaPodgrupe);
     return up;
-  }
-
-  // iskoristi
-  private List<PodGrupa> pronadjiSvePodGrupeUZavisnostiOdVrste(List<String> naziviPodGrupa) {
-    List<PodGrupa> podGrupe = new ArrayList<>();
-    naziviPodGrupa.stream()
-        .filter(Objects::nonNull)
-        .forEach(vrsta -> podGrupe.addAll(podGrupaService.vratiSvePodGrupePoNazivu(vrsta)));
-    return podGrupe;
   }
 }

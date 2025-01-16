@@ -1,7 +1,5 @@
 package com.automaterijal.application.domain.model;
 
-import com.automaterijal.application.domain.constants.RobaKategorije;
-import com.automaterijal.application.domain.entity.PodGrupa;
 import com.automaterijal.application.tecdoc.ArticleDirectSearchAllNumbersWithStateRecord;
 import java.util.List;
 import lombok.AccessLevel;
@@ -15,11 +13,10 @@ public class UniverzalniParametri {
   Integer page;
   Integer pageSize;
   List<String> proizvodjac;
+  List<String> mandatoryProid;
   boolean naStanju;
   String trazenaRec;
   List<String> grupa;
   List<String> podgrupeZaPretragu;
-  RobaKategorije robaKategorije;
-  List<PodGrupa> podGrupe;
   List<ArticleDirectSearchAllNumbersWithStateRecord> kesiranDirectArticleSearch;
 }

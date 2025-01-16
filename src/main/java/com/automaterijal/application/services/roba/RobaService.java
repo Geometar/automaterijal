@@ -2,6 +2,8 @@ package com.automaterijal.application.services.roba;
 
 import com.automaterijal.application.domain.entity.roba.Roba;
 import com.automaterijal.application.domain.repository.roba.RobaRepository;
+import java.util.List;
+import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -12,9 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
-
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -22,41 +21,43 @@ import java.util.Optional;
 @Slf4j
 public class RobaService {
 
-    @NonNull
-    final RobaRepository robaRepository;
+  @NonNull final RobaRepository robaRepository;
 
-    public Optional<Roba> pronadjiRobuPoPrimarnomKljucu(Long id) {
-        return robaRepository.findById(id);
+  public Optional<Roba> pronadjiRobuPoPrimarnomKljucu(Long id) {
+    return robaRepository.findById(id);
+  }
+
+  public List<Roba> pronadjiRobuPoPrimarnomKljucuBatch(List<Long> ids) {
+    return robaRepository.findByRobaidIn(ids);
+  }
+
+  public Page<Roba> pronadjiSvuRobu(boolean naStanju, Pageable pageable) {
+    if (naStanju) {
+      return robaRepository.findByStanjeGreaterThan(0, pageable);
+    } else {
+      return robaRepository.findAll(pageable);
     }
+  }
 
-    public List<Roba> pronadjiRobuPoPrimarnomKljucuBatch(List<Long> ids) {
-        return robaRepository.findByRobaidIn(ids);
+  public Page<Roba> pronadjiSvuRobuPoProizvodjacima(
+      List<String> proizvodjaci, boolean naStanju, Pageable pageable) {
+    if (naStanju) {
+      return robaRepository.findByProizvodjacProidInAndStanjeGreaterThan(proizvodjaci, 0, pageable);
+    } else {
+      return robaRepository.findByProizvodjacProidIn(proizvodjaci, pageable);
     }
+  }
 
-    public Page<Roba> pronadjiSvuRobu(boolean naStanju, Pageable pageable) {
-        if (naStanju) {
-            return robaRepository.findByStanjeGreaterThan(0, pageable);
-        } else {
-            return robaRepository.findAll(pageable);
-        }
-    }
+  public List<Roba> pronadjiSvuRobuPoPodGrupiIdListaSvaStanja(List<Integer> podGrupaId) {
+    return robaRepository.findByPodgrupaidIn(podGrupaId);
+  }
 
-    public List<Roba> pronadjiSvuRobuPoPodGrupiIdListaSvaStanja(List<Integer> podGrupaId) {
-        return robaRepository.findByPodgrupaidIn(podGrupaId);
-    }
+  public Roba pronadjiPoPretaziIProizvodjacima(String katBr, List<String> proizvodjaci) {
+    return robaRepository.findByKatbrAndProizvodjacProidInAndStanjeGreaterThan(
+        katBr, proizvodjaci, 0);
+  }
 
-    public Roba pronadjiPoPretaziIProizvodjacima(String katBr, List<String> proizvodjaci) {
-        return robaRepository.findByKatbrAndProizvodjacProidInAndStanjeGreaterThan(katBr, proizvodjaci,
-                0);
-    }
-
-    public Page<Roba> pronadjiSvuRobuPoGrupiIdNaStanju(List<String> grupaId, boolean naStanju,
-                                                       Pageable pageable) {
-        return naStanju ? robaRepository.findByGrupaidInAndStanjeGreaterThan(grupaId, 0, pageable) : robaRepository.findByGrupaidInAndStanjeGreaterThan(grupaId, -1, pageable);
-    }
-
-    public List<Roba> pronadjiRobuPoKataloskomBroju(String katBr) {
-        return robaRepository.findByKatbr(katBr);
-    }
-
+  public List<Roba> pronadjiRobuPoKataloskomBroju(String katBr) {
+    return robaRepository.findByKatbr(katBr);
+  }
 }

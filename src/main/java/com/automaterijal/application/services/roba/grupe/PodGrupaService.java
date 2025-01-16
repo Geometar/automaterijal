@@ -51,18 +51,8 @@ public class PodGrupaService {
     return podGrupaRepository.findAll();
   }
 
-  public List<PodGrupa> vratiSvePodGrupePoNazivu(String naziv) {
-    return podGrupaRepository.findByNazivLike(naziv).stream().toList();
-  }
-
   public List<PodGrupa> vratiSvePodGrupePoNazivima(List<String> nazivi) {
     return podGrupaRepository.findByNazivIn(nazivi);
-  }
-
-  public List<PodGrupa> vratiSvePodGrupePoGrupi(String grupaId) {
-    return podGrupaRepository.findByGrupaId(grupaId).stream()
-        .filter(podGrupa -> !podGrupa.getNaziv().isEmpty())
-        .toList();
   }
 
   public List<PodGrupa> vratiSvePodGrupePoGrupeIn(List<String> grupaId) {
@@ -76,22 +66,12 @@ public class PodGrupaService {
       MagacinDto magacinDto, UniverzalniParametri parametri, List<RobaDto> roba) {
     List<PodgrupaDto> podgrupaDtos;
     if (parametri.getTrazenaRec() == null && parametri.getProizvodjac() == null) {
-      if (parametri.getRobaKategorije() == null) {
-        podgrupaDtos =
-            podGrupaRepository.findAll().stream()
-                .filter(podGrupa -> StringUtils.isNotBlank(podGrupa.getNaziv()))
-                .map(mapper::map)
-                .toList();
-      } else {
-        podgrupaDtos =
-            podGrupaRepository
-                .findByPodGrupaIdIn(
-                    parametri.getPodGrupe().stream().map(PodGrupa::getPodGrupaId).toList())
-                .stream()
-                .filter(podGrupa -> StringUtils.isNotBlank(podGrupa.getNaziv()))
-                .map(mapper::map)
-                .toList();
-      }
+      podgrupaDtos =
+          podGrupaRepository.findAll().stream()
+              .filter(podGrupa -> StringUtils.isNotBlank(podGrupa.getNaziv()))
+              .map(mapper::map)
+              .toList();
+
     } else {
       Set<Integer> sviKljucevi =
           roba.stream().map(RobaDto::getPodGrupa).collect(Collectors.toSet());

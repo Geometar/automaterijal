@@ -13,14 +13,19 @@ import org.springframework.stereotype.Repository;
 public interface RobaRepository extends JpaRepository<Roba, Long> {
 
   Page<Roba> findByStanjeGreaterThan(double stanje, Pageable pageable);
-  
-  Page<Roba> findByGrupaidInAndStanjeGreaterThan(Collection<String> ids, double stanje,
-      Pageable pageable);
+
+  Page<Roba> findByProizvodjacProidInAndStanjeGreaterThan(
+      List<String> proIds, double stanje, Pageable pageable);
+
+  Page<Roba> findByProizvodjacProidIn(List<String> proIds, Pageable pageable);
+
+  Page<Roba> findByGrupaidInAndStanjeGreaterThan(
+      Collection<String> ids, double stanje, Pageable pageable);
 
   List<Roba> findByPodgrupaidIn(Collection<Integer> ids);
 
-  Roba findByKatbrAndProizvodjacProidInAndStanjeGreaterThan(String katBr, List<String> proids,
-      double stanje);
+  Roba findByKatbrAndProizvodjacProidInAndStanjeGreaterThan(
+      String katBr, List<String> proids, double stanje);
 
   List<Roba> findByKatbr(String katBr);
 
@@ -28,4 +33,3 @@ public interface RobaRepository extends JpaRepository<Roba, Long> {
 
   Page<Roba> findByRobaidIn(Set<Long> robaId, Pageable pageable);
 }
-

@@ -104,6 +104,10 @@ public class RobaJooqRepository {
 
     CriteriaBuilder criteriaBuilder = CriteriaBuilder.init();
 
+    // Manufacturer condition
+    criteriaBuilder.addConditionIfNotEmpty(
+        parametri.getMandatoryProid(), ROBA.PROID.in(parametri.getMandatoryProid()));
+
     // Stock condition
     criteriaBuilder.addConditionIfTrue(
         parametri.isNaStanju(), ROBA.STANJE.greaterThan(BigDecimal.ZERO));

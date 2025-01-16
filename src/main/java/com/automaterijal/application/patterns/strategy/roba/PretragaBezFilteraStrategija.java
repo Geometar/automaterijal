@@ -5,7 +5,6 @@ import com.automaterijal.application.domain.dto.MagacinDto;
 import com.automaterijal.application.domain.dto.PodgrupaDto;
 import com.automaterijal.application.domain.dto.RobaDto;
 import com.automaterijal.application.domain.entity.Partner;
-import com.automaterijal.application.domain.entity.PodGrupa;
 import com.automaterijal.application.domain.entity.roba.Roba;
 import com.automaterijal.application.domain.mapper.RobaMapper;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
@@ -13,12 +12,8 @@ import com.automaterijal.application.services.ProizvodjacService;
 import com.automaterijal.application.services.TecDocService;
 import com.automaterijal.application.services.roba.RobaHelper;
 import com.automaterijal.application.services.roba.RobaService;
-import com.automaterijal.application.services.roba.adapter.RobaAdapterService;
 import com.automaterijal.application.services.roba.grupe.PodGrupaService;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.NonNull;
@@ -35,7 +30,6 @@ import org.springframework.stereotype.Service;
 public class PretragaBezFilteraStrategija implements PretragaRobeStrategija {
 
   @NonNull final RobaService robaService;
-  @NonNull final RobaAdapterService jooqRepository;
   @NonNull final ProizvodjacService proizvodjacService;
   @NonNull final PodGrupaService podGrupaService;
   @NonNull final RobaMapper mapper;
@@ -53,11 +47,8 @@ public class PretragaBezFilteraStrategija implements PretragaRobeStrategija {
 
     Page<RobaDto> robaDto =
         vratiSvuRobuUZavisnostiOdTrazenogStanja(parametri, pageable, ulogovaniPartner);
-    if (parametri.getRobaKategorije() == null) {
-      magacinDto.setPodgrupe(podGrupaService.vratiSveGrupeNazive());
-    } else if (parametri.getRobaKategorije() != null) {
-      magacinDto.setPodgrupe(vratiSvePodgrupePoNazivu(parametri));
-    }
+
+    magacinDto.setPodgrupe(podGrupaService.vratiSveGrupeNazive());
     magacinDto.setProizvodjaci(proizvodjacService.pronadjiSveProizvodjaceZaVrstu(parametri));
     magacinDto.setRobaDto(robaDto);
 
@@ -84,34 +75,12 @@ public class PretragaBezFilteraStrategija implements PretragaRobeStrategija {
   private Page<Roba> pronadjiRobu(UniverzalniParametri parametri, Pageable pageable) {
     boolean naStanju = parametri.isNaStanju();
 
-    // Return all items if no category is set
-    if (parametri.getRobaKategorije() == null) {
-      return robaService.pronadjiSvuRobu(naStanju, pageable);
+    if (parametri.getMandatoryProid() != null && !parametri.getMandatoryProid().isEmpty()) {
+      return robaService.pronadjiSvuRobuPoProizvodjacima(
+          parametri.getMandatoryProid(), naStanju, pageable);
     }
 
-    // Search by group ID if it's a group search
-    if (parametri.getRobaKategorije().isGrupaPretraga()) {
-      return robaService.pronadjiSvuRobuPoGrupiIdNaStanju(
-          parametri.getRobaKategorije().getFieldName(), naStanju, pageable);
-    }
-
-    // Search by sub-group if it's a sub-group search
-    if (parametri.getRobaKategorije().isPodgrupaPretraga()) {
-      List<PodGrupa> podGrupaList =
-          parametri.getPodgrupeZaPretragu() != null
-              ? parametri.getPodGrupe().stream()
-                  .filter(
-                      podGrupa ->
-                          parametri.getPodgrupeZaPretragu().stream()
-                              .noneMatch(value -> value.equals(podGrupa.getNaziv())))
-                  .toList()
-              : parametri.getPodGrupe();
-
-      return jooqRepository.pronadjiSvuRobuPoPodgrupama(podGrupaList, naStanju, pageable);
-    }
-
-    // Return null if none of the above conditions match
-    return null;
+    return robaService.pronadjiSvuRobu(naStanju, pageable);
   }
 
   private List<RobaDto> mapirajRobu(Page<Roba> roba) {
@@ -129,20 +98,5 @@ public class PretragaBezFilteraStrategija implements PretragaRobeStrategija {
                 .filter(podgrupaDto -> podgrupaDto.getId() == robaDto.getPodGrupa())
                 .findAny()
                 .ifPresent(podgrupaDto -> robaDto.setPodGrupaNaziv(podgrupaDto.getNaziv())));
-  }
-
-  private List<String> vratiSvePodgrupePoNazivu(UniverzalniParametri parametri) {
-    Set<String> podGrupeSet = new HashSet<>();
-    if (!parametri.getPodGrupe().isEmpty()) {
-      List<String> podGrupe = parametri.getPodGrupe().stream().map(PodGrupa::getNaziv).toList();
-      podGrupeSet =
-          podGrupaService.vratiSvePodGrupePoNazivima(podGrupe).stream()
-              .map(PodGrupa::getNaziv)
-              .map(String::toUpperCase)
-              .collect(Collectors.toSet());
-    } else {
-      podGrupaService.vratiSvePodGrupePoGrupeIn(parametri.getGrupa());
-    }
-    return new ArrayList<>(podGrupeSet).stream().sorted().toList();
   }
 }

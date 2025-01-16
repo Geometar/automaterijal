@@ -66,15 +66,11 @@ public class RobaAdapterService {
     MagacinDto magacinDto = new MagacinDto();
 
     List<RobaDto> roba = robaJooqRepository.generic(parametri, DSL.noCondition());
+
     podGrupaService.popuniPodgrupe(magacinDto, parametri, roba);
     proizvodjacService.popuniProizvodjace(roba, magacinDto, parametri);
-    if (parametri.getProizvodjac() != null && parametri.getGrupa() != null) {
-      roba = robaFilterPoParametrima(parametri, roba);
-    }
-
-    if (parametri.getRobaKategorije() == null) {
-      roba = sortirajPoGrupi(roba);
-    }
+    roba = robaFilterPoParametrima(parametri, roba);
+    roba = sortirajPoGrupi(roba);
 
     magacinDto.setRobaDto(createPageable(roba, parametri.getPageSize(), parametri.getPage()));
 
@@ -162,16 +158,10 @@ public class RobaAdapterService {
     proizvodjacService.popuniProizvodjace(allRoba, magacinDto, parametri);
 
     // Primeni filtere po proizvođaču i grupi ako je potrebno
-    if (parametri.getProizvodjac() != null
-        || parametri.getGrupa() != null
-        || parametri.getPodgrupeZaPretragu() != null) {
-      allRoba = robaFilterPoParametrima(parametri, allRoba);
-    }
+    allRoba = robaFilterPoParametrima(parametri, allRoba);
 
     // Sortiraj robu po grupi ako kategorija nije zadana
-    if (parametri.getRobaKategorije() == null) {
-      allRoba = sortirajPoGrupi(allRoba);
-    }
+    allRoba = sortirajPoGrupi(allRoba);
 
     // Sortiraj robu po podgrupi
     sortirajRobuTecDocPoPodgrupi(allRoba, parametri);

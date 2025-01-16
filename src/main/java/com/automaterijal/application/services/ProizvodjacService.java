@@ -7,7 +7,6 @@ import com.automaterijal.application.domain.entity.Proizvodjac;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.domain.repository.ProizvodjacRepository;
 import com.automaterijal.application.services.roba.RobaService;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -74,18 +73,7 @@ public class ProizvodjacService {
   }
 
   public List<Proizvodjac> pronadjiSveProizvodjaceZaVrstu(UniverzalniParametri parametri) {
-    List<Proizvodjac> proizvodjaci = null;
-
-    if (parametri.getRobaKategorije() == null) {
-      proizvodjaci = pronadjiSve();
-    } else if (parametri.getRobaKategorije().isGrupaPretraga()) {
-      proizvodjaci = proizvodjaciKateogrija(parametri.getPodGrupe());
-    } else if (parametri.getRobaKategorije().isPodgrupaPretraga()) {
-      proizvodjaci = proizvodjaciKateogrija(parametri.getPodGrupe());
-    } else {
-      proizvodjaci = new ArrayList<>();
-    }
-    return proizvodjaci;
+    return pronadjiSve();
   }
 
   private List<Proizvodjac> pronadjiSve() {

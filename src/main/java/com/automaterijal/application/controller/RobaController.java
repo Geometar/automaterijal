@@ -49,14 +49,15 @@ public class RobaController {
       @RequestParam(required = false) Optional<Integer> page,
       @RequestParam(required = false) Optional<Integer> pageSize,
       @RequestParam(required = false) List<String> proizvodjaci,
+      @RequestParam(required = false) List<String> mandatoryProid,
       @RequestParam(required = false) Optional<Boolean> naStanju,
-      @RequestParam(required = false) List<String> grupe,
+      @RequestParam(required = false) List<String> podgrupe,
       @RequestParam(required = false) Optional<String> searchTerm,
       Authentication authentication) {
 
     var univerzalniParametri =
         robaSpringBeanUtils.popuniIVratiGenerickeParametreZaServis(
-            page, pageSize, proizvodjaci, naStanju, searchTerm, grupe, null);
+            page, pageSize, proizvodjaci, mandatoryProid, naStanju, searchTerm, podgrupe);
     var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
     logWebService.log(
         uPartner,
