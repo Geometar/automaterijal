@@ -23,6 +23,7 @@ public class RobaSpringBeanUtils {
       Optional<Integer> page,
       Optional<Integer> pageSize,
       List<String> proizvodjac,
+      List<String> mandatoryGrupe,
       List<String> mandatoryProid,
       Optional<Boolean> naStanju,
       Optional<String> searchTerm,
@@ -37,7 +38,14 @@ public class RobaSpringBeanUtils {
         mandatoryProid != null
             ? mandatoryProid.stream().map(String::toUpperCase).map(String::toString).toList()
             : new ArrayList<>();
+
+    List<String> IMGrrupe =
+        mandatoryGrupe != null
+            ? mandatoryGrupe.stream().map(String::toUpperCase).map(String::toString).toList()
+            : new ArrayList<>();
+
     Boolean iNaStanju = naStanju.orElse(false);
+
     List<String> iPodgrupe =
         podgrupe != null
             ? podgrupe.stream().map(String::toUpperCase).map(String::toString).toList()
@@ -51,13 +59,14 @@ public class RobaSpringBeanUtils {
             .orElse(null);
 
     return popuniParametreZaServis(
-        iPage, iPageSize, iProizvodjac, iMProid, iNaStanju, iPodgrupe, iSearchTerm);
+        iPage, iPageSize, iProizvodjac, IMGrrupe, iMProid, iNaStanju, iPodgrupe, iSearchTerm);
   }
 
   private UniverzalniParametri popuniParametreZaServis(
       Integer internalPage,
       Integer internalPageSize,
       List<String> internalProizvodjac,
+      List<String> IMGrupe,
       List<String> iMProid,
       Boolean internalNaStanju,
       List<String> internaPodgrupe,
@@ -66,6 +75,7 @@ public class RobaSpringBeanUtils {
     up.setPage(internalPage);
     up.setPageSize(internalPageSize);
     up.setProizvodjac(internalProizvodjac);
+    up.setGrupa(IMGrupe);
     up.setMandatoryProid(iMProid);
     up.setNaStanju(internalNaStanju);
     up.setTrazenaRec(internalSearchTerm);

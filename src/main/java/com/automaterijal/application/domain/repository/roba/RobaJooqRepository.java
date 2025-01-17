@@ -108,6 +108,10 @@ public class RobaJooqRepository {
     criteriaBuilder.addConditionIfNotEmpty(
         parametri.getMandatoryProid(), ROBA.PROID.in(parametri.getMandatoryProid()));
 
+    // Categories condition
+    criteriaBuilder.addConditionIfNotEmpty(
+        parametri.getGrupa(), ROBA.GRUPAID.in(parametri.getGrupa()));
+
     // Stock condition
     criteriaBuilder.addConditionIfTrue(
         parametri.isNaStanju(), ROBA.STANJE.greaterThan(BigDecimal.ZERO));
