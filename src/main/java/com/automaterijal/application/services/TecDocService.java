@@ -6,11 +6,9 @@ import com.automaterijal.application.domain.dto.RobaDto;
 import com.automaterijal.application.domain.dto.SlikaDto;
 import com.automaterijal.application.domain.entity.tecdoc.TecDocAtributi;
 import com.automaterijal.application.domain.entity.tecdoc.TecDocBrands;
-import com.automaterijal.application.domain.mapper.RobaMapper;
 import com.automaterijal.application.domain.mapper.TecDocMapper;
 import com.automaterijal.application.domain.repository.tecdoc.TecDocAtributiRepository;
 import com.automaterijal.application.domain.repository.tecdoc.TecDocBrandsRepository;
-import com.automaterijal.application.services.roba.RobaService;
 import com.automaterijal.application.tecdoc.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -37,17 +35,11 @@ public class TecDocService {
 
   @Autowired TecDocClient tecDocClient;
 
-  @Autowired RobaService robaService;
-
-  @Autowired RobaMapper robaMapper;
-
   @Autowired TecDocAtributiRepository tecDocAtributiRepository;
 
   @Autowired TecDocBrandsRepository tecDocBrandsRepository;
 
   @Autowired TecDocMapper tecDocMapper;
-
-  @Autowired SlikeService slikeService;
 
   @Value("${roba.slika.tdPrefix}")
   String putDoSlike;
@@ -112,7 +104,7 @@ public class TecDocService {
               TecDocProizvodjaci.pronadjiPoNazivu(robaDto.getProizvodjac().getProid());
           if (tdProizvodjaci != null) {
             String katBr = getKataloskiBroj(robaDto, tdProizvodjaci);
-            if (shouldFetchTecDocData(robaDto, katBr)) {
+            if (shouldFetchTecDocData(robaDto)) {
               fetchTecDocData(
                   robaDto, tdProizvodjaci, katBr, artikliBezSacuvanihPodataka, zameneKatBr);
             }
@@ -121,7 +113,7 @@ public class TecDocService {
   }
 
   // 2. Provera da li treba dohvatiti TecDoc podatke
-  private boolean shouldFetchTecDocData(RobaDto robaDto, String katBr) {
+  private boolean shouldFetchTecDocData(RobaDto robaDto) {
     List<TecDocAtributi> tecDocAtributi =
         tecDocAtributiRepository.findByRobaId(robaDto.getRobaid());
     return tecDocAtributi.isEmpty();
@@ -141,8 +133,7 @@ public class TecDocService {
       directSearch = fallbackSearch(katBr, tdProizvodjaci);
     }
 
-    processDirectSearch(
-        directSearch, katBr, tdProizvodjaci, artikliBezSacuvanihPodataka, zameneKatBr, robaDto);
+    processDirectSearch(directSearch, katBr, artikliBezSacuvanihPodataka, robaDto);
   }
 
   // 4. Fallback pretraga za TecDoc podatke
@@ -157,12 +148,10 @@ public class TecDocService {
   private void processDirectSearch(
       List<ArticleDirectSearchAllNumbersWithStateRecord> directSearch,
       String katBr,
-      TecDocProizvodjaci tdProizvodjaci,
       List<Long> artikliBezSacuvanihPodataka,
-      Map<String, String> zameneKatBr,
       RobaDto robaDto) {
     if (!directSearch.isEmpty()) {
-      Long tdArticleId = findMatchingArticleId(directSearch, katBr, tdProizvodjaci);
+      Long tdArticleId = findMatchingArticleId(directSearch, katBr);
       if (tdArticleId != null) {
         artikliBezSacuvanihPodataka.add(tdArticleId);
       }
@@ -173,9 +162,7 @@ public class TecDocService {
 
   // 6. Pronalaženje odgovarajućeg artikla
   private Long findMatchingArticleId(
-      List<ArticleDirectSearchAllNumbersWithStateRecord> directSearch,
-      String katBr,
-      TecDocProizvodjaci tdProizvodjaci) {
+      List<ArticleDirectSearchAllNumbersWithStateRecord> directSearch, String katBr) {
     return directSearch.stream()
         .filter(rekord -> daLiSeBrojeviPodudaraju(katBr, rekord.getArticleNo(), null))
         .map(ArticleDirectSearchAllNumbersWithStateRecord::getArticleId)
