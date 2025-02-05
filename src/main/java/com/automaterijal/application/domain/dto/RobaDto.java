@@ -1,11 +1,10 @@
 package com.automaterijal.application.domain.dto;
 
 import com.automaterijal.application.domain.entity.Proizvodjac;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
-
 import java.math.BigDecimal;
 import java.util.List;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Data
 @Builder
@@ -28,6 +27,5 @@ public class RobaDto {
     String dokumentSlikaId;
     byte[] dokument;
     double stanje;
-    boolean dozvoljenoZaAnonimusa;
     List<RobaTehnickiOpisDto> tehnickiOpis;
 }

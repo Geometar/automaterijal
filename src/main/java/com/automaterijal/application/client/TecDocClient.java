@@ -38,6 +38,10 @@ public class TecDocClient {
       body.put("brandId", brandId);
     }
 
+    if (numbertype == 0) {
+      body.put("searchExact", true);
+    }
+
     request.put("getArticleDirectSearchAllNumbersWithState", body);
 
     ArticleDirectSearchAllNumbersWithStateResponse result =
@@ -67,6 +71,7 @@ public class TecDocClient {
     body.put("mainArticles", true);
     body.put("basicData", true);
     body.put("thumbnails", true);
+    body.put("usageNumbers", true);
 
     JSONObject articleIds = new JSONObject();
     articleIds.put("array", robaIds);

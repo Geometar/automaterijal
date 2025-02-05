@@ -23,13 +23,12 @@ public class RobaDetaljiDto {
   String naziv;
   String tekst;
   double stanje;
-  boolean dozvoljenoZaAnonimusa;
   Double rabat;
   BigDecimal cena;
   Proizvodjac proizvodjac;
   byte[] proizvodjacLogo;
   List<RobaTehnickiOpisDto> tehnickiOpis;
-  Map<String, List<RobaBrojeviDto>> tdBrojevi;
+  List<RobaBrojeviDto> tdBrojevi;
   Map<String, List<RobaAplikacijaDto>> aplikacije;
   Map<String, List<TecDocDokumentacija>> dokumentacija;
   List<RobaDto> asociraniArtikli;

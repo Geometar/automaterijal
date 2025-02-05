@@ -102,7 +102,7 @@ public enum TecDocProizvodjaci {
   ASMET(4829, null, false),
   DON(4868, null, false),
   VA(6186, null, false),
-  HI_Q(6265, null, false),
+  HIQ(6265, null, false),
   GKN(6306, null, false),
   HIFI(6309, null, false),
   AIC(6558, null, false),
@@ -125,11 +125,6 @@ public enum TecDocProizvodjaci {
     for (TecDocProizvodjaci v : TecDocProizvodjaci.values()) {
       keyMap.put(v.getTecDocId(), v);
     }
-  }
-
-  @Override
-  public String toString() {
-    return name().replace("_", "-");
   }
 
   public static TecDocProizvodjaci pronadjiPoNazivu(String proId) {

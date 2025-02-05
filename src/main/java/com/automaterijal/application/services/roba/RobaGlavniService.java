@@ -90,8 +90,6 @@ public class RobaGlavniService {
         robaDto -> {
           robaHelper.setCenuRobeTabela(robaDto, robaCenes, partner);
           robaDto.setSlika(robaHelper.vratiSliku(robaDto.getRobaid(), robaDto.getSlika()));
-
-          robaDto.setDozvoljenoZaAnonimusa(dozvoljeneGrupeKljucevi.contains(robaDto.getGrupa()));
         });
   }
 
@@ -123,9 +121,6 @@ public class RobaGlavniService {
         grupaDozvoljenaService.pronadjiSveDozvoljeneGrupe().stream()
             .map(GrupaDozvoljena::getGrupaid)
             .toList();
-
-    detaljnoDto.setDozvoljenoZaAnonimusa(
-        !(partner == null && !dozvoljeneGrupeKljucevi.contains(detaljnoDto.getGrupa())));
 
     robaTekstService
         .pronadjiTextPoRobiId(detaljnoDto.getRobaid())
@@ -329,11 +324,7 @@ public class RobaGlavniService {
     }
 
     if (!tdBrojevi.isEmpty()) {
-      robaBrojeviMap =
-          tdBrojevi.stream().collect(Collectors.groupingBy(RobaBrojeviDto::getProizvodjac));
-    }
-    if (!robaBrojeviMap.isEmpty()) {
-      detaljiDto.setTdBrojevi(robaBrojeviMap);
+      detaljiDto.setTdBrojevi(tdBrojevi);
     }
     return tdBrojevi;
   }
@@ -352,7 +343,7 @@ public class RobaGlavniService {
       RobaTehnickiOpisDto tehnickiOpisDto = new RobaTehnickiOpisDto();
       tehnickiOpisDto.setVrednost(rekord.getAttrValue());
       tehnickiOpisDto.setOznaka(rekord.getAttrShortName());
-      tehnickiOpisDto.setJedinica(rekord.getAttrValue());
+      tehnickiOpisDto.setJedinica(rekord.getAttrUnit());
       tehnickiOpis.add(tehnickiOpisDto);
     }
 

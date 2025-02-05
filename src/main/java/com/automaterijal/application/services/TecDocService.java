@@ -16,9 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import javax.imageio.ImageIO;
 import lombok.AccessLevel;
@@ -82,31 +80,26 @@ public class TecDocService {
   //    ******************** TecDoc Logika  ********************
   public void batchVracanjeICuvanjeTDAtributa(List<RobaDto> robaDtos) {
     List<Long> artikliBezSacuvanihPodataka = new ArrayList<>();
-    Map<String, String> zameneKatBr = new HashMap<>();
 
     // Priprema podataka
-    prepareData(robaDtos, artikliBezSacuvanihPodataka, zameneKatBr);
+    prepareData(robaDtos, artikliBezSacuvanihPodataka);
 
     // Obrada artikala bez sačuvanih podataka
     if (!artikliBezSacuvanihPodataka.isEmpty()) {
-      processArtikliBezSacuvanihPodataka(artikliBezSacuvanihPodataka, robaDtos, zameneKatBr);
+      processArtikliBezSacuvanihPodataka(artikliBezSacuvanihPodataka, robaDtos);
     }
   }
 
   // 1. Priprema podataka
-  private void prepareData(
-      List<RobaDto> robaDtos,
-      List<Long> artikliBezSacuvanihPodataka,
-      Map<String, String> zameneKatBr) {
+  private void prepareData(List<RobaDto> robaDtos, List<Long> artikliBezSacuvanihPodataka) {
     robaDtos.forEach(
         robaDto -> {
           TecDocProizvodjaci tdProizvodjaci =
               TecDocProizvodjaci.pronadjiPoNazivu(robaDto.getProizvodjac().getProid());
           if (tdProizvodjaci != null) {
-            String katBr = getKataloskiBroj(robaDto, tdProizvodjaci);
+            String katBr = getKataloskiBroj(robaDto.getKatbr(), tdProizvodjaci);
             if (shouldFetchTecDocData(robaDto)) {
-              fetchTecDocData(
-                  robaDto, tdProizvodjaci, katBr, artikliBezSacuvanihPodataka, zameneKatBr);
+              fetchTecDocData(robaDto, tdProizvodjaci, katBr, artikliBezSacuvanihPodataka);
             }
           }
         });
@@ -124,8 +117,7 @@ public class TecDocService {
       RobaDto robaDto,
       TecDocProizvodjaci tdProizvodjaci,
       String katBr,
-      List<Long> artikliBezSacuvanihPodataka,
-      Map<String, String> zameneKatBr) {
+      List<Long> artikliBezSacuvanihPodataka) {
     List<ArticleDirectSearchAllNumbersWithStateRecord> directSearch =
         tecDocClient.tecDocPretraga(katBr, tdProizvodjaci.getTecDocId(), 0);
 
@@ -164,7 +156,11 @@ public class TecDocService {
   private Long findMatchingArticleId(
       List<ArticleDirectSearchAllNumbersWithStateRecord> directSearch, String katBr) {
     return directSearch.stream()
-        .filter(rekord -> daLiSeBrojeviPodudaraju(katBr, rekord.getArticleNo(), null))
+        .filter(
+            rekord ->
+                daLiSeBrojeviPodudaraju(katBr, rekord.getArticleNo(), null)
+                    || rekord.getNumberType() == 2
+                    || rekord.getNumberType() == 0)
         .map(ArticleDirectSearchAllNumbersWithStateRecord::getArticleId)
         .findFirst()
         .orElse(null);
@@ -184,25 +180,29 @@ public class TecDocService {
 
   // 8. Obrada artikala bez sačuvanih podataka
   private void processArtikliBezSacuvanihPodataka(
-      List<Long> artikliBezSacuvanihPodataka,
-      List<RobaDto> robaDtos,
-      Map<String, String> zameneKatBr) {
+      List<Long> artikliBezSacuvanihPodataka, List<RobaDto> robaDtos) {
     for (int i = 0; i < artikliBezSacuvanihPodataka.size(); i += 24) {
       List<Long> artiklId =
           artikliBezSacuvanihPodataka.subList(
               i, Math.min(i + 24, artikliBezSacuvanihPodataka.size()));
       List<ArticlesByIds6Record> detaljiArtikala = tecDocClient.vratiDetaljeArtikla(artiklId);
 
-      detaljiArtikala.forEach(detalji -> processArticleDetails(detalji, robaDtos, zameneKatBr));
+      detaljiArtikala.forEach(detalji -> processArticleDetails(detalji, robaDtos));
     }
   }
 
   // 9. Obrada detalja artikla
-  private void processArticleDetails(
-      ArticlesByIds6Record detalji, List<RobaDto> robaDtos, Map<String, String> zameneKatBr) {
+  private void processArticleDetails(ArticlesByIds6Record detalji, List<RobaDto> robaDtos) {
     if (detalji.getDirectArticle() != null) {
       ArticleDirectSearchById3Record directArticle = detalji.getDirectArticle();
-      Optional<RobaDto> dtoOptional = findMatchingRobaDto(directArticle, robaDtos, zameneKatBr);
+      List<String> alternativeManufactureNumber =
+          detalji.getUsageNumbers2() != null
+              ? detalji.getUsageNumbers2().getArray().stream()
+                  .map(UsageNumbers2Record::getUsageNumber)
+                  .toList()
+              : List.of();
+      Optional<RobaDto> dtoOptional =
+          findMatchingRobaDto(directArticle, robaDtos, alternativeManufactureNumber);
 
       dtoOptional.ifPresent(
           robaDto -> processArticleAttributesAndImages(detalji, directArticle, robaDto));
@@ -213,26 +213,28 @@ public class TecDocService {
   private Optional<RobaDto> findMatchingRobaDto(
       ArticleDirectSearchById3Record directArticle,
       List<RobaDto> robaDtos,
-      Map<String, String> zameneKatBr) {
+      List<String> alternativeManufactureNumber) {
     return robaDtos.stream()
         .filter(
             robaDto ->
                 daLiSeBrojeviPodudaraju(
-                    getKataloskiBroj(
-                        robaDto,
-                        TecDocProizvodjaci.pronadjiPoNazivu(robaDto.getProizvodjac().getProid())),
+                    robaDto.getKatbr(),
                     directArticle.getArticleNo().replace(" ", ""),
-                    null))
+                    TecDocProizvodjaci.pronadjiPoNazivu(robaDto.getProizvodjac().getProid())))
         .findFirst()
         .or(
             () ->
                 robaDtos.stream()
                     .filter(
                         robaDto ->
-                            daLiSeBrojeviPodudaraju(
-                                zameneKatBr.get(robaDto.getKatbr()),
-                                directArticle.getArticleNo(),
-                                null))
+                            alternativeManufactureNumber.stream()
+                                .anyMatch(
+                                    katBr ->
+                                        daLiSeBrojeviPodudaraju(
+                                            robaDto.getKatbr(),
+                                            katBr.replace(" ", ""),
+                                            TecDocProizvodjaci.pronadjiPoNazivu(
+                                                robaDto.getProizvodjac().getProid()))))
                     .findFirst());
   }
 
@@ -322,11 +324,11 @@ public class TecDocService {
     robaDto.setSlika(slikaDto);
   }
 
-  private String getKataloskiBroj(RobaDto robaDto, TecDocProizvodjaci tdProizvodjaci) {
+  private String getKataloskiBroj(String katBr, TecDocProizvodjaci tdProizvodjaci) {
     if (tdProizvodjaci != null && tdProizvodjaci.getDodatak() != null) {
-      return robaDto.getKatbr().replaceAll(tdProizvodjaci.getDodatak(), "");
+      return katBr.replaceAll(tdProizvodjaci.getDodatak(), "");
     }
-    return robaDto.getKatbr();
+    return katBr;
   }
 
   private boolean daLiSeBrojeviPodudaraju(

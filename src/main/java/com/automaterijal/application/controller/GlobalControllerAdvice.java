@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.connector.ClientAbortException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -15,6 +16,13 @@ import org.springframework.web.server.ResponseStatusException;
 @ControllerAdvice
 @Slf4j
 public class GlobalControllerAdvice {
+
+  @ExceptionHandler(ClientAbortException.class)
+  public ResponseEntity<String> handleClientAbortException(ClientAbortException ex) {
+    log.error("Client disconnected before response completed: ", ex);
+    return ResponseEntity.noContent().build();
+  }
+
   /** Handle UnauthorizedException globally. */
   @ExceptionHandler(ResponseStatusException.class)
   public ResponseEntity<Object> handleResponseStatusException(

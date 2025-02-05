@@ -11,25 +11,35 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 public class HttpClientConfig {
-  
+
   @Bean
   public WebClient webClient(WebClient.Builder builder) {
-    return builder.build();
+    return builder
+        .exchangeStrategies(
+            ExchangeStrategies.builder()
+                .codecs(
+                    configurer ->
+                        configurer.defaultCodecs().maxInMemorySize(10 * 1024 * 1024)) // 10MB
+                .build())
+        .build();
   }
 
   @Bean
   public RestTemplate getRestClient(RestTemplateBuilder builder) {
-    RestTemplate restClient = builder.setConnectTimeout(Duration.ofSeconds(10))
-            .setReadTimeout(Duration.ofSeconds(10)).build();
+    RestTemplate restClient =
+        builder
+            .setConnectTimeout(Duration.ofSeconds(10))
+            .setReadTimeout(Duration.ofSeconds(10))
+            .build();
 
     // Add one interceptor like in your example, except using anonymous class.
-    restClient.setInterceptors(Collections.singletonList((request, body, execution) ->
-            execution.execute(request, body)
-    ));
+    restClient.setInterceptors(
+        Collections.singletonList((request, body, execution) -> execution.execute(request, body)));
 
     return restClient;
   }

@@ -3,11 +3,9 @@ package com.automaterijal.application.services.roba;
 import com.automaterijal.application.domain.dto.RobaDto;
 import com.automaterijal.application.domain.dto.RobaTehnickiOpisDto;
 import com.automaterijal.application.domain.dto.SlikaDto;
-import com.automaterijal.application.domain.entity.GrupaDozvoljena;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.roba.RobaCene;
 import com.automaterijal.application.domain.entity.tecdoc.TecDocAtributi;
-import com.automaterijal.application.services.GrupaDozvoljenaService;
 import com.automaterijal.application.services.SlikeService;
 import com.automaterijal.application.services.TecDocService;
 import java.util.ArrayList;
@@ -27,18 +25,12 @@ public class RobaHelper {
 
   @NonNull final RobaCeneService robaCeneService;
   @NonNull final SlikeService slikeService;
-  @NonNull final GrupaDozvoljenaService grupaDozvoljenaService;
   @NonNull final TecDocService tecDocService;
 
   public void setujZaTabelu(List<RobaDto> robaDtos, Partner partner) {
     List<Long> listaRobeId = robaDtos.stream().map(RobaDto::getRobaid).toList();
     List<TecDocAtributi> tecDocAtributiSvi =
         tecDocService.vratiTecDocAtributePrekoRobeIds(listaRobeId);
-
-    List<String> dozvoljeneGrupeKljucevi =
-        grupaDozvoljenaService.pronadjiSveDozvoljeneGrupe().stream()
-            .map(GrupaDozvoljena::getGrupaid)
-            .toList();
 
     List<RobaCene> robaCene = robaCeneService.pronadjiCeneZaRobuBatch(listaRobeId);
 
@@ -52,8 +44,6 @@ public class RobaHelper {
           setupTehnickeAtributeTabela(tecDocAtributi, robaDto);
           setCenuRobeTabela(robaDto, robaCene, partner);
           robaDto.setSlika(vratiSliku(robaDto.getRobaid(), robaDto.getSlika()));
-
-          robaDto.setDozvoljenoZaAnonimusa(dozvoljeneGrupeKljucevi.contains(robaDto.getGrupa()));
         });
   }
 
