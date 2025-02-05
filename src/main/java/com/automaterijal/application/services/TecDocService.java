@@ -341,6 +341,6 @@ public class TecDocService {
     }
     katBr = katBr.replace("[-,./]", "").replace("\\s+", "").replace("-LUČ", "");
     tecDocKatBr = tecDocKatBr.replace("[-,./]", "").replace("\\s+", "");
-    return katBr.equals(tecDocKatBr);
+    return katBr.equalsIgnoreCase(tecDocKatBr);
   }
 }
