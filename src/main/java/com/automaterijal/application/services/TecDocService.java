@@ -92,13 +92,15 @@ public class TecDocService {
 
   // 1. Priprema podataka
   private void prepareData(List<RobaDto> robaDtos, List<Long> artikliBezSacuvanihPodataka) {
+    final List<TecDocAtributi> data =
+        tecDocAtributiRepository.findByRobaIdIn(robaDtos.stream().map(RobaDto::getRobaid).toList());
     robaDtos.forEach(
         robaDto -> {
           TecDocProizvodjaci tdProizvodjaci =
               TecDocProizvodjaci.pronadjiPoNazivu(robaDto.getProizvodjac().getProid());
           if (tdProizvodjaci != null) {
             String katBr = getKataloskiBroj(robaDto.getKatbr(), tdProizvodjaci);
-            if (shouldFetchTecDocData(robaDto)) {
+            if (shouldFetchTecDocData(data, robaDto.getRobaid())) {
               fetchTecDocData(robaDto, tdProizvodjaci, katBr, artikliBezSacuvanihPodataka);
             }
           }
@@ -106,10 +108,11 @@ public class TecDocService {
   }
 
   // 2. Provera da li treba dohvatiti TecDoc podatke
-  private boolean shouldFetchTecDocData(RobaDto robaDto) {
-    List<TecDocAtributi> tecDocAtributi =
-        tecDocAtributiRepository.findByRobaId(robaDto.getRobaid());
-    return tecDocAtributi.isEmpty();
+  private boolean shouldFetchTecDocData(List<TecDocAtributi> data, Long requiredRobaId) {
+    return data.stream()
+        .filter(tecDocAtributi -> tecDocAtributi.getRobaId().equals(requiredRobaId))
+        .toList()
+        .isEmpty();
   }
 
   // 3. Dohvatanje TecDoc podataka

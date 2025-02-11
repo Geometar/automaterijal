@@ -2,15 +2,11 @@ package com.automaterijal.application.services;
 
 import com.automaterijal.application.domain.dto.MagacinDto;
 import com.automaterijal.application.domain.dto.RobaDto;
-import com.automaterijal.application.domain.entity.PodGrupa;
 import com.automaterijal.application.domain.entity.Proizvodjac;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.domain.repository.ProizvodjacRepository;
 import com.automaterijal.application.services.roba.RobaService;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.NonNull;
@@ -46,7 +42,7 @@ public class ProizvodjacService {
     }
     getPopuniProizvodjaceURobi(robaDtos, proizvodjaci);
 
-    if (parametri.getProizvodjac() != null) {
+    if (parametri.getProizvodjac() != null && !parametri.getProizvodjac().isEmpty()) {
       boolean trazeniProizvodjacPostoji =
           proizvodjaci.stream()
               .anyMatch(
@@ -79,19 +75,6 @@ public class ProizvodjacService {
   private List<Proizvodjac> pronadjiSve() {
     return proizvodjacRepository.findAllByOrderByNazivAsc().stream()
         .filter(proizvodjac -> !proizvodjac.getNaziv().equals("0"))
-        .toList();
-  }
-
-  public List<Proizvodjac> proizvodjaciKateogrija(List<PodGrupa> podgrupe) {
-    Set<String> filterRoba =
-        robaService
-            .pronadjiSvuRobuPoPodGrupiIdListaSvaStanja(
-                podgrupe.stream().map(PodGrupa::getPodGrupaId).toList())
-            .stream()
-            .map(robaEnitet -> robaEnitet.getProizvodjac().getProid())
-            .collect(Collectors.toSet());
-    return proizvodjacRepository.findByProidIn(filterRoba).stream()
-        .sorted(Comparator.comparing(Proizvodjac::getNaziv))
         .toList();
   }
 

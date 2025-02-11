@@ -20,79 +20,77 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PretragaSaFilteromStrategija implements PretragaRobeStrategija {
-    @NonNull
-    final RobaAdapterService robaAdapter;
-    @NonNull
-    final TecDocService tecDocService;
-    @NonNull
-    final RobaHelper robaHelper;
+public class PretragaSaFilteromStrategija {
+  @NonNull final RobaAdapterService robaAdapter;
+  @NonNull final TecDocService tecDocService;
+  @NonNull final RobaHelper robaHelper;
 
-    @Override
-    public MagacinDto pretrazi(UniverzalniParametri parametri, Partner ulogovaniPartner) {
+  public MagacinDto pretrazi(UniverzalniParametri parametri, Partner ulogovaniPartner) {
 
-        MagacinDto magacinDto = parametri.getTrazenaRec() != null ? logikaZaMagacinSaTrazenomRecju(parametri) : robaAdapter.vratiRobuFiltriranuBezPretrage(parametri);
+    MagacinDto magacinDto =
+        parametri.getTrazenaRec() != null
+            ? logikaZaMagacinSaTrazenomRecju(parametri)
+            : robaAdapter.vratiRobuFiltriranuBezPretrage(parametri);
 
-        if (!magacinDto.getRobaDto().isEmpty()) {
-            tecDocService.batchVracanjeICuvanjeTDAtributa(magacinDto.getRobaDto().getContent());
-            robaHelper.setujZaTabelu(magacinDto.getRobaDto().getContent(), ulogovaniPartner);
-        }
-
-        return magacinDto;
+    if (!magacinDto.getRobaDto().isEmpty()) {
+      tecDocService.batchVracanjeICuvanjeTDAtributa(magacinDto.getRobaDto().getContent());
+      robaHelper.setujZaTabelu(magacinDto.getRobaDto().getContent(), ulogovaniPartner);
     }
 
-    private MagacinDto logikaZaMagacinSaTrazenomRecju(UniverzalniParametri parametri) {
-        // Priprema stringova za pretragu: sa tačnom rečju i bez razmaka
-        String pregragaPoTacnojReciLike = parametri.getTrazenaRec() + "%";
+    return magacinDto;
+  }
 
-        final Set<String> kataloskiBrojevi = new HashSet<>();
-        Set<Long> robaId = new HashSet<>();
+  private MagacinDto logikaZaMagacinSaTrazenomRecju(UniverzalniParametri parametri) {
+    final Set<String> kataloskiBrojevi = new HashSet<>();
+    Set<Long> robaId = new HashSet<>();
 
-        robaAdapter.pronadjiPoKatBroju(pregragaPoTacnojReciLike, kataloskiBrojevi, robaId, parametri);
-        if (!kataloskiBrojevi.isEmpty()) {
-            robaAdapter.pomocniKveriPoRobiOld(kataloskiBrojevi);
-            robaAdapter.pronadjiPoKatBrojuIn(kataloskiBrojevi, robaId, parametri);
-        }
-
-        // Pokusaj pretrage pomocu naziva
-        if (kataloskiBrojevi.isEmpty() && robaAdapter.pronadjiPoNazivu(parametri.getTrazenaRec(), parametri, kataloskiBrojevi, robaId)) {
-            return robaAdapter.pronadjiPoRobaId(parametri, robaId);
-        }
-
-        // Ukljucujemo tecdoc u pretragu
-        pretragaPomocuTecDoca(parametri, kataloskiBrojevi);
-
-        return robaAdapter.vratiArtikleIzTecDoca(parametri, kataloskiBrojevi);
+    robaAdapter.pronadjiPoKatBroju(kataloskiBrojevi, robaId, parametri);
+    if (!kataloskiBrojevi.isEmpty()) {
+      robaAdapter.pomocniKveriPoRobiOld(kataloskiBrojevi);
+      robaAdapter.pronadjiPoKatBrojuIn(kataloskiBrojevi, robaId);
     }
 
-    private void pretragaPomocuTecDoca(UniverzalniParametri parametri, Set<String> kataloskiBrojevi) {
+    // Pokusaj pretrage pomocu naziva
+    if (kataloskiBrojevi.isEmpty()
+        && robaAdapter.pronadjiPoNazivu(parametri, kataloskiBrojevi, robaId)) {
+      return robaAdapter.pronadjiPoRobaId(parametri, robaId);
+    }
 
-        // TecDoc pretraga na osnovu tačne reči, tip pretrage je 10 (trazimo sve)
-        List<ArticleDirectSearchAllNumbersWithStateRecord> response = tecDocService.tecDocPretragaPoTrazenojReci(
-                parametri.getTrazenaRec(), null, 10);
-        parametri.setKesiranDirectArticleSearch(response);
+    // Ukljucujemo tecdoc u pretragu
+    pretragaPomocuTecDoca(parametri, kataloskiBrojevi);
 
-        // Obrada rezultata TecDoc pretrage
-        response.forEach(rekord -> {
-            String katBr = rekord.getArticleNo();
-            // Pronalazi proizvođača na osnovu ID brenda
-            TecDocProizvodjaci tecDocProizvodjaci = TecDocProizvodjaci.pronadjiPoKljucu(
-                    rekord.getBrandNo().intValue());
-            kataloskiBrojevi.add(katBr);
+    return robaAdapter.vratiArtikleIzTecDoca(parametri, kataloskiBrojevi);
+  }
 
-            // Ako proizvođač ima dodatak, kreira se alternativni kataloški broj
-            if (tecDocProizvodjaci != null && tecDocProizvodjaci.getDodatak() != null) {
-                String alternativiKatBr;
-                if (tecDocProizvodjaci.isDodatakNaKraju()) {
-                    alternativiKatBr = katBr + tecDocProizvodjaci.getDodatak();
-                } else {
-                    alternativiKatBr = tecDocProizvodjaci.getDodatak() + katBr;
-                }
-                kataloskiBrojevi.add(alternativiKatBr);
+  private void pretragaPomocuTecDoca(UniverzalniParametri parametri, Set<String> kataloskiBrojevi) {
+
+    // TecDoc pretraga na osnovu tačne reči, tip pretrage je 10 (trazimo sve)
+    List<ArticleDirectSearchAllNumbersWithStateRecord> response =
+        tecDocService.tecDocPretragaPoTrazenojReci(parametri.getTrazenaRec(), null, 10);
+    parametri.setKesiranDirectArticleSearch(response);
+
+    // Obrada rezultata TecDoc pretrage
+    response.forEach(
+        rekord -> {
+          String katBr = rekord.getArticleNo();
+          // Pronalazi proizvođača na osnovu ID brenda
+          TecDocProizvodjaci tecDocProizvodjaci =
+              TecDocProizvodjaci.pronadjiPoKljucu(rekord.getBrandNo().intValue());
+          kataloskiBrojevi.add(katBr);
+
+          // Ako proizvođač ima dodatak, kreira se alternativni kataloški broj
+          if (tecDocProizvodjaci != null && tecDocProizvodjaci.getDodatak() != null) {
+            String alternativiKatBr;
+            if (tecDocProizvodjaci.isDodatakNaKraju()) {
+              alternativiKatBr = katBr + tecDocProizvodjaci.getDodatak();
+            } else {
+              alternativiKatBr = tecDocProizvodjaci.getDodatak() + katBr;
             }
+            kataloskiBrojevi.add(alternativiKatBr);
+          }
         });
 
-        // Dodavanje tačne tražene reči kao kataloškog broja
-        kataloskiBrojevi.add(parametri.getTrazenaRec());
-    }
+    // Dodavanje tačne tražene reči kao kataloškog broja
+    kataloskiBrojevi.add(parametri.getTrazenaRec());
+  }
 }

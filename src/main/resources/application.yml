@@ -3,6 +3,8 @@ server:
 
 # Spring konfiguracija
 spring:
+  cache:
+    type: none
   # Datasource i JPA postavke
   jpa:
     show-sql: true

@@ -6,6 +6,7 @@ import com.automaterijal.application.domain.dto.robadetalji.RobaDetaljiDto;
 import com.automaterijal.application.domain.entity.roba.Roba;
 import com.automaterijal.application.domain.entity.roba.RobaAplikacija;
 import com.automaterijal.db.tables.records.RobaRecord;
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
@@ -17,6 +18,8 @@ public interface RobaMapper {
   @Mapping(target = "grupa", source = "grupaid")
   @Mapping(target = "slika.robaSlika", source = "slika")
   RobaDto map(Roba roba);
+
+  List<RobaDto> map(List<Roba> robas);
 
   @Mapping(target = "grupa", source = "grupaid")
   @Mapping(target = "podGrupa", source = "podgrupaid")

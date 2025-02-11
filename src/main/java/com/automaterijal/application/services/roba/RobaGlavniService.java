@@ -8,7 +8,6 @@ import com.automaterijal.application.domain.dto.SlikaDto;
 import com.automaterijal.application.domain.dto.robadetalji.RobaBrojeviDto;
 import com.automaterijal.application.domain.dto.robadetalji.RobaDetaljiDto;
 import com.automaterijal.application.domain.dto.tecdoc.TecDocDokumentacija;
-import com.automaterijal.application.domain.entity.GrupaDozvoljena;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.roba.Roba;
 import com.automaterijal.application.domain.entity.roba.RobaCene;
@@ -16,8 +15,7 @@ import com.automaterijal.application.domain.entity.tecdoc.TecDocAtributi;
 import com.automaterijal.application.domain.mapper.RobaMapper;
 import com.automaterijal.application.domain.mapper.TecDocMapper;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
-import com.automaterijal.application.patterns.factory.PretragaRobeFactory;
-import com.automaterijal.application.patterns.strategy.roba.PretragaRobeStrategija;
+import com.automaterijal.application.patterns.strategy.roba.PretragaSaFilteromStrategija;
 import com.automaterijal.application.services.GrupaDozvoljenaService;
 import com.automaterijal.application.services.TecDocService;
 import com.automaterijal.application.services.roba.grupe.PodGrupaService;
@@ -46,15 +44,14 @@ public class RobaGlavniService {
   @NonNull final RobaMapper mapper;
   @NonNull final TecDocMapper tecDocMapper;
   @NonNull final TecDocService tecDocService;
-  @NonNull final PretragaRobeFactory pretragaRobeFactory;
+  @NonNull final PretragaSaFilteromStrategija pretragaSaFilteromStrategija;
   @NonNull final RobaHelper robaHelper;
 
   /** Ulazna metoda iz kontrolera */
   public MagacinDto pronadjiRobuPoPretrazi(
       UniverzalniParametri parametri, Partner ulogovaniPartner) {
     // Koristimo fabriku da bismo dobili pravu strategiju
-    PretragaRobeStrategija strategija = pretragaRobeFactory.getPretragaStrategija(parametri);
-    return strategija.pretrazi(parametri, ulogovaniPartner);
+    return pretragaSaFilteromStrategija.pretrazi(parametri, ulogovaniPartner);
   }
 
   public List<RobaDto> vratiIzdvajamoIzPonudeRobu(List<Long> robaIds, Partner partner) {
@@ -79,11 +76,6 @@ public class RobaGlavniService {
 
   /** Metoda za setovanje cena i tehnickog opisa u dto-u */
   private void setujZaTabeluDashboard(List<RobaDto> robaDtos, Partner partner) {
-    List<String> dozvoljeneGrupeKljucevi =
-        grupaDozvoljenaService.pronadjiSveDozvoljeneGrupe().stream()
-            .map(GrupaDozvoljena::getGrupaid)
-            .toList();
-
     List<Long> robaIds = robaDtos.stream().map(RobaDto::getRobaid).toList();
     List<RobaCene> robaCenes = robaCeneService.pronadjiCeneZaRobuBatch(robaIds);
     robaDtos.forEach(

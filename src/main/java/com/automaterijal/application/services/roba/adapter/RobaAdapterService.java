@@ -1,15 +1,14 @@
 package com.automaterijal.application.services.roba.adapter;
 
-import static com.automaterijal.db.tables.Roba.ROBA;
 
+import com.automaterijal.application.domain.cache.RobaCache;
 import com.automaterijal.application.domain.dto.DashboardDto;
 import com.automaterijal.application.domain.dto.MagacinDto;
 import com.automaterijal.application.domain.dto.RobaDto;
-import com.automaterijal.application.domain.entity.PodGrupa;
-import com.automaterijal.application.domain.entity.roba.Roba;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.domain.repository.roba.RobaJooqRepository;
 import com.automaterijal.application.services.ProizvodjacService;
+import com.automaterijal.application.services.roba.RobaService;
 import com.automaterijal.application.services.roba.grupe.PodGrupaService;
 import com.automaterijal.application.utils.GeneralUtil;
 import java.util.*;
@@ -23,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -31,6 +29,8 @@ import org.springframework.util.StringUtils;
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RobaAdapterService {
+
+  @Autowired RobaService robaService;
 
   @Autowired RobaJooqRepository robaJooqRepository;
 
@@ -139,19 +139,10 @@ public class RobaAdapterService {
     MagacinDto magacinDto = new MagacinDto();
     List<RobaDto> allRoba = new ArrayList<>();
 
-    List<RobaDto> robaKatbr =
-        robaJooqRepository.generic(parametri, ROBA.KATBR.in(kataloskiBrojevi));
-    allRoba.addAll(robaKatbr);
-
-    Set<String> nadjeniBrojevi =
-        robaKatbr.stream().map(RobaDto::getKatbr).collect(Collectors.toSet());
-    nadjeniBrojevi.addAll(robaKatbr.stream().map(RobaDto::getKatbrpro).collect(Collectors.toSet()));
-
-    // Fetch podaci za KATBRPRO
-    List<RobaDto> robaKatbrpro =
-        robaJooqRepository.generic(parametri, ROBA.KATBRPRO.in(nadjeniBrojevi));
-    allRoba.addAll(robaKatbrpro);
-    allRoba = new ArrayList<>(new HashSet<>(allRoba));
+    List<RobaCache> robaKatbr = robaService.getAllRobaFilteredByKatBr(kataloskiBrojevi);
+    allRoba.addAll(
+        robaService.pronadjiRobuPoPrimarnomKljucu(
+            robaKatbr.stream().map(RobaCache::getRobaId).toList()));
 
     // Popuni dodatne podatke za roba (podgrupe, proizvođači itd.)
     podGrupaService.popuniPodgrupe(magacinDto, parametri, allRoba);
@@ -201,11 +192,8 @@ public class RobaAdapterService {
   }
 
   public boolean pronadjiPoNazivu(
-      String searchTerm,
-      UniverzalniParametri parametri,
-      Set<String> kataloskiBrojevi,
-      Set<Long> robaId) {
-    List<RobaDto> roba = robaJooqRepository.pronadjiRobuPoNazivu(searchTerm, parametri);
+      UniverzalniParametri parametri, Set<String> kataloskiBrojevi, Set<Long> robaId) {
+    List<RobaCache> roba = robaService.getAllRobaByNaizvLike(parametri.getTrazenaRec());
 
     List<String> nazivi = new ArrayList<>();
     popuniKolekcije(roba, kataloskiBrojevi, robaId, nazivi);
@@ -214,32 +202,25 @@ public class RobaAdapterService {
   }
 
   public void pronadjiPoKatBroju(
-      String tacnaRecLike,
-      Set<String> kataloskiBrojevi,
-      Set<Long> robaId,
-      UniverzalniParametri parametri) {
+      Set<String> kataloskiBrojevi, Set<Long> robaId, UniverzalniParametri parametri) {
     List<String> nazivi = new ArrayList<>();
 
-    List<RobaDto> robaPoKatalaskomBroju =
-        robaJooqRepository.generic(parametri, ROBA.KATBR.like(tacnaRecLike));
+    List<RobaCache> robaPoKatalaskomBroju =
+        robaService.getAllRobaFilteredByKatBr(parametri.getTrazenaRec());
     popuniKolekcije(robaPoKatalaskomBroju, kataloskiBrojevi, robaId, nazivi);
-    List<RobaDto> robaPoKatBrojuProizvodjaca =
-        robaJooqRepository.generic(parametri, ROBA.KATBRPRO.like(tacnaRecLike));
-    popuniKolekcije(robaPoKatBrojuProizvodjaca, kataloskiBrojevi, robaId, nazivi);
 
     prodjiIPopraviKatBr(kataloskiBrojevi);
   }
 
-  public void pronadjiPoKatBrojuIn(
-      Set<String> kataloskiBrojevi, Set<Long> robaId, UniverzalniParametri parametri) {
+  public void pronadjiPoKatBrojuIn(Set<String> kataloskiBrojevi, Set<Long> robaId) {
     List<String> nazivi = new ArrayList<>();
-    List<RobaDto> roba = robaJooqRepository.generic(parametri, ROBA.KATBR.in(kataloskiBrojevi));
+    List<RobaCache> roba = robaService.getAllRobaByKatBrIn(kataloskiBrojevi);
     popuniKolekcije(roba, kataloskiBrojevi, robaId, nazivi);
     prodjiIPopraviKatBr(kataloskiBrojevi);
   }
 
   private static void popuniKolekcije(
-      List<RobaDto> roba, Set<String> kataloskiBrojevi, Set<Long> robaId, List<String> nazivi) {
+      List<RobaCache> roba, Set<String> kataloskiBrojevi, Set<Long> robaId, List<String> nazivi) {
     roba.forEach(
         data -> {
           if (StringUtils.hasText(data.getKatbr())) {
@@ -248,8 +229,8 @@ public class RobaAdapterService {
           if (StringUtils.hasText(data.getKatbrpro())) {
             kataloskiBrojevi.add(data.getKatbrpro());
           }
-          if (data.getRobaid() != null) {
-            robaId.add(data.getRobaid());
+          if (data.getRobaId() != null) {
+            robaId.add(data.getRobaId());
           }
 
           if (StringUtils.hasText(data.getNaziv())) {
@@ -290,21 +271,6 @@ public class RobaAdapterService {
         });
     retVal.clear();
     retVal.addAll(noviKatBrojevi);
-  }
-
-  /** Zbog n+1 u hibernate koristimo jooq da vrati svu robu u zavisnosti od podgrupe */
-  public Page<Roba> pronadjiSvuRobuPoPodgrupama(
-      List<PodGrupa> podGrupaId, boolean naStanju, Pageable pageable) {
-
-    List<Roba> roba = robaJooqRepository.pronadjiRobuPoPodgrupama(podGrupaId, naStanju);
-
-    Page<Roba> result = createPageable(roba, pageable.getPageSize(), pageable.getPageNumber());
-    result.forEach(
-        rekord ->
-            proizvodjacService
-                .vratiProizvodjacaPoPk(rekord.getProizvodjac().getProid())
-                .ifPresent(rekord::setProizvodjac));
-    return result;
   }
 
   public DashboardDto vracanjePodatakaZaDashboard() {
