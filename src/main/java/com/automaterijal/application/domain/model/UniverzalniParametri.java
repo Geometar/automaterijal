@@ -17,6 +17,6 @@ public class UniverzalniParametri {
   boolean naStanju;
   String trazenaRec;
   List<String> grupa;
-  List<String> podgrupeZaPretragu;
+  List<Integer> podgrupeZaPretragu;
   List<ArticleDirectSearchAllNumbersWithStateRecord> kesiranDirectArticleSearch;
 }

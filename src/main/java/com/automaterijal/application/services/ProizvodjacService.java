@@ -35,7 +35,7 @@ public class ProizvodjacService {
       List<RobaDto> robaDtos, MagacinDto magacinDto, UniverzalniParametri parametri) {
     List<Proizvodjac> proizvodjaci;
     if (parametri.getPodgrupeZaPretragu() == null && parametri.getTrazenaRec() == null) {
-      proizvodjaci = pronadjiSveProizvodjaceZaVrstu(parametri);
+      proizvodjaci = pronadjiSveProizvodjaceZaVrstu();
     } else {
       Set<String> proizKljuc =
           robaDtos.stream()
@@ -72,7 +72,7 @@ public class ProizvodjacService {
     }
   }
 
-  public List<Proizvodjac> pronadjiSveProizvodjaceZaVrstu(UniverzalniParametri parametri) {
+  public List<Proizvodjac> pronadjiSveProizvodjaceZaVrstu() {
     return pronadjiSve();
   }
 

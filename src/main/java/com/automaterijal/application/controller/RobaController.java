@@ -52,7 +52,7 @@ public class RobaController {
       @RequestParam(required = false) List<String> grupe,
       @RequestParam(required = false) List<String> mandatoryProid,
       @RequestParam(required = false) Optional<Boolean> naStanju,
-      @RequestParam(required = false) List<String> podgrupe,
+      @RequestParam(required = false) List<Integer> podgrupe,
       @RequestParam(required = false) Optional<String> searchTerm,
       Authentication authentication) {
 

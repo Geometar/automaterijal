@@ -128,7 +128,7 @@ public class RobaAdapterService {
               .filter(
                   robaDto ->
                       parametri.getPodgrupeZaPretragu().stream()
-                          .anyMatch(value -> value.equalsIgnoreCase(robaDto.getPodGrupaNaziv())))
+                          .anyMatch(value -> value == robaDto.getPodGrupa()))
               .toList();
     }
     return roba;

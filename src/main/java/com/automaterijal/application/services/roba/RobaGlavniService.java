@@ -117,11 +117,6 @@ public class RobaGlavniService {
               tecDocService.vratiTecDocAtributePrekoRobeId(detaljnoDto.getRobaid())));
     }
 
-    List<String> dozvoljeneGrupeKljucevi =
-        grupaDozvoljenaService.pronadjiSveDozvoljeneGrupe().stream()
-            .map(GrupaDozvoljena::getGrupaid)
-            .toList();
-
     robaTekstService
         .pronadjiTextPoRobiId(detaljnoDto.getRobaid())
         .ifPresent(robaTekst -> detaljnoDto.setTekst(robaTekst.getTekst()));

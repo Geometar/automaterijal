@@ -9,13 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PodGrupaRepository extends JpaRepository<PodGrupa, Integer> {
 
-    List<PodGrupa> findByPodGrupaIdIn(Collection<Integer> podGrupaKljucevi);
-
-    List<PodGrupa> findByNazivLike(String naziv);
-
-    List<PodGrupa> findByNazivIn(List<String> naziv);
-
-    List<PodGrupa> findByGrupaId(String grupaId);
-    List<PodGrupa> findByGrupaIdIn(List<String> grupaIds);
-
+  List<PodGrupa> findByPodGrupaIdIn(Collection<Integer> podGrupaKljucevi);
 }

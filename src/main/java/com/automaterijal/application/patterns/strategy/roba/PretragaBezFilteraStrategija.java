@@ -48,8 +48,8 @@ public class PretragaBezFilteraStrategija implements PretragaRobeStrategija {
     Page<RobaDto> robaDto =
         vratiSvuRobuUZavisnostiOdTrazenogStanja(parametri, pageable, ulogovaniPartner);
 
-    magacinDto.setPodgrupe(podGrupaService.vratiSveGrupeNazive());
-    magacinDto.setProizvodjaci(proizvodjacService.pronadjiSveProizvodjaceZaVrstu(parametri));
+    magacinDto.setCategories(podGrupaService.vratiSveGrupe());
+    magacinDto.setProizvodjaci(proizvodjacService.pronadjiSveProizvodjaceZaVrstu());
     magacinDto.setRobaDto(robaDto);
 
     return magacinDto;

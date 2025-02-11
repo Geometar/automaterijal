@@ -17,6 +17,18 @@ spring:
     url: jdbc:mysql://77.105.37.50:3306/automate_orders?useUnicode=true&characterEncoding=utf8&autoReconnect=true&useSSL=false&serverTimezone=Europe/Amsterdam
     username: automate
     password: hIOe8800
+    hikari:
+      maximum-pool-size: 10       # Maximum connections in the pool
+      minimum-idle: 2            # Minimum idle connections
+      idle-timeout: 60000        # 60 seconds before an idle connection is removed
+      max-lifetime: 1800000      # 30 minutes before a connection is closed
+      connection-timeout: 60000  # 60 seconds timeout for acquiring a connection
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
+        sessionVariables: wait_timeout=300,interactive_timeout=300
 
 
 # Putanje za slike proizvoda

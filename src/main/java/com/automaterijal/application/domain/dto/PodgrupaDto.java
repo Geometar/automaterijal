@@ -7,8 +7,7 @@ import lombok.experimental.FieldDefaults;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PodgrupaDto {
-
-    Integer id;
-    String naziv;
-
+  Integer id;
+  String naziv;
+  String grupa;
 }

@@ -27,7 +27,7 @@ public class RobaSpringBeanUtils {
       List<String> mandatoryProid,
       Optional<Boolean> naStanju,
       Optional<String> searchTerm,
-      List<String> podgrupe) {
+      List<Integer> podgrupe) {
     Integer iPage = page.orElse(0);
     Integer iPageSize = pageSize.orElse(10);
     List<String> iProizvodjac =
@@ -46,10 +46,7 @@ public class RobaSpringBeanUtils {
 
     Boolean iNaStanju = naStanju.orElse(false);
 
-    List<String> iPodgrupe =
-        podgrupe != null
-            ? podgrupe.stream().map(String::toUpperCase).map(String::toString).toList()
-            : new ArrayList<>();
+    List<Integer> iPodgrupe = podgrupe;
 
     String iSearchTerm =
         searchTerm
@@ -69,7 +66,7 @@ public class RobaSpringBeanUtils {
       List<String> IMGrupe,
       List<String> iMProid,
       Boolean internalNaStanju,
-      List<String> internaPodgrupe,
+      List<Integer> internaPodgrupe,
       String internalSearchTerm) {
     UniverzalniParametri up = new UniverzalniParametri();
     up.setPage(internalPage);
