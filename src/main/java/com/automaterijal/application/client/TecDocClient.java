@@ -1,11 +1,6 @@
 package com.automaterijal.application.client;
 
-import com.automaterijal.application.tecdoc.AmBrandsRecord;
-import com.automaterijal.application.tecdoc.AmBrandsResponse;
-import com.automaterijal.application.tecdoc.ArticleDirectSearchAllNumbersWithStateRecord;
-import com.automaterijal.application.tecdoc.ArticleDirectSearchAllNumbersWithStateResponse;
-import com.automaterijal.application.tecdoc.ArticlesByIds6Record;
-import com.automaterijal.application.tecdoc.ArticlesByIds6Response;
+import com.automaterijal.application.tecdoc.*;
 import java.util.Collections;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -104,10 +99,86 @@ public class TecDocClient {
                 : List.of());
   }
 
+  /** Vracanje TecDoc proizvodjaca vozila */
+  public List<Manufacturers2Record> getManufactures() {
+    JSONObject request = new JSONObject();
+    JSONObject body = kreirajStandardniObjekat();
+    body.put("linkingTargetType", "PO");
+    request.put("getManufacturers2", body);
+
+    Manufacturers2Response result = vratiOdgovor(request, Manufacturers2Response.class);
+    return extractListFromResponse(
+        result,
+        response ->
+            response != null && response.getData() != null
+                ? response.getData().getArray()
+                : List.of());
+  }
+
+  /** Vracanje TecDoc modele proizvodjaca */
+  public List<ModelSeries2Record> getModels(Integer manuId, String type) {
+    JSONObject request = new JSONObject();
+    JSONObject body = kreirajStandardniObjekat();
+    body.put("linkingTargetType", type);
+    body.put("manuId", manuId);
+    request.put("getModelSeries2", body);
+
+    ModelSeries2Response result = vratiOdgovor(request, ModelSeries2Response.class);
+    return extractListFromResponse(
+        result,
+        response ->
+            response != null && response.getData() != null
+                ? response.getData().getArray()
+                : List.of());
+  }
+
+  /** Vracanje TecDoc vehicle identifikatore */
+  public List<VehicleIdsByCriteriaRecord> getVehiclesId(
+      Integer manuId, Integer modelId, String type) {
+    JSONObject request = new JSONObject();
+    JSONObject body = kreirajStandardniObjekat();
+    body.put("carType", type);
+    body.put("manuId", manuId);
+    body.put("modId", modelId);
+    body.put("countriesCarSelection", "rs");
+    request.put("getVehicleIdsByCriteria", body);
+
+    VehicleIdsByCriteriaResponse result = vratiOdgovor(request, VehicleIdsByCriteriaResponse.class);
+    return extractListFromResponse(
+        result,
+        response ->
+            response != null && response.getData() != null
+                ? response.getData().getArray()
+                : List.of());
+  }
+
+  /** Vracanje TecDoc vehicle detalja */
+  public List<VehicleByIds4Record> getVehiclesByIds(List<Long> carIds) {
+    JSONObject request = new JSONObject();
+    JSONObject body = kreirajStandardniObjekat();
+    body.put("carIds", carIds);
+    body.put("countriesCarSelection", "rs");
+    body.put("motorCodes", true);
+
+    JSONObject arrayCarIds = new JSONObject();
+    arrayCarIds.put("array", carIds);
+    body.put("carIds", arrayCarIds);
+    request.put("getVehicleByIds4", body);
+
+    VehicleByIds4Response result = vratiOdgovor(request, VehicleByIds4Response.class);
+    return extractListFromResponse(
+        result,
+        response ->
+            response != null && response.getData() != null
+                ? response.getData().getArray()
+                : List.of());
+  }
+
   /** Setovanje standardnjih parametara poziva */
   private JSONObject kreirajStandardniObjekat() {
     JSONObject standardniObjekat = new JSONObject();
     standardniObjekat.put("articleCountry", "rs");
+    standardniObjekat.put("country", "rs");
     standardniObjekat.put("lang", "sr");
     standardniObjekat.put("provider", 23009);
     return standardniObjekat;

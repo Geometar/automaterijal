@@ -1,6 +1,10 @@
 package com.automaterijal.application.controller;
 
+import com.automaterijal.application.domain.dto.tecdoc.Manufcatures;
+import com.automaterijal.application.domain.dto.tecdoc.Model;
 import com.automaterijal.application.services.TecDocService;
+import com.automaterijal.application.tecdoc.VehicleByIds4Record;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -30,5 +34,25 @@ public class TecDocController {
         .contentType(MediaType.APPLICATION_PDF) // Or appropriate content type
         .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=document.pdf") // Optional
         .body(documentBytes);
+  }
+
+  @GetMapping(value = "/manufactures")
+  public ResponseEntity<List<Manufcatures>> getManufactures() {
+    return ResponseEntity.ok().body(tecDocService.getAllManufactures());
+  }
+
+  @GetMapping(value = "/manufactures/{manuId}")
+  public ResponseEntity<List<Model>> getModels(
+      @PathVariable("manuId") Integer manuId,
+      @RequestParam(value = "type", required = false, defaultValue = "PO") String type) {
+    return ResponseEntity.ok().body(tecDocService.getModelsForModeId(manuId, type));
+  }
+
+  @GetMapping(value = "/manufactures/{manuId}/{modelId}")
+  public ResponseEntity<List<VehicleByIds4Record>> getModels(
+      @PathVariable("manuId") Integer manuId,
+      @PathVariable("modelId") Integer modelId,
+      @RequestParam(value = "type", required = false, defaultValue = "PO") String type) {
+    return ResponseEntity.ok().body(tecDocService.getVehicleDetails(manuId, modelId, type));
   }
 }
