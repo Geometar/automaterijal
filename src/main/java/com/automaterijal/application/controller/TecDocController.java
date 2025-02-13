@@ -3,7 +3,8 @@ package com.automaterijal.application.controller;
 import com.automaterijal.application.domain.dto.tecdoc.Manufcatures;
 import com.automaterijal.application.domain.dto.tecdoc.Model;
 import com.automaterijal.application.services.TecDocService;
-import com.automaterijal.application.tecdoc.VehicleByIds4Record;
+import com.automaterijal.application.tecdoc.AssemblyGroupFacetCount;
+import com.automaterijal.application.tecdoc.LinkageTargetDetails;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.NonNull;
@@ -49,10 +50,17 @@ public class TecDocController {
   }
 
   @GetMapping(value = "/manufactures/{manuId}/{modelId}")
-  public ResponseEntity<List<VehicleByIds4Record>> getModels(
+  public ResponseEntity<List<LinkageTargetDetails>> getModels(
       @PathVariable("manuId") Integer manuId,
       @PathVariable("modelId") Integer modelId,
       @RequestParam(value = "type", required = false, defaultValue = "PO") String type) {
-    return ResponseEntity.ok().body(tecDocService.getVehicleDetails(manuId, modelId, type));
+    return ResponseEntity.ok().body(tecDocService.getModelSubTypes(manuId, modelId, type));
+  }
+
+  @GetMapping(value = "/assemblygroup/{linkedTargetId}/{type}")
+  public ResponseEntity<List<AssemblyGroupFacetCount>> getAssemblyGroupsForVehicle(
+      @PathVariable("linkedTargetId") Integer linkedTargetId, @PathVariable("type") String type) {
+    return ResponseEntity.ok()
+        .body(tecDocService.getAssemblyGroupsForVehicle(type, linkedTargetId));
   }
 }

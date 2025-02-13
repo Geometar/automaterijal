@@ -133,44 +133,46 @@ public class TecDocClient {
   }
 
   /** Vracanje TecDoc vehicle identifikatore */
-  public List<VehicleIdsByCriteriaRecord> getVehiclesId(
+  public List<LinkageTargetDetails> getLinkageTargets(
       Integer manuId, Integer modelId, String type) {
     JSONObject request = new JSONObject();
     JSONObject body = kreirajStandardniObjekat();
-    body.put("carType", type);
-    body.put("manuId", manuId);
-    body.put("modId", modelId);
-    body.put("countriesCarSelection", "rs");
-    request.put("getVehicleIdsByCriteria", body);
+    body.put("linkageTargetCountry", "RS");
+    body.put("linkageTargetType", type);
+    body.put("mfrIds", List.of(manuId));
+    body.put("vehicleModelSeriesIds", List.of(modelId));
+    request.put("getLinkageTargets", body);
 
-    VehicleIdsByCriteriaResponse result = vratiOdgovor(request, VehicleIdsByCriteriaResponse.class);
+    LinkageTargetsResponse result = vratiOdgovor(request, LinkageTargetsResponse.class);
     return extractListFromResponse(
         result,
         response ->
-            response != null && response.getData() != null
-                ? response.getData().getArray()
+            response != null && response.getLinkageTargets() != null
+                ? response.getLinkageTargets()
                 : List.of());
   }
 
-  /** Vracanje TecDoc vehicle detalja */
-  public List<VehicleByIds4Record> getVehiclesByIds(List<Long> carIds) {
+  /** Vracanje TecDoc vehicle identifikatore */
+  public List<AssemblyGroupFacetCount> getAssemblyGroupsForVehicle(
+      String type, Integer linkageTargetId) {
     JSONObject request = new JSONObject();
     JSONObject body = kreirajStandardniObjekat();
-    body.put("carIds", carIds);
-    body.put("countriesCarSelection", "rs");
-    body.put("motorCodes", true);
+    body.put("articleCountry", "RS");
+    body.put("linkageTargetId", linkageTargetId);
+    body.put("linkageTargetType", type);
 
-    JSONObject arrayCarIds = new JSONObject();
-    arrayCarIds.put("array", carIds);
-    body.put("carIds", arrayCarIds);
-    request.put("getVehicleByIds4", body);
+    JSONObject enabled = new JSONObject();
+    enabled.put("enabled", true);
 
-    VehicleByIds4Response result = vratiOdgovor(request, VehicleByIds4Response.class);
+    body.put("assemblyGroupFacetOptions", enabled);
+    request.put("getArticles", body);
+
+    ArticlesResponse result = vratiOdgovor(request, ArticlesResponse.class);
     return extractListFromResponse(
         result,
         response ->
-            response != null && response.getData() != null
-                ? response.getData().getArray()
+            response != null && response.getAssemblyGroupFacets() != null
+                ? response.getAssemblyGroupFacets().getCounts()
                 : List.of());
   }
 

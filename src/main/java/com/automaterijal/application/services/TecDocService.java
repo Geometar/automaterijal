@@ -72,13 +72,13 @@ public class TecDocService {
     return tecDocMapper.mapToModel(tecDocClient.getModels(manuId, type));
   }
 
-  public List<VehicleByIds4Record> getVehicleDetails(Integer manuId, Integer modelId, String type) {
-    List<Long> carIds =
-        tecDocClient.getVehiclesId(manuId, modelId, type).stream()
-            .map(VehicleIdsByCriteriaRecord::getCarId)
-            .toList();
+  public List<LinkageTargetDetails> getModelSubTypes(Integer manuId, Integer modelId, String type) {
+    return tecDocClient.getLinkageTargets(manuId, modelId, type);
+  }
 
-    return tecDocClient.getVehiclesByIds(carIds);
+  public List<AssemblyGroupFacetCount> getAssemblyGroupsForVehicle(
+      String type, Integer linkedTargetType) {
+    return tecDocClient.getAssemblyGroupsForVehicle(type, linkedTargetType);
   }
 
   public void batchVracanjeICuvanjeTDAtributa(List<RobaDto> robaDtos) {
