@@ -24,6 +24,8 @@ public interface RobaMapper {
   @Mapping(target = "grupa", source = "grupaid")
   @Mapping(target = "podGrupa", source = "podgrupaid")
   @Mapping(target = "slika.robaSlika", source = "slika")
+  @Mapping(target = "proizvodjac.naziv", source = "proizvodjac.naziv")
+  @Mapping(target = "proizvodjac.proid", source = "proizvodjac.proid")
   RobaDetaljiDto mapujDetaljno(Roba roba);
 
   @Mapping(target = "kw", source = "kw")

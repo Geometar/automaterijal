@@ -10,6 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 @Entity
@@ -57,6 +58,7 @@ public class Roba {
   @Column(name = "vpcid")
   int vpcid;
 
+  @ToString.Exclude
   @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   @JoinColumn(name = "proid", insertable = false, updatable = false)
   Proizvodjac proizvodjac;
