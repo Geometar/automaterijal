@@ -3,10 +3,10 @@ package com.automaterijal.application.domain.repository.roba;
 import static com.automaterijal.db.tables.Roba.ROBA;
 import static com.automaterijal.db.tables.RobaKatbrOld.ROBA_KATBR_OLD;
 
+import com.automaterijal.application.domain.dto.ProizvodjacDTO;
 import com.automaterijal.application.domain.dto.RobaDto;
 import com.automaterijal.application.domain.dto.SlikaDto;
 import com.automaterijal.application.domain.entity.PodGrupa;
-import com.automaterijal.application.domain.entity.Proizvodjac;
 import com.automaterijal.application.domain.entity.roba.Roba;
 import com.automaterijal.application.domain.mapper.RobaMapper;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
@@ -156,6 +156,8 @@ public class RobaJooqRepository {
 
   private RobaDto map(
       Record8<Integer, String, String, BigDecimal, String, Integer, String, String> robaRecord) {
+    ProizvodjacDTO proizvodjacDTO = new ProizvodjacDTO();
+    proizvodjacDTO.setProid(robaRecord.component7());
     return RobaDto.builder()
         .robaid(robaRecord.component1().longValue())
         .katbr(robaRecord.component2())
@@ -163,7 +165,7 @@ public class RobaJooqRepository {
         .stanje(robaRecord.component4() != null ? robaRecord.component4().doubleValue() : 0)
         .grupa(robaRecord.component5())
         .podGrupa(robaRecord.component6())
-        .proizvodjac(Proizvodjac.builder().proid(robaRecord.component7()).build())
+        .proizvodjac(proizvodjacDTO)
         .slika(new SlikaDto(robaRecord.component8()))
         .build();
   }

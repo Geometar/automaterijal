@@ -1,11 +1,11 @@
 package com.automaterijal.application.services;
 
 import com.automaterijal.application.domain.dto.MagacinDto;
+import com.automaterijal.application.domain.dto.ProizvodjacDTO;
 import com.automaterijal.application.domain.dto.RobaDto;
 import com.automaterijal.application.domain.entity.Proizvodjac;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.domain.repository.ProizvodjacRepository;
-import com.automaterijal.application.services.roba.RobaService;
 import java.util.*;
 import java.util.stream.Collectors;
 import lombok.AccessLevel;
@@ -24,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProizvodjacService {
 
   @NonNull final ProizvodjacRepository proizvodjacRepository;
-  @NonNull final RobaService robaService;
 
   /** Popunjavanje proizvodjaca u zavistosti od kriterijuma */
   public void popuniProizvodjace(
@@ -36,7 +35,7 @@ public class ProizvodjacService {
       Set<String> proizKljuc =
           robaDtos.stream()
               .map(RobaDto::getProizvodjac)
-              .map(Proizvodjac::getProid)
+              .map(ProizvodjacDTO::getProid)
               .collect(Collectors.toSet());
       proizvodjaci = proizvodjacRepository.findByProidIn(proizKljuc);
     }
@@ -64,7 +63,7 @@ public class ProizvodjacService {
       proizvodjaci.stream()
           .filter(proizvodjac -> proizvodjac.getProid().equals(roba.getProizvodjac().getProid()))
           .findFirst()
-          .ifPresent(roba::setProizvodjac);
+          .ifPresent(roba::setProizvodjacDto);
     }
   }
 

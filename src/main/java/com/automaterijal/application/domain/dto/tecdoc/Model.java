@@ -5,4 +5,4 @@ public record Model(
     Integer favoriteFlag,
     String name,
     Integer constructedFrom,
-    Integer constructeTo) {}
+    Integer constructedTo) {}

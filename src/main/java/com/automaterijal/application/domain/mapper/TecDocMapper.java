@@ -61,7 +61,7 @@ public interface TecDocMapper {
   @Mapping(target = "favoriteFlag", source = "favorFlag")
   @Mapping(target = "name", source = "modelname")
   @Mapping(target = "constructedFrom", source = "yearOfConstrFrom")
-  @Mapping(target = "constructeTo", source = "yearOfConstrTo")
+  @Mapping(target = "constructedTo", source = "yearOfConstrTo")
   Model map(ModelSeries2Record modelSeries2Record);
 
   List<Model> mapToModel(List<ModelSeries2Record> modelSeries2Records);
