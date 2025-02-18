@@ -133,7 +133,7 @@ public class TecDocClient {
   }
 
   /** Vracanje TecDoc vehicle identifikatore */
-  public List<LinkageTargetDetails> getLinkageTargets(
+  public List<LinkageTargetDetails> getVehicleSubModels(
       Integer manuId, Integer modelId, String type) {
     JSONObject request = new JSONObject();
     JSONObject body = kreirajStandardniObjekat();
@@ -141,6 +141,29 @@ public class TecDocClient {
     body.put("linkageTargetType", type);
     body.put("mfrIds", List.of(manuId));
     body.put("vehicleModelSeriesIds", List.of(modelId));
+    request.put("getLinkageTargets", body);
+
+    LinkageTargetsResponse result = vratiOdgovor(request, LinkageTargetsResponse.class);
+    return extractListFromResponse(
+        result,
+        response ->
+            response != null && response.getLinkageTargets() != null
+                ? response.getLinkageTargets()
+                : List.of());
+  }
+
+  /** Vracanje TecDoc vehicle detalja */
+  public List<LinkageTargetDetails> getLinkageTargets(Integer id, String type) {
+    JSONObject request = new JSONObject();
+    JSONObject body = kreirajStandardniObjekat();
+    body.put("linkageTargetCountry", "RS");
+
+    JSONObject linkageTargetIds = new JSONObject();
+    linkageTargetIds.put("type", type);
+    linkageTargetIds.put("id", id);
+
+    body.put("linkageTargetIds", linkageTargetIds);
+
     request.put("getLinkageTargets", body);
 
     LinkageTargetsResponse result = vratiOdgovor(request, LinkageTargetsResponse.class);

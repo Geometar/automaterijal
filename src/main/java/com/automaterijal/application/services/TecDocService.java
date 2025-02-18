@@ -73,7 +73,11 @@ public class TecDocService {
   }
 
   public List<LinkageTargetDetails> getModelSubTypes(Integer manuId, Integer modelId, String type) {
-    return tecDocClient.getLinkageTargets(manuId, modelId, type);
+    return tecDocClient.getVehicleSubModels(manuId, modelId, type);
+  }
+
+  public List<LinkageTargetDetails> getLinkageTargetDetails(Integer id, String type) {
+    return tecDocClient.getLinkageTargets(id, type);
   }
 
   public List<AssemblyGroupFacetCount> getAssemblyGroupsForVehicle(

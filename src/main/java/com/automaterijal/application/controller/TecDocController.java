@@ -57,6 +57,13 @@ public class TecDocController {
     return ResponseEntity.ok().body(tecDocService.getModelSubTypes(manuId, modelId, type));
   }
 
+  @GetMapping(value = "/linkageTargets")
+  public ResponseEntity<List<LinkageTargetDetails>> getLinkageTargets(
+      @RequestParam(value = "tecdocTargetType") String type,
+      @RequestParam(value = "tecdocTargetId") Integer id) {
+    return ResponseEntity.ok().body(tecDocService.getLinkageTargetDetails(id, type));
+  }
+
   @GetMapping(value = "/assemblygroup/{linkedTargetId}/{type}")
   public ResponseEntity<List<AssemblyGroupFacetCount>> getAssemblyGroupsForVehicle(
       @PathVariable("linkedTargetId") Integer linkedTargetId, @PathVariable("type") String type) {
