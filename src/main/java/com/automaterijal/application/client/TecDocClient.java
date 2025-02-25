@@ -141,6 +141,16 @@ public class TecDocClient {
     body.put("linkageTargetType", type);
     body.put("mfrIds", List.of(manuId));
     body.put("vehicleModelSeriesIds", List.of(modelId));
+
+    JSONObject sortMfrName = new JSONObject();
+    sortMfrName.put("field", "mfrName");
+    sortMfrName.put("direction", "asc");
+    JSONObject sortDescription = new JSONObject();
+    sortDescription.put("field", "description");
+    sortDescription.put("direction", "asc");
+
+    body.put("sort", List.of(sortMfrName, sortDescription));
+
     request.put("getLinkageTargets", body);
 
     LinkageTargetsResponse result = vratiOdgovor(request, LinkageTargetsResponse.class);

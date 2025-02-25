@@ -7,7 +7,8 @@ import lombok.experimental.FieldDefaults;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RobaTehnickiOpisDto {
-    String oznaka;
-    String vrednost;
-    String jedinica;
+  String type;
+  String oznaka;
+  String vrednost;
+  String jedinica;
 }

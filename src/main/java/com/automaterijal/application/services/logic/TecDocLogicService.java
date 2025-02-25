@@ -59,8 +59,7 @@ public class TecDocLogicService {
               TecDocProizvodjaci.pronadjiPoNazivu(robaDto.getProizvodjac().getProid());
           if (tdProizvodjaci != null) {
             String katBr =
-                TecDocProizvodjaci.generateAlternativeCatalogNumber(
-                    robaDto.getKatbr(), tdProizvodjaci);
+                TecDocProizvodjaci.restoreOriginalCatalogNumber(robaDto.getKatbr(), tdProizvodjaci);
             if (shouldFetchTecDocData(data, robaDto.getRobaid())) {
               fetchTecDocData(robaDto, tdProizvodjaci, katBr, artikliBezSacuvanihPodataka);
             }

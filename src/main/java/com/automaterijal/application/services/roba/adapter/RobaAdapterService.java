@@ -20,7 +20,6 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -80,16 +79,10 @@ public class RobaAdapterService {
     roba = robaFilterPoParametrima(parametri, roba);
     roba = sortirajPoGrupi(roba);
 
-    magacinDto.setRobaDto(createPageable(roba, parametri.getPageSize(), parametri.getPage()));
+    magacinDto.setRobaDto(
+        GeneralUtil.createPageable(roba, parametri.getPageSize(), parametri.getPage()));
 
     return magacinDto;
-  }
-
-  private static <T> Page<T> createPageable(List<T> items, int pageSize, int pageNumber) {
-    int start = pageSize * pageNumber;
-    int end = Math.min((start + pageSize), items.size());
-    return new PageImpl<>(
-        items.subList(start, end), PageRequest.of(pageNumber, pageSize), items.size());
   }
 
   private List<RobaDto> sortirajPoGrupi(List<RobaDto> roba) {
@@ -102,8 +95,8 @@ public class RobaAdapterService {
               return robaDto;
             })
         .sorted(
-            Comparator.comparing(RobaDto::getPodGrupaNaziv)
-                .thenComparing(robaDto -> robaDto.getStanje() == 0))
+                Comparator.comparing((RobaDto robaDto) -> robaDto.getStanje() == 0) // false (stanje > 0) dolazi pre true (stanje == 0)
+                        .thenComparing(RobaDto::getPodGrupaNaziv)) // Sortiranje po nazivu grupe
         .collect(Collectors.toList());
   }
 
@@ -172,7 +165,8 @@ public class RobaAdapterService {
 
     // Paginacija rezultata
 
-    magacinDto.setRobaDto(createPageable(allRoba, parametri.getPageSize(), parametri.getPage()));
+    magacinDto.setRobaDto(
+        GeneralUtil.createPageable(allRoba, parametri.getPageSize(), parametri.getPage()));
     return magacinDto;
   }
 
@@ -318,7 +312,8 @@ public class RobaAdapterService {
     // Sortiraj robu po grupi ako kategorija nije zadana
     roba = sortirajPoGrupi(roba);
 
-    magacinDto.setRobaDto(createPageable(roba, parametri.getPageSize(), parametri.getPage()));
+    magacinDto.setRobaDto(
+        GeneralUtil.createPageable(roba, parametri.getPageSize(), parametri.getPage()));
 
     return magacinDto;
   }

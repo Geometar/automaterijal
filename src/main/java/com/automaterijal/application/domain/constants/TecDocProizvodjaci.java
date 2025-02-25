@@ -164,9 +164,22 @@ public enum TecDocProizvodjaci {
     if (manufacturer == null || manufacturer.dodatak == null) {
       return katBr.replaceAll("\\s+", "");
     }
-    String result =
-        manufacturer.isDodatakNaKraju ? katBr + manufacturer.dodatak : manufacturer.dodatak + katBr;
-    return result.trim().replaceAll("\\s+", "");
+
+    String dodatak = manufacturer.dodatak.trim();
+    String normalizedKatBr = katBr.replaceAll("\\s+", "");
+
+    // Determine where to check for the existing dodatak based on isDodatakNaKraju
+    boolean alreadyHasDodatak =
+        manufacturer.isDodatakNaKraju
+            ? normalizedKatBr.endsWith(dodatak)
+            : normalizedKatBr.startsWith(dodatak);
+
+    if (alreadyHasDodatak) {
+      return normalizedKatBr; // If dodatak is already in place, return as is
+    }
+
+    // Apply dodatak at the correct position
+    return manufacturer.isDodatakNaKraju ? normalizedKatBr + dodatak : dodatak + normalizedKatBr;
   }
 
   // End of: Generisanje kataloskog broja

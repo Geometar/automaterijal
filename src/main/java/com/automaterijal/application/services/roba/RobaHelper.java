@@ -9,6 +9,7 @@ import com.automaterijal.application.domain.entity.tecdoc.TecDocAtributi;
 import com.automaterijal.application.services.SlikeService;
 import com.automaterijal.application.services.TecDocService;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -53,8 +54,9 @@ public class RobaHelper {
       if (dto.getTecDocArticleId() != null) {
         if (dto.getDokumentId() == null
             && dto.getAttrType() != null
-            && dto.getAttrType().equals("N")) {
+            && (dto.getAttrType().equals("N") || dto.getAttrType().equals("A"))) {
           RobaTehnickiOpisDto tehnickiOpisDto = new RobaTehnickiOpisDto();
+          tehnickiOpisDto.setType(dto.getAttrType());
           tehnickiOpisDto.setOznaka(dto.getAttrShortName());
           tehnickiOpisDto.setJedinica(dto.getAttrUnit());
           tehnickiOpisDto.setVrednost(dto.getAttrValue());
@@ -77,6 +79,8 @@ public class RobaHelper {
         }
       }
     }
+
+    tehnickiOpisi.sort(Comparator.comparing(RobaTehnickiOpisDto::getType));
 
     if (tehnickiOpisi.size() > 5) {
       robaDto.setTehnickiOpis(tehnickiOpisi.stream().limit(4).toList());

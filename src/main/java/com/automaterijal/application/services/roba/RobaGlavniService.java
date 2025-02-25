@@ -375,8 +375,10 @@ public class RobaGlavniService {
       String assembleGroupId,
       UniverzalniParametri parametri,
       Partner ulogovaniPartner) {
+
     ArticlesResponse articleResponse =
         tecDocService.getAssociatedArticles(id, type, assembleGroupId);
+
     return pretragaSaFilteromStrategija.getAssociatedArticlesFromTecDoc(
         articleResponse.getArticles(), parametri, ulogovaniPartner);
   }
