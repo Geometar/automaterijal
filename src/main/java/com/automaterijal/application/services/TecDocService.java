@@ -2,6 +2,7 @@ package com.automaterijal.application.services;
 
 import com.automaterijal.application.client.TecDocClient;
 import com.automaterijal.application.domain.dto.RobaDto;
+import com.automaterijal.application.domain.dto.tecdoc.AssemblyGroupWrapper;
 import com.automaterijal.application.domain.dto.tecdoc.Manufcatures;
 import com.automaterijal.application.domain.dto.tecdoc.Model;
 import com.automaterijal.application.domain.entity.tecdoc.TecDocAtributi;
@@ -38,7 +39,7 @@ public class TecDocService {
   //    ******************** TecDoc Pretraga  ********************
 
   public List<ArticleDirectSearchAllNumbersWithStateRecord> tecDocPretragaPoTrazenojReci(
-      String trazenaRec, Integer brandId, Integer numbertype) {
+      String trazenaRec, Long brandId, Integer numbertype) {
     return tecDocClient.tecDocPretraga(trazenaRec, brandId, numbertype);
   }
 
@@ -80,9 +81,19 @@ public class TecDocService {
     return tecDocClient.getLinkageTargets(id, type);
   }
 
-  public List<AssemblyGroupFacetCount> getAssemblyGroupsForVehicle(
-      String type, Integer linkedTargetType) {
-    return tecDocClient.getAssemblyGroupsForVehicle(type, linkedTargetType);
+  public ArticlesResponse getAssociatedArticles(Integer id, String type, String assembleGroupId) {
+    return tecDocClient.getAssociatedArticles(id, type, assembleGroupId);
+  }
+
+  public AssemblyGroupWrapper getAssemblyGroupsForVehicle(String type, Integer linkedTargetType) {
+    List<GenericArticlesRecord> genericArticles =
+        tecDocClient.getGenericArticles(type, linkedTargetType);
+    List<AssemblyGroupFacetCount> assemblyGroupFacetCounts =
+        tecDocClient.getAssemblyGroupsForVehicle(type, linkedTargetType);
+    AssemblyGroupWrapper response = new AssemblyGroupWrapper();
+    response.setGenericArticles(genericArticles);
+    response.setAssemblyGroupFacetCounts(assemblyGroupFacetCounts);
+    return response;
   }
 
   public void batchVracanjeICuvanjeTDAtributa(List<RobaDto> robaDtos) {

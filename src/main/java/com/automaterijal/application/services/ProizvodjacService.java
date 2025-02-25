@@ -29,7 +29,9 @@ public class ProizvodjacService {
   public void popuniProizvodjace(
       List<RobaDto> robaDtos, MagacinDto magacinDto, UniverzalniParametri parametri) {
     List<Proizvodjac> proizvodjaci;
-    if (parametri.getPodgrupeZaPretragu() == null && parametri.getTrazenaRec() == null) {
+    if (parametri.getPodgrupeZaPretragu() == null
+        && parametri.getTrazenaRec() == null
+        && !parametri.isTecdocPretraga()) {
       proizvodjaci = pronadjiSveProizvodjaceZaVrstu();
     } else {
       Set<String> proizKljuc =

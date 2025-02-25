@@ -23,7 +23,7 @@ public class TecDocClient {
 
   /** Genericna tecDoc pretraga po trazenom broju */
   public List<ArticleDirectSearchAllNumbersWithStateRecord> tecDocPretraga(
-      String searchNumber, Integer brandId, Integer numbertype) {
+      String searchNumber, Long brandId, Integer numbertype) {
     JSONObject request = new JSONObject();
     JSONObject body = kreirajStandardniObjekat();
     body.put("articleNumber", searchNumber);
@@ -196,6 +196,46 @@ public class TecDocClient {
         response ->
             response != null && response.getAssemblyGroupFacets() != null
                 ? response.getAssemblyGroupFacets().getCounts()
+                : List.of());
+  }
+
+  /** Vracanje TecDoc artikala vezano za vozilo */
+  public ArticlesResponse getAssociatedArticles(
+      Integer linkageTargetId, String type, String assembleGroupId) {
+    JSONObject request = new JSONObject();
+    JSONObject body = kreirajStandardniObjekat();
+    body.put("articleCountry", "RS");
+    body.put("linkageTargetId", linkageTargetId);
+    body.put("linkageTargetType", type);
+    body.put("includeGenericArticles", true);
+    body.put("includeTradeNumbers", true);
+    body.put("includeArticleCriteria", true);
+    body.put("includeLinkages", true);
+    body.put("includeImages", true);
+    body.put("includeGenericArticleFacets", true);
+    body.put("perPage", 1000);
+    body.put("assemblyGroupNodeIds", List.of(assembleGroupId));
+    request.put("getArticles", body);
+    return vratiOdgovor(request, ArticlesResponse.class);
+  }
+
+  /** Vracanje generickih artikala vezano za vozilo */
+  public List<GenericArticlesRecord> getGenericArticles(String type, Integer linkageTargetId) {
+    JSONObject request = new JSONObject();
+    JSONObject body = kreirajStandardniObjekat();
+    body.put("articleCountry", "RS");
+    body.put("linkingTargetId", linkageTargetId);
+    body.put("linkingTargetType", type);
+    body.put("searchTreeNodes", true);
+    body.put("linked", true);
+    request.put("getGenericArticles", body);
+
+    GenericArticlesResponse result = vratiOdgovor(request, GenericArticlesResponse.class);
+    return extractListFromResponse(
+        result,
+        response ->
+            response != null && response.getData() != null
+                ? response.getData().getArray()
                 : List.of());
   }
 

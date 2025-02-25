@@ -16,7 +16,6 @@ import com.automaterijal.application.domain.mapper.RobaMapper;
 import com.automaterijal.application.domain.mapper.TecDocMapper;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.patterns.strategy.roba.PretragaSaFilteromStrategija;
-import com.automaterijal.application.services.GrupaDozvoljenaService;
 import com.automaterijal.application.services.TecDocService;
 import com.automaterijal.application.services.roba.grupe.PodGrupaService;
 import com.automaterijal.application.tecdoc.*;
@@ -42,7 +41,6 @@ public class RobaGlavniService {
   @NonNull final RobaAplikacijeServis aplikacijeServis;
   @NonNull final PodGrupaService podGrupaService;
   @NonNull final RobaTekstService robaTekstService;
-  @NonNull final GrupaDozvoljenaService grupaDozvoljenaService;
   @NonNull final RobaMapper mapper;
   @NonNull final TecDocMapper tecDocMapper;
   @NonNull final TecDocService tecDocService;
@@ -359,15 +357,27 @@ public class RobaGlavniService {
         tecDocArticleId = tecDocArticleIdOptional.get();
       }
     } else if (!tecDocAtributi.isEmpty()) {
-      Optional<Integer> tecDocArticleIdOptional =
+      Optional<Long> tecDocArticleIdOptional =
           tecDocAtributi.stream()
               .filter(atributi -> atributi.getTecDocArticleId() != null)
               .map(TecDocAtributi::getTecDocArticleId)
               .findFirst();
       if (tecDocArticleIdOptional.isPresent()) {
-        tecDocArticleId = Long.valueOf(tecDocArticleIdOptional.get());
+        tecDocArticleId = tecDocArticleIdOptional.get();
       }
     }
     return tecDocArticleId;
+  }
+
+  public MagacinDto getAssociatedArticles(
+      Integer id,
+      String type,
+      String assembleGroupId,
+      UniverzalniParametri parametri,
+      Partner ulogovaniPartner) {
+    ArticlesResponse articleResponse =
+        tecDocService.getAssociatedArticles(id, type, assembleGroupId);
+    return pretragaSaFilteromStrategija.getAssociatedArticlesFromTecDoc(
+        articleResponse.getArticles(), parametri, ulogovaniPartner);
   }
 }

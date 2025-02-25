@@ -8,9 +8,12 @@ import com.automaterijal.application.services.TecDocService;
 import com.automaterijal.application.services.roba.RobaHelper;
 import com.automaterijal.application.services.roba.adapter.RobaAdapterService;
 import com.automaterijal.application.tecdoc.ArticleDirectSearchAllNumbersWithStateRecord;
+import com.automaterijal.application.tecdoc.ArticleRecord;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +27,24 @@ public class PretragaSaFilteromStrategija {
   @NonNull final RobaAdapterService robaAdapter;
   @NonNull final TecDocService tecDocService;
   @NonNull final RobaHelper robaHelper;
+  @NonNull final RobaAdapterService robaAdapterService;
+
+  public MagacinDto getAssociatedArticlesFromTecDoc(
+      List<ArticleRecord> articles, UniverzalniParametri parametri, Partner ulogovaniPartner) {
+
+    Set<String> articleNumbers =
+        processArticleRecords(
+            articles, ArticleRecord::getArticleNumber, ArticleRecord::getDataSupplierId);
+
+    MagacinDto magacinDto =
+        robaAdapterService.fetchRobaByTecDocArticles(articleNumbers, parametri, articles);
+    if (!magacinDto.getRobaDto().isEmpty()) {
+      tecDocService.batchVracanjeICuvanjeTDAtributa(magacinDto.getRobaDto().getContent());
+      robaHelper.setujZaTabelu(magacinDto.getRobaDto().getContent(), ulogovaniPartner);
+    }
+
+    return magacinDto;
+  }
 
   public MagacinDto pretrazi(UniverzalniParametri parametri, Partner ulogovaniPartner) {
 
@@ -69,28 +90,27 @@ public class PretragaSaFilteromStrategija {
         tecDocService.tecDocPretragaPoTrazenojReci(parametri.getTrazenaRec(), null, 10);
     parametri.setKesiranDirectArticleSearch(response);
 
-    // Obrada rezultata TecDoc pretrage
-    response.forEach(
-        rekord -> {
-          String katBr = rekord.getArticleNo();
-          // Pronalazi proizvođača na osnovu ID brenda
-          TecDocProizvodjaci tecDocProizvodjaci =
-              TecDocProizvodjaci.pronadjiPoKljucu(rekord.getBrandNo().intValue());
-          kataloskiBrojevi.add(katBr);
-
-          // Ako proizvođač ima dodatak, kreira se alternativni kataloški broj
-          if (tecDocProizvodjaci != null && tecDocProizvodjaci.getDodatak() != null) {
-            String alternativiKatBr;
-            if (tecDocProizvodjaci.isDodatakNaKraju()) {
-              alternativiKatBr = katBr + tecDocProizvodjaci.getDodatak();
-            } else {
-              alternativiKatBr = tecDocProizvodjaci.getDodatak() + katBr;
-            }
-            kataloskiBrojevi.add(alternativiKatBr);
-          }
-        });
+    // Process TecDoc search results
+    kataloskiBrojevi.addAll(
+        processArticleRecords(
+            response,
+            ArticleDirectSearchAllNumbersWithStateRecord::getArticleNo,
+            ArticleDirectSearchAllNumbersWithStateRecord::getBrandNo));
 
     // Dodavanje tačne tražene reči kao kataloškog broja
     kataloskiBrojevi.add(parametri.getTrazenaRec());
+  }
+
+  /** Generic method to process article records and extract catalog numbers. */
+  private <T> Set<String> processArticleRecords(
+      List<T> records, Function<T, String> getArticleNo, Function<T, Long> getBrandNo) {
+    return records.stream()
+        .map(
+            record -> {
+              String katBr = getArticleNo.apply(record);
+              return TecDocProizvodjaci.generateAlternativeCatalogNumber(
+                  katBr, getBrandNo.apply(record));
+            })
+        .collect(Collectors.toSet());
   }
 }

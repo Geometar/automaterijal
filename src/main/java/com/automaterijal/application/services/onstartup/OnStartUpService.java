@@ -37,8 +37,7 @@ public class OnStartUpService {
     List<AmBrandsRecord> records = tecDocClient.vrateTecDocAmBrands();
     records.forEach(
         amBrandsRecord -> {
-          var tecDocProizvodjaci =
-              TecDocProizvodjaci.pronadjiPoKljucu(amBrandsRecord.getBrandId().intValue());
+          var tecDocProizvodjaci = TecDocProizvodjaci.pronadjiPoKljucu(amBrandsRecord.getBrandId());
           if (tecDocProizvodjaci != null) {
             TecDocBrands brands = new TecDocBrands();
             brands.setBrandId(amBrandsRecord.getBrandId());

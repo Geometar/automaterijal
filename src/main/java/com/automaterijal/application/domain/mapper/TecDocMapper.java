@@ -27,7 +27,7 @@ public interface TecDocMapper {
       AssignedArticleAttributs2Record record,
       RobaDto robaDto,
       Long tecDocArticleId,
-      Integer tecDocPpid);
+      Long tecDocPpid);
 
   @Mapping(target = "tecDocArticleId", source = "tecDocArticleId")
   @Mapping(target = "robaId", source = "robaDto.robaid")
@@ -36,7 +36,7 @@ public interface TecDocMapper {
   @Mapping(target = "katbr", source = "robaDto.katbr")
   @Mapping(target = "dokumentId", source = "record.docId")
   TecDocAtributi map(
-      ArticleDocuments2Record record, RobaDto robaDto, Long tecDocArticleId, Integer tecDocPpid);
+      ArticleDocuments2Record record, RobaDto robaDto, Long tecDocArticleId, Long tecDocPpid);
 
   TecDocDokumentacija map(ArticleDocuments2Record record);
 
@@ -47,7 +47,7 @@ public interface TecDocMapper {
   @Mapping(target = "katbr", source = "robaDto.katbr")
   @Mapping(target = "dokumentId", source = "record.thumbDocId")
   TecDocAtributi map(
-      ThumbnailByArticleIdRecord record, RobaDto robaDto, Long tecDocArticleId, Integer tecDocPpid);
+      ThumbnailByArticleIdRecord record, RobaDto robaDto, Long tecDocArticleId, Long tecDocPpid);
 
   @Mapping(target = "id", source = "manuId")
   @Mapping(target = "favoriteFlag", source = "favorFlag")

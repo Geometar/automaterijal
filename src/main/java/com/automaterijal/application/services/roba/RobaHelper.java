@@ -51,13 +51,15 @@ public class RobaHelper {
     List<RobaTehnickiOpisDto> tehnickiOpisi = new ArrayList<>();
     for (TecDocAtributi dto : tecDocAtributi) {
       if (dto.getTecDocArticleId() != null) {
-        if (dto.getDokumentId() == null && dto.getAttrType().equals("N")) {
+        if (dto.getDokumentId() == null
+            && dto.getAttrType() != null
+            && dto.getAttrType().equals("N")) {
           RobaTehnickiOpisDto tehnickiOpisDto = new RobaTehnickiOpisDto();
           tehnickiOpisDto.setOznaka(dto.getAttrShortName());
           tehnickiOpisDto.setJedinica(dto.getAttrUnit());
           tehnickiOpisDto.setVrednost(dto.getAttrValue());
           tehnickiOpisi.add(tehnickiOpisDto);
-        } else {
+        } else if (dto.getDokumentId() != null) {
           robaDto.setDokumentSlikaId(dto.getDokumentId());
           robaDto.setDokument(dto.getDokument());
         }

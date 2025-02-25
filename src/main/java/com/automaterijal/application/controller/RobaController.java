@@ -58,7 +58,15 @@ public class RobaController {
 
     var univerzalniParametri =
         robaSpringBeanUtils.popuniIVratiGenerickeParametreZaServis(
-            page, pageSize, proizvodjaci, grupe, mandatoryProid, naStanju, searchTerm, podgrupe);
+            page,
+            pageSize,
+            proizvodjaci,
+            grupe,
+            mandatoryProid,
+            naStanju,
+            searchTerm,
+            podgrupe,
+            false);
     var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
     logWebService.log(
         uPartner,

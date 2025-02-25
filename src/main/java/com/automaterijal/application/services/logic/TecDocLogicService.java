@@ -58,7 +58,9 @@ public class TecDocLogicService {
           TecDocProizvodjaci tdProizvodjaci =
               TecDocProizvodjaci.pronadjiPoNazivu(robaDto.getProizvodjac().getProid());
           if (tdProizvodjaci != null) {
-            String katBr = getKataloskiBroj(robaDto.getKatbr(), tdProizvodjaci);
+            String katBr =
+                TecDocProizvodjaci.generateAlternativeCatalogNumber(
+                    robaDto.getKatbr(), tdProizvodjaci);
             if (shouldFetchTecDocData(data, robaDto.getRobaid())) {
               fetchTecDocData(robaDto, tdProizvodjaci, katBr, artikliBezSacuvanihPodataka);
             }
@@ -286,22 +288,12 @@ public class TecDocLogicService {
     robaDto.setSlika(slikaDto);
   }
 
-  private String getKataloskiBroj(String katBr, TecDocProizvodjaci tdProizvodjaci) {
-    if (tdProizvodjaci != null && tdProizvodjaci.getDodatak() != null) {
-      return katBr.replaceAll(tdProizvodjaci.getDodatak(), "");
-    }
-    return katBr;
-  }
-
   private boolean daLiSeBrojeviPodudaraju(
       String katBr, String tecDocKatBr, TecDocProizvodjaci tecDocProizvodjaci) {
     if (katBr == null || tecDocKatBr == null) {
       return false;
     }
-    if (tecDocProizvodjaci != null && tecDocProizvodjaci.getDodatak() != null) {
-      katBr = katBr.replaceAll(tecDocProizvodjaci.getDodatak(), "");
-    }
-    katBr = katBr.replace("[-,./]", "").replace("\\s+", "").replace("-LUČ", "");
+    katBr = TecDocProizvodjaci.restoreOriginalCatalogNumber(katBr, tecDocProizvodjaci);
     tecDocKatBr = tecDocKatBr.replace("[-,./]", "").replace("\\s+", "");
     return katBr.equalsIgnoreCase(tecDocKatBr);
   }

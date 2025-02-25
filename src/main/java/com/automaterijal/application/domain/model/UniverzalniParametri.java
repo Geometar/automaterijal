@@ -19,4 +19,5 @@ public class UniverzalniParametri {
   List<String> grupa;
   List<Integer> podgrupeZaPretragu;
   List<ArticleDirectSearchAllNumbersWithStateRecord> kesiranDirectArticleSearch;
+  boolean tecdocPretraga;
 }
