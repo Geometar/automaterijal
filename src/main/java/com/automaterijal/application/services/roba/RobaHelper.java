@@ -35,17 +35,19 @@ public class RobaHelper {
 
     List<RobaCene> robaCene = robaCeneService.pronadjiCeneZaRobuBatch(listaRobeId);
 
-    robaDtos.forEach(
-        robaDto -> {
-          List<TecDocAtributi> tecDocAtributi =
-              tecDocAtributiSvi.stream()
-                  .filter(atributi -> Objects.equals(atributi.getRobaId(), robaDto.getRobaid()))
-                  .collect(Collectors.toList());
+    robaDtos.stream()
+        .filter(robaDto -> robaDto.getRobaid() != null)
+        .forEach(
+            robaDto -> {
+              List<TecDocAtributi> tecDocAtributi =
+                  tecDocAtributiSvi.stream()
+                      .filter(atributi -> Objects.equals(atributi.getRobaId(), robaDto.getRobaid()))
+                      .collect(Collectors.toList());
 
-          setupTehnickeAtributeTabela(tecDocAtributi, robaDto);
-          setCenuRobeTabela(robaDto, robaCene, partner);
-          robaDto.setSlika(vratiSliku(robaDto.getRobaid(), robaDto.getSlika()));
-        });
+              setupTehnickeAtributeTabela(tecDocAtributi, robaDto);
+              setCenuRobeTabela(robaDto, robaCene, partner);
+              robaDto.setSlika(vratiSliku(robaDto.getRobaid(), robaDto.getSlika()));
+            });
   }
 
   private void setupTehnickeAtributeTabela(List<TecDocAtributi> tecDocAtributi, RobaDto robaDto) {

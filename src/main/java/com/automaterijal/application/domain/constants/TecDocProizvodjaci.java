@@ -183,10 +183,6 @@ public enum TecDocProizvodjaci {
   }
 
   // End of: Generisanje kataloskog broja
-  public static String restoreOriginalCatalogNumber(String katBr, Long brandId) {
-    TecDocProizvodjaci manufacturer = TecDocProizvodjaci.pronadjiPoKljucu(brandId);
-    return removeDodatak(katBr, manufacturer);
-  }
 
   public static String restoreOriginalCatalogNumber(String katBr, TecDocProizvodjaci manufacturer) {
     return removeDodatak(katBr, manufacturer);

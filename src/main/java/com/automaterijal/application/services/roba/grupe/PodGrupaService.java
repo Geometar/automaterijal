@@ -49,9 +49,19 @@ public class PodGrupaService {
     Set<Integer> podgrupaIds =
         roba.stream().map(RobaDto::getPodGrupa).filter(id -> id != 0).collect(Collectors.toSet());
 
-    return podgrupaIds.isEmpty()
-        ? Collections.emptyList()
-        : podgrupeJooqRepository.findAllPodgrupeWithGrupa(podgrupaIds);
+    List<PodgrupaDto> podgrupaDtos = new ArrayList<>();
+    if (!podgrupaIds.isEmpty()) {
+      podgrupaDtos.addAll(podgrupeJooqRepository.findAllPodgrupeWithGrupa(podgrupaIds));
+    }
+
+    if (roba.stream().map(RobaDto::getPodGrupa).anyMatch(id -> id == 0)) {
+      PodgrupaDto dto = new PodgrupaDto();
+      dto.setId(0);
+      dto.setNaziv("Tecdoc artikli");
+      dto.setGrupa("Dodatno");
+      podgrupaDtos.add(dto);
+    }
+    return podgrupaDtos;
   }
 
   private void popuniNazivePodgrupa(List<RobaDto> robaDtos, List<PodgrupaDto> podgrupaDtos) {

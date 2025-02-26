@@ -4,6 +4,9 @@ import com.automaterijal.application.domain.dto.SlikaDto;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
+import com.automaterijal.application.tecdoc.ArticleRecord;
+import com.automaterijal.application.tecdoc.ImageRecord;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -34,6 +37,23 @@ public class SlikeService {
       slikaDto.setUrl(true);
     }
 
+    return slikaDto;
+  }
+
+  public SlikaDto getImageFromTD(ArticleRecord articleRecord) {
+    SlikaDto slikaDto = new SlikaDto();
+    slikaDto.setUrl(true);
+    if (articleRecord.getImages() != null && !articleRecord.getImages().isEmpty()) {
+      ImageRecord imageRecord = articleRecord.getImages().getFirst();
+      slikaDto.setSlikeUrl(
+          imageRecord.getImageURL200() != null
+              ? imageRecord.getImageURL200()
+              : imageRecord.getImageURL100());
+
+      return slikaDto;
+    } else {
+      slikaDto.setSlikeUrl(SLIKA_NIJE_DOSTUPNA_URL);
+    }
     return slikaDto;
   }
 }
