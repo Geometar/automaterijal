@@ -1,5 +1,6 @@
 package com.automaterijal.application.services.roba.grupe;
 
+import com.automaterijal.application.domain.constants.GlobalConstants;
 import com.automaterijal.application.domain.dto.MagacinDto;
 import com.automaterijal.application.domain.dto.PodgrupaDto;
 import com.automaterijal.application.domain.dto.RobaDto;
@@ -54,10 +55,12 @@ public class PodGrupaService {
       podgrupaDtos.addAll(podgrupeJooqRepository.findAllPodgrupeWithGrupa(podgrupaIds));
     }
 
-    if (roba.stream().map(RobaDto::getPodGrupa).anyMatch(id -> id == 0)) {
+    if (roba.stream()
+        .map(RobaDto::getPodGrupa)
+        .anyMatch(id -> id.equals(GlobalConstants.TECDOC_PODGRUPA_KEY))) {
       PodgrupaDto dto = new PodgrupaDto();
-      dto.setId(0);
-      dto.setNaziv("Tecdoc artikli");
+      dto.setId(GlobalConstants.TECDOC_PODGRUPA_KEY);
+      dto.setNaziv(GlobalConstants.TECDOC_PODGRUPA_VALUE);
       dto.setGrupa("Dodatno");
       podgrupaDtos.add(dto);
     }

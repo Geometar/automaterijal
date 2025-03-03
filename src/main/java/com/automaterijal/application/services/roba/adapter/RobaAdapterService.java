@@ -100,6 +100,7 @@ public class RobaAdapterService {
                     (RobaDto robaDto) ->
                         robaDto.getStanje() == 0) // Artikli sa stanjem > 0 idu pre stanja 0
                 .thenComparing(robaDto -> robaDto.getPodGrupa() == 0) // Podgrupa ID 0 ide na kraj
+                .thenComparing(Comparator.comparing(RobaDto::getStanje).reversed())
                 .thenComparing(
                     RobaDto
                         ::getPodGrupaNaziv) // Unutar grupe sortiranje po nazivu) // Sortiranje po
@@ -408,6 +409,12 @@ public class RobaAdapterService {
     List<RobaDto> removable =
         notTdRoba.stream()
             .filter(robaDto -> isNotMatchingMainArticle(tdRoba, robaDto))
+            .collect(Collectors.toList());
+
+    // Remove if its not found by original number
+    removable =
+        removable.stream()
+            .filter(robaDto -> !robaDto.getKatbr().contains("-OE"))
             .collect(Collectors.toList());
 
     if (!removable.isEmpty()) {

@@ -223,6 +223,7 @@ public class TecDocClient {
     body.put("includeLinkages", true);
     body.put("includeImages", true);
     body.put("includeGenericArticleFacets", true);
+    body.put("includeOEMNumbers", true);
     body.put("perPage", 1000);
     body.put("assemblyGroupNodeIds", List.of(assembleGroupId));
     request.put("getArticles", body);

@@ -9,6 +9,7 @@ import com.automaterijal.application.services.roba.RobaHelper;
 import com.automaterijal.application.services.roba.adapter.RobaAdapterService;
 import com.automaterijal.application.tecdoc.ArticleDirectSearchAllNumbersWithStateRecord;
 import com.automaterijal.application.tecdoc.ArticleRecord;
+import com.automaterijal.application.tecdoc.ArticleRefRecord;
 import com.automaterijal.application.utils.GeneralUtil;
 import java.util.HashSet;
 import java.util.List;
@@ -41,6 +42,15 @@ public class PretragaSaFilteromStrategija {
     Set<String> articleNumbers =
         processArticleRecords(
             articles, ArticleRecord::getArticleNumber, ArticleRecord::getDataSupplierId);
+
+    articles.forEach(
+        articleRecord ->
+            articleNumbers.addAll(
+                articleRecord.getOemNumbers().stream()
+                    .map(ArticleRefRecord::getArticleNumber)
+                    .map(GeneralUtil::cleanArticleNumber)
+                    .map(oe -> oe.concat("-OE"))
+                    .collect(Collectors.toSet())));
     MagacinDto magacinDto =
         robaAdapterService.fetchRobaByTecDocArticles(articleNumbers, parametri, articles);
     if (!magacinDto.getRobaDto().isEmpty()) {

@@ -1,5 +1,6 @@
 package com.automaterijal.application.domain.dto;
 
+import com.automaterijal.application.domain.constants.GlobalConstants;
 import com.automaterijal.application.domain.constants.TecDocProizvodjaci;
 import com.automaterijal.application.domain.entity.Proizvodjac;
 import com.automaterijal.application.services.SlikeService;
@@ -56,9 +57,9 @@ public class RobaDto {
     proizvodjacDTO.setProid(tecDocProizvodjaci.name());
     data.setProizvodjac(proizvodjacDTO);
 
-    data.setPodGrupaNaziv("Tecdoc artikli");
+    data.setPodGrupaNaziv(GlobalConstants.TECDOC_PODGRUPA_VALUE);
     data.setGrupa("Dodatno");
-    data.setPodGrupa(0);
+    data.setPodGrupa(GlobalConstants.TECDOC_PODGRUPA_KEY);
     data.setSlika(slikeService.getImageFromTD(articleRecord));
 
     // Convert technical descriptions
