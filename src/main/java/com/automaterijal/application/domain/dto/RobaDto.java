@@ -6,6 +6,7 @@ import com.automaterijal.application.domain.entity.Proizvodjac;
 import com.automaterijal.application.services.SlikeService;
 import com.automaterijal.application.tecdoc.ArticleRecord;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,6 +35,7 @@ public class RobaDto {
   byte[] dokument;
   double stanje;
   List<RobaTehnickiOpisDto> tehnickiOpis;
+  List<RobaTehnickiOpisDto> tdLinkageCriteria = new ArrayList<>();
 
   public void setProizvodjacDto(Proizvodjac proizvodjac) {
     ProizvodjacDTO proizvodjacDTO = new ProizvodjacDTO();
@@ -54,7 +56,7 @@ public class RobaDto {
     data.setNaziv(articleRecord.getGenericArticles().get(0).getGenericArticleDescription());
 
     ProizvodjacDTO proizvodjacDTO = new ProizvodjacDTO();
-    proizvodjacDTO.setProid(tecDocProizvodjaci.name());
+    proizvodjacDTO.setProid(tecDocProizvodjaci.getCleanName());
     data.setProizvodjac(proizvodjacDTO);
 
     data.setPodGrupaNaziv(GlobalConstants.TECDOC_PODGRUPA_VALUE);

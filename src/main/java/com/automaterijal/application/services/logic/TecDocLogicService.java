@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -81,8 +82,11 @@ public class TecDocLogicService {
       TecDocProizvodjaci tdProizvodjaci,
       String katBr,
       List<Long> artikliBezSacuvanihPodataka) {
+
     List<ArticleDirectSearchAllNumbersWithStateRecord> directSearch =
-        tecDocClient.tecDocPretraga(katBr, tdProizvodjaci.getTecDocId(), 0);
+        TecDocProizvodjaci.getAllTecDocIdsByName(robaDto.getProizvodjac().getProid()).stream()
+            .flatMap(tdId -> tecDocClient.tecDocPretraga(katBr, tdId, 0).stream())
+            .collect(Collectors.toList());
 
     if (directSearch.isEmpty()) {
       directSearch = fallbackSearch(katBr, tdProizvodjaci);
@@ -118,15 +122,30 @@ public class TecDocLogicService {
   // 6. Pronalaženje odgovarajućeg artikla
   private Long findMatchingArticleId(
       List<ArticleDirectSearchAllNumbersWithStateRecord> directSearch, String katBr) {
-    return directSearch.stream()
-        .filter(
-            rekord ->
-                daLiSeBrojeviPodudaraju(katBr, rekord.getArticleNo(), null)
-                    || rekord.getNumberType() == 2
-                    || rekord.getNumberType() == 0)
+    // Step 1: Filter articles based on number matching and number type
+    List<ArticleDirectSearchAllNumbersWithStateRecord> filtered =
+        directSearch.stream()
+            .filter(
+                rekord ->
+                    daLiSeBrojeviPodudaraju(katBr, rekord.getArticleNo(), null)
+                        || rekord.getNumberType() == 2
+                        || rekord.getNumberType() == 0)
+            .toList();
+
+    // Step 2: Extract articles with stateId = 1
+    List<ArticleDirectSearchAllNumbersWithStateRecord> state1 =
+        filtered.stream().filter(article -> article.getArticleStateId() == 1).toList();
+
+    // Step 3: Return first match from state1, or fallback to first match from filtered list
+    return state1.stream()
         .map(ArticleDirectSearchAllNumbersWithStateRecord::getArticleId)
         .findFirst()
-        .orElse(null);
+        .orElseGet(
+            () ->
+                filtered.stream()
+                    .map(ArticleDirectSearchAllNumbersWithStateRecord::getArticleId)
+                    .findFirst()
+                    .orElse(null));
   }
 
   // 7. Čuvanje praznog TecDoc zapisa

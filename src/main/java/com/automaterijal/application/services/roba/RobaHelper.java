@@ -83,12 +83,7 @@ public class RobaHelper {
     }
 
     tehnickiOpisi.sort(Comparator.comparing(RobaTehnickiOpisDto::getType));
-
-    if (tehnickiOpisi.size() > 5) {
-      robaDto.setTehnickiOpis(tehnickiOpisi.stream().limit(4).toList());
-    } else {
-      robaDto.setTehnickiOpis(tehnickiOpisi);
-    }
+    robaDto.setTehnickiOpis(tehnickiOpisi);
   }
 
   public void setCenuRobeTabela(RobaDto robaDto, List<RobaCene> robaCene, Partner partner) {

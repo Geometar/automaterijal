@@ -10,6 +10,7 @@ import com.automaterijal.application.services.SlikeService;
 import com.automaterijal.application.services.roba.RobaService;
 import com.automaterijal.application.services.roba.grupe.PodGrupaService;
 import com.automaterijal.application.tecdoc.ArticleRecord;
+import com.automaterijal.application.tecdoc.CriteriaRecord;
 import com.automaterijal.application.utils.GeneralUtil;
 import java.util.*;
 import java.util.Comparator;
@@ -109,6 +110,35 @@ public class RobaAdapterService {
         .collect(Collectors.toList());
   }
 
+  private List<RobaDto> mandatoryFiltering(UniverzalniParametri parametri, List<RobaDto> roba) {
+    if (parametri.getMandatoryProid() != null && !parametri.getMandatoryProid().isEmpty()) {
+      roba =
+          roba.stream()
+              .filter(
+                  robaDto ->
+                      parametri.getMandatoryProid().stream()
+                          .anyMatch(
+                              value -> value.equalsIgnoreCase(robaDto.getProizvodjac().getProid())))
+              .collect(Collectors.toList());
+    }
+
+    if (parametri.getGrupa() != null && !parametri.getGrupa().isEmpty()) {
+      roba =
+          roba.stream()
+              .filter(
+                  robaDto ->
+                      parametri.getGrupa().stream()
+                          .anyMatch(value -> value.equalsIgnoreCase(robaDto.getGrupa())))
+              .collect(Collectors.toList());
+    }
+
+    if (parametri.isNaStanju()) {
+      roba = roba.stream().filter(robaDto -> robaDto.getStanje() > 0).collect(Collectors.toList());
+    }
+
+    return roba;
+  }
+
   private List<RobaDto> robaFilterPoParametrima(
       UniverzalniParametri parametri, List<RobaDto> roba) {
     if (parametri.getProizvodjac() != null && !parametri.getProizvodjac().isEmpty()) {
@@ -117,6 +147,16 @@ public class RobaAdapterService {
               .filter(
                   robaDto ->
                       parametri.getProizvodjac().stream()
+                          .anyMatch(
+                              value -> value.equalsIgnoreCase(robaDto.getProizvodjac().getProid())))
+              .collect(Collectors.toList());
+    }
+    if (parametri.getMandatoryProid() != null && !parametri.getMandatoryProid().isEmpty()) {
+      roba =
+          roba.stream()
+              .filter(
+                  robaDto ->
+                      parametri.getMandatoryProid().stream()
                           .anyMatch(
                               value -> value.equalsIgnoreCase(robaDto.getProizvodjac().getProid())))
               .collect(Collectors.toList());
@@ -158,6 +198,8 @@ public class RobaAdapterService {
     allRoba.addAll(
         robaService.pronadjiRobuPoPrimarnomKljucu(
             robaKatbr.stream().map(RobaCache::getRobaId).toList()));
+
+    allRoba = mandatoryFiltering(parametri, allRoba);
 
     // Popuni dodatne podatke za roba (podgrupe, proizvođači itd.)
     podGrupaService.popuniPodgrupe(magacinDto, parametri, allRoba);
@@ -327,6 +369,8 @@ public class RobaAdapterService {
     magacinDto.setRobaDto(
         GeneralUtil.createPageable(roba, parametri.getPageSize(), parametri.getPage()));
 
+    enrichRobaDtoWithLinkageCriteria(magacinDto.getRobaDto().getContent(), articles);
+
     return magacinDto;
   }
 
@@ -348,7 +392,7 @@ public class RobaAdapterService {
                                   robaDto
                                           .getProizvodjac()
                                           .getProid()
-                                          .equals(tecDocProizvodjaci.name())
+                                          .equals(tecDocProizvodjaci.getCleanName())
                                       && robaDto.getKatbr().equals(katBr));
 
                   return articleInDB
@@ -375,21 +419,25 @@ public class RobaAdapterService {
   }
 
   private boolean isNotMatchingWithTecDoc(List<ArticleRecord> articles, RobaDto robaDto) {
+    return !isMatchingWithTecDoc(articles, robaDto);
+  }
+
+  private boolean isMatchingWithTecDoc(List<ArticleRecord> articles, RobaDto robaDto) {
     TecDocProizvodjaci tecDocProizvodjaci =
         TecDocProizvodjaci.findByName(robaDto.getProizvodjac().getProid());
-
     if (tecDocProizvodjaci == null) {
-      return false; // If not a TecDoc article, allow it for further alternative checks
+      return false; // Not a TecDoc article
     }
 
     String katBr =
         TecDocProizvodjaci.restoreOriginalCatalogNumber(robaDto.getKatbr(), tecDocProizvodjaci);
-
+    List<Long> tdBrandIds =
+        TecDocProizvodjaci.getAllTecDocIdsByName(robaDto.getProizvodjac().getProid());
     return articles.stream()
-        .noneMatch(
+        .anyMatch(
             articleRecord ->
                 articleRecord.getArticleNumber().equals(katBr)
-                    && articleRecord.getDataSupplierId() == tecDocProizvodjaci.getTecDocId());
+                    && tdBrandIds.contains(articleRecord.getDataSupplierId()));
   }
 
   private void filterIfNotMatchingMainArticle(List<RobaDto> robaDtos) {
@@ -422,6 +470,48 @@ public class RobaAdapterService {
     }
 
     robaDtos.removeAll(removable);
+  }
+
+  private void enrichRobaDtoWithLinkageCriteria(
+      List<RobaDto> robaDtos, List<ArticleRecord> articles) {
+    robaDtos.forEach(
+        robaDto -> {
+          List<RobaTehnickiOpisDto> criteriaList =
+              articles.stream()
+                  .filter(article -> isMatchingArticle(robaDto, article))
+                  .flatMap(article -> article.getLinkages().stream())
+                  .flatMap(linkage -> linkage.getLinkageCriteria().stream())
+                  .filter(CriteriaRecord::isImmediateDisplay)
+                  .map(
+                      criteria -> {
+                        RobaTehnickiOpisDto opisDto = new RobaTehnickiOpisDto();
+                        opisDto.setType(criteria.getCriteriaType());
+                        opisDto.setVrednost(criteria.getFormattedValue());
+                        opisDto.setOznaka(criteria.getCriteriaDescription());
+                        return opisDto;
+                      })
+                  .collect(Collectors.toList());
+
+          if (!criteriaList.isEmpty()) {
+            robaDto.setTdLinkageCriteria(criteriaList);
+          }
+        });
+  }
+
+  private boolean isMatchingArticle(RobaDto robaDto, ArticleRecord articleRecord) {
+    TecDocProizvodjaci tdProizvodjac =
+        TecDocProizvodjaci.findByName(robaDto.getProizvodjac().getProid());
+    if (tdProizvodjac == null) {
+      return false;
+    }
+
+    return TecDocProizvodjaci.getAllTecDocIdsByName(robaDto.getProizvodjac().getProid())
+            .contains(articleRecord.getDataSupplierId())
+        && robaDto
+            .getKatbr()
+            .equals(
+                TecDocProizvodjaci.generateAlternativeCatalogNumber(
+                    articleRecord.getArticleNumber(), tdProizvodjac));
   }
 
   private boolean isNotMatchingMainArticle(List<RobaDto> tdRoba, RobaDto robaDto) {

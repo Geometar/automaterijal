@@ -1,7 +1,6 @@
 package com.automaterijal.application.domain.constants;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
@@ -23,7 +22,7 @@ public enum TecDocProizvodjaci {
   BIL(16L, null, false),
   VALEO(21L, "-VAL", true),
   BOSCH(30L, null, false),
-  CONTI(31L, null, false),
+  CONTI(31L, "CT", true),
   SACHS(32L, null, false),
   GATES(33L, null, false),
   KNECH(34L, null, false),
@@ -42,6 +41,7 @@ public enum TecDocProizvodjaci {
   BRMB(65L, null, false),
   DENSO(66L, null, false),
   HENG(81L, null, false),
+  CONTI_2(83L, "CT", true),
   KYB(85L, null, false),
   DEL(89L, null, false),
   METZ(94L, null, false),
@@ -107,7 +107,8 @@ public enum TecDocProizvodjaci {
   HIFI(6309L, null, false),
   AIC(6558L, null, false),
   TOTAL(6853L, null, false),
-  NTY(6355L, null, false);
+  NTY(6355L, null, false),
+  BERU_2(6441L, null, false);
 
   @NonNull final Long tecDocId;
   final String dodatak;
@@ -145,11 +146,6 @@ public enum TecDocProizvodjaci {
   }
 
   // Start of: Generisanje kataloskog broja
-  public static String generateAlternativeCatalogNumber(String katBr, String manufcacture) {
-    TecDocProizvodjaci manufacturer = TecDocProizvodjaci.findByName(manufcacture);
-    return applyDodatak(katBr, manufacturer);
-  }
-
   public static String generateAlternativeCatalogNumber(String katBr, long brandId) {
     TecDocProizvodjaci manufacturer = TecDocProizvodjaci.pronadjiPoKljucu(brandId);
     return applyDodatak(katBr, manufacturer);
@@ -168,11 +164,7 @@ public enum TecDocProizvodjaci {
     String dodatak = manufacturer.dodatak.trim();
     String normalizedKatBr = katBr.replaceAll("\\s+", "");
 
-    // Determine where to check for the existing dodatak based on isDodatakNaKraju
-    boolean alreadyHasDodatak =
-        manufacturer.isDodatakNaKraju
-            ? normalizedKatBr.endsWith(dodatak)
-            : normalizedKatBr.startsWith(dodatak);
+    boolean alreadyHasDodatak = normalizedKatBr.contains(dodatak);
 
     if (alreadyHasDodatak) {
       return normalizedKatBr; // If dodatak is already in place, return as is
@@ -190,10 +182,43 @@ public enum TecDocProizvodjaci {
 
   private static String removeDodatak(String katBr, TecDocProizvodjaci manufacturer) {
     if (manufacturer != null && manufacturer.dodatak != null) {
-      katBr = katBr.replace(manufacturer.dodatak, "");
+      String dodatak = manufacturer.dodatak.trim();
+
+      if (manufacturer.isDodatakNaKraju && katBr.endsWith(dodatak)) {
+        // Remove dodatak from the end
+        katBr = katBr.substring(0, katBr.length() - dodatak.length());
+      } else if (!manufacturer.isDodatakNaKraju && katBr.startsWith(dodatak)) {
+        // Remove dodatak from the beginning
+        katBr = katBr.substring(dodatak.length());
+      }
     }
 
     // Remove special characters and extra spaces
     return katBr.replaceAll("[-,./]", "").replaceAll("\\s+", "").replace("-LUČ", "");
+  }
+
+  // Use this when we want all ids since some manufacturer can have 2 td brands
+  public static List<Long> getAllTecDocIdsByName(String manufacturerName) {
+    if (manufacturerName == null || manufacturerName.isEmpty()) {
+      return Collections.emptyList();
+    }
+
+    // Normalize input (ensure "_2" doesn't affect name matching)
+    String cleanName = manufacturerName.replace("_2", "");
+
+    // Store all matching TecDoc IDs
+    List<Long> ids = new ArrayList<>();
+
+    for (TecDocProizvodjaci manufacturer : values()) {
+      if (manufacturer.getCleanName().equals(cleanName)) {
+        ids.add(manufacturer.getTecDocId());
+      }
+    }
+
+    return ids;
+  }
+
+  public String getCleanName() {
+    return this.name().replace("_2", "");
   }
 }

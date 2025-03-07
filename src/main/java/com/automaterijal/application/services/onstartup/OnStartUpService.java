@@ -42,7 +42,7 @@ public class OnStartUpService {
             TecDocBrands brands = new TecDocBrands();
             brands.setBrandId(amBrandsRecord.getBrandId());
             brands.setBrandLogoID(amBrandsRecord.getBrandLogoID());
-            brands.setProid(tecDocProizvodjaci.name());
+            brands.setProid(tecDocProizvodjaci.getCleanName());
             if (StringUtils.hasText(amBrandsRecord.getBrandLogoID())) {
               brands.setBrand(tecDocClient.vratiDokument(amBrandsRecord.getBrandLogoID(), 0));
             }
