@@ -11,6 +11,7 @@ import com.automaterijal.application.services.roba.RobaService;
 import com.automaterijal.application.services.roba.grupe.PodGrupaService;
 import com.automaterijal.application.tecdoc.ArticleRecord;
 import com.automaterijal.application.tecdoc.CriteriaRecord;
+import com.automaterijal.application.tecdoc.TradeNumberDetailsRecord;
 import com.automaterijal.application.utils.GeneralUtil;
 import java.util.*;
 import java.util.Comparator;
@@ -411,9 +412,13 @@ public class RobaAdapterService {
             .filter(robaDto -> isNotMatchingWithTecDoc(articles, robaDto))
             .collect(Collectors.toList());
 
-    if (!removable.isEmpty()) {
-      log.error("Ne podudaraju se artikli sa TecDoc-om");
-    }
+    removable.forEach(
+        robaDto ->
+            log.error(
+                "Artikal ne odgovara tekdoku "
+                    + robaDto.getKatbr()
+                    + " proizvodjac "
+                    + robaDto.getProizvodjac()));
 
     robaDtos.removeAll(removable);
   }
@@ -435,9 +440,21 @@ public class RobaAdapterService {
         TecDocProizvodjaci.getAllTecDocIdsByName(robaDto.getProizvodjac().getProid());
     return articles.stream()
         .anyMatch(
-            articleRecord ->
-                articleRecord.getArticleNumber().equals(katBr)
-                    && tdBrandIds.contains(articleRecord.getDataSupplierId()));
+            articleRecord -> {
+              if (!tdBrandIds.contains(articleRecord.getDataSupplierId())) {
+                return false;
+              }
+
+              if (articleRecord.getArticleNumber().equals(katBr)) {
+                return true;
+              }
+
+              return tecDocProizvodjaci.isUseTradeNumber()
+                  && articleRecord.getTradeNumbersDetails().stream()
+                      .filter(TradeNumberDetailsRecord::isIsImmediateDisplay)
+                      .map(TradeNumberDetailsRecord::getTradeNumber)
+                      .anyMatch(katBr::equals);
+            });
   }
 
   private void filterIfNotMatchingMainArticle(List<RobaDto> robaDtos) {
@@ -465,9 +482,13 @@ public class RobaAdapterService {
             .filter(robaDto -> !robaDto.getKatbr().contains("-OE"))
             .collect(Collectors.toList());
 
-    if (!removable.isEmpty()) {
-      log.error("Ne podudaraju se artikli sa TecDoc alternativom");
-    }
+    removable.forEach(
+        robaDto ->
+            log.error(
+                "Artikal alternativa ne dogovara katbr "
+                    + robaDto.getKatbr()
+                    + " proizvodjac "
+                    + robaDto.getProizvodjac()));
 
     robaDtos.removeAll(removable);
   }

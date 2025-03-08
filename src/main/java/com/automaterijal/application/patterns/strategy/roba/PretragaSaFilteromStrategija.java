@@ -10,6 +10,7 @@ import com.automaterijal.application.services.roba.adapter.RobaAdapterService;
 import com.automaterijal.application.tecdoc.ArticleDirectSearchAllNumbersWithStateRecord;
 import com.automaterijal.application.tecdoc.ArticleRecord;
 import com.automaterijal.application.tecdoc.ArticleRefRecord;
+import com.automaterijal.application.tecdoc.TradeNumberDetailsRecord;
 import com.automaterijal.application.utils.GeneralUtil;
 import java.util.HashSet;
 import java.util.List;
@@ -21,6 +22,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.util.SetUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -42,6 +44,30 @@ public class PretragaSaFilteromStrategija {
     Set<String> articleNumbers =
         processArticleRecords(
             articles, ArticleRecord::getArticleNumber, ArticleRecord::getDataSupplierId);
+
+    articles.forEach(
+        articleRecord -> {
+          if (!TecDocProizvodjaci.pronadjiPoKljucu(articleRecord.getDataSupplierId())
+              .isUseTradeNumber()) {
+            return;
+          }
+          Set<TradeNumberDetailsRecord> records =
+              articleRecord.getTradeNumbersDetails().stream()
+                  .filter(TradeNumberDetailsRecord::isIsImmediateDisplay)
+                  .collect(Collectors.toSet());
+          if (!SetUtils.isEmpty(records)) {
+            articleNumbers.addAll(
+                records.stream()
+                    .flatMap(
+                        tradeNumberDetailsRecord ->
+                            processArticleRecords(
+                                articles,
+                                tradeNumberDetailsRecord.getTradeNumber(),
+                                articleRecord.getDataSupplierId())
+                                .stream())
+                    .collect(Collectors.toSet()));
+          }
+        });
 
     articles.forEach(
         articleRecord ->
@@ -125,6 +151,16 @@ public class PretragaSaFilteromStrategija {
               String katBr = getArticleNo.apply(record);
               return TecDocProizvodjaci.generateAlternativeCatalogNumber(
                   katBr, getBrandNo.apply(record));
+            })
+        .collect(Collectors.toSet());
+  }
+
+  private <T> Set<String> processArticleRecords(
+      List<T> records, String articleNo, Long getBrandNo) {
+    return records.stream()
+        .map(
+            record -> {
+              return TecDocProizvodjaci.generateAlternativeCatalogNumber(articleNo, getBrandNo);
             })
         .collect(Collectors.toSet());
   }

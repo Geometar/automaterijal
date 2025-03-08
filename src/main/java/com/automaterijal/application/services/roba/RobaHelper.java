@@ -82,7 +82,9 @@ public class RobaHelper {
       }
     }
 
-    tehnickiOpisi.sort(Comparator.comparing(RobaTehnickiOpisDto::getType));
+    tehnickiOpisi.sort(
+        Comparator.comparing(
+            RobaTehnickiOpisDto::getType, Comparator.nullsFirst(Comparator.naturalOrder())));
     robaDto.setTehnickiOpis(tehnickiOpisi);
   }
 
