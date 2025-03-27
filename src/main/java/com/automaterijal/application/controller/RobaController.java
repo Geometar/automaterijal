@@ -68,11 +68,7 @@ public class RobaController {
             podgrupe,
             false);
     var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
-    logWebService.log(
-        uPartner,
-        univerzalniParametri.getGrupa(),
-        univerzalniParametri.getProizvodjac(),
-        univerzalniParametri.getTrazenaRec());
+    logWebService.log(uPartner, univerzalniParametri);
     MagacinDto magacinDto =
         robaGlavniService.pronadjiRobuPoPretrazi(univerzalniParametri, uPartner);
 

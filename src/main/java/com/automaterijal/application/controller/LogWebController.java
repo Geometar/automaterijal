@@ -1,6 +1,6 @@
 package com.automaterijal.application.controller;
 
-import com.automaterijal.application.domain.entity.LogWeb;
+import com.automaterijal.application.domain.dto.LogWebDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.services.LogWebService;
 import com.automaterijal.application.utils.PartnerSpringBeanUtils;
@@ -18,32 +18,29 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequestMapping("/api/log")
+@RequestMapping("/api/logs")
 @CrossOrigin(origins = "http://localhost:4200")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class LogWebController {
 
-    @NonNull
-    final LogWebService logWebService;
+  @NonNull final LogWebService logWebService;
 
-    @NonNull
-    final PartnerSpringBeanUtils partnerSpringBeanUtils;
+  @NonNull final PartnerSpringBeanUtils partnerSpringBeanUtils;
 
-    @GetMapping
-    public ResponseEntity<Page<LogWeb>> vratiSveLogovePartnera(
-            @RequestParam(required = false) Integer ppid,
-            @RequestParam(required = false) Integer page,
-            @RequestParam(required = false) Integer pageSize,
-            Authentication authentication
-    ) {
-        Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
-        if (partner.getPrivilegije() != 2047) {
+  @GetMapping
+  public ResponseEntity<Page<LogWebDto>> vratiSveLogovePartnera(
+      @RequestParam(required = false) Integer ppid,
+      @RequestParam(required = false) Integer page,
+      @RequestParam(required = false) Integer pageSize,
+      Authentication authentication) {
+    Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+    if (partner.getPrivilegije() != 2047) {
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nije Admin");
-        }
-        var iPage = page == null ? 0 : page;
-        var iPageSize = pageSize == null ? 10 : pageSize;
-        Pageable pageable = PageRequest.of(iPage, iPageSize);
-        return ResponseEntity.ok(logWebService.vratiLogove(ppid, pageable));
     }
+    var iPage = page == null ? 0 : page;
+    var iPageSize = pageSize == null ? 10 : pageSize;
+    Pageable pageable = PageRequest.of(iPage, iPageSize);
+    return ResponseEntity.ok(logWebService.vratiLogove(ppid, pageable));
+  }
 }

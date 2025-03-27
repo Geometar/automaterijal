@@ -20,20 +20,14 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserDetailsService implements
-    org.springframework.security.core.userdetails.UserDetailsService {
+public class UserDetailsService
+    implements org.springframework.security.core.userdetails.UserDetailsService {
 
-  @NonNull
-  final PartnerRepository partnerRepository;
+  @NonNull final PartnerRepository partnerRepository;
 
-  @NonNull
-  final UsersService usersService;
+  @NonNull final PartnerSpringBeanUtils partnerSpringBeanUtils;
 
-  @NonNull
-  final PartnerSpringBeanUtils partnerSpringBeanUtils;
-
-  @NonNull
-  final PartnerMapper mapper;
+  @NonNull final PartnerMapper mapper;
 
   /**
    * Izvlacimo korisnika iz baze po username-u za logovanje. Postoji 2 scenarija ovde 1) Korisnik
@@ -43,9 +37,9 @@ public class UserDetailsService implements
    */
   @Override
   public CurrentUser loadUserByUsername(final String username) throws UsernameNotFoundException {
-    final Optional<Partner> optionalPartner = partnerRepository.findByWebKorisnikAndWebStatusGreaterThan(
-        username, 0);
-    if (!optionalPartner.isPresent()) {
+    final Optional<Partner> optionalPartner =
+        partnerRepository.findByWebKorisnikAndWebStatusGreaterThan(username, 0);
+    if (optionalPartner.isEmpty()) {
       throw new UsernameNotFoundException("Partner not found with username " + username);
     }
     final Partner partner = optionalPartner.get();

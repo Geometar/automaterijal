@@ -84,4 +84,8 @@ public class PodGrupaService {
   public Optional<PodGrupa> vratiPodgrupuPoKljucu(int kljuc) {
     return podGrupaRepository.findById(kljuc);
   }
+
+  public List<PodGrupa> vratiPodgrupuPoKljucu(List<Integer> podgrupaKeys) {
+    return podGrupaRepository.findByPodGrupaIdIn(podgrupaKeys);
+  }
 }

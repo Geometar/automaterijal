@@ -13,6 +13,9 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
+        connection.useUnicode: true
+        connection.characterEncoding: UTF-8
+        connection.charSet: UTF-8
     open-in-view: false
 
   # Isključenje automatske Spring Security konfiguracije
@@ -57,3 +60,6 @@ automaterijal:
 logging:
   file:
     name: ../logs/arhiva/automaterijal
+
+# In case we want to use offline mode
+offline: false

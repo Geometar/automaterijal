@@ -57,7 +57,7 @@ public class FakturaController {
             : GeneralUtil.timestampToLDT(dateTo.longValue()).atStartOfDay().plusDays(1);
     if (partner == null) {
       throw new ResponseStatusException(
-          HttpStatus.UNAUTHORIZED, "Unauthorized to update this partner");
+          HttpStatus.FORBIDDEN, "Unauthorized to update this partner");
     } else if (ppid != null && ppid.intValue() != partner.getPpid().intValue()) {
 
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Los zahtev");

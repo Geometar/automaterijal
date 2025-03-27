@@ -6,6 +6,7 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -14,6 +15,9 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 @Slf4j
 @Service
 public class TecDocClient {
+
+  @Value("${offline}")
+  private boolean offline = false;
 
   private static final String URL =
       "https://webservice.tecalliance.services/pegasus-3-0/info/proxy/services/TecdocToCatDLB.jsonEndpoint";
@@ -270,9 +274,19 @@ public class TecDocClient {
 
   /** Generecika metoda koja sluzi za REST poziv prema TECDOC-u */
   private <T> T vratiOdgovor(JSONObject request, Class<T> responseKlasa) {
+
+    if (offline) {
+      try {
+        return responseKlasa.newInstance();
+      } catch (InstantiationException e) {
+        throw new RuntimeException(e);
+      } catch (IllegalAccessException e) {
+        throw new RuntimeException(e);
+      }
+    }
+
     HttpHeaders headers = new HttpHeaders();
     headers.set("x-api-key", API_KEY);
-    log.info("Request se salje {}", request.toString().trim());
 
     try {
       return webClient

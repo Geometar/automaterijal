@@ -44,7 +44,7 @@ public class AdminController {
 
   @NonNull final PartnerSpringBeanUtils partnerSpringBeanUtils;
 
-  @GetMapping(value = "/logovanja")
+  @GetMapping(value = "/logs")
   public ResponseEntity<Page<PartnerLogovanjeDto>> vratiUlogovanogPartnera(
       @RequestParam Integer page, @RequestParam Integer pageSize, Authentication authentication) {
     Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
