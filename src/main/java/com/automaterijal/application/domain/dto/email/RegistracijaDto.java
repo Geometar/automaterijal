@@ -6,21 +6,20 @@ import lombok.experimental.FieldDefaults;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RegistracijaDto extends Email{
+public class RegistracijaDto {
 
-    public static final String NASLOV = "Registracija korisnika";
-    public static final String TEMPLATE = "registracioniTemplate";
-    // Pravno Lice
-    String nazivFirme;
-    String pib;
-    // Fizicko Lice
-    String imeIPrezime;
+  public static final String NASLOV = "Registracija korisnika";
+  public static final String TEMPLATE = "registracioniTemplate";
+  // Pravno Lice
+  String nazivFirme;
+  String pib;
+  // Fizicko Lice
+  String imeIPrezime;
 
-    // Zajednicki sadrzilac
-    String grad;
-    String adresa;
-    String email;
-    String kontaktTelefon;
-    Boolean daLiJePravnoLice;
-
+  // Zajednicki sadrzilac
+  String grad;
+  String adresa;
+  String email;
+  String kontaktTelefon;
+  Boolean daLiJePravnoLice;
 }

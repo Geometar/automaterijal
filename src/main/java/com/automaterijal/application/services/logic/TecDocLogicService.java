@@ -60,7 +60,11 @@ public class TecDocLogicService {
               TecDocProizvodjaci.pronadjiPoNazivu(robaDto.getProizvodjac().getProid());
           if (tdProizvodjaci != null) {
             String katBr =
-                TecDocProizvodjaci.restoreOriginalCatalogNumber(robaDto.getKatbr(), tdProizvodjaci);
+                TecDocProizvodjaci.restoreOriginalCatalogNumber(
+                    tdProizvodjaci.isUseAlternativeNumber()
+                        ? robaDto.getKatbrpro()
+                        : robaDto.getKatbr(),
+                    tdProizvodjaci);
             if (shouldFetchTecDocData(data, robaDto.getRobaid())) {
               fetchTecDocData(robaDto, tdProizvodjaci, katBr, artikliBezSacuvanihPodataka);
             }
@@ -198,11 +202,16 @@ public class TecDocLogicService {
       List<String> alternativeManufactureNumber) {
     return robaDtos.stream()
         .filter(
-            robaDto ->
-                daLiSeBrojeviPodudaraju(
-                    robaDto.getKatbr(),
-                    directArticle.getArticleNo().replace(" ", ""),
-                    TecDocProizvodjaci.pronadjiPoNazivu(robaDto.getProizvodjac().getProid())))
+            robaDto -> {
+              TecDocProizvodjaci tecDocProizvodjaci =
+                  TecDocProizvodjaci.pronadjiPoNazivu(robaDto.getProizvodjac().getProid());
+              return daLiSeBrojeviPodudaraju(
+                  tecDocProizvodjaci.isUseAlternativeNumber()
+                      ? robaDto.getKatbrpro()
+                      : robaDto.getKatbr(),
+                  directArticle.getArticleNo().replace(" ", ""),
+                  tecDocProizvodjaci);
+            })
         .findFirst()
         .or(
             () ->
@@ -211,12 +220,18 @@ public class TecDocLogicService {
                         robaDto ->
                             alternativeManufactureNumber.stream()
                                 .anyMatch(
-                                    katBr ->
-                                        daLiSeBrojeviPodudaraju(
-                                            robaDto.getKatbr(),
-                                            katBr.replace(" ", ""),
-                                            TecDocProizvodjaci.pronadjiPoNazivu(
-                                                robaDto.getProizvodjac().getProid()))))
+                                    katBr -> {
+                                      TecDocProizvodjaci tecDocProizvodjaci =
+                                          TecDocProizvodjaci.pronadjiPoNazivu(
+                                              robaDto.getProizvodjac().getProid());
+                                      return daLiSeBrojeviPodudaraju(
+                                          tecDocProizvodjaci.isUseAlternativeNumber()
+                                              ? robaDto.getKatbrpro()
+                                              : robaDto.getKatbr(),
+                                          katBr.replace(" ", ""),
+                                          TecDocProizvodjaci.pronadjiPoNazivu(
+                                              robaDto.getProizvodjac().getProid()));
+                                    }))
                     .findFirst());
   }
 

@@ -64,7 +64,7 @@ public class RobaJooqRepository {
   public List<RobaDto> generic(UniverzalniParametri parametri, Condition condition) {
     // Kreiraj bazni upit
     SelectConditionStep<
-            Record8<Integer, String, String, BigDecimal, String, Integer, String, String>>
+            Record9<Integer, String, String, BigDecimal, String, Integer, String, String, String>>
         select =
             robaSelect()
                 .and(
@@ -120,17 +120,18 @@ public class RobaJooqRepository {
   }
 
   private SelectConditionStep<
-          Record8<Integer, String, String, BigDecimal, String, Integer, String, String>>
+          Record9<Integer, String, String, BigDecimal, String, Integer, String, String, String>>
       robaSelect() {
     return robaSelect(null, null); // Pozivamo metodu sa null vrednošću za trazenaRec
   }
 
   // Verzija metode sa trazenaRec parametrom
   private SelectConditionStep<
-          Record8<Integer, String, String, BigDecimal, String, Integer, String, String>>
+          Record9<Integer, String, String, BigDecimal, String, Integer, String, String, String>>
       robaSelect(String trazenaRec, Set<Integer> robaId) {
 
-    SelectJoinStep<Record8<Integer, String, String, BigDecimal, String, Integer, String, String>>
+    SelectJoinStep<
+            Record9<Integer, String, String, BigDecimal, String, Integer, String, String, String>>
         select =
             dslContext
                 .selectDistinct(
@@ -141,7 +142,8 @@ public class RobaJooqRepository {
                     ROBA.GRUPAID,
                     ROBA.PODGRUPAID,
                     ROBA.PROID,
-                    ROBA.SLIKA)
+                    ROBA.SLIKA,
+                    ROBA.KATBRPRO)
                 .from(ROBA);
 
     if (trazenaRec != null) {
@@ -155,12 +157,14 @@ public class RobaJooqRepository {
   }
 
   private RobaDto map(
-      Record8<Integer, String, String, BigDecimal, String, Integer, String, String> robaRecord) {
+      Record9<Integer, String, String, BigDecimal, String, Integer, String, String, String>
+          robaRecord) {
     ProizvodjacDTO proizvodjacDTO = new ProizvodjacDTO();
     proizvodjacDTO.setProid(robaRecord.component7());
     return RobaDto.builder()
         .robaid(robaRecord.component1().longValue())
         .katbr(robaRecord.component2())
+        .katbrpro(robaRecord.component9())
         .naziv(robaRecord.component3())
         .stanje(robaRecord.component4() != null ? robaRecord.component4().doubleValue() : 0)
         .grupa(robaRecord.component5())

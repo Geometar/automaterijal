@@ -1,10 +1,9 @@
-package com.automaterijal.application.domain.dto.email;
+package com.automaterijal.application.domain.constants;
 
-public abstract class Email {
+import lombok.experimental.UtilityClass;
 
-  protected Email() {
-    throw new IllegalStateException("Utility class");
-  }
+@UtilityClass
+public class EmailConstants {
 
   public static final String EMAIL_ZA_SLANJE = "webshop@automaterijal.com";
   public static final String EMAIL_ZA_PRIMANJE = "radespasoje@gmail.com";

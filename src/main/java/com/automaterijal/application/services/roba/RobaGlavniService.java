@@ -253,6 +253,9 @@ public class RobaGlavniService {
       if (dokument.getDocTypeName().equals("Tehnički crtež")) {
         dokument.setDokument(tecDocService.vratiDokument(dokument.getDocId(), 0));
       }
+      if (dokument.getDocFileTypeName().equals("URL")) {
+        dokument.setDocUrl(dokument.getDocUrl());
+      }
     }
     if (!dokumenta.isEmpty()) {
       mapaDokumentacije =
@@ -261,20 +264,48 @@ public class RobaGlavniService {
       mapaDokumentacije.remove("Slika");
     }
     if (!mapaDokumentacije.isEmpty()) {
-      Set<String> kljuceviDokumenata = mapaDokumentacije.keySet();
-      for (String kljuc : kljuceviDokumenata) {
-        ListIterator<TecDocDokumentacija> iter = mapaDokumentacije.get(kljuc).listIterator();
-        boolean hasMoreUrl = false;
-        while (iter.hasNext()) {
-          TecDocDokumentacija docDokumentacija = iter.next();
-          if (docDokumentacija.getDocFileTypeName().toUpperCase().contains("URL") && !hasMoreUrl) {
-            hasMoreUrl = true;
-          } else if (docDokumentacija.getDocFileTypeName().toUpperCase().contains("URL")
-              && hasMoreUrl) {
-            iter.remove();
-          }
-        }
-      }
+      mapaDokumentacije.replaceAll(
+          (kljuc, dokumenti) -> {
+            List<TecDocDokumentacija> result = new ArrayList<>();
+
+            List<TecDocDokumentacija> urlDocs = new ArrayList<>();
+            for (TecDocDokumentacija doc : dokumenti) {
+              if (doc.getDocFileTypeName().toUpperCase().contains("URL")) {
+                urlDocs.add(doc);
+              } else {
+                result.add(doc); // keep non-URL documents
+              }
+            }
+
+            if (!urlDocs.isEmpty()) {
+              TecDocDokumentacija selected =
+                  urlDocs.stream()
+                      .filter(
+                          d -> {
+                            String url = d.getDocUrl().toLowerCase();
+                            return url.contains("sr")
+                                || url.contains("serbian")
+                                || url.contains("rs");
+                          })
+                      .findFirst()
+                      .orElseGet(
+                          () ->
+                              urlDocs.stream()
+                                  .filter(
+                                      d -> {
+                                        String url = d.getDocUrl().toLowerCase();
+                                        return url.contains("en") || url.contains("english");
+                                      })
+                                  .findFirst()
+                                  .orElse(urlDocs.get(0)) // fallback to first URL
+                          );
+
+              result.add(selected);
+            }
+
+            return result;
+          });
+
       detaljiDto.setDokumentacija(mapaDokumentacije);
     }
   }
