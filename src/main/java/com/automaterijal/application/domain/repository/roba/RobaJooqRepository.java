@@ -6,13 +6,9 @@ import static com.automaterijal.db.tables.RobaKatbrOld.ROBA_KATBR_OLD;
 import com.automaterijal.application.domain.dto.ProizvodjacDTO;
 import com.automaterijal.application.domain.dto.RobaDto;
 import com.automaterijal.application.domain.dto.SlikaDto;
-import com.automaterijal.application.domain.entity.PodGrupa;
-import com.automaterijal.application.domain.entity.roba.Roba;
-import com.automaterijal.application.domain.mapper.RobaMapper;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.utils.CriteriaBuilder;
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -29,22 +25,10 @@ public class RobaJooqRepository {
 
   @Autowired DSLContext dslContext;
 
-  @Autowired RobaMapper mapper;
-
   public List<RobaDto> vratiRobuPoRobiId(Set<Long> robaIds) {
     Condition condition =
         ROBA.ROBAID.in(robaIds.stream().map(Long::intValue).collect(Collectors.toSet()));
     return generic(null, condition);
-  }
-
-  public List<RobaDto> pronadjiRobuPoNazivu(String searchTerm, UniverzalniParametri parametri) {
-    List<Condition> conditions =
-        Arrays.stream(searchTerm.trim().split("\\s+"))
-            .map(word -> ROBA.NAZIV.like("%" + word + "%"))
-            .collect(Collectors.toList());
-    Condition finalCondition = conditions.stream().reduce(DSL.noCondition(), Condition::and);
-
-    return generic(parametri, finalCondition);
   }
 
   public List<RobaDto> fetchKatBrOld(Set<String> kataloskiBrojevi) {
@@ -75,26 +59,6 @@ public class RobaJooqRepository {
 
     // Fetch podaci
     return select.orderBy(ROBA.STANJE.desc()).fetchStream().map(this::map).toList();
-  }
-
-  public List<String> vratiSveProzivodjace() {
-    return dslContext
-        .select()
-        .from(ROBA)
-        .where(ROBA.STANJE.greaterThan(BigDecimal.ZERO))
-        .fetch(ROBA.PROID);
-  }
-
-  public List<Roba> pronadjiRobuPoPodgrupama(List<PodGrupa> podGrupaId, boolean naStanju) {
-    List<Integer> podgrupe = podGrupaId.stream().map(PodGrupa::getPodGrupaId).toList();
-    Condition condition =
-        CriteriaBuilder.init()
-            .addCondition(ROBA.PODGRUPAID.in(podgrupe))
-            .addConditionIfTrue(naStanju, ROBA.STANJE.greaterThan(BigDecimal.ZERO))
-            .build();
-    return dslContext.selectFrom(ROBA).where(condition).orderBy(ROBA.STANJE.desc()).fetch().stream()
-        .map(mapper::map)
-        .collect(Collectors.toList());
   }
 
   private Condition filterPoParametrima(UniverzalniParametri parametri) {

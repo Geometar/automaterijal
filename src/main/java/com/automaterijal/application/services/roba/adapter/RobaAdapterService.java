@@ -332,16 +332,6 @@ public class RobaAdapterService {
     retVal.addAll(noviKatBrojevi);
   }
 
-  public DashboardDto vracanjePodatakaZaDashboard() {
-    List<String> sviProizvodjaci = robaJooqRepository.vratiSveProzivodjace();
-    Set<String> jedinstveniProizvodjaci = new HashSet<>(sviProizvodjaci);
-
-    return DashboardDto.builder()
-        .brojArtikala(sviProizvodjaci.size())
-        .brojProizvodjaca(jedinstveniProizvodjaci.size())
-        .build();
-  }
-
   public MagacinDto fetchRobaByTecDocArticles(
       Set<String> articleNumbers, UniverzalniParametri parametri, List<ArticleRecord> articles) {
     MagacinDto magacinDto = new MagacinDto();

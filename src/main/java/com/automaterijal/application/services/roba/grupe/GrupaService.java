@@ -19,26 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class GrupaService {
 
-    @NonNull
-    final GrupaRepository grupaRepository;
+  @NonNull final GrupaRepository grupaRepository;
 
-    public List<String> vratiSveIdGrupePoNazivu(final String naziv) {
-        return grupaRepository.findByNaziv(naziv)
-                .stream()
-                .map(Grupa::getGrupaid)
-                .toList();
-    }
-
-    public String vratiNazivGrupePoId(final String id) {
-        String retVal = null;
-        final Optional<Grupa> grupa =  grupaRepository.findById(id);
-        if(grupa.isPresent()) {
-            retVal = grupa.get().getNaziv();
-        }
-        return retVal;
-    }
-
-    public List<Grupa> vratiSveGrupe() {
-        return grupaRepository.findAllByOrderByNaziv();
-    }
+  public List<Grupa> vratiSveGrupe() {
+    return grupaRepository.findAllByOrderByNaziv();
+  }
 }

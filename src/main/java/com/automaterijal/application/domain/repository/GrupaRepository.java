@@ -8,6 +8,5 @@ import java.util.List;
 
 @Repository
 public interface GrupaRepository extends JpaRepository<Grupa, String> {
-    List<Grupa> findByNaziv(String naziv);
-    List<Grupa> findAllByOrderByNaziv();
+  List<Grupa> findAllByOrderByNaziv();
 }
