@@ -113,9 +113,11 @@ public class PretragaSaFilteromStrategija {
     }
 
     // Pokusaj pretrage pomocu naziva
-    if (kataloskiBrojevi.isEmpty()
-        && robaAdapter.pronadjiPoNazivu(parametri, kataloskiBrojevi, robaId)) {
-      return robaAdapter.pronadjiPoRobaId(parametri, robaId);
+    if (kataloskiBrojevi.isEmpty()) {
+      boolean found = robaAdapter.pronadjiPoNazivu(parametri, kataloskiBrojevi, robaId);
+      if (found) {
+        return robaAdapter.pronadjiPoRobaId(parametri, robaId);
+      }
     }
 
     // Ukljucujemo tecdoc u pretragu

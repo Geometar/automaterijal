@@ -61,7 +61,7 @@ public class TecDocLogicService {
           if (tdProizvodjaci != null) {
             String katBr =
                 TecDocProizvodjaci.restoreOriginalCatalogNumber(
-                    tdProizvodjaci.isUseAlternativeNumber()
+                    tdProizvodjaci.isUseAlternativeNumber() && robaDto.getKatbrpro() != null
                         ? robaDto.getKatbrpro()
                         : robaDto.getKatbr(),
                     tdProizvodjaci);
@@ -205,8 +205,13 @@ public class TecDocLogicService {
             robaDto -> {
               TecDocProizvodjaci tecDocProizvodjaci =
                   TecDocProizvodjaci.pronadjiPoNazivu(robaDto.getProizvodjac().getProid());
+
+              if (tecDocProizvodjaci == null) {
+                return false;
+              }
+
               return daLiSeBrojeviPodudaraju(
-                  tecDocProizvodjaci.isUseAlternativeNumber()
+                  tecDocProizvodjaci.isUseAlternativeNumber() && robaDto.getKatbrpro() != null
                       ? robaDto.getKatbrpro()
                       : robaDto.getKatbr(),
                   directArticle.getArticleNo().replace(" ", ""),
@@ -226,6 +231,7 @@ public class TecDocLogicService {
                                               robaDto.getProizvodjac().getProid());
                                       return daLiSeBrojeviPodudaraju(
                                           tecDocProizvodjaci.isUseAlternativeNumber()
+                                                  && robaDto.getKatbrpro() != null
                                               ? robaDto.getKatbrpro()
                                               : robaDto.getKatbr(),
                                           katBr.replace(" ", ""),

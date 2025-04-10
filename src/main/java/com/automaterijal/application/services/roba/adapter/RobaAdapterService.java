@@ -53,14 +53,14 @@ public class RobaAdapterService {
     podGrupaService.popuniPodgrupe(magacinDto, parametri, roba);
     proizvodjacService.popuniProizvodjace(roba, magacinDto, parametri);
 
-    int start = parametri.getPageSize() * parametri.getPage();
-    int end = Math.min((start + parametri.getPageSize()), roba.size());
-
     // Primeni filtere po proizvođaču i grupi ako je potrebno
     roba = robaFilterPoParametrima(parametri, roba);
 
     // Sortiraj robu po grupi ako kategorija nije zadana
     roba = sortirajPoGrupi(roba);
+
+    int start = parametri.getPageSize() * parametri.getPage();
+    int end = Math.min((start + parametri.getPageSize()), roba.size());
 
     magacinDto.setRobaDto(
         new PageImpl<>(

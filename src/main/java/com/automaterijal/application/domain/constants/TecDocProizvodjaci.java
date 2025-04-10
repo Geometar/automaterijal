@@ -196,7 +196,7 @@ public enum TecDocProizvodjaci {
     }
 
     // Remove special characters and extra spaces
-    return katBr.replaceAll("[-,./]", "").replaceAll("\\s+", "").replace("-LUČ", "");
+    return katBr.replaceAll("\\s+", "").replace("-LUČ", "");
   }
 
   // Use this when we want all ids since some manufacturer can have 2 td brands

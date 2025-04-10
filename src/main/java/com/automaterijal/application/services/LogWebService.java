@@ -40,7 +40,7 @@ public class LogWebService {
   public void log(Partner partner, UniverzalniParametri parametri) {
     List<String> proizvodjac = parametri.resolveProizvodjac();
     List<String> filter = new ArrayList<>();
-    if (!parametri.getPodgrupeZaPretragu().isEmpty()) {
+    if (parametri.getPodgrupeZaPretragu() != null && !parametri.getPodgrupeZaPretragu().isEmpty()) {
       filter =
           this.podGrupaService.vratiPodgrupuPoKljucu(parametri.getPodgrupeZaPretragu()).stream()
               .map(PodGrupa::getNaziv)
