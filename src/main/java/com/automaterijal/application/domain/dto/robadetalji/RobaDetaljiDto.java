@@ -26,7 +26,7 @@ public class RobaDetaljiDto {
   Double rabat;
   BigDecimal cena;
   Proizvodjac proizvodjac;
-  byte[] proizvodjacLogo;
+  String proizvodjacLogo;
   List<RobaTehnickiOpisDto> tehnickiOpis;
   List<RobaBrojeviDto> tdBrojevi;
   Map<String, List<RobaAplikacijaDto>> aplikacije;

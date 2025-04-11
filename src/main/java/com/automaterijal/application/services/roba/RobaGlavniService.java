@@ -10,12 +10,12 @@ import com.automaterijal.application.domain.dto.robadetalji.RobaDetaljiDto;
 import com.automaterijal.application.domain.dto.tecdoc.TecDocDokumentacija;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.roba.Roba;
-import com.automaterijal.application.domain.entity.roba.RobaCene;
 import com.automaterijal.application.domain.entity.tecdoc.TecDocAtributi;
 import com.automaterijal.application.domain.mapper.RobaMapper;
 import com.automaterijal.application.domain.mapper.TecDocMapper;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.patterns.strategy.roba.PretragaSaFilteromStrategija;
+import com.automaterijal.application.services.SlikeService;
 import com.automaterijal.application.services.TecDocService;
 import com.automaterijal.application.services.roba.grupe.PodGrupaService;
 import com.automaterijal.application.tecdoc.*;
@@ -46,21 +46,13 @@ public class RobaGlavniService {
   @NonNull final TecDocService tecDocService;
   @NonNull final PretragaSaFilteromStrategija pretragaSaFilteromStrategija;
   @NonNull final RobaHelper robaHelper;
+  @NonNull final SlikeService slikeService;
 
   /** Ulazna metoda iz kontrolera */
   public MagacinDto pronadjiRobuPoPretrazi(
       UniverzalniParametri parametri, Partner ulogovaniPartner) {
     // Koristimo fabriku da bismo dobili pravu strategiju
     return pretragaSaFilteromStrategija.pretrazi(parametri, ulogovaniPartner);
-  }
-
-  public List<RobaDto> vratiIzdvajamoIzPonudeRobu(List<Long> robaIds, Partner partner) {
-    List<Roba> robas = robaService.pronadjiRobuPoPrimarnomKljucuBatch(robaIds);
-    List<RobaDto> retVal = robas.stream().map(mapper::map).toList();
-    if (!retVal.isEmpty()) {
-      setujZaTabeluDashboard(retVal, partner);
-    }
-    return retVal;
   }
 
   public Optional<RobaDetaljiDto> pronadjiRobuPoRobaId(Long robaId, Partner ulogovaniPartner) {
@@ -72,17 +64,6 @@ public class RobaGlavniService {
       retVal = Optional.of(detaljnoDto);
     }
     return retVal;
-  }
-
-  /** Metoda za setovanje cena i tehnickog opisa u dto-u */
-  private void setujZaTabeluDashboard(List<RobaDto> robaDtos, Partner partner) {
-    List<Long> robaIds = robaDtos.stream().map(RobaDto::getRobaid).toList();
-    List<RobaCene> robaCenes = robaCeneService.pronadjiCeneZaRobuBatch(robaIds);
-    robaDtos.forEach(
-        robaDto -> {
-          robaHelper.setCenuRobeTabela(robaDto, robaCenes, partner);
-          robaDto.setSlika(robaHelper.vratiSliku(robaDto.getRobaid(), robaDto.getSlika()));
-        });
   }
 
   // ************************************ Vrati detalje za robu pojedinacno
@@ -153,7 +134,9 @@ public class RobaGlavniService {
 
     tecDocService
         .vratiTecDocBrendovePrekoProId(detaljiDto.getProizvodjac().getProid())
-        .ifPresent(tecDocBrands -> detaljiDto.setProizvodjacLogo(tecDocBrands.getBrand()));
+        .ifPresent(
+            tecDocBrands ->
+                detaljiDto.setProizvodjacLogo(slikeService.getImageForBrandLogo(tecDocBrands)));
 
     // ***************** Setujemo atribute iz tecdoca ako postoje *************************
     setujTehnickeDetalje(detaljiDto, tecDocDetalji);
@@ -325,7 +308,6 @@ public class RobaGlavniService {
 
   private static List<RobaBrojeviDto> setujOriginalneBrojeve(
       RobaDetaljiDto detaljiDto, List<ArticlesByIds6Record> tecDocDetalji) {
-    Map<String, List<RobaBrojeviDto>> robaBrojeviMap = new HashMap<>();
     List<ArticleOENumbersRecord> oeNumbersRecords =
         tecDocDetalji.stream()
             .filter(rekord -> rekord.getOenNumbers() != null)

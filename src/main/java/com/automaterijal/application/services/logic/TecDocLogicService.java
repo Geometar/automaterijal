@@ -229,6 +229,11 @@ public class TecDocLogicService {
                                       TecDocProizvodjaci tecDocProizvodjaci =
                                           TecDocProizvodjaci.pronadjiPoNazivu(
                                               robaDto.getProizvodjac().getProid());
+
+                                      if (tecDocProizvodjaci == null) {
+                                        return false;
+                                      }
+
                                       return daLiSeBrojeviPodudaraju(
                                           tecDocProizvodjaci.isUseAlternativeNumber()
                                                   && robaDto.getKatbrpro() != null
