@@ -6,6 +6,7 @@ import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.roba.RobaTekst;
 import com.automaterijal.application.services.LogWebService;
 import com.automaterijal.application.services.roba.RobaGlavniService;
+import com.automaterijal.application.services.roba.RobaSearchService;
 import com.automaterijal.application.services.roba.RobaTekstService;
 import com.automaterijal.application.utils.PartnerSpringBeanUtils;
 import com.automaterijal.application.utils.RobaSpringBeanUtils;
@@ -39,6 +40,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class RobaController {
 
   @NonNull final RobaGlavniService robaGlavniService;
+  @NonNull final RobaSearchService robaSearchService;
   @NonNull final RobaTekstService robaTekstService;
   @NonNull final PartnerSpringBeanUtils partnerSpringBeanUtils;
   @NonNull final RobaSpringBeanUtils robaSpringBeanUtils;
@@ -69,8 +71,7 @@ public class RobaController {
             false);
     var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
     logWebService.log(uPartner, univerzalniParametri);
-    MagacinDto magacinDto =
-        robaGlavniService.pronadjiRobuPoPretrazi(univerzalniParametri, uPartner);
+    MagacinDto magacinDto = robaSearchService.pretrazi(univerzalniParametri, uPartner);
 
     return ResponseEntity.ok().headers(createHeaders(uPartner)).body(magacinDto);
   }

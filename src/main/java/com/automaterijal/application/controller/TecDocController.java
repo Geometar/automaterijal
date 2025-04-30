@@ -5,7 +5,7 @@ import com.automaterijal.application.domain.dto.tecdoc.AssemblyGroupWrapper;
 import com.automaterijal.application.domain.dto.tecdoc.Manufcatures;
 import com.automaterijal.application.domain.dto.tecdoc.Model;
 import com.automaterijal.application.services.TecDocService;
-import com.automaterijal.application.services.roba.RobaGlavniService;
+import com.automaterijal.application.services.roba.RobaSearchService;
 import com.automaterijal.application.tecdoc.LinkageTargetDetails;
 import com.automaterijal.application.utils.PartnerSpringBeanUtils;
 import com.automaterijal.application.utils.RobaSpringBeanUtils;
@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.*;
 public class TecDocController {
 
   @NonNull final TecDocService tecDocService;
-  @NonNull final RobaGlavniService robaGlavniService;
+  @NonNull final RobaSearchService robaSearchService;
   @NonNull final RobaSpringBeanUtils robaSpringBeanUtils;
   @NonNull final PartnerSpringBeanUtils partnerSpringBeanUtils;
 
@@ -93,7 +93,7 @@ public class TecDocController {
 
     return ResponseEntity.ok()
         .body(
-            robaGlavniService.getAssociatedArticles(
+            robaSearchService.getAssociatedArticles(
                 id, type, assembleGroupId, univerzalniParametri, uPartner));
   }
 

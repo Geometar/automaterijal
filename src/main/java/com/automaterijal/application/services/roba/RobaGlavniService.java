@@ -1,7 +1,6 @@
 package com.automaterijal.application.services.roba;
 
 import com.automaterijal.application.domain.constants.TecDocProizvodjaci;
-import com.automaterijal.application.domain.dto.MagacinDto;
 import com.automaterijal.application.domain.dto.RobaDto;
 import com.automaterijal.application.domain.dto.RobaTehnickiOpisDto;
 import com.automaterijal.application.domain.dto.SlikaDto;
@@ -13,8 +12,6 @@ import com.automaterijal.application.domain.entity.roba.Roba;
 import com.automaterijal.application.domain.entity.tecdoc.TecDocAtributi;
 import com.automaterijal.application.domain.mapper.RobaMapper;
 import com.automaterijal.application.domain.mapper.TecDocMapper;
-import com.automaterijal.application.domain.model.UniverzalniParametri;
-import com.automaterijal.application.patterns.strategy.roba.PretragaSaFilteromStrategija;
 import com.automaterijal.application.services.SlikeService;
 import com.automaterijal.application.services.TecDocService;
 import com.automaterijal.application.services.roba.grupe.PodGrupaService;
@@ -36,7 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class RobaGlavniService {
 
-  @NonNull final RobaService robaService;
+  @NonNull final RobaRepositoryService robaRepositoryService;
   @NonNull final RobaCeneService robaCeneService;
   @NonNull final RobaAplikacijeServis aplikacijeServis;
   @NonNull final PodGrupaService podGrupaService;
@@ -44,20 +41,12 @@ public class RobaGlavniService {
   @NonNull final RobaMapper mapper;
   @NonNull final TecDocMapper tecDocMapper;
   @NonNull final TecDocService tecDocService;
-  @NonNull final PretragaSaFilteromStrategija pretragaSaFilteromStrategija;
   @NonNull final RobaHelper robaHelper;
   @NonNull final SlikeService slikeService;
 
-  /** Ulazna metoda iz kontrolera */
-  public MagacinDto pronadjiRobuPoPretrazi(
-      UniverzalniParametri parametri, Partner ulogovaniPartner) {
-    // Koristimo fabriku da bismo dobili pravu strategiju
-    return pretragaSaFilteromStrategija.pretrazi(parametri, ulogovaniPartner);
-  }
-
   public Optional<RobaDetaljiDto> pronadjiRobuPoRobaId(Long robaId, Partner ulogovaniPartner) {
     Optional<RobaDetaljiDto> retVal = Optional.empty();
-    Optional<Roba> roba = robaService.pronadjiRobuPoPrimarnomKljucu(robaId);
+    Optional<Roba> roba = robaRepositoryService.pronadjiRobuPoPrimarnomKljucu(robaId);
     if (roba.isPresent()) {
       RobaDetaljiDto detaljnoDto = mapper.mapujDetaljno(roba.get());
       setujZaDetalje(detaljnoDto, ulogovaniPartner);
@@ -171,7 +160,9 @@ public class RobaGlavniService {
 
   private void processMainArticle(
       MainArticlesRecord mainArticlesRecord, Partner partner, List<RobaDto> asociraniArtikli) {
-    robaService.pronadjiRobuPoKataloskomBroju(mainArticlesRecord.getArticleNumber()).stream()
+    robaRepositoryService
+        .pronadjiRobuPoKataloskomBroju(mainArticlesRecord.getArticleNumber())
+        .stream()
         .map(mapper::map)
         .filter(this::isValidProizvodjac)
         .forEach(robaDto -> handleRobaDto(robaDto, partner, asociraniArtikli));
@@ -380,19 +371,5 @@ public class RobaGlavniService {
       }
     }
     return tecDocArticleId;
-  }
-
-  public MagacinDto getAssociatedArticles(
-      Integer id,
-      String type,
-      String assembleGroupId,
-      UniverzalniParametri parametri,
-      Partner ulogovaniPartner) {
-
-    ArticlesResponse articleResponse =
-        tecDocService.getAssociatedArticles(id, type, assembleGroupId);
-
-    return pretragaSaFilteromStrategija.getAssociatedArticlesFromTecDoc(
-        articleResponse.getArticles(), parametri, ulogovaniPartner);
   }
 }

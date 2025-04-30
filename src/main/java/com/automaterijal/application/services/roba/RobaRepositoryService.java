@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Slf4j
-public class RobaService {
+public class RobaRepositoryService {
 
   @NonNull final RobaRepository robaRepository;
   @NonNull final CachedRobaService cachedRobaService;
@@ -34,14 +34,6 @@ public class RobaService {
 
   public List<RobaDto> pronadjiRobuPoPrimarnomKljucu(List<Long> robaIds) {
     return mapper.map(robaRepository.findByRobaidIn(robaIds));
-  }
-
-  public List<Roba> pronadjiRobuPoPrimarnomKljucuBatch(List<Long> ids) {
-    return robaRepository.findByRobaidIn(ids);
-  }
-
-  public List<Roba> pronadjiSvuRobuPoPodGrupiIdListaSvaStanja(List<Integer> podGrupaId) {
-    return robaRepository.findByPodgrupaidIn(podGrupaId);
   }
 
   public Roba pronadjiPoPretaziIProizvodjacima(String katBr, List<String> proizvodjaci) {

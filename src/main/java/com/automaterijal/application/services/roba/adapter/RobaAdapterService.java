@@ -7,7 +7,7 @@ import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.domain.repository.roba.RobaJooqRepository;
 import com.automaterijal.application.services.ProizvodjacService;
 import com.automaterijal.application.services.SlikeService;
-import com.automaterijal.application.services.roba.RobaService;
+import com.automaterijal.application.services.roba.RobaRepositoryService;
 import com.automaterijal.application.services.roba.grupe.PodGrupaService;
 import com.automaterijal.application.tecdoc.ArticleRecord;
 import com.automaterijal.application.tecdoc.CriteriaRecord;
@@ -31,7 +31,7 @@ import org.springframework.util.StringUtils;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RobaAdapterService {
 
-  @Autowired RobaService robaService;
+  @Autowired RobaRepositoryService robaRepositoryService;
 
   @Autowired RobaJooqRepository robaJooqRepository;
 
@@ -195,9 +195,9 @@ public class RobaAdapterService {
     MagacinDto magacinDto = new MagacinDto();
     List<RobaDto> allRoba = new ArrayList<>();
 
-    List<RobaCache> robaKatbr = robaService.getAllRobaFilteredByKatBr(kataloskiBrojevi);
+    List<RobaCache> robaKatbr = robaRepositoryService.getAllRobaFilteredByKatBr(kataloskiBrojevi);
     allRoba.addAll(
-        robaService.pronadjiRobuPoPrimarnomKljucu(
+        robaRepositoryService.pronadjiRobuPoPrimarnomKljucu(
             robaKatbr.stream().map(RobaCache::getRobaId).toList()));
 
     allRoba = mandatoryFiltering(parametri, allRoba);
@@ -252,7 +252,7 @@ public class RobaAdapterService {
 
   public boolean pronadjiPoNazivu(
       UniverzalniParametri parametri, Set<String> kataloskiBrojevi, Set<Long> robaId) {
-    List<RobaCache> roba = robaService.getAllRobaByNaizvLike(parametri.getTrazenaRec());
+    List<RobaCache> roba = robaRepositoryService.getAllRobaByNaizvLike(parametri.getTrazenaRec());
 
     List<String> nazivi = new ArrayList<>();
     popuniKolekcije(roba, kataloskiBrojevi, robaId, nazivi);
@@ -265,7 +265,7 @@ public class RobaAdapterService {
     List<String> nazivi = new ArrayList<>();
 
     List<RobaCache> robaPoKatalaskomBroju =
-        robaService.getAllRobaFilteredByKatBr(parametri.getTrazenaRec());
+        robaRepositoryService.getAllRobaFilteredByKatBr(parametri.getTrazenaRec());
     popuniKolekcije(robaPoKatalaskomBroju, kataloskiBrojevi, robaId, nazivi);
 
     prodjiIPopraviKatBr(kataloskiBrojevi);
@@ -273,7 +273,7 @@ public class RobaAdapterService {
 
   public void pronadjiPoKatBrojuIn(Set<String> kataloskiBrojevi, Set<Long> robaId) {
     List<String> nazivi = new ArrayList<>();
-    List<RobaCache> roba = robaService.getAllRobaByKatBrIn(kataloskiBrojevi);
+    List<RobaCache> roba = robaRepositoryService.getAllRobaByKatBrIn(kataloskiBrojevi);
     popuniKolekcije(roba, kataloskiBrojevi, robaId, nazivi);
     prodjiIPopraviKatBr(kataloskiBrojevi);
   }
@@ -336,9 +336,9 @@ public class RobaAdapterService {
       Set<String> articleNumbers, UniverzalniParametri parametri, List<ArticleRecord> articles) {
     MagacinDto magacinDto = new MagacinDto();
 
-    List<RobaCache> robaCaches = robaService.getAllRobaFilteredByKatBr(articleNumbers);
+    List<RobaCache> robaCaches = robaRepositoryService.getAllRobaFilteredByKatBr(articleNumbers);
     List<RobaDto> roba =
-        robaService.pronadjiRobuPoPrimarnomKljucu(
+        robaRepositoryService.pronadjiRobuPoPrimarnomKljucu(
             robaCaches.stream().map(RobaCache::getRobaId).toList());
 
     filterIfNotMatchingMainArticle(roba);

@@ -9,7 +9,7 @@ import com.automaterijal.application.domain.mapper.ExternalRobaMapper;
 import com.automaterijal.application.domain.repository.external.PartnerB2bIdRepository;
 import com.automaterijal.application.domain.repository.external.PartnerB2bProizvodjacRepository;
 import com.automaterijal.application.services.roba.RobaCeneService;
-import com.automaterijal.application.services.roba.RobaService;
+import com.automaterijal.application.services.roba.RobaRepositoryService;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
@@ -29,26 +29,19 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class PartnerExternalService {
 
-  @NonNull
-  final PartnerB2bIdRepository b2bIdRepository;
+  @NonNull final PartnerB2bIdRepository b2bIdRepository;
 
-  @NonNull
-  final PartnerB2bProizvodjacRepository b2bProizvodjacRepository;
+  @NonNull final PartnerB2bProizvodjacRepository b2bProizvodjacRepository;
 
-  @NonNull
-  final PartnerService partnerService;
+  @NonNull final PartnerService partnerService;
 
-  @NonNull
-  final RobaService robaService;
+  @NonNull final RobaRepositoryService robaRepositoryService;
 
-  @NonNull
-  final ExternalRobaMapper mapper;
+  @NonNull final ExternalRobaMapper mapper;
 
-  @NonNull
-  final RobaCeneService robaCeneService;
+  @NonNull final RobaCeneService robaCeneService;
 
-  @NonNull
-  final TdAutomaterijalService tdAutomaterijalService;
+  @NonNull final TdAutomaterijalService tdAutomaterijalService;
 
   public Optional<PartnerB2bId> pronadjiPartneraPoUuid(String uuid) {
     return b2bIdRepository.findByUuid(uuid);
@@ -58,32 +51,40 @@ public class PartnerExternalService {
     ExternalRobaDto retVal;
     itemNo = itemNo.replaceAll("\\s+", "");
     // Pronadji sve proizvodjace koje partner moze da ima i samog partnera izvuci iz baze
-    List<PartnerB2bProizvodjac> listaProizvodjaca = b2bProizvodjacRepository.findByProizvodjacKljuceviPpid(
-        ppid);
+    List<PartnerB2bProizvodjac> listaProizvodjaca =
+        b2bProizvodjacRepository.findByProizvodjacKljuceviPpid(ppid);
     Partner partner = partnerService.pronadjiPartneraPoId(ppid);
-    List<String> kljuceviProizvodjaca = listaProizvodjaca.stream()
-        .map(b2bProizvodjac -> b2bProizvodjac.getProizvodjacKljucevi().getProid())
-        .toList();
+    List<String> kljuceviProizvodjaca =
+        listaProizvodjaca.stream()
+            .map(b2bProizvodjac -> b2bProizvodjac.getProizvodjacKljucevi().getProid())
+            .toList();
 
     // U slucaju da postoji brand id filtrirati kljuceve proizvodjaca samo da sadrzi taj ID
     if (brandID != null && tdAutomaterijalService.vratiNasProIdIzTecDoca(brandID).isPresent()) {
       String proId = tdAutomaterijalService.vratiNasProIdIzTecDoca(brandID).orElse("");
-      kljuceviProizvodjaca = kljuceviProizvodjaca.stream().filter(kljuc -> kljuc.equals(proId))
-          .toList();
+      kljuceviProizvodjaca =
+          kljuceviProizvodjaca.stream().filter(kljuc -> kljuc.equals(proId)).toList();
     }
 
-    Roba roba = robaService.pronadjiPoPretaziIProizvodjacima(itemNo, kljuceviProizvodjaca);
+    Roba roba =
+        robaRepositoryService.pronadjiPoPretaziIProizvodjacima(itemNo, kljuceviProizvodjaca);
 
     if (roba != null) {
-      log.info("B2B: Partneru {} vracena roba sa katBr {}", partner.getMestaIsporuke().getNaziv(),
+      log.info(
+          "B2B: Partneru {} vracena roba sa katBr {}",
+          partner.getMestaIsporuke().getNaziv(),
           itemNo);
-      BigDecimal cena = robaCeneService.vratiRobuB2BKomunikacija(roba.getRobaid(),
-              roba.getGrupaid(), roba.getProizvodjac().getProid(), partner)
-          .setScale(2, RoundingMode.CEILING);
+      BigDecimal cena =
+          robaCeneService
+              .vratiRobuB2BKomunikacija(
+                  roba.getRobaid(), roba.getGrupaid(), roba.getProizvodjac().getProid(), partner)
+              .setScale(2, RoundingMode.CEILING);
       retVal = mapper.map(roba, cena.doubleValue());
     } else {
-      log.info("B2B: Partneru {} nije nadjena roba sa katBr {}",
-          partner.getMestaIsporuke().getNaziv(), itemNo);
+      log.info(
+          "B2B: Partneru {} nije nadjena roba sa katBr {}",
+          partner.getMestaIsporuke().getNaziv(),
+          itemNo);
       retVal = new ExternalRobaDto();
       retVal.setSucess(true);
     }
