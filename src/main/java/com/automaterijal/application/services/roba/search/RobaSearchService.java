@@ -1,4 +1,4 @@
-package com.automaterijal.application.services.roba;
+package com.automaterijal.application.services.roba.search;
 
 import com.automaterijal.application.domain.constants.TecDocProizvodjaci;
 import com.automaterijal.application.domain.dto.MagacinDto;
@@ -6,6 +6,7 @@ import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.services.TecDocService;
 import com.automaterijal.application.services.roba.adapter.RobaAdapterService;
+import com.automaterijal.application.services.roba.util.RobaHelper;
 import com.automaterijal.application.tecdoc.*;
 import com.automaterijal.application.utils.GeneralUtil;
 import java.util.HashSet;
@@ -84,7 +85,7 @@ public class RobaSearchService {
         robaAdapterService.fetchRobaByTecDocArticles(articleNumbers, parametri, articles);
     if (!magacinDto.getRobaDto().isEmpty()) {
       tecDocService.batchVracanjeICuvanjeTDAtributa(magacinDto.getRobaDto().getContent());
-      robaHelper.setujZaTabelu(magacinDto.getRobaDto().getContent(), ulogovaniPartner);
+      robaHelper.setupForTable(magacinDto.getRobaDto().getContent(), ulogovaniPartner);
     }
 
     return magacinDto;
@@ -99,7 +100,7 @@ public class RobaSearchService {
 
     if (!magacinDto.getRobaDto().isEmpty()) {
       tecDocService.batchVracanjeICuvanjeTDAtributa(magacinDto.getRobaDto().getContent());
-      robaHelper.setujZaTabelu(magacinDto.getRobaDto().getContent(), ulogovaniPartner);
+      robaHelper.setupForTable(magacinDto.getRobaDto().getContent(), ulogovaniPartner);
     }
 
     return magacinDto;

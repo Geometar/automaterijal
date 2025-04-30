@@ -5,7 +5,7 @@ import com.automaterijal.application.domain.dto.tecdoc.AssemblyGroupWrapper;
 import com.automaterijal.application.domain.dto.tecdoc.Manufcatures;
 import com.automaterijal.application.domain.dto.tecdoc.Model;
 import com.automaterijal.application.services.TecDocService;
-import com.automaterijal.application.services.roba.RobaSearchService;
+import com.automaterijal.application.services.roba.search.RobaSearchService;
 import com.automaterijal.application.tecdoc.LinkageTargetDetails;
 import com.automaterijal.application.utils.PartnerSpringBeanUtils;
 import com.automaterijal.application.utils.RobaSpringBeanUtils;

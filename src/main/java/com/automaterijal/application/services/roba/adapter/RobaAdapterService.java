@@ -1,17 +1,14 @@
 package com.automaterijal.application.services.roba.adapter;
 
 import com.automaterijal.application.domain.cache.RobaCache;
-import com.automaterijal.application.domain.constants.TecDocProizvodjaci;
 import com.automaterijal.application.domain.dto.*;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.domain.repository.roba.RobaJooqRepository;
 import com.automaterijal.application.services.ProizvodjacService;
-import com.automaterijal.application.services.SlikeService;
-import com.automaterijal.application.services.roba.RobaRepositoryService;
 import com.automaterijal.application.services.roba.grupe.PodGrupaService;
+import com.automaterijal.application.services.roba.processor.RobaTecDocProcessor;
+import com.automaterijal.application.services.roba.repo.RobaRepositoryService;
 import com.automaterijal.application.tecdoc.ArticleRecord;
-import com.automaterijal.application.tecdoc.CriteriaRecord;
-import com.automaterijal.application.tecdoc.TradeNumberDetailsRecord;
 import com.automaterijal.application.utils.GeneralUtil;
 import java.util.*;
 import java.util.Comparator;
@@ -39,7 +36,7 @@ public class RobaAdapterService {
 
   @Autowired ProizvodjacService proizvodjacService;
 
-  @Autowired SlikeService slikeService;
+  @Autowired RobaTecDocProcessor robaTecDocProcessor;
 
   /**
    * Ulazna metoda iz glavnog servisa kad je pretraga po RobaId (za sad to znaci da je pretraga po
@@ -341,11 +338,11 @@ public class RobaAdapterService {
         robaRepositoryService.pronadjiRobuPoPrimarnomKljucu(
             robaCaches.stream().map(RobaCache::getRobaId).toList());
 
-    filterIfNotMatchingMainArticle(roba);
-    filterIfNotMatchingWithTecDoc(articles, roba);
+    robaTecDocProcessor.filterIfNotMatchingMainArticle(roba);
+    robaTecDocProcessor.filterIfNotMatchingWithTecDoc(articles, roba);
 
     // TD Articles
-    addTecdocArticles(articles, roba);
+    robaTecDocProcessor.addTecdocArticles(articles, roba);
 
     // Popuni dodatne podatke za roba (podgrupe, proizvođači itd.)
     podGrupaService.popuniPodgrupe(magacinDto, parametri, roba);
@@ -360,201 +357,8 @@ public class RobaAdapterService {
     magacinDto.setRobaDto(
         GeneralUtil.createPageable(roba, parametri.getPageSize(), parametri.getPage()));
 
-    enrichRobaDtoWithLinkageCriteria(magacinDto.getRobaDto().getContent(), articles);
+    robaTecDocProcessor.enrichRobaDtoWithLinkageCriteria(magacinDto.getRobaDto().getContent(), articles);
 
     return magacinDto;
-  }
-
-  private void addTecdocArticles(List<ArticleRecord> articles, List<RobaDto> roba) {
-    List<RobaDto> tdArticles =
-        articles.stream()
-            .map(
-                articleRecord -> {
-                  TecDocProizvodjaci tecDocProizvodjaci =
-                      TecDocProizvodjaci.pronadjiPoKljucu(articleRecord.getDataSupplierId());
-                  String katBr =
-                      TecDocProizvodjaci.generateAlternativeCatalogNumber(
-                          articleRecord.getArticleNumber(), tecDocProizvodjaci);
-
-                  boolean articleInDB =
-                      roba.stream()
-                          .anyMatch(
-                              robaDto ->
-                                  robaDto
-                                          .getProizvodjac()
-                                          .getProid()
-                                          .equals(tecDocProizvodjaci.getCleanName())
-                                      && robaDto.getKatbr().equals(katBr));
-
-                  return articleInDB
-                      ? null
-                      : RobaDto.fromTecdocArticle(articleRecord, tecDocProizvodjaci, slikeService);
-                })
-            .filter(Objects::nonNull)
-            .collect(Collectors.toList());
-
-    roba.addAll(tdArticles);
-  }
-
-  private void filterIfNotMatchingWithTecDoc(List<ArticleRecord> articles, List<RobaDto> robaDtos) {
-    List<RobaDto> removable =
-        robaDtos.stream()
-            .filter(robaDto -> isNotMatchingWithTecDoc(articles, robaDto))
-            .collect(Collectors.toList());
-
-    removable.forEach(
-        robaDto ->
-            log.error(
-                "Artikal ne odgovara tekdoku "
-                    + robaDto.getKatbr()
-                    + " proizvodjac "
-                    + robaDto.getProizvodjac()));
-
-    robaDtos.removeAll(removable);
-  }
-
-  private boolean isNotMatchingWithTecDoc(List<ArticleRecord> articles, RobaDto robaDto) {
-    return !isMatchingWithTecDoc(articles, robaDto);
-  }
-
-  private boolean isMatchingWithTecDoc(List<ArticleRecord> articles, RobaDto robaDto) {
-    TecDocProizvodjaci tecDocProizvodjaci =
-        TecDocProizvodjaci.findByName(robaDto.getProizvodjac().getProid());
-    if (tecDocProizvodjaci == null) {
-      return false; // Not a TecDoc article
-    }
-
-    String katBr =
-        TecDocProizvodjaci.restoreOriginalCatalogNumber(robaDto.getKatbr(), tecDocProizvodjaci);
-    List<Long> tdBrandIds =
-        TecDocProizvodjaci.getAllTecDocIdsByName(robaDto.getProizvodjac().getProid());
-    return articles.stream()
-        .anyMatch(
-            articleRecord -> {
-              if (!tdBrandIds.contains(articleRecord.getDataSupplierId())) {
-                return false;
-              }
-
-              if (articleRecord.getArticleNumber().equals(katBr)) {
-                return true;
-              }
-
-              return tecDocProizvodjaci.isUseTradeNumber()
-                  && articleRecord.getTradeNumbersDetails().stream()
-                      .filter(TradeNumberDetailsRecord::isIsImmediateDisplay)
-                      .map(TradeNumberDetailsRecord::getTradeNumber)
-                      .anyMatch(katBr::equals);
-            });
-  }
-
-  private void filterIfNotMatchingMainArticle(List<RobaDto> robaDtos) {
-    // Partition RobaDtos into TecDoc-mapped and non-TecDoc-mapped lists
-    Map<Boolean, List<RobaDto>> partitioned =
-        robaDtos.stream()
-            .collect(
-                Collectors.partitioningBy(
-                    robaDto ->
-                        TecDocProizvodjaci.findByName(robaDto.getProizvodjac().getProid())
-                            != null));
-
-    List<RobaDto> tdRoba = partitioned.get(true); // TecDoc-mapped items
-    List<RobaDto> notTdRoba = partitioned.get(false); // Items not mapped to TecDoc
-
-    // Remove items that do not match a valid TecDoc-mapped alternative
-    List<RobaDto> removable =
-        notTdRoba.stream()
-            .filter(robaDto -> isNotMatchingMainArticle(tdRoba, robaDto))
-            .collect(Collectors.toList());
-
-    // Remove if its not found by original number
-    removable =
-        removable.stream()
-            .filter(robaDto -> !robaDto.getKatbr().contains("-OE"))
-            .collect(Collectors.toList());
-
-    removable.forEach(
-        robaDto ->
-            log.error(
-                "Artikal alternativa ne dogovara katbr "
-                    + robaDto.getKatbr()
-                    + " proizvodjac "
-                    + robaDto.getProizvodjac()));
-
-    robaDtos.removeAll(removable);
-  }
-
-  private void enrichRobaDtoWithLinkageCriteria(
-      List<RobaDto> robaDtos, List<ArticleRecord> articles) {
-    robaDtos.forEach(
-        robaDto -> {
-          List<RobaTehnickiOpisDto> criteriaList =
-              articles.stream()
-                  .filter(article -> isMatchingArticle(robaDto, article))
-                  .flatMap(article -> article.getLinkages().stream())
-                  .flatMap(linkage -> linkage.getLinkageCriteria().stream())
-                  .filter(CriteriaRecord::isImmediateDisplay)
-                  .map(
-                      criteria -> {
-                        RobaTehnickiOpisDto opisDto = new RobaTehnickiOpisDto();
-                        opisDto.setType(criteria.getCriteriaType());
-                        opisDto.setVrednost(criteria.getFormattedValue());
-                        opisDto.setOznaka(criteria.getCriteriaDescription());
-                        return opisDto;
-                      })
-                  .collect(Collectors.toList());
-
-          if (!criteriaList.isEmpty()) {
-            robaDto.setTdLinkageCriteria(criteriaList);
-          }
-        });
-  }
-
-  private boolean isMatchingArticle(RobaDto robaDto, ArticleRecord articleRecord) {
-    TecDocProizvodjaci tdProizvodjac =
-        TecDocProizvodjaci.findByName(robaDto.getProizvodjac().getProid());
-    if (tdProizvodjac == null) {
-      return false;
-    }
-
-    return TecDocProizvodjaci.getAllTecDocIdsByName(robaDto.getProizvodjac().getProid())
-            .contains(articleRecord.getDataSupplierId())
-        && robaDto
-            .getKatbr()
-            .equals(
-                TecDocProizvodjaci.generateAlternativeCatalogNumber(
-                    articleRecord.getArticleNumber(), tdProizvodjac));
-  }
-
-  private boolean isNotMatchingMainArticle(List<RobaDto> tdRoba, RobaDto robaDto) {
-    // Get all matching TecDoc-mapped items that have the same alternative catalog number
-    List<RobaDto> matchedTdRoba =
-        tdRoba.stream()
-            .filter(
-                data ->
-                    data.getKatbrpro().equals(robaDto.getKatbr())
-                        || data.getKatbr().equals(robaDto.getKatbr()))
-            .collect(Collectors.toList());
-
-    // If no matches, reject this alternative item
-    if (matchedTdRoba.isEmpty()) {
-      return true;
-    }
-
-    // Check if multiple different TecDoc manufacturers exist
-    Set<String> distinctManufacturers =
-        matchedTdRoba.stream()
-            .map(data -> data.getProizvodjac().getProid())
-            .collect(Collectors.toSet());
-
-    if (distinctManufacturers.size() > 1) {
-      log.warn(
-          "Alternative catalog number {} matches multiple TecDoc manufacturers: {}",
-          robaDto.getKatbr(),
-          distinctManufacturers);
-      return true; // Reject because it's ambiguous
-    }
-
-    // Ensure that at least one mapped TecDoc product has the same PodGrupa
-    return matchedTdRoba.stream().noneMatch(data -> data.getPodGrupa() == robaDto.getPodGrupa());
   }
 }

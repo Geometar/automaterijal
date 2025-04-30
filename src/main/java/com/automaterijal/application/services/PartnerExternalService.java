@@ -9,7 +9,7 @@ import com.automaterijal.application.domain.mapper.ExternalRobaMapper;
 import com.automaterijal.application.domain.repository.external.PartnerB2bIdRepository;
 import com.automaterijal.application.domain.repository.external.PartnerB2bProizvodjacRepository;
 import com.automaterijal.application.services.roba.RobaCeneService;
-import com.automaterijal.application.services.roba.RobaRepositoryService;
+import com.automaterijal.application.services.roba.repo.RobaRepositoryService;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;

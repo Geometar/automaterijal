@@ -1,4 +1,4 @@
-package com.automaterijal.application.services.roba.cache;
+package com.automaterijal.application.services.roba.repo;
 
 import com.automaterijal.application.domain.cache.RobaCache;
 import com.automaterijal.application.domain.repository.roba.RobaRepository;
@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Transactional
-public class CachedRobaService {
+public class RobaCachedService {
   @NonNull final RobaRepository robaRepository;
 
   @Cacheable(value = "robaCache", key = "'allRoba'") // Uses cache if available

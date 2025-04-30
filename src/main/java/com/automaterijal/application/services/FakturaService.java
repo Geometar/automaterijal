@@ -15,7 +15,7 @@ import com.automaterijal.application.domain.repository.valuehelp.NacinPlacanjaRe
 import com.automaterijal.application.domain.repository.valuehelp.NacinPrevozaRepository;
 import com.automaterijal.application.domain.repository.valuehelp.StatusRepository;
 import com.automaterijal.application.services.roba.RobaCeneService;
-import com.automaterijal.application.services.roba.RobaRepositoryService;
+import com.automaterijal.application.services.roba.repo.RobaRepositoryService;
 import com.automaterijal.application.utils.GeneralUtil;
 import java.math.BigDecimal;
 import java.math.RoundingMode;

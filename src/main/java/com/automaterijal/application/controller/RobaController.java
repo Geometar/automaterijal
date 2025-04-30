@@ -5,9 +5,9 @@ import com.automaterijal.application.domain.dto.robadetalji.RobaDetaljiDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.roba.RobaTekst;
 import com.automaterijal.application.services.LogWebService;
-import com.automaterijal.application.services.roba.RobaGlavniService;
-import com.automaterijal.application.services.roba.RobaSearchService;
 import com.automaterijal.application.services.roba.RobaTekstService;
+import com.automaterijal.application.services.roba.details.RobaDetailsService;
+import com.automaterijal.application.services.roba.search.RobaSearchService;
 import com.automaterijal.application.utils.PartnerSpringBeanUtils;
 import com.automaterijal.application.utils.RobaSpringBeanUtils;
 import java.util.List;
@@ -39,7 +39,7 @@ import org.springframework.web.server.ResponseStatusException;
 @Slf4j
 public class RobaController {
 
-  @NonNull final RobaGlavniService robaGlavniService;
+  @NonNull final RobaDetailsService robaDetailsService;
   @NonNull final RobaSearchService robaSearchService;
   @NonNull final RobaTekstService robaTekstService;
   @NonNull final PartnerSpringBeanUtils partnerSpringBeanUtils;
@@ -80,7 +80,7 @@ public class RobaController {
   public ResponseEntity<RobaDetaljiDto> vratiRobuPojedinacno(
       @PathVariable("robaID") Long robaId, Authentication authentication) {
     var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
-    return robaGlavniService
+    return robaDetailsService
         .pronadjiRobuPoRobaId(robaId, uPartner)
         .map(ResponseEntity::ok)
         .orElse(ResponseEntity.notFound().build());

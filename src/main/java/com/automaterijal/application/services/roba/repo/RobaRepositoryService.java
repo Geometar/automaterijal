@@ -1,11 +1,10 @@
-package com.automaterijal.application.services.roba;
+package com.automaterijal.application.services.roba.repo;
 
 import com.automaterijal.application.domain.cache.RobaCache;
 import com.automaterijal.application.domain.dto.RobaDto;
 import com.automaterijal.application.domain.entity.roba.Roba;
 import com.automaterijal.application.domain.mapper.RobaMapper;
 import com.automaterijal.application.domain.repository.roba.RobaRepository;
-import com.automaterijal.application.services.roba.cache.CachedRobaService;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -25,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class RobaRepositoryService {
 
   @NonNull final RobaRepository robaRepository;
-  @NonNull final CachedRobaService cachedRobaService;
+  @NonNull final RobaCachedService robaCachedService;
   @NonNull final RobaMapper mapper;
 
   public Optional<Roba> pronadjiRobuPoPrimarnomKljucu(Long id) {
@@ -46,7 +45,7 @@ public class RobaRepositoryService {
   }
 
   public List<RobaCache> getAllRobaFilteredByKatBr(String searchTerm) {
-    return cachedRobaService.getAllRoba().stream()
+    return robaCachedService.getAllRoba().stream()
         .filter(
             robaCache ->
                 robaCache.getKatbr().contains(searchTerm)
@@ -55,19 +54,19 @@ public class RobaRepositoryService {
   }
 
   public List<RobaCache> getAllRobaByNaizvLike(String searchTerm) {
-    return cachedRobaService.getAllRoba().stream()
+    return robaCachedService.getAllRoba().stream()
         .filter(robaCache -> robaCache.getNaziv().contains(searchTerm))
         .toList();
   }
 
   public List<RobaCache> getAllRobaByKatBrIn(Set<String> katBr) {
-    return cachedRobaService.getAllRoba().stream()
+    return robaCachedService.getAllRoba().stream()
         .filter(robaCache -> katBr.contains(robaCache.getKatbr()))
         .toList();
   }
 
   public List<RobaCache> getAllRobaFilteredByKatBr(Set<String> katBr) {
-    return cachedRobaService.getAllRoba().stream()
+    return robaCachedService.getAllRoba().stream()
         .filter(
             robaCache ->
                 katBr.contains(robaCache.getKatbr()) || katBr.contains(robaCache.getKatbrpro()))

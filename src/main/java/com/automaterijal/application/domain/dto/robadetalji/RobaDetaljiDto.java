@@ -1,5 +1,6 @@
 package com.automaterijal.application.domain.dto.robadetalji;
 
+import com.automaterijal.application.domain.dto.AbstractRobaBaseDto;
 import com.automaterijal.application.domain.dto.RobaDto;
 import com.automaterijal.application.domain.dto.RobaTehnickiOpisDto;
 import com.automaterijal.application.domain.dto.SlikaDto;
@@ -14,7 +15,7 @@ import lombok.experimental.FieldDefaults;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RobaDetaljiDto {
+public class RobaDetaljiDto extends AbstractRobaBaseDto {
   Long robaid;
   SlikaDto slika;
   String grupa;
