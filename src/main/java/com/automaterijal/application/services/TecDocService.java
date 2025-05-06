@@ -8,9 +8,10 @@ import com.automaterijal.application.domain.dto.tecdoc.Model;
 import com.automaterijal.application.domain.entity.tecdoc.TecDocAtributi;
 import com.automaterijal.application.domain.entity.tecdoc.TecDocBrands;
 import com.automaterijal.application.domain.mapper.TecDocMapper;
-import com.automaterijal.application.domain.repository.tecdoc.TecDocAtributiRepository;
-import com.automaterijal.application.domain.repository.tecdoc.TecDocBrandsRepository;
 import com.automaterijal.application.services.logic.TecDocLogicService;
+import com.automaterijal.application.services.tecdoc.TecDocAttributeService;
+import com.automaterijal.application.services.tecdoc.TecDocBrandService;
+import com.automaterijal.application.services.tecdoc.TecDocDocumentService;
 import com.automaterijal.application.tecdoc.*;
 import java.util.Arrays;
 import java.util.List;
@@ -27,14 +28,11 @@ import org.springframework.stereotype.Service;
 public class TecDocService {
 
   @Autowired TecDocClient tecDocClient;
-
-  @Autowired TecDocAtributiRepository tecDocAtributiRepository;
-
-  @Autowired TecDocBrandsRepository tecDocBrandsRepository;
-
+  @Autowired TecDocAttributeService tecDocAttributeService;
   @Autowired TecDocMapper tecDocMapper;
-
   @Autowired TecDocLogicService tecDocLogicService;
+  @Autowired TecDocBrandService tecDocBrandService;
+  @Autowired TecDocDocumentService tecDocDocumentService;
 
   //    ******************** TecDoc Pretraga  ********************
 
@@ -50,19 +48,19 @@ public class TecDocService {
   //    ******************** TecDoc Atributi  ********************
 
   public List<TecDocAtributi> vratiTecDocAtributePrekoRobeId(Long robaId) {
-    return tecDocAtributiRepository.findByRobaId(robaId);
+    return tecDocAttributeService.findByRobaId(robaId);
   }
 
   public List<TecDocAtributi> vratiTecDocAtributePrekoRobeIds(List<Long> robaIds) {
-    return tecDocAtributiRepository.findByRobaIdIn(robaIds);
+    return tecDocAttributeService.findByRobaIds(robaIds);
   }
 
   public byte[] vratiDokument(String dokumentId, Integer tipSlike) {
-    return tecDocLogicService.vratiDokument(dokumentId, tipSlike);
+    return tecDocDocumentService.getDocument(dokumentId, tipSlike);
   }
 
   public Optional<TecDocBrands> vratiTecDocBrendovePrekoProId(String proId) {
-    return tecDocBrandsRepository.findById(proId);
+    return tecDocBrandService.findById(proId);
   }
 
   public List<Manufcatures> getAllManufactures() {
@@ -97,6 +95,6 @@ public class TecDocService {
   }
 
   public void batchVracanjeICuvanjeTDAtributa(List<RobaLightDto> robaLightDtos) {
-    tecDocLogicService.batchVracanjeICuvanjeTDAtributa(robaLightDtos);
+    tecDocLogicService.fetchAndSaveTecDocAttributes(robaLightDtos);
   }
 }

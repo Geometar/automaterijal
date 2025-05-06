@@ -11,9 +11,7 @@ import lombok.experimental.FieldDefaults;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RobaExpandedDto extends RobaLightDto {
-  String podGrupaNaziv;
   String tekst;
-  String proizvodjacLogo;
   List<RobaBrojeviDto> tdBrojevi;
   Map<String, List<TecDocDokumentacija>> dokumentacija;
   List<RobaLightDto> asociraniArtikli;

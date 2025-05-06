@@ -1,16 +1,15 @@
 package com.automaterijal.application.services.roba.processor;
 
+import com.automaterijal.application.domain.constants.GlobalConstants;
 import com.automaterijal.application.domain.constants.TecDocProizvodjaci;
+import com.automaterijal.application.domain.dto.ProizvodjacDTO;
 import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.dto.RobaTehnickiOpisDto;
 import com.automaterijal.application.services.SlikeService;
 import com.automaterijal.application.tecdoc.ArticleRecord;
 import com.automaterijal.application.tecdoc.CriteriaRecord;
 import com.automaterijal.application.tecdoc.TradeNumberDetailsRecord;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -171,7 +170,7 @@ public class RobaTecDocProcessor {
 
                   return articleInDB
                       ? null
-                      : RobaLightDto.fromTecdocArticle(
+                      : generateRobaLightDto(
                           articleRecord, tecDocProizvodjaci, slikeService);
                 })
             .filter(Objects::nonNull)
@@ -221,4 +220,35 @@ public class RobaTecDocProcessor {
                 TecDocProizvodjaci.generateAlternativeCatalogNumber(
                     articleRecord.getArticleNumber(), tdProizvodjac));
   }
+
+    private RobaLightDto generateRobaLightDto(
+            ArticleRecord articleRecord,
+            TecDocProizvodjaci tecDocProizvodjaci,
+            SlikeService slikeService) {
+        String katBr =
+                TecDocProizvodjaci.generateAlternativeCatalogNumber(
+                        articleRecord.getArticleNumber(), tecDocProizvodjaci);
+
+        RobaLightDto data = new RobaLightDto();
+        data.setKatbr(katBr);
+        data.setNaziv(articleRecord.getGenericArticles().get(0).getGenericArticleDescription());
+
+        ProizvodjacDTO proizvodjacDTO = new ProizvodjacDTO();
+        proizvodjacDTO.setProid(tecDocProizvodjaci.getCleanName());
+        data.setProizvodjac(proizvodjacDTO);
+
+        data.setPodGrupaNaziv(GlobalConstants.TECDOC_PODGRUPA_VALUE);
+        data.setGrupa("Dodatno");
+        data.setPodGrupa(GlobalConstants.TECDOC_PODGRUPA_KEY);
+        data.setSlika(slikeService.getImageFromTD(articleRecord));
+
+        // Convert technical descriptions
+        List<RobaTehnickiOpisDto> tehnickiOpisi =
+                RobaTehnickiOpisDto.fromArticleCriteria(articleRecord.getArticleCriteria());
+        tehnickiOpisi = tehnickiOpisi.stream().limit(4).collect(Collectors.toList());
+        tehnickiOpisi.sort(Comparator.comparing(RobaTehnickiOpisDto::getType));
+        data.setTehnickiOpis(tehnickiOpisi);
+
+        return data;
+    }
 }
