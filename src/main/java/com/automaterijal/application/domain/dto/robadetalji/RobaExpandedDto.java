@@ -1,7 +1,6 @@
 package com.automaterijal.application.domain.dto.robadetalji;
 
-import com.automaterijal.application.domain.dto.AbstractRobaBaseDto;
-import com.automaterijal.application.domain.dto.RobaDto;
+import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.dto.RobaTehnickiOpisDto;
 import com.automaterijal.application.domain.dto.SlikaDto;
 import com.automaterijal.application.domain.dto.tecdoc.TecDocDokumentacija;
@@ -15,7 +14,7 @@ import lombok.experimental.FieldDefaults;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RobaDetaljiDto extends AbstractRobaBaseDto {
+public class RobaExpandedDto extends RobaLightDto {
   Long robaid;
   SlikaDto slika;
   String grupa;
@@ -32,5 +31,5 @@ public class RobaDetaljiDto extends AbstractRobaBaseDto {
   List<RobaBrojeviDto> tdBrojevi;
   Map<String, List<RobaAplikacijaDto>> aplikacije;
   Map<String, List<TecDocDokumentacija>> dokumentacija;
-  List<RobaDto> asociraniArtikli;
+  List<RobaLightDto> asociraniArtikli;
 }

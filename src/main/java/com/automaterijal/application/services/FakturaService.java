@@ -2,7 +2,7 @@ package com.automaterijal.application.services;
 
 import com.automaterijal.application.domain.dto.FakturaDetaljiDto;
 import com.automaterijal.application.domain.dto.FakturaDto;
-import com.automaterijal.application.domain.dto.RobaDto;
+import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.entity.Faktura;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.roba.Roba;
@@ -54,8 +54,8 @@ public class FakturaService {
   @NonNull final RobaMapper robaMapper;
   @NonNull final SlikeService slikeService;
 
-  public List<RobaDto> submitujFakturu(FakturaDto fakturaDto, Partner partner) {
-    List<RobaDto> dozvoljenaKolicina = new ArrayList<>();
+  public List<RobaLightDto> submitujFakturu(FakturaDto fakturaDto, Partner partner) {
+    List<RobaLightDto> dozvoljenaKolicina = new ArrayList<>();
     proveraMagacinaIKolicina(dozvoljenaKolicina, fakturaDto);
     if (dozvoljenaKolicina.isEmpty()) {
       sacuvajFakturu(fakturaDto, partner);
@@ -63,7 +63,8 @@ public class FakturaService {
     return dozvoljenaKolicina;
   }
 
-  private void proveraMagacinaIKolicina(List<RobaDto> dozvoljenaKolicina, FakturaDto fakturaDto) {
+  private void proveraMagacinaIKolicina(
+      List<RobaLightDto> dozvoljenaKolicina, FakturaDto fakturaDto) {
     fakturaDto
         .getDetalji()
         .forEach(

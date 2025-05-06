@@ -1,7 +1,7 @@
 package com.automaterijal.application.controller;
 
 import com.automaterijal.application.domain.dto.MagacinDto;
-import com.automaterijal.application.domain.dto.robadetalji.RobaDetaljiDto;
+import com.automaterijal.application.domain.dto.robadetalji.RobaExpandedDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.roba.RobaTekst;
 import com.automaterijal.application.services.LogWebService;
@@ -77,7 +77,7 @@ public class RobaController {
   }
 
   @GetMapping(value = "/{robaID}")
-  public ResponseEntity<RobaDetaljiDto> vratiRobuPojedinacno(
+  public ResponseEntity<RobaExpandedDto> vratiRobuPojedinacno(
       @PathVariable("robaID") Long robaId, Authentication authentication) {
     var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
     return robaDetailsService

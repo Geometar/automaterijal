@@ -45,7 +45,7 @@ public class RobaAdapterService {
   public MagacinDto pronadjiPoRobaId(UniverzalniParametri parametri, Set<Long> robaIds) {
     MagacinDto magacinDto = new MagacinDto();
 
-    List<RobaDto> roba = robaJooqRepository.vratiRobuPoRobiId(robaIds);
+    List<RobaLightDto> roba = robaJooqRepository.vratiRobuPoRobiId(robaIds);
 
     podGrupaService.popuniPodgrupe(magacinDto, parametri, roba);
     proizvodjacService.popuniProizvodjace(roba, magacinDto, parametri);
@@ -72,7 +72,7 @@ public class RobaAdapterService {
   public MagacinDto vratiRobuFiltriranuBezPretrage(UniverzalniParametri parametri) {
     MagacinDto magacinDto = new MagacinDto();
 
-    List<RobaDto> roba = robaJooqRepository.generic(parametri, DSL.noCondition());
+    List<RobaLightDto> roba = robaJooqRepository.generic(parametri, DSL.noCondition());
 
     podGrupaService.popuniPodgrupe(magacinDto, parametri, roba);
     proizvodjacService.popuniProizvodjace(roba, magacinDto, parametri);
@@ -85,7 +85,7 @@ public class RobaAdapterService {
     return magacinDto;
   }
 
-  private List<RobaDto> sortirajPoGrupi(List<RobaDto> roba) {
+  private List<RobaLightDto> sortirajPoGrupi(List<RobaLightDto> roba) {
     return roba.stream()
         .map(
             robaDto -> {
@@ -96,19 +96,20 @@ public class RobaAdapterService {
             })
         .sorted(
             Comparator.comparing(
-                    (RobaDto robaDto) ->
-                        robaDto.getStanje() == 0) // Artikli sa stanjem > 0 idu pre stanja 0
+                    (RobaLightDto robaLightDto) ->
+                        robaLightDto.getStanje() == 0) // Artikli sa stanjem > 0 idu pre stanja 0
                 .thenComparing(robaDto -> robaDto.getPodGrupa() == 0) // Podgrupa ID 0 ide na kraj
-                .thenComparing(Comparator.comparing(RobaDto::getStanje).reversed())
+                .thenComparing(Comparator.comparing(RobaLightDto::getStanje).reversed())
                 .thenComparing(
-                    RobaDto
+                    RobaLightDto
                         ::getPodGrupaNaziv) // Unutar grupe sortiranje po nazivu) // Sortiranje po
             // nazivu grupe
             )
         .collect(Collectors.toList());
   }
 
-  private List<RobaDto> mandatoryFiltering(UniverzalniParametri parametri, List<RobaDto> roba) {
+  private List<RobaLightDto> mandatoryFiltering(
+      UniverzalniParametri parametri, List<RobaLightDto> roba) {
     if (parametri.getMandatoryProid() != null && !parametri.getMandatoryProid().isEmpty()) {
       roba =
           roba.stream()
@@ -137,8 +138,8 @@ public class RobaAdapterService {
     return roba;
   }
 
-  private List<RobaDto> robaFilterPoParametrima(
-      UniverzalniParametri parametri, List<RobaDto> roba) {
+  private List<RobaLightDto> robaFilterPoParametrima(
+      UniverzalniParametri parametri, List<RobaLightDto> roba) {
     if (parametri.getProizvodjac() != null && !parametri.getProizvodjac().isEmpty()) {
       roba =
           roba.stream()
@@ -190,7 +191,7 @@ public class RobaAdapterService {
   public MagacinDto vratiArtikleIzTecDoca(
       UniverzalniParametri parametri, Set<String> kataloskiBrojevi) {
     MagacinDto magacinDto = new MagacinDto();
-    List<RobaDto> allRoba = new ArrayList<>();
+    List<RobaLightDto> allRoba = new ArrayList<>();
 
     List<RobaCache> robaKatbr = robaRepositoryService.getAllRobaFilteredByKatBr(kataloskiBrojevi);
     allRoba.addAll(
@@ -220,16 +221,16 @@ public class RobaAdapterService {
   }
 
   private void sortirajRobuTecDocPoPodgrupi(
-      List<RobaDto> robaDtos, UniverzalniParametri parametri) {
-    List<RobaDto> pronadjenaTacnaRoba =
-        robaDtos.stream()
+      List<RobaLightDto> robaLightDtos, UniverzalniParametri parametri) {
+    List<RobaLightDto> pronadjenaTacnaRoba =
+        robaLightDtos.stream()
             .filter(robaDto -> robaDto.getKatbr().equals(parametri.getTrazenaRec()))
             .collect(Collectors.toList());
 
     // Ako nema tačnog rezultata, traži približne
     if (pronadjenaTacnaRoba.isEmpty()) {
       pronadjenaTacnaRoba =
-          robaDtos.stream()
+          robaLightDtos.stream()
               .filter(robaDto -> robaDto.getKatbr().contains(parametri.getTrazenaRec()))
               .collect(Collectors.toList());
     }
@@ -239,8 +240,8 @@ public class RobaAdapterService {
       int podGrupa = pronadjenaTacnaRoba.get(0).getPodGrupa();
 
       // Sortiranje korišćenjem Comparator-a
-      robaDtos.sort(
-          Comparator.comparing((RobaDto robaDto) -> robaDto.getStanje() > 0)
+      robaLightDtos.sort(
+          Comparator.comparing((RobaLightDto robaLightDto) -> robaLightDto.getStanje() > 0)
               .reversed() // Da osiguramo da `stanje > 0` ide ispred
               .thenComparing(
                   robaDto -> podGrupa == robaDto.getPodGrupa() ? -1 : 1)); // Podgrupa prioritet
@@ -304,7 +305,7 @@ public class RobaAdapterService {
   }
 
   public void pomocniKveriPoRobiOld(Set<String> kataloskiBrojevi) {
-    List<RobaDto> roba = robaJooqRepository.fetchKatBrOld(kataloskiBrojevi);
+    List<RobaLightDto> roba = robaJooqRepository.fetchKatBrOld(kataloskiBrojevi);
     roba.forEach(
         data -> {
           if (StringUtils.hasText(data.getKatbr())) {
@@ -334,7 +335,7 @@ public class RobaAdapterService {
     MagacinDto magacinDto = new MagacinDto();
 
     List<RobaCache> robaCaches = robaRepositoryService.getAllRobaFilteredByKatBr(articleNumbers);
-    List<RobaDto> roba =
+    List<RobaLightDto> roba =
         robaRepositoryService.pronadjiRobuPoPrimarnomKljucu(
             robaCaches.stream().map(RobaCache::getRobaId).toList());
 
@@ -357,7 +358,8 @@ public class RobaAdapterService {
     magacinDto.setRobaDto(
         GeneralUtil.createPageable(roba, parametri.getPageSize(), parametri.getPage()));
 
-    robaTecDocProcessor.enrichRobaDtoWithLinkageCriteria(magacinDto.getRobaDto().getContent(), articles);
+    robaTecDocProcessor.enrichRobaDtoWithLinkageCriteria(
+        magacinDto.getRobaDto().getContent(), articles);
 
     return magacinDto;
   }

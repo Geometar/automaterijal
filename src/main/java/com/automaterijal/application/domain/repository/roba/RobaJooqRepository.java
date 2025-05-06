@@ -4,7 +4,7 @@ import static com.automaterijal.db.tables.Roba.ROBA;
 import static com.automaterijal.db.tables.RobaKatbrOld.ROBA_KATBR_OLD;
 
 import com.automaterijal.application.domain.dto.ProizvodjacDTO;
-import com.automaterijal.application.domain.dto.RobaDto;
+import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.dto.SlikaDto;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.utils.CriteriaBuilder;
@@ -25,13 +25,13 @@ public class RobaJooqRepository {
 
   @Autowired DSLContext dslContext;
 
-  public List<RobaDto> vratiRobuPoRobiId(Set<Long> robaIds) {
+  public List<RobaLightDto> vratiRobuPoRobiId(Set<Long> robaIds) {
     Condition condition =
         ROBA.ROBAID.in(robaIds.stream().map(Long::intValue).collect(Collectors.toSet()));
     return generic(null, condition);
   }
 
-  public List<RobaDto> fetchKatBrOld(Set<String> kataloskiBrojevi) {
+  public List<RobaLightDto> fetchKatBrOld(Set<String> kataloskiBrojevi) {
     return dslContext
         .selectDistinct(ROBA_KATBR_OLD.KATBR, ROBA_KATBR_OLD.KATBRPRO)
         .from(ROBA_KATBR_OLD)
@@ -41,11 +41,13 @@ public class RobaJooqRepository {
                 .in(kataloskiBrojevi)
                 .or(ROBA_KATBR_OLD.KATBRPRO.in(kataloskiBrojevi)))
         .fetchStream()
-        .map(data -> RobaDto.builder().katbr(data.component1()).katbrpro(data.component2()).build())
+        .map(
+            data ->
+                RobaLightDto.builder().katbr(data.component1()).katbrpro(data.component2()).build())
         .toList();
   }
 
-  public List<RobaDto> generic(UniverzalniParametri parametri, Condition condition) {
+  public List<RobaLightDto> generic(UniverzalniParametri parametri, Condition condition) {
     // Kreiraj bazni upit
     SelectConditionStep<
             Record9<Integer, String, String, BigDecimal, String, Integer, String, String, String>>
@@ -120,12 +122,12 @@ public class RobaJooqRepository {
     }
   }
 
-  private RobaDto map(
+  private RobaLightDto map(
       Record9<Integer, String, String, BigDecimal, String, Integer, String, String, String>
           robaRecord) {
     ProizvodjacDTO proizvodjacDTO = new ProizvodjacDTO();
     proizvodjacDTO.setProid(robaRecord.component7());
-    return RobaDto.builder()
+    return RobaLightDto.builder()
         .robaid(robaRecord.component1().longValue())
         .katbr(robaRecord.component2())
         .katbrpro(robaRecord.component9())

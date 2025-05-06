@@ -1,8 +1,8 @@
 package com.automaterijal.application.domain.mapper;
 
-import com.automaterijal.application.domain.dto.RobaDto;
+import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.dto.robadetalji.RobaAplikacijaDto;
-import com.automaterijal.application.domain.dto.robadetalji.RobaDetaljiDto;
+import com.automaterijal.application.domain.dto.robadetalji.RobaExpandedDto;
 import com.automaterijal.application.domain.entity.roba.Roba;
 import com.automaterijal.application.domain.entity.roba.RobaAplikacija;
 import com.automaterijal.db.tables.records.RobaRecord;
@@ -19,16 +19,16 @@ public interface RobaMapper {
   @Mapping(target = "slika.robaSlika", source = "slika")
   @Mapping(target = "proizvodjac.proid", source = "proizvodjac.proid")
   @Mapping(target = "proizvodjac.naziv", source = "proizvodjac.naziv")
-  RobaDto map(Roba roba);
+  RobaLightDto map(Roba roba);
 
-  List<RobaDto> map(List<Roba> robas);
+  List<RobaLightDto> map(List<Roba> robas);
 
   @Mapping(target = "grupa", source = "grupaid")
   @Mapping(target = "podGrupa", source = "podgrupaid")
   @Mapping(target = "slika.robaSlika", source = "slika")
   @Mapping(target = "proizvodjac.naziv", source = "proizvodjac.naziv")
   @Mapping(target = "proizvodjac.proid", source = "proizvodjac.proid")
-  RobaDetaljiDto mapujDetaljno(Roba roba);
+  RobaExpandedDto mapujDetaljno(Roba roba);
 
   @Mapping(target = "kw", source = "kw")
   RobaAplikacijaDto mapAplikacija(RobaAplikacija aplikacija);

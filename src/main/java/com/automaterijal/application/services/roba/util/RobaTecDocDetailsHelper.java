@@ -3,7 +3,7 @@ package com.automaterijal.application.services.roba.util;
 import com.automaterijal.application.domain.constants.TecDocProizvodjaci;
 import com.automaterijal.application.domain.dto.RobaTehnickiOpisDto;
 import com.automaterijal.application.domain.dto.robadetalji.RobaBrojeviDto;
-import com.automaterijal.application.domain.dto.robadetalji.RobaDetaljiDto;
+import com.automaterijal.application.domain.dto.robadetalji.RobaExpandedDto;
 import com.automaterijal.application.domain.dto.tecdoc.TecDocDokumentacija;
 import com.automaterijal.application.domain.entity.tecdoc.TecDocAtributi;
 import com.automaterijal.application.domain.mapper.TecDocMapper;
@@ -30,7 +30,7 @@ public class RobaTecDocDetailsHelper {
   @NonNull final TecDocService tecDocService;
 
   public static void setujTehnickeDetalje(
-      RobaDetaljiDto detaljiDto, List<ArticlesByIds6Record> tecDocDetalji) {
+      RobaExpandedDto detaljiDto, List<ArticlesByIds6Record> tecDocDetalji) {
     List<AssignedArticleAttributs2Record> atributiRecord =
         tecDocDetalji.stream()
             .filter(rekord -> rekord.getArticleAttributes() != null)
@@ -53,7 +53,7 @@ public class RobaTecDocDetailsHelper {
   }
 
   public void setujDokumentaciju(
-      RobaDetaljiDto detaljiDto, List<ArticlesByIds6Record> tecDocDetalji) {
+      RobaExpandedDto detaljiDto, List<ArticlesByIds6Record> tecDocDetalji) {
     List<TecDocDokumentacija> dokumenta =
         tecDocDetalji.stream()
             .filter(rekord -> rekord.getArticleDocuments() != null)
@@ -129,7 +129,7 @@ public class RobaTecDocDetailsHelper {
   }
 
   public static List<RobaBrojeviDto> setujOriginalneBrojeve(
-      RobaDetaljiDto detaljiDto, List<ArticlesByIds6Record> tecDocDetalji) {
+      RobaExpandedDto detaljiDto, List<ArticlesByIds6Record> tecDocDetalji) {
     List<ArticleOENumbersRecord> oeNumbersRecords =
         tecDocDetalji.stream()
             .filter(rekord -> rekord.getOenNumbers() != null)
@@ -151,7 +151,7 @@ public class RobaTecDocDetailsHelper {
     return tdBrojevi;
   }
 
-  public Long vratiTecDocArticleId(RobaDetaljiDto detaljiDto) {
+  public Long vratiTecDocArticleId(RobaExpandedDto detaljiDto) {
     List<TecDocAtributi> tecDocAtributi =
         tecDocService.vratiTecDocAtributePrekoRobeId(detaljiDto.getRobaid());
     TecDocProizvodjaci tecDocProizvodjaci =

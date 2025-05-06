@@ -3,7 +3,7 @@ package com.automaterijal.application.services.roba.grupe;
 import com.automaterijal.application.domain.constants.GlobalConstants;
 import com.automaterijal.application.domain.dto.MagacinDto;
 import com.automaterijal.application.domain.dto.PodgrupaDto;
-import com.automaterijal.application.domain.dto.RobaDto;
+import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.entity.PodGrupa;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.domain.repository.PodGrupaRepository;
@@ -31,7 +31,7 @@ public class PodGrupaService {
 
   /** Start of: Metoda za popunjavanje svih grupa u zavisnosti od kriterijuma */
   public void popuniPodgrupe(
-      MagacinDto magacinDto, UniverzalniParametri parametri, List<RobaDto> roba) {
+      MagacinDto magacinDto, UniverzalniParametri parametri, List<RobaLightDto> roba) {
     boolean parametriRequiresFiltering =
         parametri.getTrazenaRec() != null
             || parametri.getProizvodjac() != null
@@ -46,9 +46,12 @@ public class PodGrupaService {
     magacinDto.setCategories(groupByGrupa(podgrupaDtos));
   }
 
-  private List<PodgrupaDto> fetchFilteredPodgrupe(List<RobaDto> roba) {
+  private List<PodgrupaDto> fetchFilteredPodgrupe(List<RobaLightDto> roba) {
     Set<Integer> podgrupaIds =
-        roba.stream().map(RobaDto::getPodGrupa).filter(id -> id != 0).collect(Collectors.toSet());
+        roba.stream()
+            .map(RobaLightDto::getPodGrupa)
+            .filter(id -> id != 0)
+            .collect(Collectors.toSet());
 
     List<PodgrupaDto> podgrupaDtos = new ArrayList<>();
     if (!podgrupaIds.isEmpty()) {
@@ -56,7 +59,7 @@ public class PodGrupaService {
     }
 
     if (roba.stream()
-        .map(RobaDto::getPodGrupa)
+        .map(RobaLightDto::getPodGrupa)
         .anyMatch(id -> id.equals(GlobalConstants.TECDOC_PODGRUPA_KEY))) {
       PodgrupaDto dto = new PodgrupaDto();
       dto.setId(GlobalConstants.TECDOC_PODGRUPA_KEY);
@@ -67,11 +70,12 @@ public class PodGrupaService {
     return podgrupaDtos;
   }
 
-  private void popuniNazivePodgrupa(List<RobaDto> robaDtos, List<PodgrupaDto> podgrupaDtos) {
+  private void popuniNazivePodgrupa(
+      List<RobaLightDto> robaLightDtos, List<PodgrupaDto> podgrupaDtos) {
     Map<Integer, String> podgrupaNazivi =
         podgrupaDtos.stream().collect(Collectors.toMap(PodgrupaDto::getId, PodgrupaDto::getNaziv));
 
-    for (RobaDto roba : robaDtos) {
+    for (RobaLightDto roba : robaLightDtos) {
       roba.setPodGrupaNaziv(podgrupaNazivi.getOrDefault(roba.getPodGrupa(), NEBITNA_GRUPA));
     }
   }

@@ -1,7 +1,7 @@
 package com.automaterijal.application.controller;
 
 import com.automaterijal.application.domain.dto.FakturaDto;
-import com.automaterijal.application.domain.dto.RobaDto;
+import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.services.FakturaService;
 import com.automaterijal.application.services.PartnerService;
@@ -70,7 +70,7 @@ public class FakturaController {
   }
 
   @PostMapping
-  public ResponseEntity<List<RobaDto>> podnesiFakturu(
+  public ResponseEntity<List<RobaLightDto>> podnesiFakturu(
       @RequestBody FakturaDto fakturaDto, Authentication authentication) {
     Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
     if (partner == null) {

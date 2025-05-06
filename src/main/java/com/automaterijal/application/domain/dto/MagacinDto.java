@@ -12,7 +12,7 @@ import org.springframework.data.domain.Page;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class MagacinDto {
 
-  Page<RobaDto> robaDto;
+  Page<RobaLightDto> robaDto;
   Map<String, List<PodgrupaDto>> categories;
   List<Proizvodjac> proizvodjaci;
 }

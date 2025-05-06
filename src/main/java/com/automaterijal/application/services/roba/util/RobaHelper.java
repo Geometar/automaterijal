@@ -1,9 +1,9 @@
 package com.automaterijal.application.services.roba.util;
 
-import com.automaterijal.application.domain.dto.AbstractRobaBaseDto;
-import com.automaterijal.application.domain.dto.RobaDto;
+import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.dto.RobaTehnickiOpisDto;
 import com.automaterijal.application.domain.dto.SlikaDto;
+import com.automaterijal.application.domain.dto.robadetalji.RobaExpandedDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.roba.RobaCene;
 import com.automaterijal.application.domain.entity.tecdoc.TecDocAtributi;
@@ -29,15 +29,16 @@ public class RobaHelper {
   @NonNull final SlikeService imageService;
   @NonNull final TecDocService tecDocService;
 
-  public void setupForTable(List<RobaDto> items, Partner partner) {
-    List<Long> itemIds = items.stream().map(RobaDto::getRobaid).toList();
+  public void setupForTable(List<RobaLightDto> items, Partner partner) {
+    List<Long> itemIds = items.stream().map(RobaLightDto::getRobaid).toList();
     List<TecDocAtributi> allAttributes = tecDocService.vratiTecDocAtributePrekoRobeIds(itemIds);
     List<RobaCene> allPrices = priceService.pronadjiCeneZaRobuBatch(itemIds);
 
-    for (RobaDto dto : items) {
+    for (RobaLightDto dto : items) {
       if (dto.getRobaid() == null) continue;
 
-      List<TecDocAtributi> attributes = allAttributes.stream()
+      List<TecDocAtributi> attributes =
+          allAttributes.stream()
               .filter(attr -> Objects.equals(attr.getRobaId(), dto.getRobaid()))
               .collect(Collectors.toList());
 
@@ -47,29 +48,34 @@ public class RobaHelper {
     }
   }
 
-  public void setupTechnicalAttributesForTable(List<TecDocAtributi> attributes, RobaDto dto) {
+  public void setupTechnicalAttributesForTable(List<TecDocAtributi> attributes, RobaLightDto dto) {
     List<RobaTehnickiOpisDto> result = extractTechnicalAttributes(attributes, true);
     dto.setTehnickiOpis(result);
 
     attributes.stream()
-            .filter(attr -> attr.getDokumentId() != null)
-            .findFirst()
-            .ifPresent(attr -> {
+        .filter(attr -> attr.getDokumentId() != null)
+        .findFirst()
+        .ifPresent(
+            attr -> {
               dto.setDokumentSlikaId(attr.getDokumentId());
               dto.setDokument(attr.getDokument());
             });
   }
 
-  public void setupTechnicalAttributesForDetails(List<TecDocAtributi> attributes, AbstractRobaBaseDto dto) {
+  public void setupTechnicalAttributesForDetails(
+      List<TecDocAtributi> attributes, RobaExpandedDto dto) {
     dto.setTehnickiOpis(extractTechnicalAttributes(attributes, false));
   }
 
-  private List<RobaTehnickiOpisDto> extractTechnicalAttributes(List<TecDocAtributi> attributes, boolean onlyNandA) {
+  private List<RobaTehnickiOpisDto> extractTechnicalAttributes(
+      List<TecDocAtributi> attributes, boolean onlyNandA) {
     return attributes.stream()
-            .filter(attr -> attr.getTecDocArticleId() != null)
-            .filter(attr -> attr.getDokumentId() == null)
-            .filter(attr -> !onlyNandA || "N".equals(attr.getAttrType()) || "A".equals(attr.getAttrType()))
-            .map(attr -> {
+        .filter(attr -> attr.getTecDocArticleId() != null)
+        .filter(attr -> attr.getDokumentId() == null)
+        .filter(
+            attr -> !onlyNandA || "N".equals(attr.getAttrType()) || "A".equals(attr.getAttrType()))
+        .map(
+            attr -> {
               RobaTehnickiOpisDto dto = new RobaTehnickiOpisDto();
               dto.setType(attr.getAttrType());
               dto.setOznaka(attr.getAttrShortName());
@@ -77,22 +83,30 @@ public class RobaHelper {
               dto.setVrednost(attr.getAttrValue());
               return dto;
             })
-            .sorted(Comparator.comparing(RobaTehnickiOpisDto::getType, Comparator.nullsFirst(Comparator.naturalOrder())))
-            .collect(Collectors.toList());
+        .sorted(
+            Comparator.comparing(
+                RobaTehnickiOpisDto::getType, Comparator.nullsFirst(Comparator.naturalOrder())))
+        .collect(Collectors.toList());
   }
 
-  private void setupPrice(RobaDto dto, List<RobaCene> allPrices, Partner partner) {
-    RobaCene price = allPrices.stream()
+  private void setupPrice(RobaLightDto dto, List<RobaCene> allPrices, Partner partner) {
+    RobaCene price =
+        allPrices.stream()
             .filter(p -> p.getRobaid().equals(dto.getRobaid()))
             .findFirst()
             .orElse(null);
 
-    dto.setCena(priceService.vratiCenuRobeBatch(price, dto.getGrupa(), dto.getProizvodjac().getProid(), partner));
-    dto.setRabat(priceService.vratiRabatPartneraNaArtikal(dto.getProizvodjac().getProid(), dto.getGrupa(), partner));
+    dto.setCena(
+        priceService.vratiCenuRobeBatch(
+            price, dto.getGrupa(), dto.getProizvodjac().getProid(), partner));
+    dto.setRabat(
+        priceService.vratiRabatPartneraNaArtikal(
+            dto.getProizvodjac().getProid(), dto.getGrupa(), partner));
   }
 
   public SlikaDto resolveImage(Long robaId, SlikaDto existing) {
-    String url = (existing != null && existing.getRobaSlika() != null && !existing.getRobaSlika().isEmpty())
+    String url =
+        (existing != null && existing.getRobaSlika() != null && !existing.getRobaSlika().isEmpty())
             ? existing.getRobaSlika()
             : robaId.toString();
     return imageService.vratiSlikuRobe(url);

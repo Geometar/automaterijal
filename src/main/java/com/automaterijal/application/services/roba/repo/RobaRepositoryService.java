@@ -1,7 +1,7 @@
 package com.automaterijal.application.services.roba.repo;
 
 import com.automaterijal.application.domain.cache.RobaCache;
-import com.automaterijal.application.domain.dto.RobaDto;
+import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.entity.roba.Roba;
 import com.automaterijal.application.domain.mapper.RobaMapper;
 import com.automaterijal.application.domain.repository.roba.RobaRepository;
@@ -31,7 +31,7 @@ public class RobaRepositoryService {
     return robaRepository.findById(id);
   }
 
-  public List<RobaDto> pronadjiRobuPoPrimarnomKljucu(List<Long> robaIds) {
+  public List<RobaLightDto> pronadjiRobuPoPrimarnomKljucu(List<Long> robaIds) {
     return mapper.map(robaRepository.findByRobaidIn(robaIds));
   }
 

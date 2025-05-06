@@ -2,7 +2,7 @@ package com.automaterijal.application.services;
 
 import com.automaterijal.application.domain.dto.MagacinDto;
 import com.automaterijal.application.domain.dto.ProizvodjacDTO;
-import com.automaterijal.application.domain.dto.RobaDto;
+import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.entity.Proizvodjac;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.domain.repository.ProizvodjacRepository;
@@ -27,7 +27,7 @@ public class ProizvodjacService {
 
   /** Popunjavanje proizvodjaca u zavistosti od kriterijuma */
   public void popuniProizvodjace(
-      List<RobaDto> robaDtos, MagacinDto magacinDto, UniverzalniParametri parametri) {
+      List<RobaLightDto> robaLightDtos, MagacinDto magacinDto, UniverzalniParametri parametri) {
     List<Proizvodjac> proizvodjaci;
     if (parametri.getPodgrupeZaPretragu() == null
         && parametri.getTrazenaRec() == null
@@ -35,13 +35,13 @@ public class ProizvodjacService {
       proizvodjaci = pronadjiSveProizvodjaceZaVrstu();
     } else {
       Set<String> proizKljuc =
-          robaDtos.stream()
-              .map(RobaDto::getProizvodjac)
+          robaLightDtos.stream()
+              .map(RobaLightDto::getProizvodjac)
               .map(ProizvodjacDTO::getProid)
               .collect(Collectors.toSet());
       proizvodjaci = proizvodjacRepository.findByProidIn(proizKljuc);
     }
-    getPopuniProizvodjaceURobi(robaDtos, proizvodjaci);
+    getPopuniProizvodjaceURobi(robaLightDtos, proizvodjaci);
 
     if (parametri.getProizvodjac() != null && !parametri.getProizvodjac().isEmpty()) {
       boolean trazeniProizvodjacPostoji =
@@ -60,8 +60,9 @@ public class ProizvodjacService {
     magacinDto.setProizvodjaci(proizvodjaci);
   }
 
-  private void getPopuniProizvodjaceURobi(List<RobaDto> robaDtos, List<Proizvodjac> proizvodjaci) {
-    for (RobaDto roba : robaDtos) {
+  private void getPopuniProizvodjaceURobi(
+      List<RobaLightDto> robaLightDtos, List<Proizvodjac> proizvodjaci) {
+    for (RobaLightDto roba : robaLightDtos) {
       proizvodjaci.stream()
           .filter(proizvodjac -> proizvodjac.getProid().equals(roba.getProizvodjac().getProid()))
           .findFirst()

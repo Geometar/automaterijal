@@ -2,7 +2,7 @@ package com.automaterijal.application.services.logic;
 
 import com.automaterijal.application.client.TecDocClient;
 import com.automaterijal.application.domain.constants.TecDocProizvodjaci;
-import com.automaterijal.application.domain.dto.RobaDto;
+import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.dto.SlikaDto;
 import com.automaterijal.application.domain.entity.tecdoc.TecDocAtributi;
 import com.automaterijal.application.domain.mapper.TecDocMapper;
@@ -38,23 +38,25 @@ public class TecDocLogicService {
   @Value("${roba.slika.tdPrefix}")
   String putDoSlike;
 
-  public void batchVracanjeICuvanjeTDAtributa(List<RobaDto> robaDtos) {
+  public void batchVracanjeICuvanjeTDAtributa(List<RobaLightDto> robaLightDtos) {
     List<Long> artikliBezSacuvanihPodataka = new ArrayList<>();
 
     // Priprema podataka
-    prepareData(robaDtos, artikliBezSacuvanihPodataka);
+    prepareData(robaLightDtos, artikliBezSacuvanihPodataka);
 
     // Obrada artikala bez sačuvanih podataka
     if (!artikliBezSacuvanihPodataka.isEmpty()) {
-      processArtikliBezSacuvanihPodataka(artikliBezSacuvanihPodataka, robaDtos);
+      processArtikliBezSacuvanihPodataka(artikliBezSacuvanihPodataka, robaLightDtos);
     }
   }
 
   // 1. Priprema podataka
-  private void prepareData(List<RobaDto> robaDtos, List<Long> artikliBezSacuvanihPodataka) {
+  private void prepareData(
+      List<RobaLightDto> robaLightDtos, List<Long> artikliBezSacuvanihPodataka) {
     final List<TecDocAtributi> data =
-        tecDocAtributiRepository.findByRobaIdIn(robaDtos.stream().map(RobaDto::getRobaid).toList());
-    robaDtos.forEach(
+        tecDocAtributiRepository.findByRobaIdIn(
+            robaLightDtos.stream().map(RobaLightDto::getRobaid).toList());
+    robaLightDtos.forEach(
         robaDto -> {
           TecDocProizvodjaci tdProizvodjaci =
               TecDocProizvodjaci.pronadjiPoNazivu(robaDto.getProizvodjac().getProid());
@@ -82,13 +84,13 @@ public class TecDocLogicService {
 
   // 3. Dohvatanje TecDoc podataka
   private void fetchTecDocData(
-      RobaDto robaDto,
+      RobaLightDto robaLightDto,
       TecDocProizvodjaci tdProizvodjaci,
       String katBr,
       List<Long> artikliBezSacuvanihPodataka) {
 
     List<ArticleDirectSearchAllNumbersWithStateRecord> directSearch =
-        TecDocProizvodjaci.getAllTecDocIdsByName(robaDto.getProizvodjac().getProid()).stream()
+        TecDocProizvodjaci.getAllTecDocIdsByName(robaLightDto.getProizvodjac().getProid()).stream()
             .flatMap(tdId -> tecDocClient.tecDocPretraga(katBr, tdId, 0).stream())
             .collect(Collectors.toList());
 
@@ -96,7 +98,7 @@ public class TecDocLogicService {
       directSearch = fallbackSearch(katBr, tdProizvodjaci);
     }
 
-    processDirectSearch(directSearch, katBr, artikliBezSacuvanihPodataka, robaDto);
+    processDirectSearch(directSearch, katBr, artikliBezSacuvanihPodataka, robaLightDto);
   }
 
   // 4. Fallback pretraga za TecDoc podatke
@@ -112,14 +114,14 @@ public class TecDocLogicService {
       List<ArticleDirectSearchAllNumbersWithStateRecord> directSearch,
       String katBr,
       List<Long> artikliBezSacuvanihPodataka,
-      RobaDto robaDto) {
+      RobaLightDto robaLightDto) {
     if (!directSearch.isEmpty()) {
       Long tdArticleId = findMatchingArticleId(directSearch, katBr);
       if (tdArticleId != null) {
         artikliBezSacuvanihPodataka.add(tdArticleId);
       }
     } else {
-      saveEmptyTecDocRecord(robaDto);
+      saveEmptyTecDocRecord(robaLightDto);
     }
   }
 
@@ -153,32 +155,33 @@ public class TecDocLogicService {
   }
 
   // 7. Čuvanje praznog TecDoc zapisa
-  private void saveEmptyTecDocRecord(RobaDto robaDto) {
+  private void saveEmptyTecDocRecord(RobaLightDto robaLightDto) {
     TecDocAtributi atributi = new TecDocAtributi();
-    atributi.setRobaId(robaDto.getRobaid());
-    atributi.setKatbr(robaDto.getKatbr());
+    atributi.setRobaId(robaLightDto.getRobaid());
+    atributi.setKatbr(robaLightDto.getKatbr());
     sacuvajTecDocAtribute(atributi);
     log.info(
         "Artikal katBr {} - proizvodjac {} ne postoji u TD",
-        robaDto.getKatbr(),
-        robaDto.getProizvodjac().getProid());
+        robaLightDto.getKatbr(),
+        robaLightDto.getProizvodjac().getProid());
   }
 
   // 8. Obrada artikala bez sačuvanih podataka
   private void processArtikliBezSacuvanihPodataka(
-      List<Long> artikliBezSacuvanihPodataka, List<RobaDto> robaDtos) {
+      List<Long> artikliBezSacuvanihPodataka, List<RobaLightDto> robaLightDtos) {
     for (int i = 0; i < artikliBezSacuvanihPodataka.size(); i += 24) {
       List<Long> artiklId =
           artikliBezSacuvanihPodataka.subList(
               i, Math.min(i + 24, artikliBezSacuvanihPodataka.size()));
       List<ArticlesByIds6Record> detaljiArtikala = tecDocClient.vratiDetaljeArtikla(artiklId);
 
-      detaljiArtikala.forEach(detalji -> processArticleDetails(detalji, robaDtos));
+      detaljiArtikala.forEach(detalji -> processArticleDetails(detalji, robaLightDtos));
     }
   }
 
   // 9. Obrada detalja artikla
-  private void processArticleDetails(ArticlesByIds6Record detalji, List<RobaDto> robaDtos) {
+  private void processArticleDetails(
+      ArticlesByIds6Record detalji, List<RobaLightDto> robaLightDtos) {
     if (detalji.getDirectArticle() != null) {
       ArticleDirectSearchById3Record directArticle = detalji.getDirectArticle();
       List<String> alternativeManufactureNumber =
@@ -187,20 +190,20 @@ public class TecDocLogicService {
                   .map(UsageNumbers2Record::getUsageNumber)
                   .toList()
               : List.of();
-      Optional<RobaDto> dtoOptional =
-          findMatchingRobaDto(directArticle, robaDtos, alternativeManufactureNumber);
+      Optional<RobaLightDto> dtoOptional =
+          findMatchingRobaDto(directArticle, robaLightDtos, alternativeManufactureNumber);
 
       dtoOptional.ifPresent(
           robaDto -> processArticleAttributesAndImages(detalji, directArticle, robaDto));
     }
   }
 
-  // 10. Pronalaženje odgovarajućeg RobaDto
-  private Optional<RobaDto> findMatchingRobaDto(
+  // 10. Pronalaženje odgovarajućeg RobaLightDto
+  private Optional<RobaLightDto> findMatchingRobaDto(
       ArticleDirectSearchById3Record directArticle,
-      List<RobaDto> robaDtos,
+      List<RobaLightDto> robaLightDtos,
       List<String> alternativeManufactureNumber) {
-    return robaDtos.stream()
+    return robaLightDtos.stream()
         .filter(
             robaDto -> {
               TecDocProizvodjaci tecDocProizvodjaci =
@@ -220,7 +223,7 @@ public class TecDocLogicService {
         .findFirst()
         .or(
             () ->
-                robaDtos.stream()
+                robaLightDtos.stream()
                     .filter(
                         robaDto ->
                             alternativeManufactureNumber.stream()
@@ -248,15 +251,17 @@ public class TecDocLogicService {
 
   // 11. Obrada atributa i slika
   private void processArticleAttributesAndImages(
-      ArticlesByIds6Record detalji, ArticleDirectSearchById3Record directArticle, RobaDto robaDto) {
-    saveAttributes(detalji.getArticleAttributes(), robaDto, directArticle);
-    saveImages(detalji.getArticleThumbnails(), robaDto, directArticle);
+      ArticlesByIds6Record detalji,
+      ArticleDirectSearchById3Record directArticle,
+      RobaLightDto robaLightDto) {
+    saveAttributes(detalji.getArticleAttributes(), robaLightDto, directArticle);
+    saveImages(detalji.getArticleThumbnails(), robaLightDto, directArticle);
   }
 
   // 12. Čuvanje atributa
   private void saveAttributes(
       AssignedArticleAttributs2RecordSeq attributes,
-      RobaDto robaDto,
+      RobaLightDto robaLightDto,
       ArticleDirectSearchById3Record directArticle) {
     if (attributes != null && attributes.getArray() != null) {
       attributes
@@ -266,9 +271,10 @@ public class TecDocLogicService {
                 TecDocAtributi atributi =
                     tecDocMapper.map(
                         att,
-                        robaDto,
+                        robaLightDto,
                         directArticle.getArticleId(),
-                        TecDocProizvodjaci.pronadjiPoNazivu(robaDto.getProizvodjac().getProid())
+                        TecDocProizvodjaci.pronadjiPoNazivu(
+                                robaLightDto.getProizvodjac().getProid())
                             .getTecDocId());
                 sacuvajTecDocAtribute(atributi);
               });
@@ -278,7 +284,7 @@ public class TecDocLogicService {
   // 13. Čuvanje slika
   private void saveImages(
       ThumbnailByArticleIdRecordSeq thumbnails,
-      RobaDto robaDto,
+      RobaLightDto robaLightDto,
       ArticleDirectSearchById3Record directArticle) {
     if (thumbnails != null && thumbnails.getArray() != null && !thumbnails.getArray().isEmpty()) {
       ThumbnailByArticleIdRecord thumbnail = thumbnails.getArray().get(0);
@@ -286,8 +292,8 @@ public class TecDocLogicService {
         byte[] dokumentSlike = vratiDokument(thumbnail.getThumbDocId(), 0);
         BufferedImage bImage = readImage(dokumentSlike);
         if (bImage != null) {
-          saveImageFile(bImage, robaDto.getRobaid());
-          cacheImageInDatabase(robaDto, thumbnail, dokumentSlike, directArticle);
+          saveImageFile(bImage, robaLightDto.getRobaid());
+          cacheImageInDatabase(robaLightDto, thumbnail, dokumentSlike, directArticle);
         }
       }
     }
@@ -314,22 +320,23 @@ public class TecDocLogicService {
 
   // 16. Kesiranje slike u bazi
   private void cacheImageInDatabase(
-      RobaDto robaDto,
+      RobaLightDto robaLightDto,
       ThumbnailByArticleIdRecord thumbnail,
       byte[] dokumentSlike,
       ArticleDirectSearchById3Record directArticle) {
     TecDocAtributi atributi =
         tecDocMapper.map(
             thumbnail,
-            robaDto,
+            robaLightDto,
             directArticle.getArticleId(),
-            TecDocProizvodjaci.pronadjiPoNazivu(robaDto.getProizvodjac().getProid()).getTecDocId());
+            TecDocProizvodjaci.pronadjiPoNazivu(robaLightDto.getProizvodjac().getProid())
+                .getTecDocId());
     sacuvajTecDocAtribute(atributi);
 
     SlikaDto slikaDto = new SlikaDto();
     slikaDto.setSlikeByte(dokumentSlike);
     slikaDto.setUrl(false);
-    robaDto.setSlika(slikaDto);
+    robaLightDto.setSlika(slikaDto);
   }
 
   private boolean daLiSeBrojeviPodudaraju(

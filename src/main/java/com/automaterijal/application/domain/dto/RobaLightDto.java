@@ -18,7 +18,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RobaDto extends AbstractRobaBaseDto {
+public class RobaLightDto {
   Long robaid;
   SlikaDto slika;
   String katbr;
@@ -43,7 +43,7 @@ public class RobaDto extends AbstractRobaBaseDto {
     setProizvodjac(proizvodjacDTO);
   }
 
-  public static RobaDto fromTecdocArticle(
+  public static RobaLightDto fromTecdocArticle(
       ArticleRecord articleRecord,
       TecDocProizvodjaci tecDocProizvodjaci,
       SlikeService slikeService) {
@@ -51,7 +51,7 @@ public class RobaDto extends AbstractRobaBaseDto {
         TecDocProizvodjaci.generateAlternativeCatalogNumber(
             articleRecord.getArticleNumber(), tecDocProizvodjaci);
 
-    RobaDto data = new RobaDto();
+    RobaLightDto data = new RobaLightDto();
     data.setKatbr(katBr);
     data.setNaziv(articleRecord.getGenericArticles().get(0).getGenericArticleDescription());
 

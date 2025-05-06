@@ -1,10 +1,10 @@
 package com.automaterijal.application.services.roba.processor;
 
 import com.automaterijal.application.domain.constants.TecDocProizvodjaci;
-import com.automaterijal.application.domain.dto.RobaDto;
+import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.dto.SlikaDto;
 import com.automaterijal.application.domain.dto.robadetalji.RobaBrojeviDto;
-import com.automaterijal.application.domain.dto.robadetalji.RobaDetaljiDto;
+import com.automaterijal.application.domain.dto.robadetalji.RobaExpandedDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.tecdoc.TecDocAtributi;
 import com.automaterijal.application.domain.mapper.RobaMapper;
@@ -32,17 +32,21 @@ public class RobaDetailsProcessor {
   @NonNull final RobaMapper mapper;
   @NonNull final TecDocService tecDocService;
 
-  public void postaviCenuIRabat(RobaDto robaDto, Partner partner) {
-    robaDto.setCena(
+  public void postaviCenuIRabat(RobaLightDto robaLightDto, Partner partner) {
+    robaLightDto.setCena(
         robaCeneService.vratiCenuRobePoRobiId(
-            robaDto.getRobaid(), robaDto.getGrupa(), robaDto.getProizvodjac().getProid(), partner));
+            robaLightDto.getRobaid(),
+            robaLightDto.getGrupa(),
+            robaLightDto.getProizvodjac().getProid(),
+            partner));
 
-    robaDto.setRabat(
+    robaLightDto.setRabat(
         robaCeneService.vratiRabatPartneraNaArtikal(
-            robaDto.getProizvodjac().getProid(), robaDto.getGrupa(), partner));
+            robaLightDto.getProizvodjac().getProid(), robaLightDto.getGrupa(), partner));
   }
 
-  private void postaviSlikuIzAtributa(RobaDto robaDto, List<TecDocAtributi> tecDocAtributi) {
+  private void postaviSlikuIzAtributa(
+      RobaLightDto robaLightDto, List<TecDocAtributi> tecDocAtributi) {
     tecDocAtributi.stream()
         .filter(tdAtributi -> tdAtributi.getDokument() != null)
         .forEach(
@@ -50,12 +54,12 @@ public class RobaDetailsProcessor {
               SlikaDto slikaDto = new SlikaDto();
               slikaDto.setUrl(false);
               slikaDto.setSlikeByte(tdAtributi.getDokument());
-              robaDto.setSlika(slikaDto);
+              robaLightDto.setSlika(slikaDto);
             });
   }
 
   public void processMainArticle(
-      MainArticlesRecord mainArticlesRecord, Partner partner, List<RobaDto> asociraniArtikli) {
+      MainArticlesRecord mainArticlesRecord, Partner partner, List<RobaLightDto> asociraniArtikli) {
     robaRepositoryService
         .pronadjiRobuPoKataloskomBroju(mainArticlesRecord.getArticleNumber())
         .stream()
@@ -64,25 +68,26 @@ public class RobaDetailsProcessor {
         .forEach(robaDto -> handleRobaDto(robaDto, partner, asociraniArtikli));
   }
 
-  private boolean isValidProizvodjac(RobaDto robaDto) {
-    return TecDocProizvodjaci.pronadjiPoNazivu(robaDto.getProizvodjac().getProid()) != null;
+  private boolean isValidProizvodjac(RobaLightDto robaLightDto) {
+    return TecDocProizvodjaci.pronadjiPoNazivu(robaLightDto.getProizvodjac().getProid()) != null;
   }
 
-  public void handleRobaDto(RobaDto robaDto, Partner partner, List<RobaDto> asociraniArtikli) {
+  public void handleRobaDto(
+      RobaLightDto robaLightDto, Partner partner, List<RobaLightDto> asociraniArtikli) {
     List<TecDocAtributi> tecDocAtributi =
-        tecDocService.vratiTecDocAtributePrekoRobeId(robaDto.getRobaid());
+        tecDocService.vratiTecDocAtributePrekoRobeId(robaLightDto.getRobaid());
 
     if (tecDocAtributi.isEmpty()) {
-      tecDocService.batchVracanjeICuvanjeTDAtributa(Collections.singletonList(robaDto));
-      tecDocAtributi = tecDocService.vratiTecDocAtributePrekoRobeId(robaDto.getRobaid());
+      tecDocService.batchVracanjeICuvanjeTDAtributa(Collections.singletonList(robaLightDto));
+      tecDocAtributi = tecDocService.vratiTecDocAtributePrekoRobeId(robaLightDto.getRobaid());
     }
 
-    postaviSlikuIzAtributa(robaDto, tecDocAtributi);
-    postaviCenuIRabat(robaDto, partner);
-    asociraniArtikli.add(robaDto);
+    postaviSlikuIzAtributa(robaLightDto, tecDocAtributi);
+    postaviCenuIRabat(robaLightDto, partner);
+    asociraniArtikli.add(robaLightDto);
   }
 
-  public void setujSliku(RobaDetaljiDto detaljiDto, List<RobaBrojeviDto> tdBrojevi) {
+  public void setujSliku(RobaExpandedDto detaljiDto, List<RobaBrojeviDto> tdBrojevi) {
     List<TecDocAtributi> tecDocAtributi =
         tecDocService.vratiTecDocAtributePrekoRobeId(detaljiDto.getRobaid());
     if (!tdBrojevi.isEmpty()) {

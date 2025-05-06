@@ -1,9 +1,9 @@
 package com.automaterijal.application.services.roba.details;
 
 import com.automaterijal.application.domain.constants.TecDocProizvodjaci;
-import com.automaterijal.application.domain.dto.RobaDto;
+import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.dto.robadetalji.RobaBrojeviDto;
-import com.automaterijal.application.domain.dto.robadetalji.RobaDetaljiDto;
+import com.automaterijal.application.domain.dto.robadetalji.RobaExpandedDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.roba.Roba;
 import com.automaterijal.application.domain.mapper.RobaMapper;
@@ -46,11 +46,11 @@ public class RobaDetailsService {
   @NonNull final SlikeService slikeService;
   @NonNull final RobaDetailsProcessor robaDetailsProcessor;
 
-  public Optional<RobaDetaljiDto> pronadjiRobuPoRobaId(Long robaId, Partner ulogovaniPartner) {
-    Optional<RobaDetaljiDto> retVal = Optional.empty();
+  public Optional<RobaExpandedDto> pronadjiRobuPoRobaId(Long robaId, Partner ulogovaniPartner) {
+    Optional<RobaExpandedDto> retVal = Optional.empty();
     Optional<Roba> roba = robaRepositoryService.pronadjiRobuPoPrimarnomKljucu(robaId);
     if (roba.isPresent()) {
-      RobaDetaljiDto detaljnoDto = mapper.mapujDetaljno(roba.get());
+      RobaExpandedDto detaljnoDto = mapper.mapujDetaljno(roba.get());
       setujZaDetalje(detaljnoDto, ulogovaniPartner);
       retVal = Optional.of(detaljnoDto);
     }
@@ -60,7 +60,7 @@ public class RobaDetailsService {
   // ************************************ Vrati detalje za robu pojedinacno
   // ***************************************************************
 
-  private void setujZaDetalje(RobaDetaljiDto detaljnoDto, Partner partner) {
+  private void setujZaDetalje(RobaExpandedDto detaljnoDto, Partner partner) {
     detaljnoDto.setCena(
         robaCeneService.vratiCenuRobePoRobiId(
             detaljnoDto.getRobaid(),
@@ -92,7 +92,7 @@ public class RobaDetailsService {
   // ----------------------------------------
 
   /** Pozivamo servise tecdoca i punimo detalje */
-  private void popuniDetaljePrekoTecDoca(RobaDetaljiDto detaljiDto, Partner partner) {
+  private void popuniDetaljePrekoTecDoca(RobaExpandedDto detaljiDto, Partner partner) {
     TecDocProizvodjaci tecDocProizvodjaci =
         TecDocProizvodjaci.pronadjiPoNazivu(detaljiDto.getProizvodjac().getProid());
     if (tecDocProizvodjaci == null) {
@@ -129,7 +129,7 @@ public class RobaDetailsService {
 
     // ***************** Setujemo asocirane artikle *************************
 
-    final List<RobaDto> asociraniArtikli = new ArrayList<>();
+    final List<RobaLightDto> asociraniArtikli = new ArrayList<>();
 
     tecDocDetalji.stream()
         .filter(rekord -> rekord.getMainArticle() != null)

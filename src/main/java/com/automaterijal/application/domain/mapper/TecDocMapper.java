@@ -1,6 +1,6 @@
 package com.automaterijal.application.domain.mapper;
 
-import com.automaterijal.application.domain.dto.RobaDto;
+import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.dto.tecdoc.Manufcatures;
 import com.automaterijal.application.domain.dto.tecdoc.Model;
 import com.automaterijal.application.domain.dto.tecdoc.TecDocDokumentacija;
@@ -15,39 +15,45 @@ import org.mapstruct.NullValueCheckStrategy;
 public interface TecDocMapper {
 
   @Mapping(target = "tecDocArticleId", source = "tecDocArticleId")
-  @Mapping(target = "robaId", source = "robaDto.robaid")
+  @Mapping(target = "robaId", source = "robaLightDto.robaid")
   @Mapping(target = "tecDocPpid", source = "tecDocPpid")
-  @Mapping(target = "ppid", source = "robaDto.proizvodjac.proid")
-  @Mapping(target = "katbr", source = "robaDto.katbr")
+  @Mapping(target = "ppid", source = "robaLightDto.proizvodjac.proid")
+  @Mapping(target = "katbr", source = "robaLightDto.katbr")
   @Mapping(target = "attrValue", source = "record.attrValue")
   @Mapping(target = "attrUnit", source = "record.attrUnit")
   @Mapping(target = "attrShortName", source = "record.attrShortName")
   @Mapping(target = "attrType", source = "record.attrType")
   TecDocAtributi map(
       AssignedArticleAttributs2Record record,
-      RobaDto robaDto,
+      RobaLightDto robaLightDto,
       Long tecDocArticleId,
       Long tecDocPpid);
 
   @Mapping(target = "tecDocArticleId", source = "tecDocArticleId")
-  @Mapping(target = "robaId", source = "robaDto.robaid")
+  @Mapping(target = "robaId", source = "robaLightDto.robaid")
   @Mapping(target = "tecDocPpid", source = "tecDocPpid")
-  @Mapping(target = "ppid", source = "robaDto.proizvodjac.proid")
-  @Mapping(target = "katbr", source = "robaDto.katbr")
+  @Mapping(target = "ppid", source = "robaLightDto.proizvodjac.proid")
+  @Mapping(target = "katbr", source = "robaLightDto.katbr")
   @Mapping(target = "dokumentId", source = "record.docId")
   TecDocAtributi map(
-      ArticleDocuments2Record record, RobaDto robaDto, Long tecDocArticleId, Long tecDocPpid);
+      ArticleDocuments2Record record,
+      RobaLightDto robaLightDto,
+      Long tecDocArticleId,
+      Long tecDocPpid);
 
   TecDocDokumentacija map(ArticleDocuments2Record record);
 
   @Mapping(target = "tecDocArticleId", source = "tecDocArticleId")
-  @Mapping(target = "robaId", source = "robaDto.robaid")
+  @Mapping(target = "robaId", source = "robaLightDto.robaid")
   @Mapping(target = "tecDocPpid", source = "tecDocPpid")
-  @Mapping(target = "ppid", source = "robaDto.proizvodjac.proid")
-  @Mapping(target = "katbr", source = "robaDto.katbr")
+  @Mapping(target = "ppid", source = "robaLightDto.proizvodjac.proid")
+  @Mapping(target = "katbr", source = "robaLightDto.katbr")
   @Mapping(target = "dokumentId", source = "record.thumbDocId")
   TecDocAtributi map(
-      ThumbnailByArticleIdRecord record, RobaDto robaDto, Long tecDocArticleId, Long tecDocPpid);
+      ThumbnailByArticleIdRecord record,
+      RobaLightDto robaLightDto,
+      Long tecDocArticleId,
+      Long tecDocPpid);
 
   @Mapping(target = "id", source = "manuId")
   @Mapping(target = "favoriteFlag", source = "favorFlag")

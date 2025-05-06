@@ -1,7 +1,7 @@
 package com.automaterijal.application.services;
 
 import com.automaterijal.application.client.TecDocClient;
-import com.automaterijal.application.domain.dto.RobaDto;
+import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.dto.tecdoc.AssemblyGroupWrapper;
 import com.automaterijal.application.domain.dto.tecdoc.Manufcatures;
 import com.automaterijal.application.domain.dto.tecdoc.Model;
@@ -96,7 +96,7 @@ public class TecDocService {
     return response;
   }
 
-  public void batchVracanjeICuvanjeTDAtributa(List<RobaDto> robaDtos) {
-    tecDocLogicService.batchVracanjeICuvanjeTDAtributa(robaDtos);
+  public void batchVracanjeICuvanjeTDAtributa(List<RobaLightDto> robaLightDtos) {
+    tecDocLogicService.batchVracanjeICuvanjeTDAtributa(robaLightDtos);
   }
 }
