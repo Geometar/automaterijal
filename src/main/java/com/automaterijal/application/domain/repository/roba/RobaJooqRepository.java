@@ -6,6 +6,7 @@ import static com.automaterijal.db.tables.RobaKatbrOld.ROBA_KATBR_OLD;
 import com.automaterijal.application.domain.dto.ProizvodjacDTO;
 import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.dto.SlikaDto;
+import com.automaterijal.application.domain.dto.helpper.RobaLightDtoBuilderHelper;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.utils.CriteriaBuilder;
 import java.math.BigDecimal;
@@ -43,7 +44,10 @@ public class RobaJooqRepository {
         .fetchStream()
         .map(
             data ->
-                RobaLightDto.builder().katbr(data.component1()).katbrpro(data.component2()).build())
+                RobaLightDtoBuilderHelper.builder()
+                    .katbr(data.component1())
+                    .katbrpro(data.component2())
+                    .build())
         .toList();
   }
 
@@ -127,7 +131,7 @@ public class RobaJooqRepository {
           robaRecord) {
     ProizvodjacDTO proizvodjacDTO = new ProizvodjacDTO();
     proizvodjacDTO.setProid(robaRecord.component7());
-    return RobaLightDto.builder()
+    return RobaLightDtoBuilderHelper.builder()
         .robaid(robaRecord.component1().longValue())
         .katbr(robaRecord.component2())
         .katbrpro(robaRecord.component9())

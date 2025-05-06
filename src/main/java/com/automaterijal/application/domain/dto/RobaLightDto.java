@@ -14,9 +14,6 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RobaLightDto {
   Long robaid;
@@ -25,7 +22,7 @@ public class RobaLightDto {
   String katbrpro;
   String naziv;
   ProizvodjacDTO proizvodjac;
-  byte[] proizvodjacLogo;
+  String proizvodjacLogo;
   String grupa;
   int podGrupa;
   String podGrupaNaziv;

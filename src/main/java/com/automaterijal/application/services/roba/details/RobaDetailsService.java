@@ -9,7 +9,6 @@ import com.automaterijal.application.domain.entity.roba.Roba;
 import com.automaterijal.application.domain.mapper.RobaMapper;
 import com.automaterijal.application.services.SlikeService;
 import com.automaterijal.application.services.TecDocService;
-import com.automaterijal.application.services.roba.RobaAplikacijeServis;
 import com.automaterijal.application.services.roba.RobaCeneService;
 import com.automaterijal.application.services.roba.RobaTekstService;
 import com.automaterijal.application.services.roba.grupe.PodGrupaService;
@@ -36,7 +35,6 @@ public class RobaDetailsService {
 
   @NonNull final RobaRepositoryService robaRepositoryService;
   @NonNull final RobaCeneService robaCeneService;
-  @NonNull final RobaAplikacijeServis aplikacijeServis;
   @NonNull final PodGrupaService podGrupaService;
   @NonNull final RobaTekstService robaTekstService;
   @NonNull final RobaMapper mapper;
@@ -70,7 +68,6 @@ public class RobaDetailsService {
     detaljnoDto.setRabat(
         robaCeneService.vratiRabatPartneraNaArtikal(
             detaljnoDto.getProizvodjac().getProid(), detaljnoDto.getGrupa(), partner));
-    detaljnoDto.setAplikacije(aplikacijeServis.vratiAplikacijeZaDetalje(detaljnoDto.getRobaid()));
 
     popuniDetaljePrekoTecDoca(detaljnoDto, partner);
     detaljnoDto.setSlika(robaHelper.resolveImage(detaljnoDto.getRobaid(), detaljnoDto.getSlika()));
@@ -85,7 +82,7 @@ public class RobaDetailsService {
         .ifPresent(robaTekst -> detaljnoDto.setTekst(robaTekst.getTekst()));
     podGrupaService
         .vratiPodgrupuPoKljucu(Integer.valueOf(detaljnoDto.getPodGrupa()))
-        .ifPresent(podGrupa -> detaljnoDto.setPodGrupa(podGrupa.getNaziv()));
+        .ifPresent(podGrupa -> detaljnoDto.setPodGrupaNaziv(podGrupa.getNaziv()));
   }
 
   // ---------------------------------------- TECDOC -------------------------------- TECDOC

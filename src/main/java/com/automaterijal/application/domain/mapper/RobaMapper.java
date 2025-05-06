@@ -1,10 +1,8 @@
 package com.automaterijal.application.domain.mapper;
 
 import com.automaterijal.application.domain.dto.RobaLightDto;
-import com.automaterijal.application.domain.dto.robadetalji.RobaAplikacijaDto;
 import com.automaterijal.application.domain.dto.robadetalji.RobaExpandedDto;
 import com.automaterijal.application.domain.entity.roba.Roba;
-import com.automaterijal.application.domain.entity.roba.RobaAplikacija;
 import com.automaterijal.db.tables.records.RobaRecord;
 import java.util.List;
 import org.mapstruct.Mapper;
@@ -29,9 +27,6 @@ public interface RobaMapper {
   @Mapping(target = "proizvodjac.naziv", source = "proizvodjac.naziv")
   @Mapping(target = "proizvodjac.proid", source = "proizvodjac.proid")
   RobaExpandedDto mapujDetaljno(Roba roba);
-
-  @Mapping(target = "kw", source = "kw")
-  RobaAplikacijaDto mapAplikacija(RobaAplikacija aplikacija);
 
   @Mapping(target = "proizvodjac.proid", source = "proid")
   Roba map(RobaRecord robaRecord);
