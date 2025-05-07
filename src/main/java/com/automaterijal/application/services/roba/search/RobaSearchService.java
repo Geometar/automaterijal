@@ -135,7 +135,6 @@ public class RobaSearchService {
     // TecDoc pretraga na osnovu tačne reči, tip pretrage je 10 (trazimo sve)
     List<ArticleDirectSearchAllNumbersWithStateRecord> response =
         tecDocService.tecDocPretragaPoTrazenojReci(parametri.getTrazenaRec(), null, 10);
-    parametri.setKesiranDirectArticleSearch(response);
 
     // Process TecDoc search results
     catalogNumbers.addAll(

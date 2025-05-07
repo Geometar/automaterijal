@@ -56,7 +56,9 @@ public class TecDocLogicService {
                     ? dto.getKatbrpro()
                     : dto.getKatbr(),
                 tdProizvodjaci);
-        if (shouldFetchTecDocData(data, dto.getRobaid())) {
+
+        boolean tecDocDataMissing = shouldFetchTecDocData(data, dto.getRobaid());
+        if (tecDocDataMissing) {
           fetchTecDocData(dto, tdProizvodjaci, katBr, artikliBezSacuvanihPodataka);
         }
       }

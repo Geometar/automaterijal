@@ -113,7 +113,7 @@ public class RobaAdapterService {
     allRoba = robaSortService.sortByGroup(allRoba);
 
     // Sortiraj robu po podgrupi
-    robaSortService.sortByTecDocSubGroup(allRoba, parametri);
+    allRoba = robaSortService.sortByTecDocSubGroup(allRoba, parametri);
 
     // Paginacija rezultata
     magacinDto.setRobaDto(

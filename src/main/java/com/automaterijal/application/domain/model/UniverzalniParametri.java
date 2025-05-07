@@ -1,6 +1,5 @@
 package com.automaterijal.application.domain.model;
 
-import com.automaterijal.application.tecdoc.ArticleDirectSearchAllNumbersWithStateRecord;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
@@ -19,7 +18,6 @@ public class UniverzalniParametri {
   String trazenaRec;
   List<String> grupa;
   List<Integer> podgrupeZaPretragu;
-  List<ArticleDirectSearchAllNumbersWithStateRecord> kesiranDirectArticleSearch;
   boolean tecdocPretraga;
 
   public List<String> resolveProizvodjac() {
