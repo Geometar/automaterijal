@@ -1,4 +1,4 @@
-package com.automaterijal.application.services.roba.repo;
+package com.automaterijal.application.services.roba.cache;
 
 import com.automaterijal.application.domain.cache.RobaCache;
 import com.automaterijal.application.domain.repository.roba.RobaRepository;

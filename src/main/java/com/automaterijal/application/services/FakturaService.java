@@ -15,7 +15,7 @@ import com.automaterijal.application.domain.repository.valuehelp.NacinPlacanjaRe
 import com.automaterijal.application.domain.repository.valuehelp.NacinPrevozaRepository;
 import com.automaterijal.application.domain.repository.valuehelp.StatusRepository;
 import com.automaterijal.application.services.roba.RobaCeneService;
-import com.automaterijal.application.services.roba.repo.RobaRepositoryService;
+import com.automaterijal.application.services.roba.repo.RobaDatabaseService;
 import com.automaterijal.application.utils.GeneralUtil;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -46,7 +46,7 @@ public class FakturaService {
   @NonNull final NacinPlacanjaRepository nacinPlacanjaRepository;
   @NonNull final NacinPrevozaRepository nacinPrevozaRepository;
   @NonNull final MestaIsporukeRepository mestaIsporukeRepository;
-  @NonNull final RobaRepositoryService robaRepositoryService;
+  @NonNull final RobaDatabaseService robaDatabaseService;
   @NonNull final RobaCeneService robaCeneService;
   @NonNull final ProizvodjacService proizvodjacService;
   @NonNull final PartnerService partnerService;
@@ -70,7 +70,7 @@ public class FakturaService {
         .forEach(
             detalji -> {
               Optional<Roba> robaOptional =
-                  robaRepositoryService.pronadjiRobuPoPrimarnomKljucu(detalji.getRobaId());
+                  robaDatabaseService.pronadjiRobuPoPrimarnomKljucu(detalji.getRobaId());
               if (robaOptional.isPresent()) {
                 Roba roba = robaOptional.get();
                 if (roba.getStanje() < detalji.getKolicina()) {
@@ -162,7 +162,7 @@ public class FakturaService {
 
   private void obogatiDetalje(FakturaDetaljiDto dto, Partner partner) {
     statusRepository.findById(dto.getStatus().getId()).ifPresent(status -> mapper.map(dto, status));
-    robaRepositoryService
+    robaDatabaseService
         .pronadjiRobuPoPrimarnomKljucu(dto.getRobaId())
         .ifPresent(
             roba -> {

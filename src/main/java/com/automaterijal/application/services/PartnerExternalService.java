@@ -9,7 +9,7 @@ import com.automaterijal.application.domain.mapper.ExternalRobaMapper;
 import com.automaterijal.application.domain.repository.external.PartnerB2bIdRepository;
 import com.automaterijal.application.domain.repository.external.PartnerB2bProizvodjacRepository;
 import com.automaterijal.application.services.roba.RobaCeneService;
-import com.automaterijal.application.services.roba.repo.RobaRepositoryService;
+import com.automaterijal.application.services.roba.repo.RobaDatabaseService;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
@@ -35,7 +35,7 @@ public class PartnerExternalService {
 
   @NonNull final PartnerService partnerService;
 
-  @NonNull final RobaRepositoryService robaRepositoryService;
+  @NonNull final RobaDatabaseService robaDatabaseService;
 
   @NonNull final ExternalRobaMapper mapper;
 
@@ -66,8 +66,7 @@ public class PartnerExternalService {
           kljuceviProizvodjaca.stream().filter(kljuc -> kljuc.equals(proId)).toList();
     }
 
-    Roba roba =
-        robaRepositoryService.pronadjiPoPretaziIProizvodjacima(itemNo, kljuceviProizvodjaca);
+    Roba roba = robaDatabaseService.pronadjiPoPretaziIProizvodjacima(itemNo, kljuceviProizvodjaca);
 
     if (roba != null) {
       log.info(

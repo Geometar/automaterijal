@@ -26,6 +26,10 @@ public class TecDocAttributeService {
   @NonNull TecDocMapper tecDocMapper;
   @NonNull TecDocAtributiRepository tecDocAtributiRepository;
 
+  public List<TecDocAtributi> findAll() {
+    return tecDocAtributiRepository.findAll();
+  }
+
   public List<TecDocAtributi> findByRobaId(Long robaId) {
     return tecDocAtributiRepository.findByRobaId(robaId);
   }

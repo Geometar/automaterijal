@@ -13,7 +13,7 @@ import com.automaterijal.application.services.roba.RobaCeneService;
 import com.automaterijal.application.services.roba.RobaTekstService;
 import com.automaterijal.application.services.roba.grupe.PodGrupaService;
 import com.automaterijal.application.services.roba.processor.RobaDetailsProcessor;
-import com.automaterijal.application.services.roba.repo.RobaRepositoryService;
+import com.automaterijal.application.services.roba.repo.RobaDatabaseService;
 import com.automaterijal.application.services.roba.util.RobaHelper;
 import com.automaterijal.application.services.roba.util.RobaTecDocDetailsHelper;
 import com.automaterijal.application.tecdoc.*;
@@ -33,7 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class RobaDetailsService {
 
-  @NonNull final RobaRepositoryService robaRepositoryService;
+  @NonNull final RobaDatabaseService robaDatabaseService;
   @NonNull final RobaCeneService robaCeneService;
   @NonNull final PodGrupaService podGrupaService;
   @NonNull final RobaTekstService robaTekstService;
@@ -46,7 +46,7 @@ public class RobaDetailsService {
 
   public Optional<RobaExpandedDto> pronadjiRobuPoRobaId(Long robaId, Partner ulogovaniPartner) {
     Optional<RobaExpandedDto> retVal = Optional.empty();
-    Optional<Roba> roba = robaRepositoryService.pronadjiRobuPoPrimarnomKljucu(robaId);
+    Optional<Roba> roba = robaDatabaseService.pronadjiRobuPoPrimarnomKljucu(robaId);
     if (roba.isPresent()) {
       RobaExpandedDto detaljnoDto = mapper.mapujDetaljno(roba.get());
       setujZaDetalje(detaljnoDto, ulogovaniPartner);

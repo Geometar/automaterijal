@@ -3,8 +3,8 @@ package com.automaterijal.application.services.onstartup;
 import com.automaterijal.application.client.TecDocClient;
 import com.automaterijal.application.domain.constants.TecDocProizvodjaci;
 import com.automaterijal.application.domain.entity.tecdoc.TecDocBrands;
-import com.automaterijal.application.domain.repository.tecdoc.TecDocAtributiRepository;
-import com.automaterijal.application.domain.repository.tecdoc.TecDocBrandsRepository;
+import com.automaterijal.application.services.tecdoc.TecDocAttributeService;
+import com.automaterijal.application.services.tecdoc.TecDocBrandService;
 import com.automaterijal.application.tecdoc.AmBrandsRecord;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -26,9 +26,9 @@ public class OnStartUpService {
 
   @Autowired TecDocClient tecDocClient;
 
-  @Autowired TecDocBrandsRepository tecDocBrandsRepository;
+  @Autowired TecDocBrandService tecDocBrandService;
 
-  @Autowired TecDocAtributiRepository tecDocAtributiRepository;
+  @Autowired TecDocAttributeService tecDocAttributeService;
 
   @Value("${roba.slika.tdPrefix}")
   String putDoSlike;
@@ -46,13 +46,13 @@ public class OnStartUpService {
             if (StringUtils.hasText(amBrandsRecord.getBrandLogoID())) {
               brands.setBrand(tecDocClient.vratiDokument(amBrandsRecord.getBrandLogoID(), 0));
             }
-            tecDocBrandsRepository.saveAndFlush(brands);
+            tecDocBrandService.save(brands);
           }
         });
   }
 
   public void izvadiSlikeIzAtributaIStoruj() {
-    tecDocAtributiRepository.findAll().stream()
+    tecDocAttributeService.findAll().stream()
         .filter(atributi -> atributi.getDokument() != null)
         .forEach(
             atributi -> {

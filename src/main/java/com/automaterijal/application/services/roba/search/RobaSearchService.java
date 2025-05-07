@@ -46,7 +46,7 @@ public class RobaSearchService {
                 GeneralUtil.cleanArticleNumber(articleRecord.getArticleNumber())));
 
     Set<String> articleNumbers =
-        processArticleRecords(
+        generateAlternativeCatalogNumbers(
             articles, ArticleRecord::getArticleNumber, ArticleRecord::getDataSupplierId);
 
     articles.forEach(
@@ -64,7 +64,7 @@ public class RobaSearchService {
                 records.stream()
                     .flatMap(
                         tradeNumberDetailsRecord ->
-                            processArticleRecords(
+                            generateAlternativeCatalogNumbers(
                                 articles,
                                 tradeNumberDetailsRecord.getTradeNumber(),
                                 articleRecord.getDataSupplierId())
@@ -82,7 +82,7 @@ public class RobaSearchService {
                     .map(oe -> oe.concat("-OE"))
                     .collect(Collectors.toSet())));
     MagacinDto magacinDto =
-        robaAdapterService.fetchRobaByTecDocArticles(articleNumbers, parametri, articles);
+        robaAdapterService.fetchProductsByTecDocArticles(articleNumbers, parametri, articles);
     if (!magacinDto.getRobaDto().isEmpty()) {
       tecDocService.batchVracanjeICuvanjeTDAtributa(magacinDto.getRobaDto().getContent());
       robaHelper.setupForTable(magacinDto.getRobaDto().getContent(), ulogovaniPartner);
@@ -91,12 +91,12 @@ public class RobaSearchService {
     return magacinDto;
   }
 
-  public MagacinDto pretrazi(UniverzalniParametri parametri, Partner ulogovaniPartner) {
+  public MagacinDto searchProducts(UniverzalniParametri parametri, Partner ulogovaniPartner) {
 
     MagacinDto magacinDto =
         parametri.getTrazenaRec() != null
-            ? logikaZaMagacinSaTrazenomRecju(parametri)
-            : robaAdapter.vratiRobuFiltriranuBezPretrage(parametri);
+            ? searchProductsBySearchTerm(parametri)
+            : robaAdapter.searchFilteredProductsWithoutSearchTerm(parametri);
 
     if (!magacinDto.getRobaDto().isEmpty()) {
       tecDocService.batchVracanjeICuvanjeTDAtributa(magacinDto.getRobaDto().getContent());
@@ -106,31 +106,31 @@ public class RobaSearchService {
     return magacinDto;
   }
 
-  private MagacinDto logikaZaMagacinSaTrazenomRecju(UniverzalniParametri parametri) {
-    final Set<String> kataloskiBrojevi = new HashSet<>();
+  private MagacinDto searchProductsBySearchTerm(UniverzalniParametri parametri) {
+    final Set<String> catalogNumbers = new HashSet<>();
     Set<Long> robaId = new HashSet<>();
 
-    robaAdapter.pronadjiPoKatBroju(kataloskiBrojevi, robaId, parametri);
-    if (!kataloskiBrojevi.isEmpty()) {
-      robaAdapter.pomocniKveriPoRobiOld(kataloskiBrojevi);
-      robaAdapter.pronadjiPoKatBrojuIn(kataloskiBrojevi, robaId);
+    robaAdapter.searchProductsByCatalogNumber(catalogNumbers, robaId, parametri);
+    if (!catalogNumbers.isEmpty()) {
+      robaAdapter.fetchByAlternativeCatalogueNumber(catalogNumbers);
+      robaAdapter.searchProductsByCatalogNumbersIn(catalogNumbers, robaId);
     }
 
     // Pokusaj pretrage pomocu naziva
-    if (kataloskiBrojevi.isEmpty()) {
-      boolean found = robaAdapter.pronadjiPoNazivu(parametri, kataloskiBrojevi, robaId);
+    if (catalogNumbers.isEmpty()) {
+      boolean found = robaAdapter.searchProductsByName(parametri, catalogNumbers, robaId);
       if (found) {
-        return robaAdapter.pronadjiPoRobaId(parametri, robaId);
+        return robaAdapter.searchProductsByIds(parametri, robaId);
       }
     }
 
     // Ukljucujemo tecdoc u pretragu
-    pretragaPomocuTecDoca(parametri, kataloskiBrojevi);
+    searchUsingTecDoc(parametri, catalogNumbers);
 
-    return robaAdapter.vratiArtikleIzTecDoca(parametri, kataloskiBrojevi);
+    return robaAdapter.fetchSearchResultsByCatalogNumbersAndFilters(parametri, catalogNumbers);
   }
 
-  private void pretragaPomocuTecDoca(UniverzalniParametri parametri, Set<String> kataloskiBrojevi) {
+  private void searchUsingTecDoc(UniverzalniParametri parametri, Set<String> catalogNumbers) {
 
     // TecDoc pretraga na osnovu tačne reči, tip pretrage je 10 (trazimo sve)
     List<ArticleDirectSearchAllNumbersWithStateRecord> response =
@@ -138,18 +138,18 @@ public class RobaSearchService {
     parametri.setKesiranDirectArticleSearch(response);
 
     // Process TecDoc search results
-    kataloskiBrojevi.addAll(
-        processArticleRecords(
+    catalogNumbers.addAll(
+        generateAlternativeCatalogNumbers(
             response,
             ArticleDirectSearchAllNumbersWithStateRecord::getArticleNo,
             ArticleDirectSearchAllNumbersWithStateRecord::getBrandNo));
 
     // Dodavanje tačne tražene reči kao kataloškog broja
-    kataloskiBrojevi.add(parametri.getTrazenaRec());
+    catalogNumbers.add(parametri.getTrazenaRec());
   }
 
   /** Generic method to process article records and extract catalog numbers. */
-  private <T> Set<String> processArticleRecords(
+  private <T> Set<String> generateAlternativeCatalogNumbers(
       List<T> records, Function<T, String> getArticleNo, Function<T, Long> getBrandNo) {
     return records.stream()
         .map(
@@ -161,7 +161,7 @@ public class RobaSearchService {
         .collect(Collectors.toSet());
   }
 
-  private <T> Set<String> processArticleRecords(
+  private <T> Set<String> generateAlternativeCatalogNumbers(
       List<T> records, String articleNo, Long getBrandNo) {
     return records.stream()
         .map(

@@ -1,12 +1,7 @@
-package com.automaterijal.application.services.roba.repo;
+package com.automaterijal.application.services.roba.cache;
 
 import com.automaterijal.application.domain.cache.RobaCache;
-import com.automaterijal.application.domain.dto.RobaLightDto;
-import com.automaterijal.application.domain.entity.roba.Roba;
-import com.automaterijal.application.domain.mapper.RobaMapper;
-import com.automaterijal.application.domain.repository.roba.RobaRepository;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import lombok.AccessLevel;
 import lombok.NonNull;
@@ -21,28 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Slf4j
-public class RobaRepositoryService {
-
-  @NonNull final RobaRepository robaRepository;
+public class RobaCacheService {
   @NonNull final RobaCachedService robaCachedService;
-  @NonNull final RobaMapper mapper;
-
-  public Optional<Roba> pronadjiRobuPoPrimarnomKljucu(Long id) {
-    return robaRepository.findById(id);
-  }
-
-  public List<RobaLightDto> pronadjiRobuPoPrimarnomKljucu(List<Long> robaIds) {
-    return mapper.map(robaRepository.findByRobaidIn(robaIds));
-  }
-
-  public Roba pronadjiPoPretaziIProizvodjacima(String katBr, List<String> proizvodjaci) {
-    return robaRepository.findByKatbrAndProizvodjacProidInAndStanjeGreaterThan(
-        katBr, proizvodjaci, 0);
-  }
-
-  public List<Roba> pronadjiRobuPoKataloskomBroju(String katBr) {
-    return robaRepository.findByKatbr(katBr);
-  }
 
   public List<RobaCache> getAllRobaFilteredByKatBr(String searchTerm) {
     return robaCachedService.getAllRoba().stream()

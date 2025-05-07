@@ -1,6 +1,6 @@
 package com.automaterijal.application.schedulers;
 
-import com.automaterijal.application.services.roba.repo.RobaCachedService;
+import com.automaterijal.application.services.roba.cache.RobaCachedService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;

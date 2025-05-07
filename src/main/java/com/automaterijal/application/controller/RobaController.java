@@ -71,7 +71,7 @@ public class RobaController {
             false);
     var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
     logWebService.log(uPartner, univerzalniParametri);
-    MagacinDto magacinDto = robaSearchService.pretrazi(univerzalniParametri, uPartner);
+    MagacinDto magacinDto = robaSearchService.searchProducts(univerzalniParametri, uPartner);
 
     return ResponseEntity.ok().headers(createHeaders(uPartner)).body(magacinDto);
   }

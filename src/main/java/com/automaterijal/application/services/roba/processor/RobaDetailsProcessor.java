@@ -10,7 +10,7 @@ import com.automaterijal.application.domain.entity.tecdoc.TecDocAtributi;
 import com.automaterijal.application.domain.mapper.RobaMapper;
 import com.automaterijal.application.services.TecDocService;
 import com.automaterijal.application.services.roba.RobaCeneService;
-import com.automaterijal.application.services.roba.repo.RobaRepositoryService;
+import com.automaterijal.application.services.roba.repo.RobaDatabaseService;
 import com.automaterijal.application.tecdoc.MainArticlesRecord;
 import java.util.Collections;
 import java.util.List;
@@ -27,7 +27,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class RobaDetailsProcessor {
 
-  @NonNull final RobaRepositoryService robaRepositoryService;
+  @NonNull final RobaDatabaseService robaDatabaseService;
   @NonNull final RobaCeneService robaCeneService;
   @NonNull final RobaMapper mapper;
   @NonNull final TecDocService tecDocService;
@@ -60,7 +60,7 @@ public class RobaDetailsProcessor {
 
   public void processMainArticle(
       MainArticlesRecord mainArticlesRecord, Partner partner, List<RobaLightDto> asociraniArtikli) {
-    robaRepositoryService
+    robaDatabaseService
         .pronadjiRobuPoKataloskomBroju(mainArticlesRecord.getArticleNumber())
         .stream()
         .map(mapper::map)
