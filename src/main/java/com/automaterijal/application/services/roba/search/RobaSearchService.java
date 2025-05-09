@@ -30,65 +30,101 @@ public class RobaSearchService {
   @NonNull final RobaHelper robaHelper;
   @NonNull final RobaAdapterService robaAdapterService;
 
+  /** Main method for fetching associated articles with TecDoc data. */
   public MagacinDto getAssociatedArticles(
       Integer id,
       String type,
       String assembleGroupId,
       UniverzalniParametri parametri,
-      Partner ulogovaniPartner) {
+      Partner loggedPartner) {
 
-    List<ArticleRecord> articles =
-        tecDocService.getAssociatedArticles(id, type, assembleGroupId).getArticles();
+    // 1. Fetch articles from TecDoc
+    List<ArticleRecord> articles = fetchArticlesFromTecDoc(id, type, assembleGroupId);
 
+    // 2. Generate all possible catalog numbers
+    Set<String> catalogNumbers = generateCatalogNumbers(articles);
+
+    // 3. Process trade numbers and OEM numbers
+    processTradeNumbers(articles, catalogNumbers);
+    processOemNumbers(articles, catalogNumbers);
+
+    // 4. Fetch products using generated catalog numbers
+    MagacinDto magacinDto =
+        robaAdapterService.fetchProductsByTecDocArticles(catalogNumbers, parametri, articles);
+
+    // 5. Apply TecDoc attributes to the fetched products
+    if (!magacinDto.getRobaDto().isEmpty()) {
+      applyTecDocAttributes(magacinDto, articles, loggedPartner);
+    }
+
+    return magacinDto;
+  }
+
+  /** Fetches articles from TecDoc API based on ID, type, and assembly group. */
+  private List<ArticleRecord> fetchArticlesFromTecDoc(
+      Integer id, String type, String assembleGroupId) {
+    return tecDocService.getAssociatedArticles(id, type, assembleGroupId).getArticles().stream()
+        .peek(
+            article ->
+                article.setArticleNumber(
+                    GeneralUtil.cleanArticleNumber(article.getArticleNumber())))
+        .collect(Collectors.toList());
+  }
+
+  /** Generates catalog numbers for the given articles. */
+  private Set<String> generateCatalogNumbers(List<ArticleRecord> articles) {
+    return articles.stream()
+        .map(
+            article ->
+                TecDocProizvodjaci.generateAlternativeCatalogNumber(
+                    article.getArticleNumber(), article.getDataSupplierId()))
+        .collect(Collectors.toSet());
+  }
+
+  /** Processes trade numbers (alternative numbers) from TecDoc articles. */
+  private void processTradeNumbers(List<ArticleRecord> articles, Set<String> catalogNumbers) {
     articles.forEach(
-        articleRecord ->
-            articleRecord.setArticleNumber(
-                GeneralUtil.cleanArticleNumber(articleRecord.getArticleNumber())));
-
-    Set<String> articleNumbers =
-        generateAlternativeCatalogNumbers(
-            articles, ArticleRecord::getArticleNumber, ArticleRecord::getDataSupplierId);
-
-    articles.forEach(
-        articleRecord -> {
-          if (!TecDocProizvodjaci.pronadjiPoKljucu(articleRecord.getDataSupplierId())
+        article -> {
+          if (!TecDocProizvodjaci.pronadjiPoKljucu(article.getDataSupplierId())
               .isUseTradeNumber()) {
             return;
           }
-          Set<TradeNumberDetailsRecord> records =
-              articleRecord.getTradeNumbersDetails().stream()
+
+          Set<TradeNumberDetailsRecord> tradeRecords =
+              article.getTradeNumbersDetails().stream()
                   .filter(TradeNumberDetailsRecord::isIsImmediateDisplay)
                   .collect(Collectors.toSet());
-          if (!SetUtils.isEmpty(records)) {
-            articleNumbers.addAll(
-                records.stream()
-                    .flatMap(
-                        tradeNumberDetailsRecord ->
-                            generateAlternativeCatalogNumbers(
-                                articles,
-                                tradeNumberDetailsRecord.getTradeNumber(),
-                                articleRecord.getDataSupplierId())
-                                .stream())
-                    .collect(Collectors.toSet()));
-          }
-        });
 
+          if (SetUtils.isEmpty(tradeRecords)) return;
+
+          tradeRecords.forEach(
+              tradeNumber -> {
+                String tradeNumberValue = tradeNumber.getTradeNumber();
+                String generatedNumber =
+                    TecDocProizvodjaci.generateAlternativeCatalogNumber(
+                        tradeNumberValue, article.getDataSupplierId());
+                catalogNumbers.add(generatedNumber);
+              });
+        });
+  }
+
+  /** Processes OEM numbers from TecDoc articles. */
+  private void processOemNumbers(List<ArticleRecord> articles, Set<String> catalogNumbers) {
     articles.forEach(
-        articleRecord ->
-            articleNumbers.addAll(
-                articleRecord.getOemNumbers().stream()
+        article ->
+            catalogNumbers.addAll(
+                article.getOemNumbers().stream()
                     .map(ArticleRefRecord::getArticleNumber)
                     .map(GeneralUtil::cleanArticleNumber)
                     .map(oe -> oe.concat("-OE"))
                     .collect(Collectors.toSet())));
-    MagacinDto magacinDto =
-        robaAdapterService.fetchProductsByTecDocArticles(articleNumbers, parametri, articles);
-    if (!magacinDto.getRobaDto().isEmpty()) {
-      tecDocService.batchVracanjeICuvanjeTDAtributa(magacinDto.getRobaDto().getContent());
-      robaHelper.setupForTable(magacinDto.getRobaDto().getContent(), ulogovaniPartner);
-    }
+  }
 
-    return magacinDto;
+  /** Applies TecDoc attributes to the fetched products for the final response. */
+  private void applyTecDocAttributes(
+      MagacinDto magacinDto, List<ArticleRecord> articles, Partner loggedPartner) {
+    tecDocService.batchVracanjeICuvanjeTDAtributa(magacinDto.getRobaDto().getContent());
+    robaHelper.setupForTable(magacinDto.getRobaDto().getContent(), loggedPartner);
   }
 
   public MagacinDto searchProducts(UniverzalniParametri parametri, Partner ulogovaniPartner) {
