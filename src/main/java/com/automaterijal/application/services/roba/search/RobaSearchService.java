@@ -54,7 +54,7 @@ public class RobaSearchService {
 
     // 5. Apply TecDoc attributes to the fetched products
     if (!magacinDto.getRobaDto().isEmpty()) {
-      applyTecDocAttributes(magacinDto, articles, loggedPartner);
+      applyTecDocAttributes(magacinDto, loggedPartner);
     }
 
     return magacinDto;
@@ -121,8 +121,7 @@ public class RobaSearchService {
   }
 
   /** Applies TecDoc attributes to the fetched products for the final response. */
-  private void applyTecDocAttributes(
-      MagacinDto magacinDto, List<ArticleRecord> articles, Partner loggedPartner) {
+  private void applyTecDocAttributes(MagacinDto magacinDto, Partner loggedPartner) {
     tecDocService.batchVracanjeICuvanjeTDAtributa(magacinDto.getRobaDto().getContent());
     robaHelper.setupForTable(magacinDto.getRobaDto().getContent(), loggedPartner);
   }
@@ -192,16 +191,6 @@ public class RobaSearchService {
               String katBr = getArticleNo.apply(record);
               return TecDocProizvodjaci.generateAlternativeCatalogNumber(
                   katBr, getBrandNo.apply(record));
-            })
-        .collect(Collectors.toSet());
-  }
-
-  private <T> Set<String> generateAlternativeCatalogNumbers(
-      List<T> records, String articleNo, Long getBrandNo) {
-    return records.stream()
-        .map(
-            record -> {
-              return TecDocProizvodjaci.generateAlternativeCatalogNumber(articleNo, getBrandNo);
             })
         .collect(Collectors.toSet());
   }

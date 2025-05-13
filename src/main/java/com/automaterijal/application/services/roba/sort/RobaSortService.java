@@ -2,6 +2,7 @@ package com.automaterijal.application.services.roba.sort;
 
 import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
+import com.automaterijal.application.services.roba.grupe.PodGrupaService;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,7 +16,7 @@ public class RobaSortService {
         .peek(
             robaDto -> {
               if (robaDto.getPodGrupaNaziv() == null) {
-                robaDto.setPodGrupaNaziv("ZZZ");
+                robaDto.setPodGrupaNaziv(PodGrupaService.ANONIMNA_GRUPA);
               }
             })
         .sorted(getGroupComparator())
@@ -36,18 +37,18 @@ public class RobaSortService {
 
   /** Sortira robu TecDoc po podgrupi. */
   public List<RobaLightDto> sortByTecDocSubGroup(
-          List<RobaLightDto> robaLightDtos, UniverzalniParametri parametri) {
+      List<RobaLightDto> robaLightDtos, UniverzalniParametri parametri) {
     List<RobaLightDto> pronadjenaTacnaRoba =
-            robaLightDtos.stream()
-                    .filter(robaDto -> robaDto.getKatbr().equals(parametri.getTrazenaRec()))
-                    .collect(Collectors.toList());
+        robaLightDtos.stream()
+            .filter(robaDto -> robaDto.getKatbr().equals(parametri.getTrazenaRec()))
+            .collect(Collectors.toList());
 
     // Ako nema tačnog rezultata, traži približne
     if (pronadjenaTacnaRoba.isEmpty()) {
       pronadjenaTacnaRoba =
-              robaLightDtos.stream()
-                      .filter(robaDto -> robaDto.getKatbr().contains(parametri.getTrazenaRec()))
-                      .collect(Collectors.toList());
+          robaLightDtos.stream()
+              .filter(robaDto -> robaDto.getKatbr().contains(parametri.getTrazenaRec()))
+              .collect(Collectors.toList());
     }
 
     // Ako su pronađeni podaci
@@ -56,10 +57,10 @@ public class RobaSortService {
 
       // Sortiranje korišćenjem Comparator-a
       robaLightDtos.sort(
-              Comparator.comparing((RobaLightDto robaLightDto) -> robaLightDto.getStanje() > 0)
-                      .reversed() // Da osiguramo da `stanje > 0` ide ispred
-                      .thenComparing(
-                              robaDto -> podGrupa == robaDto.getPodGrupa() ? -1 : 1)); // Podgrupa prioritet
+          Comparator.comparing((RobaLightDto robaLightDto) -> robaLightDto.getStanje() > 0)
+              .reversed() // Da osiguramo da `stanje > 0` ide ispred
+              .thenComparing(
+                  robaDto -> podGrupa == robaDto.getPodGrupa() ? -1 : 1)); // Podgrupa prioritet
     }
 
     return robaLightDtos;

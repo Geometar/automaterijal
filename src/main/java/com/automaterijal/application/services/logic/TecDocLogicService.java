@@ -40,7 +40,6 @@ public class TecDocLogicService {
     }
   }
 
-  // 1. Priprema podataka
   private void prepareData(
       List<RobaLightDto> robaLightDtos, List<Long> artikliBezSacuvanihPodataka) {
     List<Long> ids = robaLightDtos.stream().map(RobaLightDto::getRobaid).toList();
@@ -65,7 +64,6 @@ public class TecDocLogicService {
     }
   }
 
-  // 2. Provera da li treba dohvatiti TecDoc podatke
   private boolean shouldFetchTecDocData(List<TecDocAtributi> data, Long requiredRobaId) {
     return data.stream()
         .filter(tecDocAtributi -> tecDocAtributi.getRobaId().equals(requiredRobaId))
@@ -73,7 +71,6 @@ public class TecDocLogicService {
         .isEmpty();
   }
 
-  // 3. Dohvatanje TecDoc podataka
   private void fetchTecDocData(
       RobaLightDto robaLightDto,
       TecDocProizvodjaci tdProizvodjaci,
@@ -89,7 +86,6 @@ public class TecDocLogicService {
     }
   }
 
-  // 7. Čuvanje praznog TecDoc zapisa
   private void saveEmptyTecDocRecord(RobaLightDto robaLightDto) {
     TecDocAtributi atributi = new TecDocAtributi();
     atributi.setRobaId(robaLightDto.getRobaid());
@@ -101,7 +97,6 @@ public class TecDocLogicService {
         robaLightDto.getProizvodjac().getProid());
   }
 
-  // 8. Obrada artikala bez sačuvanih podataka
   private void processArtikliBezSacuvanihPodataka(
       List<Long> artikliBezSacuvanihPodataka, List<RobaLightDto> robaLightDtos) {
     for (int i = 0; i < artikliBezSacuvanihPodataka.size(); i += 24) {
@@ -114,7 +109,6 @@ public class TecDocLogicService {
     }
   }
 
-  // 9. Obrada detalja artikla
   private void processArticleDetails(
       ArticlesByIds6Record detalji, List<RobaLightDto> robaLightDtos) {
     if (detalji.getDirectArticle() != null) {
@@ -134,7 +128,6 @@ public class TecDocLogicService {
     }
   }
 
-  // 11. Obrada atributa i slika
   private void processArticleAttributesAndImages(
       ArticlesByIds6Record details,
       ArticleDirectSearchById3Record directArticle,

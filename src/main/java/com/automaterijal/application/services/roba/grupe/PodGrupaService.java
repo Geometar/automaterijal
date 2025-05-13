@@ -27,7 +27,7 @@ public class PodGrupaService {
 
   @NonNull final PodGrupaRepository podGrupaRepository;
   @NonNull final PodgrupeJooqRepository podgrupeJooqRepository;
-  public static final String NEBITNA_GRUPA = "ZZZ";
+  public static final String ANONIMNA_GRUPA = "OSTALO";
 
   /** Start of: Metoda za popunjavanje svih grupa u zavisnosti od kriterijuma */
   public void popuniPodgrupe(
@@ -76,7 +76,7 @@ public class PodGrupaService {
         podgrupaDtos.stream().collect(Collectors.toMap(PodgrupaDto::getId, PodgrupaDto::getNaziv));
 
     for (RobaLightDto roba : robaLightDtos) {
-      roba.setPodGrupaNaziv(podgrupaNazivi.getOrDefault(roba.getPodGrupa(), NEBITNA_GRUPA));
+      roba.setPodGrupaNaziv(podgrupaNazivi.getOrDefault(roba.getPodGrupa(), ANONIMNA_GRUPA));
     }
   }
 
