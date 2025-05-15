@@ -1,6 +1,7 @@
 package com.automaterijal.application.services.roba.cache;
 
 import com.automaterijal.application.domain.cache.RobaCache;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import lombok.AccessLevel;
@@ -28,9 +29,14 @@ public class RobaCacheService {
         .toList();
   }
 
-  public List<RobaCache> getAllRobaByNaizvLike(String searchTerm) {
+  public List<RobaCache> getAllRobaByNazivLike(String searchTerm) {
+    String[] searchTerms = searchTerm.split(" ");
     return robaCachedService.getAllRoba().stream()
-        .filter(robaCache -> robaCache.getNaziv().contains(searchTerm))
+        .filter(
+            robaCache ->
+                Arrays.stream(searchTerms)
+                    .allMatch(
+                        term -> robaCache.getNaziv().toLowerCase().contains(term.toLowerCase())))
         .toList();
   }
 

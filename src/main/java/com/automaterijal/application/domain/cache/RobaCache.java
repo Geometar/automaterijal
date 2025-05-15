@@ -12,7 +12,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RobaCache implements Serializable {
-  Long robaId;
+  Long robaid;
   String katbr;
   String katbrpro;
   String naziv;

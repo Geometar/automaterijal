@@ -1,5 +1,6 @@
 package com.automaterijal.application.domain.dto;
 
+import com.automaterijal.application.domain.cache.RobaCache;
 import com.automaterijal.application.domain.entity.Proizvodjac;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -9,12 +10,8 @@ import lombok.experimental.FieldDefaults;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RobaLightDto {
-  Long robaid;
+public class RobaLightDto extends RobaCache {
   SlikaDto slika;
-  String katbr;
-  String katbrpro;
-  String naziv;
   ProizvodjacDTO proizvodjac;
   String proizvodjacLogo;
   String grupa;

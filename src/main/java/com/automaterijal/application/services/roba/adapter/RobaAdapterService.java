@@ -14,6 +14,7 @@ import com.automaterijal.application.services.roba.sort.RobaSortService;
 import com.automaterijal.application.tecdoc.ArticleRecord;
 import com.automaterijal.application.utils.GeneralUtil;
 import java.util.*;
+import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
@@ -98,7 +99,7 @@ public class RobaAdapterService {
     List<RobaCache> robaKatbr = robaCachedService.getAllRobaFilteredByKatBr(kataloskiBrojevi);
     allRoba.addAll(
         robaDatabaseService.pronadjiRobuPoPrimarnomKljucu(
-            robaKatbr.stream().map(RobaCache::getRobaId).toList()));
+            robaKatbr.stream().map(RobaCache::getRobaid).toList()));
 
     allRoba = robaFilterService.applyMandatoryFilters(parametri, allRoba);
 
@@ -122,13 +123,33 @@ public class RobaAdapterService {
   }
 
   public boolean searchProductsByName(
-      UniverzalniParametri parametri, Set<String> kataloskiBrojevi, Set<Long> robaId) {
-    List<RobaCache> roba = robaCachedService.getAllRobaByNaizvLike(parametri.getTrazenaRec());
+      UniverzalniParametri parameters, Set<String> catalogNumbers, Set<Long> productIds) {
 
-    List<String> nazivi = new ArrayList<>();
-    collectProductData(roba, kataloskiBrojevi, robaId, nazivi);
+    String searchTerm = parameters.getTrazenaRec();
 
-    return isSearchTermActuallyName(parametri.getTrazenaRec(), nazivi);
+    // Find manufacturer by name (if present)
+    Optional<ProizvodjacDTO> manufacturerDTO =
+        proizvodjacService.findManufacturerByName(searchTerm);
+
+    // Retrieve products by manufacturer or by name
+    List<RobaCache> products =
+        manufacturerDTO
+            .map(
+                dto ->
+                    robaDatabaseService.findByManufacturer(dto.getProid()).stream()
+                        .map(RobaCache.class::cast)
+                        .collect(Collectors.toList()))
+            .orElseGet(() -> robaCachedService.getAllRobaByNazivLike(searchTerm));
+
+    // Collect product names
+    List<String> productNames =
+        products.stream().map(RobaCache::getNaziv).collect(Collectors.toList());
+
+    // Collect product data (catalog numbers, product IDs, and names)
+    collectProductData(products, catalogNumbers, productIds, productNames);
+
+    // Check if the search term actually matches the name
+    return manufacturerDTO.isPresent() || isSearchTermActuallyName(searchTerm, productNames);
   }
 
   public void searchProductsByCatalogNumber(
@@ -159,8 +180,8 @@ public class RobaAdapterService {
           if (StringUtils.hasText(data.getKatbrpro())) {
             kataloskiBrojevi.add(data.getKatbrpro());
           }
-          if (data.getRobaId() != null) {
-            robaId.add(data.getRobaId());
+          if (data.getRobaid() != null) {
+            robaId.add(data.getRobaid());
           }
 
           if (StringUtils.hasText(data.getNaziv())) {
@@ -198,7 +219,7 @@ public class RobaAdapterService {
     List<RobaCache> robaCaches = robaCachedService.getAllRobaFilteredByKatBr(articleNumbers);
     List<RobaLightDto> roba =
         robaDatabaseService.pronadjiRobuPoPrimarnomKljucu(
-            robaCaches.stream().map(RobaCache::getRobaId).toList());
+            robaCaches.stream().map(RobaCache::getRobaid).toList());
 
     robaTecDocProcessor.filterIfNotMatchingMainArticle(roba);
     robaTecDocProcessor.filterIfNotMatchingWithTecDoc(articles, roba);

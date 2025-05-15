@@ -39,8 +39,7 @@ public class TecDocSearchService {
 
   private List<ArticleDirectSearchAllNumbersWithStateRecord> fallbackSearch(
       TecDocProizvodjaci manufacturer, String catalogNumber) {
-    int searchType = manufacturer != TecDocProizvodjaci.HP ? 2 : 1;
-    return tecDocClient.tecDocPretraga(catalogNumber, manufacturer.getTecDocId(), searchType);
+    return tecDocClient.tecDocPretraga(catalogNumber, manufacturer.getTecDocId(), 1);
   }
 
   private Long findMatchingArticleId(

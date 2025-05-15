@@ -83,4 +83,15 @@ public class ProizvodjacService {
   public Optional<Proizvodjac> vratiProizvodjacaPoPk(String id) {
     return proizvodjacRepository.findById(id);
   }
+
+  public Optional<ProizvodjacDTO> findManufacturerByName(String naziv) {
+    return proizvodjacRepository
+        .findByNaziv(naziv)
+        .map(
+            proizvodjac -> {
+              ProizvodjacDTO retVal = new ProizvodjacDTO();
+              retVal.setProizvodjac(proizvodjac);
+              return retVal;
+            });
+  }
 }

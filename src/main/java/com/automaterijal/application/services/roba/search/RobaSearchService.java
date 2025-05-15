@@ -145,18 +145,15 @@ public class RobaSearchService {
     final Set<String> catalogNumbers = new HashSet<>();
     Set<Long> robaId = new HashSet<>();
 
+    boolean found = robaAdapter.searchProductsByName(parametri, catalogNumbers, robaId);
+    if (found) {
+      return robaAdapter.searchProductsByIds(parametri, robaId);
+    }
+
     robaAdapter.searchProductsByCatalogNumber(catalogNumbers, robaId, parametri);
     if (!catalogNumbers.isEmpty()) {
       robaAdapter.fetchByAlternativeCatalogueNumber(catalogNumbers);
       robaAdapter.searchProductsByCatalogNumbersIn(catalogNumbers, robaId);
-    }
-
-    // Pokusaj pretrage pomocu naziva
-    if (catalogNumbers.isEmpty()) {
-      boolean found = robaAdapter.searchProductsByName(parametri, catalogNumbers, robaId);
-      if (found) {
-        return robaAdapter.searchProductsByIds(parametri, robaId);
-      }
     }
 
     // Ukljucujemo tecdoc u pretragu
