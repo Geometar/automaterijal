@@ -96,16 +96,14 @@ public class RobaAdapterService {
     MagacinDto magacinDto = new MagacinDto();
     List<RobaLightDto> allRoba = new ArrayList<>();
 
-    List<RobaCache> robaKatbr = robaCachedService.getAllRobaFilteredByKatBr(kataloskiBrojevi);
-    allRoba.addAll(
-        robaDatabaseService.pronadjiRobuPoPrimarnomKljucu(
-            robaKatbr.stream().map(RobaCache::getRobaid).toList()));
+    List<RobaCache> robaCache = robaCachedService.getAllRobaFilteredByKatBr(kataloskiBrojevi);
+    allRoba.addAll(robaDatabaseService.findByPrimaryKeyFromCache(robaCache));
 
     allRoba = robaFilterService.applyMandatoryFilters(parametri, allRoba);
 
     // Popuni dodatne podatke za roba (podgrupe, proizvođači itd.)
     podGrupaService.popuniPodgrupe(magacinDto, parametri, allRoba);
-    proizvodjacService.popuniProizvodjace(allRoba, magacinDto, parametri);
+    fillResultManufactures(magacinDto, allRoba);
 
     // Primeni filtere po proizvođaču i grupi ako je potrebno
     allRoba = robaFilterService.applyOptionalFilters(parametri, allRoba);
@@ -122,24 +120,19 @@ public class RobaAdapterService {
     return magacinDto;
   }
 
+  private void fillResultManufactures(MagacinDto magacinDto, List<RobaLightDto> data) {
+    magacinDto.setProizvodjaci(
+        data.stream().map(RobaLightDto::getProizvodjac).collect(Collectors.toSet()).stream()
+            .toList());
+  }
+
   public boolean searchProductsByName(
       UniverzalniParametri parameters, Set<String> catalogNumbers, Set<Long> productIds) {
 
     String searchTerm = parameters.getTrazenaRec();
 
-    // Find manufacturer by name (if present)
-    Optional<ProizvodjacDTO> manufacturerDTO =
-        proizvodjacService.findManufacturerByName(searchTerm);
-
     // Retrieve products by manufacturer or by name
-    List<RobaCache> products =
-        manufacturerDTO
-            .map(
-                dto ->
-                    robaDatabaseService.findByManufacturer(dto.getProid()).stream()
-                        .map(RobaCache.class::cast)
-                        .collect(Collectors.toList()))
-            .orElseGet(() -> robaCachedService.getAllRobaByNazivLike(searchTerm));
+    List<RobaCache> products = robaCachedService.getAllRobaByNazivLike(searchTerm);
 
     // Collect product names
     List<String> productNames =
@@ -149,7 +142,7 @@ public class RobaAdapterService {
     collectProductData(products, catalogNumbers, productIds, productNames);
 
     // Check if the search term actually matches the name
-    return manufacturerDTO.isPresent() || isSearchTermActuallyName(searchTerm, productNames);
+    return isSearchTermActuallyName(searchTerm, productNames);
   }
 
   public void searchProductsByCatalogNumber(
@@ -217,9 +210,7 @@ public class RobaAdapterService {
     MagacinDto magacinDto = new MagacinDto();
 
     List<RobaCache> robaCaches = robaCachedService.getAllRobaFilteredByKatBr(articleNumbers);
-    List<RobaLightDto> roba =
-        robaDatabaseService.pronadjiRobuPoPrimarnomKljucu(
-            robaCaches.stream().map(RobaCache::getRobaid).toList());
+    List<RobaLightDto> roba = robaDatabaseService.findByPrimaryKeyFromCache(robaCaches);
 
     robaTecDocProcessor.filterIfNotMatchingMainArticle(roba);
     robaTecDocProcessor.filterIfNotMatchingWithTecDoc(articles, roba);
@@ -229,6 +220,8 @@ public class RobaAdapterService {
 
     // Popuni dodatne podatke za roba (podgrupe, proizvođači itd.)
     podGrupaService.popuniPodgrupe(magacinDto, parametri, roba);
+
+    // CAUTION: if you change this search by vehicle won't work correctly
     proizvodjacService.popuniProizvodjace(roba, magacinDto, parametri);
 
     // Primeni filtere po proizvođaču i grupi ako je potrebnoroba =

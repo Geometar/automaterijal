@@ -1,7 +1,7 @@
 package com.automaterijal.application.services.roba.cache;
 
 import com.automaterijal.application.domain.cache.RobaCache;
-import com.automaterijal.application.domain.repository.roba.RobaRepository;
+import com.automaterijal.application.domain.repository.roba.RobaJooqRepository;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.NonNull;
@@ -17,25 +17,15 @@ import org.springframework.transaction.annotation.Transactional;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Transactional
 public class RobaCachedService {
-  @NonNull final RobaRepository robaRepository;
+  @NonNull final RobaJooqRepository robaJooqRepository;
 
   @Cacheable(value = "robaCache", key = "'allRoba'") // Uses cache if available
   public List<RobaCache> getAllRoba() {
-    return robaRepository.findAll().stream()
-        .map(
-            roba ->
-                new RobaCache(
-                    roba.getRobaid(), roba.getKatbr(), roba.getKatbrpro(), roba.getNaziv()))
-        .toList();
+    return robaJooqRepository.fetchCache();
   }
 
   @CachePut(value = "robaCache", key = "'allRoba'") // Always updates the cache
   public List<RobaCache> refreshRobaCache() {
-    return robaRepository.findAll().stream()
-        .map(
-            roba ->
-                new RobaCache(
-                    roba.getRobaid(), roba.getKatbr(), roba.getKatbrpro(), roba.getNaziv()))
-        .toList();
+    return robaJooqRepository.fetchCache();
   }
 }

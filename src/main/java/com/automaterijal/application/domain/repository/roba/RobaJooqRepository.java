@@ -1,8 +1,10 @@
 package com.automaterijal.application.domain.repository.roba;
 
+import static com.automaterijal.db.tables.Proizvodjac.PROIZVODJAC;
 import static com.automaterijal.db.tables.Roba.ROBA;
 import static com.automaterijal.db.tables.RobaKatbrOld.ROBA_KATBR_OLD;
 
+import com.automaterijal.application.domain.cache.RobaCache;
 import com.automaterijal.application.domain.dto.ProizvodjacDTO;
 import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.dto.SlikaDto;
@@ -16,6 +18,7 @@ import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.jooq.*;
+import org.jooq.Record;
 import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -25,6 +28,48 @@ import org.springframework.stereotype.Repository;
 public class RobaJooqRepository {
 
   @Autowired DSLContext dslContext;
+
+  public List<RobaCache> fetchCache() {
+    return dslContext
+        .select(
+            ROBA.ROBAID,
+            ROBA.KATBR,
+            ROBA.KATBRPRO,
+            ROBA.NAZIV,
+            PROIZVODJAC.PROID,
+            PROIZVODJAC.NAZIV)
+        .from(ROBA)
+        .join(PROIZVODJAC)
+        .on(ROBA.PROID.eq(PROIZVODJAC.PROID))
+        .fetchStream()
+        .map(this::mapToRobaCache)
+        .collect(Collectors.toList());
+  }
+
+  private RobaCache mapToRobaCache(Record fields) {
+    RobaCache robaCache = new RobaCache();
+    robaCache.setRobaid(fields.get(ROBA.ROBAID).longValue());
+    robaCache.setKatbr(fields.get(ROBA.KATBR));
+    robaCache.setKatbrpro(fields.get(ROBA.KATBRPRO));
+
+    // Populate manufacturer data
+    ProizvodjacDTO manufacturer = new ProizvodjacDTO();
+    manufacturer.setProid(fields.get(PROIZVODJAC.PROID));
+    manufacturer.setNaziv(fields.get(PROIZVODJAC.NAZIV));
+    robaCache.setProizvodjac(manufacturer);
+
+    // Build product name, ensuring manufacturer name is included
+    String productName = fields.get(ROBA.NAZIV);
+    robaCache.setNaziv(buildProductName(manufacturer.getNaziv(), productName));
+
+    return robaCache;
+  }
+
+  private String buildProductName(String manufacturerName, String productName) {
+    return productName.contains(manufacturerName)
+        ? productName
+        : manufacturerName + " " + productName;
+  }
 
   public List<RobaLightDto> vratiRobuPoRobiId(Set<Long> robaIds) {
     Condition condition =

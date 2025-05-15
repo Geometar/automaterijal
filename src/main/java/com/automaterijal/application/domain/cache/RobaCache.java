@@ -1,5 +1,7 @@
 package com.automaterijal.application.domain.cache;
 
+import com.automaterijal.application.domain.dto.ProizvodjacDTO;
+import com.automaterijal.application.domain.entity.Proizvodjac;
 import java.io.Serializable;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -16,4 +18,11 @@ public class RobaCache implements Serializable {
   String katbr;
   String katbrpro;
   String naziv;
+  ProizvodjacDTO proizvodjac;
+
+  public void setProizvodjacDto(Proizvodjac proizvodjac) {
+    ProizvodjacDTO proizvodjacDTO = new ProizvodjacDTO();
+    proizvodjacDTO.setProizvodjac(proizvodjac);
+    setProizvodjac(proizvodjacDTO);
+  }
 }

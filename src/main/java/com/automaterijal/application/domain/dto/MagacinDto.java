@@ -1,6 +1,5 @@
 package com.automaterijal.application.domain.dto;
 
-import com.automaterijal.application.domain.entity.Proizvodjac;
 import java.util.List;
 import java.util.Map;
 import lombok.AccessLevel;
@@ -14,5 +13,5 @@ public class MagacinDto {
 
   Page<RobaLightDto> robaDto;
   Map<String, List<PodgrupaDto>> categories;
-  List<Proizvodjac> proizvodjaci;
+  List<ProizvodjacDTO> proizvodjaci;
 }

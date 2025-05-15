@@ -4,6 +4,7 @@ import com.automaterijal.application.domain.dto.MagacinDto;
 import com.automaterijal.application.domain.dto.ProizvodjacDTO;
 import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.entity.Proizvodjac;
+import com.automaterijal.application.domain.mapper.ManufacturerMapper;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.domain.repository.ProizvodjacRepository;
 import java.util.*;
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProizvodjacService {
 
   @NonNull final ProizvodjacRepository proizvodjacRepository;
+  @NonNull final ManufacturerMapper mapper;
 
   /** Popunjavanje proizvodjaca u zavistosti od kriterijuma */
   public void popuniProizvodjace(
@@ -57,7 +59,7 @@ public class ProizvodjacService {
             .forEach(proizvodjaci::addFirst);
       }
     }
-    magacinDto.setProizvodjaci(proizvodjaci);
+    magacinDto.setProizvodjaci(mapper.map(proizvodjaci));
   }
 
   private void getPopuniProizvodjaceURobi(
@@ -82,16 +84,5 @@ public class ProizvodjacService {
 
   public Optional<Proizvodjac> vratiProizvodjacaPoPk(String id) {
     return proizvodjacRepository.findById(id);
-  }
-
-  public Optional<ProizvodjacDTO> findManufacturerByName(String naziv) {
-    return proizvodjacRepository
-        .findByNaziv(naziv)
-        .map(
-            proizvodjac -> {
-              ProizvodjacDTO retVal = new ProizvodjacDTO();
-              retVal.setProizvodjac(proizvodjac);
-              return retVal;
-            });
   }
 }
