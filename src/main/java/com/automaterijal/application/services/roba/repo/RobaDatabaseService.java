@@ -28,7 +28,7 @@ public class RobaDatabaseService {
   @NonNull final RobaRepository robaRepository;
   @NonNull final RobaMapper mapper;
 
-  public Optional<Roba> pronadjiRobuPoPrimarnomKljucu(Long id) {
+  public Optional<Roba> findByRobaId(Long id) {
     return robaRepository.findById(id);
   }
 

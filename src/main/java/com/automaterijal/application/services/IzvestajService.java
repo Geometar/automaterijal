@@ -46,7 +46,7 @@ public class IzvestajService {
 
   public Page<IzvestajDto> vratiSveIzvestaje(
       Partner partner,
-      String trazenaRec,
+      String searchTerm,
       Integer page,
       Integer pageSize,
       LocalDateTime vremeOd,
@@ -55,7 +55,7 @@ public class IzvestajService {
     var pageable = PageRequest.of(page, pageSize);
     Page<Komentar> komentar =
         jooqRepository.pronadjiSveKomentarePoParametrima(
-            partner, trazenaRec, vremeOd, vremeDo, komercijalista, pageable);
+            partner, searchTerm, vremeOd, vremeDo, komercijalista, pageable);
     List<IzvestajDto> izvestajiDto = map(komentar.getContent());
 
     return new PageImpl<>(izvestajiDto, komentar.getPageable(), komentar.getTotalElements());

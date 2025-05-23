@@ -26,7 +26,7 @@ public class IzvestajJooqRepository {
 
   public Page<Komentar> pronadjiSveKomentarePoParametrima(
       Partner partner,
-      String trazenaRec,
+      String searchTerm,
       LocalDateTime vremeOd,
       LocalDateTime vremeDo,
       Integer komercijalista,
@@ -39,8 +39,8 @@ public class IzvestajJooqRepository {
       select = komentarRecords.where(KOMENTAR.PPID.eq(partner.getPpid()));
     }
 
-    if (trazenaRec != null) {
-      List<Integer> sviId = vratiSveIdFirme(trazenaRec);
+    if (searchTerm != null) {
+      List<Integer> sviId = vratiSveIdFirme(searchTerm);
       select.and(KOMENTAR.FIRMA.in(sviId));
     }
 

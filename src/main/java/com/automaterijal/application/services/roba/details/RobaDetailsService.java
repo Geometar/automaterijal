@@ -17,6 +17,7 @@ import com.automaterijal.application.services.roba.repo.RobaDatabaseService;
 import com.automaterijal.application.services.roba.util.RobaHelper;
 import com.automaterijal.application.services.roba.util.RobaTecDocDetailsHelper;
 import com.automaterijal.application.tecdoc.*;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.*;
 import lombok.AccessLevel;
 import lombok.NonNull;
@@ -25,6 +26,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -44,12 +46,12 @@ public class RobaDetailsService {
   @NonNull final SlikeService slikeService;
   @NonNull final RobaDetailsProcessor robaDetailsProcessor;
 
-  public Optional<RobaExpandedDto> pronadjiRobuPoRobaId(Long robaId, Partner ulogovaniPartner) {
+  public Optional<RobaExpandedDto> fetchRobaDetails(Long robaId, Partner ulogovaniPartner) {
     Optional<RobaExpandedDto> retVal = Optional.empty();
-    Optional<Roba> roba = robaDatabaseService.pronadjiRobuPoPrimarnomKljucu(robaId);
+    Optional<Roba> roba = robaDatabaseService.findByRobaId(robaId);
     if (roba.isPresent()) {
       RobaExpandedDto detaljnoDto = mapper.mapujDetaljno(roba.get());
-      setujZaDetalje(detaljnoDto, ulogovaniPartner);
+      setupDetails(detaljnoDto, ulogovaniPartner);
       retVal = Optional.of(detaljnoDto);
     }
     return retVal;
@@ -58,7 +60,7 @@ public class RobaDetailsService {
   // ************************************ Vrati detalje za robu pojedinacno
   // ***************************************************************
 
-  private void setujZaDetalje(RobaExpandedDto detaljnoDto, Partner partner) {
+  private void setupDetails(RobaExpandedDto detaljnoDto, Partner partner) {
     detaljnoDto.setCena(
         robaCeneService.vratiCenuRobePoRobiId(
             detaljnoDto.getRobaid(),
@@ -140,5 +142,14 @@ public class RobaDetailsService {
     if (!asociraniArtikli.isEmpty()) {
       detaljiDto.setAsociraniArtikli(asociraniArtikli);
     }
+  }
+
+  public Optional<RobaExpandedDto> uploadImg(Long robaId, MultipartFile file, Partner partner) {
+    robaDatabaseService
+        .findByRobaId(robaId)
+        .orElseThrow(() -> new EntityNotFoundException("Roba nije pronađena: " + robaId));
+
+    slikeService.saveImage(robaId, file);
+    return fetchRobaDetails(robaId, partner);
   }
 }

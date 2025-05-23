@@ -13,6 +13,16 @@ server:
     key-alias: 1
 
 spring:
+  jpa:
+    show-sql: false  # Smanjuje SQL logove u konzoli i logovima
+    properties:
+      hibernate:
+        format_sql: false
+        use_sql_comments: false
+        jdbc.batch_size: 50  # Poboljšava performanse za batch operacije
+        order_inserts: true
+        order_updates: true
+    open-in-view: false
   datasource:
     url: jdbc:mysql://77.105.37.50:3306/automate_orders?useUnicode=true&characterEncoding=utf8&autoReconnect=true&useSSL=false&serverTimezone=Europe/Amsterdam
     username: automate
@@ -35,3 +45,10 @@ spring:
 roba:
   slika:
     tdPrefix: "/home/ftpuser/automaterijal/misc/tecdoc/slike/"
+
+logging:
+  level:
+    root: INFO
+    org.hibernate: WARN
+    org.hibernate.SQL: WARN
+    org.hibernate.type: WARN

@@ -69,8 +69,7 @@ public class FakturaService {
         .getDetalji()
         .forEach(
             detalji -> {
-              Optional<Roba> robaOptional =
-                  robaDatabaseService.pronadjiRobuPoPrimarnomKljucu(detalji.getRobaId());
+              Optional<Roba> robaOptional = robaDatabaseService.findByRobaId(detalji.getRobaId());
               if (robaOptional.isPresent()) {
                 Roba roba = robaOptional.get();
                 if (roba.getStanje() < detalji.getKolicina()) {
@@ -163,7 +162,7 @@ public class FakturaService {
   private void obogatiDetalje(FakturaDetaljiDto dto, Partner partner) {
     statusRepository.findById(dto.getStatus().getId()).ifPresent(status -> mapper.map(dto, status));
     robaDatabaseService
-        .pronadjiRobuPoPrimarnomKljucu(dto.getRobaId())
+        .findByRobaId(dto.getRobaId())
         .ifPresent(
             roba -> {
               mapper.map(dto, roba);
@@ -192,7 +191,7 @@ public class FakturaService {
                 && !fakturaDetaljiDto.getSlika().getRobaSlika().isEmpty()
             ? fakturaDetaljiDto.getSlika().getRobaSlika()
             : fakturaDetaljiDto.getRobaId().toString();
-    fakturaDetaljiDto.setSlika(slikeService.vratiSlikuRobe(url));
+    fakturaDetaljiDto.setSlika(slikeService.fetchImageFromFileSystem(url));
   }
 
   @Transactional(readOnly = true)

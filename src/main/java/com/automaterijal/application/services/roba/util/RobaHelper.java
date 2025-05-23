@@ -109,6 +109,6 @@ public class RobaHelper {
         (existing != null && existing.getRobaSlika() != null && !existing.getRobaSlika().isEmpty())
             ? existing.getRobaSlika()
             : robaId.toString();
-    return imageService.vratiSlikuRobe(url);
+    return imageService.fetchImageFromFileSystem(url);
   }
 }

@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
@@ -81,7 +82,7 @@ public class RobaController {
       @PathVariable("robaID") Long robaId, Authentication authentication) {
     var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
     return robaDetailsService
-        .pronadjiRobuPoRobaId(robaId, uPartner)
+        .fetchRobaDetails(robaId, uPartner)
         .map(ResponseEntity::ok)
         .orElse(ResponseEntity.notFound().build());
   }
@@ -99,6 +100,29 @@ public class RobaController {
     } else {
       log.error("Odbijen zahtev da sacuva tekst za robu {}", robaId);
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nije Admin");
+    }
+  }
+
+  @PostMapping("/{robaID}/image")
+  public ResponseEntity<RobaExpandedDto> uploadSlikaZaRobu(
+      @PathVariable("robaID") Long robaId,
+      @RequestParam("file") MultipartFile file,
+      Authentication authentication) {
+
+    var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+    if (uPartner == null || uPartner.getPrivilegije() != 2047) {
+      log.error("Neautorizovan pokusaj da se uploaduje slika za robu {}", robaId);
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nije Admin");
+    }
+
+    try {
+      return robaDetailsService
+          .uploadImg(robaId, file, uPartner)
+          .map(ResponseEntity::ok)
+          .orElseGet(() -> ResponseEntity.notFound().build());
+    } catch (Exception e) {
+      log.error("Greška pri uploadu slike za robu {}: {}", robaId, e.getMessage());
+      return ResponseEntity.internalServerError().build();
     }
   }
 

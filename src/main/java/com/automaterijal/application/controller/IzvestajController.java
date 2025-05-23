@@ -41,7 +41,7 @@ public class IzvestajController {
       @RequestParam(required = false) Optional<Integer> pageSize,
       @RequestParam(required = false) BigDecimal dateFrom,
       @RequestParam(required = false) BigDecimal dateTo,
-      @RequestParam(required = false) String trazenaRec,
+      @RequestParam(required = false) String searchTerm,
       @RequestParam(required = false) Integer komercijalista,
       Authentication authentication) {
     var iPage = page.isPresent() ? page.get() : 0;
@@ -57,7 +57,7 @@ public class IzvestajController {
     Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
     Page<IzvestajDto> izvestajDto =
         izvestajService.vratiSveIzvestaje(
-            partner, trazenaRec, iPage, iPageSize, iVremeOd, iVremeDo, komercijalista);
+            partner, searchTerm, iPage, iPageSize, iVremeOd, iVremeDo, komercijalista);
     return ResponseEntity.ok(izvestajDto);
   }
 
