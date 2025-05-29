@@ -23,6 +23,13 @@ public class TecDocAtributi {
   String attrValue;
   String attrUnit;
   String attrShortName;
+
+  //  Attribute types:
+  //  A: Alphanumeric
+  //  D: Date
+  //  K: Key
+  //  N: Numeric
+  //  V: Without value
   String attrType;
   String dokumentId;
   byte[] dokument;

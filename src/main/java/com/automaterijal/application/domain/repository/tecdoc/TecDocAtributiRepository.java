@@ -12,4 +12,5 @@ public interface TecDocAtributiRepository extends JpaRepository<TecDocAtributi, 
 
   List<TecDocAtributi> findByRobaIdIn(List<Long> robaId);
 
+  void deleteByRobaId(Long robaId);
 }

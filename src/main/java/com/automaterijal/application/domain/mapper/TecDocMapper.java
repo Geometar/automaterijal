@@ -1,6 +1,7 @@
 package com.automaterijal.application.domain.mapper;
 
 import com.automaterijal.application.domain.dto.RobaLightDto;
+import com.automaterijal.application.domain.dto.robadetalji.RobaAtributesDto;
 import com.automaterijal.application.domain.dto.tecdoc.Manufcatures;
 import com.automaterijal.application.domain.dto.tecdoc.Model;
 import com.automaterijal.application.domain.dto.tecdoc.TecDocDokumentacija;
@@ -71,4 +72,8 @@ public interface TecDocMapper {
   Model map(ModelSeries2Record modelSeries2Record);
 
   List<Model> mapToModel(List<ModelSeries2Record> modelSeries2Records);
+
+  TecDocAtributi map(RobaAtributesDto dto);
+
+  List<TecDocAtributi> map(List<RobaAtributesDto> dto);
 }

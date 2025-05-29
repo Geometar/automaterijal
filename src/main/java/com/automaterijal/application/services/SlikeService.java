@@ -121,4 +121,17 @@ public class SlikeService {
 
     return fileName;
   }
+
+  public void deleteImage(Long robaId) {
+    for (String ext : allowed_extension) {
+      Path filePath = Paths.get(tdPrefix, robaId + ext);
+      try {
+        if (Files.deleteIfExists(filePath)) {
+          log.info("Deleted image: {}", filePath);
+        }
+      } catch (IOException e) {
+        log.warn("Failed to delete image: {}", filePath, e);
+      }
+    }
+  }
 }

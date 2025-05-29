@@ -6,6 +6,7 @@ import com.automaterijal.application.domain.dto.robadetalji.RobaBrojeviDto;
 import com.automaterijal.application.domain.dto.robadetalji.RobaExpandedDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.roba.Roba;
+import com.automaterijal.application.domain.entity.tecdoc.TecDocAtributi;
 import com.automaterijal.application.domain.mapper.RobaMapper;
 import com.automaterijal.application.services.SlikeService;
 import com.automaterijal.application.services.TecDocService;
@@ -16,6 +17,7 @@ import com.automaterijal.application.services.roba.processor.RobaDetailsProcesso
 import com.automaterijal.application.services.roba.repo.RobaDatabaseService;
 import com.automaterijal.application.services.roba.util.RobaHelper;
 import com.automaterijal.application.services.roba.util.RobaTecDocDetailsHelper;
+import com.automaterijal.application.services.tecdoc.TecDocAttributeService;
 import com.automaterijal.application.tecdoc.*;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.*;
@@ -45,6 +47,7 @@ public class RobaDetailsService {
   @NonNull final RobaTecDocDetailsHelper robaTecDocDetailsHelper;
   @NonNull final SlikeService slikeService;
   @NonNull final RobaDetailsProcessor robaDetailsProcessor;
+  @NonNull final TecDocAttributeService tecDocAttributeService;
 
   public Optional<RobaExpandedDto> fetchRobaDetails(Long robaId, Partner ulogovaniPartner) {
     Optional<RobaExpandedDto> retVal = Optional.empty();
@@ -79,12 +82,22 @@ public class RobaDetailsService {
           tecDocService.vratiTecDocAtributePrekoRobeId(detaljnoDto.getRobaid()), detaljnoDto);
     }
 
+    setManualAttributes(detaljnoDto);
+
     robaTekstService
         .pronadjiTextPoRobiId(detaljnoDto.getRobaid())
         .ifPresent(robaTekst -> detaljnoDto.setTekst(robaTekst.getTekst()));
+
     podGrupaService
         .vratiPodgrupuPoKljucu(Integer.valueOf(detaljnoDto.getPodGrupa()))
         .ifPresent(podGrupa -> detaljnoDto.setPodGrupaNaziv(podGrupa.getNaziv()));
+  }
+
+  private void setManualAttributes(RobaExpandedDto detaljnoDto) {
+    List<TecDocAtributi> tecDocAttributes =
+        tecDocAttributeService.findByRobaId(detaljnoDto.getRobaid());
+    tecDocAttributeService.addManualTehnicalDetails(detaljnoDto, tecDocAttributes);
+    tecDocAttributeService.addManualDocuments(detaljnoDto, tecDocAttributes);
   }
 
   // ---------------------------------------- TECDOC -------------------------------- TECDOC
@@ -147,9 +160,17 @@ public class RobaDetailsService {
   public Optional<RobaExpandedDto> uploadImg(Long robaId, MultipartFile file, Partner partner) {
     robaDatabaseService
         .findByRobaId(robaId)
-        .orElseThrow(() -> new EntityNotFoundException("Roba nije pronađena: " + robaId));
+        .orElseThrow(() -> new EntityNotFoundException("Article not found: " + robaId));
 
     slikeService.saveImage(robaId, file);
     return fetchRobaDetails(robaId, partner);
+  }
+
+  public void deleteImg(Long robaId) {
+    robaDatabaseService
+        .findByRobaId(robaId)
+        .orElseThrow(() -> new EntityNotFoundException("Article not found: " + robaId));
+
+    slikeService.deleteImage(robaId);
   }
 }
