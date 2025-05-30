@@ -87,7 +87,7 @@ public enum TecDocProizvodjaci {
   COML(421L, null, false, false),
   KS(432L, null, false, false),
   FIAAM(437L, null, false, false),
-  ENERG(443L, null, false, false),
+  ENERG(443L, null, false, true),
   HIT(449L, "-HIT", false, false),
   NV(485L, "-NAR", false, false),
   SHELL(4314L, null, false, true),
