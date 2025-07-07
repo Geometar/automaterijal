@@ -36,8 +36,13 @@ public class SlikeService {
   public SlikaDto fetchImageFromFileSystem(String slikaBaseName) {
     SlikaDto slikaDto = new SlikaDto();
 
+    // 1. Remove any existing extension from slikaBaseName
+    int dotIndex = slikaBaseName.lastIndexOf(".");
+    String baseName = (dotIndex != -1) ? slikaBaseName.substring(0, dotIndex) : slikaBaseName;
+
+    // 2. Iterate over allowed extensions
     for (String ext : allowed_extension) {
-      Path path = Paths.get(tdPrefix, slikaBaseName + ext);
+      Path path = Paths.get(tdPrefix, baseName + ext);
       if (Files.exists(path)) {
         try {
           byte[] bytes = Files.readAllBytes(path);
@@ -50,7 +55,7 @@ public class SlikeService {
       }
     }
 
-    // If not found, return fallback image
+    // 3. If not found, return fallback image
     slikaDto.setSlikeUrl(SLIKA_NIJE_DOSTUPNA_URL);
     slikaDto.setUrl(true);
     return slikaDto;

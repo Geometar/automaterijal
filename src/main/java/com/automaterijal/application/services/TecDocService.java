@@ -63,8 +63,8 @@ public class TecDocService {
     return tecDocBrandService.findById(proId);
   }
 
-  public List<Manufcatures> getAllManufactures() {
-    return tecDocMapper.mapToManufcatures(tecDocClient.getManufactures());
+  public List<Manufcatures> getAllManufactures(String type) {
+    return tecDocMapper.mapToManufcatures(tecDocClient.getManufactures(type));
   }
 
   public List<Model> getModelsForModeId(Integer manuId, String type) {

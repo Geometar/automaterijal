@@ -4,6 +4,7 @@ import com.automaterijal.application.tecdoc.*;
 import java.util.Collections;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -104,10 +105,10 @@ public class TecDocClient {
   }
 
   /** Vracanje TecDoc proizvodjaca vozila */
-  public List<Manufacturers2Record> getManufactures() {
+  public List<Manufacturers2Record> getManufactures(String type) {
     JSONObject request = new JSONObject();
     JSONObject body = kreirajStandardniObjekat();
-    body.put("linkingTargetType", "PO");
+    body.put("linkingTargetType", type);
     request.put("getManufacturers2", body);
 
     Manufacturers2Response result = vratiOdgovor(request, Manufacturers2Response.class);
@@ -141,22 +142,24 @@ public class TecDocClient {
       Integer manuId, Integer modelId, String type) {
     JSONObject request = new JSONObject();
     JSONObject body = kreirajStandardniObjekat();
+
+    // Glavna polja
     body.put("linkageTargetCountry", "RS");
+    body.put("linkageTargetCountryGroupFlag", false);
     body.put("linkageTargetType", type);
-    body.put("mfrIds", List.of(manuId));
-    body.put("vehicleModelSeriesIds", List.of(modelId));
+    body.put("mfrIds", manuId);
+    body.put("vehicleModelSeriesIds", modelId);
 
-    JSONObject sortMfrName = new JSONObject();
-    sortMfrName.put("field", "mfrName");
-    sortMfrName.put("direction", "asc");
-    JSONObject sortDescription = new JSONObject();
-    sortDescription.put("field", "description");
-    sortDescription.put("direction", "asc");
+    // Sortiranje
+    JSONArray sort = new JSONArray();
+    sort.put(new JSONObject().put("field", "mfrName").put("direction", "asc"));
+    sort.put(new JSONObject().put("field", "description").put("direction", "asc"));
+    body.put("sort", sort);
 
-    body.put("sort", List.of(sortMfrName, sortDescription));
-
+    // Završno pakovanje
     request.put("getLinkageTargets", body);
 
+    // Poziv i rezultat
     LinkageTargetsResponse result = vratiOdgovor(request, LinkageTargetsResponse.class);
     return extractListFromResponse(
         result,

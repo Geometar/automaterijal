@@ -47,8 +47,9 @@ public class TecDocController {
   }
 
   @GetMapping(value = "/manufactures")
-  public ResponseEntity<List<Manufcatures>> getManufactures() {
-    return ResponseEntity.ok().body(tecDocService.getAllManufactures());
+  public ResponseEntity<List<Manufcatures>> getManufactures(
+      @RequestParam(value = "type", required = false, defaultValue = "PO") String type) {
+    return ResponseEntity.ok().body(tecDocService.getAllManufactures(type));
   }
 
   @GetMapping(value = "/manufactures/{manuId}")
