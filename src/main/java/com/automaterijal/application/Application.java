@@ -20,7 +20,7 @@ public class Application {
   /** Init method to get all required data to for the application to run */
   @PostConstruct
   public void init() {
-    onStartUpService.izvadiSlikeIzAtributaIStoruj();
-    onStartUpService.loadTecDocAmBrands();
+    //    onStartUpService.loadTecDocAmBrands();
+    //    onStartUpService.izvadiSlikeIzAtributaIStoruj();
   }
 }

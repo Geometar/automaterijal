@@ -28,11 +28,13 @@ spring:
     username: automate
     password: hIOe8800
     hikari:
-      maximum-pool-size: 10       # Maximum connections in the pool
-      minimum-idle: 2            # Minimum idle connections
-      idle-timeout: 60000        # 60 seconds before an idle connection is removed
-      max-lifetime: 1800000      # 30 minutes before a connection is closed
-      connection-timeout: 60000  # 60 seconds timeout for acquiring a connection
+      maximum-pool-size: 10
+      minimum-idle: 2
+      idle-timeout: 60000
+      max-lifetime: 180000    # 3 min
+      keepalive-time: 180000  # pinguje konekcije da ih održi živim
+      connection-timeout: 60000
+      validation-timeout: 3000
       data-source-properties:
         cachePrepStmts: true
         prepStmtCacheSize: 250
