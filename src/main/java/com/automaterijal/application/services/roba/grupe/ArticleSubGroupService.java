@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Slf4j
-public class PodGrupaService {
+public class ArticleSubGroupService {
 
   @NonNull final PodGrupaRepository podGrupaRepository;
   @NonNull final PodgrupeJooqRepository podgrupeJooqRepository;

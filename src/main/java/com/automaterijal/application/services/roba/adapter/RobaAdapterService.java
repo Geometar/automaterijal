@@ -7,7 +7,7 @@ import com.automaterijal.application.domain.repository.roba.RobaJooqRepository;
 import com.automaterijal.application.services.ProizvodjacService;
 import com.automaterijal.application.services.roba.cache.RobaCacheService;
 import com.automaterijal.application.services.roba.filter.RobaFilterService;
-import com.automaterijal.application.services.roba.grupe.PodGrupaService;
+import com.automaterijal.application.services.roba.grupe.ArticleSubGroupService;
 import com.automaterijal.application.services.roba.processor.RobaTecDocProcessor;
 import com.automaterijal.application.services.roba.repo.RobaDatabaseService;
 import com.automaterijal.application.services.roba.sort.RobaSortService;
@@ -41,7 +41,7 @@ public class RobaAdapterService {
   @Autowired RobaFilterService robaFilterService;
 
   // Misc
-  @Autowired PodGrupaService podGrupaService;
+  @Autowired ArticleSubGroupService articleSubGroupService;
   @Autowired ProizvodjacService proizvodjacService;
 
   /**
@@ -53,7 +53,7 @@ public class RobaAdapterService {
 
     List<RobaLightDto> roba = robaJooqRepository.vratiRobuPoRobiId(robaIds);
 
-    podGrupaService.popuniPodgrupe(magacinDto, parametri, roba);
+    articleSubGroupService.popuniPodgrupe(magacinDto, parametri, roba);
     proizvodjacService.popuniProizvodjace(roba, magacinDto, parametri);
 
     // Primeni filtere po proizvođaču i grupi ako je potrebno
@@ -80,7 +80,7 @@ public class RobaAdapterService {
 
     List<RobaLightDto> roba = robaJooqRepository.generic(parametri, DSL.noCondition());
 
-    podGrupaService.popuniPodgrupe(magacinDto, parametri, roba);
+    articleSubGroupService.popuniPodgrupe(magacinDto, parametri, roba);
     proizvodjacService.popuniProizvodjace(roba, magacinDto, parametri);
     roba = robaFilterService.applyOptionalFilters(parametri, roba);
     roba = robaSortService.sortByGroup(roba);
@@ -102,7 +102,7 @@ public class RobaAdapterService {
     allRoba = robaFilterService.applyMandatoryFilters(parametri, allRoba);
 
     // Popuni dodatne podatke za roba (podgrupe, proizvođači itd.)
-    podGrupaService.popuniPodgrupe(magacinDto, parametri, allRoba);
+    articleSubGroupService.popuniPodgrupe(magacinDto, parametri, allRoba);
     fillResultManufactures(magacinDto, allRoba);
 
     // Primeni filtere po proizvođaču i grupi ako je potrebno
@@ -219,7 +219,7 @@ public class RobaAdapterService {
     robaTecDocProcessor.addTecdocArticles(articles, roba);
 
     // Popuni dodatne podatke za roba (podgrupe, proizvođači itd.)
-    podGrupaService.popuniPodgrupe(magacinDto, parametri, roba);
+    articleSubGroupService.popuniPodgrupe(magacinDto, parametri, roba);
 
     // CAUTION: if you change this search by vehicle won't work correctly
     proizvodjacService.popuniProizvodjace(roba, magacinDto, parametri);

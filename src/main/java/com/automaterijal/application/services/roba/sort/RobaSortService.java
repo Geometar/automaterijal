@@ -2,7 +2,7 @@ package com.automaterijal.application.services.roba.sort;
 
 import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
-import com.automaterijal.application.services.roba.grupe.PodGrupaService;
+import com.automaterijal.application.services.roba.grupe.ArticleSubGroupService;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,7 +16,7 @@ public class RobaSortService {
         .peek(
             robaDto -> {
               if (robaDto.getPodGrupaNaziv() == null) {
-                robaDto.setPodGrupaNaziv(PodGrupaService.ANONIMNA_GRUPA);
+                robaDto.setPodGrupaNaziv(ArticleSubGroupService.ANONIMNA_GRUPA);
               }
             })
         .sorted(getGroupComparator())

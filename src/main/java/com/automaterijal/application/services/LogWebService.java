@@ -7,7 +7,7 @@ import com.automaterijal.application.domain.entity.PodGrupa;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.domain.repository.LogWebJooqRepository;
 import com.automaterijal.application.domain.repository.LogWebRepository;
-import com.automaterijal.application.services.roba.grupe.PodGrupaService;
+import com.automaterijal.application.services.roba.grupe.ArticleSubGroupService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -34,7 +34,7 @@ public class LogWebService {
 
   @NonNull final LogWebJooqRepository logWebJooqRepository;
 
-  @NonNull final PodGrupaService podGrupaService;
+  @NonNull final ArticleSubGroupService articleSubGroupService;
 
   @Async
   public void log(Partner partner, UniverzalniParametri parametri) {
@@ -42,7 +42,9 @@ public class LogWebService {
     List<String> filter = new ArrayList<>();
     if (parametri.getPodgrupeZaPretragu() != null && !parametri.getPodgrupeZaPretragu().isEmpty()) {
       filter =
-          this.podGrupaService.vratiPodgrupuPoKljucu(parametri.getPodgrupeZaPretragu()).stream()
+          this.articleSubGroupService
+              .vratiPodgrupuPoKljucu(parametri.getPodgrupeZaPretragu())
+              .stream()
               .map(PodGrupa::getNaziv)
               .collect(Collectors.toList());
     }

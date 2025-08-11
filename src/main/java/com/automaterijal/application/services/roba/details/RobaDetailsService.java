@@ -12,7 +12,7 @@ import com.automaterijal.application.services.SlikeService;
 import com.automaterijal.application.services.TecDocService;
 import com.automaterijal.application.services.roba.RobaCeneService;
 import com.automaterijal.application.services.roba.RobaTekstService;
-import com.automaterijal.application.services.roba.grupe.PodGrupaService;
+import com.automaterijal.application.services.roba.grupe.ArticleSubGroupService;
 import com.automaterijal.application.services.roba.processor.RobaDetailsProcessor;
 import com.automaterijal.application.services.roba.repo.RobaDatabaseService;
 import com.automaterijal.application.services.roba.util.RobaHelper;
@@ -39,7 +39,7 @@ public class RobaDetailsService {
 
   @NonNull final RobaDatabaseService robaDatabaseService;
   @NonNull final RobaCeneService robaCeneService;
-  @NonNull final PodGrupaService podGrupaService;
+  @NonNull final ArticleSubGroupService articleSubGroupService;
   @NonNull final RobaTekstService robaTekstService;
   @NonNull final RobaMapper mapper;
   @NonNull final TecDocService tecDocService;
@@ -88,7 +88,7 @@ public class RobaDetailsService {
         .pronadjiTextPoRobiId(detaljnoDto.getRobaid())
         .ifPresent(robaTekst -> detaljnoDto.setTekst(robaTekst.getTekst()));
 
-    podGrupaService
+    articleSubGroupService
         .vratiPodgrupuPoKljucu(Integer.valueOf(detaljnoDto.getPodGrupa()))
         .ifPresent(podGrupa -> detaljnoDto.setPodGrupaNaziv(podGrupa.getNaziv()));
   }
