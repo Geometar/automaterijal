@@ -6,6 +6,7 @@ import com.automaterijal.application.domain.entity.Grupa;
 import com.automaterijal.application.domain.entity.PodGrupa;
 import com.automaterijal.application.domain.repository.GrupaRepository;
 import com.automaterijal.application.domain.repository.PodGrupaRepository;
+import java.util.Arrays;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.NonNull;
@@ -25,11 +26,15 @@ public class ArticleGroupService {
   @NonNull final GrupaRepository grupaRepository;
   @NonNull final PodGrupaRepository podGrupaRepository;
 
+  static final List<String> FORBIDDEN_CATEGORIES =
+      Arrays.asList("PN", "TG", "6000", "LUCO", "ANULL");
+
   public List<ArticleGroupsDto> fetchAllGroupsWithSubgroups() {
     List<Grupa> allGroups = grupaRepository.findAllByOrderByNaziv();
     List<PodGrupa> allSubGroups = podGrupaRepository.findAll();
 
     return allGroups.stream()
+        .filter(group -> !FORBIDDEN_CATEGORIES.contains(group.getGrupaid()))
         .map(
             group -> {
               List<ArticleSubGroupsDto> matchingSubGroups =
