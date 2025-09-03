@@ -1,6 +1,7 @@
 package com.automaterijal.application.services.roba.cache;
 
 import com.automaterijal.application.domain.cache.RobaCache;
+import java.text.Normalizer;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -30,14 +31,23 @@ public class RobaCacheService {
   }
 
   public List<RobaCache> getAllRobaByNazivLike(String searchTerm) {
-    String[] searchTerms = searchTerm.split(" ");
+    String[] searchTerms =
+        Arrays.stream(searchTerm.split("\\s+")).filter(s -> !s.isBlank()).toArray(String[]::new);
+
     return robaCachedService.getAllRoba().stream()
         .filter(
             robaCache ->
-                Arrays.stream(searchTerms)
-                    .allMatch(
-                        term -> robaCache.getNaziv().toLowerCase().contains(term.toLowerCase())))
+                robaCache.getNaziv() != null
+                    && Arrays.stream(searchTerms)
+                        .allMatch(
+                            term -> normalize(robaCache.getNaziv()).contains(normalize(term))))
         .toList();
+  }
+
+  private String normalize(String input) {
+    return Normalizer.normalize(input, Normalizer.Form.NFD)
+            .replaceAll("\\p{InCombiningDiacriticalMarks}+", "")
+            .toLowerCase();
   }
 
   public List<RobaCache> getAllRobaByKatBrIn(Set<String> katBr) {
