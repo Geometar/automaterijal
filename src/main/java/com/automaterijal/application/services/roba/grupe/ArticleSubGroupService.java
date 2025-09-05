@@ -92,4 +92,8 @@ public class ArticleSubGroupService {
   public List<PodGrupa> vratiPodgrupuPoKljucu(List<Integer> podgrupaKeys) {
     return podGrupaRepository.findByPodGrupaIdIn(podgrupaKeys);
   }
+
+  public List<PodGrupa> findAll() {
+    return podGrupaRepository.findAll();
+  }
 }

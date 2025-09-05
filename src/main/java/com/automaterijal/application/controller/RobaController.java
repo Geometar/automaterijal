@@ -3,12 +3,14 @@ package com.automaterijal.application.controller;
 import com.automaterijal.application.domain.dto.MagacinDto;
 import com.automaterijal.application.domain.dto.robadetalji.RobaAtributesDto;
 import com.automaterijal.application.domain.dto.robadetalji.RobaExpandedDto;
+import com.automaterijal.application.domain.dto.showcase.ShowcaseResponseDTO;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.roba.RobaTekst;
 import com.automaterijal.application.services.LogWebService;
 import com.automaterijal.application.services.roba.RobaTekstService;
 import com.automaterijal.application.services.roba.details.RobaDetailsService;
 import com.automaterijal.application.services.roba.search.RobaSearchService;
+import com.automaterijal.application.services.roba.showcase.ShowcaseService;
 import com.automaterijal.application.services.tecdoc.TecDocAttributeService;
 import com.automaterijal.application.utils.PartnerSpringBeanUtils;
 import com.automaterijal.application.utils.RobaSpringBeanUtils;
@@ -42,6 +44,7 @@ public class RobaController {
   @NonNull final RobaSpringBeanUtils robaSpringBeanUtils;
   @NonNull final TecDocAttributeService tecDocAttributeService;
   @NonNull final LogWebService logWebService;
+  @NonNull final ShowcaseService showcaseService;
 
   @GetMapping
   public ResponseEntity<MagacinDto> pronadjiSvuRobu(
@@ -81,6 +84,12 @@ public class RobaController {
         .fetchRobaDetails(robaId, uPartner)
         .map(ResponseEntity::ok)
         .orElse(ResponseEntity.notFound().build());
+  }
+
+  @GetMapping(value = "/showcase")
+  public ResponseEntity<ShowcaseResponseDTO> getShowcaseArticles(Authentication authentication) {
+    var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+    return ResponseEntity.ok(showcaseService.buildShowcase(uPartner));
   }
 
   @PostMapping(value = "/{robaID}")

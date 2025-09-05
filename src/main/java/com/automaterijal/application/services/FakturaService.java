@@ -52,7 +52,7 @@ public class FakturaService {
   @NonNull final PartnerService partnerService;
   @NonNull final FakturaMapper mapper;
   @NonNull final RobaMapper robaMapper;
-  @NonNull final SlikeService slikeService;
+  @NonNull final ImageService imageService;
 
   public List<RobaLightDto> submitujFakturu(FakturaDto fakturaDto, Partner partner) {
     List<RobaLightDto> dozvoljenaKolicina = new ArrayList<>();
@@ -191,7 +191,7 @@ public class FakturaService {
                 && !fakturaDetaljiDto.getSlika().getRobaSlika().isEmpty()
             ? fakturaDetaljiDto.getSlika().getRobaSlika()
             : fakturaDetaljiDto.getRobaId().toString();
-    fakturaDetaljiDto.setSlika(slikeService.fetchImageFromFileSystem(url));
+    fakturaDetaljiDto.setSlika(imageService.fetchImageFromFileSystem(url));
   }
 
   @Transactional(readOnly = true)

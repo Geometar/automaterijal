@@ -24,7 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Slf4j
-public class SlikeService {
+public class ImageService {
 
   @Value("${roba.slika.tdPrefix}")
   String tdPrefix;

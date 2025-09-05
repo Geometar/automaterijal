@@ -5,7 +5,7 @@ import com.automaterijal.application.domain.constants.TecDocProizvodjaci;
 import com.automaterijal.application.domain.dto.ProizvodjacDTO;
 import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.dto.RobaTehnickiOpisDto;
-import com.automaterijal.application.services.SlikeService;
+import com.automaterijal.application.services.ImageService;
 import com.automaterijal.application.tecdoc.ArticleRecord;
 import com.automaterijal.application.tecdoc.CriteriaRecord;
 import com.automaterijal.application.tecdoc.TradeNumberDetailsRecord;
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RobaTecDocProcessor {
 
-  @Autowired SlikeService slikeService;
+  @Autowired ImageService imageService;
 
   public void filterIfNotMatchingWithTecDoc(
       List<ArticleRecord> articles, List<RobaLightDto> robaLightDtos) {
@@ -170,8 +170,7 @@ public class RobaTecDocProcessor {
 
                   return articleInDB
                       ? null
-                      : generateRobaLightDto(
-                          articleRecord, tecDocProizvodjaci, slikeService);
+                      : generateRobaLightDto(articleRecord, tecDocProizvodjaci, imageService);
                 })
             .filter(Objects::nonNull)
             .collect(Collectors.toList());
@@ -221,34 +220,34 @@ public class RobaTecDocProcessor {
                     articleRecord.getArticleNumber(), tdProizvodjac));
   }
 
-    private RobaLightDto generateRobaLightDto(
-            ArticleRecord articleRecord,
-            TecDocProizvodjaci tecDocProizvodjaci,
-            SlikeService slikeService) {
-        String katBr =
-                TecDocProizvodjaci.generateAlternativeCatalogNumber(
-                        articleRecord.getArticleNumber(), tecDocProizvodjaci);
+  private RobaLightDto generateRobaLightDto(
+      ArticleRecord articleRecord,
+      TecDocProizvodjaci tecDocProizvodjaci,
+      ImageService imageService) {
+    String katBr =
+        TecDocProizvodjaci.generateAlternativeCatalogNumber(
+            articleRecord.getArticleNumber(), tecDocProizvodjaci);
 
-        RobaLightDto data = new RobaLightDto();
-        data.setKatbr(katBr);
-        data.setNaziv(articleRecord.getGenericArticles().get(0).getGenericArticleDescription());
+    RobaLightDto data = new RobaLightDto();
+    data.setKatbr(katBr);
+    data.setNaziv(articleRecord.getGenericArticles().get(0).getGenericArticleDescription());
 
-        ProizvodjacDTO proizvodjacDTO = new ProizvodjacDTO();
-        proizvodjacDTO.setProid(tecDocProizvodjaci.getCleanName());
-        data.setProizvodjac(proizvodjacDTO);
+    ProizvodjacDTO proizvodjacDTO = new ProizvodjacDTO();
+    proizvodjacDTO.setProid(tecDocProizvodjaci.getCleanName());
+    data.setProizvodjac(proizvodjacDTO);
 
-        data.setPodGrupaNaziv(GlobalConstants.TECDOC_PODGRUPA_VALUE);
-        data.setGrupa("Dodatno");
-        data.setPodGrupa(GlobalConstants.TECDOC_PODGRUPA_KEY);
-        data.setSlika(slikeService.getImageFromTD(articleRecord));
+    data.setPodGrupaNaziv(GlobalConstants.TECDOC_PODGRUPA_VALUE);
+    data.setGrupa("Dodatno");
+    data.setPodGrupa(GlobalConstants.TECDOC_PODGRUPA_KEY);
+    data.setSlika(imageService.getImageFromTD(articleRecord));
 
-        // Convert technical descriptions
-        List<RobaTehnickiOpisDto> tehnickiOpisi =
-                RobaTehnickiOpisDto.fromArticleCriteria(articleRecord.getArticleCriteria());
-        tehnickiOpisi = tehnickiOpisi.stream().limit(4).collect(Collectors.toList());
-        tehnickiOpisi.sort(Comparator.comparing(RobaTehnickiOpisDto::getType));
-        data.setTehnickiOpis(tehnickiOpisi);
+    // Convert technical descriptions
+    List<RobaTehnickiOpisDto> tehnickiOpisi =
+        RobaTehnickiOpisDto.fromArticleCriteria(articleRecord.getArticleCriteria());
+    tehnickiOpisi = tehnickiOpisi.stream().limit(4).collect(Collectors.toList());
+    tehnickiOpisi.sort(Comparator.comparing(RobaTehnickiOpisDto::getType));
+    data.setTehnickiOpis(tehnickiOpisi);
 
-        return data;
-    }
+    return data;
+  }
 }

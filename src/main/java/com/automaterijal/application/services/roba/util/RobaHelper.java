@@ -7,7 +7,7 @@ import com.automaterijal.application.domain.dto.robadetalji.RobaExpandedDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.roba.RobaCene;
 import com.automaterijal.application.domain.entity.tecdoc.TecDocAtributi;
-import com.automaterijal.application.services.SlikeService;
+import com.automaterijal.application.services.ImageService;
 import com.automaterijal.application.services.TecDocService;
 import com.automaterijal.application.services.roba.RobaCeneService;
 import com.automaterijal.application.services.tecdoc.TecDocAttributeService;
@@ -27,7 +27,7 @@ import org.springframework.stereotype.Component;
 public class RobaHelper {
 
   @NonNull final RobaCeneService priceService;
-  @NonNull final SlikeService imageService;
+  @NonNull final ImageService imageService;
   @NonNull final TecDocService tecDocService;
   @NonNull final TecDocAttributeService tecDocAttributeService;
 
@@ -91,6 +91,18 @@ public class RobaHelper {
             Comparator.comparing(
                 RobaTehnickiOpisDto::getType, Comparator.nullsFirst(Comparator.naturalOrder())))
         .collect(Collectors.toList());
+  }
+
+  // u RobaHelper
+  public void setupPriceOnly(List<RobaLightDto> items, Partner partner) {
+    if (items == null || items.isEmpty()) return;
+
+    var ids = items.stream().map(RobaLightDto::getRobaid).toList();
+    var allPrices = priceService.pronadjiCeneZaRobuBatch(ids);
+
+    for (var dto : items) {
+      setupPrice(dto, allPrices, partner);
+    }
   }
 
   private void setupPrice(RobaLightDto dto, List<RobaCene> allPrices, Partner partner) {

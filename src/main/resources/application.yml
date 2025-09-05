@@ -61,5 +61,10 @@ logging:
   file:
     name: ../logs/arhiva/automaterijal
 
+showcase:
+  cache:
+    reset:
+      ms: 172800000   # 48h
+
 # In case we want to use offline mode
 offline: false

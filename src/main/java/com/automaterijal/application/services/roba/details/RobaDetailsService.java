@@ -8,7 +8,7 @@ import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.roba.Roba;
 import com.automaterijal.application.domain.entity.tecdoc.TecDocAtributi;
 import com.automaterijal.application.domain.mapper.RobaMapper;
-import com.automaterijal.application.services.SlikeService;
+import com.automaterijal.application.services.ImageService;
 import com.automaterijal.application.services.TecDocService;
 import com.automaterijal.application.services.roba.RobaCeneService;
 import com.automaterijal.application.services.roba.RobaTekstService;
@@ -45,7 +45,7 @@ public class RobaDetailsService {
   @NonNull final TecDocService tecDocService;
   @NonNull final RobaHelper robaHelper;
   @NonNull final RobaTecDocDetailsHelper robaTecDocDetailsHelper;
-  @NonNull final SlikeService slikeService;
+  @NonNull final ImageService imageService;
   @NonNull final RobaDetailsProcessor robaDetailsProcessor;
   @NonNull final TecDocAttributeService tecDocAttributeService;
 
@@ -122,7 +122,7 @@ public class RobaDetailsService {
         .vratiTecDocBrendovePrekoProId(detaljiDto.getProizvodjac().getProid())
         .ifPresent(
             tecDocBrands ->
-                detaljiDto.setProizvodjacLogo(slikeService.getImageForBrandLogo(tecDocBrands)));
+                detaljiDto.setProizvodjacLogo(imageService.getImageForBrandLogo(tecDocBrands)));
 
     // ***************** Setujemo atribute iz tecdoca ako postoje *************************
     robaTecDocDetailsHelper.setujTehnickeDetalje(detaljiDto, tecDocDetalji);
@@ -162,7 +162,7 @@ public class RobaDetailsService {
         .findByRobaId(robaId)
         .orElseThrow(() -> new EntityNotFoundException("Article not found: " + robaId));
 
-    slikeService.saveImage(robaId, file);
+    imageService.saveImage(robaId, file);
     return fetchRobaDetails(robaId, partner);
   }
 
@@ -171,6 +171,6 @@ public class RobaDetailsService {
         .findByRobaId(robaId)
         .orElseThrow(() -> new EntityNotFoundException("Article not found: " + robaId));
 
-    slikeService.deleteImage(robaId);
+    imageService.deleteImage(robaId);
   }
 }
