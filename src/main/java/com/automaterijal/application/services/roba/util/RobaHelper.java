@@ -4,6 +4,7 @@ import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.dto.RobaTehnickiOpisDto;
 import com.automaterijal.application.domain.dto.SlikaDto;
 import com.automaterijal.application.domain.dto.robadetalji.RobaExpandedDto;
+import com.automaterijal.application.domain.entity.Grupa;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.roba.RobaCene;
 import com.automaterijal.application.domain.entity.tecdoc.TecDocAtributi;
@@ -37,6 +38,7 @@ public class RobaHelper {
     List<Long> itemIds = items.stream().map(RobaLightDto::getRobaid).toList();
     List<TecDocAtributi> allAttributes = tecDocService.vratiTecDocAtributePrekoRobeIds(itemIds);
     List<RobaCene> allPrices = priceService.pronadjiCeneZaRobuBatch(itemIds);
+    List<Grupa> groups = articleGroupService.findAll();
 
     for (RobaLightDto dto : items) {
       if (dto.getRobaid() == null) continue;
@@ -50,7 +52,11 @@ public class RobaHelper {
       tecDocAttributeService.addManualTehnicalDetails(dto, attributes);
 
       setupPrice(dto, allPrices, partner);
-      dto.setGrupaNaziv(articleGroupService.getGroupName(dto.getGrupa()));
+
+      groups.stream()
+          .filter(g -> g.getGrupaid().equals(dto.getGrupa()))
+          .findFirst()
+          .ifPresent(d -> dto.setGrupaNaziv(d.getNaziv()));
       dto.setSlika(resolveImage(dto.getRobaid(), dto.getSlika()));
     }
   }

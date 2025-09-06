@@ -58,6 +58,9 @@ public class Roba {
   @Column(name = "vpcid")
   int vpcid;
 
+  @Column(name = "proid", insertable = false, updatable = false)
+  private String proid;
+
   @ToString.Exclude
   @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   @JoinColumn(name = "proid", insertable = false, updatable = false)

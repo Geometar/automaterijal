@@ -60,4 +60,8 @@ public class ArticleGroupService {
   public String getGroupName(String groupId) {
     return grupaRepository.findById(groupId).map(Grupa::getNaziv).orElse("");
   }
+
+  public List<Grupa> findAll() {
+    return grupaRepository.findAll();
+  }
 }

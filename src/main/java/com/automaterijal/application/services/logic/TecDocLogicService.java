@@ -16,6 +16,7 @@ import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,6 +29,7 @@ public class TecDocLogicService {
   @Autowired TecDocAttributeService tecDocAttributeService;
   @Autowired TecDocDocumentService tecDocDocumentService;
 
+  @Async
   public void fetchAndSaveTecDocAttributes(List<RobaLightDto> robaLightDtos) {
     List<Long> artikliBezSacuvanihPodataka = new ArrayList<>();
 
@@ -46,6 +48,9 @@ public class TecDocLogicService {
     final List<TecDocAtributi> data = tecDocAttributeService.findByRobaIds(ids);
 
     for (RobaLightDto dto : robaLightDtos) {
+      if (dto.getRobaid() == null) {
+        continue;
+      }
       TecDocProizvodjaci tdProizvodjaci =
           TecDocProizvodjaci.pronadjiPoNazivu(dto.getProizvodjac().getProid());
       if (tdProizvodjaci != null) {

@@ -3,9 +3,11 @@ package com.automaterijal.application.services.roba.repo;
 import com.automaterijal.application.domain.cache.RobaCache;
 import com.automaterijal.application.domain.dto.ProizvodjacDTO;
 import com.automaterijal.application.domain.dto.RobaLightDto;
+import com.automaterijal.application.domain.entity.Proizvodjac;
 import com.automaterijal.application.domain.entity.roba.Roba;
 import com.automaterijal.application.domain.mapper.RobaMapper;
 import com.automaterijal.application.domain.repository.roba.RobaRepository;
+import com.automaterijal.application.services.ProizvodjacService;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -27,6 +29,7 @@ public class RobaDatabaseService {
 
   @NonNull final RobaRepository robaRepository;
   @NonNull final RobaMapper mapper;
+  @NonNull final ProizvodjacService proizvodjacService;
 
   public Optional<Roba> findByRobaId(Long id) {
     return robaRepository.findById(id);
@@ -36,6 +39,13 @@ public class RobaDatabaseService {
     List<RobaLightDto> retVal =
         mapper.map(
             robaRepository.findByRobaidIn(robaCache.stream().map(RobaCache::getRobaid).toList()));
+    List<Proizvodjac> proizvodjacDTO = proizvodjacService.pronadjiSve();
+    retVal.forEach(
+        robaLightDto ->
+            proizvodjacDTO.stream()
+                .filter(p -> p.getProid().equals(robaLightDto.getProizvodjac().getProid()))
+                .findFirst()
+                .ifPresent(p -> robaLightDto.getProizvodjac().setNaziv(p.getNaziv())));
 
     // Mapa za brzi pristup Proizvodjac po robaid
     Map<Long, ProizvodjacDTO> cacheMap =

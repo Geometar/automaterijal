@@ -76,13 +76,13 @@ public class ProizvodjacService {
     return pronadjiSve();
   }
 
-  private List<Proizvodjac> pronadjiSve() {
+  public Optional<Proizvodjac> vratiProizvodjacaPoPk(String id) {
+    return proizvodjacRepository.findById(id);
+  }
+
+  public List<Proizvodjac> pronadjiSve() {
     return proizvodjacRepository.findAllByOrderByNazivAsc().stream()
         .filter(proizvodjac -> !proizvodjac.getNaziv().equals("0"))
         .toList();
-  }
-
-  public Optional<Proizvodjac> vratiProizvodjacaPoPk(String id) {
-    return proizvodjacRepository.findById(id);
   }
 }
