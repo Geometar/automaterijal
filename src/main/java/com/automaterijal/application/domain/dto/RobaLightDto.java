@@ -13,6 +13,7 @@ public class RobaLightDto extends RobaCache {
   SlikaDto slika;
   String proizvodjacLogo;
   String grupa;
+  String grupaNaziv;
   int podGrupa;
   String podGrupaNaziv;
   BigDecimal cena;

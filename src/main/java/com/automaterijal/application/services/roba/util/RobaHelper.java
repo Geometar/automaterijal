@@ -10,6 +10,7 @@ import com.automaterijal.application.domain.entity.tecdoc.TecDocAtributi;
 import com.automaterijal.application.services.ImageService;
 import com.automaterijal.application.services.TecDocService;
 import com.automaterijal.application.services.roba.RobaCeneService;
+import com.automaterijal.application.services.roba.grupe.ArticleGroupService;
 import com.automaterijal.application.services.tecdoc.TecDocAttributeService;
 import java.util.Comparator;
 import java.util.List;
@@ -30,6 +31,7 @@ public class RobaHelper {
   @NonNull final ImageService imageService;
   @NonNull final TecDocService tecDocService;
   @NonNull final TecDocAttributeService tecDocAttributeService;
+  @NonNull final ArticleGroupService articleGroupService;
 
   public void setupForTable(List<RobaLightDto> items, Partner partner) {
     List<Long> itemIds = items.stream().map(RobaLightDto::getRobaid).toList();
@@ -48,6 +50,7 @@ public class RobaHelper {
       tecDocAttributeService.addManualTehnicalDetails(dto, attributes);
 
       setupPrice(dto, allPrices, partner);
+      dto.setGrupaNaziv(articleGroupService.getGroupName(dto.getGrupa()));
       dto.setSlika(resolveImage(dto.getRobaid(), dto.getSlika()));
     }
   }

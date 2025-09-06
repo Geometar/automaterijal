@@ -12,6 +12,7 @@ import com.automaterijal.application.services.ImageService;
 import com.automaterijal.application.services.TecDocService;
 import com.automaterijal.application.services.roba.RobaCeneService;
 import com.automaterijal.application.services.roba.RobaTekstService;
+import com.automaterijal.application.services.roba.grupe.ArticleGroupService;
 import com.automaterijal.application.services.roba.grupe.ArticleSubGroupService;
 import com.automaterijal.application.services.roba.processor.RobaDetailsProcessor;
 import com.automaterijal.application.services.roba.repo.RobaDatabaseService;
@@ -48,6 +49,7 @@ public class RobaDetailsService {
   @NonNull final ImageService imageService;
   @NonNull final RobaDetailsProcessor robaDetailsProcessor;
   @NonNull final TecDocAttributeService tecDocAttributeService;
+  @NonNull final ArticleGroupService articleGroupService;
 
   public Optional<RobaExpandedDto> fetchRobaDetails(Long robaId, Partner ulogovaniPartner) {
     Optional<RobaExpandedDto> retVal = Optional.empty();
@@ -81,6 +83,8 @@ public class RobaDetailsService {
       robaHelper.setupTechnicalAttributesForDetails(
           tecDocService.vratiTecDocAtributePrekoRobeId(detaljnoDto.getRobaid()), detaljnoDto);
     }
+
+    detaljnoDto.setGrupaNaziv(articleGroupService.getGroupName(detaljnoDto.getGrupa()));
 
     setManualAttributes(detaljnoDto);
 

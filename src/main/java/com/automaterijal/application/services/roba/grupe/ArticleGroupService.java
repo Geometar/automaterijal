@@ -56,4 +56,8 @@ public class ArticleGroupService {
     return new ArticleSubGroupsDto(
         subGroup.getPodGrupaId(), subGroup.getGrupaId(), subGroup.getNaziv());
   }
+
+  public String getGroupName(String groupId) {
+    return grupaRepository.findById(groupId).map(Grupa::getNaziv).orElse("");
+  }
 }
