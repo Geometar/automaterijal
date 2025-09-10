@@ -2,23 +2,21 @@ package com.automaterijal.application.utils;
 
 import lombok.experimental.UtilityClass;
 
+import java.text.Normalizer;
+
 @UtilityClass
 public class SlugUtil {
-  public String toSlug(String input) {
+  public static String toSlug(String input) {
     if (input == null || input.isBlank()) return "";
 
     String normalized =
-        input
+        Normalizer.normalize(input, Normalizer.Form.NFD)
+            .replaceAll("\\p{M}", "") // skini dijakritike
             .toLowerCase()
-            .replaceAll("[čć]", "c")
-            .replaceAll("đ", "dj")
-            .replaceAll("š", "s")
-            .replaceAll("ž", "z")
-            .replaceAll("[^a-z0-9\\s-]", "") // izbaci specijalne znakove
+            .replaceAll("[^a-z0-9\\s-]", "")
             .trim()
-            .replaceAll("\\s+", "-"); // whitespace -> -
+            .replaceAll("\\s+", "-");
 
-    // spoji duple crtice i ukloni na krajevima
     return normalized.replaceAll("-{2,}", "-").replaceAll("^-|-$", "");
   }
 }
