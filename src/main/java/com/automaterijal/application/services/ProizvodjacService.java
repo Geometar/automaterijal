@@ -7,6 +7,7 @@ import com.automaterijal.application.domain.entity.Proizvodjac;
 import com.automaterijal.application.domain.mapper.ManufacturerMapper;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.domain.repository.ProizvodjacRepository;
+import com.automaterijal.application.utils.SlugUtil;
 import java.util.*;
 import java.util.stream.Collectors;
 import lombok.AccessLevel;
@@ -84,5 +85,18 @@ public class ProizvodjacService {
     return proizvodjacRepository.findAllByOrderByNazivAsc().stream()
         .filter(proizvodjac -> !proizvodjac.getNaziv().equals("0"))
         .toList();
+  }
+
+  public Optional<ProizvodjacDTO> findBySlug(String slug) {
+    return proizvodjacRepository.findAll().stream()
+        .filter(p -> SlugUtil.toSlug(p.getNaziv()).equals(slug))
+        .findFirst()
+        .map(this::mapToDto);
+  }
+
+  private ProizvodjacDTO mapToDto(Proizvodjac proizvodjac) {
+    ProizvodjacDTO retval = new ProizvodjacDTO();
+    retval.setProizvodjac(proizvodjac);
+    return retval;
   }
 }
