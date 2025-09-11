@@ -4,6 +4,7 @@ import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.Popusti;
 import com.automaterijal.application.domain.entity.roba.RobaCene;
 import com.automaterijal.application.domain.repository.roba.RobaCeneRepository;
+import com.automaterijal.application.services.PartnerService;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 public class RobaCeneService {
 
   @NonNull final RobaCeneRepository robaCeneRepository;
+  @NonNull final PartnerService partnerService;
 
   static final Long GLAVNIMAGACIN = 1L;
 
@@ -56,6 +58,7 @@ public class RobaCeneService {
 
   public BigDecimal vratiCenuRobeBatch(
       RobaCene robaCene, String grupaId, String proID, Partner partner) {
+    partner = getDefaultPartnerIfNotExist(partner);
     BigDecimal retVal = null;
     Double popust = 1.0;
     if (partner != null) {
@@ -94,6 +97,7 @@ public class RobaCeneService {
 
   public BigDecimal vratiCenuRobePoRobiId(
       Long robaId, String grupaId, String proID, Partner partner) {
+    partner = getDefaultPartnerIfNotExist(partner);
     BigDecimal retVal = null;
     Double popust = 1.0;
     if (partner != null) {
@@ -131,6 +135,7 @@ public class RobaCeneService {
   }
 
   public Double vratiRabatPartneraNaArtikal(String proId, String grupaId, Partner partner) {
+    partner = getDefaultPartnerIfNotExist(partner);
     Double popust = 0.0;
     if (partner != null) {
       popust = preracunajPopustNaArtkalZaUlogovanogPartnera(grupaId, proId, partner);
@@ -175,5 +180,12 @@ public class RobaCeneService {
 
   public List<RobaCene> pronadjiCeneZaRobuBatch(List<Long> robaIds) {
     return robaCeneRepository.findByMagacinidAndRobaidIn(GLAVNIMAGACIN, robaIds);
+  }
+
+  private Partner getDefaultPartnerIfNotExist(Partner partner) {
+    if (partner != null) {
+      return partner;
+    }
+    return partnerService.findDefaultPartner();
   }
 }

@@ -74,7 +74,7 @@ public class FakturaController {
       @RequestBody FakturaDto fakturaDto, Authentication authentication) {
     Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
     if (partner == null) {
-      partner = partnerService.pronadjiPartneraPoId(850);
+      partner = partnerService.findDefaultPartner();
     }
 
     log.info(

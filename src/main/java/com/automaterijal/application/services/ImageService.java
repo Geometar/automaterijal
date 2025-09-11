@@ -7,6 +7,7 @@ import com.automaterijal.application.tecdoc.ImageRecord;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -80,19 +81,68 @@ public class ImageService {
 
   public String getImageForBrandLogo(TecDocBrands tecDocBrands) {
     byte[] logoBytes = tecDocBrands.getBrand();
-    if (logoBytes == null || logoBytes.length == 0) {
-      return null;
+    if (logoBytes == null || logoBytes.length == 0) return null;
+
+    if (looksLikeUtf8OfJpeg(logoBytes)) {
+      String utf8 = new String(logoBytes, StandardCharsets.UTF_8);
+      logoBytes = utf8.getBytes(StandardCharsets.ISO_8859_1);
     }
-    String mimeType;
-    try {
-      mimeType = URLConnection.guessContentTypeFromStream(new ByteArrayInputStream(logoBytes));
-    } catch (IOException e) {
-      throw new RuntimeException("Failed to detect mime type", e);
+
+    String mimeType = detectMimeByMagic(logoBytes);
+    if (mimeType == null) {
+      try (ByteArrayInputStream bais = new ByteArrayInputStream(logoBytes)) {
+        mimeType = URLConnection.guessContentTypeFromStream(bais);
+      } catch (IOException ignore) {
+        // ByteArrayInputStream praktično ne baca IOException
+      }
     }
-    if (mimeType == null) mimeType = "image/jpeg"; // fallback ako guess ne uspe
+    if (mimeType == null) mimeType = "image/jpeg";
 
     String base64 = Base64.getEncoder().encodeToString(logoBytes);
     return "data:" + mimeType + ";base64," + base64;
+  }
+
+  private static boolean looksLikeUtf8OfJpeg(byte[] b) {
+    return b.length >= 4
+        && b[0] == (byte) 0xC3
+        && b[1] == (byte) 0xBF
+        && b[2] == (byte) 0xC3
+        && b[3] == (byte) 0x98;
+  }
+
+  private static String detectMimeByMagic(byte[] b) {
+    if (b.length >= 3 && b[0] == (byte) 0xFF && b[1] == (byte) 0xD8 && b[2] == (byte) 0xFF)
+      return "image/jpeg";
+    if (b.length >= 8
+        && b[0] == (byte) 0x89
+        && b[1] == (byte) 0x50
+        && b[2] == (byte) 0x4E
+        && b[3] == (byte) 0x47
+        && b[4] == (byte) 0x0D
+        && b[5] == (byte) 0x0A
+        && b[6] == (byte) 0x1A
+        && b[7] == (byte) 0x0A) return "image/png";
+    if (b.length >= 6
+        && b[0] == (byte) 0x47
+        && b[1] == (byte) 0x49
+        && b[2] == (byte) 0x46
+        && b[3] == (byte) 0x38
+        && (b[4] == (byte) 0x39 || b[4] == (byte) 0x37)
+        && b[5] == (byte) 0x61) return "image/gif";
+    if (b.length >= 12
+        && b[0] == (byte) 0x52
+        && b[1] == (byte) 0x49
+        && b[2] == (byte) 0x46
+        && b[3] == (byte) 0x46
+        && // "RIFF"
+        b[8] == (byte) 0x57
+        && b[9] == (byte) 0x45
+        && b[10] == (byte) 0x42
+        && b[11] == (byte) 0x50) return "image/webp";
+
+    String head = new String(b, 0, Math.min(b.length, 64), StandardCharsets.UTF_8).trim();
+    if (head.startsWith("<?xml") || head.startsWith("<svg")) return "image/svg+xml";
+    return null;
   }
 
   public String saveImage(Long robaId, MultipartFile file) {

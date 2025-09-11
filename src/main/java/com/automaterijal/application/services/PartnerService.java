@@ -116,6 +116,10 @@ public class PartnerService {
     return retVal;
   }
 
+  public Partner findDefaultPartner() {
+    return partnerRepository.findById(102044).orElse(null);
+  }
+
   /** Servis za povecavanje broja logovanja korisnika */
   public void povecanPartnerovOrderCount(Partner partner) {
     Optional<Partner> partnerHibernate = partnerRepository.findById(partner.getPpid());

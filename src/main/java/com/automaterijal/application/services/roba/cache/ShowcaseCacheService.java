@@ -1,10 +1,12 @@
 package com.automaterijal.application.services.roba.cache;
 
 import com.automaterijal.application.domain.dto.RobaLightDto;
+import com.automaterijal.application.domain.entity.Grupa;
 import com.automaterijal.application.domain.entity.PodGrupa;
 import com.automaterijal.application.domain.entity.Proizvodjac;
 import com.automaterijal.application.domain.repository.ProizvodjacRepository;
 import com.automaterijal.application.domain.repository.ShowcaseRepositoryJooq;
+import com.automaterijal.application.services.roba.grupe.ArticleGroupService;
 import com.automaterijal.application.services.roba.grupe.ArticleSubGroupService;
 import com.automaterijal.application.services.roba.util.RobaHelper;
 import java.util.List;
@@ -23,7 +25,8 @@ public class ShowcaseCacheService {
   private final ShowcaseRepositoryJooq repo;
   private final ProizvodjacRepository proizvodjacRepository;
   private final ArticleSubGroupService articleSubGroupService;
-  private final RobaHelper robaHelper; // we will call resolveImage here
+  private final ArticleGroupService articleGroupService;
+  private final RobaHelper robaHelper;
 
   private static final String BUCKET_CACHE = "showcaseBucket";
   private static final String SECTIONS_CACHE = "showcaseSections";
@@ -42,6 +45,8 @@ public class ShowcaseCacheService {
       unless = "#result == null || #result.isEmpty()")
   public List<RobaLightDto> top5ForSubgroup(String group, Integer subGroup) {
     var items = repo.fetchByGroupAndSubgroup(group, subGroup, FETCH_SIZE);
+    List<Grupa> categories = articleGroupService.findAll();
+    fillCategorieName(items, categories);
 
     // resolve real image from FS (fills bytes); skip items without bytes
     items.forEach(i -> i.setSlika(robaHelper.resolveImage(i.getRobaid(), i.getSlika())));
@@ -67,6 +72,15 @@ public class ShowcaseCacheService {
         });
 
     return kept;
+  }
+
+  private void fillCategorieName(List<RobaLightDto> data, List<Grupa> categories) {
+    data.forEach(
+        d ->
+            categories.stream()
+                .filter(c -> c.getGrupaid().equals(d.getGrupa()))
+                .findFirst()
+                .ifPresent(c -> d.setGrupaNaziv(c.getNaziv())));
   }
 
   /** Store whole section (called by scheduler). */
