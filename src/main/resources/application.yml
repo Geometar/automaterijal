@@ -68,3 +68,9 @@ showcase:
 
 # In case we want to use offline mode
 offline: false
+
+site:
+  base-url: https://automaterijal.com
+sitemap:
+  brand-prefix: /webshop/manufacturers
+  category-prefix: /webshop/category

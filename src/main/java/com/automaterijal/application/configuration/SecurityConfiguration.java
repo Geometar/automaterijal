@@ -29,42 +29,66 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableScheduling
 @EnableWebSecurity
 public class SecurityConfiguration {
-  @Autowired
-  private UserDetailsService userDetailsService;
+  @Autowired private UserDetailsService userDetailsService;
 
-  @Autowired
-  private AuthEntryPointJwt unauthorizedHandler;
+  @Autowired private AuthEntryPointJwt unauthorizedHandler;
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    http.cors().and().csrf().disable()
-            .sessionManagement()
-            .maximumSessions(10)
-            .sessionRegistry(sessionRegistry())
-            .and()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
-            .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
-            .and()
-            .authorizeHttpRequests((requests) -> requests
-                    .requestMatchers("/api/auth/signin", "/static/**", "/", "/*.js", "/*.ico", "/*.css", "/assets/slike/**").permitAll()
-                    .requestMatchers("/api/**").permitAll()
-                    .anyRequest().authenticated())
-            .logout((logout) -> logout
+    http.cors()
+        .and()
+        .csrf()
+        .disable()
+        .sessionManagement()
+        .maximumSessions(10)
+        .sessionRegistry(sessionRegistry())
+        .and()
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and()
+        .exceptionHandling()
+        .authenticationEntryPoint(unauthorizedHandler)
+        .and()
+        .authorizeHttpRequests(
+            (requests) ->
+                requests
+                    .requestMatchers(
+                        "/api/auth/signin",
+                        "/static/**",
+                        "/",
+                        "/*.js",
+                        "/*.ico",
+                        "/*.css",
+                        "/assets/slike/**")
+                    .permitAll()
+                    .requestMatchers("/api/**")
+                    .permitAll()
+                    .requestMatchers(
+                        "/sitemap.xml",
+                        "/sitemap-brands.xml",
+                        "/sitemap-categories.xml",
+                        "/sitemap-products**",
+                        "/sitemap-static.xml")
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated())
+        .logout(
+            (logout) ->
+                logout
                     .logoutUrl("/logout")
                     .logoutSuccessUrl("/api/roba")
                     .deleteCookies("JSESSIONID")
                     .invalidateHttpSession(true)
                     .permitAll());
 
-    http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+    http.addFilterBefore(
+        authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
     return http.build();
   }
 
-
   @Bean
-  public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+  public AuthenticationManager authenticationManager(
+      AuthenticationConfiguration authenticationConfiguration) throws Exception {
     return authenticationConfiguration.getAuthenticationManager();
   }
 
@@ -75,8 +99,7 @@ public class SecurityConfiguration {
 
   @Bean
   public DaoAuthenticationProvider authenticationProvider() {
-    DaoAuthenticationProvider authProvider
-        = new DaoAuthenticationProvider();
+    DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
     authProvider.setUserDetailsService(userDetailsService);
     authProvider.setPasswordEncoder(passwordEncoder());
     return authProvider;
@@ -110,10 +133,17 @@ public class SecurityConfiguration {
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(List.of("https://automaterijal.com", "https://automaterijal.com", "http://localhost:4200", "http://127.0.0.1:4200", "http://localhost:4000", "http://127.0.0.1:4000"));
+    configuration.setAllowedOrigins(
+        List.of(
+            "https://automaterijal.com",
+            "https://automaterijal.com",
+            "http://localhost:4200",
+            "http://127.0.0.1:4200",
+            "http://localhost:4000",
+            "http://127.0.0.1:4000"));
     configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
     configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
-    configuration.setAllowCredentials(true);  // Allow credentials for these specific origins
+    configuration.setAllowCredentials(true); // Allow credentials for these specific origins
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", configuration);
     return source;

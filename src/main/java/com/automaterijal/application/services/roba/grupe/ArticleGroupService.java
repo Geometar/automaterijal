@@ -26,7 +26,7 @@ public class ArticleGroupService {
   @NonNull final GrupaRepository grupaRepository;
   @NonNull final PodGrupaRepository podGrupaRepository;
 
-  static final List<String> FORBIDDEN_CATEGORIES =
+  public static final List<String> FORBIDDEN_CATEGORIES =
       Arrays.asList("PN", "TG", "6000", "LUCO", "ANULL");
 
   public List<ArticleGroupsDto> fetchAllGroupsWithSubgroups() {

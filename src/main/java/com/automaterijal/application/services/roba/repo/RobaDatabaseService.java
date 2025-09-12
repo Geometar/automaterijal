@@ -66,4 +66,8 @@ public class RobaDatabaseService {
   public List<Roba> pronadjiRobuPoKataloskomBroju(String katBr) {
     return robaRepository.findByKatbr(katBr);
   }
+
+  public List<Roba> findAll() {
+    return robaRepository.findAll();
+  }
 }
