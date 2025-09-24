@@ -46,20 +46,20 @@ public class TecDocController {
         .body(documentBytes);
   }
 
-  @GetMapping(value = "/manufactures")
+  @GetMapping(value = "/manufacturers")
   public ResponseEntity<List<Manufcatures>> getManufactures(
       @RequestParam(value = "type", required = false, defaultValue = "PO") String type) {
     return ResponseEntity.ok().body(tecDocService.getAllManufactures(type));
   }
 
-  @GetMapping(value = "/manufactures/{manuId}")
+  @GetMapping(value = "/manufacturers/{manuId}")
   public ResponseEntity<List<Model>> getModels(
       @PathVariable("manuId") Integer manuId,
       @RequestParam(value = "type", required = false, defaultValue = "PO") String type) {
     return ResponseEntity.ok().body(tecDocService.getModelsForModeId(manuId, type));
   }
 
-  @GetMapping(value = "/manufactures/{manuId}/{modelId}")
+  @GetMapping(value = "/manufacturers/{manuId}/{modelId}")
   public ResponseEntity<List<LinkageTargetDetails>> getModels(
       @PathVariable("manuId") Integer manuId,
       @PathVariable("modelId") Integer modelId,

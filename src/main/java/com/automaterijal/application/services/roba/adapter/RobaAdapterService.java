@@ -13,6 +13,7 @@ import com.automaterijal.application.services.roba.repo.RobaDatabaseService;
 import com.automaterijal.application.services.roba.sort.RobaSortService;
 import com.automaterijal.application.tecdoc.ArticleRecord;
 import com.automaterijal.application.utils.GeneralUtil;
+import java.text.Normalizer;
 import java.util.*;
 import java.util.stream.Collectors;
 import lombok.AccessLevel;
@@ -185,10 +186,25 @@ public class RobaAdapterService {
 
   private static boolean isSearchTermActuallyName(String searchTerm, List<String> nazivi) {
     // Clean up the search term by removing '%' and splitting by spaces
-    String cleanedSearchTerm = searchTerm.replace("%", "").trim();
-    List<String> trazeneReci = Arrays.asList(cleanedSearchTerm.split("\\s+"));
+    if (!StringUtils.hasText(searchTerm) || nazivi == null || nazivi.isEmpty()) {
+      return false;
+    }
 
-    return nazivi.stream().anyMatch(naziv -> trazeneReci.stream().allMatch(naziv::contains));
+    String cleanedSearchTerm = normalizeName(searchTerm.replace("%", "").trim());
+    List<String> trazeneReci =
+        Arrays.stream(cleanedSearchTerm.split("\\s+"))
+            .filter(StringUtils::hasText)
+            .toList();
+
+    if (trazeneReci.isEmpty()) {
+      return false;
+    }
+
+    return nazivi.stream()
+        .filter(StringUtils::hasText)
+        .map(RobaAdapterService::normalizeName)
+        .anyMatch(
+            naziv -> trazeneReci.stream().allMatch(trazenaRec -> naziv.contains(trazenaRec)));
   }
 
   public void fetchByAlternativeCatalogueNumber(Set<String> kataloskiBrojevi) {
@@ -249,5 +265,19 @@ public class RobaAdapterService {
         });
     retVal.clear();
     retVal.addAll(noviKatBrojevi);
+  }
+
+  private static String normalizeName(String value) {
+    if (!StringUtils.hasText(value)) {
+      return "";
+    }
+
+    String latinic = GeneralUtil.cyrillicToLatinic(value);
+    String normalized =
+        Normalizer.normalize(latinic, Normalizer.Form.NFD)
+            .replaceAll("\\p{InCombiningDiacriticalMarks}+", "")
+            .toLowerCase();
+
+    return normalized;
   }
 }
