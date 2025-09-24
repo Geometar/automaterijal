@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 public class ShowcaseService {
 
   private static final String SECTIONS_CACHE = "showcaseSections";
-  private static final String VER = "v2";
+  private static final String VER = "v3";
 
   private final CacheManager cacheManager;
   private final RobaHelper robaHelper;

@@ -164,6 +164,7 @@ public class RobaSearchService {
       robaHelper.setupForTable(magacinDto.getRobaDto().getContent(), ulogovaniPartner);
     }
 
+
     return magacinDto;
   }
 
@@ -188,9 +189,7 @@ public class RobaSearchService {
 
     // Ukljucujemo tecdoc u pretragu
     searchUsingTecDoc(parametri, catalogNumbers);
-
-    return robaAdapterService.fetchSearchResultsByCatalogNumbersAndFilters(
-        parametri, catalogNumbers);
+    return robaAdapterService.fetchSearchResultsByCatalogNumbersAndFilters(parametri, catalogNumbers);
   }
 
   private void searchUsingTecDoc(UniverzalniParametri parametri, Set<String> catalogNumbers) {
@@ -198,6 +197,7 @@ public class RobaSearchService {
     if (!StringUtils.hasText(searchTerm)) {
       return;
     }
+
 
     // TecDoc pretraga na osnovu tačne reči, tip pretrage je 10 (trazimo sve)
     List<ArticleDirectSearchAllNumbersWithStateRecord> response =
@@ -214,6 +214,7 @@ public class RobaSearchService {
     if (catalogNumbers.size() < MAX_TEC_DOC_RESULTS) {
       catalogNumbers.add(searchTerm);
     }
+
   }
 
   /** Generic method to process article records and extract catalog numbers. */

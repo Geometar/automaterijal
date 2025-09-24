@@ -19,46 +19,72 @@ public class CacheConfig {
 
   @Bean
   public CacheManager cacheManager() {
-    // showcaseBucket: per (group:subgroup) buckets used for warmup
-    CacheConfiguration<Object, Object> showcaseBucketEh =
+    javax.cache.CacheManager jCache = Caching.getCachingProvider().getCacheManager();
+
+    registerCache(
+        jCache,
+        "showcaseBucket",
         CacheConfigurationBuilder.newCacheConfigurationBuilder(
                 Object.class, Object.class, ResourcePoolsBuilder.heap(50_000))
             .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(Duration.ofHours(48)))
-            .build();
+            .build());
 
-    // showcaseSections: final sections (maziva, alati, pribor) written by scheduler
-    CacheConfiguration<Object, Object> showcaseSectionsEh =
+    registerCache(
+        jCache,
+        "showcaseSections",
         CacheConfigurationBuilder.newCacheConfigurationBuilder(
                 Object.class, Object.class, ResourcePoolsBuilder.heap(10_000))
             .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(Duration.ofHours(48)))
-            .build();
+            .build());
 
-    // robaCache: existing cache you already use elsewhere
-    CacheConfiguration<Object, Object> robaEh =
+    registerCache(
+        jCache,
+        "robaCache",
         CacheConfigurationBuilder.newCacheConfigurationBuilder(
                 Object.class, Object.class, ResourcePoolsBuilder.heap(100_000))
             .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(Duration.ofMinutes(30)))
-            .build();
+            .build());
 
-    Configuration<Object, Object> showcaseBucketCfg =
-        Eh107Configuration.fromEhcacheCacheConfiguration(showcaseBucketEh);
-    Configuration<Object, Object> showcaseSectionsCfg =
-        Eh107Configuration.fromEhcacheCacheConfiguration(showcaseSectionsEh);
-    Configuration<Object, Object> robaCfg =
-        Eh107Configuration.fromEhcacheCacheConfiguration(robaEh);
+    registerCache(
+        jCache,
+        "showcaseGroupNames",
+        CacheConfigurationBuilder.newCacheConfigurationBuilder(
+                Object.class, Object.class, ResourcePoolsBuilder.heap(10))
+            .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(Duration.ofHours(6)))
+            .build());
 
-    javax.cache.CacheManager jCache = Caching.getCachingProvider().getCacheManager();
+    registerCache(
+        jCache,
+        "showcaseSubGroupNames",
+        CacheConfigurationBuilder.newCacheConfigurationBuilder(
+                Object.class, Object.class, ResourcePoolsBuilder.heap(10))
+            .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(Duration.ofHours(6)))
+            .build());
 
-    if (jCache.getCache("showcaseBucket") == null) {
-      jCache.createCache("showcaseBucket", showcaseBucketCfg);
-    }
-    if (jCache.getCache("showcaseSections") == null) {
-      jCache.createCache("showcaseSections", showcaseSectionsCfg);
-    }
-    if (jCache.getCache("robaCache") == null) {
-      jCache.createCache("robaCache", robaCfg);
-    }
+    registerCache(
+        jCache,
+        "showcaseManufacturerNames",
+        CacheConfigurationBuilder.newCacheConfigurationBuilder(
+                Object.class, Object.class, ResourcePoolsBuilder.heap(10))
+            .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(Duration.ofHours(6)))
+            .build());
+
+    registerCache(
+        jCache,
+        "imageCache",
+        CacheConfigurationBuilder.newCacheConfigurationBuilder(
+                Object.class, Object.class, ResourcePoolsBuilder.heap(1_000))
+            .withExpiry(ExpiryPolicyBuilder.timeToIdleExpiration(Duration.ofHours(3)))
+            .build());
 
     return new JCacheCacheManager(jCache);
+  }
+
+  private void registerCache(
+      javax.cache.CacheManager cacheManager, String cacheName, CacheConfiguration<?, ?> cfg) {
+    if (cacheManager.getCache(cacheName) == null) {
+      Configuration<?, ?> configuration = Eh107Configuration.fromEhcacheCacheConfiguration(cfg);
+      cacheManager.createCache(cacheName, configuration);
+    }
   }
 }

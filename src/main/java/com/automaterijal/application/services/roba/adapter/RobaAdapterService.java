@@ -1,5 +1,7 @@
 package com.automaterijal.application.services.roba.adapter;
 
+import static com.automaterijal.db.tables.Roba.ROBA;
+
 import com.automaterijal.application.domain.cache.RobaCache;
 import com.automaterijal.application.domain.dto.*;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
@@ -12,14 +14,16 @@ import com.automaterijal.application.services.roba.processor.RobaTecDocProcessor
 import com.automaterijal.application.services.roba.repo.RobaDatabaseService;
 import com.automaterijal.application.services.roba.sort.RobaSortService;
 import com.automaterijal.application.tecdoc.ArticleRecord;
+import com.automaterijal.application.utils.CriteriaBuilder;
 import com.automaterijal.application.utils.GeneralUtil;
+import java.math.BigDecimal;
 import java.text.Normalizer;
 import java.util.*;
 import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.jooq.impl.DSL;
+import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -78,8 +82,28 @@ public class RobaAdapterService {
   /** Ulazna metoda iz glavnog servisa */
   public MagacinDto searchFilteredProductsWithoutSearchTerm(UniverzalniParametri parametri) {
     MagacinDto magacinDto = new MagacinDto();
+    CriteriaBuilder criteriaBuilder = CriteriaBuilder.init();
+    criteriaBuilder.addConditionIfTrue(
+            parametri.isNaStanju(), ROBA.STANJE.greaterThan(BigDecimal.ZERO));
+    Condition condition = criteriaBuilder.build();
 
-    List<RobaLightDto> roba = robaJooqRepository.generic(parametri, DSL.noCondition());
+    Integer pageSize = parametri.getPageSize();
+    Integer page = parametri.getPage();
+    boolean paged = pageSize != null && pageSize > 0 && page != null && page >= 0;
+
+    List<RobaLightDto> roba;
+    long total;
+    if (paged) {
+      roba =
+          robaJooqRepository.generic(
+              parametri, condition, pageSize, Math.max(0, page) * pageSize);
+      total = robaJooqRepository.count(parametri, condition);
+    } else {
+      roba = robaJooqRepository.generic(parametri, condition);
+      total = roba.size();
+      pageSize = roba.size() == 0 ? 1 : roba.size();
+      page = 0;
+    }
 
     articleSubGroupService.popuniPodgrupe(magacinDto, parametri, roba);
     proizvodjacService.popuniProizvodjace(roba, magacinDto, parametri);
@@ -87,7 +111,8 @@ public class RobaAdapterService {
     roba = robaSortService.sortByGroup(roba);
 
     magacinDto.setRobaDto(
-        GeneralUtil.createPageable(roba, parametri.getPageSize(), parametri.getPage()));
+        new PageImpl<>(
+            roba, PageRequest.of(Math.max(0, page), Math.max(1, pageSize)), total));
 
     return magacinDto;
   }

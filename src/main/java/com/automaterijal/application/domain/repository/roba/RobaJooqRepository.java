@@ -97,10 +97,15 @@ public class RobaJooqRepository {
   }
 
   public List<RobaLightDto> generic(UniverzalniParametri parametri, Condition condition) {
+    return generic(parametri, condition, null, null);
+  }
+
+  public List<RobaLightDto> generic(
+      UniverzalniParametri parametri, Condition condition, Integer limit, Integer offset) {
     // Kreiraj bazni upit
     SelectConditionStep<
             Record9<Integer, String, String, BigDecimal, String, Integer, String, String, String>>
-        select =
+        baseSelect =
             robaSelect()
                 .and(
                     CriteriaBuilder.init()
@@ -108,8 +113,35 @@ public class RobaJooqRepository {
                         .addCondition(filterPoParametrima(parametri))
                         .build());
 
+    SelectLimitStep<
+            Record9<Integer, String, String, BigDecimal, String, Integer, String, String, String>>
+        ordered = baseSelect.orderBy(ROBA.STANJE.desc());
+
+    if (limit != null && limit > 0) {
+      int limitValue = limit;
+      if (offset != null && offset >= 0) {
+        int offsetValue = offset;
+        return ordered.limit(offsetValue, limitValue).fetchStream().map(this::map).toList();
+      }
+      return ordered.limit(limitValue).fetchStream().map(this::map).toList();
+    }
+
     // Fetch podaci
-    return select.orderBy(ROBA.STANJE.desc()).fetchStream().map(this::map).toList();
+    return ordered.fetchStream().map(this::map).toList();
+  }
+
+  public long count(UniverzalniParametri parametri, Condition condition) {
+    Condition combined =
+        CriteriaBuilder.init()
+            .addCondition(condition)
+            .addCondition(filterPoParametrima(parametri))
+            .build();
+
+    return dslContext
+        .selectCount()
+        .from(ROBA)
+        .where(combined)
+        .fetchOne(0, long.class);
   }
 
   private Condition filterPoParametrima(UniverzalniParametri parametri) {
@@ -119,13 +151,18 @@ public class RobaJooqRepository {
 
     CriteriaBuilder criteriaBuilder = CriteriaBuilder.init();
 
-    // Manufacturer condition
+    // Manufacturer condition (accepts either explicit or mandatory proid list)
+    List<String> resolvedProducers = parametri.resolveProizvodjac();
     criteriaBuilder.addConditionIfNotEmpty(
-        parametri.getMandatoryProid(), ROBA.PROID.in(parametri.getMandatoryProid()));
+        resolvedProducers, ROBA.PROID.in(resolvedProducers));
 
     // Categories condition
     criteriaBuilder.addConditionIfNotEmpty(
         parametri.getGrupa(), ROBA.GRUPAID.in(parametri.getGrupa()));
+
+    // Sub-categories condition
+    criteriaBuilder.addConditionIfNotEmpty(
+        parametri.getPodgrupeZaPretragu(), ROBA.PODGRUPAID.in(parametri.getPodgrupeZaPretragu()));
 
     // Stock condition
     criteriaBuilder.addConditionIfTrue(

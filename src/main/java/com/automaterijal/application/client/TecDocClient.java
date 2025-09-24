@@ -12,6 +12,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
+import reactor.core.publisher.Mono;
 
 @Slf4j
 @Service
@@ -292,16 +293,18 @@ public class TecDocClient {
     headers.set("x-api-key", API_KEY);
 
     try {
-      return webClient
+      T body =
+          webClient
           .post()
           .uri(URL)
           .header(HttpHeaders.CONTENT_TYPE, "application/json")
           .header(HttpHeaders.ACCEPT, "application/json")
           .headers(httpHeaders -> httpHeaders.addAll(headers))
-          .bodyValue(request.toString().trim())
-          .retrieve()
-          .bodyToMono(responseKlasa)
-          .block(); // Blocking for synchronous response, remove if using reactive
+              .bodyValue(request.toString().trim())
+              .retrieve()
+              .bodyToMono(responseKlasa)
+              .block(); // Blocking for synchronous response, remove if using reactive
+      return body;
     } catch (WebClientResponseException e) {
       log.error("Error during REST call: {}, Status code: {}", e.getMessage(), e.getStatusCode());
       return null;
@@ -318,14 +321,36 @@ public class TecDocClient {
             "https://webservice.tecalliance.services/pegasus-3-0/documents/23009/%s/%d?api_key=%s",
             dokumentId, tipSlike, API_KEY);
 
-    return webClient
-        .get()
-        .uri(url)
-        .header(
-            HttpHeaders.ACCEPT,
-            MediaType.APPLICATION_OCTET_STREAM_VALUE) // Expecting byte[] response
-        .retrieve() // Fetches the response
-        .bodyToMono(byte[].class) // Convert response to byte[]
-        .block(); // Block for the response (useful in non-reactive environments)
+    try {
+      return webClient
+          .get()
+          .uri(url)
+          .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_OCTET_STREAM_VALUE)
+          .retrieve()
+          .onStatus(
+              HttpStatusCode::is4xxClientError,
+              response -> {
+                // Ako je 404, vratimo Mono.empty (bez greške); drugim 4xx možemo tretirati kao
+                // grešku
+                return response.statusCode().value() == 404
+                    ? Mono.empty()
+                    : response.createException();
+              })
+          .bodyToMono(byte[].class)
+          .onErrorResume(
+              WebClientResponseException.class,
+              ex -> {
+                // Ako je WebClient greška (npr. 404 koji nije pokriven gore), vratimo null
+                if (ex.getRawStatusCode() == 404) {
+                  return Mono.just(
+                      new byte[0]); // ili Mono.empty() u zavisnosti šta želiš kao fallback
+                }
+                return Mono.error(ex);
+              })
+          .block();
+    } catch (Exception ex) {
+      log.error("Unexpected error during document REST call: {}", ex.getMessage(), ex);
+      return null;
+    }
   }
 }

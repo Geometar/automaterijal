@@ -1,13 +1,7 @@
 package com.automaterijal.application.services.roba.cache;
 
 import com.automaterijal.application.domain.dto.RobaLightDto;
-import com.automaterijal.application.domain.entity.Grupa;
-import com.automaterijal.application.domain.entity.PodGrupa;
-import com.automaterijal.application.domain.entity.Proizvodjac;
-import com.automaterijal.application.domain.repository.ProizvodjacRepository;
 import com.automaterijal.application.domain.repository.ShowcaseRepositoryJooq;
-import com.automaterijal.application.services.roba.grupe.ArticleGroupService;
-import com.automaterijal.application.services.roba.grupe.ArticleSubGroupService;
 import com.automaterijal.application.services.roba.util.RobaHelper;
 import java.util.List;
 import java.util.Map;
@@ -23,14 +17,12 @@ import org.springframework.stereotype.Service;
 public class ShowcaseCacheService {
 
   private final ShowcaseRepositoryJooq repo;
-  private final ProizvodjacRepository proizvodjacRepository;
-  private final ArticleSubGroupService articleSubGroupService;
-  private final ArticleGroupService articleGroupService;
   private final RobaHelper robaHelper;
+  private final ShowcaseLookupService lookupService;
 
   private static final String BUCKET_CACHE = "showcaseBucket";
   private static final String SECTIONS_CACHE = "showcaseSections";
-  private static final String VER = "v2";
+  private static final String VER = "v3";
   private static final int FETCH_SIZE = 40;
   private static final int KEEP_SIZE = 5;
 
@@ -45,8 +37,8 @@ public class ShowcaseCacheService {
       unless = "#result == null || #result.isEmpty()")
   public List<RobaLightDto> top5ForSubgroup(String group, Integer subGroup) {
     var items = repo.fetchByGroupAndSubgroup(group, subGroup, FETCH_SIZE);
-    List<Grupa> categories = articleGroupService.findAll();
-    fillCategorieName(items, categories);
+    Map<String, String> categoryNames = lookupService.groupNameMap();
+    fillCategorieName(items, categoryNames);
 
     // resolve real image from FS (fills bytes); skip items without bytes
     items.forEach(i -> i.setSlika(robaHelper.resolveImage(i.getRobaid(), i.getSlika())));
@@ -60,8 +52,8 @@ public class ShowcaseCacheService {
     if (kept.isEmpty()) return kept;
 
     // enrich names
-    var proMap = loadProizvodjacNameMap();
-    var pgMap = loadPodgrupaNameMap();
+    var proMap = lookupService.manufacturerNameMap();
+    var pgMap = lookupService.subGroupNameMap();
 
     kept.forEach(
         dto -> {
@@ -74,13 +66,14 @@ public class ShowcaseCacheService {
     return kept;
   }
 
-  private void fillCategorieName(List<RobaLightDto> data, List<Grupa> categories) {
+  private void fillCategorieName(List<RobaLightDto> data, Map<String, String> categories) {
     data.forEach(
-        d ->
-            categories.stream()
-                .filter(c -> c.getGrupaid().equals(d.getGrupa()))
-                .findFirst()
-                .ifPresent(c -> d.setGrupaNaziv(c.getNaziv())));
+        d -> {
+          String name = categories.get(d.getGrupa());
+          if (name != null) {
+            d.setGrupaNaziv(name);
+          }
+        });
   }
 
   /** Store whole section (called by scheduler). */
@@ -101,15 +94,10 @@ public class ShowcaseCacheService {
         && dto.getSlika().getSlikeByte().length > 0;
   }
 
-  private Map<String, String> loadProizvodjacNameMap() {
-    return proizvodjacRepository.findAll().stream()
-        .filter(p -> p.getProid() != null && p.getNaziv() != null)
-        .collect(Collectors.toMap(Proizvodjac::getProid, Proizvodjac::getNaziv, (a, b) -> a));
-  }
-
-  private Map<Integer, String> loadPodgrupaNameMap() {
-    return articleSubGroupService.findAll().stream()
-        .filter(p -> p.getPodGrupaId() != null && p.getNaziv() != null)
-        .collect(Collectors.toMap(PodGrupa::getPodGrupaId, PodGrupa::getNaziv, (a, b) -> a));
+  /** Preload lookup caches so the first warm-up round does not hit the DB repeatedly. */
+  public void preloadLookups() {
+    lookupService.groupNameMap();
+    lookupService.subGroupNameMap();
+    lookupService.manufacturerNameMap();
   }
 }

@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,8 +35,15 @@ public class ImageService {
 
   private static final String SLIKA_NIJE_DOSTUPNA_URL = "images/no-image/no-image.png";
 
+  @Cacheable(value = "imageCache", key = "#root.target.normalizeCacheKey(#slikaBaseName)")
   public SlikaDto fetchImageFromFileSystem(String slikaBaseName) {
     SlikaDto slikaDto = new SlikaDto();
+
+    if (slikaBaseName == null || slikaBaseName.isBlank()) {
+      slikaDto.setSlikeUrl(SLIKA_NIJE_DOSTUPNA_URL);
+      slikaDto.setUrl(true);
+      return slikaDto;
+    }
 
     // 1. Remove any existing extension from slikaBaseName
     int dotIndex = slikaBaseName.lastIndexOf(".");
@@ -60,6 +68,16 @@ public class ImageService {
     slikaDto.setSlikeUrl(SLIKA_NIJE_DOSTUPNA_URL);
     slikaDto.setUrl(true);
     return slikaDto;
+  }
+
+  public String normalizeCacheKey(String slikaBaseName) {
+    if (slikaBaseName == null) {
+      return "no-image";
+    }
+    String trimmed = slikaBaseName.trim();
+    int dotIndex = trimmed.lastIndexOf('.');
+    String baseName = dotIndex != -1 ? trimmed.substring(0, dotIndex) : trimmed;
+    return baseName.toLowerCase();
   }
 
   public SlikaDto getImageFromTD(ArticleRecord articleRecord) {
