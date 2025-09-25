@@ -132,6 +132,18 @@ public class ImageService {
     return path;
   }
 
+  public boolean isFallbackImage(String url) {
+    if (!StringUtils.hasText(url)) {
+      return false;
+    }
+    String normalizedUrl = url.trim();
+    String fallback = resolveNoImageUrl();
+    if (StringUtils.hasText(fallback) && fallback.equalsIgnoreCase(normalizedUrl)) {
+      return true;
+    }
+    return normalizedUrl.toLowerCase().contains("no-image");
+  }
+
   public String getFallbackImageUrl() {
     return resolveNoImageUrl();
   }

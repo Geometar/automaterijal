@@ -101,20 +101,7 @@ public class ShowcaseCacheService {
     if (!StringUtils.hasText(url)) {
       return false;
     }
-    if (!StringUtils.hasText(url)) {
-      return false;
-    }
-    return !isFallbackUrl(url);
-  }
-
-  private boolean isFallbackUrl(String url) {
-    String normalized = url.toLowerCase();
-    if (normalized.contains("no-image")) {
-      return true;
-    }
-    String fallback = imageService.getFallbackImageUrl();
-    return StringUtils.hasText(fallback)
-        && normalized.equalsIgnoreCase(fallback.toLowerCase());
+    return !imageService.isFallbackImage(url);
   }
 
   /** Preload lookup caches so the first warm-up round does not hit the DB repeatedly. */

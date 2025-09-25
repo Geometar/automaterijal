@@ -131,9 +131,9 @@ public class RobaHelper {
   }
 
   public SlikaDto resolveImage(Long robaId, SlikaDto existing) {
-    SlikaDto result = tryResolve(robaId != null ? robaId.toString() : null);
-    if (hasRenderableImage(result)) {
-      return result;
+    SlikaDto primary = tryResolve(robaId != null ? robaId.toString() : null);
+    if (!isFallback(primary)) {
+      return primary;
     }
 
     String preferred =
@@ -141,7 +141,12 @@ public class RobaHelper {
             ? existing.getRobaSlika()
             : null;
 
-    return tryResolve(preferred);
+    SlikaDto secondary = tryResolve(preferred);
+    if (!isFallback(secondary)) {
+      return secondary;
+    }
+
+    return primary;
   }
 
   private SlikaDto tryResolve(String baseName) {
@@ -158,6 +163,13 @@ public class RobaHelper {
     if (StringUtils.hasText(slika.getRobaSlika())) {
       return true;
     }
-    return StringUtils.hasText(slika.getSlikeUrl());
+    return StringUtils.hasText(slika.getSlikeUrl()) && !imageService.isFallbackImage(slika.getSlikeUrl());
+  }
+
+  private boolean isFallback(SlikaDto slika) {
+    if (slika == null || !StringUtils.hasText(slika.getSlikeUrl())) {
+      return true;
+    }
+    return imageService.isFallbackImage(slika.getSlikeUrl());
   }
 }
