@@ -47,6 +47,12 @@ spring:
 roba:
   slika:
     tdPrefix: "/home/ftpuser/automaterijal/misc/tecdoc/slike/"
+    publicPrefix: "/images/roba/"
+    noImageUrl: "/images/no-image/no-image.png"
+
+blog:
+  cover-image:
+    directory: "/home/ftpuser/automaterijal/misc/blog/slike/"
 
 logging:
   level:

@@ -2,7 +2,6 @@ package com.automaterijal.application.services.roba.processor;
 
 import com.automaterijal.application.domain.constants.TecDocProizvodjaci;
 import com.automaterijal.application.domain.dto.RobaLightDto;
-import com.automaterijal.application.domain.dto.SlikaDto;
 import com.automaterijal.application.domain.dto.robadetalji.RobaBrojeviDto;
 import com.automaterijal.application.domain.dto.robadetalji.RobaExpandedDto;
 import com.automaterijal.application.domain.entity.Partner;
@@ -47,15 +46,7 @@ public class RobaDetailsProcessor {
 
   private void postaviSlikuIzAtributa(
       RobaLightDto robaLightDto, List<TecDocAtributi> tecDocAtributi) {
-    tecDocAtributi.stream()
-        .filter(tdAtributi -> tdAtributi.getDokument() != null)
-        .forEach(
-            tdAtributi -> {
-              SlikaDto slikaDto = new SlikaDto();
-              slikaDto.setUrl(false);
-              slikaDto.setSlikeByte(tdAtributi.getDokument());
-              robaLightDto.setSlika(slikaDto);
-            });
+    // Byte-based TecDoc images are no longer propagated; rely on filesystem lookup instead.
   }
 
   public void processMainArticle(
@@ -90,13 +81,6 @@ public class RobaDetailsProcessor {
   public void setujSliku(RobaExpandedDto detaljiDto, List<RobaBrojeviDto> tdBrojevi) {
     List<TecDocAtributi> tecDocAtributi =
         tecDocService.vratiTecDocAtributePrekoRobeId(detaljiDto.getRobaid());
-    if (!tdBrojevi.isEmpty()) {
-      for (TecDocAtributi dto : tecDocAtributi) {
-        SlikaDto slikaDto = new SlikaDto();
-        slikaDto.setUrl(false);
-        slikaDto.setSlikeByte(dto.getDokument());
-        detaljiDto.setSlika(slikaDto);
-      }
-    }
+    // When TecDoc provides inline images we no longer stream raw bytes—fall back to filesystem.
   }
 }

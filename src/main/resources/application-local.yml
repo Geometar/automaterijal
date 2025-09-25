@@ -21,3 +21,9 @@ spring:
 roba:
   slika:
     tdPrefix: "/Users/radespasojevic/Documents/Rade/Automaterijal/tecdoc/slike/slike/"
+    publicPrefix: "/images/roba/"
+    noImageUrl: "/images/no-image/no-image.png"
+
+blog:
+  cover-image:
+    directory: "/Users/radespasojevic/Documents/Rade/Automaterijal/tecdoc/slike/blog/"

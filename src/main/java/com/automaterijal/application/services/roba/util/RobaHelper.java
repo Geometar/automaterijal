@@ -22,6 +22,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 @Component
 @RequiredArgsConstructor
@@ -130,18 +131,33 @@ public class RobaHelper {
   }
 
   public SlikaDto resolveImage(Long robaId, SlikaDto existing) {
+    SlikaDto result = tryResolve(robaId != null ? robaId.toString() : null);
+    if (hasRenderableImage(result)) {
+      return result;
+    }
+
     String preferred =
-        (existing != null && existing.getRobaSlika() != null && !existing.getRobaSlika().isEmpty())
+        existing != null && StringUtils.hasText(existing.getRobaSlika())
             ? existing.getRobaSlika()
             : null;
 
-    if (preferred != null) {
-      SlikaDto resolved = imageService.fetchImageFromFileSystem(preferred);
-      if (!resolved.isUrl()) {
-        return resolved;
-      }
-    }
+    return tryResolve(preferred);
+  }
 
-    return imageService.fetchImageFromFileSystem(robaId != null ? robaId.toString() : null);
+  private SlikaDto tryResolve(String baseName) {
+    if (!StringUtils.hasText(baseName)) {
+      return imageService.fetchImageFromFileSystem(null);
+    }
+    return imageService.fetchImageFromFileSystem(baseName);
+  }
+
+  private boolean hasRenderableImage(SlikaDto slika) {
+    if (slika == null) {
+      return false;
+    }
+    if (StringUtils.hasText(slika.getRobaSlika())) {
+      return true;
+    }
+    return StringUtils.hasText(slika.getSlikeUrl());
   }
 }

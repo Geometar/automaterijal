@@ -74,3 +74,12 @@ site:
 sitemap:
   brand-prefix: /webshop/manufacturers
   category-prefix: /webshop/category
+
+blog:
+  cover-image:
+    directory: ../uploads/blog-cover
+
+roba:
+  slika:
+    publicPrefix: /images/roba/
+    noImageUrl: /images/no-image/no-image.png

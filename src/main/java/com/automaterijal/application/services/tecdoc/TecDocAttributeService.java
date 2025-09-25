@@ -4,7 +4,6 @@ import com.automaterijal.application.domain.constants.GlobalConstants;
 import com.automaterijal.application.domain.constants.TecDocProizvodjaci;
 import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.dto.RobaTehnickiOpisDto;
-import com.automaterijal.application.domain.dto.SlikaDto;
 import com.automaterijal.application.domain.dto.robadetalji.RobaAtributesDto;
 import com.automaterijal.application.domain.dto.robadetalji.RobaExpandedDto;
 import com.automaterijal.application.domain.dto.tecdoc.TecDocDokumentacija;
@@ -144,10 +143,7 @@ public class TecDocAttributeService {
 
     tecDocAtributiRepository.save(entity);
 
-    SlikaDto slikaDto = new SlikaDto();
-    slikaDto.setSlikeByte(imageBytes);
-    slikaDto.setUrl(false);
-    robaLightDto.setSlika(slikaDto);
+    // Previously we propagated raw image bytes into the DTO; with CDN-backed images this is no longer needed.
   }
 
   public void saveAttributesManually(List<RobaAtributesDto> dtos) {

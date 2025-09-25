@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -32,41 +33,42 @@ public class ImageService {
   @Value("${roba.slika.tdPrefix}")
   String tdPrefix;
 
-  private static final String[] allowed_extension = {".jpg", ".jpeg", ".png", ".webp"};
+  @Value("${roba.slika.publicPrefix:/images/roba/}")
+  String publicPrefix;
 
-  private static final String SLIKA_NIJE_DOSTUPNA_URL = "images/no-image/no-image.png";
+  @Value("${roba.slika.noImageUrl:/images/no-image/no-image.png}")
+  String noImageUrl;
+
+  @Value("${site.base-url:https://automaterijal.com}")
+  String siteBaseUrl;
+
+  private static final String[] allowed_extension = {".jpg", ".jpeg", ".png", ".webp"};
 
   @Cacheable(value = "imageCache", key = "#root.target.normalizeCacheKey(#slikaBaseName)")
   public SlikaDto fetchImageFromFileSystem(String slikaBaseName) {
     SlikaDto slikaDto = new SlikaDto();
 
-    if (slikaBaseName == null || slikaBaseName.isBlank()) {
-      slikaDto.setSlikeUrl(SLIKA_NIJE_DOSTUPNA_URL);
+    if (!StringUtils.hasText(slikaBaseName)) {
+      slikaDto.setSlikeUrl(resolveNoImageUrl());
       slikaDto.setUrl(true);
       return slikaDto;
     }
 
-    // 1. Remove any existing extension from slikaBaseName
-    int dotIndex = slikaBaseName.lastIndexOf(".");
+    int dotIndex = slikaBaseName.lastIndexOf('.');
     String baseName = (dotIndex != -1) ? slikaBaseName.substring(0, dotIndex) : slikaBaseName;
 
-    // 2. Iterate over allowed extensions
     for (String ext : allowed_extension) {
       Path path = Paths.get(tdPrefix, baseName + ext);
       if (Files.exists(path)) {
-        try {
-          byte[] bytes = Files.readAllBytes(path);
-          slikaDto.setSlikeByte(bytes);
-          slikaDto.setUrl(false);
-          return slikaDto;
-        } catch (IOException e) {
-          break; // fall through to default below
-        }
+        slikaDto.setUrl(true);
+        String fileName = baseName + ext;
+        slikaDto.setSlikeUrl(buildPublicPath(fileName));
+        slikaDto.setRobaSlika(fileName);
+        return slikaDto;
       }
     }
 
-    // 3. If not found, return fallback image
-    slikaDto.setSlikeUrl(SLIKA_NIJE_DOSTUPNA_URL);
+    slikaDto.setSlikeUrl(resolveNoImageUrl());
     slikaDto.setUrl(true);
     return slikaDto;
   }
@@ -81,6 +83,59 @@ public class ImageService {
     return baseName.toLowerCase();
   }
 
+  private String buildPublicPath(String fileName) {
+    String sanitizedFileName = fileName.startsWith("/") ? fileName.substring(1) : fileName;
+    String prefix = normalizedPublicPrefix();
+    if (!prefix.endsWith("/")) {
+      prefix = prefix + "/";
+    }
+    return prefix + sanitizedFileName;
+  }
+
+  private String normalizedPublicPrefix() {
+    String absolute = toAbsoluteUrl(publicPrefix);
+    if (StringUtils.hasText(absolute)) {
+      return trimTrailingSlash(absolute);
+    }
+    String base = StringUtils.hasText(siteBaseUrl) ? siteBaseUrl.trim() : "";
+    return trimTrailingSlash(base);
+  }
+
+  private String trimTrailingSlash(String value) {
+    if (!StringUtils.hasText(value)) {
+      return value;
+    }
+    int end = value.length();
+    while (end > 0 && value.charAt(end - 1) == '/') {
+      end--;
+    }
+    return value.substring(0, end);
+  }
+
+  private String resolveNoImageUrl() {
+    return toAbsoluteUrl(noImageUrl);
+  }
+
+  private String toAbsoluteUrl(String value) {
+    if (!StringUtils.hasText(value)) {
+      return value;
+    }
+    String trimmed = value.trim();
+    if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
+      return trimmed;
+    }
+    String base = StringUtils.hasText(siteBaseUrl) ? trimTrailingSlash(siteBaseUrl.trim()) : "";
+    String path = trimmed.startsWith("/") ? trimmed : "/" + trimmed;
+    if (StringUtils.hasText(base)) {
+      return base + path;
+    }
+    return path;
+  }
+
+  public String getFallbackImageUrl() {
+    return resolveNoImageUrl();
+  }
+
   public SlikaDto getImageFromTD(ArticleRecord articleRecord) {
     SlikaDto slikaDto = new SlikaDto();
     slikaDto.setUrl(true);
@@ -93,7 +148,7 @@ public class ImageService {
 
       return slikaDto;
     } else {
-      slikaDto.setSlikeUrl(SLIKA_NIJE_DOSTUPNA_URL);
+      slikaDto.setSlikeUrl(resolveNoImageUrl());
     }
     return slikaDto;
   }

@@ -2,6 +2,7 @@ package com.automaterijal.application.services.roba.cache;
 
 import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.repository.ShowcaseRepositoryJooq;
+import com.automaterijal.application.services.ImageService;
 import com.automaterijal.application.services.roba.util.RobaHelper;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +21,7 @@ public class ShowcaseCacheService {
   private final ShowcaseRepositoryJooq repo;
   private final RobaHelper robaHelper;
   private final ShowcaseLookupService lookupService;
+  private final ImageService imageService;
 
   private static final String BUCKET_CACHE = "showcaseBucket";
   private static final String SECTIONS_CACHE = "showcaseSections";
@@ -45,7 +48,7 @@ public class ShowcaseCacheService {
 
     var kept =
         items.stream()
-            .filter(ShowcaseCacheService::hasImageBytes) // keep only with bytes
+            .filter(this::hasRenderableImage) // skip fallback/no-image entries
             .limit(KEEP_SIZE)
             .collect(Collectors.toList());
 
@@ -87,11 +90,31 @@ public class ShowcaseCacheService {
 
   // --- helpers ---
 
-  private static boolean hasImageBytes(RobaLightDto dto) {
-    return dto != null
-        && dto.getSlika() != null
-        && dto.getSlika().getSlikeByte() != null
-        && dto.getSlika().getSlikeByte().length > 0;
+  private boolean hasRenderableImage(RobaLightDto dto) {
+    if (dto == null || dto.getSlika() == null) {
+      return false;
+    }
+    if (StringUtils.hasText(dto.getSlika().getRobaSlika())) {
+      return true;
+    }
+    String url = dto.getSlika().getSlikeUrl();
+    if (!StringUtils.hasText(url)) {
+      return false;
+    }
+    if (!StringUtils.hasText(url)) {
+      return false;
+    }
+    return !isFallbackUrl(url);
+  }
+
+  private boolean isFallbackUrl(String url) {
+    String normalized = url.toLowerCase();
+    if (normalized.contains("no-image")) {
+      return true;
+    }
+    String fallback = imageService.getFallbackImageUrl();
+    return StringUtils.hasText(fallback)
+        && normalized.equalsIgnoreCase(fallback.toLowerCase());
   }
 
   /** Preload lookup caches so the first warm-up round does not hit the DB repeatedly. */
