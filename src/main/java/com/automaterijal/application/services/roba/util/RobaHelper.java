@@ -130,10 +130,18 @@ public class RobaHelper {
   }
 
   public SlikaDto resolveImage(Long robaId, SlikaDto existing) {
-    String url =
+    String preferred =
         (existing != null && existing.getRobaSlika() != null && !existing.getRobaSlika().isEmpty())
             ? existing.getRobaSlika()
-            : robaId.toString();
-    return imageService.fetchImageFromFileSystem(url);
+            : null;
+
+    if (preferred != null) {
+      SlikaDto resolved = imageService.fetchImageFromFileSystem(preferred);
+      if (!resolved.isUrl()) {
+        return resolved;
+      }
+    }
+
+    return imageService.fetchImageFromFileSystem(robaId != null ? robaId.toString() : null);
   }
 }

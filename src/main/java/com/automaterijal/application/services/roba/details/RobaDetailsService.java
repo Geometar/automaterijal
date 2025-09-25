@@ -20,6 +20,7 @@ import com.automaterijal.application.services.roba.util.RobaHelper;
 import com.automaterijal.application.services.roba.util.RobaTecDocDetailsHelper;
 import com.automaterijal.application.services.tecdoc.TecDocAttributeService;
 import com.automaterijal.application.tecdoc.*;
+import com.automaterijal.application.utils.SlugUtil;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.*;
 import lombok.AccessLevel;
@@ -50,6 +51,12 @@ public class RobaDetailsService {
   @NonNull final RobaDetailsProcessor robaDetailsProcessor;
   @NonNull final TecDocAttributeService tecDocAttributeService;
   @NonNull final ArticleGroupService articleGroupService;
+
+  public Optional<String> findSlugPathById(Long robaId) {
+    return robaDatabaseService
+        .findByRobaId(robaId)
+        .map(roba -> robaId + "-" + SlugUtil.toSlug(roba.getNaziv()));
+  }
 
   public Optional<RobaExpandedDto> fetchRobaDetails(Long robaId, Partner ulogovaniPartner) {
     Optional<RobaExpandedDto> retVal = Optional.empty();

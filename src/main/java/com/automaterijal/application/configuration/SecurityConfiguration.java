@@ -67,7 +67,8 @@ public class SecurityConfiguration {
                         "/sitemap-brands.xml",
                         "/sitemap-categories.xml",
                         "/sitemap-products**",
-                        "/sitemap-static.xml")
+                        "/sitemap-static.xml",
+                        "/webshop/**")
                     .permitAll()
                     .anyRequest()
                     .authenticated())

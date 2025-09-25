@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -163,6 +164,9 @@ public class ImageService {
     return null;
   }
 
+  @CacheEvict(
+      value = "imageCache",
+      key = "#root.target.normalizeCacheKey(#robaId != null ? #robaId.toString() : null)")
   public String saveImage(Long robaId, MultipartFile file) {
     String extension =
         Optional.ofNullable(file.getOriginalFilename())
@@ -195,6 +199,9 @@ public class ImageService {
     return fileName;
   }
 
+  @CacheEvict(
+      value = "imageCache",
+      key = "#root.target.normalizeCacheKey(#robaId != null ? #robaId.toString() : null)")
   public void deleteImage(Long robaId) {
     for (String ext : allowed_extension) {
       Path filePath = Paths.get(tdPrefix, robaId + ext);
