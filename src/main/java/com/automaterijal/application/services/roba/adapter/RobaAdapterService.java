@@ -84,35 +84,31 @@ public class RobaAdapterService {
     MagacinDto magacinDto = new MagacinDto();
     CriteriaBuilder criteriaBuilder = CriteriaBuilder.init();
     criteriaBuilder.addConditionIfTrue(
-            parametri.isNaStanju(), ROBA.STANJE.greaterThan(BigDecimal.ZERO));
+        parametri.isNaStanju(), ROBA.STANJE.greaterThan(BigDecimal.ZERO));
     Condition condition = criteriaBuilder.build();
 
     Integer pageSize = parametri.getPageSize();
     Integer page = parametri.getPage();
     boolean paged = pageSize != null && pageSize > 0 && page != null && page >= 0;
 
-    List<RobaLightDto> roba;
-    long total;
-    if (paged) {
-      roba =
-          robaJooqRepository.generic(
-              parametri, condition, pageSize, Math.max(0, page) * pageSize);
-      total = robaJooqRepository.count(parametri, condition);
-    } else {
-      roba = robaJooqRepository.generic(parametri, condition);
-      total = roba.size();
-      pageSize = roba.size() == 0 ? 1 : roba.size();
-      page = 0;
-    }
+    List<RobaLightDto> roba = robaJooqRepository.generic(parametri, condition);
 
     articleSubGroupService.popuniPodgrupe(magacinDto, parametri, roba);
     proizvodjacService.popuniProizvodjace(roba, magacinDto, parametri);
     roba = robaFilterService.applyOptionalFilters(parametri, roba);
     roba = robaSortService.sortByGroup(roba);
 
+    long total = roba.size();
+
+    int effectivePageSize = paged ? Math.max(1, pageSize) : (total == 0 ? 1 : (int) total);
+    int effectivePage = paged ? Math.max(0, page) : 0;
+
+    int fromIndex = Math.min(effectivePage * effectivePageSize, roba.size());
+    int toIndex = Math.min(fromIndex + effectivePageSize, roba.size());
+    List<RobaLightDto> pageContent = roba.subList(fromIndex, toIndex);
+
     magacinDto.setRobaDto(
-        new PageImpl<>(
-            roba, PageRequest.of(Math.max(0, page), Math.max(1, pageSize)), total));
+        new PageImpl<>(pageContent, PageRequest.of(effectivePage, effectivePageSize), total));
 
     return magacinDto;
   }
@@ -217,9 +213,7 @@ public class RobaAdapterService {
 
     String cleanedSearchTerm = normalizeName(searchTerm.replace("%", "").trim());
     List<String> trazeneReci =
-        Arrays.stream(cleanedSearchTerm.split("\\s+"))
-            .filter(StringUtils::hasText)
-            .toList();
+        Arrays.stream(cleanedSearchTerm.split("\\s+")).filter(StringUtils::hasText).toList();
 
     if (trazeneReci.isEmpty()) {
       return false;
@@ -228,8 +222,7 @@ public class RobaAdapterService {
     return nazivi.stream()
         .filter(StringUtils::hasText)
         .map(RobaAdapterService::normalizeName)
-        .anyMatch(
-            naziv -> trazeneReci.stream().allMatch(trazenaRec -> naziv.contains(trazenaRec)));
+        .anyMatch(naziv -> trazeneReci.stream().allMatch(trazenaRec -> naziv.contains(trazenaRec)));
   }
 
   public void fetchByAlternativeCatalogueNumber(Set<String> kataloskiBrojevi) {

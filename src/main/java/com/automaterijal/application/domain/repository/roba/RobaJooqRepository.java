@@ -137,11 +137,7 @@ public class RobaJooqRepository {
             .addCondition(filterPoParametrima(parametri))
             .build();
 
-    return dslContext
-        .selectCount()
-        .from(ROBA)
-        .where(combined)
-        .fetchOne(0, long.class);
+    return dslContext.selectCount().from(ROBA).where(combined).fetchOne(0, long.class);
   }
 
   private Condition filterPoParametrima(UniverzalniParametri parametri) {
@@ -153,16 +149,11 @@ public class RobaJooqRepository {
 
     // Manufacturer condition (accepts either explicit or mandatory proid list)
     List<String> resolvedProducers = parametri.resolveProizvodjac();
-    criteriaBuilder.addConditionIfNotEmpty(
-        resolvedProducers, ROBA.PROID.in(resolvedProducers));
+    criteriaBuilder.addConditionIfNotEmpty(resolvedProducers, ROBA.PROID.in(resolvedProducers));
 
     // Categories condition
     criteriaBuilder.addConditionIfNotEmpty(
         parametri.getGrupa(), ROBA.GRUPAID.in(parametri.getGrupa()));
-
-    // Sub-categories condition
-    criteriaBuilder.addConditionIfNotEmpty(
-        parametri.getPodgrupeZaPretragu(), ROBA.PODGRUPAID.in(parametri.getPodgrupeZaPretragu()));
 
     // Stock condition
     criteriaBuilder.addConditionIfTrue(
