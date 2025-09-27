@@ -44,7 +44,10 @@ public class ImageService {
 
   private static final String[] allowed_extension = {".jpg", ".jpeg", ".png", ".webp"};
 
-  @Cacheable(value = "imageCache", key = "#root.target.normalizeCacheKey(#slikaBaseName)")
+  @Cacheable(
+      value = "imageCache",
+      key = "#root.target.normalizeCacheKey(#slikaBaseName)",
+      unless = "#result == null || #root.target.isFallbackImage(#result.getSlikeUrl())")
   public SlikaDto fetchImageFromFileSystem(String slikaBaseName) {
     SlikaDto slikaDto = new SlikaDto();
 

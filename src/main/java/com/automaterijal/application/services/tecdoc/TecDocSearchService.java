@@ -39,7 +39,12 @@ public class TecDocSearchService {
 
   private List<ArticleDirectSearchAllNumbersWithStateRecord> fallbackSearch(
       TecDocProizvodjaci manufacturer, String catalogNumber) {
-    return tecDocClient.tecDocPretraga(catalogNumber, manufacturer.getTecDocId(), 1);
+    List<ArticleDirectSearchAllNumbersWithStateRecord> retVal =
+        tecDocClient.tecDocPretraga(catalogNumber, manufacturer.getTecDocId(), 1);
+    if (retVal.isEmpty() && manufacturer.isUseTradeNumber()) {
+      retVal = tecDocClient.tecDocPretraga(catalogNumber, manufacturer.getTecDocId(), 2);
+    }
+    return retVal;
   }
 
   private Long findMatchingArticleId(

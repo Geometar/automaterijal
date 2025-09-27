@@ -89,23 +89,41 @@ public class RobaAdapterService {
 
     Integer pageSize = parametri.getPageSize();
     Integer page = parametri.getPage();
-    boolean paged = pageSize != null && pageSize > 0 && page != null && page >= 0;
+    boolean hasPageParams = pageSize != null && pageSize > 0 && page != null && page >= 0;
+    boolean paged = parametri.isPaged() && hasPageParams;
 
-    List<RobaLightDto> roba = robaJooqRepository.generic(parametri, condition);
+    int effectivePage = hasPageParams ? Math.max(0, page) : 0;
+    int effectivePageSize = hasPageParams ? Math.max(1, pageSize) : 0;
 
-    articleSubGroupService.popuniPodgrupe(magacinDto, parametri, roba);
-    proizvodjacService.popuniProizvodjace(roba, magacinDto, parametri);
+    List<RobaLightDto> roba;
+    if (paged) {
+      int offset = effectivePage * effectivePageSize;
+      roba = robaJooqRepository.generic(parametri, condition, effectivePageSize, offset);
+    } else {
+      roba = robaJooqRepository.generic(parametri, condition);
+    }
+
+    if (!parametri.isShowcase()) {
+      articleSubGroupService.popuniPodgrupe(magacinDto, parametri, roba);
+      proizvodjacService.popuniProizvodjace(roba, magacinDto, parametri);
+    }
     roba = robaFilterService.applyOptionalFilters(parametri, roba);
     roba = robaSortService.sortByGroup(roba);
 
-    long total = roba.size();
-
-    int effectivePageSize = paged ? Math.max(1, pageSize) : (total == 0 ? 1 : (int) total);
-    int effectivePage = paged ? Math.max(0, page) : 0;
-
-    int fromIndex = Math.min(effectivePage * effectivePageSize, roba.size());
-    int toIndex = Math.min(fromIndex + effectivePageSize, roba.size());
-    List<RobaLightDto> pageContent = roba.subList(fromIndex, toIndex);
+    long total;
+    List<RobaLightDto> pageContent;
+    if (paged && !parametri.isShowcase()) {
+      total = robaJooqRepository.count(parametri, condition);
+      pageContent = roba;
+    } else {
+      total = roba.size();
+      if (effectivePageSize <= 0) {
+        effectivePageSize = total == 0 ? 1 : (int) total;
+      }
+      int fromIndex = Math.min(effectivePage * effectivePageSize, roba.size());
+      int toIndex = Math.min(fromIndex + effectivePageSize, roba.size());
+      pageContent = roba.subList(fromIndex, toIndex);
+    }
 
     magacinDto.setRobaDto(
         new PageImpl<>(pageContent, PageRequest.of(effectivePage, effectivePageSize), total));

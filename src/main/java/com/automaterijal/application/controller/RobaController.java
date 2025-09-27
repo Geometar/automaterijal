@@ -56,6 +56,8 @@ public class RobaController {
       @RequestParam(required = false) Optional<Boolean> naStanju,
       @RequestParam(required = false) List<Integer> podgrupe,
       @RequestParam(required = false) Optional<String> searchTerm,
+      @RequestParam(required = false) boolean paged,
+      @RequestParam(required = false) boolean showcase,
       Authentication authentication) {
 
     var univerzalniParametri =
@@ -68,7 +70,9 @@ public class RobaController {
             naStanju,
             searchTerm,
             podgrupe,
-            false);
+            false,
+            paged,
+            showcase);
     var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
     logWebService.log(uPartner, univerzalniParametri);
     MagacinDto magacinDto = robaSearchService.searchProducts(univerzalniParametri, uPartner);

@@ -19,6 +19,8 @@ public class UniverzalniParametri {
   List<String> grupa;
   List<Integer> podgrupeZaPretragu;
   boolean tecdocPretraga;
+  boolean paged;
+  boolean showcase;
 
   public List<String> resolveProizvodjac() {
     List<String> proizvodjac = this.getProizvodjac();

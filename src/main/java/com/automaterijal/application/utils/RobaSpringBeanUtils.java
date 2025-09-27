@@ -28,7 +28,9 @@ public class RobaSpringBeanUtils {
       Optional<Boolean> naStanju,
       Optional<String> searchTerm,
       List<Integer> podgrupe,
-      boolean tecdocPretaga) {
+      boolean tecdocPretaga,
+      boolean paged,
+      boolean showcase) {
     Integer iPage = page.orElse(0);
     Integer iPageSize = pageSize.orElse(10);
     List<String> iProizvodjac =
@@ -65,7 +67,9 @@ public class RobaSpringBeanUtils {
         iNaStanju,
         iPodgrupe,
         iSearchTerm,
-        tecdocPretaga);
+        tecdocPretaga,
+        paged,
+        showcase);
   }
 
   private UniverzalniParametri popuniParametreZaServis(
@@ -77,7 +81,9 @@ public class RobaSpringBeanUtils {
       Boolean internalNaStanju,
       List<Integer> internaPodgrupe,
       String internalSearchTerm,
-      boolean tecdocPretraga) {
+      boolean tecdocPretraga,
+      boolean paged,
+      boolean showcase) {
     UniverzalniParametri up = new UniverzalniParametri();
     up.setPage(internalPage);
     up.setPageSize(internalPageSize);
@@ -88,6 +94,8 @@ public class RobaSpringBeanUtils {
     up.setTrazenaRec(internalSearchTerm);
     up.setPodgrupeZaPretragu(internaPodgrupe);
     up.setTecdocPretraga(tecdocPretraga);
+    up.setPaged(paged);
+    up.setShowcase(showcase);
     return up;
   }
 }

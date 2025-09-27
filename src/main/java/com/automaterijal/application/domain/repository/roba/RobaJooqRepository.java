@@ -159,6 +159,11 @@ public class RobaJooqRepository {
     criteriaBuilder.addConditionIfTrue(
         parametri.isNaStanju(), ROBA.STANJE.greaterThan(BigDecimal.ZERO));
 
+    if (parametri.isShowcase()) {
+      criteriaBuilder.addConditionIfNotEmpty(
+          parametri.getPodgrupeZaPretragu(), ROBA.PODGRUPAID.in(parametri.getPodgrupeZaPretragu()));
+    }
+
     return criteriaBuilder.build();
   }
 

@@ -88,7 +88,17 @@ public class TecDocController {
 
     var univerzalniParametri =
         robaSpringBeanUtils.popuniIVratiGenerickeParametreZaServis(
-            page, pageSize, proizvodjaci, null, null, naStanju, Optional.empty(), podgrupe, true);
+            page,
+            pageSize,
+            proizvodjaci,
+            null,
+            null,
+            naStanju,
+            Optional.empty(),
+            podgrupe,
+            true,
+            false,
+            false);
 
     var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
 
