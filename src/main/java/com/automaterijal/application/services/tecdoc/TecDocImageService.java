@@ -4,6 +4,8 @@ import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.tecdoc.ArticleDirectSearchById3Record;
 import com.automaterijal.application.tecdoc.ThumbnailByArticleIdRecord;
 import com.automaterijal.application.tecdoc.ThumbnailByArticleIdRecordSeq;
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -57,10 +59,40 @@ public class TecDocImageService {
   }
 
   private void snimiNaDisk(BufferedImage image, Long robaId) {
+    File jpgFile = new File(putDoSlike + robaId + ".jpg");
     try {
-      ImageIO.write(image, "jpg", new File(putDoSlike + robaId + ".jpg"));
+      boolean saved = ImageIO.write(image, "jpg", jpgFile);
+      if (!saved) {
+        BufferedImage rgbImage = convertToRgb(image);
+        saved = ImageIO.write(rgbImage, "jpg", jpgFile);
+      }
+
+      if (!saved) {
+        File pngFile = new File(putDoSlike + robaId + ".png");
+        boolean fallbackSaved = ImageIO.write(image, "png", pngFile);
+        if (fallbackSaved) {
+          log.warn("TecDoc slika za robu {} sačuvana kao PNG zbog alfa kanala", robaId);
+        } else {
+          log.error(
+              "Nije moguće snimiti TecDoc sliku za robu {} ni kao JPG ni kao PNG", robaId);
+        }
+      }
     } catch (IOException e) {
       log.error("Greška pri snimanju slike na disk", e);
     }
+  }
+
+  private BufferedImage convertToRgb(BufferedImage source) {
+    BufferedImage converted =
+        new BufferedImage(source.getWidth(), source.getHeight(), BufferedImage.TYPE_INT_RGB);
+    Graphics2D graphics = converted.createGraphics();
+    try {
+      graphics.setColor(Color.WHITE);
+      graphics.fillRect(0, 0, source.getWidth(), source.getHeight());
+      graphics.drawImage(source, 0, 0, null);
+    } finally {
+      graphics.dispose();
+    }
+    return converted;
   }
 }
