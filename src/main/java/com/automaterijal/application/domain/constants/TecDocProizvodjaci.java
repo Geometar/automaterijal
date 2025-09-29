@@ -65,7 +65,7 @@ public enum TecDocProizvodjaci {
   GLY(202L, null, false, false),
   INA(204L, null, false, false),
   NRF(205L, "-NRF", false, false),
-  CAS(207L, null, false, false),
+  CAS(207L, null, false, true),
   TRA(209L, null, false, false),
   VER(215L, null, false, false),
   NU(216L, null, false, false),
@@ -106,7 +106,7 @@ public enum TecDocProizvodjaci {
   GKN(6306L, null, false, false),
   HIFI(6309L, null, false, false),
   AIC(6558L, "-AIC", false, false),
-  TOTAL(6853L, null, false, false),
+  TOTAL(6853L, null, false, true),
   NTY(6355L, null, false, false),
   BERU_2(6441L, null, false, false);
 
