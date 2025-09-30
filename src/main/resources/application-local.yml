@@ -27,3 +27,6 @@ roba:
 blog:
   cover-image:
     directory: "/Users/radespasojevic/Documents/Rade/Automaterijal/tecdoc/slike/blog/"
+
+sitemap:
+  blog-prefix: /blog

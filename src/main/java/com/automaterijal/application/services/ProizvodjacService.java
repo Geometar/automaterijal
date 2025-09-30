@@ -74,17 +74,21 @@ public class ProizvodjacService {
   }
 
   public List<Proizvodjac> pronadjiSveProizvodjaceZaVrstu() {
-    return pronadjiSve();
+    return findAll();
   }
 
   public Optional<Proizvodjac> vratiProizvodjacaPoPk(String id) {
     return proizvodjacRepository.findById(id);
   }
 
-  public List<Proizvodjac> pronadjiSve() {
+  public List<Proizvodjac> findAll() {
     return proizvodjacRepository.findAllByOrderByNazivAsc().stream()
         .filter(proizvodjac -> !proizvodjac.getNaziv().equals("0"))
         .toList();
+  }
+
+  public List<ProizvodjacDTO> fetchAll() {
+    return findAll().stream().map(mapper::map).collect(Collectors.toList());
   }
 
   public Optional<ProizvodjacDTO> findBySlug(String slug) {

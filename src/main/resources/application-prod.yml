@@ -62,5 +62,6 @@ logging:
     org.hibernate.type: WARN
 
 sitemap:
+  blog-prefix: /blog
   products:
     refresh-cron: 0 0 2 * * *

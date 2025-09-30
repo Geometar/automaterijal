@@ -51,6 +51,12 @@ public class SitemapController {
         .append("/sitemap-brands.xml</loc><lastmod>")
         .append(now)
         .append("</lastmod></sitemap>\n");
+    String blogLastmod = isoUtc(sitemapService.getLatestBlogLastmod().orElse(null));
+    sb.append("  <sitemap><loc>")
+        .append(baseUrl)
+        .append("/sitemap-blog.xml</loc><lastmod>")
+        .append(blogLastmod)
+        .append("</lastmod></sitemap>\n");
     String productLastmod = isoUtc(productSitemapCache.getLastRefreshTime());
     sb.append("  <sitemap><loc>")
         .append(baseUrl)
@@ -80,6 +86,11 @@ public class SitemapController {
         .append("/</loc><lastmod>")
         .append(now)
         .append("</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>\n");
+    sb.append("  <url><loc>")
+        .append(baseUrl)
+        .append("/blog</loc><lastmod>")
+        .append(now)
+        .append("</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>\n");
     sb.append("  <url><loc>")
         .append(baseUrl)
         .append("/home</loc><lastmod>")
@@ -120,6 +131,26 @@ public class SitemapController {
           .append(url)
           .append("</loc><lastmod>")
           .append(now)
+          .append("</lastmod></url>\n");
+    }
+    sb.append("</urlset>");
+    return sb.toString();
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Blog
+  // ─────────────────────────────────────────────────────────────────────────────
+  @GetMapping("/sitemap-blog.xml")
+  public String sitemapBlog() {
+    List<SitemapService.BlogSitemapEntry> entries = sitemapService.getBlogSitemapEntries();
+    StringBuilder sb = new StringBuilder();
+    sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+    sb.append("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n");
+    for (SitemapService.BlogSitemapEntry entry : entries) {
+      sb.append("  <url><loc>")
+          .append(entry.url())
+          .append("</loc><lastmod>")
+          .append(isoUtc(entry.lastmod()))
           .append("</lastmod></url>\n");
     }
     sb.append("</urlset>");

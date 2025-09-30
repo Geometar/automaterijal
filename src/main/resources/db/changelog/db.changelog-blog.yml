@@ -1,0 +1,255 @@
+---
+databaseChangeLog:
+  - changeSet:
+      id: 20250218-01-create-blog-tables
+      author: codex
+      changes:
+        - createTable:
+            tableName: blog_category
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: VARCHAR(120)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: slug
+                  type: VARCHAR(160)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: description
+                  type: VARCHAR(320)
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: blog_tag
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: VARCHAR(120)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: slug
+                  type: VARCHAR(160)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: blog_post
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: title
+                  type: VARCHAR(200)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: slug
+                  type: VARCHAR(200)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: excerpt
+                  type: VARCHAR(500)
+              - column:
+                  name: cover_image_url
+                  type: VARCHAR(255)
+              - column:
+                  name: content
+                  type: LONGTEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: meta_title
+                  type: VARCHAR(255)
+              - column:
+                  name: meta_description
+                  type: VARCHAR(320)
+              - column:
+                  name: canonical_url
+                  type: VARCHAR(255)
+              - column:
+                  name: meta_keywords
+                  type: VARCHAR(255)
+              - column:
+                  name: status
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: published_at
+                  type: TIMESTAMP
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+        - createTable:
+            tableName: blog_post_categories
+            columns:
+              - column:
+                  name: post_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: category_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: blog_post_tags
+            columns:
+              - column:
+                  name: post_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: tag_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: blog_comment
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: post_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: author_name
+                  type: VARCHAR(120)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: author_email
+                  type: VARCHAR(180)
+              - column:
+                  name: content
+                  type: VARCHAR(2048)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: approved
+                  type: BOOLEAN
+                  defaultValueBoolean: true
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: blog_post_categories
+            baseColumnNames: post_id
+            referencedTableName: blog_post
+            referencedColumnNames: id
+            constraintName: fk_blog_post_categories_post
+            onDelete: CASCADE
+        - addForeignKeyConstraint:
+            baseTableName: blog_post_categories
+            baseColumnNames: category_id
+            referencedTableName: blog_category
+            referencedColumnNames: id
+            constraintName: fk_blog_post_categories_category
+            onDelete: CASCADE
+        - addForeignKeyConstraint:
+            baseTableName: blog_post_tags
+            baseColumnNames: post_id
+            referencedTableName: blog_post
+            referencedColumnNames: id
+            constraintName: fk_blog_post_tags_post
+            onDelete: CASCADE
+        - addForeignKeyConstraint:
+            baseTableName: blog_post_tags
+            baseColumnNames: tag_id
+            referencedTableName: blog_tag
+            referencedColumnNames: id
+            constraintName: fk_blog_post_tags_tag
+            onDelete: CASCADE
+        - addForeignKeyConstraint:
+            baseTableName: blog_comment
+            baseColumnNames: post_id
+            referencedTableName: blog_post
+            referencedColumnNames: id
+            constraintName: fk_blog_comment_post
+            onDelete: CASCADE
+        - addUniqueConstraint:
+            tableName: blog_post_tags
+            columnNames: post_id, tag_id
+            constraintName: uq_blog_post_tags
+        - addUniqueConstraint:
+            tableName: blog_post_categories
+            columnNames: post_id, category_id
+            constraintName: uq_blog_post_categories
+  - changeSet:
+      id: 20250218-06-add-showcase-column
+      author: codex
+      changes:
+        - addColumn:
+            tableName: blog_post
+            columns:
+              - column:
+                  name: showcase
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 20250306-01-add-showcase-payload-column
+      author: codex
+      changes:
+        - addColumn:
+            tableName: blog_post
+            columns:
+              - column:
+                  name: showcase_payload
+                  type: LONGTEXT
+                  constraints:
+                    nullable: true
+        - update:
+            tableName: blog_post
+            columns:
+              showcase_payload: 'true'
+            where: showcase = 1

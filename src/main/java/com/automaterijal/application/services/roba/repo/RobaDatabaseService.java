@@ -3,7 +3,6 @@ package com.automaterijal.application.services.roba.repo;
 import com.automaterijal.application.domain.cache.RobaCache;
 import com.automaterijal.application.domain.dto.ProizvodjacDTO;
 import com.automaterijal.application.domain.dto.RobaLightDto;
-import com.automaterijal.application.domain.entity.Proizvodjac;
 import com.automaterijal.application.domain.entity.roba.Roba;
 import com.automaterijal.application.domain.mapper.RobaMapper;
 import com.automaterijal.application.domain.repository.roba.RobaRepository;
@@ -39,7 +38,7 @@ public class RobaDatabaseService {
     List<RobaLightDto> retVal =
         mapper.map(
             robaRepository.findByRobaidIn(robaCache.stream().map(RobaCache::getRobaid).toList()));
-    List<Proizvodjac> proizvodjacDTO = proizvodjacService.pronadjiSve();
+    List<ProizvodjacDTO> proizvodjacDTO = proizvodjacService.fetchAll();
     retVal.forEach(
         robaLightDto ->
             proizvodjacDTO.stream()

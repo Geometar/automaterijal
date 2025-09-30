@@ -2,6 +2,7 @@ package com.automaterijal.application.controller;
 
 import com.automaterijal.application.domain.dto.ProizvodjacDTO;
 import com.automaterijal.application.services.ProizvodjacService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,5 +23,10 @@ public class ManufactureController {
         .findBySlug(slug)
         .map(ResponseEntity::ok)
         .orElse(ResponseEntity.notFound().build());
+  }
+
+  @GetMapping
+  public ResponseEntity<List<ProizvodjacDTO>> findAll() {
+    return ResponseEntity.ok(proizvodjacService.fetchAll());
   }
 }

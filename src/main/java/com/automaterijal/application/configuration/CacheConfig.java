@@ -77,6 +77,22 @@ public class CacheConfig {
             .withExpiry(ExpiryPolicyBuilder.timeToIdleExpiration(Duration.ofHours(3)))
             .build());
 
+    registerCache(
+        jCache,
+        "blogPostList",
+        CacheConfigurationBuilder.newCacheConfigurationBuilder(
+                Object.class, Object.class, ResourcePoolsBuilder.heap(2_000))
+            .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(Duration.ofMinutes(15)))
+            .build());
+
+    registerCache(
+        jCache,
+        "blogPostDetail",
+        CacheConfigurationBuilder.newCacheConfigurationBuilder(
+                Object.class, Object.class, ResourcePoolsBuilder.heap(2_000))
+            .withExpiry(ExpiryPolicyBuilder.timeToIdleExpiration(Duration.ofMinutes(30)))
+            .build());
+
     return new JCacheCacheManager(jCache);
   }
 

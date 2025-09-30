@@ -4,13 +4,18 @@ import com.automaterijal.application.domain.dto.ArticleGroupsDto;
 import com.automaterijal.application.domain.dto.ArticleSubGroupsDto;
 import com.automaterijal.application.domain.entity.Proizvodjac;
 import com.automaterijal.application.domain.entity.roba.Roba;
+import com.automaterijal.application.domain.repository.blog.BlogPostRepository;
 import com.automaterijal.application.services.roba.grupe.ArticleGroupService;
 import com.automaterijal.application.services.roba.repo.RobaDatabaseService;
 import com.automaterijal.application.utils.SlugUtil;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +23,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 @Service
 @Transactional(readOnly = true)
@@ -28,6 +34,7 @@ public class SitemapService {
   @NonNull final ProizvodjacService proizvodjacService;
   @NonNull final ArticleGroupService articleGroupService;
   @NonNull final RobaDatabaseService robaDatabaseService;
+  @NonNull final BlogPostRepository blogPostRepository;
 
   public static final int PRODUCT_SITEMAP_LIMIT = 50_000;
 
@@ -40,8 +47,11 @@ public class SitemapService {
   @Value("${sitemap.category-prefix:/webshop/category}")
   String categoryPrefix;
 
+  @Value("${sitemap.blog-prefix:/blog}")
+  String blogPrefix;
+
   public List<String> getAllBrandUrls() {
-    return proizvodjacService.pronadjiSve().stream()
+    return proizvodjacService.findAll().stream()
         .map(Proizvodjac::getNaziv)
         .filter(n -> n != null && !n.isBlank())
         .map(SlugUtil::toSlug)
@@ -135,6 +145,31 @@ public class SitemapService {
     return List.of(all.subList(0, perPage), all.subList(perPage, total));
   }
 
+  public List<BlogSitemapEntry> getBlogSitemapEntries() {
+    String normalizedBase = stripTrailingSlash(baseUrl);
+    String prefix = ensureLeadingSlash(blogPrefix);
+
+    List<BlogSitemapEntry> entries = new ArrayList<>(512);
+    try (var stream = blogPostRepository.streamPublishedOrdered()) {
+      stream.forEach(
+          post -> {
+            String slug = safe(post.getSlug());
+            if (!StringUtils.hasText(slug)) {
+              return;
+            }
+            String url = normalizedBase + prefix + "/" + slug;
+            entries.add(new BlogSitemapEntry(url, toUtcOffset(post.getPublishedAt())));
+          });
+    }
+    return List.copyOf(entries);
+  }
+
+  public Optional<OffsetDateTime> getLatestBlogLastmod() {
+    try (var stream = blogPostRepository.streamLatestPublishedAt()) {
+      return stream.findFirst().map(SitemapService::toUtcOffset);
+    }
+  }
+
   // Helpers
   private String buildProductUrl(Roba roba) {
     String normalizedBase = stripTrailingSlash(baseUrl);
@@ -170,4 +205,10 @@ public class SitemapService {
   private static String safe(String s) {
     return s == null ? "" : s.trim();
   }
+
+  private static OffsetDateTime toUtcOffset(LocalDateTime time) {
+    return time == null ? null : time.atOffset(ZoneOffset.UTC);
+  }
+
+  public record BlogSitemapEntry(String url, OffsetDateTime lastmod) {}
 }
