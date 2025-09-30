@@ -2,6 +2,7 @@ package com.automaterijal.application.controller;
 
 import static lombok.AccessLevel.PRIVATE;
 
+import com.automaterijal.application.services.ProductSitemapCache;
 import com.automaterijal.application.services.SitemapService;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 public class SitemapController {
 
   @NonNull final SitemapService sitemapService;
+  @NonNull final ProductSitemapCache productSitemapCache;
 
   @Value("${site.base-url}")
   String baseUrl;
@@ -41,11 +43,6 @@ public class SitemapController {
         .append("</lastmod></sitemap>\n");
     sb.append("  <sitemap><loc>")
         .append(baseUrl)
-        .append("/sitemap-products.xml</loc><lastmod>")
-        .append(now)
-        .append("</lastmod></sitemap>\n");
-    sb.append("  <sitemap><loc>")
-        .append(baseUrl)
         .append("/sitemap-categories.xml</loc><lastmod>")
         .append(now)
         .append("</lastmod></sitemap>\n");
@@ -53,6 +50,17 @@ public class SitemapController {
         .append(baseUrl)
         .append("/sitemap-brands.xml</loc><lastmod>")
         .append(now)
+        .append("</lastmod></sitemap>\n");
+    String productLastmod = isoUtc(productSitemapCache.getLastRefreshTime());
+    sb.append("  <sitemap><loc>")
+        .append(baseUrl)
+        .append("/sitemap-products-1.xml</loc><lastmod>")
+        .append(productLastmod)
+        .append("</lastmod></sitemap>\n");
+    sb.append("  <sitemap><loc>")
+        .append(baseUrl)
+        .append("/sitemap-products-2.xml</loc><lastmod>")
+        .append(productLastmod)
         .append("</lastmod></sitemap>\n");
     sb.append("</sitemapindex>");
     return sb.toString();
@@ -141,53 +149,11 @@ public class SitemapController {
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
-  // Products index
-  // ─────────────────────────────────────────────────────────────────────────────
-  @GetMapping("/sitemap-products.xml")
-  public String sitemapProductsIndex() {
-    String now = nowIsoUtc();
-    List<List<String>> parts = sitemapService.getProductUrlsTwoPages();
-
-    StringBuilder sb = new StringBuilder();
-    sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-    sb.append("<sitemapindex xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n");
-    for (int i = 0; i < parts.size(); i++) {
-      sb.append("  <sitemap><loc>")
-          .append(baseUrl)
-          .append("/sitemap-products-")
-          .append(i + 1)
-          .append(".xml</loc><lastmod>")
-          .append(now)
-          .append("</lastmod></sitemap>\n");
-    }
-    sb.append("</sitemapindex>");
-    return sb.toString();
-  }
-
-  // ─────────────────────────────────────────────────────────────────────────────
   // Products pages
   // ─────────────────────────────────────────────────────────────────────────────
   @GetMapping("/sitemap-products-{page}.xml")
   public String sitemapProductsPage(@PathVariable int page) {
-    String now = nowIsoUtc();
-    List<List<String>> parts = sitemapService.getProductUrlsTwoPages();
-    if (page < 1 || page > parts.size()) {
-      return "<?xml version=\"1.0\" encoding=\"UTF-8\"?><urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"></urlset>";
-    }
-    List<String> urls = parts.get(page - 1);
-
-    StringBuilder sb = new StringBuilder();
-    sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-    sb.append("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n");
-    for (String url : urls) {
-      sb.append("  <url><loc>")
-          .append(url)
-          .append("</loc><lastmod>")
-          .append(now)
-          .append("</lastmod></url>\n");
-    }
-    sb.append("</urlset>");
-    return sb.toString();
+    return productSitemapCache.getPage(page);
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -195,5 +161,12 @@ public class SitemapController {
   // ─────────────────────────────────────────────────────────────────────────────
   private String nowIsoUtc() {
     return OffsetDateTime.now(ZoneOffset.UTC).toString(); // ISO-8601
+  }
+
+  private String isoUtc(OffsetDateTime time) {
+    if (time == null) {
+      return nowIsoUtc();
+    }
+    return time.withOffsetSameInstant(ZoneOffset.UTC).toString();
   }
 }

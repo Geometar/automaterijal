@@ -74,6 +74,8 @@ site:
 sitemap:
   brand-prefix: /webshop/manufacturers
   category-prefix: /webshop/category
+  products:
+    refresh-cron: 0 0 2 * * *
 
 blog:
   cover-image:

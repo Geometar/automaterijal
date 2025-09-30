@@ -60,3 +60,7 @@ logging:
     org.hibernate: WARN
     org.hibernate.SQL: WARN
     org.hibernate.type: WARN
+
+sitemap:
+  products:
+    refresh-cron: 0 0 2 * * *
