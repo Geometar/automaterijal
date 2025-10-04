@@ -251,7 +251,7 @@ public class TecDocClient {
     request.put("getGenericArticles", body);
 
     GenericArticlesResponse result = vratiOdgovor(request, GenericArticlesResponse.class);
-it    return extractListFromResponse(
+    return extractListFromResponse(
         result,
         response ->
             response != null && response.getData() != null

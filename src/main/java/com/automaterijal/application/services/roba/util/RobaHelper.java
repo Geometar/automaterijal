@@ -51,6 +51,10 @@ public class RobaHelper {
 
       setupTechnicalAttributesForTable(attributes, dto);
       tecDocAttributeService.addManualTehnicalDetails(dto, attributes);
+      if (dto.getTehnickiOpis().isEmpty() && !attributes.isEmpty()) {
+        List<RobaTehnickiOpisDto> result = extractTechnicalAttributes(attributes, false);
+        dto.setTehnickiOpis(result);
+      }
 
       setupPrice(dto, allPrices, partner);
 
@@ -163,7 +167,8 @@ public class RobaHelper {
     if (StringUtils.hasText(slika.getRobaSlika())) {
       return true;
     }
-    return StringUtils.hasText(slika.getSlikeUrl()) && !imageService.isFallbackImage(slika.getSlikeUrl());
+    return StringUtils.hasText(slika.getSlikeUrl())
+        && !imageService.isFallbackImage(slika.getSlikeUrl());
   }
 
   private boolean isFallback(SlikaDto slika) {
