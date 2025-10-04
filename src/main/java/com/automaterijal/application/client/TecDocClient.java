@@ -150,6 +150,7 @@ public class TecDocClient {
     body.put("linkageTargetType", type);
     body.put("mfrIds", manuId);
     body.put("vehicleModelSeriesIds", modelId);
+    body.put("perPage", 100);
 
     // Sortiranje
     JSONArray sort = new JSONArray();
@@ -250,7 +251,7 @@ public class TecDocClient {
     request.put("getGenericArticles", body);
 
     GenericArticlesResponse result = vratiOdgovor(request, GenericArticlesResponse.class);
-    return extractListFromResponse(
+it    return extractListFromResponse(
         result,
         response ->
             response != null && response.getData() != null
@@ -295,11 +296,11 @@ public class TecDocClient {
     try {
       T body =
           webClient
-          .post()
-          .uri(URL)
-          .header(HttpHeaders.CONTENT_TYPE, "application/json")
-          .header(HttpHeaders.ACCEPT, "application/json")
-          .headers(httpHeaders -> httpHeaders.addAll(headers))
+              .post()
+              .uri(URL)
+              .header(HttpHeaders.CONTENT_TYPE, "application/json")
+              .header(HttpHeaders.ACCEPT, "application/json")
+              .headers(httpHeaders -> httpHeaders.addAll(headers))
               .bodyValue(request.toString().trim())
               .retrieve()
               .bodyToMono(responseKlasa)

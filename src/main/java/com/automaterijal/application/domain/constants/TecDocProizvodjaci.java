@@ -101,7 +101,7 @@ public enum TecDocProizvodjaci {
   LKOIL(4748L, null, false, true),
   ASMET(4829L, null, false, false),
   DON(4868L, null, false, false),
-  VA(6186L, null, false, false),
+  VA(6186L, "-VALV", false, false),
   HIQ(6265L, null, false, false),
   GKN(6306L, null, false, false),
   HIFI(6309L, null, false, false),
