@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @ControllerAdvice
 @Slf4j
@@ -55,6 +56,20 @@ public class GlobalControllerAdvice {
     body.put("fieldErrors", fieldErrors);
     log.error("Exception caught: ", ex);
     return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(NoResourceFoundException.class)
+  public ResponseEntity<Object> handleNoResourceFound(
+      NoResourceFoundException ex, WebRequest request) {
+    Map<String, Object> body = new HashMap<>();
+    body.put("timestamp", LocalDateTime.now());
+    body.put("status", HttpStatus.NOT_FOUND.value());
+    body.put("error", "Resource Not Found");
+    body.put("message", ex.getMessage());
+    body.put("path", request.getDescription(false));
+
+    log.warn("Static resource not found: {}", ex.getMessage());
+    return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
   }
 
   /** Handle generic exceptions (catch-all for runtime errors). */

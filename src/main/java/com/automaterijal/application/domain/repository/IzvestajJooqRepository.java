@@ -56,7 +56,11 @@ public class IzvestajJooqRepository {
     select.orderBy(KOMENTAR.DATUM_KREIRANJA.desc());
     List<Komentar> komentari = select.fetch().stream().map(this::napraviKomentar).toList();
     int start = pageable.getPageSize() * pageable.getPageNumber();
-    int end = Math.min((start + pageable.getPageSize()), komentari.size());
+    if (start >= komentari.size()) {
+      return new PageImpl<>(
+          List.of(), PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()), komentari.size());
+    }
+    int end = Math.min(start + pageable.getPageSize(), komentari.size());
     List<Komentar> retVal = komentari.subList(start, end);
     return new PageImpl<>(
         retVal, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()), komentari.size());
