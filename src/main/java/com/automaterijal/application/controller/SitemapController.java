@@ -51,6 +51,11 @@ public class SitemapController {
         .append("/sitemap-brands.xml</loc><lastmod>")
         .append(now)
         .append("</lastmod></sitemap>\n");
+    sb.append("  <sitemap><loc>")
+        .append(baseUrl)
+        .append("/sitemap-brand-pages.xml</loc><lastmod>")
+        .append(now)
+        .append("</lastmod></sitemap>\n");
     String blogLastmod = isoUtc(sitemapService.getLatestBlogLastmod().orElse(null));
     sb.append("  <sitemap><loc>")
         .append(baseUrl)
@@ -127,6 +132,25 @@ public class SitemapController {
     sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
     sb.append("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n");
     for (String url : brandUrls) {
+      sb.append("  <url><loc>")
+          .append(url)
+          .append("</loc><lastmod>")
+          .append(now)
+          .append("</lastmod></url>\n");
+    }
+    sb.append("</urlset>");
+    return sb.toString();
+  }
+
+  @GetMapping("/sitemap-brand-pages.xml")
+  public String sitemapBrandPages() {
+    String now = nowIsoUtc();
+    List<String> brandDetailUrls = sitemapService.getAllBrandDetailUrls();
+
+    StringBuilder sb = new StringBuilder();
+    sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+    sb.append("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n");
+    for (String url : brandDetailUrls) {
       sb.append("  <url><loc>")
           .append(url)
           .append("</loc><lastmod>")

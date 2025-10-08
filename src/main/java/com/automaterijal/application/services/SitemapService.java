@@ -31,6 +31,25 @@ import org.springframework.util.StringUtils;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SitemapService {
 
+  private static final List<String> BRAND_DETAIL_SLUGS =
+      List.of(
+          "shell",
+          "lukoil",
+          "fuchs",
+          "valvoline",
+          "febi",
+          "bilstein",
+          "blue-print",
+          "hi-q",
+          "mahle",
+          "fleetguard",
+          "victor-reinz",
+          "pierburg",
+          "kolbenschmidt",
+          "magneti-marelli",
+          "bottari",
+          "energizer");
+
   @NonNull final ProizvodjacService proizvodjacService;
   @NonNull final ArticleGroupService articleGroupService;
   @NonNull final RobaDatabaseService robaDatabaseService;
@@ -43,6 +62,9 @@ public class SitemapService {
 
   @Value("${sitemap.brand-prefix:/manufacturers}")
   String brandPrefix;
+
+  @Value("${sitemap.brand-details-prefix:/brendovi}")
+  String brandDetailsPrefix;
 
   @Value("${sitemap.category-prefix:/webshop/category}")
   String categoryPrefix;
@@ -70,6 +92,14 @@ public class SitemapService {
   // ostaviš ako ti treba i varijanta sa nazivom:
   private String brandToUrl(String brandName) {
     return brandToUrlFromSlug(SlugUtil.toSlug(brandName));
+  }
+
+  public List<String> getAllBrandDetailUrls() {
+    String normalizedBase = stripTrailingSlash(baseUrl);
+    String prefix = ensureLeadingSlash(brandDetailsPrefix);
+    return BRAND_DETAIL_SLUGS.stream()
+        .map(slug -> normalizedBase + prefix + "/" + slug)
+        .toList();
   }
 
   public List<String> getAllCategoryUrls() {

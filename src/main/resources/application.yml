@@ -73,6 +73,7 @@ site:
   base-url: https://automaterijal.com
 sitemap:
   brand-prefix: /webshop/manufacturers
+  brand-details-prefix: /brendovi
   category-prefix: /webshop/category
   blog-prefix: /blog
   products:

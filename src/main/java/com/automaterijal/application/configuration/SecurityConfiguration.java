@@ -65,6 +65,7 @@ public class SecurityConfiguration {
                     .requestMatchers(
                         "/sitemap.xml",
                         "/sitemap-brands.xml",
+                        "/sitemap-brand-pages.xml",
                         "/sitemap-categories.xml",
                         "/sitemap-blog.xml",
                         "/sitemap-products**",
