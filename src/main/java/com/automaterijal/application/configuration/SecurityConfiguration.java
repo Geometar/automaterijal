@@ -70,6 +70,7 @@ public class SecurityConfiguration {
                         "/sitemap-blog.xml",
                         "/sitemap-products**",
                         "/sitemap-static.xml",
+                        "/share/**",
                         "/webshop/**")
                     .permitAll()
                     .anyRequest()
