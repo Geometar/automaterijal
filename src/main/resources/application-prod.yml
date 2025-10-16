@@ -6,11 +6,6 @@ server:
   servlet:
     session:
       timeout: 180m
-  ssl:
-    key-store: classpath:ssl/automaterijal.p12
-    key-store-password: Crninovembar18!
-    key-store-type: PKCS12
-    key-alias: 1
 
 spring:
   jpa:

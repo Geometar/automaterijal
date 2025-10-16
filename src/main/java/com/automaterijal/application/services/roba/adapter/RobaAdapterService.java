@@ -123,6 +123,7 @@ public class RobaAdapterService {
       int fromIndex = Math.min(effectivePage * effectivePageSize, roba.size());
       int toIndex = Math.min(fromIndex + effectivePageSize, roba.size());
       pageContent = roba.subList(fromIndex, toIndex);
+      proizvodjacService.popuniProizvodjace(pageContent, magacinDto, parametri);
     }
 
     magacinDto.setRobaDto(
