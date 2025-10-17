@@ -3,6 +3,7 @@ package com.automaterijal.application.configuration;
 import com.automaterijal.application.services.security.AuthEntryPointJwt;
 import com.automaterijal.application.services.security.AuthTokenFilter;
 import com.automaterijal.application.utils.LoginStaticUtils;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -78,8 +79,10 @@ public class SecurityConfiguration {
         .logout(
             (logout) ->
                 logout
-                    .logoutUrl("/logout")
-                    .logoutSuccessUrl("/api/roba")
+                    .logoutUrl("/api/logout")
+                    .logoutSuccessHandler(
+                        (request, response, authentication) ->
+                            response.setStatus(HttpServletResponse.SC_NO_CONTENT))
                     .deleteCookies("JSESSIONID")
                     .invalidateHttpSession(true)
                     .permitAll());
