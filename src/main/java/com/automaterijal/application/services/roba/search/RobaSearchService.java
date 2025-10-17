@@ -8,7 +8,7 @@ import com.automaterijal.application.services.TecDocService;
 import com.automaterijal.application.services.roba.adapter.RobaAdapterService;
 import com.automaterijal.application.services.roba.util.RobaHelper;
 import com.automaterijal.application.tecdoc.*;
-import com.automaterijal.application.utils.GeneralUtil;
+import com.automaterijal.application.utils.CatalogNumberUtils;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -76,7 +76,7 @@ public class RobaSearchService {
         .peek(
             article ->
                 article.setArticleNumber(
-                    GeneralUtil.cleanArticleNumber(article.getArticleNumber())))
+                    CatalogNumberUtils.cleanPreserveSeparators(article.getArticleNumber())))
         .collect(Collectors.toList());
   }
 
@@ -136,7 +136,7 @@ public class RobaSearchService {
                     .filter(Objects::nonNull)
                     .map(ArticleRefRecord::getArticleNumber)
                     .filter(StringUtils::hasText)
-                    .map(GeneralUtil::cleanArticleNumber)
+                    .map(CatalogNumberUtils::cleanPreserveSeparators)
                     .map(oe -> oe.concat("-OE"))
                     .forEach(catalogNumbers::add));
   }

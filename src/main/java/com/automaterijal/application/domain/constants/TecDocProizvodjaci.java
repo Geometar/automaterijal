@@ -1,5 +1,6 @@
 package com.automaterijal.application.domain.constants;
 
+import com.automaterijal.application.utils.CatalogNumberUtils;
 import java.util.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -159,11 +160,11 @@ public enum TecDocProizvodjaci {
 
   private static String applyDodatak(String katBr, TecDocProizvodjaci manufacturer) {
     if (manufacturer == null || manufacturer.dodatak == null) {
-      return katBr.replaceAll("\\s+", "");
+      return CatalogNumberUtils.stripWhitespace(katBr);
     }
 
     String dodatak = manufacturer.dodatak.trim();
-    String normalizedKatBr = katBr.replaceAll("\\s+", "");
+    String normalizedKatBr = CatalogNumberUtils.stripWhitespace(katBr);
 
     boolean alreadyHasDodatak = normalizedKatBr.contains(dodatak);
 
@@ -195,7 +196,7 @@ public enum TecDocProizvodjaci {
     }
 
     // Remove special characters and extra spaces
-    return katBr.replaceAll("\\s+", "").replace("-LUČ", "");
+    return CatalogNumberUtils.stripWhitespace(katBr).replace("-LUČ", "");
   }
 
   // Use this when we want all ids since some manufacturer can have 2 td brands

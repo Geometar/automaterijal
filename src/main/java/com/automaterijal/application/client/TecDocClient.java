@@ -1,6 +1,7 @@
 package com.automaterijal.application.client;
 
 import com.automaterijal.application.tecdoc.*;
+import com.automaterijal.application.utils.CatalogNumberUtils;
 import java.util.Collections;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -57,7 +58,8 @@ public class TecDocClient {
     return data.stream()
         .peek(
             stateRecord ->
-                stateRecord.setArticleNo(stateRecord.getArticleNo().replaceAll("\\s+", "")))
+                stateRecord.setArticleNo(
+                    CatalogNumberUtils.cleanPreserveSeparators(stateRecord.getArticleNo())))
         .toList();
   }
 

@@ -2,6 +2,7 @@ package com.automaterijal.application.services.roba.cache;
 
 import com.automaterijal.application.domain.cache.RobaCache;
 import com.automaterijal.application.utils.GeneralUtil;
+import com.automaterijal.application.utils.CatalogNumberUtils;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -322,7 +323,8 @@ final class RobaCacheIndex {
   }
 
   private static String normalizeCatalog(String value) {
-    return defaultString(value).replaceAll("\\s+", "").toUpperCase();
+    String cleaned = CatalogNumberUtils.cleanPreserveSeparators(value);
+    return cleaned == null ? "" : cleaned;
   }
 
   private static String normalizeName(String value) {

@@ -14,6 +14,7 @@ import com.automaterijal.application.services.roba.processor.RobaTecDocProcessor
 import com.automaterijal.application.services.roba.repo.RobaDatabaseService;
 import com.automaterijal.application.services.roba.sort.RobaSortService;
 import com.automaterijal.application.tecdoc.ArticleRecord;
+import com.automaterijal.application.utils.CatalogNumberUtils;
 import com.automaterijal.application.utils.CriteriaBuilder;
 import com.automaterijal.application.utils.GeneralUtil;
 import java.math.BigDecimal;
@@ -296,9 +297,15 @@ public class RobaAdapterService {
     Set<String> noviKatBrojevi = new HashSet<>();
     retVal.forEach(
         katBrojevi -> {
-          String noviBroj =
-              GeneralUtil.cyrillicToLatinic(katBrojevi.replace(" ", "").toUpperCase());
-          noviKatBrojevi.add(noviBroj);
+          String cleaned = CatalogNumberUtils.cleanPreserveSeparators(katBrojevi);
+          if (!StringUtils.hasText(cleaned)) {
+            return;
+          }
+
+          String latinic = GeneralUtil.cyrillicToLatinic(cleaned);
+          if (StringUtils.hasText(latinic)) {
+            noviKatBrojevi.add(latinic);
+          }
         });
     retVal.clear();
     retVal.addAll(noviKatBrojevi);

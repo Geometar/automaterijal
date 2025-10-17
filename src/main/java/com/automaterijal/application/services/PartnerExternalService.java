@@ -10,6 +10,7 @@ import com.automaterijal.application.domain.repository.external.PartnerB2bIdRepo
 import com.automaterijal.application.domain.repository.external.PartnerB2bProizvodjacRepository;
 import com.automaterijal.application.services.roba.RobaCeneService;
 import com.automaterijal.application.services.roba.repo.RobaDatabaseService;
+import com.automaterijal.application.utils.CatalogNumberUtils;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
@@ -49,7 +50,7 @@ public class PartnerExternalService {
 
   public ExternalRobaDto pronadjiRobu(Integer ppid, String itemNo, Integer brandID) {
     ExternalRobaDto retVal;
-    itemNo = itemNo.replaceAll("\\s+", "");
+    itemNo = CatalogNumberUtils.cleanPreserveSeparators(itemNo);
     // Pronadji sve proizvodjace koje partner moze da ima i samog partnera izvuci iz baze
     List<PartnerB2bProizvodjac> listaProizvodjaca =
         b2bProizvodjacRepository.findByProizvodjacKljuceviPpid(ppid);

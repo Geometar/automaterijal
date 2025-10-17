@@ -29,19 +29,6 @@ public class GeneralUtil {
     return Timestamp.valueOf(localDateTime);
   }
 
-  public String cleanArticleNumber(String katBr) {
-    if (StringUtils.isEmpty(katBr)) {
-      return katBr;
-    }
-
-    return katBr
-        .replaceAll("[-,./]", "")
-        .replaceAll("\\s+", "")
-        .replace("-LUČ", "")
-        .toUpperCase()
-        .trim();
-  }
-
   public static <T> Page<T> createPageable(List<T> items, int pageSize, int pageNumber) {
     int start = pageSize * pageNumber;
     int end = Math.min((start + pageSize), items.size());

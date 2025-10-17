@@ -5,6 +5,7 @@ import com.automaterijal.application.domain.constants.TecDocProizvodjaci;
 import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.tecdoc.ArticleDirectSearchAllNumbersWithStateRecord;
 import com.automaterijal.application.tecdoc.ArticleDirectSearchById3Record;
+import com.automaterijal.application.utils.CatalogNumberUtils;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -49,16 +50,13 @@ public class TecDocSearchService {
 
   private Long findMatchingArticleId(
       List<ArticleDirectSearchAllNumbersWithStateRecord> results, String catalogNumber) {
-    String catalogNumberNoSpaces = removeWhitespace(catalogNumber);
-    String normalizedCatalogNumber = normalizeCatalogNumber(catalogNumber);
+    String catalogNumberCleaned = cleanedWithSeparators(catalogNumber);
     List<ArticleDirectSearchAllNumbersWithStateRecord> filtered =
         results.stream()
             .filter(
                 record ->
-                    removeWhitespace(record.getArticleNo())
-                            .equalsIgnoreCase(catalogNumberNoSpaces)
-                        || normalizeCatalogNumber(record.getArticleNo())
-                            .equalsIgnoreCase(normalizedCatalogNumber)
+                    cleanedWithSeparators(record.getArticleNo())
+                            .equalsIgnoreCase(catalogNumberCleaned)
                         || record.getNumberType() == 2
                         || record.getNumberType() == 0)
             .toList();
@@ -87,7 +85,7 @@ public class TecDocSearchService {
 
   private Optional<RobaLightDto> findByExactArticleNo(
       ArticleDirectSearchById3Record article, List<RobaLightDto> robaList) {
-    String cleanedArticleNo = article.getArticleNo().replace(" ", "");
+    String cleanedArticleNo = cleanedWithSeparators(article.getArticleNo());
     Long articleBrandId = article.getBrandNo();
 
     return robaList.stream()
@@ -127,9 +125,7 @@ public class TecDocSearchService {
                       ? dto.getKatbrpro()
                       : dto.getKatbr();
 
-              return altNumbers.stream()
-                  .map(n -> n.replace(" ", ""))
-                  .anyMatch(alt -> numbersMatch(localNumber, alt, td));
+              return altNumbers.stream().anyMatch(alt -> numbersMatch(localNumber, alt, td));
             })
         .findFirst();
   }
@@ -137,20 +133,11 @@ public class TecDocSearchService {
   private boolean numbersMatch(String katBr, String tecDocKatBr, TecDocProizvodjaci td) {
     if (katBr == null || tecDocKatBr == null) return false;
     katBr = TecDocProizvodjaci.restoreOriginalCatalogNumber(katBr, td);
-    String katBrNoSpaces = removeWhitespace(katBr);
-    String tecDocKatBrNoSpaces = removeWhitespace(tecDocKatBr);
-    if (katBrNoSpaces.equalsIgnoreCase(tecDocKatBrNoSpaces)) return true;
-
-    String normalizedKatBr = normalizeCatalogNumber(katBr);
-    String normalizedTecDocKatBr = normalizeCatalogNumber(tecDocKatBr);
-    return normalizedKatBr.equalsIgnoreCase(normalizedTecDocKatBr);
+    return CatalogNumberUtils.equalsWhenCleaned(katBr, tecDocKatBr);
   }
 
-  private String normalizeCatalogNumber(String value) {
-    return value == null ? "" : value.replaceAll("[-,./\\s]", "");
-  }
-
-  private String removeWhitespace(String value) {
-    return value == null ? "" : value.replaceAll("\\s", "");
+  private String cleanedWithSeparators(String value) {
+    String cleaned = CatalogNumberUtils.cleanPreserveSeparators(value);
+    return cleaned != null ? cleaned : "";
   }
 }
