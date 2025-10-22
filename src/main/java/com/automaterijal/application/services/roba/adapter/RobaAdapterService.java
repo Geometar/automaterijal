@@ -59,7 +59,7 @@ public class RobaAdapterService {
 
     List<RobaLightDto> roba = robaJooqRepository.vratiRobuPoRobiId(robaIds);
 
-    articleSubGroupService.popuniPodgrupe(magacinDto, parametri, roba);
+    articleSubGroupService.popuniPodgrupe(magacinDto, roba);
     proizvodjacService.popuniProizvodjace(roba, magacinDto, parametri);
 
     // Primeni filtere po proizvođaču i grupi ako je potrebno
@@ -83,54 +83,72 @@ public class RobaAdapterService {
   /** Ulazna metoda iz glavnog servisa */
   public MagacinDto searchFilteredProductsWithoutSearchTerm(UniverzalniParametri parametri) {
     MagacinDto magacinDto = new MagacinDto();
+    Condition condition = buildBaseCondition(parametri);
+    PagingContext paging = PagingContext.from(parametri);
+    boolean showcase = parametri.isShowcase();
+
+    List<RobaLightDto> roba = fetchProducts(parametri, condition, paging);
+
+    if (!showcase) {
+      populateGroupsAndManufacturers(magacinDto, parametri, roba);
+    }
+
+    roba = prepareRoba(parametri, roba);
+
+    if (showcase) {
+      proizvodjacService.popuniProizvodjace(roba, magacinDto, parametri);
+    }
+
+    PageImpl<RobaLightDto> page = buildPage(parametri, condition, paging, roba, showcase);
+    magacinDto.setRobaDto(page);
+
+    return magacinDto;
+  }
+
+  private Condition buildBaseCondition(UniverzalniParametri parametri) {
     CriteriaBuilder criteriaBuilder = CriteriaBuilder.init();
     criteriaBuilder.addConditionIfTrue(
         parametri.isNaStanju(), ROBA.STANJE.greaterThan(BigDecimal.ZERO));
-    Condition condition = criteriaBuilder.build();
+    return criteriaBuilder.build();
+  }
 
-    Integer pageSize = parametri.getPageSize();
-    Integer page = parametri.getPage();
-    boolean hasPageParams = pageSize != null && pageSize > 0 && page != null && page >= 0;
-    boolean paged = parametri.isPaged() && hasPageParams;
+  private List<RobaLightDto> fetchProducts(
+      UniverzalniParametri parametri, Condition condition, PagingContext paging) {
+    if (paging.enabled()) {
+      return robaJooqRepository.generic(parametri, condition, paging.pageSize(), paging.offset());
+    }
+    return robaJooqRepository.generic(parametri, condition);
+  }
 
-    int effectivePage = hasPageParams ? Math.max(0, page) : 0;
-    int effectivePageSize = hasPageParams ? Math.max(1, pageSize) : 0;
+  private void populateGroupsAndManufacturers(
+      MagacinDto magacinDto, UniverzalniParametri parametri, List<RobaLightDto> roba) {
+    articleSubGroupService.popuniPodgrupe(magacinDto, roba);
+    proizvodjacService.popuniProizvodjace(roba, magacinDto, parametri);
+  }
 
-    List<RobaLightDto> roba;
-    if (paged) {
-      int offset = effectivePage * effectivePageSize;
-      roba = robaJooqRepository.generic(parametri, condition, effectivePageSize, offset);
-    } else {
-      roba = robaJooqRepository.generic(parametri, condition);
+  private List<RobaLightDto> prepareRoba(UniverzalniParametri parametri, List<RobaLightDto> roba) {
+    List<RobaLightDto> filtered = robaFilterService.applyOptionalFilters(parametri, roba);
+    return robaSortService.sortByGroup(filtered);
+  }
+
+  private PageImpl<RobaLightDto> buildPage(
+      UniverzalniParametri parametri,
+      Condition condition,
+      PagingContext paging,
+      List<RobaLightDto> roba,
+      boolean showcase) {
+    if (paging.enabled() && !showcase) {
+      long total = robaJooqRepository.count(parametri, condition);
+      return new PageImpl<>(roba, PageRequest.of(paging.page(), paging.pageSize()), total);
     }
 
-    if (!parametri.isShowcase()) {
-      articleSubGroupService.popuniPodgrupe(magacinDto, parametri, roba);
-      proizvodjacService.popuniProizvodjace(roba, magacinDto, parametri);
-    }
-    roba = robaFilterService.applyOptionalFilters(parametri, roba);
-    roba = robaSortService.sortByGroup(roba);
+    long total = roba.size();
+    int pageSize = paging.resolvePageSize(total);
+    int fromIndex = Math.min(paging.page() * pageSize, roba.size());
+    int toIndex = Math.min(fromIndex + pageSize, roba.size());
+    List<RobaLightDto> pageContent = roba.subList(fromIndex, toIndex);
 
-    long total;
-    List<RobaLightDto> pageContent;
-    if (paged && !parametri.isShowcase()) {
-      total = robaJooqRepository.count(parametri, condition);
-      pageContent = roba;
-    } else {
-      total = roba.size();
-      if (effectivePageSize <= 0) {
-        effectivePageSize = total == 0 ? 1 : (int) total;
-      }
-      int fromIndex = Math.min(effectivePage * effectivePageSize, roba.size());
-      int toIndex = Math.min(fromIndex + effectivePageSize, roba.size());
-      pageContent = roba.subList(fromIndex, toIndex);
-      proizvodjacService.popuniProizvodjace(pageContent, magacinDto, parametri);
-    }
-
-    magacinDto.setRobaDto(
-        new PageImpl<>(pageContent, PageRequest.of(effectivePage, effectivePageSize), total));
-
-    return magacinDto;
+    return new PageImpl<>(pageContent, PageRequest.of(paging.page(), pageSize), total);
   }
 
   public MagacinDto fetchSearchResultsByCatalogNumbersAndFilters(
@@ -144,7 +162,7 @@ public class RobaAdapterService {
     allRoba = robaFilterService.applyMandatoryFilters(parametri, allRoba);
 
     // Popuni dodatne podatke za roba (podgrupe, proizvođači itd.)
-    articleSubGroupService.popuniPodgrupe(magacinDto, parametri, allRoba);
+    articleSubGroupService.popuniPodgrupe(magacinDto, allRoba);
     fillResultManufactures(magacinDto, allRoba);
 
     // Primeni filtere po proizvođaču i grupi ako je potrebno
@@ -273,7 +291,7 @@ public class RobaAdapterService {
     robaTecDocProcessor.addTecdocArticles(articles, roba);
 
     // Popuni dodatne podatke za roba (podgrupe, proizvođači itd.)
-    articleSubGroupService.popuniPodgrupe(magacinDto, parametri, roba);
+    articleSubGroupService.popuniPodgrupe(magacinDto, roba);
 
     // CAUTION: if you change this search by vehicle won't work correctly
     proizvodjacService.popuniProizvodjace(roba, magacinDto, parametri);
@@ -323,5 +341,55 @@ public class RobaAdapterService {
             .toLowerCase();
 
     return normalized;
+  }
+}
+
+final class PagingContext {
+  private final boolean enabled;
+  private final int page;
+  private final int pageSize;
+
+  private PagingContext(boolean enabled, int page, int pageSize) {
+    this.enabled = enabled;
+    this.page = page;
+    this.pageSize = pageSize;
+  }
+
+  static PagingContext from(UniverzalniParametri parametri) {
+    Integer pageSize = parametri.getPageSize();
+    Integer page = parametri.getPage();
+    boolean hasPageParams = pageSize != null && pageSize > 0 && page != null && page >= 0;
+    boolean paged = parametri.isPaged() && hasPageParams;
+
+    int effectivePage = hasPageParams ? Math.max(0, page) : 0;
+    int effectivePageSize = hasPageParams ? Math.max(1, pageSize) : 0;
+
+    return new PagingContext(paged, effectivePage, effectivePageSize);
+  }
+
+  boolean enabled() {
+    return enabled;
+  }
+
+  int page() {
+    return page;
+  }
+
+  int pageSize() {
+    return pageSize;
+  }
+
+  int offset() {
+    return page * pageSize;
+  }
+
+  int resolvePageSize(long fallbackTotal) {
+    if (pageSize > 0) {
+      return pageSize;
+    }
+    if (fallbackTotal <= 0) {
+      return 1;
+    }
+    return (int) Math.min(Integer.MAX_VALUE, fallbackTotal);
   }
 }

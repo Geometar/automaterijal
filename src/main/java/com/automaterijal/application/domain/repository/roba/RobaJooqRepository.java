@@ -145,23 +145,32 @@ public class RobaJooqRepository {
       return DSL.noCondition(); // Early return for null parameters
     }
 
+    UniverzalniParametri.FilterByType filterByType = parametri.resolveFilterByType();
     CriteriaBuilder criteriaBuilder = CriteriaBuilder.init();
 
-    // Manufacturer condition (accepts either explicit or mandatory proid list)
-    List<String> resolvedProducers = parametri.resolveProizvodjac();
-    criteriaBuilder.addConditionIfNotEmpty(resolvedProducers, ROBA.PROID.in(resolvedProducers));
+    // Manufacturer condition (mandatory list should always apply)
+    criteriaBuilder.addConditionIfNotEmpty(
+        parametri.getMandatoryProid(), ROBA.PROID.in(parametri.getMandatoryProid()));
+
+    if (filterByType.applyManufacturerFilter()) {
+      criteriaBuilder.addConditionIfNotEmpty(
+          parametri.getProizvodjac(), ROBA.PROID.in(parametri.getProizvodjac()));
+    }
 
     // Categories condition
-    criteriaBuilder.addConditionIfNotEmpty(
-        parametri.getGrupa(), ROBA.GRUPAID.in(parametri.getGrupa()));
+    if (filterByType.applyGroupFilter()) {
+      criteriaBuilder.addConditionIfNotEmpty(
+          parametri.getGrupa(), ROBA.GRUPAID.in(parametri.getGrupa()));
+    }
 
     // Stock condition
     criteriaBuilder.addConditionIfTrue(
         parametri.isNaStanju(), ROBA.STANJE.greaterThan(BigDecimal.ZERO));
 
-    if (parametri.isShowcase()) {
+    if (filterByType.applySubGroupFilter()) {
       criteriaBuilder.addConditionIfNotEmpty(
-          parametri.getPodgrupeZaPretragu(), ROBA.PODGRUPAID.in(parametri.getPodgrupeZaPretragu()));
+          parametri.getPodgrupeZaPretragu(),
+          ROBA.PODGRUPAID.in(parametri.getPodgrupeZaPretragu()));
     }
 
     return criteriaBuilder.build();

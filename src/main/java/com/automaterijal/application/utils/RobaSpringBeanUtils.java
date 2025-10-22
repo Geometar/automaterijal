@@ -29,6 +29,7 @@ public class RobaSpringBeanUtils {
       Optional<String> searchTerm,
       List<Integer> podgrupe,
       boolean tecdocPretaga,
+      Optional<String> filterBy,
       boolean paged,
       boolean showcase) {
     Integer iPage = page.orElse(0);
@@ -57,6 +58,11 @@ public class RobaSpringBeanUtils {
             .map(trazenaRec -> trazenaRec.trim().toUpperCase())
             .map(GeneralUtil::cyrillicToLatinic)
             .orElse(null);
+    String iFilterBy =
+        filterBy.filter(StringUtils::hasText)
+            .map(String::trim)
+            .map(String::toLowerCase)
+            .orElse(null);
 
     return popuniParametreZaServis(
         iPage,
@@ -68,6 +74,7 @@ public class RobaSpringBeanUtils {
         iPodgrupe,
         iSearchTerm,
         tecdocPretaga,
+        iFilterBy,
         paged,
         showcase);
   }
@@ -82,6 +89,7 @@ public class RobaSpringBeanUtils {
       List<Integer> internaPodgrupe,
       String internalSearchTerm,
       boolean tecdocPretraga,
+      String filterBy,
       boolean paged,
       boolean showcase) {
     UniverzalniParametri up = new UniverzalniParametri();
@@ -94,6 +102,7 @@ public class RobaSpringBeanUtils {
     up.setTrazenaRec(internalSearchTerm);
     up.setPodgrupeZaPretragu(internaPodgrupe);
     up.setTecdocPretraga(tecdocPretraga);
+    up.setFilterBy(filterBy);
     up.setPaged(paged);
     up.setShowcase(showcase);
     return up;

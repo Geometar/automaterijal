@@ -84,6 +84,7 @@ public class TecDocController {
       @RequestParam(required = false) List<String> proizvodjaci,
       @RequestParam(required = false) List<Integer> podgrupe,
       @RequestParam(required = false) Optional<Boolean> naStanju,
+      @RequestParam(required = false) Optional<String> filterBy,
       Authentication authentication) {
 
     var univerzalniParametri =
@@ -97,6 +98,7 @@ public class TecDocController {
             Optional.empty(),
             podgrupe,
             true,
+            filterBy,
             false,
             false);
 

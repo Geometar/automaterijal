@@ -56,6 +56,7 @@ public class RobaController {
       @RequestParam(required = false) Optional<Boolean> naStanju,
       @RequestParam(required = false) List<Integer> podgrupe,
       @RequestParam(required = false) Optional<String> searchTerm,
+      @RequestParam(required = false) Optional<String> filterBy,
       @RequestParam(required = false) boolean paged,
       @RequestParam(required = false) boolean showcase,
       Authentication authentication) {
@@ -71,6 +72,7 @@ public class RobaController {
             searchTerm,
             podgrupe,
             false,
+            filterBy,
             paged,
             showcase);
     var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);

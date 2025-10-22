@@ -9,6 +9,7 @@ import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.domain.repository.ProizvodjacRepository;
 import com.automaterijal.application.utils.SlugUtil;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.NonNull;
@@ -31,46 +32,13 @@ public class ProizvodjacService {
   /** Popunjavanje proizvodjaca u zavistosti od kriterijuma */
   public void popuniProizvodjace(
       List<RobaLightDto> robaLightDtos, MagacinDto magacinDto, UniverzalniParametri parametri) {
-    List<Proizvodjac> proizvodjaci;
-    if (parametri.getPodgrupeZaPretragu() == null
-        && parametri.getTrazenaRec() == null
-        && !parametri.isTecdocPretraga()) {
-      proizvodjaci = pronadjiSveProizvodjaceZaVrstu();
-    } else {
-      Set<String> proizKljuc =
-          robaLightDtos.stream()
-              .map(RobaLightDto::getProizvodjac)
-              .map(ProizvodjacDTO::getProid)
-              .collect(Collectors.toSet());
-      proizvodjaci = proizvodjacRepository.findByProidIn(proizKljuc);
-    }
-    getPopuniProizvodjaceURobi(robaLightDtos, proizvodjaci);
+    List<Proizvodjac> proizvodjaci = resolveRelevantManufacturers(robaLightDtos);
+    Map<String, Proizvodjac> proizvodjaciPoIdu = indexManufacturersById(proizvodjaci);
 
-    if (parametri.getProizvodjac() != null && !parametri.getProizvodjac().isEmpty()) {
-      boolean trazeniProizvodjacPostoji =
-          proizvodjaci.stream()
-              .anyMatch(
-                  proizvodjac ->
-                      parametri.getProizvodjac().stream()
-                          .anyMatch(value -> value.equals(proizvodjac.getProid())));
+    assignManufacturersToProducts(robaLightDtos, proizvodjaciPoIdu);
+    ensureRequestedManufacturersPresent(parametri, proizvodjaci, proizvodjaciPoIdu);
 
-      if (!trazeniProizvodjacPostoji) {
-        proizvodjacRepository
-            .findByProidIn(parametri.getProizvodjac())
-            .forEach(proizvodjaci::addFirst);
-      }
-    }
     magacinDto.setProizvodjaci(mapper.map(proizvodjaci));
-  }
-
-  private void getPopuniProizvodjaceURobi(
-      List<RobaLightDto> robaLightDtos, List<Proizvodjac> proizvodjaci) {
-    for (RobaLightDto roba : robaLightDtos) {
-      proizvodjaci.stream()
-          .filter(proizvodjac -> proizvodjac.getProid().equals(roba.getProizvodjac().getProid()))
-          .findFirst()
-          .ifPresent(roba::setProizvodjacDto);
-    }
   }
 
   public List<Proizvodjac> pronadjiSveProizvodjaceZaVrstu() {
@@ -102,5 +70,80 @@ public class ProizvodjacService {
     ProizvodjacDTO retval = new ProizvodjacDTO();
     retval.setProizvodjac(proizvodjac);
     return retval;
+  }
+
+  private List<Proizvodjac> resolveRelevantManufacturers(List<RobaLightDto> robaLightDtos) {
+    Set<String> manufacturerIds = manufacturerIdsFromProducts(robaLightDtos);
+    if (manufacturerIds.isEmpty()) {
+      return new LinkedList<>();
+    }
+
+    return new LinkedList<>(proizvodjacRepository.findByProidIn(manufacturerIds));
+  }
+
+  private Map<String, Proizvodjac> indexManufacturersById(List<Proizvodjac> proizvodjaci) {
+    return proizvodjaci.stream()
+        .collect(
+            Collectors.toMap(
+                Proizvodjac::getProid,
+                Function.identity(),
+                (left, right) -> left,
+                LinkedHashMap::new));
+  }
+
+  private void assignManufacturersToProducts(
+      List<RobaLightDto> robaLightDtos, Map<String, Proizvodjac> proizvodjaciPoIdu) {
+    for (RobaLightDto roba : robaLightDtos) {
+      ProizvodjacDTO proizvodjac = roba.getProizvodjac();
+      if (proizvodjac == null || proizvodjac.getProid() == null) {
+        continue;
+      }
+
+      Proizvodjac pronadjeni = proizvodjaciPoIdu.get(proizvodjac.getProid());
+      if (pronadjeni != null) {
+        roba.setProizvodjacDto(pronadjeni);
+      }
+    }
+  }
+
+  private void ensureRequestedManufacturersPresent(
+      UniverzalniParametri parametri,
+      List<Proizvodjac> proizvodjaci,
+      Map<String, Proizvodjac> proizvodjaciPoIdu) {
+
+    List<String> requested = parametri.getProizvodjac();
+    if (requested == null || requested.isEmpty()) {
+      return;
+    }
+
+    Set<String> missingManufacturerIds =
+        requested.stream()
+            .filter(Objects::nonNull)
+            .filter(id -> !proizvodjaciPoIdu.containsKey(id))
+            .collect(Collectors.toCollection(LinkedHashSet::new));
+
+    if (missingManufacturerIds.isEmpty()) {
+      return;
+    }
+
+    List<Proizvodjac> fetched = proizvodjacRepository.findByProidIn(missingManufacturerIds);
+    for (Proizvodjac dodatni : fetched) {
+      String manufacturerId = dodatni.getProid();
+      if (manufacturerId == null || proizvodjaciPoIdu.containsKey(manufacturerId)) {
+        continue;
+      }
+
+      proizvodjaci.add(0, dodatni);
+      proizvodjaciPoIdu.put(manufacturerId, dodatni);
+    }
+  }
+
+  private Set<String> manufacturerIdsFromProducts(List<RobaLightDto> robaLightDtos) {
+    return robaLightDtos.stream()
+        .map(RobaLightDto::getProizvodjac)
+        .filter(Objects::nonNull)
+        .map(ProizvodjacDTO::getProid)
+        .filter(Objects::nonNull)
+        .collect(Collectors.toCollection(LinkedHashSet::new));
   }
 }

@@ -30,17 +30,9 @@ public class ArticleSubGroupService {
   public static final String ANONIMNA_GRUPA = "OSTALO";
 
   /** Start of: Metoda za popunjavanje svih grupa u zavisnosti od kriterijuma */
-  public void popuniPodgrupe(
-      MagacinDto magacinDto, UniverzalniParametri parametri, List<RobaLightDto> roba) {
-    boolean parametriRequiresFiltering =
-        parametri.getTrazenaRec() != null
-            || parametri.getProizvodjac() != null
-            || parametri.isTecdocPretraga();
+  public void popuniPodgrupe(MagacinDto magacinDto, List<RobaLightDto> roba) {
 
-    List<PodgrupaDto> podgrupaDtos =
-        parametriRequiresFiltering
-            ? fetchFilteredPodgrupe(roba)
-            : podgrupeJooqRepository.findAllPodgrupe();
+    List<PodgrupaDto> podgrupaDtos = fetchFilteredPodgrupe(roba);
 
     popuniNazivePodgrupa(roba, podgrupaDtos);
     magacinDto.setCategories(groupByGrupa(podgrupaDtos));

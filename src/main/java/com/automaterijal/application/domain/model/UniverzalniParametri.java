@@ -21,6 +21,7 @@ public class UniverzalniParametri {
   boolean tecdocPretraga;
   boolean paged;
   boolean showcase;
+  String filterBy;
 
   public List<String> resolveProizvodjac() {
     List<String> proizvodjac = this.getProizvodjac();
@@ -34,5 +35,61 @@ public class UniverzalniParametri {
     }
 
     return new ArrayList<>();
+  }
+
+  public FilterByType resolveFilterByType() {
+    return FilterByType.from(filterBy);
+  }
+
+  public boolean shouldApplyManufacturerFilterInQuery() {
+    return resolveFilterByType().applyManufacturerFilter();
+  }
+
+  public boolean shouldApplyGroupFilterInQuery() {
+    return resolveFilterByType().applyGroupFilter();
+  }
+
+  public boolean shouldApplySubGroupFilterInQuery() {
+    return resolveFilterByType().applySubGroupFilter();
+  }
+
+  public enum FilterByType {
+    CATEGORY("category"),
+    SUBCATEGORY("subcategory"),
+    MANUFACTURE("manufacture"),
+    SEARCH_TERM("searchTerm"),
+    NONE(null);
+
+    private final String value;
+
+    FilterByType(String value) {
+      this.value = value;
+    }
+
+    static FilterByType from(String raw) {
+      if (raw == null || raw.isBlank()) {
+        return NONE;
+      }
+
+      for (FilterByType candidate : values()) {
+        if (candidate.value != null && candidate.value.equalsIgnoreCase(raw)) {
+          return candidate;
+        }
+      }
+
+      return NONE;
+    }
+
+    public boolean applyManufacturerFilter() {
+      return this == NONE || this == MANUFACTURE;
+    }
+
+    public boolean applyGroupFilter() {
+      return this == NONE || this == CATEGORY;
+    }
+
+    public boolean applySubGroupFilter() {
+      return this == NONE || this == SUBCATEGORY;
+    }
   }
 }
