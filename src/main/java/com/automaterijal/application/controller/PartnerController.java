@@ -3,8 +3,10 @@ package com.automaterijal.application.controller;
 import com.automaterijal.application.domain.constants.PartnerAkcije;
 import com.automaterijal.application.domain.dto.PartnerDto;
 import com.automaterijal.application.domain.dto.ResetovanjeSifreDto;
+import com.automaterijal.application.domain.dto.partner.PartnerCardResponseDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.services.PartnerService;
+import com.automaterijal.application.services.PartnerCardService;
 import com.automaterijal.application.services.security.UserDetailsService;
 import com.automaterijal.application.services.security.UsersService;
 import com.automaterijal.application.utils.PartnerSpringBeanUtils;
@@ -44,6 +46,9 @@ public class PartnerController {
 
   @NonNull
   final PartnerService partnerService;
+
+  @NonNull
+  final PartnerCardService partnerCardService;
 
   @NonNull
   final PartnerSpringBeanUtils partnerSpringBeanUtils;
@@ -132,5 +137,15 @@ public class PartnerController {
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nije Admin");
     }
     return ResponseEntity.ok(partnerService.vratiPartnera(ppid));
+  }
+
+  @GetMapping(value = "/kartica")
+  public ResponseEntity<PartnerCardResponseDto> vratiKarticuPartnera(
+      final Authentication authentication) {
+    Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+    if (partner == null) {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Nije pronadjen partner");
+    }
+    return ResponseEntity.ok(partnerCardService.vratiKarticuZaPartnera(partner.getPpid()));
   }
 }
