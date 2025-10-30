@@ -128,6 +128,19 @@ public class PartnerController {
     }
   }
 
+  @GetMapping(value = "/pretraga")
+  public ResponseEntity<List<Partner>> pretraziPartnerePoNazivu(
+      final Authentication authentication, @RequestParam final String naziv) {
+    final var partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+    if (partner == null || partner.getPrivilegije().intValue() != 2047) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nije Admin");
+    }
+    if (naziv == null || naziv.trim().isEmpty()) {
+      return ResponseEntity.ok(List.of());
+    }
+    return ResponseEntity.ok(partnerService.pretraziPartnerePoNazivu(naziv));
+  }
+
   @GetMapping(value = "/{ppid}")
   public ResponseEntity<Partner> vratiPartnera(
       @PathVariable("ppid") Integer ppid,
@@ -147,5 +160,15 @@ public class PartnerController {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Nije pronadjen partner");
     }
     return ResponseEntity.ok(partnerCardService.vratiKarticuZaPartnera(partner.getPpid()));
+  }
+
+  @GetMapping(value = "/{ppid}/kartica-admin")
+  public ResponseEntity<PartnerCardResponseDto> vratiKarticuZaAdmina(
+      final Authentication authentication, @PathVariable("ppid") final Integer ppid) {
+    final var partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+    if (partner == null || partner.getPrivilegije().intValue() != 2047) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nije Admin");
+    }
+    return ResponseEntity.ok(partnerCardService.vratiKarticuZaPartnera(ppid));
   }
 }

@@ -144,4 +144,9 @@ public class PartnerService {
   public Partner vratiPartnera(Integer ppid) {
     return partnerRepository.findByPpid(ppid).orElse(null);
   }
+
+  @Transactional(readOnly = true)
+  public List<Partner> pretraziPartnerePoNazivu(String naziv) {
+    return partnerRepository.findTop50ByNazivContainingIgnoreCaseOrderByNazivAsc(naziv);
+  }
 }

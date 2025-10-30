@@ -54,7 +54,7 @@ schedule:
 # JWT konfiguracija
 automaterijal:
   jwtSecret: bezKoderSecretKey
-  jwtExpirationMs: 28800000
+  jwtExpirationMs: 43200000
 
 # Logging konfiguracija
 logging:

@@ -20,4 +20,6 @@ public interface PartnerRepository extends JpaRepository<Partner, Integer> {
   Optional<Partner> findByPpid(Integer ppid);
 
   List<Partner> findByPrivilegijeGreaterThanOrderByNazivAsc(Integer privilergije);
+
+  List<Partner> findTop50ByNazivContainingIgnoreCaseOrderByNazivAsc(String naziv);
 }
