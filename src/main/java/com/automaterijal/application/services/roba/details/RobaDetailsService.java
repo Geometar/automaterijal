@@ -4,6 +4,7 @@ import com.automaterijal.application.domain.constants.TecDocProizvodjaci;
 import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.dto.robadetalji.RobaBrojeviDto;
 import com.automaterijal.application.domain.dto.robadetalji.RobaExpandedDto;
+import com.automaterijal.application.domain.dto.tecdoc.TecDocLinkedManufacturerDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.roba.Roba;
 import com.automaterijal.application.domain.entity.tecdoc.TecDocAtributi;
@@ -38,6 +39,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Transactional
 @Slf4j
 public class RobaDetailsService {
+
+  private static final String DEFAULT_LINKING_TARGET_TYPE = "VOLB";
 
   @NonNull final RobaDatabaseService robaDatabaseService;
   @NonNull final RobaCeneService robaCeneService;
@@ -122,9 +125,14 @@ public class RobaDetailsService {
       return;
     }
     List<ArticlesByIds6Record> tecDocDetalji = new ArrayList<>();
+    detaljiDto.setLinkedManufacturers(List.of());
     Long tecDocArticleId = robaTecDocDetailsHelper.vratiTecDocArticleId(detaljiDto);
     if (tecDocArticleId != null) {
       tecDocDetalji = tecDocService.vratiDetaljeArtikla(tecDocArticleId);
+      List<TecDocLinkedManufacturerDto> linkedManufacturers =
+          tecDocService.getLinkedManufacturersByArticleId(
+              tecDocArticleId, DEFAULT_LINKING_TARGET_TYPE);
+      detaljiDto.setLinkedManufacturers(linkedManufacturers);
     }
 
     // ***************** Setujemo brand tecdoca ako postoje *************************
