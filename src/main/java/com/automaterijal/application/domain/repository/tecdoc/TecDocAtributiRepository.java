@@ -2,6 +2,7 @@ package com.automaterijal.application.domain.repository.tecdoc;
 
 import com.automaterijal.application.domain.entity.tecdoc.TecDocAtributi;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,4 +14,6 @@ public interface TecDocAtributiRepository extends JpaRepository<TecDocAtributi, 
   List<TecDocAtributi> findByRobaIdIn(List<Long> robaId);
 
   void deleteByRobaId(Long robaId);
+
+  Optional<TecDocAtributi> findFirstByRobaIdAndTecDocArticleIdIsNotNullOrderByIdAsc(Long robaId);
 }

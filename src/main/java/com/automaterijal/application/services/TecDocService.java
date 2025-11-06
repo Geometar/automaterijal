@@ -15,6 +15,7 @@ import com.automaterijal.application.services.tecdoc.TecDocDocumentService;
 import com.automaterijal.application.tecdoc.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -96,5 +97,22 @@ public class TecDocService {
 
   public void batchVracanjeICuvanjeTDAtributa(List<RobaLightDto> robaLightDtos) {
     tecDocLogicService.fetchAndSaveTecDocAttributes(robaLightDtos);
+  }
+
+  public Optional<ArticleLinkedAllLinkingTargetManufacturer2Response>
+      getArticleLinkedManufacturers(Long robaId, String linkingTargetType) {
+    if (linkingTargetType == null || linkingTargetType.isBlank()) {
+      return Optional.empty();
+    }
+
+    String sanitizedType = linkingTargetType.trim().toUpperCase(Locale.ROOT);
+
+    return tecDocAttributeService
+        .findTecDocArticleIdByRobaId(robaId)
+        .flatMap(
+            articleId ->
+                Optional.ofNullable(
+                    tecDocClient.getArticleLinkedAllLinkingTargetManufacturer2(
+                        articleId, sanitizedType)));
   }
 }

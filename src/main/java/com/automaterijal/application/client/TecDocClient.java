@@ -261,6 +261,19 @@ public class TecDocClient {
                 : List.of());
   }
 
+  /** Vraca povezane proizvodjace za zadati TecDoc artikal */
+  public ArticleLinkedAllLinkingTargetManufacturer2Response
+      getArticleLinkedAllLinkingTargetManufacturer2(Long articleId, String linkingTargetType) {
+    JSONObject request = new JSONObject();
+    JSONObject body = kreirajStandardniObjekat();
+    body.put("linkingTargetType", linkingTargetType);
+    body.put("countryGroupFlag", false);
+    body.put("articleId", articleId);
+    request.put("getArticleLinkedAllLinkingTargetManufacturer2", body);
+
+    return vratiOdgovor(request, ArticleLinkedAllLinkingTargetManufacturer2Response.class);
+  }
+
   /** Setovanje standardnjih parametara poziva */
   private JSONObject kreirajStandardniObjekat() {
     JSONObject standardniObjekat = new JSONObject();

@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +46,12 @@ public class TecDocAttributeService {
 
   public List<TecDocAtributi> findByRobaIds(List<Long> robaIds) {
     return tecDocAtributiRepository.findByRobaIdIn(robaIds);
+  }
+
+  public Optional<Long> findTecDocArticleIdByRobaId(Long robaId) {
+    return tecDocAtributiRepository
+        .findFirstByRobaIdAndTecDocArticleIdIsNotNullOrderByIdAsc(robaId)
+        .map(TecDocAtributi::getTecDocArticleId);
   }
 
   public void saveAttributes(
