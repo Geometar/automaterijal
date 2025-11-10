@@ -261,6 +261,68 @@ public class TecDocClient {
                 : List.of());
   }
 
+  /** Vraca povezane proizvodjace za zadati TecDoc artikal */
+  public ArticleLinkedAllLinkingTargetManufacturer2Response
+      getArticleLinkedAllLinkingTargetManufacturer2(Long articleId, String linkingTargetType) {
+    JSONObject request = new JSONObject();
+    JSONObject body = kreirajStandardniObjekat();
+    body.put("linkingTargetType", linkingTargetType);
+    body.put("countryGroupFlag", false);
+    body.put("articleId", articleId);
+    request.put("getArticleLinkedAllLinkingTargetManufacturer2", body);
+
+    return vratiOdgovor(request, ArticleLinkedAllLinkingTargetManufacturer2Response.class);
+  }
+
+  /** Vraca vozila (linkage targete) za zadatog proizvodjaca koji je vezan za TecDoc artikal */
+  public ArticleLinkedAllLinkingTarget4Response getArticleLinkedAllLinkingTarget4(
+      Long articleId, Long linkingTargetManuId, String linkingTargetType) {
+    JSONObject request = new JSONObject();
+    JSONObject body = kreirajStandardniObjekat();
+    body.put("linkingTargetType", linkingTargetType);
+    body.put("countryGroupFlag", false);
+    body.put("articleId", articleId);
+    body.put("linkingTargetManuId", linkingTargetManuId);
+    body.put("withMainArticles", false);
+    request.put("getArticleLinkedAllLinkingTarget4", body);
+
+    return vratiOdgovor(request, ArticleLinkedAllLinkingTarget4Response.class);
+  }
+
+  /** Vraca detalje linkovanih targeta na osnovu parova articleLinkId/linkingTargetId */
+  public ArticleLinkedAllLinkingTargetsByIds3Response getArticleLinkedAllLinkingTargetsByIds3(
+      Long articleId,
+      String linkingTargetType,
+      List<ArticleLinkedAllLinkingTargetDetailsRecord> linkedPairs) {
+    JSONObject request = new JSONObject();
+    JSONObject body = kreirajStandardniObjekat();
+    body.put("articleId", articleId);
+    body.put("linkingTargetType", linkingTargetType);
+    body.put("immediateAttributs", true);
+
+    JSONArray pairsArray = new JSONArray();
+    for (ArticleLinkedAllLinkingTargetDetailsRecord pair : linkedPairs) {
+      if (pair == null || pair.getArticleLinkId() == null || pair.getLinkingTargetId() == null) {
+        continue;
+      }
+      JSONObject pairJson = new JSONObject();
+      pairJson.put("articleLinkId", pair.getArticleLinkId());
+      pairJson.put("linkingTargetId", pair.getLinkingTargetId());
+      pairsArray.put(pairJson);
+    }
+
+    if (pairsArray.length() == 0) {
+      return null;
+    }
+
+    JSONObject pairsWrapper = new JSONObject();
+    pairsWrapper.put("array", pairsArray);
+    body.put("linkedArticlePairs", pairsWrapper);
+
+    request.put("getArticleLinkedAllLinkingTargetsByIds3", body);
+    return vratiOdgovor(request, ArticleLinkedAllLinkingTargetsByIds3Response.class);
+  }
+
   /** Setovanje standardnjih parametara poziva */
   private JSONObject kreirajStandardniObjekat() {
     JSONObject standardniObjekat = new JSONObject();

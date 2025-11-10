@@ -6,6 +6,8 @@ import com.automaterijal.application.domain.dto.tecdoc.Manufcatures;
 import com.automaterijal.application.domain.dto.tecdoc.Model;
 import com.automaterijal.application.services.TecDocService;
 import com.automaterijal.application.services.roba.search.RobaSearchService;
+import com.automaterijal.application.domain.dto.tecdoc.TecDocLinkedManufacturerTargetsDto;
+import com.automaterijal.application.tecdoc.ArticleLinkedAllLinkingTargetManufacturer2Response;
 import com.automaterijal.application.tecdoc.LinkageTargetDetails;
 import com.automaterijal.application.utils.PartnerSpringBeanUtils;
 import com.automaterijal.application.utils.RobaSpringBeanUtils;
@@ -16,11 +18,13 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/tecdoc")
@@ -72,6 +76,33 @@ public class TecDocController {
       @RequestParam(value = "tecdocTargetType") String type,
       @RequestParam(value = "tecdocTargetId") Integer id) {
     return ResponseEntity.ok().body(tecDocService.getLinkageTargetDetails(id, type));
+  }
+
+  @GetMapping(value = "/articles/{robaId}/linked-manufacturers")
+  public ResponseEntity<ArticleLinkedAllLinkingTargetManufacturer2Response>
+      getArticleLinkedManufacturers(
+          @PathVariable("robaId") Long robaId,
+          @RequestParam("linkingTargetType") String linkingTargetType) {
+    return tecDocService
+        .getArticleLinkedManufacturers(robaId, linkingTargetType)
+        .map(ResponseEntity::ok)
+        .orElseThrow(
+            () ->
+                new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "TecDoc artikal nije pronađen za zadatu robu"));
+  }
+
+  @GetMapping(value = "/articles/{robaId}/linked-targets")
+  public ResponseEntity<List<TecDocLinkedManufacturerTargetsDto>> getArticleLinkedTargets(
+      @PathVariable("robaId") Long robaId,
+      @RequestParam("linkingTargetType") String linkingTargetType) {
+    return tecDocService
+        .getArticleLinkedTargets(robaId, linkingTargetType)
+        .map(ResponseEntity::ok)
+        .orElseThrow(
+            () ->
+                new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "TecDoc artikal nije pronađen za zadatu robu"));
   }
 
   @GetMapping(value = "/articles")

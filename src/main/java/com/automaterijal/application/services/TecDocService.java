@@ -5,6 +5,10 @@ import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.dto.tecdoc.AssemblyGroupWrapper;
 import com.automaterijal.application.domain.dto.tecdoc.Manufcatures;
 import com.automaterijal.application.domain.dto.tecdoc.Model;
+import com.automaterijal.application.domain.dto.tecdoc.TecDocLinkedManufacturerDto;
+import com.automaterijal.application.domain.dto.tecdoc.TecDocLinkedManufacturerTargetsDto;
+import com.automaterijal.application.domain.dto.tecdoc.TecDocLinkedModelDto;
+import com.automaterijal.application.domain.dto.tecdoc.TecDocLinkedVariantDto;
 import com.automaterijal.application.domain.entity.tecdoc.TecDocAtributi;
 import com.automaterijal.application.domain.entity.tecdoc.TecDocBrands;
 import com.automaterijal.application.domain.mapper.TecDocMapper;
@@ -13,9 +17,16 @@ import com.automaterijal.application.services.tecdoc.TecDocAttributeService;
 import com.automaterijal.application.services.tecdoc.TecDocBrandService;
 import com.automaterijal.application.services.tecdoc.TecDocDocumentService;
 import com.automaterijal.application.tecdoc.*;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
@@ -96,5 +107,239 @@ public class TecDocService {
 
   public void batchVracanjeICuvanjeTDAtributa(List<RobaLightDto> robaLightDtos) {
     tecDocLogicService.fetchAndSaveTecDocAttributes(robaLightDtos);
+  }
+
+  public Optional<ArticleLinkedAllLinkingTargetManufacturer2Response>
+      getArticleLinkedManufacturers(Long robaId, String linkingTargetType) {
+    if (linkingTargetType == null || linkingTargetType.isBlank()) {
+      return Optional.empty();
+    }
+
+    String sanitizedType = linkingTargetType.trim().toUpperCase(Locale.ROOT);
+
+    return tecDocAttributeService
+        .findTecDocArticleIdByRobaId(robaId)
+        .flatMap(
+            articleId ->
+                Optional.ofNullable(
+                    tecDocClient.getArticleLinkedAllLinkingTargetManufacturer2(
+                        articleId, sanitizedType)));
+  }
+
+  public List<TecDocLinkedManufacturerDto> getLinkedManufacturersByArticleId(
+      Long articleId, String linkingTargetType) {
+    if (articleId == null || linkingTargetType == null || linkingTargetType.isBlank()) {
+      return List.of();
+    }
+
+    String sanitizedType = linkingTargetType.trim().toUpperCase(Locale.ROOT);
+
+    ArticleLinkedAllLinkingTargetManufacturer2Response response =
+        tecDocClient.getArticleLinkedAllLinkingTargetManufacturer2(articleId, sanitizedType);
+
+    if (response == null
+        || response.getData() == null
+        || response.getData().getArray() == null) {
+      return List.of();
+    }
+
+    return response.getData().getArray().stream()
+        .filter(Objects::nonNull)
+        .filter(record -> record.getManuId() != null)
+        .map(record -> new TecDocLinkedManufacturerDto(record.getManuId(), record.getManuName()))
+        .toList();
+  }
+
+  public List<TecDocLinkedManufacturerDto> getLinkedManufacturersForRoba(
+      Long robaId, String linkingTargetType) {
+    if (robaId == null) {
+      return List.of();
+    }
+
+    return tecDocAttributeService
+        .findTecDocArticleIdByRobaId(robaId)
+        .map(articleId -> getLinkedManufacturersByArticleId(articleId, linkingTargetType))
+        .orElse(List.of());
+  }
+
+  public Optional<List<TecDocLinkedManufacturerTargetsDto>> getArticleLinkedTargets(
+      Long robaId, String linkingTargetType) {
+    if (linkingTargetType == null || linkingTargetType.isBlank()) {
+      return Optional.empty();
+    }
+
+    String sanitizedType = linkingTargetType.trim().toUpperCase(Locale.ROOT);
+
+    return tecDocAttributeService
+        .findTecDocArticleIdByRobaId(robaId)
+        .flatMap(articleId -> Optional.of(fetchLinkedManufacturersWithTargets(articleId, sanitizedType)));
+  }
+
+  private List<TecDocLinkedManufacturerTargetsDto> fetchLinkedManufacturersWithTargets(
+      Long articleId, String linkingTargetType) {
+
+    List<TecDocLinkedManufacturerDto> manufacturers =
+        getLinkedManufacturersByArticleId(articleId, linkingTargetType);
+
+    List<TecDocLinkedManufacturerTargetsDto> result = new ArrayList<>();
+
+    for (TecDocLinkedManufacturerDto manufacturer : manufacturers) {
+      Long manuId = manufacturer.getLinkingTargetId();
+      if (manuId == null) {
+        continue;
+      }
+
+      ArticleLinkedAllLinkingTarget4Response linkedTargetsResponse =
+          tecDocClient.getArticleLinkedAllLinkingTarget4(articleId, manuId, linkingTargetType);
+
+      List<ArticleLinkedAllLinkingTargetDetailsRecord> details =
+          extractLinkingTargetDetails(linkedTargetsResponse);
+
+      if (details.isEmpty()) {
+        continue;
+      }
+
+      List<ArticleLinkedAllLinkingTargetsByIds3Record> aggregatedTargets =
+          fetchLinkedTargetsByIds(articleId, linkingTargetType, details);
+
+      if (!aggregatedTargets.isEmpty()) {
+        List<TecDocLinkedModelDto> models = groupTargetsByModel(aggregatedTargets);
+        if (!models.isEmpty()) {
+          result.add(
+              new TecDocLinkedManufacturerTargetsDto(manuId, manufacturer.getName(), models));
+        }
+      }
+    }
+
+    return result;
+  }
+
+  private List<ArticleLinkedAllLinkingTargetDetailsRecord> extractLinkingTargetDetails(
+      ArticleLinkedAllLinkingTarget4Response response) {
+    if (response == null || response.getData() == null || response.getData().getArray() == null) {
+      return List.of();
+    }
+
+    List<ArticleLinkedAllLinkingTargetDetailsRecord> details = new ArrayList<>();
+    Set<String> seenPairs = new LinkedHashSet<>();
+
+    for (ArticleLinkedAllLinkingTarget4Record record :
+        response.getData().getArray().stream().filter(Objects::nonNull).toList()) {
+      if (record.getArticleLinkages() == null || record.getArticleLinkages().getArray() == null) {
+        continue;
+      }
+
+      for (ArticleLinkedAllLinkingTargetDetailsRecord linkage :
+          record.getArticleLinkages().getArray().stream().filter(Objects::nonNull).toList()) {
+        if (linkage.getArticleLinkId() == null || linkage.getLinkingTargetId() == null) {
+          continue;
+        }
+
+        String key = linkage.getArticleLinkId() + ":" + linkage.getLinkingTargetId();
+        if (seenPairs.add(key)) {
+          details.add(linkage);
+        }
+      }
+    }
+
+    return details;
+  }
+
+  private List<ArticleLinkedAllLinkingTargetsByIds3Record> fetchLinkedTargetsByIds(
+      Long articleId,
+      String linkingTargetType,
+      List<ArticleLinkedAllLinkingTargetDetailsRecord> details) {
+
+    List<ArticleLinkedAllLinkingTargetsByIds3Record> aggregated = new ArrayList<>();
+
+    final int batchSize = 25;
+    for (int index = 0; index < details.size(); index += batchSize) {
+      List<ArticleLinkedAllLinkingTargetDetailsRecord> batch =
+          details.subList(index, Math.min(details.size(), index + batchSize));
+
+      ArticleLinkedAllLinkingTargetsByIds3Response response =
+          tecDocClient.getArticleLinkedAllLinkingTargetsByIds3(
+              articleId, linkingTargetType, batch);
+
+      if (response == null
+          || response.getData() == null
+          || response.getData().getArray() == null) {
+        continue;
+      }
+
+      aggregated.addAll(
+          response.getData().getArray().stream().filter(Objects::nonNull).collect(Collectors.toList()));
+    }
+
+    return aggregated;
+  }
+
+  private List<TecDocLinkedModelDto> groupTargetsByModel(
+      List<ArticleLinkedAllLinkingTargetsByIds3Record> records) {
+    LinkedHashMap<String, ModelGroup> grouped = new LinkedHashMap<>();
+
+    for (ArticleLinkedAllLinkingTargetsByIds3Record record :
+        records.stream().filter(Objects::nonNull).toList()) {
+      if (record.getLinkedVehicles() == null || record.getLinkedVehicles().getArray() == null) {
+        continue;
+      }
+
+      for (ArticleLinkedVehiclesById2Record vehicle :
+          record.getLinkedVehicles().getArray().stream().filter(Objects::nonNull).toList()) {
+        Long modelId = vehicle.getModelId() != null ? vehicle.getModelId() : vehicle.getCarId();
+        String modelName =
+            vehicle.getModelDesc() != null
+                ? vehicle.getModelDesc()
+                : Optional.ofNullable(vehicle.getCarDesc()).orElse("Unknown model");
+        String key = modelId + "|" + modelName;
+
+        ModelGroup group =
+            grouped.computeIfAbsent(key, k -> new ModelGroup(modelId, modelName));
+
+        long articleLinkKey = record.getArticleLinkId();
+        long linkingTargetKey = record.getLinkingTargetId();
+        if (linkingTargetKey == 0L && vehicle.getCarId() != null) {
+          linkingTargetKey = vehicle.getCarId();
+        }
+        String variantKey = articleLinkKey + ":" + linkingTargetKey;
+
+        if (group.variantKeys.add(variantKey)) {
+          group.variants.add(toVariant(record, vehicle));
+        }
+      }
+    }
+
+    return grouped.values().stream()
+        .map(group -> new TecDocLinkedModelDto(group.modelId, group.modelName, group.variants))
+        .toList();
+  }
+
+  private TecDocLinkedVariantDto toVariant(
+      ArticleLinkedAllLinkingTargetsByIds3Record record, ArticleLinkedVehiclesById2Record vehicle) {
+    return new TecDocLinkedVariantDto(
+        record.getArticleLinkId(),
+        record.getLinkingTargetId(),
+        vehicle.getCarId(),
+        vehicle.getCarDesc(),
+        vehicle.getConstructionType(),
+        vehicle.getPowerKwFrom(),
+        vehicle.getPowerKwTo(),
+        vehicle.getPowerHpFrom(),
+        vehicle.getPowerHpTo(),
+        vehicle.getCylinderCapacity(),
+        vehicle.getYearOfConstructionFrom(),
+        vehicle.getYearOfConstructionTo());
+  }
+
+  private static final class ModelGroup {
+    final Long modelId;
+    final String modelName;
+    final List<TecDocLinkedVariantDto> variants = new ArrayList<>();
+    final Set<String> variantKeys = new LinkedHashSet<>();
+
+    ModelGroup(Long modelId, String modelName) {
+      this.modelId = modelId;
+      this.modelName = modelName;
+    }
   }
 }
