@@ -4,6 +4,7 @@ import static lombok.AccessLevel.PRIVATE;
 
 import com.automaterijal.application.services.ProductSitemapCache;
 import com.automaterijal.application.services.SitemapService;
+import com.automaterijal.application.services.VehicleSitemapCache;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
@@ -23,6 +24,7 @@ public class SitemapController {
 
   @NonNull final SitemapService sitemapService;
   @NonNull final ProductSitemapCache productSitemapCache;
+  @NonNull final VehicleSitemapCache vehicleSitemapCache;
 
   @Value("${site.base-url}")
   String baseUrl;
@@ -63,16 +65,27 @@ public class SitemapController {
         .append(blogLastmod)
         .append("</lastmod></sitemap>\n");
     String productLastmod = isoUtc(productSitemapCache.getLastRefreshTime());
-    sb.append("  <sitemap><loc>")
-        .append(baseUrl)
-        .append("/sitemap-products-1.xml</loc><lastmod>")
-        .append(productLastmod)
-        .append("</lastmod></sitemap>\n");
-    sb.append("  <sitemap><loc>")
-        .append(baseUrl)
-        .append("/sitemap-products-2.xml</loc><lastmod>")
-        .append(productLastmod)
-        .append("</lastmod></sitemap>\n");
+    int productPages = productSitemapCache.getPageCount();
+    for (int page = 1; page <= productPages; page++) {
+      sb.append("  <sitemap><loc>")
+          .append(baseUrl)
+          .append("/sitemap-products-")
+          .append(page)
+          .append(".xml</loc><lastmod>")
+          .append(productLastmod)
+          .append("</lastmod></sitemap>\n");
+    }
+    String vehicleLastmod = isoUtc(vehicleSitemapCache.getLastRefreshTime());
+    int vehiclePages = vehicleSitemapCache.getPageCount();
+    for (int page = 1; page <= vehiclePages; page++) {
+      sb.append("  <sitemap><loc>")
+          .append(baseUrl)
+          .append("/sitemap-vehicles-")
+          .append(page)
+          .append(".xml</loc><lastmod>")
+          .append(vehicleLastmod)
+          .append("</lastmod></sitemap>\n");
+    }
     sb.append("</sitemapindex>");
     return sb.toString();
   }
@@ -209,6 +222,14 @@ public class SitemapController {
   @GetMapping("/sitemap-products-{page}.xml")
   public String sitemapProductsPage(@PathVariable int page) {
     return productSitemapCache.getPage(page);
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Vehicles pages
+  // ─────────────────────────────────────────────────────────────────────────────
+  @GetMapping("/sitemap-vehicles-{page}.xml")
+  public String sitemapVehiclesPage(@PathVariable int page) {
+    return vehicleSitemapCache.getPage(page);
   }
 
   // ─────────────────────────────────────────────────────────────────────────────

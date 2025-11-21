@@ -17,16 +17,15 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 /**
- * Pre-generates product sitemap XML once per schedule and serves it from memory for fast responses.
+ * Pre-generates vehicle sitemap XML once per schedule and serves it from memory for fast responses.
  */
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 @Slf4j
-public class ProductSitemapCache {
+public class VehicleSitemapCache {
 
-  static final String EMPTY_SITEMAP_XML =
-      "<?xml version=\"1.0\" encoding=\"UTF-8\"?><urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"></urlset>";
+  private static final int VEHICLE_SITEMAP_LIMIT = 50_000;
 
   @NonNull SitemapService sitemapService;
 
@@ -39,18 +38,16 @@ public class ProductSitemapCache {
     refreshCacheSafely();
   }
 
-  @Scheduled(cron = "${sitemap.products.refresh-cron:0 0 2 * * *}")
+  @Scheduled(cron = "${sitemap.vehicles.refresh-cron:0 30 3 * * *}")
   public void scheduledRefresh() {
     refreshCacheSafely();
   }
 
-  /**
-   * Returns cached XML for requested page (1-based). Falls back to an empty sitemap when missing.
-   */
+  /** Returns cached XML for requested page (1-based). */
   public String getPage(int page) {
     List<String> pages = cachedPages.get();
     if (page < 1 || page > pages.size()) {
-      return EMPTY_SITEMAP_XML;
+      return ProductSitemapCache.EMPTY_SITEMAP_XML;
     }
     return pages.get(page - 1);
   }
@@ -68,40 +65,52 @@ public class ProductSitemapCache {
     try {
       doRefresh();
     } catch (Exception ex) {
-      log.error("Failed to refresh product sitemap cache", ex);
+      log.error("Failed to refresh vehicle sitemap cache", ex);
     }
   }
 
   private void doRefresh() {
-    List<List<String>> urlPages = sitemapService.getProductUrlsTwoPages();
+    List<SitemapService.VehicleSitemapEntry> entries = sitemapService.getVehicleSitemapEntries();
     OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
 
-    if (urlPages.isEmpty()) {
+    if (entries.isEmpty()) {
       cachedPages.set(List.of());
       lastRefresh.set(now);
       return;
     }
 
-    List<String> xmlPages = new ArrayList<>(urlPages.size());
-    for (List<String> urls : urlPages) {
-      xmlPages.add(buildXml(urls, now));
+    long modelCount =
+        entries.stream().filter(e -> "0.6".equals(e.priority())).count(); // models have 0.6
+    log.info(
+        "Vehicle sitemap entries total={}, models={}",
+        entries.size(),
+        modelCount);
+
+    List<String> xmlPages = new ArrayList<>();
+    for (int start = 0; start < entries.size(); start += VEHICLE_SITEMAP_LIMIT) {
+      int end = Math.min(entries.size(), start + VEHICLE_SITEMAP_LIMIT);
+      xmlPages.add(buildXml(entries.subList(start, end), now));
     }
 
     cachedPages.set(List.copyOf(xmlPages));
     lastRefresh.set(now);
-    log.info("Product sitemap cache refreshed with {} page(s)", xmlPages.size());
+    log.info("Vehicle sitemap cache refreshed with {} page(s)", xmlPages.size());
   }
 
-  private static String buildXml(List<String> urls, OffsetDateTime lastmod) {
+  private static String buildXml(List<SitemapService.VehicleSitemapEntry> urls, OffsetDateTime lastmod) {
     StringBuilder sb = new StringBuilder();
     sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
     sb.append("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n");
-    for (String url : urls) {
+    for (SitemapService.VehicleSitemapEntry entry : urls) {
       sb.append("  <url><loc>")
-          .append(url)
+          .append(entry.url())
           .append("</loc><lastmod>")
           .append(lastmod)
-          .append("</lastmod></url>\n");
+          .append("</lastmod><changefreq>")
+          .append(entry.changefreq())
+          .append("</changefreq><priority>")
+          .append(entry.priority())
+          .append("</priority></url>\n");
     }
     sb.append("</urlset>");
     return sb.toString();

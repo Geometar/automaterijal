@@ -70,6 +70,7 @@ public class SecurityConfiguration {
                         "/sitemap-categories.xml",
                         "/sitemap-blog.xml",
                         "/sitemap-products**",
+                        "/sitemap-vehicles**",
                         "/sitemap-static.xml",
                         "/share/**",
                         "/webshop/**")
