@@ -60,3 +60,8 @@ sitemap:
   blog-prefix: /blog
   products:
     refresh-cron: 0 0 2 * * *
+  vehicles:
+    prefix: /webshop/vozila
+    linking-target-type: PO
+    refresh-cron: 0 30 3 * * *
+    model-end-cutoff-year: 1995
