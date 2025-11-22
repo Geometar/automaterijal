@@ -10,6 +10,7 @@ import com.automaterijal.application.domain.mapper.RobaMapper;
 import com.automaterijal.application.services.TecDocService;
 import com.automaterijal.application.services.roba.RobaCeneService;
 import com.automaterijal.application.services.roba.repo.RobaDatabaseService;
+import com.automaterijal.application.services.roba.util.RobaHelper;
 import com.automaterijal.application.tecdoc.MainArticlesRecord;
 import java.util.Collections;
 import java.util.List;
@@ -30,6 +31,7 @@ public class RobaDetailsProcessor {
   @NonNull final RobaCeneService robaCeneService;
   @NonNull final RobaMapper mapper;
   @NonNull final TecDocService tecDocService;
+  @NonNull final RobaHelper robaHelper;
 
   public void postaviCenuIRabat(RobaLightDto robaLightDto, Partner partner) {
     robaLightDto.setCena(
@@ -42,6 +44,7 @@ public class RobaDetailsProcessor {
     robaLightDto.setRabat(
         robaCeneService.vratiRabatPartneraNaArtikal(
             robaLightDto.getProizvodjac().getProid(), robaLightDto.getGrupa(), partner));
+    robaHelper.markOutOfStockIfPriceMissing(robaLightDto);
   }
 
   private void postaviSlikuIzAtributa(

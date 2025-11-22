@@ -13,6 +13,7 @@ import com.automaterijal.application.services.TecDocService;
 import com.automaterijal.application.services.roba.RobaCeneService;
 import com.automaterijal.application.services.roba.grupe.ArticleGroupService;
 import com.automaterijal.application.services.tecdoc.TecDocAttributeService;
+import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -132,6 +133,19 @@ public class RobaHelper {
     dto.setRabat(
         priceService.vratiRabatPartneraNaArtikal(
             dto.getProizvodjac().getProid(), dto.getGrupa(), partner));
+    markOutOfStockIfPriceMissing(dto);
+  }
+
+  /** Ako je cena null ili 0 za kupca, tretiraj kao da nema na stanju. */
+  public void markOutOfStockIfPriceMissing(RobaLightDto dto) {
+    if (dto == null) {
+      return;
+    }
+
+    BigDecimal cena = dto.getCena();
+    if (cena == null || cena.compareTo(BigDecimal.ZERO) <= 0) {
+      dto.setStanje(0);
+    }
   }
 
   public SlikaDto resolveImage(Long robaId, SlikaDto existing) {

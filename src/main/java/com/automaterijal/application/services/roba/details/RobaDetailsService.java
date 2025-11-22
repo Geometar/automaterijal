@@ -85,6 +85,7 @@ public class RobaDetailsService {
     detaljnoDto.setRabat(
         robaCeneService.vratiRabatPartneraNaArtikal(
             detaljnoDto.getProizvodjac().getProid(), detaljnoDto.getGrupa(), partner));
+    robaHelper.markOutOfStockIfPriceMissing(detaljnoDto);
 
     popuniDetaljePrekoTecDoca(detaljnoDto, partner);
     detaljnoDto.setSlika(robaHelper.resolveImage(detaljnoDto.getRobaid(), detaljnoDto.getSlika()));
