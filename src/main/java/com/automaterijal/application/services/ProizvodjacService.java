@@ -49,6 +49,15 @@ public class ProizvodjacService {
     return proizvodjacRepository.findById(id);
   }
 
+  public Map<String, Proizvodjac> vratiProizvodjacePoId(Collection<String> ids) {
+    if (ids == null || ids.isEmpty()) {
+      return Collections.emptyMap();
+    }
+    return proizvodjacRepository.findByProidIn(ids).stream()
+        .filter(Objects::nonNull)
+        .collect(Collectors.toMap(Proizvodjac::getProid, Function.identity(), (left, right) -> left));
+  }
+
   public List<Proizvodjac> findAll() {
     return proizvodjacRepository.findAllByOrderByNazivAsc().stream()
         .filter(proizvodjac -> !proizvodjac.getNaziv().equals("0"))

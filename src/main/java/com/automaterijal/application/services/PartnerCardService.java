@@ -1,26 +1,32 @@
 package com.automaterijal.application.services;
 
-import com.automaterijal.application.domain.dto.partner.PartnerCardExternalItemDto;
-import com.automaterijal.application.domain.dto.partner.PartnerCardGroupDto;
-import com.automaterijal.application.domain.dto.partner.PartnerCardItemDto;
-import com.automaterijal.application.domain.dto.partner.PartnerCardResponseDto;
+import com.automaterijal.application.domain.dto.SlikaDto;
 import com.automaterijal.application.domain.dto.partner.PartnerCardDocumentDetailsDto;
 import com.automaterijal.application.domain.dto.partner.PartnerCardDocumentDetailsExternalDto;
 import com.automaterijal.application.domain.dto.partner.PartnerCardDocumentExternalItemDto;
 import com.automaterijal.application.domain.dto.partner.PartnerCardDocumentItemDto;
-import com.automaterijal.application.domain.dto.SlikaDto;
+import com.automaterijal.application.domain.dto.partner.PartnerCardExternalItemDto;
+import com.automaterijal.application.domain.dto.partner.PartnerCardGroupDto;
+import com.automaterijal.application.domain.dto.partner.PartnerCardItemDto;
+import com.automaterijal.application.domain.dto.partner.PartnerCardResponseDto;
 import com.automaterijal.application.domain.entity.Partner;
+import com.automaterijal.application.domain.entity.PodGrupa;
+import com.automaterijal.application.domain.entity.Proizvodjac;
 import com.automaterijal.application.domain.entity.roba.Roba;
 import com.automaterijal.application.domain.entity.roba.RobaCene;
 import com.automaterijal.application.domain.repository.roba.RobaRepository;
 import com.automaterijal.application.services.roba.RobaCeneService;
+import com.automaterijal.application.services.roba.grupe.ArticleGroupService;
+import com.automaterijal.application.services.roba.grupe.ArticleSubGroupService;
+import com.automaterijal.application.services.roba.util.RobaHelper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -56,9 +62,12 @@ public class PartnerCardService {
   @NonNull RestTemplate restTemplate;
   @NonNull ObjectMapper objectMapper;
   @NonNull PartnerService partnerService;
+  @NonNull ProizvodjacService proizvodjacService;
+  @NonNull ArticleGroupService articleGroupService;
+  @NonNull ArticleSubGroupService articleSubGroupService;
   @NonNull RobaRepository robaRepository;
   @NonNull RobaCeneService robaCeneService;
-  @NonNull ImageService imageService;
+  @NonNull RobaHelper robaHelper;
 
   public PartnerCardResponseDto vratiKarticuZaPartnera(Integer partnerPpid) {
     final String targetUrl = PARTNER_CARD_URL_TEMPLATE.formatted(partnerPpid);
@@ -206,6 +215,9 @@ public class PartnerCardService {
     final Partner partner = partnerService.vratiPartnera(partnerPpid);
     final Map<Long, Roba> robaPoId = ucitajRobu(stavke);
     final Map<Long, RobaCene> cenePoId = ucitajCene(stavke);
+    final Map<String, String> proizvodjacNazivi = ucitajProizvodjace(robaPoId.values());
+    final Map<String, String> grupaNazivi = ucitajGrupe(robaPoId.values());
+    final Map<Integer, String> podgrupaNazivi = ucitajPodgrupe(robaPoId.values());
 
     final List<PartnerCardDocumentItemDto> mapped =
         stavke.stream()
@@ -213,8 +225,14 @@ public class PartnerCardService {
                 item ->
                     mapToDocumentItemDto(
                         vrDokNormalized,
-                        item, partner, robaPoId.get(item.getRobaId()), cenePoId.get(item.getRobaId()),
-                        adminPregled))
+                        item,
+                        partner,
+                        robaPoId.get(item.getRobaId()),
+                        cenePoId.get(item.getRobaId()),
+                        adminPregled,
+                        proizvodjacNazivi,
+                        grupaNazivi,
+                        podgrupaNazivi))
             .toList();
 
     final PartnerCardDocumentDetailsDto retVal = new PartnerCardDocumentDetailsDto();
@@ -269,7 +287,10 @@ public class PartnerCardService {
       Partner partner,
       Roba roba,
       RobaCene cene,
-      boolean adminPregled) {
+      boolean adminPregled,
+      Map<String, String> proizvodjacNazivi,
+      Map<String, String> grupaNazivi,
+      Map<Integer, String> podgrupaNazivi) {
     final PartnerCardDocumentItemDto dto = new PartnerCardDocumentItemDto();
     dto.setId(item.getId());
     dto.setStavkaId(item.getStavkaId());
@@ -286,6 +307,14 @@ public class PartnerCardService {
     dto.setKatbr(item.getKatbr());
     dto.setKatbrPro(item.getKatbrPro());
     dto.setBarkod(item.getBarkod());
+    if (roba != null) {
+      dto.setProizvodjacNaziv(proizvodjacNazivi.get(roba.getProid()));
+      dto.setGrupa(roba.getGrupaid());
+      dto.setGrupaNaziv(grupaNazivi.get(roba.getGrupaid()));
+      Integer podgrupaId = roba.getPodgrupaid();
+      dto.setPodgrupa(podgrupaId);
+      dto.setPodgrupaNaziv(podgrupaNazivi.get(podgrupaId));
+    }
     dto.setSlika(resolveSlika(roba));
 
     final String vrDokNormalized = normalizeVrDokValue(vrDok);
@@ -512,9 +541,67 @@ public class PartnerCardService {
 
   private SlikaDto resolveSlika(Roba roba) {
     if (roba == null) {
-      return imageService.fetchImageFromFileSystem(null);
+      return robaHelper.resolveImage(null, null);
     }
-    return imageService.fetchImageFromFileSystem(roba.getSlika());
+    return robaHelper.resolveImage(roba.getRobaid(), new SlikaDto(roba.getSlika()));
+  }
+
+  private Map<String, String> ucitajProizvodjace(Collection<Roba> roba) {
+    if (roba == null || roba.isEmpty()) {
+      return Collections.emptyMap();
+    }
+    final Set<String> ids =
+        roba.stream()
+            .map(Roba::getProid)
+            .filter(Objects::nonNull)
+            .map(String::trim)
+            .filter(id -> !id.isEmpty())
+            .collect(Collectors.toSet());
+    if (ids.isEmpty()) {
+      return Collections.emptyMap();
+    }
+    return proizvodjacService.vratiProizvodjacePoId(ids).values().stream()
+        .filter(Objects::nonNull)
+        .collect(Collectors.toMap(Proizvodjac::getProid, Proizvodjac::getNaziv));
+  }
+
+  private Map<String, String> ucitajGrupe(Collection<Roba> roba) {
+    if (roba == null || roba.isEmpty()) {
+      return Collections.emptyMap();
+    }
+    final List<String> ids =
+        roba.stream()
+            .map(Roba::getGrupaid)
+            .filter(Objects::nonNull)
+            .map(String::trim)
+            .filter(id -> !id.isEmpty())
+            .distinct()
+            .toList();
+    if (ids.isEmpty()) {
+      return Collections.emptyMap();
+    }
+    return articleGroupService.findAll().stream()
+        .filter(Objects::nonNull)
+        .filter(grupa -> ids.contains(grupa.getGrupaid()))
+        .collect(Collectors.toMap(grupa -> grupa.getGrupaid(), grupa -> grupa.getNaziv()));
+  }
+
+  private Map<Integer, String> ucitajPodgrupe(Collection<Roba> roba) {
+    if (roba == null || roba.isEmpty()) {
+      return Collections.emptyMap();
+    }
+    final List<Integer> ids =
+        roba.stream()
+            .map(Roba::getPodgrupaid)
+            .filter(id -> id != 0)
+            .distinct()
+            .toList();
+    if (ids.isEmpty()) {
+      return Collections.emptyMap();
+    }
+    return articleSubGroupService.vratiPodgrupuPoKljucu(ids).stream()
+        .filter(Objects::nonNull)
+        .collect(Collectors.toMap(PodGrupa::getPodGrupaId, PodGrupa::getNaziv));
   }
 
   private Map<Long, Roba> ucitajRobu(List<PartnerCardDocumentExternalItemDto> stavke) {

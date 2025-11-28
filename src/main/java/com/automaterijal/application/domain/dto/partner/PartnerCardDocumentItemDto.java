@@ -26,6 +26,12 @@ public class PartnerCardDocumentItemDto {
   String katbrPro;
   String barkod;
 
+  String proizvodjacNaziv;
+  String grupa;
+  String grupaNaziv;
+  Integer podgrupa;
+  String podgrupaNaziv;
+
   SlikaDto slika;
 
   BigDecimal cenaPartneraBezPdv;
