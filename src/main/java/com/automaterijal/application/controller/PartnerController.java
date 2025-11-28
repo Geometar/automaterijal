@@ -3,15 +3,16 @@ package com.automaterijal.application.controller;
 import com.automaterijal.application.domain.constants.PartnerAkcije;
 import com.automaterijal.application.domain.dto.PartnerDto;
 import com.automaterijal.application.domain.dto.ResetovanjeSifreDto;
+import com.automaterijal.application.domain.dto.partner.PartnerCardDocumentDetailsDto;
 import com.automaterijal.application.domain.dto.partner.PartnerCardResponseDto;
 import com.automaterijal.application.domain.entity.Partner;
-import com.automaterijal.application.services.PartnerService;
 import com.automaterijal.application.services.PartnerCardService;
+import com.automaterijal.application.services.PartnerService;
 import com.automaterijal.application.services.security.UserDetailsService;
 import com.automaterijal.application.services.security.UsersService;
 import com.automaterijal.application.utils.PartnerSpringBeanUtils;
-import java.util.List;
 import jakarta.validation.constraints.NotNull;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -170,5 +171,32 @@ public class PartnerController {
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nije Admin");
     }
     return ResponseEntity.ok(partnerCardService.vratiKarticuZaPartnera(ppid));
+  }
+
+  @GetMapping(value = "/kartica/detalji")
+  public ResponseEntity<PartnerCardDocumentDetailsDto> vratiDetaljeKarticePartnera(
+      final Authentication authentication,
+      @RequestParam(name = "vrdok") String vrDok,
+      @RequestParam(name = "brdok") String brDok) {
+    Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+    if (partner == null) {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Nije pronadjen partner");
+    }
+    return ResponseEntity.ok(
+        partnerCardService.vratiDetaljeDokumenta(partner.getPpid(), vrDok, brDok, false));
+  }
+
+  @GetMapping(value = "/{ppid}/kartica-admin/detalji")
+  public ResponseEntity<PartnerCardDocumentDetailsDto> vratiDetaljeKarticeZaAdmina(
+      final Authentication authentication,
+      @PathVariable("ppid") final Integer ppid,
+      @RequestParam(name = "vrdok") String vrDok,
+      @RequestParam(name = "brdok") String brDok) {
+    final var partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+    if (partner == null || partner.getPrivilegije().intValue() != 2047) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nije Admin");
+    }
+    return ResponseEntity.ok(
+        partnerCardService.vratiDetaljeDokumenta(ppid, vrDok, brDok, true));
   }
 }

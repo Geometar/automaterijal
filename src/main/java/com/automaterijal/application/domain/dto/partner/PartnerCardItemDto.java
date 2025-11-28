@@ -11,6 +11,7 @@ public class PartnerCardItemDto {
 
   String tip;
   String nazivDok;
+  String vrDok;
   String brojDokumenta;
   String datum;
   String datumRoka;
@@ -18,4 +19,3 @@ public class PartnerCardItemDto {
   BigDecimal potrazuje;
   BigDecimal stanje;
 }
-

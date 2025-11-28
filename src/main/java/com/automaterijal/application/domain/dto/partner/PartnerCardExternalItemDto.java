@@ -18,6 +18,9 @@ public class PartnerCardExternalItemDto {
   @JsonProperty("NAZIVDOK")
   String nazivDok;
 
+  @JsonProperty("VRDOK")
+  String vrDok;
+
   @JsonProperty("BRDOK")
   String brDok;
 
@@ -40,4 +43,3 @@ public class PartnerCardExternalItemDto {
     return "Total".equalsIgnoreCase(tip) || "UKUPNO:".equalsIgnoreCase(nazivDok);
   }
 }
-
