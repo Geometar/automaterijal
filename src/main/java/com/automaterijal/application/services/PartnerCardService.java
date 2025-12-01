@@ -134,8 +134,6 @@ public class PartnerCardService {
       return praznaKartica();
     }
 
-    prikazaniZapisi.sort(this::compareByVrDokThenDate);
-
     final Map<String, List<PartnerCardExternalItemDto>> grupisanoPoTipu =
         prikazaniZapisi.stream()
             .collect(
