@@ -25,6 +25,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -58,6 +59,7 @@ public class PartnerCardService {
   static final String PARTNER_CARD_DETAILS_URL_TEMPLATE =
       "https://1clicksoft.rs/erpsrv/test/erpsrv.php?compid=302353&ppid=101022&actionid=12s&skey=d266f2f31cf903c870027659030e967e&usrid=%d&vrdok=%s&brdok=%s";
   private static final Set<String> DOZVOLJENI_VR_DOK = Set.of("4", "04", "13", "15", "32");
+  private static final List<String> PRIORITET_VR_DOK = List.of("04", "4", "32");
 
   @NonNull RestTemplate restTemplate;
   @NonNull ObjectMapper objectMapper;
@@ -76,7 +78,9 @@ public class PartnerCardService {
       responseBody = restTemplate.getForObject(targetUrl, String.class);
     } catch (RestClientException exception) {
       log.error(
-          "Neuspesan poziv kartice partnera za partnera {} prema url-u {}", partnerPpid, targetUrl,
+          "Neuspesan poziv kartice partnera za partnera {} prema url-u {}",
+          partnerPpid,
+          targetUrl,
           exception);
       throw new ResponseStatusException(
           HttpStatus.BAD_GATEWAY, "Greska pri preuzimanju kartice partnera");
@@ -123,17 +127,24 @@ public class PartnerCardService {
     final List<PartnerCardExternalItemDto> prikazaniZapisi =
         poslovniZapisi.stream()
             .filter(item -> isDozvoljenVrDok(item.getVrDok()))
-            .toList();
+            .filter(item -> !item.getTip().equals("Novcana stavka"))
+            .collect(Collectors.toCollection(ArrayList::new));
 
     if (prikazaniZapisi.isEmpty()) {
       return praznaKartica();
     }
 
+    prikazaniZapisi.sort(this::compareByVrDokThenDate);
+
     final Map<String, List<PartnerCardExternalItemDto>> grupisanoPoTipu =
         prikazaniZapisi.stream()
             .collect(
                 Collectors.groupingBy(
-                    item -> Optional.ofNullable(item.getTip()).map(String::trim).filter(s -> !s.isEmpty()).orElse("Nepoznat tip"),
+                    item ->
+                        Optional.ofNullable(item.getTip())
+                            .map(String::trim)
+                            .filter(s -> !s.isEmpty())
+                            .orElse("Nepoznat tip"),
                     LinkedHashMap::new,
                     Collectors.toList()));
 
@@ -145,7 +156,8 @@ public class PartnerCardService {
     final PartnerCardResponseDto retVal = new PartnerCardResponseDto();
     retVal.setGroups(groups);
     retVal.setUkupnoDuguje(normalize(sum(prikazaniZapisi, PartnerCardExternalItemDto::getDuguje)));
-    retVal.setUkupnoPotrazuje(normalize(sum(prikazaniZapisi, PartnerCardExternalItemDto::getPotrazuje)));
+    retVal.setUkupnoPotrazuje(
+        normalize(sum(prikazaniZapisi, PartnerCardExternalItemDto::getPotrazuje)));
     retVal.setUkupnoStanje(normalize(sum(prikazaniZapisi, PartnerCardExternalItemDto::getStanje)));
 
     return retVal;
@@ -158,8 +170,7 @@ public class PartnerCardService {
     }
     final String vrDokNormalized = normalizeVrDokValue(vrDok);
 
-    final String targetUrl =
-        PARTNER_CARD_DETAILS_URL_TEMPLATE.formatted(partnerPpid, vrDok, brDok);
+    final String targetUrl = PARTNER_CARD_DETAILS_URL_TEMPLATE.formatted(partnerPpid, vrDok, brDok);
     String responseBody;
     try {
       responseBody = restTemplate.getForObject(targetUrl, String.class);
@@ -226,7 +237,6 @@ public class PartnerCardService {
                     mapToDocumentItemDto(
                         vrDokNormalized,
                         item,
-                        partner,
                         robaPoId.get(item.getRobaId()),
                         cenePoId.get(item.getRobaId()),
                         adminPregled,
@@ -242,8 +252,7 @@ public class PartnerCardService {
     return retVal;
   }
 
-  private PartnerCardGroupDto mapToGroup(
-      String tip, List<PartnerCardExternalItemDto> items) {
+  private PartnerCardGroupDto mapToGroup(String tip, List<PartnerCardExternalItemDto> items) {
     final PartnerCardGroupDto group = new PartnerCardGroupDto();
     group.setTip(tip);
     group.setTotalDuguje(normalize(sum(items, PartnerCardExternalItemDto::getDuguje)));
@@ -251,9 +260,7 @@ public class PartnerCardService {
     group.setTotalStanje(normalize(sum(items, PartnerCardExternalItemDto::getStanje)));
     group.setStavke(
         items.stream()
-            .sorted(
-                (left, right) ->
-                    compareDatesDesc(left.getDatum(), right.getDatum()))
+            .sorted((left, right) -> compareDatesDesc(left.getDatum(), right.getDatum()))
             .map(this::mapToItemDto)
             .toList());
     return group;
@@ -284,7 +291,6 @@ public class PartnerCardService {
   private PartnerCardDocumentItemDto mapToDocumentItemDto(
       String vrDok,
       PartnerCardDocumentExternalItemDto item,
-      Partner partner,
       Roba roba,
       RobaCene cene,
       boolean adminPregled,
@@ -390,23 +396,6 @@ public class PartnerCardService {
     return first.multiply(second).setScale(2, RoundingMode.HALF_UP);
   }
 
-  private BigDecimal partnerCenaSaPdv(PartnerCardDocumentExternalItemDto item) {
-    if (item == null) {
-      return null;
-    }
-    if (item.getProdajnaCena() != null) {
-      return item.getProdajnaCena();
-    }
-    if (item.getProdajnaCenaSaPdv() != null) {
-      return item.getProdajnaCenaSaPdv();
-    }
-    if (item.getProdajnaCenaBezPdv() != null) {
-      BigDecimal multiplier = vatMultiplier(item.getPorez());
-      return item.getProdajnaCenaBezPdv().multiply(multiplier);
-    }
-    return null;
-  }
-
   private BigDecimal punaCenaSaPdv(PartnerCardDocumentExternalItemDto item) {
     if (item == null) {
       return null;
@@ -443,7 +432,9 @@ public class PartnerCardService {
       RobaCene cene, PartnerCardDocumentExternalItemDto item) {
     if (cene != null && cene.getProdajnacena() != null) {
       BigDecimal multiplier =
-          vatMultiplier(Optional.ofNullable(cene.getPdvstopa()).orElse(item != null ? item.getPorez() : null));
+          vatMultiplier(
+              Optional.ofNullable(cene.getPdvstopa())
+                  .orElse(item != null ? item.getPorez() : null));
       return normalize(cene.getProdajnacena().multiply(multiplier));
     }
     if (cene != null && cene.getDeviznacena() != null) {
@@ -458,7 +449,8 @@ public class PartnerCardService {
     return BigDecimal.ONE.add(pdv.divide(BigDecimal.valueOf(100), 4, RoundingMode.HALF_UP));
   }
 
-  private BigDecimal izracunajBezPdv(BigDecimal cenaSaPdv, BigDecimal porez, BigDecimal fallbackBezPdv) {
+  private BigDecimal izracunajBezPdv(
+      BigDecimal cenaSaPdv, BigDecimal porez, BigDecimal fallbackBezPdv) {
     if (fallbackBezPdv != null) {
       return fallbackBezPdv;
     }
@@ -591,11 +583,7 @@ public class PartnerCardService {
       return Collections.emptyMap();
     }
     final List<Integer> ids =
-        roba.stream()
-            .map(Roba::getPodgrupaid)
-            .filter(id -> id != 0)
-            .distinct()
-            .toList();
+        roba.stream().map(Roba::getPodgrupaid).filter(id -> id != 0).distinct().toList();
     if (ids.isEmpty()) {
       return Collections.emptyMap();
     }
