@@ -90,8 +90,9 @@ public class TecDocService {
     return tecDocClient.getLinkageTargets(id, type);
   }
 
-  public ArticlesResponse getAssociatedArticles(Integer id, String type, String assembleGroupId) {
-    return tecDocClient.getAssociatedArticles(id, type, assembleGroupId);
+  public ArticlesResponse getAssociatedArticles(
+      Integer id, String type, String assembleGroupId, List<Integer> genericArticleIds) {
+    return tecDocClient.getAssociatedArticles(id, type, assembleGroupId, genericArticleIds);
   }
 
   public AssemblyGroupWrapper getAssemblyGroupsForVehicle(String type, Integer linkedTargetType) {

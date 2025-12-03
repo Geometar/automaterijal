@@ -6,6 +6,7 @@ import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.services.TecDocService;
 import com.automaterijal.application.services.roba.adapter.RobaAdapterService;
+import com.automaterijal.application.services.roba.util.TecDocCategoryMapper;
 import com.automaterijal.application.services.roba.util.RobaHelper;
 import com.automaterijal.application.tecdoc.*;
 import com.automaterijal.application.utils.CatalogNumberUtils;
@@ -41,8 +42,16 @@ public class RobaSearchService {
       UniverzalniParametri parametri,
       Partner loggedPartner) {
 
-    // 1. Fetch articles from TecDoc
-    List<ArticleRecord> articles = fetchArticlesFromTecDoc(id, type, assembleGroupId);
+    List<Integer> genericArticleIds = parametri.getPodgrupeZaPretragu();
+    boolean hasSubGroupFilter = genericArticleIds != null && !genericArticleIds.isEmpty();
+
+    // 1. Fetch TecDoc articles: full set for categories, filtered set for products
+    List<ArticleRecord> categoryArticles =
+        fetchArticlesFromTecDoc(id, type, assembleGroupId, null);
+    List<ArticleRecord> articles =
+        hasSubGroupFilter
+            ? fetchArticlesFromTecDoc(id, type, assembleGroupId, genericArticleIds)
+            : categoryArticles;
 
     // 2. Generate all possible catalog numbers
     Set<String> catalogNumbers = generateCatalogNumbers(articles);
@@ -51,9 +60,15 @@ public class RobaSearchService {
     processTradeNumbers(articles, catalogNumbers);
     processOemNumbers(articles, catalogNumbers);
 
+    // 3.1 Avoid local sub-group filtering; rely on TecDoc genericArticleIds for this endpoint
+    parametri.setPodgrupeZaPretragu(null);
+
     // 4. Fetch products using generated catalog numbers
     MagacinDto magacinDto =
         robaAdapterService.fetchProductsByTecDocArticles(catalogNumbers, parametri, articles);
+
+    // 4.1 Overwrite group/subgroup using TecDoc categories (only for this API)
+    TecDocCategoryMapper.apply(magacinDto, articles, categoryArticles);
 
     // 5. Apply TecDoc attributes to the fetched products
     if (!magacinDto.getRobaDto().isEmpty()) {
@@ -65,8 +80,8 @@ public class RobaSearchService {
 
   /** Fetches articles from TecDoc API based on ID, type, and assembly group. */
   private List<ArticleRecord> fetchArticlesFromTecDoc(
-      Integer id, String type, String assembleGroupId) {
-    var response = tecDocService.getAssociatedArticles(id, type, assembleGroupId);
+      Integer id, String type, String assembleGroupId, List<Integer> genericArticleIds) {
+    var response = tecDocService.getAssociatedArticles(id, type, assembleGroupId, genericArticleIds);
     if (response == null || response.getArticles() == null) {
       return List.of();
     }

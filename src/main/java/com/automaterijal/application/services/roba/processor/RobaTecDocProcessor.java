@@ -1,6 +1,5 @@
 package com.automaterijal.application.services.roba.processor;
 
-import com.automaterijal.application.domain.constants.GlobalConstants;
 import com.automaterijal.application.domain.constants.TecDocProizvodjaci;
 import com.automaterijal.application.domain.dto.ProizvodjacDTO;
 import com.automaterijal.application.domain.dto.RobaLightDto;
@@ -236,9 +235,6 @@ public class RobaTecDocProcessor {
     proizvodjacDTO.setProid(tecDocProizvodjaci.getCleanName());
     data.setProizvodjac(proizvodjacDTO);
 
-    data.setPodGrupaNaziv(GlobalConstants.TECDOC_PODGRUPA_VALUE);
-    data.setGrupa("Dodatno");
-    data.setPodGrupa(GlobalConstants.TECDOC_PODGRUPA_KEY);
     data.setSlika(imageService.getImageFromTD(articleRecord));
 
     // Convert technical descriptions

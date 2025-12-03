@@ -42,22 +42,13 @@ public class ArticleSubGroupService {
     Set<Integer> podgrupaIds =
         roba.stream()
             .map(RobaLightDto::getPodGrupa)
+            .filter(Objects::nonNull)
             .filter(id -> id != 0)
             .collect(Collectors.toSet());
 
     List<PodgrupaDto> podgrupaDtos = new ArrayList<>();
     if (!podgrupaIds.isEmpty()) {
       podgrupaDtos.addAll(podgrupeJooqRepository.findAllPodgrupeWithGrupa(podgrupaIds));
-    }
-
-    if (roba.stream()
-        .map(RobaLightDto::getPodGrupa)
-        .anyMatch(id -> id.equals(GlobalConstants.TECDOC_PODGRUPA_KEY))) {
-      PodgrupaDto dto = new PodgrupaDto();
-      dto.setId(GlobalConstants.TECDOC_PODGRUPA_KEY);
-      dto.setNaziv(GlobalConstants.TECDOC_PODGRUPA_VALUE);
-      dto.setGrupa("Dodatno");
-      podgrupaDtos.add(dto);
     }
     return podgrupaDtos;
   }
