@@ -222,10 +222,7 @@ public class TecDocClient {
 
   /** Vracanje TecDoc artikala vezano za vozilo */
   public ArticlesResponse getAssociatedArticles(
-      Integer linkageTargetId,
-      String type,
-      String assembleGroupId,
-      List<Integer> genericArticleIds) {
+      Integer linkageTargetId, String type, String assembleGroupId) {
     JSONObject request = new JSONObject();
     JSONObject body = kreirajStandardniObjekat();
     body.put("articleCountry", "RS");
@@ -240,9 +237,6 @@ public class TecDocClient {
     body.put("includeOEMNumbers", true);
     body.put("perPage", 1000);
     body.put("assemblyGroupNodeIds", List.of(assembleGroupId));
-    if (genericArticleIds != null && !genericArticleIds.isEmpty()) {
-      body.put("genericArticleIds", genericArticleIds);
-    }
     request.put("getArticles", body);
     return vratiOdgovor(request, ArticlesResponse.class);
   }

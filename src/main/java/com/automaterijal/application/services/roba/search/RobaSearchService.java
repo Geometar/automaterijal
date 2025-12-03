@@ -2,6 +2,7 @@ package com.automaterijal.application.services.roba.search;
 
 import com.automaterijal.application.domain.constants.TecDocProizvodjaci;
 import com.automaterijal.application.domain.dto.MagacinDto;
+import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.services.TecDocService;
@@ -10,6 +11,7 @@ import com.automaterijal.application.services.roba.util.TecDocCategoryMapper;
 import com.automaterijal.application.services.roba.util.RobaHelper;
 import com.automaterijal.application.tecdoc.*;
 import com.automaterijal.application.utils.CatalogNumberUtils;
+import com.automaterijal.application.utils.GeneralUtil;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -42,16 +44,22 @@ public class RobaSearchService {
       UniverzalniParametri parametri,
       Partner loggedPartner) {
 
-    List<Integer> genericArticleIds = parametri.getPodgrupeZaPretragu();
-    boolean hasSubGroupFilter = genericArticleIds != null && !genericArticleIds.isEmpty();
+    // Sačuvaj originalni paging/filter vrednosti
+    Integer originalPage = parametri.getPage() != null ? parametri.getPage() : 0;
+    Integer originalPageSize =
+        parametri.getPageSize() != null && parametri.getPageSize() > 0
+            ? parametri.getPageSize()
+            : Integer.MAX_VALUE;
+    List<Integer> requestedSubGroups = parametri.getPodgrupeZaPretragu();
 
-    // 1. Fetch TecDoc articles: full set for categories, filtered set for products
-    List<ArticleRecord> categoryArticles =
-        fetchArticlesFromTecDoc(id, type, assembleGroupId, null);
+    // Izbegni lokalni filter podgrupa dok ne mapiramo TecDoc kategorije
+    parametri.setPage(0);
+    parametri.setPageSize(Integer.MAX_VALUE);
+    parametri.setPodgrupeZaPretragu(null);
+
+    // 1. Fetch TecDoc articles (bez filtriranja po genericArticleIds da bi imali sve kategorije)
     List<ArticleRecord> articles =
-        hasSubGroupFilter
-            ? fetchArticlesFromTecDoc(id, type, assembleGroupId, genericArticleIds)
-            : categoryArticles;
+        fetchArticlesFromTecDoc(id, type, assembleGroupId);
 
     // 2. Generate all possible catalog numbers
     Set<String> catalogNumbers = generateCatalogNumbers(articles);
@@ -60,15 +68,28 @@ public class RobaSearchService {
     processTradeNumbers(articles, catalogNumbers);
     processOemNumbers(articles, catalogNumbers);
 
-    // 3.1 Avoid local sub-group filtering; rely on TecDoc genericArticleIds for this endpoint
-    parametri.setPodgrupeZaPretragu(null);
-
     // 4. Fetch products using generated catalog numbers
     MagacinDto magacinDto =
         robaAdapterService.fetchProductsByTecDocArticles(catalogNumbers, parametri, articles);
 
     // 4.1 Overwrite group/subgroup using TecDoc categories (only for this API)
-    TecDocCategoryMapper.apply(magacinDto, articles, categoryArticles);
+    TecDocCategoryMapper.apply(magacinDto, articles);
+
+    // 4.2 Primeni filter podgrupe lokalno nakon mapiranja i vrati paging
+    if (magacinDto.getRobaDto() != null) {
+      List<RobaLightDto> items = magacinDto.getRobaDto().getContent();
+
+      if (requestedSubGroups != null && !requestedSubGroups.isEmpty()) {
+        items =
+            items.stream()
+                .filter(r -> requestedSubGroups.contains(r.getPodGrupa()))
+                .toList();
+      }
+
+      int pageSize = Math.max(1, originalPageSize);
+      int page = Math.max(0, originalPage);
+      magacinDto.setRobaDto(GeneralUtil.createPageable(items, pageSize, page));
+    }
 
     // 5. Apply TecDoc attributes to the fetched products
     if (!magacinDto.getRobaDto().isEmpty()) {
@@ -80,8 +101,8 @@ public class RobaSearchService {
 
   /** Fetches articles from TecDoc API based on ID, type, and assembly group. */
   private List<ArticleRecord> fetchArticlesFromTecDoc(
-      Integer id, String type, String assembleGroupId, List<Integer> genericArticleIds) {
-    var response = tecDocService.getAssociatedArticles(id, type, assembleGroupId, genericArticleIds);
+      Integer id, String type, String assembleGroupId) {
+    var response = tecDocService.getAssociatedArticles(id, type, assembleGroupId);
     if (response == null || response.getArticles() == null) {
       return List.of();
     }
