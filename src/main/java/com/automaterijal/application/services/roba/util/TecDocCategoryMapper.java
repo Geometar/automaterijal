@@ -2,19 +2,13 @@ package com.automaterijal.application.services.roba.util;
 
 import com.automaterijal.application.domain.constants.TecDocProizvodjaci;
 import com.automaterijal.application.domain.dto.MagacinDto;
-import com.automaterijal.application.domain.dto.PodgrupaDto;
 import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.tecdoc.ArticleRecord;
 import com.automaterijal.application.tecdoc.ArticleRefRecord;
 import com.automaterijal.application.tecdoc.GenericArticleRecord;
 import com.automaterijal.application.tecdoc.TradeNumberDetailsRecord;
 import com.automaterijal.application.utils.CatalogNumberUtils;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import org.springframework.util.StringUtils;
 
 /** Helper for mapping TecDoc generic articles to grupa/podgrupa in MagacinDto. */
@@ -22,10 +16,7 @@ public final class TecDocCategoryMapper {
 
   private TecDocCategoryMapper() {}
 
-  public static void apply(
-      MagacinDto magacinDto,
-      List<ArticleRecord> articles,
-      List<ArticleRecord> categoriesSourceArticles) {
+  public static void apply(MagacinDto magacinDto, List<ArticleRecord> articles) {
     if (magacinDto == null
         || magacinDto.getRobaDto() == null
         || magacinDto.getRobaDto().getContent().isEmpty()
@@ -39,7 +30,6 @@ public final class TecDocCategoryMapper {
       return;
     }
 
-    Set<CategoryInfo> usedCategories = new LinkedHashSet<>();
     magacinDto
         .getRobaDto()
         .getContent()
@@ -50,26 +40,7 @@ public final class TecDocCategoryMapper {
                 return;
               }
               applyCategory(robaDto, category);
-              usedCategories.add(category);
             });
-
-    Set<CategoryInfo> availableCategories =
-        extractCategories(
-            categoriesSourceArticles != null && !categoriesSourceArticles.isEmpty()
-                ? categoriesSourceArticles
-                : articles);
-
-    if (availableCategories.isEmpty()) {
-      availableCategories = usedCategories;
-    }
-
-    if (!availableCategories.isEmpty()) {
-      magacinDto.setCategories(buildCategoryMap(availableCategories));
-    }
-  }
-
-  public static void apply(MagacinDto magacinDto, List<ArticleRecord> articles) {
-    apply(magacinDto, articles, null);
   }
 
   private static CategoryIndex buildCategoryIndex(List<ArticleRecord> articles) {
@@ -127,21 +98,6 @@ public final class TecDocCategoryMapper {
     }
 
     return new CategoryIndex(byManufacturer, byNumberOnly);
-  }
-
-  private static Set<CategoryInfo> extractCategories(List<ArticleRecord> articles) {
-    if (articles == null || articles.isEmpty()) {
-      return Set.of();
-    }
-
-    Set<CategoryInfo> categories = new LinkedHashSet<>();
-    articles.stream()
-        .filter(Objects::nonNull)
-        .map(TecDocCategoryMapper::extractCategory)
-        .filter(Objects::nonNull)
-        .forEach(categories::add);
-
-    return categories;
   }
 
   private static void addNumber(
@@ -208,28 +164,6 @@ public final class TecDocCategoryMapper {
     robaDto.setGrupaNaziv(category.getGroupName());
     robaDto.setPodGrupa(category.getSubGroupId());
     robaDto.setPodGrupaNaziv(category.getSubGroupName());
-  }
-
-  private static Map<String, List<PodgrupaDto>> buildCategoryMap(Set<CategoryInfo> usedCategories) {
-    Map<String, List<PodgrupaDto>> categories = new LinkedHashMap<>();
-
-    for (CategoryInfo category : usedCategories) {
-      List<PodgrupaDto> subGroups =
-          categories.computeIfAbsent(category.getGroupName(), key -> new java.util.ArrayList<>());
-
-      boolean exists =
-          subGroups.stream().anyMatch(dto -> Objects.equals(dto.getId(), category.getSubGroupId()));
-
-      if (!exists) {
-        PodgrupaDto dto = new PodgrupaDto();
-        dto.setId(category.getSubGroupId());
-        dto.setNaziv(category.getSubGroupName());
-        dto.setGrupa(category.getGroupName());
-        subGroups.add(dto);
-      }
-    }
-
-    return categories;
   }
 
   private static String firstNonBlank(String... values) {

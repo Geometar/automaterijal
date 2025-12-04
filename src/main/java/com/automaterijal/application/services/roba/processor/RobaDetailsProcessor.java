@@ -2,8 +2,6 @@ package com.automaterijal.application.services.roba.processor;
 
 import com.automaterijal.application.domain.constants.TecDocProizvodjaci;
 import com.automaterijal.application.domain.dto.RobaLightDto;
-import com.automaterijal.application.domain.dto.robadetalji.RobaBrojeviDto;
-import com.automaterijal.application.domain.dto.robadetalji.RobaExpandedDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.tecdoc.TecDocAtributi;
 import com.automaterijal.application.domain.mapper.RobaMapper;
@@ -47,11 +45,6 @@ public class RobaDetailsProcessor {
     robaHelper.markOutOfStockIfPriceMissing(robaLightDto);
   }
 
-  private void postaviSlikuIzAtributa(
-      RobaLightDto robaLightDto, List<TecDocAtributi> tecDocAtributi) {
-    // Byte-based TecDoc images are no longer propagated; rely on filesystem lookup instead.
-  }
-
   public void processMainArticle(
       MainArticlesRecord mainArticlesRecord, Partner partner, List<RobaLightDto> asociraniArtikli) {
     robaDatabaseService
@@ -76,14 +69,7 @@ public class RobaDetailsProcessor {
       tecDocAtributi = tecDocService.vratiTecDocAtributePrekoRobeId(robaLightDto.getRobaid());
     }
 
-    postaviSlikuIzAtributa(robaLightDto, tecDocAtributi);
     postaviCenuIRabat(robaLightDto, partner);
     asociraniArtikli.add(robaLightDto);
-  }
-
-  public void setujSliku(RobaExpandedDto detaljiDto, List<RobaBrojeviDto> tdBrojevi) {
-    List<TecDocAtributi> tecDocAtributi =
-        tecDocService.vratiTecDocAtributePrekoRobeId(detaljiDto.getRobaid());
-    // When TecDoc provides inline images we no longer stream raw bytes—fall back to filesystem.
   }
 }

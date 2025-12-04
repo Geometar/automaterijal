@@ -117,17 +117,10 @@ public class SitemapService {
     return normalizedBase + normalizedPrefix + "/" + brandSlug;
   }
 
-  // ostaviš ako ti treba i varijanta sa nazivom:
-  private String brandToUrl(String brandName) {
-    return brandToUrlFromSlug(SlugUtil.toSlug(brandName));
-  }
-
   public List<String> getAllBrandDetailUrls() {
     String normalizedBase = stripTrailingSlash(baseUrl);
     String prefix = ensureLeadingSlash(brandDetailsPrefix);
-    return BRAND_DETAIL_SLUGS.stream()
-        .map(slug -> normalizedBase + prefix + "/" + slug)
-        .toList();
+    return BRAND_DETAIL_SLUGS.stream().map(slug -> normalizedBase + prefix + "/" + slug).toList();
   }
 
   public List<String> getAllCategoryUrls() {
@@ -513,5 +506,6 @@ public class SitemapService {
   }
 
   public record VehicleSitemapEntry(String url, String changefreq, String priority) {}
+
   public record BlogSitemapEntry(String url, OffsetDateTime lastmod) {}
 }

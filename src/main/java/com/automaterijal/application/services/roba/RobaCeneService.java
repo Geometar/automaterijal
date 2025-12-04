@@ -38,7 +38,7 @@ public class RobaCeneService {
         robaCeneRepository.findByMagacinidAndRobaid(GLAVNIMAGACIN, robaId);
     if (robaCene.isPresent()) {
       RobaCene cene = robaCene.get();
-      if (partner.getVpcid() != 5) {
+      if (partner != null && partner.getVpcid() != 5) {
         String vpcid = vratiVpcid(grupaId, proID, partner);
         if (vpcid.equals("1")) {
           retVal = cene.getProdajnacena().multiply(BigDecimal.valueOf(popust));

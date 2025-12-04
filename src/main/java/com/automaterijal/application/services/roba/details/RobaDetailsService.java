@@ -152,9 +152,6 @@ public class RobaDetailsService {
     List<RobaBrojeviDto> tdBrojevi =
         robaTecDocDetailsHelper.setujOriginalneBrojeve(detaljiDto, tecDocDetalji);
 
-    // ***************** Setujemo sliku iz tecdoca ako postoje *************************
-    robaDetailsProcessor.setujSliku(detaljiDto, tdBrojevi);
-
     // ***************** Setujemo dokumentaciju iz tecdoca ako postoje *************************
 
     robaTecDocDetailsHelper.setujDokumentaciju(detaljiDto, tecDocDetalji);

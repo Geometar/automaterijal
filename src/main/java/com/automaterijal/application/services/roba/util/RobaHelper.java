@@ -174,17 +174,6 @@ public class RobaHelper {
     return imageService.fetchImageFromFileSystem(baseName);
   }
 
-  private boolean hasRenderableImage(SlikaDto slika) {
-    if (slika == null) {
-      return false;
-    }
-    if (StringUtils.hasText(slika.getRobaSlika())) {
-      return true;
-    }
-    return StringUtils.hasText(slika.getSlikeUrl())
-        && !imageService.isFallbackImage(slika.getSlikeUrl());
-  }
-
   private boolean isFallback(SlikaDto slika) {
     if (slika == null || !StringUtils.hasText(slika.getSlikeUrl())) {
       return true;

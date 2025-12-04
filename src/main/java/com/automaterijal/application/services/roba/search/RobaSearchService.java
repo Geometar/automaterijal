@@ -3,6 +3,7 @@ package com.automaterijal.application.services.roba.search;
 import com.automaterijal.application.domain.constants.TecDocProizvodjaci;
 import com.automaterijal.application.domain.dto.MagacinDto;
 import com.automaterijal.application.domain.dto.RobaLightDto;
+import com.automaterijal.application.domain.dto.PodgrupaDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.services.TecDocService;
@@ -14,6 +15,7 @@ import com.automaterijal.application.utils.CatalogNumberUtils;
 import com.automaterijal.application.utils.GeneralUtil;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
@@ -57,9 +59,9 @@ public class RobaSearchService {
     parametri.setPageSize(Integer.MAX_VALUE);
     parametri.setPodgrupeZaPretragu(null);
 
-    // 1. Fetch TecDoc articles (bez filtriranja po genericArticleIds da bi imali sve kategorije)
-    List<ArticleRecord> articles =
-        fetchArticlesFromTecDoc(id, type, assembleGroupId);
+    // 1. Fetch TecDoc response (bez genericArticleIds da uzmemo sve kategorije)
+    ArticlesResponse response = tecDocService.getAssociatedArticles(id, type, assembleGroupId);
+    List<ArticleRecord> articles = extractArticles(response);
 
     // 2. Generate all possible catalog numbers
     Set<String> catalogNumbers = generateCatalogNumbers(articles);
@@ -74,6 +76,9 @@ public class RobaSearchService {
 
     // 4.1 Overwrite group/subgroup using TecDoc categories (only for this API)
     TecDocCategoryMapper.apply(magacinDto, articles);
+
+    // 4.2 Izgradi kategorije iz TecDoc genericArticle faceta (flat pod jednom grupom)
+    magacinDto.setCategories(buildCategoriesFromFacets(response));
 
     // 4.2 Primeni filter podgrupe lokalno nakon mapiranja i vrati paging
     if (magacinDto.getRobaDto() != null) {
@@ -99,10 +104,7 @@ public class RobaSearchService {
     return magacinDto;
   }
 
-  /** Fetches articles from TecDoc API based on ID, type, and assembly group. */
-  private List<ArticleRecord> fetchArticlesFromTecDoc(
-      Integer id, String type, String assembleGroupId) {
-    var response = tecDocService.getAssociatedArticles(id, type, assembleGroupId);
+  private List<ArticleRecord> extractArticles(ArticlesResponse response) {
     if (response == null || response.getArticles() == null) {
       return List.of();
     }
@@ -181,6 +183,29 @@ public class RobaSearchService {
   private void applyTecDocAttributes(MagacinDto magacinDto, Partner loggedPartner) {
     tecDocService.batchVracanjeICuvanjeTDAtributa(magacinDto.getRobaDto().getContent());
     robaHelper.setupForTable(magacinDto.getRobaDto().getContent(), loggedPartner);
+  }
+
+  private Map<String, List<PodgrupaDto>> buildCategoriesFromFacets(ArticlesResponse response) {
+    GenericArticleFacetCounts facets =
+        response != null ? response.getGenericArticleFacets() : null;
+    if (facets == null || facets.getCounts() == null) {
+      return Map.of();
+    }
+
+    List<PodgrupaDto> subGroups =
+        facets.getCounts().stream()
+            .filter(Objects::nonNull)
+            .map(
+                count -> {
+                  PodgrupaDto dto = new PodgrupaDto();
+                  dto.setId(count.getGenericArticleId());
+                  dto.setNaziv(count.getGenericArticleDescription());
+                  dto.setGrupa("SVE");
+                  return dto;
+                })
+            .collect(Collectors.toList());
+
+    return Map.of("SVE", subGroups);
   }
 
   public MagacinDto searchProducts(UniverzalniParametri parametri, Partner ulogovaniPartner) {
