@@ -62,10 +62,6 @@ public class RobaDatabaseService {
         katBr, proizvodjaci, 0);
   }
 
-  public List<Roba> pronadjiRobuPoKataloskomBroju(String katBr) {
-    return robaRepository.findByKatbr(katBr);
-  }
-
   public List<Roba> findAll() {
     return robaRepository.findAll();
   }

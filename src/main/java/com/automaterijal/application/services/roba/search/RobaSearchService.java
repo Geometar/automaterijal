@@ -2,8 +2,8 @@ package com.automaterijal.application.services.roba.search;
 
 import com.automaterijal.application.domain.constants.TecDocProizvodjaci;
 import com.automaterijal.application.domain.dto.MagacinDto;
-import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.dto.PodgrupaDto;
+import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.services.TecDocService;
@@ -85,10 +85,7 @@ public class RobaSearchService {
       List<RobaLightDto> items = magacinDto.getRobaDto().getContent();
 
       if (requestedSubGroups != null && !requestedSubGroups.isEmpty()) {
-        items =
-            items.stream()
-                .filter(r -> requestedSubGroups.contains(r.getPodGrupa()))
-                .toList();
+        items = items.stream().filter(r -> requestedSubGroups.contains(r.getPodGrupa())).toList();
       }
 
       int pageSize = Math.max(1, originalPageSize);
@@ -98,7 +95,7 @@ public class RobaSearchService {
 
     // 5. Apply TecDoc attributes to the fetched products
     if (!magacinDto.getRobaDto().isEmpty()) {
-      applyTecDocAttributes(magacinDto, loggedPartner);
+      robaEnrichmentService.enrichLightDtos(magacinDto.getRobaDto().getContent(), loggedPartner);
     }
 
     return magacinDto;
@@ -179,14 +176,8 @@ public class RobaSearchService {
                     .forEach(catalogNumbers::add));
   }
 
-  /** Applies TecDoc attributes to the fetched products for the final response. */
-  private void applyTecDocAttributes(MagacinDto magacinDto, Partner loggedPartner) {
-    robaEnrichmentService.enrichLightDtos(magacinDto.getRobaDto().getContent(), loggedPartner);
-  }
-
   private Map<String, List<PodgrupaDto>> buildCategoriesFromFacets(ArticlesResponse response) {
-    GenericArticleFacetCounts facets =
-        response != null ? response.getGenericArticleFacets() : null;
+    GenericArticleFacetCounts facets = response != null ? response.getGenericArticleFacets() : null;
     if (facets == null || facets.getCounts() == null) {
       return Map.of();
     }
@@ -207,7 +198,7 @@ public class RobaSearchService {
     return Map.of("SVE", subGroups);
   }
 
-  public MagacinDto searchProducts(UniverzalniParametri parametri, Partner ulogovaniPartner) {
+  public MagacinDto searchProducts(UniverzalniParametri parametri, Partner loggedPartner) {
 
     String rawSearchTerm = parametri.getTrazenaRec();
     if (StringUtils.hasText(rawSearchTerm)) {
@@ -220,9 +211,8 @@ public class RobaSearchService {
             : robaAdapterService.searchFilteredProductsWithoutSearchTerm(parametri);
 
     if (!magacinDto.getRobaDto().isEmpty()) {
-      applyTecDocAttributes(magacinDto, ulogovaniPartner);
+      robaEnrichmentService.enrichLightDtos(magacinDto.getRobaDto().getContent(), loggedPartner);
     }
-
 
     return magacinDto;
   }
@@ -248,7 +238,8 @@ public class RobaSearchService {
 
     // Ukljucujemo tecdoc u pretragu
     searchUsingTecDoc(parametri, catalogNumbers);
-    return robaAdapterService.fetchSearchResultsByCatalogNumbersAndFilters(parametri, catalogNumbers);
+    return robaAdapterService.fetchSearchResultsByCatalogNumbersAndFilters(
+        parametri, catalogNumbers);
   }
 
   private void searchUsingTecDoc(UniverzalniParametri parametri, Set<String> catalogNumbers) {
@@ -256,7 +247,6 @@ public class RobaSearchService {
     if (!StringUtils.hasText(searchTerm)) {
       return;
     }
-
 
     // TecDoc pretraga na osnovu tačne reči, tip pretrage je 10 (trazimo sve)
     List<ArticleDirectSearchAllNumbersWithStateRecord> response =
@@ -273,7 +263,6 @@ public class RobaSearchService {
     if (catalogNumbers.size() < MAX_TEC_DOC_RESULTS) {
       catalogNumbers.add(searchTerm);
     }
-
   }
 
   /** Generic method to process article records and extract catalog numbers. */
