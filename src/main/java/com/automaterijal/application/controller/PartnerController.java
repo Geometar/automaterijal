@@ -6,6 +6,7 @@ import com.automaterijal.application.domain.dto.ResetovanjeSifreDto;
 import com.automaterijal.application.domain.dto.partner.PartnerCardDocumentDetailsDto;
 import com.automaterijal.application.domain.dto.partner.PartnerCardResponseDto;
 import com.automaterijal.application.domain.entity.Partner;
+import com.automaterijal.application.domain.mapper.PartnerMapper;
 import com.automaterijal.application.services.PartnerCardService;
 import com.automaterijal.application.services.PartnerService;
 import com.automaterijal.application.services.security.UserDetailsService;
@@ -39,28 +40,22 @@ import org.springframework.web.server.ResponseStatusException;
 @Slf4j
 public class PartnerController {
 
-  @NotNull
-  final UserDetailsService service;
+  @NotNull final UserDetailsService service;
 
-  @NonNull
-  final UsersService usersService;
+  @NonNull final UsersService usersService;
 
-  @NonNull
-  final PartnerService partnerService;
+  @NonNull final PartnerService partnerService;
 
-  @NonNull
-  final PartnerCardService partnerCardService;
+  @NonNull final PartnerCardService partnerCardService;
 
-  @NonNull
-  final PartnerSpringBeanUtils partnerSpringBeanUtils;
+  @NonNull final PartnerSpringBeanUtils partnerSpringBeanUtils;
 
-  /**
-   * Kontroler za vracanje ulogovanog partnera iz spring security-ja
-   */
+  @NonNull final PartnerMapper mapper;
+
+  /** Kontroler za vracanje ulogovanog partnera iz spring security-ja */
   @GetMapping(value = "/read")
   public ResponseEntity<PartnerDto> vratiUlogovanogPartnera(
-      final Authentication authentication,
-      @RequestParam final boolean prviRequest) {
+      final Authentication authentication, @RequestParam final boolean prviRequest) {
 
     final var dto = service.vratiUlogovanogKorisnika(authentication);
     if (dto != null && prviRequest) {
@@ -70,9 +65,7 @@ public class PartnerController {
     return ResponseEntity.ok(dto);
   }
 
-  /**
-   * Kontroler za updejtovanje informacija o partneru
-   */
+  /** Kontroler za updejtovanje informacija o partneru */
   @PutMapping(value = "/update")
   public ResponseEntity<PartnerDto> updejtujPartnera(
       @RequestBody final PartnerDto partnerDto,
@@ -93,9 +86,7 @@ public class PartnerController {
     return ResponseEntity.ok(response);
   }
 
-  /**
-   * Kontroler za promenu izgubljene sifre partnera ili kod prvog logovanja
-   */
+  /** Kontroler za promenu izgubljene sifre partnera ili kod prvog logovanja */
   @PutMapping(value = "/promena-sifre")
   public ResponseEntity<Object> promeniSifruPartnera(
       final Authentication authentication,
@@ -103,9 +94,9 @@ public class PartnerController {
       @RequestParam final boolean isPrvaPromena) {
     final var partnerDto = service.vratiUlogovanogKorisnika(authentication);
 
-    if ((!isPrvaPromena && !dto.getSifra().equals(dto.getPonovljenjaSifra())) && (
-        isPrvaPromena && partnerDto == null || !dto.getSifra()
-            .equals(dto.getPonovljenjaSifra()))) {
+    if ((!isPrvaPromena && !dto.getSifra().equals(dto.getPonovljenjaSifra()))
+        && (isPrvaPromena && partnerDto == null
+            || !dto.getSifra().equals(dto.getPonovljenjaSifra()))) {
       return ResponseEntity.badRequest().build();
     }
 
@@ -122,15 +113,14 @@ public class PartnerController {
   public ResponseEntity<List<Partner>> vratiSveKomercijaliste(final Authentication authentication) {
     final var partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
     if (partner.getPrivilegije().intValue() != 2047) {
-      throw new ResponseStatusException(
-              HttpStatus.FORBIDDEN, "Nije Admin");
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nije Admin");
     } else {
       return ResponseEntity.ok(partnerService.vratiSveKomercijaliste());
     }
   }
 
   @GetMapping(value = "/pretraga")
-  public ResponseEntity<List<Partner>> pretraziPartnerePoNazivu(
+  public ResponseEntity<List<PartnerDto>> pretraziPartnerePoNazivu(
       final Authentication authentication, @RequestParam final String naziv) {
     final var partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
     if (partner == null || partner.getPrivilegije().intValue() != 2047) {
@@ -139,13 +129,12 @@ public class PartnerController {
     if (naziv == null || naziv.trim().isEmpty()) {
       return ResponseEntity.ok(List.of());
     }
-    return ResponseEntity.ok(partnerService.pretraziPartnerePoNazivu(naziv));
+    return ResponseEntity.ok(mapper.map(partnerService.pretraziPartnerePoNazivu(naziv)));
   }
 
   @GetMapping(value = "/{ppid}")
   public ResponseEntity<Partner> vratiPartnera(
-      @PathVariable("ppid") Integer ppid,
-      final Authentication authentication) {
+      @PathVariable("ppid") Integer ppid, final Authentication authentication) {
     Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
     if (partner.getPrivilegije() != 2047) {
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nije Admin");
@@ -196,7 +185,6 @@ public class PartnerController {
     if (partner == null || partner.getPrivilegije().intValue() != 2047) {
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nije Admin");
     }
-    return ResponseEntity.ok(
-        partnerCardService.vratiDetaljeDokumenta(ppid, vrDok, brDok, true));
+    return ResponseEntity.ok(partnerCardService.vratiDetaljeDokumenta(ppid, vrDok, brDok, true));
   }
 }
