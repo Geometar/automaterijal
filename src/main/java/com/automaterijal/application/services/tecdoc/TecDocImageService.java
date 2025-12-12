@@ -42,8 +42,7 @@ public class TecDocImageService {
         BufferedImage bImage = procitajSliku(dokumentSlike);
         if (bImage != null) {
           snimiNaDisk(bImage, robaLightDto.getRobaid());
-          tecDocAttributeService.cacheThumbnailAttribute(
-              robaLightDto, thumbnail, dokumentSlike, directArticle);
+          tecDocAttributeService.cacheThumbnailAttribute(robaLightDto, thumbnail, directArticle);
         }
       }
     }
@@ -73,8 +72,7 @@ public class TecDocImageService {
         if (fallbackSaved) {
           log.warn("TecDoc slika za robu {} sačuvana kao PNG zbog alfa kanala", robaId);
         } else {
-          log.error(
-              "Nije moguće snimiti TecDoc sliku za robu {} ni kao JPG ni kao PNG", robaId);
+          log.error("Nije moguće snimiti TecDoc sliku za robu {} ni kao JPG ni kao PNG", robaId);
         }
       }
     } catch (IOException e) {

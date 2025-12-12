@@ -77,7 +77,7 @@ public class TecDocAttributeService {
     }
   }
 
-  public void addManualTehnicalDetails(RobaLightDto dto, List<TecDocAtributi> tecDocAttributes) {
+  public void addManualTechnicalDetails(RobaLightDto dto, List<TecDocAtributi> tecDocAttributes) {
 
     List<RobaTehnickiOpisDto> tehnickiOpis = new ArrayList<>();
 
@@ -138,7 +138,6 @@ public class TecDocAttributeService {
   public void cacheThumbnailAttribute(
       RobaLightDto robaLightDto,
       ThumbnailByArticleIdRecord thumbnail,
-      byte[] imageBytes,
       ArticleDirectSearchById3Record article) {
     TecDocAtributi entity =
         tecDocMapper.map(
@@ -150,7 +149,8 @@ public class TecDocAttributeService {
 
     tecDocAtributiRepository.save(entity);
 
-    // Previously we propagated raw image bytes into the DTO; with CDN-backed images this is no longer needed.
+    // Previously we propagated raw image bytes into the DTO; with CDN-backed images this is no
+    // longer needed.
   }
 
   public void saveAttributesManually(List<RobaAtributesDto> dtos) {

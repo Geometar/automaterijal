@@ -18,7 +18,7 @@ import com.automaterijal.application.domain.repository.roba.RobaRepository;
 import com.automaterijal.application.services.roba.RobaCeneService;
 import com.automaterijal.application.services.roba.grupe.ArticleGroupService;
 import com.automaterijal.application.services.roba.grupe.ArticleSubGroupService;
-import com.automaterijal.application.services.roba.util.RobaHelper;
+import com.automaterijal.application.services.roba.RobaEnrichmentService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
@@ -69,7 +69,7 @@ public class PartnerCardService {
   @NonNull ArticleSubGroupService articleSubGroupService;
   @NonNull RobaRepository robaRepository;
   @NonNull RobaCeneService robaCeneService;
-  @NonNull RobaHelper robaHelper;
+  @NonNull RobaEnrichmentService robaEnrichmentService;
 
   public PartnerCardResponseDto vratiKarticuZaPartnera(Integer partnerPpid) {
     final String targetUrl = PARTNER_CARD_URL_TEMPLATE.formatted(partnerPpid);
@@ -531,9 +531,9 @@ public class PartnerCardService {
 
   private SlikaDto resolveSlika(Roba roba) {
     if (roba == null) {
-      return robaHelper.resolveImage(null, null);
+      return robaEnrichmentService.resolveImage(null, null);
     }
-    return robaHelper.resolveImage(roba.getRobaid(), new SlikaDto(roba.getSlika()));
+    return robaEnrichmentService.resolveImage(roba.getRobaid(), new SlikaDto(roba.getSlika()));
   }
 
   private Map<String, String> ucitajProizvodjace(Collection<Roba> roba) {

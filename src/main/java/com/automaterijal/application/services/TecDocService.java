@@ -109,8 +109,8 @@ public class TecDocService {
     tecDocLogicService.fetchAndSaveTecDocAttributes(robaLightDtos);
   }
 
-  public Optional<ArticleLinkedAllLinkingTargetManufacturer2Response>
-      getArticleLinkedManufacturers(Long robaId, String linkingTargetType) {
+  public Optional<ArticleLinkedAllLinkingTargetManufacturer2Response> getArticleLinkedManufacturers(
+      Long robaId, String linkingTargetType) {
     if (linkingTargetType == null || linkingTargetType.isBlank()) {
       return Optional.empty();
     }
@@ -137,9 +137,7 @@ public class TecDocService {
     ArticleLinkedAllLinkingTargetManufacturer2Response response =
         tecDocClient.getArticleLinkedAllLinkingTargetManufacturer2(articleId, sanitizedType);
 
-    if (response == null
-        || response.getData() == null
-        || response.getData().getArray() == null) {
+    if (response == null || response.getData() == null || response.getData().getArray() == null) {
       return List.of();
     }
 
@@ -148,18 +146,6 @@ public class TecDocService {
         .filter(record -> record.getManuId() != null)
         .map(record -> new TecDocLinkedManufacturerDto(record.getManuId(), record.getManuName()))
         .toList();
-  }
-
-  public List<TecDocLinkedManufacturerDto> getLinkedManufacturersForRoba(
-      Long robaId, String linkingTargetType) {
-    if (robaId == null) {
-      return List.of();
-    }
-
-    return tecDocAttributeService
-        .findTecDocArticleIdByRobaId(robaId)
-        .map(articleId -> getLinkedManufacturersByArticleId(articleId, linkingTargetType))
-        .orElse(List.of());
   }
 
   public Optional<List<TecDocLinkedManufacturerTargetsDto>> getArticleLinkedTargets(
@@ -172,7 +158,9 @@ public class TecDocService {
 
     return tecDocAttributeService
         .findTecDocArticleIdByRobaId(robaId)
-        .flatMap(articleId -> Optional.of(fetchLinkedManufacturersWithTargets(articleId, sanitizedType)));
+        .flatMap(
+            articleId ->
+                Optional.of(fetchLinkedManufacturersWithTargets(articleId, sanitizedType)));
   }
 
   private List<TecDocLinkedManufacturerTargetsDto> fetchLinkedManufacturersWithTargets(
@@ -258,17 +246,16 @@ public class TecDocService {
           details.subList(index, Math.min(details.size(), index + batchSize));
 
       ArticleLinkedAllLinkingTargetsByIds3Response response =
-          tecDocClient.getArticleLinkedAllLinkingTargetsByIds3(
-              articleId, linkingTargetType, batch);
+          tecDocClient.getArticleLinkedAllLinkingTargetsByIds3(articleId, linkingTargetType, batch);
 
-      if (response == null
-          || response.getData() == null
-          || response.getData().getArray() == null) {
+      if (response == null || response.getData() == null || response.getData().getArray() == null) {
         continue;
       }
 
       aggregated.addAll(
-          response.getData().getArray().stream().filter(Objects::nonNull).collect(Collectors.toList()));
+          response.getData().getArray().stream()
+              .filter(Objects::nonNull)
+              .collect(Collectors.toList()));
     }
 
     return aggregated;
@@ -293,8 +280,7 @@ public class TecDocService {
                 : Optional.ofNullable(vehicle.getCarDesc()).orElse("Unknown model");
         String key = modelId + "|" + modelName;
 
-        ModelGroup group =
-            grouped.computeIfAbsent(key, k -> new ModelGroup(modelId, modelName));
+        ModelGroup group = grouped.computeIfAbsent(key, k -> new ModelGroup(modelId, modelName));
 
         long articleLinkKey = record.getArticleLinkId();
         long linkingTargetKey = record.getLinkingTargetId();

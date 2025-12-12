@@ -7,9 +7,9 @@ import com.automaterijal.application.domain.dto.PodgrupaDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.services.TecDocService;
+import com.automaterijal.application.services.roba.RobaEnrichmentService;
 import com.automaterijal.application.services.roba.adapter.RobaAdapterService;
 import com.automaterijal.application.services.roba.util.TecDocCategoryMapper;
-import com.automaterijal.application.services.roba.util.RobaHelper;
 import com.automaterijal.application.tecdoc.*;
 import com.automaterijal.application.utils.CatalogNumberUtils;
 import com.automaterijal.application.utils.GeneralUtil;
@@ -36,7 +36,7 @@ public class RobaSearchService {
 
   @NonNull final RobaAdapterService robaAdapterService;
   @NonNull final TecDocService tecDocService;
-  @NonNull final RobaHelper robaHelper;
+  @NonNull final RobaEnrichmentService robaEnrichmentService;
 
   /** Main method for fetching associated articles with TecDoc data. */
   public MagacinDto getAssociatedArticles(
@@ -181,8 +181,7 @@ public class RobaSearchService {
 
   /** Applies TecDoc attributes to the fetched products for the final response. */
   private void applyTecDocAttributes(MagacinDto magacinDto, Partner loggedPartner) {
-    tecDocService.batchVracanjeICuvanjeTDAtributa(magacinDto.getRobaDto().getContent());
-    robaHelper.setupForTable(magacinDto.getRobaDto().getContent(), loggedPartner);
+    robaEnrichmentService.enrichLightDtos(magacinDto.getRobaDto().getContent(), loggedPartner);
   }
 
   private Map<String, List<PodgrupaDto>> buildCategoriesFromFacets(ArticlesResponse response) {
@@ -221,8 +220,7 @@ public class RobaSearchService {
             : robaAdapterService.searchFilteredProductsWithoutSearchTerm(parametri);
 
     if (!magacinDto.getRobaDto().isEmpty()) {
-      tecDocService.batchVracanjeICuvanjeTDAtributa(magacinDto.getRobaDto().getContent());
-      robaHelper.setupForTable(magacinDto.getRobaDto().getContent(), ulogovaniPartner);
+      applyTecDocAttributes(magacinDto, ulogovaniPartner);
     }
 
 

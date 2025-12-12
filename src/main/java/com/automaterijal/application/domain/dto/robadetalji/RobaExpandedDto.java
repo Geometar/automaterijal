@@ -15,6 +15,5 @@ public class RobaExpandedDto extends RobaLightDto {
   String tekst;
   List<RobaBrojeviDto> tdBrojevi;
   Map<String, List<TecDocDokumentacija>> dokumentacija;
-  List<RobaLightDto> asociraniArtikli;
   List<TecDocLinkedManufacturerDto> linkedManufacturers;
 }
