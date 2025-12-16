@@ -23,4 +23,6 @@ public class RobaLightDto extends RobaCache {
   double stanje;
   List<RobaTehnickiOpisDto> tehnickiOpis;
   List<RobaTehnickiOpisDto> tdLinkageCriteria = new ArrayList<>();
+  ProviderAvailabilityDto providerAvailability;
+  ArticleAvailabilityStatus availabilityStatus;
 }

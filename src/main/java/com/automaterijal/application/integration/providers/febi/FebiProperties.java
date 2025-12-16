@@ -20,7 +20,7 @@ public class FebiProperties {
   private String clientId;
   private String clientSecret;
   private String defaultDestinationCountry = "RS";
-  private List<String> supportedBrands = new ArrayList<>(List.of("FEBI"));
+  private List<String> supportedBrands = new ArrayList<>(List.of("FEBI", "BLUE"));
   private Duration connectTimeout = Duration.ofSeconds(5);
   private Duration readTimeout = Duration.ofSeconds(10);
   private Duration tokenSkew = Duration.ofSeconds(60);
@@ -30,4 +30,5 @@ public class FebiProperties {
   private Integer deliveryToCustomerBusinessDaysMin = 1;
   private Integer deliveryToCustomerBusinessDaysMax = 2;
   private String dispatchCutoff = "16:00";
+  private String warehouseName = "Magacin Beograd (FEBI)";
 }

@@ -4,6 +4,7 @@ import com.automaterijal.application.domain.dto.PartnerDto;
 import com.automaterijal.application.domain.dto.PartnerLogovanjeDto;
 import com.automaterijal.application.domain.entity.Partner;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -21,6 +22,7 @@ public interface PartnerMapper {
   @Mapping(target = "adresa", source = "mestaIsporuke.adresa")
   @Mapping(target = "loginCount", source = "users.loginCount", defaultValue = "0")
   PartnerDto map(Partner partner);
+  List<PartnerDto> map(List<Partner> partner);
 
 
   @Mapping(target = "ppid", ignore = true)

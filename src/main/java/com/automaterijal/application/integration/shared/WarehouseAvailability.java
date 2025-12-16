@@ -14,5 +14,6 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class WarehouseAvailability {
   String location;
+  String name;
   Integer quantity;
 }

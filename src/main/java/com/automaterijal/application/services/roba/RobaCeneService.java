@@ -146,6 +146,14 @@ public class RobaCeneService {
     return Math.abs(popust);
   }
 
+  public double resolvePartnerPriceMultiplier(String grupaId, String proId, Partner partner) {
+    partner = getDefaultPartnerIfNotExist(partner);
+    if (partner == null) {
+      return 1.0;
+    }
+    return preracunajPopustNaArtkalZaUlogovanogPartnera(grupaId, proId, partner);
+  }
+
   private Double preracunajPopustNaArtkalZaUlogovanogPartnera(
       String grupaId, String proId, Partner partner) {
     Optional<Double> retVal = Optional.empty();

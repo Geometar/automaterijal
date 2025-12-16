@@ -165,6 +165,7 @@ public class FebiInventoryProvider implements InventoryProvider {
 
     return WarehouseAvailability.builder()
         .location(warehouse.getLocation())
+        .name(properties.getWarehouseName())
         .quantity(warehouse.getQuantity())
         .build();
   }

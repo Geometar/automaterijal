@@ -3,6 +3,7 @@ package com.automaterijal.application.services.roba;
 import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.dto.RobaTehnickiOpisDto;
 import com.automaterijal.application.domain.dto.SlikaDto;
+import com.automaterijal.application.domain.dto.ArticleAvailabilityStatus;
 import com.automaterijal.application.domain.dto.robadetalji.RobaExpandedDto;
 import com.automaterijal.application.domain.entity.Grupa;
 import com.automaterijal.application.domain.entity.Partner;
@@ -36,6 +37,7 @@ public class RobaEnrichmentService {
   @NonNull TecDocService tecDocService;
   @NonNull TecDocAttributeService tecDocAttributeService;
   @NonNull ArticleGroupService articleGroupService;
+  @NonNull ExternalAvailabilityService externalAvailabilityService;
 
   /** Core enrichment for light DTOs used by both list and detail flows. */
   public void enrichDetails(RobaExpandedDto robaExpandedDto, Partner partner) {
@@ -81,6 +83,9 @@ public class RobaEnrichmentService {
       dto.setGrupaNaziv(groupNames.get(dto.getGrupa()));
       dto.setSlika(resolveImage(dto.getRobaid(), dto.getSlika()));
     }
+
+    externalAvailabilityService.populateExternalAvailability(valid, partner);
+    applyAvailabilityStatus(valid);
   }
 
   /** Lightweight enrichment for prewarmed sections that only needs price/rabat/out-of-stock. */
@@ -100,6 +105,25 @@ public class RobaEnrichmentService {
 
     for (RobaLightDto dto : items) {
       setupPrice(dto, pricesByRobaId, partner);
+    }
+
+    externalAvailabilityService.populateExternalAvailability(items, partner);
+    applyAvailabilityStatus(items);
+  }
+
+  private void applyAvailabilityStatus(List<? extends RobaLightDto> items) {
+    for (RobaLightDto dto : items) {
+      if (dto == null) {
+        continue;
+      }
+      if (dto.getStanje() > 0) {
+        dto.setAvailabilityStatus(ArticleAvailabilityStatus.IN_STOCK);
+      } else if (dto.getProviderAvailability() != null
+          && Boolean.TRUE.equals(dto.getProviderAvailability().getAvailable())) {
+        dto.setAvailabilityStatus(ArticleAvailabilityStatus.AVAILABLE);
+      } else {
+        dto.setAvailabilityStatus(ArticleAvailabilityStatus.OUT_OF_STOCK);
+      }
     }
   }
 
