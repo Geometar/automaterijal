@@ -5,7 +5,6 @@ import com.automaterijal.application.domain.dto.RobaTehnickiOpisDto;
 import com.automaterijal.application.domain.dto.SlikaDto;
 import com.automaterijal.application.domain.dto.ArticleAvailabilityStatus;
 import com.automaterijal.application.domain.dto.robadetalji.RobaExpandedDto;
-import com.automaterijal.application.domain.entity.Grupa;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.roba.RobaCene;
 import com.automaterijal.application.domain.entity.tecdoc.TecDocAtributi;
@@ -66,7 +65,7 @@ public class RobaEnrichmentService {
         mapAttributesByRobaId(tecDocService.vratiTecDocAtributePrekoRobeIds(itemIds));
     Map<Long, RobaCene> pricesByRobaId =
         mapPricesByRobaId(priceService.pronadjiCeneZaRobuBatch(itemIds));
-    Map<String, String> groupNames = mapGroupNames(articleGroupService.findAll());
+    Map<String, String> groupNames = articleGroupService.groupNamesById();
 
     for (RobaLightDto dto : valid) {
       List<TecDocAtributi> attributes = attributesByRobaId.getOrDefault(dto.getRobaid(), List.of());
@@ -247,16 +246,6 @@ public class RobaEnrichmentService {
         .filter(Objects::nonNull)
         .filter(price -> price.getRobaid() != null)
         .collect(Collectors.toMap(RobaCene::getRobaid, price -> price, (left, right) -> left));
-  }
-
-  private Map<String, String> mapGroupNames(List<Grupa> groups) {
-    if (groups == null || groups.isEmpty()) {
-      return Map.of();
-    }
-
-    return groups.stream()
-        .filter(Objects::nonNull)
-        .collect(Collectors.toMap(Grupa::getGrupaid, Grupa::getNaziv, (left, right) -> left));
   }
 
   private void ensureTechList(RobaLightDto dto) {

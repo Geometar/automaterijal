@@ -24,15 +24,36 @@ public class RobaSortService {
   }
 
   private Comparator<RobaLightDto> getGroupComparator() {
-    return Comparator.comparing(
-            (RobaLightDto robaLightDto) -> robaLightDto.getStanje() == 0) // Stanje > 0 prvo
+    return Comparator.comparingInt(this::availabilityRank)
         .thenComparing(robaDto -> robaDto.getPodGrupa() == 0) // Podgrupa ID 0 na kraj
+        .thenComparing(Comparator.comparing(RobaLightDto::getStanje).reversed())
         .thenComparing(
-            Comparator.comparing(RobaLightDto::getStanje)
-                .reversed()) // Sortiraj po stanju opadajuće
-        .thenComparing(
-            RobaLightDto::getPodGrupaNaziv,
-            Comparator.nullsLast(String::compareTo)); // Sortiraj po nazivu grupe
+            RobaLightDto::getPodGrupaNaziv, Comparator.nullsLast(String::compareTo)); // po nazivu
+  }
+
+  private int availabilityRank(RobaLightDto dto) {
+    if (dto == null) {
+      return 99;
+    }
+
+    if (dto.getAvailabilityStatus() != null) {
+      return switch (dto.getAvailabilityStatus()) {
+        case IN_STOCK -> 0;
+        case AVAILABLE -> 1;
+        case OUT_OF_STOCK -> 2;
+      };
+    }
+
+    if (dto.getStanje() > 0) {
+      return 0;
+    }
+
+    if (dto.getProviderAvailability() != null
+        && Boolean.TRUE.equals(dto.getProviderAvailability().getAvailable())) {
+      return 1;
+    }
+
+    return 2;
   }
 
   /** Sortira robu TecDoc po podgrupi. */

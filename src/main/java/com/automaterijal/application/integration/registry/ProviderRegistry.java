@@ -9,6 +9,7 @@ import com.automaterijal.application.integration.shared.exception.ProviderRateLi
 import com.automaterijal.application.integration.shared.exception.ProviderUnavailableException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +38,28 @@ public class ProviderRegistry {
     return findInventoryProviders(brand).stream()
         .map(provider -> invokeSafe(provider, query))
         .toList();
+  }
+
+  public Optional<String> resolveBrandKey(Long tecDocBrandId, String tecDocBrandName) {
+    if (inventoryProviders == null || inventoryProviders.isEmpty()) {
+      return Optional.empty();
+    }
+
+    for (InventoryProvider provider : inventoryProviders) {
+      if (provider == null
+          || provider.capabilities() == null
+          || !provider.capabilities().isEnabled()
+          || !provider.capabilities().isInventory()) {
+        continue;
+      }
+
+      Optional<String> resolved = provider.resolveBrandKey(tecDocBrandId, tecDocBrandName);
+      if (resolved != null && resolved.isPresent()) {
+        return resolved;
+      }
+    }
+
+    return Optional.empty();
   }
 
   private AvailabilityResult invokeSafe(InventoryProvider provider, InventoryQuery query) {

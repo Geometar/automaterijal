@@ -11,6 +11,7 @@ import com.automaterijal.application.services.tecdoc.TecDocSearchService;
 import com.automaterijal.application.tecdoc.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -44,8 +45,9 @@ public class TecDocLogicService {
 
   private void prepareData(
       List<RobaLightDto> robaLightDtos, List<Long> artikliBezSacuvanihPodataka) {
-    List<Long> ids = robaLightDtos.stream().map(RobaLightDto::getRobaid).toList();
-    final List<TecDocAtributi> data = tecDocAttributeService.findByRobaIds(ids);
+    List<Long> ids =
+        robaLightDtos.stream().map(RobaLightDto::getRobaid).filter(Objects::nonNull).toList();
+    final List<TecDocAtributi> data = ids.isEmpty() ? List.of() : tecDocAttributeService.findByRobaIds(ids);
 
     for (RobaLightDto dto : robaLightDtos) {
       if (dto.getRobaid() == null) {

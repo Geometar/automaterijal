@@ -54,6 +54,7 @@ public class RobaController {
       @RequestParam(required = false) List<String> grupe,
       @RequestParam(required = false) List<String> mandatoryProid,
       @RequestParam(required = false) Optional<Boolean> naStanju,
+      @RequestParam(required = false, defaultValue = "false") boolean dostupno,
       @RequestParam(required = false) List<Integer> podgrupe,
       @RequestParam(required = false) Optional<String> searchTerm,
       @RequestParam(required = false) Optional<String> filterBy,
@@ -69,6 +70,7 @@ public class RobaController {
             grupe,
             mandatoryProid,
             naStanju,
+            Optional.of(dostupno),
             searchTerm,
             podgrupe,
             false,
@@ -77,7 +79,8 @@ public class RobaController {
             showcase);
     var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
     logWebService.log(uPartner, univerzalniParametri);
-    MagacinDto magacinDto = robaSearchService.searchProducts(univerzalniParametri, uPartner);
+    MagacinDto magacinDto =
+        robaSearchService.searchProducts(univerzalniParametri, uPartner);
 
     return ResponseEntity.ok().headers(createHeaders(uPartner)).body(magacinDto);
   }

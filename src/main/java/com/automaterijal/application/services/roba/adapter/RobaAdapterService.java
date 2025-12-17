@@ -108,7 +108,7 @@ public class RobaAdapterService {
   private Condition buildBaseCondition(UniverzalniParametri parametri) {
     CriteriaBuilder criteriaBuilder = CriteriaBuilder.init();
     criteriaBuilder.addConditionIfTrue(
-        parametri.isNaStanju(), ROBA.STANJE.greaterThan(BigDecimal.ZERO));
+        parametri.isNaStanju() && !parametri.isDostupno(), ROBA.STANJE.greaterThan(BigDecimal.ZERO));
     return criteriaBuilder.build();
   }
 

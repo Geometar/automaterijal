@@ -11,6 +11,8 @@ import com.automaterijal.application.tecdoc.ArticleLinkedAllLinkingTargetManufac
 import com.automaterijal.application.tecdoc.LinkageTargetDetails;
 import com.automaterijal.application.utils.PartnerSpringBeanUtils;
 import com.automaterijal.application.utils.RobaSpringBeanUtils;
+import java.io.ByteArrayInputStream;
+import java.net.URLConnection;
 import java.util.List;
 import java.util.Optional;
 import lombok.AccessLevel;
@@ -42,11 +44,25 @@ public class TecDocController {
   /** Sa dobijenim dokument id-jem, vracamo nazamo byte[] dokument */
   @GetMapping(value = "dokument/{dokumentId}")
   public ResponseEntity<byte[]> vratiRobuPojedinacno(
-      @PathVariable("dokumentId") String dokumentId) {
-    byte[] documentBytes = tecDocService.vratiDokument(dokumentId, 0);
+      @PathVariable("dokumentId") String dokumentId,
+      @RequestParam(name = "tipSlike", required = false, defaultValue = "0") Integer tipSlike) {
+    byte[] documentBytes = tecDocService.vratiDokument(dokumentId, tipSlike);
+    if (documentBytes == null || documentBytes.length == 0) {
+      return ResponseEntity.notFound().build();
+    }
+
+    String mimeType = null;
+    try (ByteArrayInputStream bais = new ByteArrayInputStream(documentBytes)) {
+      mimeType = URLConnection.guessContentTypeFromStream(bais);
+    } catch (Exception ignore) {
+      // ignore
+    }
+    MediaType contentType =
+        mimeType != null ? MediaType.parseMediaType(mimeType) : MediaType.APPLICATION_OCTET_STREAM;
+
     return ResponseEntity.ok()
-        .contentType(MediaType.APPLICATION_PDF) // Or appropriate content type
-        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=document.pdf") // Optional
+        .contentType(contentType)
+        .header(HttpHeaders.CONTENT_DISPOSITION, "inline")
         .body(documentBytes);
   }
 
@@ -115,6 +131,7 @@ public class TecDocController {
       @RequestParam(required = false) List<String> proizvodjaci,
       @RequestParam(required = false) List<Integer> podgrupe,
       @RequestParam(required = false) Optional<Boolean> naStanju,
+      @RequestParam(required = false, defaultValue = "false") boolean dostupno,
       @RequestParam(required = false) Optional<String> filterBy,
       Authentication authentication) {
 
@@ -126,6 +143,7 @@ public class TecDocController {
             null,
             null,
             naStanju,
+            Optional.of(dostupno),
             Optional.empty(),
             podgrupe,
             true,

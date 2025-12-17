@@ -2,7 +2,9 @@ package com.automaterijal.application.integration.providers.febi;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -21,6 +23,8 @@ public class FebiProperties {
   private String clientSecret;
   private String defaultDestinationCountry = "RS";
   private List<String> supportedBrands = new ArrayList<>(List.of("FEBI", "BLUE"));
+  private Map<Long, String> supportedTecDocBrands =
+      new HashMap<>(Map.of(101L, "FEBI", 350L, "BLUE"));
   private Duration connectTimeout = Duration.ofSeconds(5);
   private Duration readTimeout = Duration.ofSeconds(10);
   private Duration tokenSkew = Duration.ofSeconds(60);

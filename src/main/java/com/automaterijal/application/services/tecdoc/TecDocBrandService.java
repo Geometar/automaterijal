@@ -22,6 +22,13 @@ public class TecDocBrandService {
     return tecDocBrandsRepository.findById(proId);
   }
 
+  public Optional<String> findProidByBrandId(Long brandId) {
+    if (brandId == null) {
+      return Optional.empty();
+    }
+    return tecDocBrandsRepository.findFirstByBrandId(brandId).map(TecDocBrands::getProid);
+  }
+
   public TecDocBrands save(TecDocBrands brands) {
     return tecDocBrandsRepository.saveAndFlush(brands);
   }

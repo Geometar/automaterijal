@@ -4,7 +4,7 @@ import com.automaterijal.application.domain.constants.TecDocProizvodjaci;
 import com.automaterijal.application.domain.dto.ProizvodjacDTO;
 import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.dto.RobaTehnickiOpisDto;
-import com.automaterijal.application.services.ImageService;
+import com.automaterijal.application.services.tecdoc.TecDocPreviewService;
 import com.automaterijal.application.tecdoc.ArticleRecord;
 import com.automaterijal.application.tecdoc.CriteriaRecord;
 import com.automaterijal.application.tecdoc.TradeNumberDetailsRecord;
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RobaTecDocProcessor {
 
-  @Autowired ImageService imageService;
+  @Autowired TecDocPreviewService tecDocPreviewService;
 
   public void filterIfNotMatchingWithTecDoc(
       List<ArticleRecord> articles, List<RobaLightDto> robaLightDtos) {
@@ -169,7 +169,7 @@ public class RobaTecDocProcessor {
 
                   return articleInDB
                       ? null
-                      : generateRobaLightDto(articleRecord, tecDocProizvodjaci, imageService);
+                      : generateRobaLightDto(articleRecord, tecDocProizvodjaci);
                 })
             .filter(Objects::nonNull)
             .collect(Collectors.toList());
@@ -220,9 +220,7 @@ public class RobaTecDocProcessor {
   }
 
   private RobaLightDto generateRobaLightDto(
-      ArticleRecord articleRecord,
-      TecDocProizvodjaci tecDocProizvodjaci,
-      ImageService imageService) {
+      ArticleRecord articleRecord, TecDocProizvodjaci tecDocProizvodjaci) {
     String katBr =
         TecDocProizvodjaci.generateAlternativeCatalogNumber(
             articleRecord.getArticleNumber(), tecDocProizvodjaci);
@@ -235,14 +233,11 @@ public class RobaTecDocProcessor {
     proizvodjacDTO.setProid(tecDocProizvodjaci.getCleanName());
     data.setProizvodjac(proizvodjacDTO);
 
-    data.setSlika(imageService.getImageFromTD(articleRecord));
-
-    // Convert technical descriptions
-    List<RobaTehnickiOpisDto> tehnickiOpisi =
-        RobaTehnickiOpisDto.fromArticleCriteria(articleRecord.getArticleCriteria());
-    tehnickiOpisi = tehnickiOpisi.stream().limit(4).collect(Collectors.toList());
-    tehnickiOpisi.sort(Comparator.comparing(RobaTehnickiOpisDto::getType));
-    data.setTehnickiOpis(tehnickiOpisi);
+    TecDocPreviewService.TecDocPreview preview = tecDocPreviewService.fromArticleRecord(articleRecord);
+    if (preview != null) {
+      data.setSlika(preview.slika());
+      data.setTehnickiOpis(preview.tehnickiOpis());
+    }
 
     return data;
   }

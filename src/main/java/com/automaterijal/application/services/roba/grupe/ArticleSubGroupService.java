@@ -1,11 +1,9 @@
 package com.automaterijal.application.services.roba.grupe;
 
-import com.automaterijal.application.domain.constants.GlobalConstants;
 import com.automaterijal.application.domain.dto.MagacinDto;
 import com.automaterijal.application.domain.dto.PodgrupaDto;
 import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.entity.PodGrupa;
-import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.domain.repository.PodGrupaRepository;
 import com.automaterijal.application.domain.repository.roba.PodgrupeJooqRepository;
 import java.util.*;
@@ -35,7 +33,11 @@ public class ArticleSubGroupService {
     List<PodgrupaDto> podgrupaDtos = fetchFilteredPodgrupe(roba);
 
     popuniNazivePodgrupa(roba, podgrupaDtos);
-    magacinDto.setCategories(groupByGrupa(podgrupaDtos));
+    Map<String, List<PodgrupaDto>> grouped = groupByGrupa(podgrupaDtos);
+    if (shouldIncludeFallback(roba)) {
+      grouped = withFallback(grouped);
+    }
+    magacinDto.setCategories(grouped);
   }
 
   private List<PodgrupaDto> fetchFilteredPodgrupe(List<RobaLightDto> roba) {
@@ -65,6 +67,62 @@ public class ArticleSubGroupService {
 
   private Map<String, List<PodgrupaDto>> groupByGrupa(List<PodgrupaDto> podgrupaDtos) {
     return podgrupaDtos.stream().collect(Collectors.groupingBy(PodgrupaDto::getGrupa));
+  }
+
+  public Map<Integer, PodgrupaDto> loadPodgrupeWithGrupa(Set<Integer> podgrupaIds) {
+    if (podgrupaIds == null || podgrupaIds.isEmpty()) {
+      return Map.of();
+    }
+    Set<Integer> ids =
+        podgrupaIds.stream()
+            .filter(Objects::nonNull)
+            .filter(id -> id != 0)
+            .collect(Collectors.toSet());
+    if (ids.isEmpty()) {
+      return Map.of();
+    }
+    return podgrupeJooqRepository.findAllPodgrupeWithGrupa(ids).stream()
+        .filter(Objects::nonNull)
+        .filter(dto -> dto.getId() != null)
+        .collect(Collectors.toMap(PodgrupaDto::getId, dto -> dto, (a, b) -> a));
+  }
+
+  public Map<String, List<PodgrupaDto>> buildCategoriesFromPodgrupaIds(Set<Integer> podgrupaIds) {
+    Set<Integer> ids = podgrupaIds != null ? podgrupaIds : Set.of();
+    boolean includeFallback = ids.contains(0);
+    List<PodgrupaDto> podgrupe = new ArrayList<>(loadPodgrupeWithGrupa(ids).values());
+    Map<String, List<PodgrupaDto>> grouped = groupByGrupa(podgrupe);
+    if (includeFallback) {
+      grouped = withFallback(grouped);
+    }
+    return grouped;
+  }
+
+  private boolean shouldIncludeFallback(List<RobaLightDto> roba) {
+    if (roba == null || roba.isEmpty()) {
+      return false;
+    }
+    return roba.stream()
+        .filter(Objects::nonNull)
+        .anyMatch(r -> r.getPodGrupa() == 0 || ANONIMNA_GRUPA.equals(r.getPodGrupaNaziv()));
+  }
+
+  private Map<String, List<PodgrupaDto>> withFallback(Map<String, List<PodgrupaDto>> grouped) {
+    Map<String, List<PodgrupaDto>> copy = grouped != null ? new HashMap<>(grouped) : new HashMap<>();
+    List<PodgrupaDto> list = new ArrayList<>(copy.getOrDefault(ANONIMNA_GRUPA, List.of()));
+
+    boolean exists =
+        list.stream().anyMatch(dto -> dto != null && Objects.equals(dto.getId(), 0));
+    if (!exists) {
+      PodgrupaDto dto = new PodgrupaDto();
+      dto.setId(0);
+      dto.setNaziv(ANONIMNA_GRUPA);
+      dto.setGrupa(ANONIMNA_GRUPA);
+      list.add(dto);
+    }
+
+    copy.put(ANONIMNA_GRUPA, list);
+    return copy;
   }
 
   /** End of: Metoda za popunjavanje svih grupa u zavisnosti od kriterijuma */

@@ -17,6 +17,8 @@ import com.automaterijal.application.integration.shared.exception.ProviderAuthen
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.Locale;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -64,6 +66,37 @@ public class FebiInventoryProvider implements InventoryProvider {
 
     return properties.getSupportedBrands().stream()
         .anyMatch(b -> b != null && b.equalsIgnoreCase(brand));
+  }
+
+  @Override
+  public Optional<String> resolveBrandKey(Long tecDocBrandId, String tecDocBrandName) {
+    if (tecDocBrandId == null) {
+      return Optional.empty();
+    }
+
+    String mapped =
+        properties.getSupportedTecDocBrands() != null
+            ? properties.getSupportedTecDocBrands().get(tecDocBrandId)
+            : null;
+    if (StringUtils.hasText(mapped) && supportsBrand(mapped)) {
+      return Optional.of(mapped.trim().toUpperCase(Locale.ROOT));
+    }
+
+    // Fallback: if TecDoc name contains a supported brand key, route to that key.
+    if (StringUtils.hasText(tecDocBrandName) && properties.getSupportedBrands() != null) {
+      String normalized = tecDocBrandName.trim().toUpperCase(Locale.ROOT);
+      for (String candidate : properties.getSupportedBrands()) {
+        if (!StringUtils.hasText(candidate)) {
+          continue;
+        }
+        String key = candidate.trim().toUpperCase(Locale.ROOT);
+        if (normalized.contains(key)) {
+          return Optional.of(key);
+        }
+      }
+    }
+
+    return Optional.empty();
   }
 
   @Override

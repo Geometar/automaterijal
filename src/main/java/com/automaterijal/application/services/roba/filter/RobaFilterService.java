@@ -22,7 +22,7 @@ public class RobaFilterService {
     roba = filterByManufacturer(parametri.getProizvodjac(), roba);
     roba = filterByGroup(parametri.getGrupa(), roba);
     roba = filterBySubGroup(parametri.getPodgrupeZaPretragu(), roba);
-    roba = filterByStock(parametri.isNaStanju(), roba);
+    roba = filterByStock(parametri, roba);
     return roba;
   }
 
@@ -69,8 +69,8 @@ public class RobaFilterService {
   }
 
   /** Filters the list by stock availability (stanje). */
-  public List<RobaLightDto> filterByStock(boolean inStock, List<RobaLightDto> roba) {
-    if (!inStock) {
+  public List<RobaLightDto> filterByStock(UniverzalniParametri parametri, List<RobaLightDto> roba) {
+    if (parametri == null || !parametri.isNaStanju() || parametri.isDostupno()) {
       return roba;
     }
     return roba.stream().filter(robaDto -> robaDto.getStanje() > 0).collect(Collectors.toList());

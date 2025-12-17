@@ -56,6 +56,13 @@ public class TecDocService {
     return tecDocClient.vratiDetaljeArtikla(Arrays.asList(articleId));
   }
 
+  public List<ArticlesByIds6Record> vratiDetaljeArtiklaBatch(List<Long> articleIds) {
+    if (articleIds == null || articleIds.isEmpty()) {
+      return List.of();
+    }
+    return tecDocClient.vratiDetaljeArtikla(articleIds);
+  }
+
   //    ******************** TecDoc Atributi  ********************
 
   public List<TecDocAtributi> vratiTecDocAtributePrekoRobeId(Long robaId) {
