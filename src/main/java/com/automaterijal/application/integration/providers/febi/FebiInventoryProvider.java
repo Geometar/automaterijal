@@ -70,16 +70,14 @@ public class FebiInventoryProvider implements InventoryProvider {
 
   @Override
   public Optional<String> resolveBrandKey(Long tecDocBrandId, String tecDocBrandName) {
-    if (tecDocBrandId == null) {
-      return Optional.empty();
-    }
-
-    String mapped =
-        properties.getSupportedTecDocBrands() != null
-            ? properties.getSupportedTecDocBrands().get(tecDocBrandId)
-            : null;
-    if (StringUtils.hasText(mapped) && supportsBrand(mapped)) {
-      return Optional.of(mapped.trim().toUpperCase(Locale.ROOT));
+    if (tecDocBrandId != null) {
+      String mapped =
+          properties.getSupportedTecDocBrands() != null
+              ? properties.getSupportedTecDocBrands().get(tecDocBrandId)
+              : null;
+      if (StringUtils.hasText(mapped) && supportsBrand(mapped)) {
+        return Optional.of(mapped.trim().toUpperCase(Locale.ROOT));
+      }
     }
 
     // Fallback: if TecDoc name contains a supported brand key, route to that key.

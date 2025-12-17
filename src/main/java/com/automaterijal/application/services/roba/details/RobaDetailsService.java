@@ -10,9 +10,14 @@ import com.automaterijal.application.services.ImageService;
 import com.automaterijal.application.services.TecDocService;
 import com.automaterijal.application.services.roba.RobaEnrichmentService;
 import com.automaterijal.application.services.roba.RobaTekstService;
+import com.automaterijal.application.services.roba.ProviderBrandResolver;
+import com.automaterijal.application.services.roba.grupe.ArticleGroupService;
 import com.automaterijal.application.services.roba.grupe.ArticleSubGroupService;
 import com.automaterijal.application.services.roba.repo.RobaDatabaseService;
 import com.automaterijal.application.services.roba.util.RobaTecDocDetailsHelper;
+import com.automaterijal.application.services.tecdoc.TecDocBrandService;
+import com.automaterijal.application.services.tecdoc.TecDocGenericArticleMappingService;
+import com.automaterijal.application.services.tecdoc.TecDocPreviewService;
 import com.automaterijal.application.tecdoc.*;
 import com.automaterijal.application.utils.SlugUtil;
 import jakarta.persistence.EntityNotFoundException;
@@ -37,9 +42,14 @@ public class RobaDetailsService {
 
   @NonNull final RobaDatabaseService robaDatabaseService;
   @NonNull final ArticleSubGroupService articleSubGroupService;
+  @NonNull final ArticleGroupService articleGroupService;
   @NonNull final RobaTekstService robaTekstService;
   @NonNull final RobaMapper mapper;
   @NonNull final TecDocService tecDocService;
+  @NonNull final TecDocBrandService tecDocBrandService;
+  @NonNull final TecDocPreviewService tecDocPreviewService;
+  @NonNull final TecDocGenericArticleMappingService tecDocGenericArticleMappingService;
+  @NonNull final ProviderBrandResolver providerBrandResolver;
   @NonNull final RobaEnrichmentService robaEnrichmentService;
   @NonNull final RobaTecDocDetailsHelper robaTecDocDetailsHelper;
   @NonNull final ImageService imageService;
@@ -59,6 +69,105 @@ public class RobaDetailsService {
       retVal = Optional.of(detaljnoDto);
     }
     return retVal;
+  }
+
+  public Optional<RobaExpandedDto> fetchExternalRobaDetailsByTecDocArticleId(
+      Long tecDocArticleId, Partner ulogovaniPartner) {
+    if (tecDocArticleId == null) {
+      return Optional.empty();
+    }
+
+    List<ArticlesByIds6Record> tecDocDetalji = tecDocService.vratiDetaljeArtikla(tecDocArticleId);
+    if (tecDocDetalji == null || tecDocDetalji.isEmpty()) {
+      return Optional.empty();
+    }
+
+    ArticlesByIds6Record record = tecDocDetalji.get(0);
+    ArticleDirectSearchById3Record direct = record != null ? record.getDirectArticle() : null;
+    if (direct == null || direct.getArticleId() == null) {
+      return Optional.empty();
+    }
+
+    RobaExpandedDto dto = new RobaExpandedDto();
+    dto.setRobaid(null);
+    dto.setTecDocArticleId(direct.getArticleId());
+    dto.setKatbr(direct.getArticleNo());
+    dto.setKatbrpro(null);
+    dto.setNaziv(buildArticleName(direct.getArticleName(), direct.getArticleAddName()));
+    dto.setStanje(0);
+
+    String resolvedProid =
+        providerBrandResolver
+            .resolveInventoryBrand(direct.getBrandNo(), direct.getBrandName())
+            .or(() -> tecDocBrandService.findProidByBrandId(direct.getBrandNo()))
+            .orElse(null);
+
+    if (resolvedProid != null && !resolvedProid.isBlank()) {
+      var p = new com.automaterijal.application.domain.dto.ProizvodjacDTO();
+      p.setProid(resolvedProid);
+      p.setNaziv(
+          direct.getBrandName() != null && !direct.getBrandName().isBlank()
+              ? direct.getBrandName()
+              : resolvedProid);
+      dto.setProizvodjac(p);
+    } else if (direct.getBrandName() != null && !direct.getBrandName().isBlank()) {
+      var p = new com.automaterijal.application.domain.dto.ProizvodjacDTO();
+      String proid = direct.getBrandName().trim().toUpperCase(Locale.ROOT);
+      p.setProid(proid);
+      p.setNaziv(direct.getBrandName().trim());
+      dto.setProizvodjac(p);
+    }
+
+    if (dto.getProizvodjac() != null && dto.getProizvodjac().getProid() != null) {
+      tecDocService
+          .vratiTecDocBrendovePrekoProId(dto.getProizvodjac().getProid())
+          .ifPresent(
+              tecDocBrands -> dto.setProizvodjacLogo(imageService.getImageForBrandLogo(tecDocBrands)));
+    }
+
+    dto.setLinkedManufacturers(
+        tecDocService.getLinkedManufacturersByArticleId(direct.getArticleId(), DEFAULT_LINKING_TARGET_TYPE));
+
+    // TecDoc content (tech details, OE, docs)
+    RobaTecDocDetailsHelper.setujTehnickeDetalje(dto, tecDocDetalji);
+    RobaTecDocDetailsHelper.setujOriginalneBrojeve(dto, tecDocDetalji);
+    robaTecDocDetailsHelper.setujDokumentaciju(dto, tecDocDetalji);
+
+    // Preview image (and fallback tech list if needed)
+    TecDocPreviewService.TecDocPreview preview = tecDocPreviewService.fromDetailsRecord(record);
+    if (preview != null) {
+      dto.setSlika(preview.slika());
+      if ((dto.getTehnickiOpis() == null || dto.getTehnickiOpis().isEmpty())
+          && preview.tehnickiOpis() != null
+          && !preview.tehnickiOpis().isEmpty()) {
+        dto.setTehnickiOpis(preview.tehnickiOpis());
+      }
+    }
+
+    // Map internal category from TecDoc genericArticleId when available
+    Long genericArticleId = direct.getGenericArticleId();
+    if (genericArticleId != null) {
+      tecDocGenericArticleMappingService
+          .resolvePodgrupaId(genericArticleId)
+          .ifPresent(
+              podgrupaId -> {
+                dto.setPodGrupa(podgrupaId);
+                articleSubGroupService
+                    .vratiPodgrupuPoKljucu(podgrupaId)
+                    .ifPresent(
+                        podgrupa -> {
+                          dto.setPodGrupaNaziv(podgrupa.getNaziv());
+                          dto.setGrupa(podgrupa.getGrupaId());
+                          Map<String, String> groupNames = articleGroupService.groupNamesById();
+                          dto.setGrupaNaziv(groupNames.get(podgrupa.getGrupaId()));
+                        });
+              });
+    }
+
+    // Provider-backed availability/price for partner (when supported)
+    robaEnrichmentService.applyPriceOnly(List.of(dto), ulogovaniPartner);
+
+    return Optional.of(dto);
   }
 
   // *** Vrati detalje za robu pojedinacno ***
@@ -94,6 +203,7 @@ public class RobaDetailsService {
     // *****************  Setuj linked manuf *************************
     Long tecDocArticleId = robaTecDocDetailsHelper.vratiTecDocArticleId(detaljiDto);
     if (tecDocArticleId != null) {
+      detaljiDto.setTecDocArticleId(tecDocArticleId);
       tecDocDetalji = tecDocService.vratiDetaljeArtikla(tecDocArticleId);
       List<TecDocLinkedManufacturerDto> linkedManufacturers =
           tecDocService.getLinkedManufacturersByArticleId(
@@ -117,6 +227,18 @@ public class RobaDetailsService {
 
     // ***************** Setujemo dokumentaciju iz tecdoca ako postoje *************************
     robaTecDocDetailsHelper.setujDokumentaciju(detaljiDto, tecDocDetalji);
+  }
+
+  private String buildArticleName(String name, String addName) {
+    String base = name != null ? name.trim() : "";
+    String add = addName != null ? addName.trim() : "";
+    if (base.isBlank()) {
+      return add.isBlank() ? null : add;
+    }
+    if (add.isBlank()) {
+      return base;
+    }
+    return base + " " + add;
   }
 
   public Optional<RobaExpandedDto> uploadImg(Long robaId, MultipartFile file, Partner partner) {

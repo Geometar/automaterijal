@@ -10,6 +10,7 @@ import lombok.experimental.FieldDefaults;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RobaLightDto extends RobaCache {
+  Long tecDocArticleId;
   SlikaDto slika;
   String proizvodjacLogo;
   String grupa;

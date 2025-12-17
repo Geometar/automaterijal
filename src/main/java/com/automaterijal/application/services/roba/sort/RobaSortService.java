@@ -25,6 +25,7 @@ public class RobaSortService {
 
   private Comparator<RobaLightDto> getGroupComparator() {
     return Comparator.comparingInt(this::availabilityRank)
+        .thenComparing(dto -> dto == null || dto.getRobaid() == null) // TecDoc-only na kraj
         .thenComparing(robaDto -> robaDto.getPodGrupa() == 0) // Podgrupa ID 0 na kraj
         .thenComparing(Comparator.comparing(RobaLightDto::getStanje).reversed())
         .thenComparing(

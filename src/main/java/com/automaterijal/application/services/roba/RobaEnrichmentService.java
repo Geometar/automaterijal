@@ -54,37 +54,36 @@ public class RobaEnrichmentService {
             .filter(dto -> dto.getRobaid() != null)
             .map(dto -> (RobaLightDto) dto)
             .collect(Collectors.toCollection(ArrayList::new));
-    if (valid.isEmpty()) {
-      return;
-    }
+    if (!valid.isEmpty()) {
+      tecDocService.batchVracanjeICuvanjeTDAtributa(valid);
 
-    tecDocService.batchVracanjeICuvanjeTDAtributa(valid);
+      List<Long> itemIds = valid.stream().map(RobaLightDto::getRobaid).toList();
+      Map<Long, List<TecDocAtributi>> attributesByRobaId =
+          mapAttributesByRobaId(tecDocService.vratiTecDocAtributePrekoRobeIds(itemIds));
+      Map<Long, RobaCene> pricesByRobaId =
+          mapPricesByRobaId(priceService.pronadjiCeneZaRobuBatch(itemIds));
+      Map<String, String> groupNames = articleGroupService.groupNamesById();
 
-    List<Long> itemIds = valid.stream().map(RobaLightDto::getRobaid).toList();
-    Map<Long, List<TecDocAtributi>> attributesByRobaId =
-        mapAttributesByRobaId(tecDocService.vratiTecDocAtributePrekoRobeIds(itemIds));
-    Map<Long, RobaCene> pricesByRobaId =
-        mapPricesByRobaId(priceService.pronadjiCeneZaRobuBatch(itemIds));
-    Map<String, String> groupNames = articleGroupService.groupNamesById();
+      for (RobaLightDto dto : valid) {
+        List<TecDocAtributi> attributes =
+            attributesByRobaId.getOrDefault(dto.getRobaid(), List.of());
 
-    for (RobaLightDto dto : valid) {
-      List<TecDocAtributi> attributes = attributesByRobaId.getOrDefault(dto.getRobaid(), List.of());
+        ensureTechList(dto);
+        if (dto.getTehnickiOpis().isEmpty()) {
+          applyTecDocTechnical(attributes, dto);
+        }
 
-      ensureTechList(dto);
-      if (dto.getTehnickiOpis().isEmpty()) {
-        applyTecDocTechnical(attributes, dto);
+        tecDocAttributeService.addManualTechnicalDetails(dto, attributes);
+        applyDocumentAttributes(attributes, dto);
+
+        setupPrice(dto, pricesByRobaId, partner);
+        dto.setGrupaNaziv(groupNames.get(dto.getGrupa()));
+        dto.setSlika(resolveImage(dto.getRobaid(), dto.getSlika()));
       }
-
-      tecDocAttributeService.addManualTechnicalDetails(dto, attributes);
-      applyDocumentAttributes(attributes, dto);
-
-      setupPrice(dto, pricesByRobaId, partner);
-      dto.setGrupaNaziv(groupNames.get(dto.getGrupa()));
-      dto.setSlika(resolveImage(dto.getRobaid(), dto.getSlika()));
     }
 
-    externalAvailabilityService.populateExternalAvailability(valid, partner);
-    applyAvailabilityStatus(valid);
+    externalAvailabilityService.populateExternalAvailability(items, partner);
+    applyAvailabilityStatus(items);
   }
 
   /** Lightweight enrichment for prewarmed sections that only needs price/rabat/out-of-stock. */

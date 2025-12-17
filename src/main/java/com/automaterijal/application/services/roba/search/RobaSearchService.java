@@ -20,6 +20,7 @@ import com.automaterijal.application.utils.GeneralUtil;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -66,7 +67,7 @@ public class RobaSearchService {
             ? normalized.getPageSize()
             : Integer.MAX_VALUE;
     List<Integer> requestedSubGroups = normalized.getPodgrupeZaPretragu();
-    boolean onlyAvailable = normalized.isDostupno();
+    boolean filterAvailable = normalized.isNaStanju();
 
     // Izbegni lokalni filter podgrupa dok ne mapiramo TecDoc kategorije
     UniverzalniParametri internalParams = normalized.copy();
@@ -104,7 +105,7 @@ public class RobaSearchService {
     }
     List<RobaLightDto> itemsForCatalogKeys = items;
 
-    if (onlyAvailable) {
+    if (filterAvailable) {
       // Enrich full filtered set so we can filter by provider-backed availability
       if (!items.isEmpty()) {
         robaEnrichmentService.enrichLightDtos(items, loggedPartner);
@@ -141,16 +142,75 @@ public class RobaSearchService {
 
       magacinDto.setProizvodjaci(buildManufacturersFromItems(combined));
     } else {
+      List<RobaLightDto> localKeyItems =
+          itemsForCatalogKeys.stream()
+              .filter(Objects::nonNull)
+              .filter(r -> r.getRobaid() != null)
+              .toList();
+      MagacinDto localForKeys = new MagacinDto();
+      localForKeys.setRobaDto(GeneralUtil.createPageable(localKeyItems, Integer.MAX_VALUE, 0));
+      List<RobaLightDto> externals =
+          externalOfferService.buildFromAssociatedTecDocArticles(
+              articles, localForKeys, loggedPartner, normalized);
+
+      Set<String> externalKeys = new HashSet<>();
+      for (RobaLightDto dto : externals) {
+        if (dto == null || dto.getProizvodjac() == null || !StringUtils.hasText(dto.getKatbr())) {
+          continue;
+        }
+        String brand =
+            StringUtils.hasText(dto.getProizvodjac().getProid())
+                ? dto.getProizvodjac().getProid().trim().toUpperCase(Locale.ROOT)
+                : null;
+        if (!StringUtils.hasText(brand)) {
+          continue;
+        }
+        externalKeys.add(brand + ":" + normalizeCatalog(dto.getKatbr()));
+      }
+
+      List<RobaLightDto> combined =
+          new ArrayList<>(
+              items.stream()
+                  .filter(
+                      dto ->
+                          dto == null
+                              || dto.getRobaid() != null
+                              || dto.getProizvodjac() == null
+                              || !StringUtils.hasText(dto.getKatbr())
+                              || !StringUtils.hasText(dto.getProizvodjac().getProid())
+                              || !externalKeys.contains(
+                                  dto.getProizvodjac().getProid().trim().toUpperCase(Locale.ROOT)
+                                      + ":"
+                                      + normalizeCatalog(dto.getKatbr())))
+                  .toList());
+      combined.addAll(externals);
+
+      // Light availability enrichment for correct ordering (stanje + provider availability)
+      if (!combined.isEmpty()) {
+        robaEnrichmentService.applyPriceOnly(combined, loggedPartner);
+      }
+
+      combined = robaSortService.sortByGroup(combined);
+
       // Page first, then enrich only the returned page
       int pageSize = Math.max(1, originalPageSize);
       int page = Math.max(0, originalPage);
-      magacinDto.setRobaDto(GeneralUtil.createPageable(items, pageSize, page));
+      magacinDto.setRobaDto(GeneralUtil.createPageable(combined, pageSize, page));
       if (magacinDto.getRobaDto() != null && !magacinDto.getRobaDto().isEmpty()) {
         robaEnrichmentService.enrichLightDtos(magacinDto.getRobaDto().getContent(), loggedPartner);
       }
+
+      Set<Integer> union = new HashSet<>();
+      combined.stream().filter(Objects::nonNull).map(RobaLightDto::getPodGrupa).forEach(union::add);
+      magacinDto.setCategories(articleSubGroupService.buildCategoriesFromPodgrupaIds(union));
+      magacinDto.setProizvodjaci(buildManufacturersFromItems(combined));
     }
 
     return magacinDto;
+  }
+
+  private String normalizeCatalog(String value) {
+    return StringUtils.hasText(value) ? CatalogNumberUtils.cleanPreserveSeparators(value.trim()) : "";
   }
 
   private List<ArticleRecord> extractArticles(ArticlesResponse response) {
@@ -238,17 +298,17 @@ public class RobaSearchService {
         normalized.getPageSize() != null && normalized.getPageSize() > 0
             ? normalized.getPageSize()
             : 10;
-    boolean onlyAvailable = normalized.isDostupno();
+    boolean filterAvailable = normalized.isNaStanju();
     boolean hasSearchTerm = StringUtils.hasText(normalized.getTrazenaRec());
     boolean includeExternalOffers = hasSearchTerm;
 
     if (includeExternalOffers) {
       return searchProductsBySearchTermWithExternalOffers(
-          normalized, loggedPartner, originalPage, originalPageSize, onlyAvailable);
+          normalized, loggedPartner, originalPage, originalPageSize, filterAvailable);
     }
 
     UniverzalniParametri internal = normalized;
-    if (onlyAvailable) {
+    if (filterAvailable) {
       internal = normalized.copy();
       internal.setPage(0);
       internal.setPageSize(Integer.MAX_VALUE);
@@ -264,7 +324,7 @@ public class RobaSearchService {
     List<RobaLightDto> itemsForCatalogKeys =
         magacinDto.getRobaDto() != null ? magacinDto.getRobaDto().getContent() : List.of();
 
-    if (onlyAvailable && magacinDto.getRobaDto() != null) {
+    if (filterAvailable && magacinDto.getRobaDto() != null) {
       if (!itemsForCatalogKeys.isEmpty()) {
         robaEnrichmentService.applyPriceOnly(itemsForCatalogKeys, loggedPartner);
       }
@@ -301,7 +361,7 @@ public class RobaSearchService {
       Partner loggedPartner,
       Integer originalPage,
       Integer originalPageSize,
-      boolean onlyAvailable) {
+      boolean filterAvailable) {
     UniverzalniParametri allLocalParams = normalized.copy();
     allLocalParams.setPage(0);
     allLocalParams.setPageSize(Integer.MAX_VALUE);
@@ -316,7 +376,7 @@ public class RobaSearchService {
         localAll.getRobaDto() != null ? localAll.getRobaDto().getContent() : List.of();
 
     List<RobaLightDto> visibleLocalItems = allLocalItems;
-    if (onlyAvailable && !allLocalItems.isEmpty()) {
+    if (filterAvailable && !allLocalItems.isEmpty()) {
       robaEnrichmentService.applyPriceOnly(allLocalItems, loggedPartner);
       visibleLocalItems =
           allLocalItems.stream()

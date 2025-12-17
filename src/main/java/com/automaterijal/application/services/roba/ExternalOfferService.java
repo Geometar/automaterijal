@@ -195,6 +195,7 @@ public class ExternalOfferService {
 
         RobaLightDto dto = new RobaLightDto();
         dto.setRobaid(null);
+        dto.setTecDocArticleId(candidate.tecDocArticleId());
         dto.setKatbr(candidate.providerArticleNumber());
         dto.setKatbrpro(null);
         dto.setNaziv(candidate.articleName());

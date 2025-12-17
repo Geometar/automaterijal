@@ -5,6 +5,7 @@ import com.automaterijal.application.domain.dto.tecdoc.AssemblyGroupWrapper;
 import com.automaterijal.application.domain.dto.tecdoc.Manufcatures;
 import com.automaterijal.application.domain.dto.tecdoc.Model;
 import com.automaterijal.application.services.TecDocService;
+import com.automaterijal.application.services.roba.details.RobaDetailsService;
 import com.automaterijal.application.services.roba.search.RobaSearchService;
 import com.automaterijal.application.domain.dto.tecdoc.TecDocLinkedManufacturerTargetsDto;
 import com.automaterijal.application.tecdoc.ArticleLinkedAllLinkingTargetManufacturer2Response;
@@ -38,6 +39,7 @@ public class TecDocController {
 
   @NonNull final TecDocService tecDocService;
   @NonNull final RobaSearchService robaSearchService;
+  @NonNull final RobaDetailsService robaDetailsService;
   @NonNull final RobaSpringBeanUtils robaSpringBeanUtils;
   @NonNull final PartnerSpringBeanUtils partnerSpringBeanUtils;
 
@@ -87,6 +89,18 @@ public class TecDocController {
     return ResponseEntity.ok().body(tecDocService.getModelSubTypes(manuId, modelId, type));
   }
 
+  @GetMapping(value = "/roba/{tecDocArticleId}")
+  public ResponseEntity<com.automaterijal.application.domain.dto.robadetalji.RobaExpandedDto>
+      getExternalRobaDetails(
+          @PathVariable("tecDocArticleId") Long tecDocArticleId,
+          Authentication authentication) {
+    var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+    return robaDetailsService
+        .fetchExternalRobaDetailsByTecDocArticleId(tecDocArticleId, uPartner)
+        .map(ResponseEntity::ok)
+        .orElse(ResponseEntity.notFound().build());
+  }
+
   @GetMapping(value = "/linkageTargets")
   public ResponseEntity<List<LinkageTargetDetails>> getLinkageTargets(
       @RequestParam(value = "tecdocTargetType") String type,
@@ -108,6 +122,20 @@ public class TecDocController {
                     HttpStatus.NOT_FOUND, "TecDoc artikal nije pronađen za zadatu robu"));
   }
 
+  @GetMapping(value = "/articles/by-article/{tecDocArticleId}/linked-manufacturers")
+  public ResponseEntity<ArticleLinkedAllLinkingTargetManufacturer2Response>
+      getArticleLinkedManufacturersByArticleId(
+          @PathVariable("tecDocArticleId") Long tecDocArticleId,
+          @RequestParam("linkingTargetType") String linkingTargetType) {
+    return tecDocService
+        .getArticleLinkedManufacturersByArticleId(tecDocArticleId, linkingTargetType)
+        .map(ResponseEntity::ok)
+        .orElseThrow(
+            () ->
+                new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "TecDoc artikal nije pronađen za zadati articleId"));
+  }
+
   @GetMapping(value = "/articles/{robaId}/linked-targets")
   public ResponseEntity<List<TecDocLinkedManufacturerTargetsDto>> getArticleLinkedTargets(
       @PathVariable("robaId") Long robaId,
@@ -121,6 +149,14 @@ public class TecDocController {
                     HttpStatus.NOT_FOUND, "TecDoc artikal nije pronađen za zadatu robu"));
   }
 
+  @GetMapping(value = "/articles/by-article/{tecDocArticleId}/linked-targets")
+  public ResponseEntity<List<TecDocLinkedManufacturerTargetsDto>> getArticleLinkedTargetsByArticleId(
+      @PathVariable("tecDocArticleId") Long tecDocArticleId,
+      @RequestParam("linkingTargetType") String linkingTargetType) {
+    return ResponseEntity.ok()
+        .body(tecDocService.getArticleLinkedTargetsByArticleId(tecDocArticleId, linkingTargetType));
+  }
+
   @GetMapping(value = "/articles")
   public ResponseEntity<MagacinDto> getLinkageTargets(
       @RequestParam(value = "tecdocTargetType") String type,
@@ -131,7 +167,6 @@ public class TecDocController {
       @RequestParam(required = false) List<String> proizvodjaci,
       @RequestParam(required = false) List<Integer> podgrupe,
       @RequestParam(required = false) Optional<Boolean> naStanju,
-      @RequestParam(required = false, defaultValue = "false") boolean dostupno,
       @RequestParam(required = false) Optional<String> filterBy,
       Authentication authentication) {
 
@@ -143,7 +178,7 @@ public class TecDocController {
             null,
             null,
             naStanju,
-            Optional.of(dostupno),
+            Optional.empty(),
             Optional.empty(),
             podgrupe,
             true,

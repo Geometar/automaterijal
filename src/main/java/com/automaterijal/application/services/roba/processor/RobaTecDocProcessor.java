@@ -8,6 +8,7 @@ import com.automaterijal.application.services.tecdoc.TecDocPreviewService;
 import com.automaterijal.application.tecdoc.ArticleRecord;
 import com.automaterijal.application.tecdoc.CriteriaRecord;
 import com.automaterijal.application.tecdoc.TradeNumberDetailsRecord;
+import com.automaterijal.application.utils.CatalogNumberUtils;
 import java.util.*;
 import java.util.stream.Collectors;
 import lombok.AccessLevel;
@@ -64,15 +65,24 @@ public class RobaTecDocProcessor {
                 return false;
               }
 
-              if (articleRecord.getArticleNumber().equals(katBr)) {
+              if (CatalogNumberUtils.equalsWhenCleaned(articleRecord.getArticleNumber(), katBr)) {
                 return true;
               }
 
-              return tecDocProizvodjaci.isUseTradeNumber()
-                  && articleRecord.getTradeNumbersDetails().stream()
-                      .filter(TradeNumberDetailsRecord::isIsImmediateDisplay)
-                      .map(TradeNumberDetailsRecord::getTradeNumber)
-                      .anyMatch(katBr::equals);
+              if (!tecDocProizvodjaci.isUseTradeNumber()) {
+                return false;
+              }
+
+              List<TradeNumberDetailsRecord> tradeDetails = articleRecord.getTradeNumbersDetails();
+              if (tradeDetails == null || tradeDetails.isEmpty()) {
+                return false;
+              }
+
+              return tradeDetails.stream()
+                  .filter(Objects::nonNull)
+                  .filter(TradeNumberDetailsRecord::isIsImmediateDisplay)
+                  .map(TradeNumberDetailsRecord::getTradeNumber)
+                  .anyMatch(tradeNo -> CatalogNumberUtils.equalsWhenCleaned(tradeNo, katBr));
             });
   }
 

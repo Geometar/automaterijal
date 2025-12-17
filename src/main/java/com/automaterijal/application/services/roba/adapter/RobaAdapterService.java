@@ -17,7 +17,6 @@ import com.automaterijal.application.tecdoc.ArticleRecord;
 import com.automaterijal.application.utils.CatalogNumberUtils;
 import com.automaterijal.application.utils.CriteriaBuilder;
 import com.automaterijal.application.utils.GeneralUtil;
-import java.math.BigDecimal;
 import java.text.Normalizer;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -107,8 +106,6 @@ public class RobaAdapterService {
 
   private Condition buildBaseCondition(UniverzalniParametri parametri) {
     CriteriaBuilder criteriaBuilder = CriteriaBuilder.init();
-    criteriaBuilder.addConditionIfTrue(
-        parametri.isNaStanju() && !parametri.isDostupno(), ROBA.STANJE.greaterThan(BigDecimal.ZERO));
     return criteriaBuilder.build();
   }
 

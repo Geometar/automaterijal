@@ -87,7 +87,7 @@ public class TecDocPreviewService {
     return previews;
   }
 
-  private TecDocPreview fromDetailsRecord(ArticlesByIds6Record record) {
+  public TecDocPreview fromDetailsRecord(ArticlesByIds6Record record) {
     if (record == null) {
       return null;
     }
@@ -285,4 +285,3 @@ public class TecDocPreviewService {
         .toList();
   }
 }
-

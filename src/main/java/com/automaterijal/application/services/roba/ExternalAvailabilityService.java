@@ -47,15 +47,60 @@ public class ExternalAvailabilityService {
         items.stream()
             .filter(Objects::nonNull)
             .filter(dto -> dto.getProizvodjac() != null)
-            .filter(dto -> StringUtils.hasText(dto.getProizvodjac().getProid()))
             .filter(dto -> dto.getStanje() <= 0)
             .map(dto -> (RobaLightDto) dto)
+            .map(
+                dto -> {
+                  String resolvedBrand = resolveBrandKey(dto);
+                  return resolvedBrand != null ? new AbstractMap.SimpleEntry<>(resolvedBrand, dto) : null;
+                })
+            .filter(Objects::nonNull)
             .collect(
-                Collectors.groupingBy(dto -> dto.getProizvodjac().getProid().trim().toUpperCase()));
+                Collectors.groupingBy(
+                    Map.Entry::getKey,
+                    Collectors.mapping(Map.Entry::getValue, Collectors.toList())));
 
     for (Map.Entry<String, List<RobaLightDto>> entry : byBrand.entrySet()) {
       populateForBrand(entry.getKey(), entry.getValue(), partner);
     }
+  }
+
+  private String resolveBrandKey(RobaLightDto dto) {
+    if (dto == null || dto.getProizvodjac() == null) {
+      return null;
+    }
+
+    String rawProid =
+        StringUtils.hasText(dto.getProizvodjac().getProid())
+            ? dto.getProizvodjac().getProid().trim().toUpperCase(Locale.ROOT)
+            : null;
+    if (StringUtils.hasText(rawProid) && !providerRegistry.findInventoryProviders(rawProid).isEmpty()) {
+      return rawProid;
+    }
+
+    // Try routing by manufacturer name (useful for TecDoc placeholders like "BLUE PRINT").
+    String rawName =
+        StringUtils.hasText(dto.getProizvodjac().getNaziv())
+            ? dto.getProizvodjac().getNaziv().trim()
+            : null;
+    String byName = providerRegistry.resolveBrandKey(null, rawName).orElse(null);
+    if (StringUtils.hasText(byName)) {
+      String normalized = byName.trim().toUpperCase(Locale.ROOT);
+      if (!providerRegistry.findInventoryProviders(normalized).isEmpty()) {
+        return normalized;
+      }
+    }
+
+    // Last resort: try routing by the raw proid as a name.
+    String byProidAsName = providerRegistry.resolveBrandKey(null, rawProid).orElse(null);
+    if (StringUtils.hasText(byProidAsName)) {
+      String normalized = byProidAsName.trim().toUpperCase(Locale.ROOT);
+      if (!providerRegistry.findInventoryProviders(normalized).isEmpty()) {
+        return normalized;
+      }
+    }
+
+    return null;
   }
 
   private void populateForBrand(String brand, List<RobaLightDto> dtos, Partner partner) {
