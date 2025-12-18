@@ -39,3 +39,7 @@ integration:
     price-list-path: /Users/radespasojevic/Documents/Rade/Automaterijal/dokumenti/pricelist/febi-pricelist.xlsx
     bypass-article-errors: true
     # base-url and destination-country left default; override here if needed
+
+security:
+  password:
+    bypass: true

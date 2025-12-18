@@ -44,6 +44,11 @@ public class RobaEnrichmentService {
   }
 
   public void enrichLightDtos(List<? extends RobaLightDto> items, Partner partner) {
+    enrichLightDtos(items, partner, true);
+  }
+
+  public void enrichLightDtos(
+      List<? extends RobaLightDto> items, Partner partner, boolean includeProviderAvailability) {
     if (items == null || items.isEmpty()) {
       return;
     }
@@ -68,6 +73,14 @@ public class RobaEnrichmentService {
         List<TecDocAtributi> attributes =
             attributesByRobaId.getOrDefault(dto.getRobaid(), List.of());
 
+        if (dto.getTecDocArticleId() == null) {
+          attributes.stream()
+              .map(TecDocAtributi::getTecDocArticleId)
+              .filter(Objects::nonNull)
+              .findFirst()
+              .ifPresent(dto::setTecDocArticleId);
+        }
+
         ensureTechList(dto);
         if (dto.getTehnickiOpis().isEmpty()) {
           applyTecDocTechnical(attributes, dto);
@@ -82,12 +95,19 @@ public class RobaEnrichmentService {
       }
     }
 
-    externalAvailabilityService.populateExternalAvailability(items, partner);
+    if (includeProviderAvailability) {
+      externalAvailabilityService.populateExternalAvailability(items, partner);
+    }
     applyAvailabilityStatus(items);
   }
 
   /** Lightweight enrichment for prewarmed sections that only needs price/rabat/out-of-stock. */
   public void applyPriceOnly(List<RobaLightDto> items, Partner partner) {
+    applyPriceOnly(items, partner, true);
+  }
+
+  public void applyPriceOnly(
+      List<RobaLightDto> items, Partner partner, boolean includeProviderAvailability) {
     if (items == null || items.isEmpty()) {
       return;
     }
@@ -105,7 +125,9 @@ public class RobaEnrichmentService {
       setupPrice(dto, pricesByRobaId, partner);
     }
 
-    externalAvailabilityService.populateExternalAvailability(items, partner);
+    if (includeProviderAvailability) {
+      externalAvailabilityService.populateExternalAvailability(items, partner);
+    }
     applyAvailabilityStatus(items);
   }
 

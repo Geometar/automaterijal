@@ -59,6 +59,7 @@ public class RobaController {
       @RequestParam(required = false) Optional<String> filterBy,
       @RequestParam(required = false) boolean paged,
       @RequestParam(required = false) boolean showcase,
+      @RequestParam(required = false, defaultValue = "false") boolean skipProvider,
       Authentication authentication) {
 
     var univerzalniParametri =
@@ -79,7 +80,7 @@ public class RobaController {
     var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
     logWebService.log(uPartner, univerzalniParametri);
     MagacinDto magacinDto =
-        robaSearchService.searchProducts(univerzalniParametri, uPartner);
+        robaSearchService.searchProducts(univerzalniParametri, uPartner, skipProvider);
 
     return ResponseEntity.ok().headers(createHeaders(uPartner)).body(magacinDto);
   }

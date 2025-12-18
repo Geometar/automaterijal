@@ -288,7 +288,8 @@ public class RobaSearchService {
                     .forEach(catalogNumbers::add));
   }
 
-  public MagacinDto searchProducts(UniverzalniParametri parametri, Partner loggedPartner) {
+  public MagacinDto searchProducts(
+      UniverzalniParametri parametri, Partner loggedPartner, boolean skipProvider) {
 
     UniverzalniParametri normalized =
         parametri != null ? parametri.normalizedCopy() : new UniverzalniParametri();
@@ -300,7 +301,7 @@ public class RobaSearchService {
             : 10;
     boolean filterAvailable = normalized.isNaStanju();
     boolean hasSearchTerm = StringUtils.hasText(normalized.getTrazenaRec());
-    boolean includeExternalOffers = hasSearchTerm;
+    boolean includeExternalOffers = hasSearchTerm && !skipProvider;
 
     if (includeExternalOffers) {
       return searchProductsBySearchTermWithExternalOffers(
@@ -326,7 +327,7 @@ public class RobaSearchService {
 
     if (filterAvailable && magacinDto.getRobaDto() != null) {
       if (!itemsForCatalogKeys.isEmpty()) {
-        robaEnrichmentService.applyPriceOnly(itemsForCatalogKeys, loggedPartner);
+        robaEnrichmentService.applyPriceOnly(itemsForCatalogKeys, loggedPartner, !skipProvider);
       }
 
       List<RobaLightDto> localAvailable =
@@ -341,7 +342,8 @@ public class RobaSearchService {
       magacinDto.setRobaDto(GeneralUtil.createPageable(combined, originalPageSize, originalPage));
 
       if (magacinDto.getRobaDto() != null && !magacinDto.getRobaDto().isEmpty()) {
-        robaEnrichmentService.enrichLightDtos(magacinDto.getRobaDto().getContent(), loggedPartner);
+        robaEnrichmentService.enrichLightDtos(
+            magacinDto.getRobaDto().getContent(), loggedPartner, !skipProvider);
       }
 
       Set<Integer> union = new HashSet<>();
@@ -350,10 +352,15 @@ public class RobaSearchService {
 
       magacinDto.setProizvodjaci(buildManufacturersFromItems(combined));
     } else if (magacinDto.getRobaDto() != null && !magacinDto.getRobaDto().isEmpty()) {
-      robaEnrichmentService.enrichLightDtos(magacinDto.getRobaDto().getContent(), loggedPartner);
+      robaEnrichmentService.enrichLightDtos(
+          magacinDto.getRobaDto().getContent(), loggedPartner, !skipProvider);
     }
 
     return magacinDto;
+  }
+
+  public MagacinDto searchProducts(UniverzalniParametri parametri, Partner loggedPartner) {
+    return searchProducts(parametri, loggedPartner, false);
   }
 
   private MagacinDto searchProductsBySearchTermWithExternalOffers(

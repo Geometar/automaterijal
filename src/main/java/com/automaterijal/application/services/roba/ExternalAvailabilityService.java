@@ -147,6 +147,14 @@ public class ExternalAvailabilityService {
 
       if (best != null) {
         dto.setProviderAvailability(applyPartnerPricing(best, dto, partner));
+        if (dto.getRabat() == null) {
+          String brandKey =
+              dto.getProizvodjac() != null ? dto.getProizvodjac().getProid() : null;
+          dto.setRabat(priceService.vratiRabatPartneraNaArtikal(brandKey, dto.getGrupa(), partner));
+        }
+        if (dto.getRobaid() == null && dto.getCena() == null && dto.getProviderAvailability() != null) {
+          dto.setCena(dto.getProviderAvailability().getPrice());
+        }
       }
     }
   }

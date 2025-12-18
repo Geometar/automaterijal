@@ -69,6 +69,35 @@ public class FakturaController {
     return ResponseEntity.ok(fakture);
   }
 
+  @GetMapping(value = "/admin")
+  public ResponseEntity<Page<FakturaDto>> getAllOrdersAdmin(
+      @RequestParam(required = false) Integer page,
+      @RequestParam(required = false) Integer pageSize,
+      @RequestParam(required = false) BigDecimal dateFrom,
+      @RequestParam(required = false) BigDecimal dateTo,
+      Authentication authentication) {
+    Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+    if (partner == null || partner.getPrivilegije() != 2047) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Unauthorized");
+    }
+
+    var iPage = page == null ? 0 : page;
+    var iPageSize = pageSize == null ? 10 : pageSize;
+    var iVremeOd =
+        dateFrom == null
+            ? LocalDate.now().minusYears(5).atStartOfDay()
+            : GeneralUtil.timestampToLDT(dateFrom.longValue()).atStartOfDay();
+    var iVremeDo =
+        dateTo == null
+            ? LocalDate.now().atStartOfDay().plusDays(1)
+            : GeneralUtil.timestampToLDT(dateTo.longValue()).atStartOfDay().plusDays(1);
+
+    Page<FakturaDto> fakture =
+        fakturaService.vratiSveFaktureUlogovanogKorisnika(
+            partner, iPage, iPageSize, iVremeOd, iVremeDo);
+    return ResponseEntity.ok(fakture);
+  }
+
   @PostMapping
   public ResponseEntity<List<RobaLightDto>> podnesiFakturu(
       @RequestBody FakturaDto fakturaDto, Authentication authentication) {

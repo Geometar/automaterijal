@@ -204,30 +204,6 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
 
-            <!-- JAXB code generation -->
-            <plugin>
-                <groupId>org.jvnet.jaxb2.maven2</groupId>
-                <artifactId>maven-jaxb2-plugin</artifactId>
-                <version>0.15.3</version> <!-- Use the latest version if available -->
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <schemaLanguage>WSDL</schemaLanguage>
-                    <generateDirectory>${project.basedir}/src/main/java</generateDirectory>
-                    <generatePackage>com.automaterijal.application.tecdoc</generatePackage>
-                    <schemas>
-                        <schema>
-                            <url>https://webservice.tecalliance.services/pegasus-3-0/wsdl/TecdocToCatDLW</url>
-                        </schema>
-                    </schemas>
-                </configuration>
-            </plugin>
-
             <!-- Liquibase plugin for database migrations -->
             <plugin>
                 <groupId>org.liquibase</groupId>
@@ -273,40 +249,110 @@
                 <version>2.21.0</version>
             </plugin>
 
-            <!-- JOOQ code generation -->
             <plugin>
-                <groupId>org.jooq</groupId>
-                <artifactId>jooq-codegen-maven</artifactId>
-                <version>${org.jooq.version}</version>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.6.0</version>
                 <executions>
                     <execution>
+                        <id>add-jooq-generated</id>
+                        <phase>generate-sources</phase>
                         <goals>
-                            <goal>generate</goal>
+                            <goal>add-source</goal>
                         </goals>
+                        <configuration>
+                            <sources>
+                                <source>target/generated-sources/jooq</source>
+                            </sources>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <jdbc>
-                        <driver>${jdbc.driver}</driver>
-                        <url>${jdbc.url}</url>
-                        <user>${jdbc.user}</user>
-                        <password>${jdbc.password}</password>
-                    </jdbc>
-                    <generator>
-                        <database>
-                            <name>org.jooq.meta.mysql.MySQLDatabase</name>
-                            <includes>.*</includes>
-                            <inputSchema>automate_orders</inputSchema>
-                        </database>
-                        <target>
-                            <packageName>com.automaterijal.db</packageName>
-                            <directory>target/generated-sources/jooq</directory>
-                        </target>
-                    </generator>
-                </configuration>
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>tecdoc-wsdl-generate</id>
+            <activation>
+                <property>
+                    <name>tecdoc.wsdl.generate</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jvnet.jaxb2.maven2</groupId>
+                        <artifactId>maven-jaxb2-plugin</artifactId>
+                        <version>0.15.3</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <schemaLanguage>WSDL</schemaLanguage>
+                            <generateDirectory>${project.basedir}/src/main/java</generateDirectory>
+                            <generatePackage>com.automaterijal.application.tecdoc</generatePackage>
+                            <schemas>
+                                <schema>
+                                    <url>https://webservice.tecalliance.services/pegasus-3-0/wsdl/TecdocToCatDLW</url>
+                                </schema>
+                            </schemas>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>jooq-generate</id>
+            <activation>
+                <property>
+                    <name>jooq.generate</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jooq</groupId>
+                        <artifactId>jooq-codegen-maven</artifactId>
+                        <version>${org.jooq.version}</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <jdbc>
+                                <driver>${jdbc.driver}</driver>
+                                <url>${jdbc.url}</url>
+                                <user>${jdbc.user}</user>
+                                <password>${jdbc.password}</password>
+                            </jdbc>
+                            <generator>
+                                <database>
+                                    <name>org.jooq.meta.mysql.MySQLDatabase</name>
+                                    <includes>.*</includes>
+                                    <inputSchema>automate_orders</inputSchema>
+                                </database>
+                                <target>
+                                    <packageName>com.automaterijal.db</packageName>
+                                    <directory>target/generated-sources/jooq</directory>
+                                </target>
+                            </generator>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
     <!-- Repositories for specific libraries -->
     <repositories>

@@ -7,6 +7,7 @@ import com.automaterijal.application.domain.dto.PodgrupaDto;
 import com.automaterijal.application.domain.dto.ProizvodjacDTO;
 import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.entity.Partner;
+import com.automaterijal.application.services.TecDocService;
 import com.automaterijal.application.services.tecdoc.TecDocGenericArticleMappingService;
 import com.automaterijal.application.services.tecdoc.TecDocPreviewService;
 import com.automaterijal.application.services.roba.grupe.ArticleGroupService;
@@ -16,9 +17,11 @@ import com.automaterijal.application.tecdoc.ArticleDirectSearchAllNumbersWithSta
 import com.automaterijal.application.tecdoc.ArticleRecord;
 import com.automaterijal.application.tecdoc.GenericArticleRecord;
 import com.automaterijal.application.utils.CatalogNumberUtils;
+import java.util.Collections;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -38,6 +41,11 @@ import org.springframework.util.StringUtils;
 public class ExternalOfferService {
 
   private static final int MAX_EXTERNAL_OFFERS = 50;
+  private static final int TECDOC_NUMBER_TYPE_ALL = 10;
+  private static final int TECDOC_ARTICLE_ID_RESOLVE_DEFAULT_LIMIT = 10;
+  private static final int TECDOC_ARTICLE_ID_RESOLVE_MAX_LIMIT = 25;
+  private static final int TECDOC_ARTICLE_ID_CACHE_MAX_SIZE = 5_000;
+  private static final long TECDOC_ARTICLE_ID_CACHE_TTL_MS = 6 * 60 * 60 * 1000L;
 
   @NonNull ExternalAvailabilityService externalAvailabilityService;
   @NonNull TecDocGenericArticleMappingService mappingService;
@@ -45,6 +53,16 @@ public class ExternalOfferService {
   @NonNull ArticleGroupService articleGroupService;
   @NonNull TecDocPreviewService tecDocPreviewService;
   @NonNull ProviderBrandResolver providerBrandResolver;
+  @NonNull TecDocService tecDocService;
+
+  Map<String, TecDocArticleIdCacheEntry> tecDocArticleIdCache =
+      Collections.synchronizedMap(
+          new LinkedHashMap<>(128, 0.75f, true) {
+            @Override
+            protected boolean removeEldestEntry(Map.Entry<String, TecDocArticleIdCacheEntry> eldest) {
+              return size() > TECDOC_ARTICLE_ID_CACHE_MAX_SIZE;
+            }
+          });
 
   public List<RobaLightDto> buildFromTecDocSearch(
       List<ArticleDirectSearchAllNumbersWithStateRecord> tecDocRecords,
@@ -134,6 +152,8 @@ public class ExternalOfferService {
     Map<Long, TecDocPreviewService.TecDocPreview> previewByArticleId =
         articleIds.isEmpty() ? Map.of() : tecDocPreviewService.previewsByArticleId(articleIds);
 
+    int tecDocResolveRemaining = resolveTecDocArticleIdLimit(parametri);
+
     for (Candidate candidate : missing) {
       if (candidate.genericArticleId() != null) {
         mappingService.touch(candidate.genericArticleId(), candidate.category());
@@ -193,9 +213,18 @@ public class ExternalOfferService {
                     ? previewByArticleId.get(candidate.tecDocArticleId())
                     : null);
 
+        Long tecDocArticleId = candidate.tecDocArticleId();
+        if (tecDocArticleId == null && tecDocResolveRemaining > 0) {
+          ResolvedTecDocArticleId resolved = resolveTecDocArticleId(candidate);
+          tecDocArticleId = resolved.articleId();
+          if (resolved.fetchedFromTecDoc()) {
+            tecDocResolveRemaining--;
+          }
+        }
+
         RobaLightDto dto = new RobaLightDto();
         dto.setRobaid(null);
-        dto.setTecDocArticleId(candidate.tecDocArticleId());
+        dto.setTecDocArticleId(tecDocArticleId);
         dto.setKatbr(candidate.providerArticleNumber());
         dto.setKatbrpro(null);
         dto.setNaziv(candidate.articleName());
@@ -222,6 +251,66 @@ public class ExternalOfferService {
     }
 
     return offers;
+  }
+
+  private int resolveTecDocArticleIdLimit(UniverzalniParametri parametri) {
+    Integer requested = parametri != null ? parametri.getPageSize() : null;
+    int limit =
+        requested != null && requested > 0 ? requested : TECDOC_ARTICLE_ID_RESOLVE_DEFAULT_LIMIT;
+    return Math.min(Math.max(0, limit), TECDOC_ARTICLE_ID_RESOLVE_MAX_LIMIT);
+  }
+
+  private record TecDocArticleIdCacheEntry(Long articleId, long expiresAtMs) {}
+
+  private record ResolvedTecDocArticleId(Long articleId, boolean fetchedFromTecDoc) {}
+
+  private ResolvedTecDocArticleId resolveTecDocArticleId(Candidate candidate) {
+    if (candidate == null
+        || candidate.tecDocBrandId() == null
+        || !StringUtils.hasText(candidate.providerArticleNumber())) {
+      return new ResolvedTecDocArticleId(null, false);
+    }
+
+    String key =
+        candidate.tecDocBrandId()
+            + ":"
+            + normalizeCatalog(candidate.providerArticleNumber());
+
+    long now = System.currentTimeMillis();
+    TecDocArticleIdCacheEntry cached = tecDocArticleIdCache.get(key);
+    if (cached != null) {
+      if (cached.expiresAtMs() >= now) {
+        return new ResolvedTecDocArticleId(cached.articleId(), false);
+      }
+      tecDocArticleIdCache.remove(key);
+    }
+
+    Long resolved = null;
+    try {
+      List<ArticleDirectSearchAllNumbersWithStateRecord> results =
+          tecDocService.tecDocPretragaPoTrazenojReci(
+              candidate.providerArticleNumber(), candidate.tecDocBrandId(), TECDOC_NUMBER_TYPE_ALL);
+      if (results != null && !results.isEmpty()) {
+        resolved =
+            results.stream()
+                .filter(Objects::nonNull)
+                .filter(r -> r.getBrandNo() != null && r.getBrandNo().equals(candidate.tecDocBrandId()))
+                .filter(r -> StringUtils.hasText(r.getArticleNo()))
+                .filter(
+                    r ->
+                        CatalogNumberUtils.equalsWhenCleaned(
+                            r.getArticleNo(), candidate.providerArticleNumber()))
+                .map(ArticleDirectSearchAllNumbersWithStateRecord::getArticleId)
+                .filter(Objects::nonNull)
+                .findFirst()
+                .orElse(null);
+      }
+    } catch (Exception ignore) {
+      resolved = null;
+    }
+
+    tecDocArticleIdCache.put(key, new TecDocArticleIdCacheEntry(resolved, now + TECDOC_ARTICLE_ID_CACHE_TTL_MS));
+    return new ResolvedTecDocArticleId(resolved, true);
   }
 
   private Map<Long, InternalCategory> buildInternalCategories(Map<Long, Integer> mappedPodgrupeByGeneric) {
