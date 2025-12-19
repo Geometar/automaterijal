@@ -7,8 +7,11 @@ import com.automaterijal.application.integration.shared.ProviderCallStatus;
 import com.automaterijal.application.integration.shared.exception.ProviderAuthenticationException;
 import com.automaterijal.application.integration.shared.exception.ProviderRateLimitException;
 import com.automaterijal.application.integration.shared.exception.ProviderUnavailableException;
+import com.automaterijal.application.integration.shared.ProviderRoutingContext;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -21,31 +24,50 @@ import org.springframework.stereotype.Component;
 public class ProviderRegistry {
 
   @NonNull private final List<InventoryProvider> inventoryProviders;
+  @NonNull private final ProviderRoutingPolicy routingPolicy;
 
   public List<InventoryProvider> findInventoryProviders(String brand) {
-    if (inventoryProviders == null || inventoryProviders.isEmpty()) {
-      return Collections.emptyList();
-    }
-
-    return inventoryProviders.stream()
-        .filter(provider -> provider.capabilities().isEnabled())
-        .filter(provider -> provider.capabilities().isInventory())
-        .filter(provider -> provider.supportsBrand(brand))
-        .toList();
+    InventoryQuery query = InventoryQuery.builder().brand(brand).build();
+    return findInventoryProviders(query, null);
   }
 
   public List<AvailabilityResult> checkAvailability(String brand, InventoryQuery query) {
-    return findInventoryProviders(brand).stream()
+    InventoryQuery effectiveQuery =
+        query != null ? query : InventoryQuery.builder().brand(brand).build();
+    if (effectiveQuery.getBrand() == null && brand != null) {
+      effectiveQuery.setBrand(brand);
+    }
+    return checkAvailability(effectiveQuery, null);
+  }
+
+  public List<InventoryProvider> findInventoryProviders(
+      InventoryQuery query, ProviderRoutingContext context) {
+    return orderedProviders(query, context).stream()
+        .filter(provider -> provider.capabilities() != null && provider.capabilities().isEnabled())
+        .filter(provider -> provider.capabilities().isInventory())
+        .filter(provider -> routingPolicy.allows(provider, query, context))
+        .filter(provider -> provider.supports(query, context))
+        .toList();
+  }
+
+  public List<AvailabilityResult> checkAvailability(
+      InventoryQuery query, ProviderRoutingContext context) {
+    return findInventoryProviders(query, context).stream()
         .map(provider -> invokeSafe(provider, query))
         .toList();
   }
 
   public Optional<String> resolveBrandKey(Long tecDocBrandId, String tecDocBrandName) {
+    return resolveBrandKey(tecDocBrandId, tecDocBrandName, null);
+  }
+
+  public Optional<String> resolveBrandKey(
+      Long tecDocBrandId, String tecDocBrandName, ProviderRoutingContext context) {
     if (inventoryProviders == null || inventoryProviders.isEmpty()) {
       return Optional.empty();
     }
 
-    for (InventoryProvider provider : inventoryProviders) {
+    for (InventoryProvider provider : orderedProviders(null, context)) {
       if (provider == null
           || provider.capabilities() == null
           || !provider.capabilities().isEnabled()
@@ -55,16 +77,46 @@ public class ProviderRegistry {
 
       Optional<String> resolved = provider.resolveBrandKey(tecDocBrandId, tecDocBrandName);
       if (resolved != null && resolved.isPresent()) {
-        return resolved;
+        if (context == null) {
+          return resolved;
+        }
+        InventoryQuery query = InventoryQuery.builder().brand(resolved.get()).build();
+        if (routingPolicy.allows(provider, query, context) && provider.supports(query, context)) {
+          return resolved;
+        }
       }
     }
 
     return Optional.empty();
   }
 
+  public int priorityFor(
+      InventoryProvider provider, InventoryQuery query, ProviderRoutingContext context) {
+    return routingPolicy.priorityFor(provider, query, context);
+  }
+
+  private List<InventoryProvider> orderedProviders(
+      InventoryQuery query, ProviderRoutingContext context) {
+    if (inventoryProviders == null || inventoryProviders.isEmpty()) {
+      return Collections.emptyList();
+    }
+
+    return inventoryProviders.stream()
+        .filter(Objects::nonNull)
+        .sorted(
+            Comparator.comparingInt(
+                    (InventoryProvider provider) -> routingPolicy.priorityFor(provider, query, context))
+                .reversed()
+                .thenComparing(InventoryProvider::providerName, String.CASE_INSENSITIVE_ORDER))
+        .toList();
+  }
+
   private AvailabilityResult invokeSafe(InventoryProvider provider, InventoryQuery query) {
     try {
       AvailabilityResult result = provider.checkAvailability(query);
+      if (result == null) {
+        return failure(provider, query, ProviderCallStatus.ERROR, "Provider returned null result");
+      }
       if (result.getStatus() == null) {
         result.setStatus(ProviderCallStatus.SUCCESS);
       }

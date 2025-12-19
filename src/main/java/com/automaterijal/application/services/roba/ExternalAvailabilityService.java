@@ -7,7 +7,10 @@ import com.automaterijal.application.integration.registry.ProviderRegistry;
 import com.automaterijal.application.integration.shared.AvailabilityItem;
 import com.automaterijal.application.integration.shared.AvailabilityResult;
 import com.automaterijal.application.integration.shared.AvailabilityStatus;
+import com.automaterijal.application.integration.shared.InventoryProvider;
 import com.automaterijal.application.integration.shared.InventoryQuery;
+import com.automaterijal.application.integration.shared.ProviderRoutingContext;
+import com.automaterijal.application.integration.shared.ProviderRoutingPurpose;
 import com.automaterijal.application.integration.shared.WarehouseAvailability;
 import com.automaterijal.application.utils.CatalogNumberUtils;
 import java.math.BigDecimal;
@@ -43,29 +46,32 @@ public class ExternalAvailabilityService {
       return;
     }
 
-    Map<String, List<RobaLightDto>> byBrand =
-        items.stream()
-            .filter(Objects::nonNull)
-            .filter(dto -> dto.getProizvodjac() != null)
-            .filter(dto -> dto.getStanje() <= 0)
-            .map(dto -> (RobaLightDto) dto)
-            .map(
-                dto -> {
-                  String resolvedBrand = resolveBrandKey(dto);
-                  return resolvedBrand != null ? new AbstractMap.SimpleEntry<>(resolvedBrand, dto) : null;
-                })
-            .filter(Objects::nonNull)
-            .collect(
-                Collectors.groupingBy(
-                    Map.Entry::getKey,
-                    Collectors.mapping(Map.Entry::getValue, Collectors.toList())));
+    Map<String, List<RobaLightDto>> byBrand = new HashMap<>();
+    List<RobaLightDto> unresolved = new ArrayList<>();
+
+    for (RobaLightDto dto : items) {
+      if (dto == null || dto.getProizvodjac() == null || dto.getStanje() > 0) {
+        continue;
+      }
+      ProviderRoutingContext context = buildContext(partner, dto);
+      String resolvedBrand = resolveBrandKey(dto, context);
+      if (resolvedBrand != null) {
+        byBrand.computeIfAbsent(resolvedBrand, ignored -> new ArrayList<>()).add(dto);
+      } else {
+        unresolved.add(dto);
+      }
+    }
 
     for (Map.Entry<String, List<RobaLightDto>> entry : byBrand.entrySet()) {
       populateForBrand(entry.getKey(), entry.getValue(), partner);
     }
+
+    if (!unresolved.isEmpty()) {
+      populateForBrand(null, unresolved, partner);
+    }
   }
 
-  private String resolveBrandKey(RobaLightDto dto) {
+  private String resolveBrandKey(RobaLightDto dto, ProviderRoutingContext context) {
     if (dto == null || dto.getProizvodjac() == null) {
       return null;
     }
@@ -74,7 +80,7 @@ public class ExternalAvailabilityService {
         StringUtils.hasText(dto.getProizvodjac().getProid())
             ? dto.getProizvodjac().getProid().trim().toUpperCase(Locale.ROOT)
             : null;
-    if (StringUtils.hasText(rawProid) && !providerRegistry.findInventoryProviders(rawProid).isEmpty()) {
+    if (StringUtils.hasText(rawProid) && hasInventoryProvider(rawProid, context)) {
       return rawProid;
     }
 
@@ -83,19 +89,19 @@ public class ExternalAvailabilityService {
         StringUtils.hasText(dto.getProizvodjac().getNaziv())
             ? dto.getProizvodjac().getNaziv().trim()
             : null;
-    String byName = providerRegistry.resolveBrandKey(null, rawName).orElse(null);
+    String byName = providerRegistry.resolveBrandKey(null, rawName, context).orElse(null);
     if (StringUtils.hasText(byName)) {
       String normalized = byName.trim().toUpperCase(Locale.ROOT);
-      if (!providerRegistry.findInventoryProviders(normalized).isEmpty()) {
+      if (hasInventoryProvider(normalized, context)) {
         return normalized;
       }
     }
 
     // Last resort: try routing by the raw proid as a name.
-    String byProidAsName = providerRegistry.resolveBrandKey(null, rawProid).orElse(null);
+    String byProidAsName = providerRegistry.resolveBrandKey(null, rawProid, context).orElse(null);
     if (StringUtils.hasText(byProidAsName)) {
       String normalized = byProidAsName.trim().toUpperCase(Locale.ROOT);
-      if (!providerRegistry.findInventoryProviders(normalized).isEmpty()) {
+      if (hasInventoryProvider(normalized, context)) {
         return normalized;
       }
     }
@@ -104,13 +110,23 @@ public class ExternalAvailabilityService {
   }
 
   private void populateForBrand(String brand, List<RobaLightDto> dtos, Partner partner) {
-    if (!StringUtils.hasText(brand) || dtos == null || dtos.isEmpty()) {
+    if (dtos == null || dtos.isEmpty()) {
       return;
     }
 
-    if (providerRegistry.findInventoryProviders(brand).isEmpty()) {
+    ProviderRoutingContext context = buildContext(partner, dtos);
+    InventoryQuery selectionQuery = InventoryQuery.builder().brand(brand).build();
+    List<InventoryProvider> providers = providerRegistry.findInventoryProviders(selectionQuery, context);
+    if (providers.isEmpty()) {
       return;
     }
+    Map<String, Integer> providerPriority =
+        providers.stream()
+            .collect(
+                Collectors.toMap(
+                    InventoryProvider::providerName,
+                    provider -> providerRegistry.priorityFor(provider, selectionQuery, context),
+                    (left, right) -> left));
 
     List<String> allArticleNumbers =
         dtos.stream().flatMap(dto -> collectArticleNumbers(dto).stream()).distinct().toList();
@@ -125,15 +141,16 @@ public class ExternalAvailabilityService {
           allArticleNumbers.subList(
               i, Math.min(i + MAX_ARTICLES_PER_REQUEST, allArticleNumbers.size()));
       InventoryQuery query = InventoryQuery.builder().brand(brand).articleNumbers(chunk).build();
-      List<AvailabilityResult> results = providerRegistry.checkAvailability(brand, query);
-      mergeResults(bestByArticle, results);
+      List<AvailabilityResult> results = providerRegistry.checkAvailability(query, context);
+      mergeResults(bestByArticle, results, providerPriority, brand);
     }
 
     for (RobaLightDto dto : dtos) {
       List<String> candidates = collectArticleNumbers(dto);
       ProviderAvailabilityDto best = null;
       for (String candidate : candidates) {
-        ProviderAvailabilityDto mapped = bestByArticle.get(normalize(candidate));
+        String key = availabilityKey(brand, candidate);
+        ProviderAvailabilityDto mapped = bestByArticle.get(key);
         if (mapped == null || !Boolean.TRUE.equals(mapped.getAvailable())) {
           continue;
         }
@@ -160,10 +177,15 @@ public class ExternalAvailabilityService {
   }
 
   private void mergeResults(
-      Map<String, ProviderAvailabilityDto> bestByArticle, List<AvailabilityResult> results) {
+      Map<String, ProviderAvailabilityDto> bestByArticle,
+      List<AvailabilityResult> results,
+      Map<String, Integer> providerPriority,
+      String requestedBrand) {
     if (bestByArticle == null || CollectionUtils.isEmpty(results)) {
       return;
     }
+
+    String normalizedRequestedBrand = normalizeBrand(requestedBrand);
 
     for (AvailabilityResult result : results) {
       if (result == null || CollectionUtils.isEmpty(result.getItems())) {
@@ -174,8 +196,20 @@ public class ExternalAvailabilityService {
         if (item == null || !StringUtils.hasText(item.getArticleNumber())) {
           continue;
         }
-        ProviderAvailabilityDto mapped = mapItem(result.getProvider(), item);
-        String key = normalize(mapped.getArticleNumber());
+        String itemBrand = normalizeBrand(item.getBrand());
+        if (StringUtils.hasText(normalizedRequestedBrand)
+            && StringUtils.hasText(itemBrand)
+            && !normalizedRequestedBrand.equals(itemBrand)) {
+          continue;
+        }
+
+        String defaultBrand =
+            StringUtils.hasText(itemBrand) ? itemBrand : normalizedRequestedBrand;
+        ProviderAvailabilityDto mapped = mapItem(result.getProvider(), item, defaultBrand);
+        String key =
+            StringUtils.hasText(normalizedRequestedBrand)
+                ? availabilityKey(mapped.getBrand(), mapped.getArticleNumber())
+                : availabilityKey(null, mapped.getArticleNumber());
         ProviderAvailabilityDto existing = bestByArticle.get(key);
         if (existing == null) {
           bestByArticle.put(key, mapped);
@@ -184,11 +218,28 @@ public class ExternalAvailabilityService {
 
         Integer existingQty = existing.getTotalQuantity();
         Integer newQty = mapped.getTotalQuantity();
+        Integer existingProviderPriority = providerPriorityFor(providerPriority, existing.getProvider());
+        Integer newProviderPriority = providerPriorityFor(providerPriority, mapped.getProvider());
         boolean takeNew =
             Boolean.TRUE.equals(mapped.getAvailable())
                 && !Boolean.TRUE.equals(existing.getAvailable());
         if (!takeNew) {
-          takeNew = newQty != null && (existingQty == null || newQty > existingQty);
+          boolean availabilityEqual = Objects.equals(mapped.getAvailable(), existing.getAvailable());
+          if (availabilityEqual) {
+            if (newProviderPriority > existingProviderPriority) {
+              takeNew = true;
+            } else if (newProviderPriority.equals(existingProviderPriority)) {
+              int priceDecision = comparePrice(mapped.getPrice(), existing.getPrice());
+              if (priceDecision < 0) {
+                takeNew = true;
+              } else if (priceDecision == 0) {
+                boolean qtyBetter = newQty != null && (existingQty == null || newQty > existingQty);
+                if (qtyBetter) {
+                  takeNew = true;
+                }
+              }
+            }
+          }
         }
         if (takeNew) {
           bestByArticle.put(key, mapped);
@@ -197,9 +248,11 @@ public class ExternalAvailabilityService {
     }
   }
 
-  private ProviderAvailabilityDto mapItem(String provider, AvailabilityItem item) {
+  private ProviderAvailabilityDto mapItem(
+      String provider, AvailabilityItem item, String defaultBrand) {
     WarehouseAvailability bestWarehouse = pickBestWarehouse(item.getWarehouses());
     return ProviderAvailabilityDto.builder()
+        .brand(defaultBrand)
         .provider(provider)
         .articleNumber(item.getArticleNumber())
         .available(isAvailable(item))
@@ -226,6 +279,7 @@ public class ExternalAvailabilityService {
     BigDecimal finalCustomerPrice = calculateCustomerPrice(availability.getPrice(), dto, partner);
 
     return ProviderAvailabilityDto.builder()
+        .brand(availability.getBrand())
         .provider(availability.getProvider())
         .articleNumber(availability.getArticleNumber())
         .available(availability.getAvailable())
@@ -241,6 +295,26 @@ public class ExternalAvailabilityService {
         .deliveryToCustomerBusinessDaysMax(availability.getDeliveryToCustomerBusinessDaysMax())
         .nextDispatchCutoff(availability.getNextDispatchCutoff())
         .build();
+  }
+
+  private int providerPriorityFor(Map<String, Integer> priority, String provider) {
+    if (priority == null || !StringUtils.hasText(provider)) {
+      return 0;
+    }
+    return priority.getOrDefault(provider, 0);
+  }
+
+  private int comparePrice(BigDecimal candidate, BigDecimal existing) {
+    if (candidate == null && existing == null) {
+      return 0;
+    }
+    if (candidate == null) {
+      return 1;
+    }
+    if (existing == null) {
+      return -1;
+    }
+    return candidate.compareTo(existing);
   }
 
   private BigDecimal calculateCustomerPrice(
@@ -309,5 +383,68 @@ public class ExternalAvailabilityService {
     return StringUtils.hasText(value)
         ? CatalogNumberUtils.cleanPreserveSeparators(value.trim())
         : "";
+  }
+
+  private String normalizeBrand(String value) {
+    return StringUtils.hasText(value) ? value.trim().toUpperCase(Locale.ROOT) : "";
+  }
+
+  private String availabilityKey(String brand, String article) {
+    String normalizedArticle = normalize(article);
+    if (!StringUtils.hasText(normalizedArticle)) {
+      return "";
+    }
+    String normalizedBrand = normalizeBrand(brand);
+    return StringUtils.hasText(normalizedBrand)
+        ? normalizedBrand + ":" + normalizedArticle
+        : normalizedArticle;
+  }
+
+  private boolean hasInventoryProvider(String brand, ProviderRoutingContext context) {
+    InventoryQuery query = InventoryQuery.builder().brand(brand).build();
+    return !providerRegistry.findInventoryProviders(query, context).isEmpty();
+  }
+
+  private ProviderRoutingContext buildContext(Partner partner, RobaLightDto dto) {
+    return ProviderRoutingContext.builder()
+        .partnerId(partner != null ? partner.getPpid() : null)
+        .partnerAudit(partner != null ? partner.getAudit() : null)
+        .purpose(ProviderRoutingPurpose.INVENTORY_ENRICHMENT)
+        .localAvailableCount(0)
+        .localMatchCount(dto != null ? 1 : 0)
+        .groups(collectGroups(dto))
+        .build();
+  }
+
+  private ProviderRoutingContext buildContext(Partner partner, List<RobaLightDto> dtos) {
+    return ProviderRoutingContext.builder()
+        .partnerId(partner != null ? partner.getPpid() : null)
+        .partnerAudit(partner != null ? partner.getAudit() : null)
+        .purpose(ProviderRoutingPurpose.INVENTORY_ENRICHMENT)
+        .localAvailableCount(0)
+        .localMatchCount(dtos != null ? dtos.size() : 0)
+        .groups(collectGroups(dtos))
+        .build();
+  }
+
+  private Set<String> collectGroups(RobaLightDto dto) {
+    if (dto == null || !StringUtils.hasText(dto.getGrupa())) {
+      return Collections.emptySet();
+    }
+    return Set.of(dto.getGrupa().trim());
+  }
+
+  private Set<String> collectGroups(List<RobaLightDto> dtos) {
+    if (dtos == null || dtos.isEmpty()) {
+      return Collections.emptySet();
+    }
+    Set<String> groups = new HashSet<>();
+    for (RobaLightDto dto : dtos) {
+      if (dto == null || !StringUtils.hasText(dto.getGrupa())) {
+        continue;
+      }
+      groups.add(dto.getGrupa().trim());
+    }
+    return groups;
   }
 }

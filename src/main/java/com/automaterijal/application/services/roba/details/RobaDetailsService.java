@@ -20,6 +20,8 @@ import com.automaterijal.application.services.tecdoc.TecDocGenericArticleMapping
 import com.automaterijal.application.services.tecdoc.TecDocPreviewService;
 import com.automaterijal.application.tecdoc.*;
 import com.automaterijal.application.utils.SlugUtil;
+import com.automaterijal.application.integration.shared.ProviderRoutingContext;
+import com.automaterijal.application.integration.shared.ProviderRoutingPurpose;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.*;
 import lombok.AccessLevel;
@@ -96,9 +98,10 @@ public class RobaDetailsService {
     dto.setNaziv(buildArticleName(direct.getArticleName(), direct.getArticleAddName()));
     dto.setStanje(0);
 
+    ProviderRoutingContext context = buildContext(ulogovaniPartner);
     String resolvedProid =
         providerBrandResolver
-            .resolveInventoryBrand(direct.getBrandNo(), direct.getBrandName())
+            .resolveInventoryBrand(direct.getBrandNo(), direct.getBrandName(), context)
             .or(() -> tecDocBrandService.findProidByBrandId(direct.getBrandNo()))
             .orElse(null);
 
@@ -184,6 +187,14 @@ public class RobaDetailsService {
     articleSubGroupService
         .vratiPodgrupuPoKljucu(Integer.valueOf(detaljnoDto.getPodGrupa()))
         .ifPresent(podGrupa -> detaljnoDto.setPodGrupaNaziv(podGrupa.getNaziv()));
+  }
+
+  private ProviderRoutingContext buildContext(Partner partner) {
+    return ProviderRoutingContext.builder()
+        .partnerId(partner != null ? partner.getPpid() : null)
+        .partnerAudit(partner != null ? partner.getAudit() : null)
+        .purpose(ProviderRoutingPurpose.DETAILS)
+        .build();
   }
 
   // ---------------------------------------- TECDOC -------------------------------- TECDOC

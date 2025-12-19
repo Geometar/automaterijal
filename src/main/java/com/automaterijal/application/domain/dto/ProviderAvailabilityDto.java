@@ -14,6 +14,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProviderAvailabilityDto {
+  String brand;
   String provider;
   String articleNumber;
   Boolean available;

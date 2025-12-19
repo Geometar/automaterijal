@@ -15,6 +15,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AvailabilityItem {
+  String brand;
   String articleNumber;
   AvailabilityStatus status;
   Integer totalQuantity;

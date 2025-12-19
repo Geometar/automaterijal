@@ -6,9 +6,20 @@ public interface InventoryProvider {
 
   String providerName();
 
+  /**
+   * Higher value means higher priority in routing when multiple providers match.
+   */
+  default int priority() {
+    return 0;
+  }
+
   ProviderCapabilities capabilities();
 
   boolean supportsBrand(String brand);
+
+  default boolean supports(InventoryQuery query, ProviderRoutingContext context) {
+    return supportsBrand(query != null ? query.getBrand() : null);
+  }
 
   AvailabilityResult checkAvailability(InventoryQuery query);
 

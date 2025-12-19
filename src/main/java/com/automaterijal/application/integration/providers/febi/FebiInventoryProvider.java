@@ -118,19 +118,20 @@ public class FebiInventoryProvider implements InventoryProvider {
     try {
       String token = authClient.getAccessToken();
       FebiStockResponse response = stockClient.fetchStock(request, token);
-      return mapToResult(response, destination);
+      return mapToResult(response, destination, query.getBrand());
     } catch (ProviderAuthenticationException ex) {
       // Token might be expired; refresh once and retry
       String token = authClient.refreshTokenNow();
       FebiStockResponse response = stockClient.fetchStock(request, token);
-      return mapToResult(response, destination);
+      return mapToResult(response, destination, query.getBrand());
     }
   }
 
-  private AvailabilityResult mapToResult(FebiStockResponse response, String requestedDestination) {
+  private AvailabilityResult mapToResult(
+      FebiStockResponse response, String requestedDestination, String brand) {
     List<AvailabilityItem> mapped =
         response != null && response.getItems() != null
-            ? response.getItems().stream().map(this::mapItem).toList()
+            ? response.getItems().stream().map(item -> mapItem(item, brand)).toList()
             : Collections.emptyList();
 
     return AvailabilityResult.builder()
@@ -145,9 +146,10 @@ public class FebiInventoryProvider implements InventoryProvider {
         .build();
   }
 
-  private AvailabilityItem mapItem(FebiStockResponseItem item) {
+  private AvailabilityItem mapItem(FebiStockResponseItem item, String brand) {
     if (item == null) {
       return AvailabilityItem.builder()
+          .brand(brand)
           .status(AvailabilityStatus.UNKNOWN)
           .warehouses(Collections.emptyList())
           .totalQuantity(0)
@@ -175,6 +177,7 @@ public class FebiInventoryProvider implements InventoryProvider {
             .orElse(null);
 
     return AvailabilityItem.builder()
+        .brand(brand)
         .articleNumber(item.getArticleNumber())
         .status(status)
         .totalQuantity(totalQuantity)

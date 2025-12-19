@@ -7,6 +7,8 @@ import com.automaterijal.application.domain.dto.PodgrupaDto;
 import com.automaterijal.application.domain.dto.ProizvodjacDTO;
 import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.entity.Partner;
+import com.automaterijal.application.integration.shared.ProviderRoutingContext;
+import com.automaterijal.application.integration.shared.ProviderRoutingPurpose;
 import com.automaterijal.application.services.TecDocService;
 import com.automaterijal.application.services.tecdoc.TecDocGenericArticleMappingService;
 import com.automaterijal.application.services.tecdoc.TecDocPreviewService;
@@ -69,7 +71,8 @@ public class ExternalOfferService {
       MagacinDto localResults,
       Partner partner,
       UniverzalniParametri parametri) {
-    List<Candidate> candidates = mapTecDocSearchCandidates(tecDocRecords);
+    ProviderRoutingContext context = buildContext(partner);
+    List<Candidate> candidates = mapTecDocSearchCandidates(tecDocRecords, context);
     return buildExternalOffers(candidates, localResults, partner, parametri);
   }
 
@@ -78,7 +81,8 @@ public class ExternalOfferService {
       MagacinDto localResults,
       Partner partner,
       UniverzalniParametri parametri) {
-    List<Candidate> candidates = mapAssociatedArticleCandidates(articles);
+    ProviderRoutingContext context = buildContext(partner);
+    List<Candidate> candidates = mapAssociatedArticleCandidates(articles, context);
     return buildExternalOffers(candidates, localResults, partner, parametri);
   }
 
@@ -392,7 +396,7 @@ public class ExternalOfferService {
       String groupId, String groupName, Integer subGroupId, String subGroupName) {}
 
   private List<Candidate> mapTecDocSearchCandidates(
-      List<ArticleDirectSearchAllNumbersWithStateRecord> records) {
+      List<ArticleDirectSearchAllNumbersWithStateRecord> records, ProviderRoutingContext context) {
     if (records == null || records.isEmpty()) {
       return List.of();
     }
@@ -407,7 +411,9 @@ public class ExternalOfferService {
       }
 
       String brand =
-          providerBrandResolver.resolveInventoryBrand(record.getBrandNo(), record.getBrandName()).orElse(null);
+          providerBrandResolver
+              .resolveInventoryBrand(record.getBrandNo(), record.getBrandName(), context)
+              .orElse(null);
       if (!StringUtils.hasText(brand)) {
         continue;
       }
@@ -438,7 +444,8 @@ public class ExternalOfferService {
     return candidates;
   }
 
-  private List<Candidate> mapAssociatedArticleCandidates(List<ArticleRecord> articles) {
+  private List<Candidate> mapAssociatedArticleCandidates(
+      List<ArticleRecord> articles, ProviderRoutingContext context) {
     if (articles == null || articles.isEmpty()) {
       return List.of();
     }
@@ -452,7 +459,7 @@ public class ExternalOfferService {
 
       String brand =
           providerBrandResolver
-              .resolveInventoryBrand(article.getDataSupplierId(), article.getMfrName())
+              .resolveInventoryBrand(article.getDataSupplierId(), article.getMfrName(), context)
               .orElse(null);
       if (!StringUtils.hasText(brand)) {
         continue;
@@ -548,6 +555,16 @@ public class ExternalOfferService {
             : proid);
 
     return p;
+  }
+
+  private ProviderRoutingContext buildContext(Partner partner) {
+    return ProviderRoutingContext.builder()
+        .partnerId(partner != null ? partner.getPpid() : null)
+        .partnerAudit(partner != null ? partner.getAudit() : null)
+        .purpose(ProviderRoutingPurpose.EXTERNAL_OFFER)
+        .localAvailableCount(0)
+        .localMatchCount(0)
+        .build();
   }
 
   private record Candidate(

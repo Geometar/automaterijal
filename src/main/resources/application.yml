@@ -88,6 +88,15 @@ blog:
   cover-image:
     directory: ../uploads/blog-cover
 
+integration:
+  providers:
+    rules:
+      - provider: febi-stock
+        enabled: true
+        priority: 100
+        purposes: [INVENTORY_ENRICHMENT, EXTERNAL_OFFER]
+        brands: [FEBI, BLUE]
+
 roba:
   slika:
     publicPrefix: /images/roba/
