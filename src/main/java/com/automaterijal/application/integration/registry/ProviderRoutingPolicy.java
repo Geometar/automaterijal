@@ -57,6 +57,35 @@ public class ProviderRoutingPolicy {
     return configured.orElse(provider.priority());
   }
 
+  public boolean allows(String providerName, String brand, ProviderRoutingContext context) {
+    List<ProviderRoutingProperties.Rule> rules = rulesForProvider(providerName);
+    if (rules.isEmpty()) {
+      return true;
+    }
+    return rules.stream()
+        .filter(rule -> rule.getEnabled() == null || rule.getEnabled())
+        .anyMatch(rule -> matches(rule, brand, context));
+  }
+
+  public int priorityFor(
+      String providerName, int fallbackPriority, String brand, ProviderRoutingContext context) {
+    List<ProviderRoutingProperties.Rule> rules = rulesForProvider(providerName);
+    if (rules.isEmpty()) {
+      return fallbackPriority;
+    }
+
+    OptionalInt configured =
+        rules.stream()
+            .filter(rule -> rule.getEnabled() == null || rule.getEnabled())
+            .filter(rule -> matches(rule, brand, context))
+            .map(ProviderRoutingProperties.Rule::getPriority)
+            .filter(Objects::nonNull)
+            .mapToInt(Integer::intValue)
+            .max();
+
+    return configured.orElse(fallbackPriority);
+  }
+
   private List<ProviderRoutingProperties.Rule> rulesForProvider(String providerName) {
     if (!StringUtils.hasText(providerName) || properties == null) {
       return List.of();
@@ -73,6 +102,12 @@ public class ProviderRoutingPolicy {
 
   private boolean matches(
       ProviderRoutingProperties.Rule rule, InventoryQuery query, ProviderRoutingContext context) {
+    String brand = query != null ? query.getBrand() : null;
+    return matches(rule, brand, context);
+  }
+
+  private boolean matches(
+      ProviderRoutingProperties.Rule rule, String brand, ProviderRoutingContext context) {
     if (rule == null) {
       return false;
     }
@@ -87,7 +122,6 @@ public class ProviderRoutingPolicy {
     }
 
     if (!CollectionUtils.isEmpty(rule.getBrands())) {
-      String brand = query != null ? query.getBrand() : null;
       if (!StringUtils.hasText(brand)) {
         return false;
       }

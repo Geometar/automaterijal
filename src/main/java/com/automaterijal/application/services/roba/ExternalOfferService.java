@@ -71,9 +71,10 @@ public class ExternalOfferService {
       MagacinDto localResults,
       Partner partner,
       UniverzalniParametri parametri) {
-    ProviderRoutingContext context = buildContext(partner);
+    LocalCounts counts = resolveLocalCounts(localResults);
+    ProviderRoutingContext context = buildContext(partner, counts);
     List<Candidate> candidates = mapTecDocSearchCandidates(tecDocRecords, context);
-    return buildExternalOffers(candidates, localResults, partner, parametri);
+    return buildExternalOffers(candidates, localResults, partner, parametri, counts);
   }
 
   public List<RobaLightDto> buildFromAssociatedTecDocArticles(
@@ -81,16 +82,18 @@ public class ExternalOfferService {
       MagacinDto localResults,
       Partner partner,
       UniverzalniParametri parametri) {
-    ProviderRoutingContext context = buildContext(partner);
+    LocalCounts counts = resolveLocalCounts(localResults);
+    ProviderRoutingContext context = buildContext(partner, counts);
     List<Candidate> candidates = mapAssociatedArticleCandidates(articles, context);
-    return buildExternalOffers(candidates, localResults, partner, parametri);
+    return buildExternalOffers(candidates, localResults, partner, parametri, counts);
   }
 
   private List<RobaLightDto> buildExternalOffers(
       List<Candidate> candidates,
       MagacinDto localResults,
       Partner partner,
-      UniverzalniParametri parametri) {
+      UniverzalniParametri parametri,
+      LocalCounts counts) {
     if (candidates == null || candidates.isEmpty()) {
       return List.of();
     }
@@ -163,6 +166,11 @@ public class ExternalOfferService {
         mappingService.touch(candidate.genericArticleId(), candidate.category());
       }
 
+      InternalCategory internal =
+          candidate.genericArticleId() != null
+              ? internalByGeneric.getOrDefault(candidate.genericArticleId(), fallbackCategory())
+              : fallbackCategory();
+
       String brand = candidate.brand();
       String article = candidate.providerArticleNumber();
       String probeKey = brand + ":" + normalizeCatalog(article);
@@ -173,6 +181,10 @@ public class ExternalOfferService {
       probe.setStanje(0);
 
       probe.setProizvodjac(buildManufacturer(candidate));
+      probe.setGrupa(internal.groupId());
+      probe.setGrupaNaziv(internal.groupName());
+      probe.setPodGrupa(internal.subGroupId() != null ? internal.subGroupId() : 0);
+      probe.setPodGrupaNaziv(internal.subGroupName());
 
       probesByBrand.computeIfAbsent(brand, ignored -> new ArrayList<>()).add(probe);
       candidateByProbeKey.put(probeKey, candidate);
@@ -186,7 +198,12 @@ public class ExternalOfferService {
         continue;
       }
 
-      externalAvailabilityService.populateExternalAvailability(probes, partner);
+      externalAvailabilityService.populateExternalAvailability(
+          probes,
+          partner,
+          ProviderRoutingPurpose.EXTERNAL_OFFER,
+          counts != null ? counts.matchCount() : null,
+          counts != null ? counts.availableCount() : null);
 
       for (RobaLightDto probe : probes) {
         if (probe == null || probe.getProviderAvailability() == null) {
@@ -557,15 +574,39 @@ public class ExternalOfferService {
     return p;
   }
 
-  private ProviderRoutingContext buildContext(Partner partner) {
+  private ProviderRoutingContext buildContext(Partner partner, LocalCounts counts) {
+    int matchCount = counts != null ? counts.matchCount() : 0;
+    int availableCount = counts != null ? counts.availableCount() : 0;
     return ProviderRoutingContext.builder()
         .partnerId(partner != null ? partner.getPpid() : null)
         .partnerAudit(partner != null ? partner.getAudit() : null)
         .purpose(ProviderRoutingPurpose.EXTERNAL_OFFER)
-        .localAvailableCount(0)
-        .localMatchCount(0)
+        .localAvailableCount(availableCount)
+        .localMatchCount(matchCount)
         .build();
   }
+
+  private LocalCounts resolveLocalCounts(MagacinDto localResults) {
+    if (localResults == null || localResults.getRobaDto() == null) {
+      return new LocalCounts(0, 0);
+    }
+
+    Page<RobaLightDto> robaPage = localResults.getRobaDto();
+    int matchCount = safeToInt(robaPage.getTotalElements());
+    int availableCount =
+        (int)
+            robaPage.getContent().stream()
+                .filter(Objects::nonNull)
+                .filter(dto -> dto.getStanje() > 0)
+                .count();
+    return new LocalCounts(matchCount, availableCount);
+  }
+
+  private int safeToInt(long value) {
+    return value > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) value;
+  }
+
+  private record LocalCounts(int matchCount, int availableCount) {}
 
   private record Candidate(
       String brand,

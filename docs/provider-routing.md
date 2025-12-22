@@ -35,12 +35,44 @@ integration:
 3) Providers are **sorted by priority**, then name for determinism.
 4) All matching providers are called; results are merged.
 
+Local counts are used to gate providers (e.g. `maxLocalMatchCount`).  
+For external offers, counts come from the local results page (total matches + in‑stock count).
+
+## Purpose (when a provider is allowed to run)
+`purpose` is a tag for the current flow. If a rule defines `purposes`, the provider is allowed
+only for those flows. If you omit `purposes`, the rule applies to all flows.
+
+Current purposes:
+- `INVENTORY_ENRICHMENT`: enrich local out-of-stock items with provider availability.
+- `EXTERNAL_OFFER`: build external-only offers from TecDoc results.
+- `DETAILS`: fetch full provider details (without TecDoc) for a single item.
+
 ## Merge/selection policy
 If multiple providers return the same article:
 1) **Available** beats **not available**.
 2) If availability equal: **higher priority wins**.
 3) If priority equal: **lower price wins**.
 4) If price equal: higher quantity wins (fallback).
+
+## Pricing for external providers
+Backend computes the **final customer price** for provider items using:
+1) **Base selling price**
+   - If `purchasePrice` exists: `purchasePrice * margin`
+   - Else: use `sellingPrice` from provider
+2) **PDV**: `* 1.20`
+3) **Partner multiplier** (from `RobaCeneService`)
+
+Margin is configured in `src/main/resources/application.yml`:
+```yaml
+pricing:
+  margin:
+    default-percent: 0.65
+    by-group:
+      ZAM: 0.30
+      AK: 0.30
+```
+Values are **percent as decimal** (e.g. `0.30` = 30%).
+Logic lives in `ProviderPricingService` and is shared by list and details flows.
 
 ## Brand-specific vs store-like providers
 ### Brand-specific (manufacturer)
@@ -53,12 +85,69 @@ If multiple providers return the same article:
 - **Must set** `AvailabilityItem.brand` from provider response.
 - This lets the merge split by brand when brand is requested.
 
-## How to add a new provider (5 steps)
-1) Implement `InventoryProvider`.
-2) In `checkAvailability`, map to `AvailabilityResult` + `AvailabilityItem`.
-3) If multi-brand: set `AvailabilityItem.brand`.
-4) Optional: override `supports(query, context)` for conditional routing.
-5) Add YAML rule under `integration.providers.rules`.
+## Provider details (no TecDoc)
+If a provider returns full details (name, images, specs), you can bypass TecDoc.
+Skeleton is ready:
+- `ProviderDetailsProvider` (interface)
+- `ProviderDetailsRegistry` (routing + priority)
+- `ExternalProviderDetailsService` (maps to `RobaExpandedDto`)
+
+Usage idea:
+```java
+ProviderDetailsQuery query =
+    ProviderDetailsQuery.builder().brand("BOSCH").articleNumber("1234").build();
+Optional<RobaExpandedDto> dto =
+    externalProviderDetailsService.fetchExternalDetails(query, partner);
+```
+
+## How to add a new provider (step by step)
+1) **Create the provider class**
+   - Implement `InventoryProvider`.
+   - Add `@Component` so Spring picks it up.
+   - Implement `providerName()`, `capabilities()`, `supportsBrand(...)`.
+   - If you need TecDoc brand mapping, implement `resolveBrandKey(...)`.
+
+2) **Map availability correctly**
+   - In `checkAvailability`, call the external API and map to:
+     - `AvailabilityResult` (provider name, status, destination, items)
+     - `AvailabilityItem` (articleNumber, brand, status, warehouses, totalQuantity)
+   - If provider returns multiple brands, **set `AvailabilityItem.brand` from response**.
+   - Pricing fields:
+     - `purchasePrice` = net/nabavna (if you have it)
+     - `sellingPrice` = provider selling price (if you have it)
+     - `ProviderPricingService` computes final customer price using
+       `purchasePrice` + margin + PDV + partner multiplier (fallback to `sellingPrice`).
+
+3) **Add routing rules**
+   - Edit `src/main/resources/application.yml` and add:
+     ```yaml
+     integration:
+       providers:
+         rules:
+           - provider: <providerName>
+             enabled: true
+             priority: 100
+             purposes: [INVENTORY_ENRICHMENT, EXTERNAL_OFFER]
+             brands: [BRAND1, BRAND2]   # optional
+             groups: [ZAM, AK]         # optional
+     ```
+   - If you skip rules for a provider, it is allowed by default.
+
+4) **(Optional) External details provider**
+   - Implement `ProviderDetailsProvider` and return `ProviderDetailsResult`
+     (name, images, specs, numbers, availability).
+   - Add a rule with `purposes: [DETAILS]` so routing allows it.
+   - Example query:
+     ```java
+     ProviderDetailsQuery query =
+         ProviderDetailsQuery.builder().brand("BOSCH").articleNumber("1234").build();
+     externalProviderDetailsService.fetchExternalDetails(query, partner);
+     ```
+
+5) **Quick validation**
+   - Search an out-of-stock item (so provider availability kicks in).
+   - Verify `providerAvailability.provider` + `providerAvailability.price` on FE/response.
+   - If multi-brand provider, check that brand-specific filtering still works.
 
 ## Files to know
 - Routing rules: `src/main/resources/application.yml`

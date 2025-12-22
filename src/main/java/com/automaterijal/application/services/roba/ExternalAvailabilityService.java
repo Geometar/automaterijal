@@ -14,7 +14,6 @@ import com.automaterijal.application.integration.shared.ProviderRoutingPurpose;
 import com.automaterijal.application.integration.shared.WarehouseAvailability;
 import com.automaterijal.application.utils.CatalogNumberUtils;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -32,16 +31,26 @@ import org.springframework.util.StringUtils;
 public class ExternalAvailabilityService {
 
   private static final int MAX_ARTICLES_PER_REQUEST = 50;
-  private static final BigDecimal VAT_FACTOR = new BigDecimal("1.20");
 
   @NonNull ProviderRegistry providerRegistry;
   @NonNull RobaCeneService priceService;
+  @NonNull ProviderPricingService providerPricingService;
 
   /**
    * Popunjava providerAvailability za artikle koji nisu na stanju (stanje <= 0) i pripadaju
    * proizvođačima za koje postoji uključen inventory provider.
    */
   public void populateExternalAvailability(List<? extends RobaLightDto> items, Partner partner) {
+    populateExternalAvailability(
+        items, partner, ProviderRoutingPurpose.INVENTORY_ENRICHMENT, null, null);
+  }
+
+  public void populateExternalAvailability(
+      List<? extends RobaLightDto> items,
+      Partner partner,
+      ProviderRoutingPurpose purpose,
+      Integer localMatchCount,
+      Integer localAvailableCount) {
     if (items == null || items.isEmpty()) {
       return;
     }
@@ -53,7 +62,8 @@ public class ExternalAvailabilityService {
       if (dto == null || dto.getProizvodjac() == null || dto.getStanje() > 0) {
         continue;
       }
-      ProviderRoutingContext context = buildContext(partner, dto);
+      ProviderRoutingContext context =
+          buildContext(partner, dto, purpose, localMatchCount, localAvailableCount);
       String resolvedBrand = resolveBrandKey(dto, context);
       if (resolvedBrand != null) {
         byBrand.computeIfAbsent(resolvedBrand, ignored -> new ArrayList<>()).add(dto);
@@ -63,11 +73,12 @@ public class ExternalAvailabilityService {
     }
 
     for (Map.Entry<String, List<RobaLightDto>> entry : byBrand.entrySet()) {
-      populateForBrand(entry.getKey(), entry.getValue(), partner);
+      populateForBrand(
+          entry.getKey(), entry.getValue(), partner, purpose, localMatchCount, localAvailableCount);
     }
 
     if (!unresolved.isEmpty()) {
-      populateForBrand(null, unresolved, partner);
+      populateForBrand(null, unresolved, partner, purpose, localMatchCount, localAvailableCount);
     }
   }
 
@@ -109,12 +120,19 @@ public class ExternalAvailabilityService {
     return null;
   }
 
-  private void populateForBrand(String brand, List<RobaLightDto> dtos, Partner partner) {
+  private void populateForBrand(
+      String brand,
+      List<RobaLightDto> dtos,
+      Partner partner,
+      ProviderRoutingPurpose purpose,
+      Integer localMatchCount,
+      Integer localAvailableCount) {
     if (dtos == null || dtos.isEmpty()) {
       return;
     }
 
-    ProviderRoutingContext context = buildContext(partner, dtos);
+    ProviderRoutingContext context =
+        buildContext(partner, dtos, purpose, localMatchCount, localAvailableCount);
     InventoryQuery selectionQuery = InventoryQuery.builder().brand(brand).build();
     List<InventoryProvider> providers = providerRegistry.findInventoryProviders(selectionQuery, context);
     if (providers.isEmpty()) {
@@ -206,10 +224,13 @@ public class ExternalAvailabilityService {
         String defaultBrand =
             StringUtils.hasText(itemBrand) ? itemBrand : normalizedRequestedBrand;
         ProviderAvailabilityDto mapped = mapItem(result.getProvider(), item, defaultBrand);
-        String key =
-            StringUtils.hasText(normalizedRequestedBrand)
-                ? availabilityKey(mapped.getBrand(), mapped.getArticleNumber())
-                : availabilityKey(null, mapped.getArticleNumber());
+        String key;
+        if (StringUtils.hasText(normalizedRequestedBrand)) {
+          key = availabilityKey(mapped.getBrand(), mapped.getArticleNumber());
+        } else {
+          String brandForKey = StringUtils.hasText(mapped.getBrand()) ? mapped.getBrand() : null;
+          key = availabilityKey(brandForKey, mapped.getArticleNumber());
+        }
         ProviderAvailabilityDto existing = bestByArticle.get(key);
         if (existing == null) {
           bestByArticle.put(key, mapped);
@@ -276,7 +297,11 @@ public class ExternalAvailabilityService {
       return null;
     }
 
-    BigDecimal finalCustomerPrice = calculateCustomerPrice(availability.getPrice(), dto, partner);
+    String brand =
+        dto != null && dto.getProizvodjac() != null ? dto.getProizvodjac().getProid() : null;
+    String group = dto != null ? dto.getGrupa() : null;
+    BigDecimal finalCustomerPrice =
+        providerPricingService.calculateCustomerPrice(availability, group, brand, partner);
 
     return ProviderAvailabilityDto.builder()
         .brand(availability.getBrand())
@@ -315,22 +340,6 @@ public class ExternalAvailabilityService {
       return -1;
     }
     return candidate.compareTo(existing);
-  }
-
-  private BigDecimal calculateCustomerPrice(
-      BigDecimal baseSellingPrice, RobaLightDto dto, Partner partner) {
-    if (baseSellingPrice == null) {
-      return null;
-    }
-    String brand =
-        dto != null && dto.getProizvodjac() != null ? dto.getProizvodjac().getProid() : null;
-    String group = dto != null ? dto.getGrupa() : null;
-    double multiplier = priceService.resolvePartnerPriceMultiplier(group, brand, partner);
-
-    return baseSellingPrice
-        .multiply(BigDecimal.valueOf(multiplier))
-        .multiply(VAT_FACTOR)
-        .setScale(2, RoundingMode.HALF_UP);
   }
 
   private String resolveWarehouseName(WarehouseAvailability warehouse) {
@@ -405,26 +414,59 @@ public class ExternalAvailabilityService {
     return !providerRegistry.findInventoryProviders(query, context).isEmpty();
   }
 
-  private ProviderRoutingContext buildContext(Partner partner, RobaLightDto dto) {
+  private ProviderRoutingContext buildContext(
+      Partner partner,
+      RobaLightDto dto,
+      ProviderRoutingPurpose purpose,
+      Integer localMatchCount,
+      Integer localAvailableCount) {
+    int matchCount = localMatchCount != null ? localMatchCount : (dto != null ? 1 : 0);
+    int availableCount =
+        localAvailableCount != null ? localAvailableCount : computeAvailableCount(dto);
     return ProviderRoutingContext.builder()
         .partnerId(partner != null ? partner.getPpid() : null)
         .partnerAudit(partner != null ? partner.getAudit() : null)
-        .purpose(ProviderRoutingPurpose.INVENTORY_ENRICHMENT)
-        .localAvailableCount(0)
-        .localMatchCount(dto != null ? 1 : 0)
+        .purpose(purpose != null ? purpose : ProviderRoutingPurpose.INVENTORY_ENRICHMENT)
+        .localAvailableCount(availableCount)
+        .localMatchCount(matchCount)
         .groups(collectGroups(dto))
         .build();
   }
 
-  private ProviderRoutingContext buildContext(Partner partner, List<RobaLightDto> dtos) {
+  private ProviderRoutingContext buildContext(
+      Partner partner,
+      List<RobaLightDto> dtos,
+      ProviderRoutingPurpose purpose,
+      Integer localMatchCount,
+      Integer localAvailableCount) {
+    int matchCount = localMatchCount != null ? localMatchCount : (dtos != null ? dtos.size() : 0);
+    int availableCount =
+        localAvailableCount != null ? localAvailableCount : computeAvailableCount(dtos);
     return ProviderRoutingContext.builder()
         .partnerId(partner != null ? partner.getPpid() : null)
         .partnerAudit(partner != null ? partner.getAudit() : null)
-        .purpose(ProviderRoutingPurpose.INVENTORY_ENRICHMENT)
-        .localAvailableCount(0)
-        .localMatchCount(dtos != null ? dtos.size() : 0)
+        .purpose(purpose != null ? purpose : ProviderRoutingPurpose.INVENTORY_ENRICHMENT)
+        .localAvailableCount(availableCount)
+        .localMatchCount(matchCount)
         .groups(collectGroups(dtos))
         .build();
+  }
+
+  private int computeAvailableCount(RobaLightDto dto) {
+    return dto != null && dto.getStanje() > 0 ? 1 : 0;
+  }
+
+  private int computeAvailableCount(List<RobaLightDto> dtos) {
+    if (dtos == null || dtos.isEmpty()) {
+      return 0;
+    }
+    int count = 0;
+    for (RobaLightDto dto : dtos) {
+      if (dto != null && dto.getStanje() > 0) {
+        count++;
+      }
+    }
+    return count;
   }
 
   private Set<String> collectGroups(RobaLightDto dto) {
