@@ -96,13 +96,26 @@ integration:
         priority: 100
         purposes: [INVENTORY_ENRICHMENT, EXTERNAL_OFFER]
         brands: [FEBI, BLUE]
+  febi:
+    order:
+      mode: DISABLED
+      base-url: https://bis1.prod.apimanagement.eu20.hana.ondemand.com/p/v1/order-api/api/v1
+      customer-order-prefix: WEB-
+      requested-delivery-offset-days: 1
+      simulate-before-create: false
+      require-availability: true
+      delivery-party: ${FEBI_ORDER_DELIVERY_PARTY:}
+      shipping-condition: ${FEBI_ORDER_SHIPPING_CONDITION:}
 
 pricing:
   margin:
-    default-percent: 0.65
+    default-percent: 0.60
     by-group:
-      ZAM: 0.30
+      ZAM: 0.40
       AK: 0.30
+    by-provider:
+      FEBI-STOCK:
+        default-percent: 0.65
 
 roba:
   slika:

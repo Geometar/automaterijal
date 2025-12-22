@@ -26,5 +26,7 @@ public class FakturaDetaljiDto {
     String izvor;
     ProviderAvailabilityDto providerAvailability;
     ArticleAvailabilityStatus availabilityStatus;
+    Boolean providerBackorder;
+    String providerMessage;
 
 }

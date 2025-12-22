@@ -65,6 +65,7 @@ public class FakturaService {
   @NonNull final RobaCeneService robaCeneService;
   @NonNull final ProizvodjacService proizvodjacService;
   @NonNull final PartnerService partnerService;
+  @NonNull final ProviderOrderService providerOrderService;
   @NonNull final WebOrderHeaderRepository webOrderHeaderRepository;
   @NonNull final FakturaMapper mapper;
   @NonNull final RobaMapper robaMapper;
@@ -115,6 +116,8 @@ public class FakturaService {
       saveErpStockOrder(fakturaDto, partner, nextOrderId, stockDetails);
       webOrderHeader.setErpExported(1);
     }
+
+    providerOrderService.placeOrders(webOrderHeader, partner);
 
     partnerService.povecanPartnerovOrderCount(partner);
     return outOfStockItems;
@@ -475,6 +478,8 @@ public class FakturaService {
                             ? com.automaterijal.application.domain.dto.ArticleAvailabilityStatus.AVAILABLE
                             : com.automaterijal.application.domain.dto.ArticleAvailabilityStatus.OUT_OF_STOCK);
                   }
+                  d.setProviderBackorder(item.getProviderBackorder());
+                  d.setProviderMessage(item.getProviderMessage());
                   return d;
                 })
             .toList();

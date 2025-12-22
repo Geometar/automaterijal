@@ -65,3 +65,8 @@ sitemap:
     linking-target-type: PO
     refresh-cron: 0 30 3 * * *
     model-end-cutoff-year: 1995
+
+integration:
+  febi:
+    order:
+      mode: LIVE

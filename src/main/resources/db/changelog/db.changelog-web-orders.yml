@@ -254,6 +254,12 @@ databaseChangeLog:
                   name: provider_next_dispatch_cutoff
                   type: VARCHAR(10)
               - column:
+                  name: provider_backorder
+                  type: TINYINT(1)
+              - column:
+                  name: provider_message
+                  type: VARCHAR(255)
+              - column:
                   name: image_url
                   type: VARCHAR(255)
               - column:
@@ -291,3 +297,17 @@ databaseChangeLog:
                   name: provider_key
               - column:
                   name: provider_article_number
+
+  - changeSet:
+      id: 2025-12-18-3
+      author: codex
+      changes:
+        - addColumn:
+            tableName: web_order_items
+            columns:
+              - column:
+                  name: provider_backorder
+                  type: TINYINT(1)
+              - column:
+                  name: provider_message
+                  type: VARCHAR(255)

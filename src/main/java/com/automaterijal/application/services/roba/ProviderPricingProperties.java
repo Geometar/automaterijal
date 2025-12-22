@@ -18,5 +18,12 @@ public class ProviderPricingProperties {
   public static class Margin {
     private BigDecimal defaultPercent = new BigDecimal("0.65");
     private Map<String, BigDecimal> byGroup = new HashMap<>();
+    private Map<String, ProviderMargin> byProvider = new HashMap<>();
+  }
+
+  @Data
+  public static class ProviderMargin {
+    private BigDecimal defaultPercent;
+    private Map<String, BigDecimal> byGroup = new HashMap<>();
   }
 }

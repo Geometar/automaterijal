@@ -125,6 +125,12 @@ public class WebOrderItem {
   @Column(name = "provider_next_dispatch_cutoff")
   String providerNextDispatchCutoff;
 
+  @Column(name = "provider_backorder")
+  Boolean providerBackorder;
+
+  @Column(name = "provider_message")
+  String providerMessage;
+
   // Image snapshot (optional; especially useful for external-only items)
   @Column(name = "image_url")
   String imageUrl;
