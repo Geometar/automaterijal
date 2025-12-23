@@ -7,8 +7,10 @@ import com.automaterijal.application.domain.dto.ProizvodjacDTO;
 import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
+import com.automaterijal.application.integration.shared.ProviderRoutingPurpose;
 import com.automaterijal.application.services.TecDocService;
 import com.automaterijal.application.services.roba.ExternalOfferService;
+import com.automaterijal.application.services.roba.ExternalOfferService.ExternalOfferPayload;
 import com.automaterijal.application.services.roba.RobaEnrichmentService;
 import com.automaterijal.application.services.roba.adapter.RobaAdapterService;
 import com.automaterijal.application.services.roba.grupe.ArticleSubGroupService;
@@ -40,6 +42,7 @@ import org.thymeleaf.util.SetUtils;
 public class RobaSearchService {
   private static final int MAX_TEC_DOC_RESULTS = 1000;
   private static final int TECDOC_NUMBER_TYPE_ALL = 10;
+  private static final int MAX_PROVIDER_ITEMS = 1000;
 
   @NonNull final RobaAdapterService robaAdapterService;
   @NonNull final TecDocService tecDocService;
@@ -105,68 +108,61 @@ public class RobaSearchService {
     }
     List<RobaLightDto> itemsForCatalogKeys = items;
 
+    if (!items.isEmpty()) {
+      robaEnrichmentService.applyPriceOnly(items, loggedPartner, false);
+    }
+
+    List<RobaLightDto> localKeyItems =
+        itemsForCatalogKeys.stream()
+            .filter(Objects::nonNull)
+            .filter(r -> r.getRobaid() != null)
+            .toList();
+    MagacinDto localForKeys = new MagacinDto();
+    localForKeys.setRobaDto(GeneralUtil.createPageable(localKeyItems, Integer.MAX_VALUE, 0));
+    ExternalOfferPayload externalPayload =
+        externalOfferService.prepareFromAssociatedTecDocArticles(
+            articles, localForKeys, loggedPartner, normalized);
+
+    List<RobaLightDto> providerTargets =
+        collectProviderTargets(items, externalPayload.getProbes());
+    ProviderCounts counts = resolveProviderCounts(items);
+    if (!providerTargets.isEmpty()) {
+      robaEnrichmentService.populateExternalAvailability(
+          providerTargets,
+          loggedPartner,
+          ProviderRoutingPurpose.EXTERNAL_OFFER,
+          counts.matchCount(),
+          counts.availableCount());
+      robaEnrichmentService.refreshAvailabilityStatus(items);
+    }
+
+    List<RobaLightDto> externals =
+        externalOfferService.materializeExternalOffers(externalPayload, normalized);
+
     if (filterAvailable) {
-      // Enrich full filtered set so we can filter by provider-backed availability
-      if (!items.isEmpty()) {
-        robaEnrichmentService.enrichLightDtos(items, loggedPartner);
-        items =
-            items.stream()
-                .filter(dto -> dto != null && dto.getAvailabilityStatus() != null)
-                .filter(
-                    dto -> dto.getAvailabilityStatus() != ArticleAvailabilityStatus.OUT_OF_STOCK)
-                .toList();
-      }
-
-      List<RobaLightDto> localKeyItems =
-          itemsForCatalogKeys.stream()
-              .filter(Objects::nonNull)
-              .filter(r -> r.getRobaid() != null)
+      List<RobaLightDto> filteredItems =
+          items.stream()
+              .filter(dto -> dto != null && dto.getAvailabilityStatus() != null)
+              .filter(dto -> dto.getAvailabilityStatus() != ArticleAvailabilityStatus.OUT_OF_STOCK)
               .toList();
-      MagacinDto localForKeys = new MagacinDto();
-      localForKeys.setRobaDto(GeneralUtil.createPageable(localKeyItems, Integer.MAX_VALUE, 0));
-      List<RobaLightDto> externals =
-          externalOfferService.buildFromAssociatedTecDocArticles(
-              articles, localForKeys, loggedPartner, normalized);
 
-      List<RobaLightDto> combined = new ArrayList<>(items);
+      List<RobaLightDto> combined = new ArrayList<>(filteredItems);
       combined.addAll(externals);
       combined = robaSortService.sortByGroup(combined);
       int pageSize = Math.max(1, originalPageSize);
       int page = Math.max(0, originalPage);
       magacinDto.setRobaDto(GeneralUtil.createPageable(combined, pageSize, page));
+      if (magacinDto.getRobaDto() != null && !magacinDto.getRobaDto().isEmpty()) {
+        robaEnrichmentService.enrichLightDtos(
+            magacinDto.getRobaDto().getContent(), loggedPartner, false);
+      }
 
-      // Rebuild categories as union of local + external (internal taxonomy)
       Set<Integer> union = new HashSet<>();
       combined.stream().filter(Objects::nonNull).map(RobaLightDto::getPodGrupa).forEach(union::add);
       magacinDto.setCategories(articleSubGroupService.buildCategoriesFromPodgrupaIds(union));
-
       magacinDto.setProizvodjaci(buildManufacturersFromItems(combined));
     } else {
-      List<RobaLightDto> localKeyItems =
-          itemsForCatalogKeys.stream()
-              .filter(Objects::nonNull)
-              .filter(r -> r.getRobaid() != null)
-              .toList();
-      MagacinDto localForKeys = new MagacinDto();
-      localForKeys.setRobaDto(GeneralUtil.createPageable(localKeyItems, Integer.MAX_VALUE, 0));
-      List<RobaLightDto> externals =
-          externalOfferService.buildFromAssociatedTecDocArticles(
-              articles, localForKeys, loggedPartner, normalized);
-
-      Set<String> externalKeys = new HashSet<>();
-      for (RobaLightDto dto : externals) {
-        if (dto == null || dto.getProizvodjac() == null || !StringUtils.hasText(dto.getKatbr())) {
-          continue;
-        }
-        String brand =
-            StringUtils.hasText(dto.getProizvodjac().getProid())
-                ? dto.getProizvodjac().getProid().trim().toUpperCase(Locale.ROOT)
-                : null;
-        if (!StringUtils.hasText(brand)) {
-          continue;
-        }
-        externalKeys.add(brand + ":" + normalizeCatalog(dto.getKatbr()));
-      }
+      Set<String> externalKeys = buildExternalKeys(externals);
 
       List<RobaLightDto> combined =
           new ArrayList<>(
@@ -185,19 +181,14 @@ public class RobaSearchService {
                   .toList());
       combined.addAll(externals);
 
-      // Light availability enrichment for correct ordering (stanje + provider availability)
-      if (!combined.isEmpty()) {
-        robaEnrichmentService.applyPriceOnly(combined, loggedPartner);
-      }
-
       combined = robaSortService.sortByGroup(combined);
 
-      // Page first, then enrich only the returned page
       int pageSize = Math.max(1, originalPageSize);
       int page = Math.max(0, originalPage);
       magacinDto.setRobaDto(GeneralUtil.createPageable(combined, pageSize, page));
       if (magacinDto.getRobaDto() != null && !magacinDto.getRobaDto().isEmpty()) {
-        robaEnrichmentService.enrichLightDtos(magacinDto.getRobaDto().getContent(), loggedPartner);
+        robaEnrichmentService.enrichLightDtos(
+            magacinDto.getRobaDto().getContent(), loggedPartner, false);
       }
 
       Set<Integer> union = new HashSet<>();
@@ -322,16 +313,30 @@ public class RobaSearchService {
             ? searchProductsBySearchTerm(internal)
             : robaAdapterService.searchFilteredProductsWithoutSearchTerm(internal);
 
-    List<RobaLightDto> itemsForCatalogKeys =
+    List<RobaLightDto> items =
         magacinDto.getRobaDto() != null ? magacinDto.getRobaDto().getContent() : List.of();
 
-    if (filterAvailable && magacinDto.getRobaDto() != null) {
-      if (!itemsForCatalogKeys.isEmpty()) {
-        robaEnrichmentService.applyPriceOnly(itemsForCatalogKeys, loggedPartner, !skipProvider);
-      }
+    if (!items.isEmpty()) {
+      robaEnrichmentService.applyPriceOnly(items, loggedPartner, false);
+    }
 
+    ProviderCounts counts = resolveProviderCounts(items);
+    if (!skipProvider) {
+      List<RobaLightDto> providerTargets = collectProviderTargets(items, List.of());
+      if (!providerTargets.isEmpty()) {
+        robaEnrichmentService.populateExternalAvailability(
+            providerTargets,
+            loggedPartner,
+            ProviderRoutingPurpose.INVENTORY_ENRICHMENT,
+            counts.matchCount(),
+            counts.availableCount());
+        robaEnrichmentService.refreshAvailabilityStatus(items);
+      }
+    }
+
+    if (filterAvailable && magacinDto.getRobaDto() != null) {
       List<RobaLightDto> localAvailable =
-          magacinDto.getRobaDto().getContent().stream()
+          items.stream()
               .filter(dto -> dto != null && dto.getAvailabilityStatus() != null)
               .filter(dto -> dto.getAvailabilityStatus() != ArticleAvailabilityStatus.OUT_OF_STOCK)
               .toList();
@@ -343,7 +348,7 @@ public class RobaSearchService {
 
       if (magacinDto.getRobaDto() != null && !magacinDto.getRobaDto().isEmpty()) {
         robaEnrichmentService.enrichLightDtos(
-            magacinDto.getRobaDto().getContent(), loggedPartner, !skipProvider);
+            magacinDto.getRobaDto().getContent(), loggedPartner, false);
       }
 
       Set<Integer> union = new HashSet<>();
@@ -353,7 +358,7 @@ public class RobaSearchService {
       magacinDto.setProizvodjaci(buildManufacturersFromItems(combined));
     } else if (magacinDto.getRobaDto() != null && !magacinDto.getRobaDto().isEmpty()) {
       robaEnrichmentService.enrichLightDtos(
-          magacinDto.getRobaDto().getContent(), loggedPartner, !skipProvider);
+          magacinDto.getRobaDto().getContent(), loggedPartner, false);
     }
 
     return magacinDto;
@@ -382,14 +387,8 @@ public class RobaSearchService {
     List<RobaLightDto> allLocalItems =
         localAll.getRobaDto() != null ? localAll.getRobaDto().getContent() : List.of();
 
-    List<RobaLightDto> visibleLocalItems = allLocalItems;
-    if (filterAvailable && !allLocalItems.isEmpty()) {
-      robaEnrichmentService.applyPriceOnly(allLocalItems, loggedPartner);
-      visibleLocalItems =
-          allLocalItems.stream()
-              .filter(dto -> dto != null && dto.getAvailabilityStatus() != null)
-              .filter(dto -> dto.getAvailabilityStatus() != ArticleAvailabilityStatus.OUT_OF_STOCK)
-              .toList();
+    if (!allLocalItems.isEmpty()) {
+      robaEnrichmentService.applyPriceOnly(allLocalItems, loggedPartner, false);
     }
 
     tecDocGenericArticleMappingService.observeFromDirectSearch(tecDoc, allLocalItems);
@@ -397,8 +396,33 @@ public class RobaSearchService {
     MagacinDto localForKeys = new MagacinDto();
     localForKeys.setRobaDto(GeneralUtil.createPageable(allLocalItems, Integer.MAX_VALUE, 0));
 
+    ExternalOfferPayload externalPayload =
+        externalOfferService.prepareFromTecDocSearch(tecDoc, localForKeys, loggedPartner, normalized);
+
+    List<RobaLightDto> providerTargets =
+        collectProviderTargets(allLocalItems, externalPayload.getProbes());
+    ProviderCounts counts = resolveProviderCounts(allLocalItems);
+    if (!providerTargets.isEmpty()) {
+      robaEnrichmentService.populateExternalAvailability(
+          providerTargets,
+          loggedPartner,
+          ProviderRoutingPurpose.EXTERNAL_OFFER,
+          counts.matchCount(),
+          counts.availableCount());
+      robaEnrichmentService.refreshAvailabilityStatus(allLocalItems);
+    }
+
+    List<RobaLightDto> visibleLocalItems = allLocalItems;
+    if (filterAvailable) {
+      visibleLocalItems =
+          allLocalItems.stream()
+              .filter(dto -> dto != null && dto.getAvailabilityStatus() != null)
+              .filter(dto -> dto.getAvailabilityStatus() != ArticleAvailabilityStatus.OUT_OF_STOCK)
+              .toList();
+    }
+
     List<RobaLightDto> externals =
-        externalOfferService.buildFromTecDocSearch(tecDoc, localForKeys, loggedPartner, normalized);
+        externalOfferService.materializeExternalOffers(externalPayload, normalized);
 
     List<RobaLightDto> combined = new ArrayList<>(visibleLocalItems);
     combined.addAll(externals);
@@ -408,7 +432,7 @@ public class RobaSearchService {
     out.setRobaDto(GeneralUtil.createPageable(combined, originalPageSize, originalPage));
 
     if (out.getRobaDto() != null && !out.getRobaDto().isEmpty()) {
-      robaEnrichmentService.enrichLightDtos(out.getRobaDto().getContent(), loggedPartner);
+      robaEnrichmentService.enrichLightDtos(out.getRobaDto().getContent(), loggedPartner, false);
     }
 
     Set<Integer> union = new HashSet<>();
@@ -569,6 +593,82 @@ public class RobaSearchService {
       }
     }
   }
+
+  private ProviderCounts resolveProviderCounts(List<RobaLightDto> items) {
+    if (items == null || items.isEmpty()) {
+      return new ProviderCounts(0, 0);
+    }
+    int matchCount = items.size();
+    int availableCount =
+        (int) items.stream().filter(Objects::nonNull).filter(dto -> dto.getStanje() > 0).count();
+    return new ProviderCounts(matchCount, availableCount);
+  }
+
+  private List<RobaLightDto> collectProviderTargets(
+      List<RobaLightDto> locals, List<RobaLightDto> externalProbes) {
+    List<RobaLightDto> targets = new ArrayList<>();
+    if (externalProbes != null) {
+      for (RobaLightDto probe : externalProbes) {
+        if (probe != null) {
+          targets.add(probe);
+        }
+      }
+    }
+
+    int limit = MAX_PROVIDER_ITEMS > 0 ? MAX_PROVIDER_ITEMS : Integer.MAX_VALUE;
+    int remaining = limit - targets.size();
+    if (remaining <= 0) {
+      return targets;
+    }
+
+    if (locals != null) {
+      for (RobaLightDto dto : locals) {
+        if (remaining <= 0) {
+          break;
+        }
+        if (dto == null || dto.getStanje() > 0) {
+          continue;
+        }
+        targets.add(dto);
+        remaining--;
+      }
+      for (RobaLightDto dto : locals) {
+        if (remaining <= 0) {
+          break;
+        }
+        if (dto == null || dto.getStanje() <= 0) {
+          continue;
+        }
+        targets.add(dto);
+        remaining--;
+      }
+    }
+
+    return targets;
+  }
+
+  private Set<String> buildExternalKeys(List<RobaLightDto> externals) {
+    if (externals == null || externals.isEmpty()) {
+      return Set.of();
+    }
+    Set<String> externalKeys = new HashSet<>();
+    for (RobaLightDto dto : externals) {
+      if (dto == null || dto.getProizvodjac() == null || !StringUtils.hasText(dto.getKatbr())) {
+        continue;
+      }
+      String brand =
+          StringUtils.hasText(dto.getProizvodjac().getProid())
+              ? dto.getProizvodjac().getProid().trim().toUpperCase(Locale.ROOT)
+              : null;
+      if (!StringUtils.hasText(brand)) {
+        continue;
+      }
+      externalKeys.add(brand + ":" + normalizeCatalog(dto.getKatbr()));
+    }
+    return externalKeys;
+  }
+
+  private record ProviderCounts(int matchCount, int availableCount) {}
 
   private record SearchCandidates(
       Set<String> catalogNumbers, Set<Long> productIds, boolean matchedByName) {}

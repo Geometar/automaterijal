@@ -37,8 +37,8 @@ public class ExternalAvailabilityService {
   @NonNull ProviderPricingService providerPricingService;
 
   /**
-   * Popunjava providerAvailability za artikle koji nisu na stanju (stanje <= 0) i pripadaju
-   * proizvođačima za koje postoji uključen inventory provider.
+   * Popunjava providerAvailability za artikle sa podržanim proizvođačima,
+   * bez obzira na stanje.
    */
   public void populateExternalAvailability(List<? extends RobaLightDto> items, Partner partner) {
     populateExternalAvailability(
@@ -59,7 +59,7 @@ public class ExternalAvailabilityService {
     List<RobaLightDto> unresolved = new ArrayList<>();
 
     for (RobaLightDto dto : items) {
-      if (dto == null || dto.getProizvodjac() == null || dto.getStanje() > 0) {
+      if (dto == null || dto.getProizvodjac() == null) {
         continue;
       }
       ProviderRoutingContext context =

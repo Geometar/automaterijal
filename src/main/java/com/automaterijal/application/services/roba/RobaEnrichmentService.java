@@ -12,6 +12,7 @@ import com.automaterijal.application.services.ImageService;
 import com.automaterijal.application.services.TecDocService;
 import com.automaterijal.application.services.roba.grupe.ArticleGroupService;
 import com.automaterijal.application.services.tecdoc.TecDocAttributeService;
+import com.automaterijal.application.integration.shared.ProviderRoutingPurpose;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -98,7 +99,7 @@ public class RobaEnrichmentService {
     if (includeProviderAvailability) {
       externalAvailabilityService.populateExternalAvailability(items, partner);
     }
-    applyAvailabilityStatus(items);
+    applyAvailabilityStatusInternal(items);
   }
 
   /** Lightweight enrichment for prewarmed sections that only needs price/rabat/out-of-stock. */
@@ -128,10 +129,24 @@ public class RobaEnrichmentService {
     if (includeProviderAvailability) {
       externalAvailabilityService.populateExternalAvailability(items, partner);
     }
-    applyAvailabilityStatus(items);
+    applyAvailabilityStatusInternal(items);
   }
 
-  private void applyAvailabilityStatus(List<? extends RobaLightDto> items) {
+  public void refreshAvailabilityStatus(List<? extends RobaLightDto> items) {
+    applyAvailabilityStatusInternal(items);
+  }
+
+  public void populateExternalAvailability(
+      List<? extends RobaLightDto> items,
+      Partner partner,
+      ProviderRoutingPurpose purpose,
+      Integer localMatchCount,
+      Integer localAvailableCount) {
+    externalAvailabilityService.populateExternalAvailability(
+        items, partner, purpose, localMatchCount, localAvailableCount);
+  }
+
+  private void applyAvailabilityStatusInternal(List<? extends RobaLightDto> items) {
     for (RobaLightDto dto : items) {
       if (dto == null) {
         continue;

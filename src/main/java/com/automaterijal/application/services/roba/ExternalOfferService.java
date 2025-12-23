@@ -7,8 +7,10 @@ import com.automaterijal.application.domain.dto.PodgrupaDto;
 import com.automaterijal.application.domain.dto.ProizvodjacDTO;
 import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.entity.Partner;
+import com.automaterijal.application.domain.entity.Proizvodjac;
 import com.automaterijal.application.integration.shared.ProviderRoutingContext;
 import com.automaterijal.application.integration.shared.ProviderRoutingPurpose;
+import com.automaterijal.application.services.ProizvodjacService;
 import com.automaterijal.application.services.TecDocService;
 import com.automaterijal.application.services.tecdoc.TecDocGenericArticleMappingService;
 import com.automaterijal.application.services.tecdoc.TecDocPreviewService;
@@ -24,11 +26,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
+
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -56,12 +61,14 @@ public class ExternalOfferService {
   @NonNull TecDocPreviewService tecDocPreviewService;
   @NonNull ProviderBrandResolver providerBrandResolver;
   @NonNull TecDocService tecDocService;
+  @NonNull ProizvodjacService proizvodjacService;
 
   Map<String, TecDocArticleIdCacheEntry> tecDocArticleIdCache =
       Collections.synchronizedMap(
           new LinkedHashMap<>(128, 0.75f, true) {
             @Override
-            protected boolean removeEldestEntry(Map.Entry<String, TecDocArticleIdCacheEntry> eldest) {
+            protected boolean removeEldestEntry(
+                Map.Entry<String, TecDocArticleIdCacheEntry> eldest) {
               return size() > TECDOC_ARTICLE_ID_CACHE_MAX_SIZE;
             }
           });
@@ -74,7 +81,17 @@ public class ExternalOfferService {
     LocalCounts counts = resolveLocalCounts(localResults);
     ProviderRoutingContext context = buildContext(partner, counts);
     List<Candidate> candidates = mapTecDocSearchCandidates(tecDocRecords, context);
-    return buildExternalOffers(candidates, localResults, partner, parametri, counts);
+    ExternalOfferPayload payload = prepareExternalOffers(candidates, localResults, parametri);
+    if (payload.isEmpty()) {
+      return List.of();
+    }
+    externalAvailabilityService.populateExternalAvailability(
+        payload.getProbes(),
+        partner,
+        ProviderRoutingPurpose.EXTERNAL_OFFER,
+        counts.matchCount(),
+        counts.availableCount());
+    return materializeExternalOffers(payload, parametri);
   }
 
   public List<RobaLightDto> buildFromAssociatedTecDocArticles(
@@ -85,17 +102,141 @@ public class ExternalOfferService {
     LocalCounts counts = resolveLocalCounts(localResults);
     ProviderRoutingContext context = buildContext(partner, counts);
     List<Candidate> candidates = mapAssociatedArticleCandidates(articles, context);
-    return buildExternalOffers(candidates, localResults, partner, parametri, counts);
+    ExternalOfferPayload payload = prepareExternalOffers(candidates, localResults, parametri);
+    if (payload.isEmpty()) {
+      return List.of();
+    }
+    externalAvailabilityService.populateExternalAvailability(
+        payload.getProbes(),
+        partner,
+        ProviderRoutingPurpose.EXTERNAL_OFFER,
+        counts.matchCount(),
+        counts.availableCount());
+    return materializeExternalOffers(payload, parametri);
   }
 
-  private List<RobaLightDto> buildExternalOffers(
-      List<Candidate> candidates,
+  public ExternalOfferPayload prepareFromTecDocSearch(
+      List<ArticleDirectSearchAllNumbersWithStateRecord> tecDocRecords,
       MagacinDto localResults,
       Partner partner,
-      UniverzalniParametri parametri,
-      LocalCounts counts) {
-    if (candidates == null || candidates.isEmpty()) {
+      UniverzalniParametri parametri) {
+    LocalCounts counts = resolveLocalCounts(localResults);
+    ProviderRoutingContext context = buildContext(partner, counts);
+    List<Candidate> candidates = mapTecDocSearchCandidates(tecDocRecords, context);
+    return prepareExternalOffers(candidates, localResults, parametri);
+  }
+
+  public ExternalOfferPayload prepareFromAssociatedTecDocArticles(
+      List<ArticleRecord> articles,
+      MagacinDto localResults,
+      Partner partner,
+      UniverzalniParametri parametri) {
+    LocalCounts counts = resolveLocalCounts(localResults);
+    ProviderRoutingContext context = buildContext(partner, counts);
+    List<Candidate> candidates = mapAssociatedArticleCandidates(articles, context);
+    return prepareExternalOffers(candidates, localResults, parametri);
+  }
+
+  public List<RobaLightDto> materializeExternalOffers(
+      ExternalOfferPayload payload, UniverzalniParametri parametri) {
+    if (payload == null || payload.isEmpty()) {
       return List.of();
+    }
+
+    List<RobaLightDto> probes = payload.getProbes();
+    Map<String, Candidate> candidateByProbeKey = payload.candidateByProbeKey;
+    Map<Long, InternalCategory> internalByGeneric = payload.internalByGeneric;
+    Map<String, String> localBrandNames = payload.localBrandNames;
+
+    List<RobaLightDto> offers = new ArrayList<>();
+
+    List<Candidate> availableCandidates = new ArrayList<>();
+    for (RobaLightDto probe : probes) {
+      if (probe == null || probe.getProviderAvailability() == null) {
+        continue;
+      }
+      String key = buildProbeKey(probe);
+      Candidate candidate = candidateByProbeKey.get(key);
+      if (candidate != null) {
+        availableCandidates.add(candidate);
+      }
+    }
+
+    List<Long> articleIds =
+        availableCandidates.stream()
+            .map(Candidate::tecDocArticleId)
+            .filter(Objects::nonNull)
+            .distinct()
+            .toList();
+    Map<Long, TecDocPreviewService.TecDocPreview> previewByArticleId =
+        articleIds.isEmpty() ? Map.of() : tecDocPreviewService.previewsByArticleId(articleIds);
+
+    int tecDocResolveRemaining = resolveTecDocArticleIdLimit(parametri);
+
+    for (RobaLightDto probe : probes) {
+      if (probe == null || probe.getProviderAvailability() == null) {
+        continue;
+      }
+
+      String probeKey = buildProbeKey(probe);
+      Candidate candidate = candidateByProbeKey.get(probeKey);
+      if (candidate == null) {
+        continue;
+      }
+
+      InternalCategory internal =
+          candidate.genericArticleId() != null
+              ? internalByGeneric.getOrDefault(candidate.genericArticleId(), fallbackCategory())
+              : fallbackCategory();
+
+      TecDocPreviewService.TecDocPreview preview =
+          candidate.tecDocArticle() != null
+              ? tecDocPreviewService.fromArticleRecord(candidate.tecDocArticle())
+              : (candidate.tecDocArticleId() != null
+                  ? previewByArticleId.get(candidate.tecDocArticleId())
+                  : null);
+
+      Long tecDocArticleId = candidate.tecDocArticleId();
+      if (tecDocArticleId == null && tecDocResolveRemaining > 0) {
+        ResolvedTecDocArticleId resolved = resolveTecDocArticleId(candidate);
+        tecDocArticleId = resolved.articleId();
+        if (resolved.fetchedFromTecDoc()) {
+          tecDocResolveRemaining--;
+        }
+      }
+
+      RobaLightDto dto = new RobaLightDto();
+      dto.setRobaid(null);
+      dto.setTecDocArticleId(tecDocArticleId);
+      dto.setKatbr(candidate.providerArticleNumber());
+      dto.setKatbrpro(null);
+      dto.setNaziv(candidate.articleName());
+
+      dto.setProizvodjac(buildManufacturer(candidate, localBrandNames));
+
+      dto.setSlika(preview != null ? preview.slika() : null);
+      dto.setTehnickiOpis(preview != null ? preview.tehnickiOpis() : null);
+
+      dto.setStanje(0);
+      dto.setProviderAvailability(probe.getProviderAvailability());
+      dto.setAvailabilityStatus(ArticleAvailabilityStatus.AVAILABLE);
+      dto.setCena(probe.getProviderAvailability().getPrice());
+
+      dto.setGrupa(internal.groupId());
+      dto.setGrupaNaziv(internal.groupName());
+      dto.setPodGrupa(internal.subGroupId() != null ? internal.subGroupId() : 0);
+      dto.setPodGrupaNaziv(internal.subGroupName());
+
+      offers.add(dto);
+    }
+
+    return offers;
+  }
+
+  private ExternalOfferPayload prepareExternalOffers(
+      List<Candidate> candidates, MagacinDto localResults, UniverzalniParametri parametri) {
+    if (candidates == null || candidates.isEmpty()) {
+      return ExternalOfferPayload.empty();
     }
 
     Set<String> localCatalogKeys =
@@ -142,24 +283,23 @@ public class ExternalOfferService {
     }
 
     if (missing.isEmpty()) {
-      return List.of();
+      return ExternalOfferPayload.empty();
     }
 
+    Map<String, String> localBrandNames = resolveLocalBrandNames(missing);
+
     List<Long> genericIds =
-        missing.stream().map(Candidate::genericArticleId).filter(Objects::nonNull).distinct().toList();
+        missing.stream()
+            .map(Candidate::genericArticleId)
+            .filter(Objects::nonNull)
+            .distinct()
+            .toList();
     Map<Long, Integer> mappedPodgrupeByGeneric = mappingService.resolvePodgrupaIds(genericIds);
     Map<Long, InternalCategory> internalByGeneric =
         buildInternalCategories(mappedPodgrupeByGeneric);
 
-    Map<String, List<RobaLightDto>> probesByBrand = new HashMap<>();
+    List<RobaLightDto> probes = new ArrayList<>();
     Map<String, Candidate> candidateByProbeKey = new HashMap<>();
-
-    List<Long> articleIds =
-        missing.stream().map(Candidate::tecDocArticleId).filter(Objects::nonNull).distinct().toList();
-    Map<Long, TecDocPreviewService.TecDocPreview> previewByArticleId =
-        articleIds.isEmpty() ? Map.of() : tecDocPreviewService.previewsByArticleId(articleIds);
-
-    int tecDocResolveRemaining = resolveTecDocArticleIdLimit(parametri);
 
     for (Candidate candidate : missing) {
       if (candidate.genericArticleId() != null) {
@@ -170,108 +310,26 @@ public class ExternalOfferService {
           candidate.genericArticleId() != null
               ? internalByGeneric.getOrDefault(candidate.genericArticleId(), fallbackCategory())
               : fallbackCategory();
-
-      String brand = candidate.brand();
-      String article = candidate.providerArticleNumber();
-      String probeKey = brand + ":" + normalizeCatalog(article);
+      if (parametri != null && !matchesFilters(internal, candidate, parametri)) {
+        continue;
+      }
 
       RobaLightDto probe = new RobaLightDto();
-      probe.setKatbr(article);
+      probe.setKatbr(candidate.providerArticleNumber());
       probe.setKatbrpro(null);
       probe.setStanje(0);
-
-      probe.setProizvodjac(buildManufacturer(candidate));
+      probe.setProizvodjac(buildManufacturer(candidate, localBrandNames));
       probe.setGrupa(internal.groupId());
       probe.setGrupaNaziv(internal.groupName());
       probe.setPodGrupa(internal.subGroupId() != null ? internal.subGroupId() : 0);
       probe.setPodGrupaNaziv(internal.subGroupName());
 
-      probesByBrand.computeIfAbsent(brand, ignored -> new ArrayList<>()).add(probe);
-      candidateByProbeKey.put(probeKey, candidate);
+      probes.add(probe);
+      candidateByProbeKey.put(buildProbeKey(probe), candidate);
     }
 
-    List<RobaLightDto> offers = new ArrayList<>();
-
-    for (Map.Entry<String, List<RobaLightDto>> entry : probesByBrand.entrySet()) {
-      List<RobaLightDto> probes = entry.getValue();
-      if (probes == null || probes.isEmpty()) {
-        continue;
-      }
-
-      externalAvailabilityService.populateExternalAvailability(
-          probes,
-          partner,
-          ProviderRoutingPurpose.EXTERNAL_OFFER,
-          counts != null ? counts.matchCount() : null,
-          counts != null ? counts.availableCount() : null);
-
-      for (RobaLightDto probe : probes) {
-        if (probe == null || probe.getProviderAvailability() == null) {
-          continue;
-        }
-        if (!Boolean.TRUE.equals(probe.getProviderAvailability().getAvailable())) {
-          continue;
-        }
-
-        String probeKey = entry.getKey() + ":" + normalizeCatalog(probe.getKatbr());
-        Candidate candidate = candidateByProbeKey.get(probeKey);
-        if (candidate == null) {
-          continue;
-        }
-
-        InternalCategory internal =
-            candidate.genericArticleId() != null
-                ? internalByGeneric.getOrDefault(candidate.genericArticleId(), fallbackCategory())
-                : fallbackCategory();
-        if (parametri != null && !matchesFilters(internal, candidate, parametri)) {
-          continue;
-        }
-
-        TecDocPreviewService.TecDocPreview preview =
-            candidate.tecDocArticle() != null
-                ? tecDocPreviewService.fromArticleRecord(candidate.tecDocArticle())
-                : (candidate.tecDocArticleId() != null
-                    ? previewByArticleId.get(candidate.tecDocArticleId())
-                    : null);
-
-        Long tecDocArticleId = candidate.tecDocArticleId();
-        if (tecDocArticleId == null && tecDocResolveRemaining > 0) {
-          ResolvedTecDocArticleId resolved = resolveTecDocArticleId(candidate);
-          tecDocArticleId = resolved.articleId();
-          if (resolved.fetchedFromTecDoc()) {
-            tecDocResolveRemaining--;
-          }
-        }
-
-        RobaLightDto dto = new RobaLightDto();
-        dto.setRobaid(null);
-        dto.setTecDocArticleId(tecDocArticleId);
-        dto.setKatbr(candidate.providerArticleNumber());
-        dto.setKatbrpro(null);
-        dto.setNaziv(candidate.articleName());
-
-        dto.setProizvodjac(buildManufacturer(candidate));
-
-        dto.setSlika(preview != null ? preview.slika() : null);
-        dto.setTehnickiOpis(preview != null ? preview.tehnickiOpis() : null);
-
-        dto.setStanje(0);
-        dto.setProviderAvailability(probe.getProviderAvailability());
-        dto.setAvailabilityStatus(ArticleAvailabilityStatus.AVAILABLE);
-        if (probe.getProviderAvailability() != null) {
-          dto.setCena(probe.getProviderAvailability().getPrice());
-        }
-
-        dto.setGrupa(internal.groupId());
-        dto.setGrupaNaziv(internal.groupName());
-        dto.setPodGrupa(internal.subGroupId() != null ? internal.subGroupId() : 0);
-        dto.setPodGrupaNaziv(internal.subGroupName());
-
-        offers.add(dto);
-      }
-    }
-
-    return offers;
+    return new ExternalOfferPayload(
+        probes, candidateByProbeKey, internalByGeneric, localBrandNames);
   }
 
   private int resolveTecDocArticleIdLimit(UniverzalniParametri parametri) {
@@ -293,9 +351,7 @@ public class ExternalOfferService {
     }
 
     String key =
-        candidate.tecDocBrandId()
-            + ":"
-            + normalizeCatalog(candidate.providerArticleNumber());
+        candidate.tecDocBrandId() + ":" + normalizeCatalog(candidate.providerArticleNumber());
 
     long now = System.currentTimeMillis();
     TecDocArticleIdCacheEntry cached = tecDocArticleIdCache.get(key);
@@ -315,7 +371,8 @@ public class ExternalOfferService {
         resolved =
             results.stream()
                 .filter(Objects::nonNull)
-                .filter(r -> r.getBrandNo() != null && r.getBrandNo().equals(candidate.tecDocBrandId()))
+                .filter(
+                    r -> r.getBrandNo() != null && r.getBrandNo().equals(candidate.tecDocBrandId()))
                 .filter(r -> StringUtils.hasText(r.getArticleNo()))
                 .filter(
                     r ->
@@ -330,11 +387,13 @@ public class ExternalOfferService {
       resolved = null;
     }
 
-    tecDocArticleIdCache.put(key, new TecDocArticleIdCacheEntry(resolved, now + TECDOC_ARTICLE_ID_CACHE_TTL_MS));
+    tecDocArticleIdCache.put(
+        key, new TecDocArticleIdCacheEntry(resolved, now + TECDOC_ARTICLE_ID_CACHE_TTL_MS));
     return new ResolvedTecDocArticleId(resolved, true);
   }
 
-  private Map<Long, InternalCategory> buildInternalCategories(Map<Long, Integer> mappedPodgrupeByGeneric) {
+  private Map<Long, InternalCategory> buildInternalCategories(
+      Map<Long, Integer> mappedPodgrupeByGeneric) {
     if (mappedPodgrupeByGeneric == null || mappedPodgrupeByGeneric.isEmpty()) {
       return Map.of();
     }
@@ -389,12 +448,16 @@ public class ExternalOfferService {
       }
     }
     if (parametri.getGrupa() != null && !parametri.getGrupa().isEmpty()) {
-      if (category == null || category.groupId() == null || !parametri.getGrupa().contains(category.groupId())) {
+      if (category == null
+          || category.groupId() == null
+          || !parametri.getGrupa().contains(category.groupId())) {
         return false;
       }
     }
     if (parametri.getPodgrupeZaPretragu() != null && !parametri.getPodgrupeZaPretragu().isEmpty()) {
-      if (category == null || category.subGroupId() == null || !parametri.getPodgrupeZaPretragu().contains(category.subGroupId())) {
+      if (category == null
+          || category.subGroupId() == null
+          || !parametri.getPodgrupeZaPretragu().contains(category.subGroupId())) {
         return false;
       }
     }
@@ -543,6 +606,13 @@ public class ExternalOfferService {
     }
   }
 
+  private String buildProbeKey(RobaLightDto probe) {
+    if (probe == null || probe.getProizvodjac() == null) {
+      return "";
+    }
+    return buildBrandKey(probe.getProizvodjac().getProid(), probe.getKatbr());
+  }
+
   private String buildBrandKey(String brand, String value) {
     if (!StringUtils.hasText(brand)) {
       return "";
@@ -559,13 +629,54 @@ public class ExternalOfferService {
         : "";
   }
 
-  private ProizvodjacDTO buildManufacturer(Candidate candidate) {
+  private Map<String, String> resolveLocalBrandNames(List<Candidate> candidates) {
+    if (candidates == null || candidates.isEmpty()) {
+      return Map.of();
+    }
+
+    Set<String> brandIds =
+        candidates.stream()
+            .map(Candidate::brand)
+            .filter(StringUtils::hasText)
+            .map(value -> value.trim().toUpperCase(Locale.ROOT))
+            .collect(Collectors.toCollection(LinkedHashSet::new));
+    if (brandIds.isEmpty()) {
+      return Map.of();
+    }
+
+    Map<String, Proizvodjac> local = proizvodjacService.vratiProizvodjacePoId(brandIds);
+    if (local == null || local.isEmpty()) {
+      return Map.of();
+    }
+
+    Map<String, String> resolved = new HashMap<>();
+    for (Proizvodjac proizvodjac : local.values()) {
+      if (proizvodjac == null
+          || !StringUtils.hasText(proizvodjac.getProid())
+          || !StringUtils.hasText(proizvodjac.getNaziv())) {
+        continue;
+      }
+      resolved.put(
+          proizvodjac.getProid().trim().toUpperCase(Locale.ROOT), proizvodjac.getNaziv().trim());
+    }
+    return resolved;
+  }
+
+  private ProizvodjacDTO buildManufacturer(
+      Candidate candidate, Map<String, String> localBrandNames) {
     ProizvodjacDTO p = new ProizvodjacDTO();
     String proid =
         candidate != null && StringUtils.hasText(candidate.brand())
             ? candidate.brand().trim().toUpperCase(Locale.ROOT)
             : null;
     p.setProid(proid);
+    String localName =
+        StringUtils.hasText(proid) && localBrandNames != null ? localBrandNames.get(proid) : null;
+    if (StringUtils.hasText(localName)) {
+      p.setNaziv(localName);
+      return p;
+    }
+
     p.setNaziv(
         candidate != null && StringUtils.hasText(candidate.brandName())
             ? candidate.brandName().trim()
@@ -584,6 +695,36 @@ public class ExternalOfferService {
         .localAvailableCount(availableCount)
         .localMatchCount(matchCount)
         .build();
+  }
+
+  public static class ExternalOfferPayload {
+    private final List<RobaLightDto> probes;
+    private final Map<String, Candidate> candidateByProbeKey;
+    private final Map<Long, InternalCategory> internalByGeneric;
+    private final Map<String, String> localBrandNames;
+
+    private ExternalOfferPayload(
+        List<RobaLightDto> probes,
+        Map<String, Candidate> candidateByProbeKey,
+        Map<Long, InternalCategory> internalByGeneric,
+        Map<String, String> localBrandNames) {
+      this.probes = probes != null ? probes : List.of();
+      this.candidateByProbeKey = candidateByProbeKey != null ? candidateByProbeKey : Map.of();
+      this.internalByGeneric = internalByGeneric != null ? internalByGeneric : Map.of();
+      this.localBrandNames = localBrandNames != null ? localBrandNames : Map.of();
+    }
+
+    public List<RobaLightDto> getProbes() {
+      return probes;
+    }
+
+    public boolean isEmpty() {
+      return probes == null || probes.isEmpty();
+    }
+
+    private static ExternalOfferPayload empty() {
+      return new ExternalOfferPayload(List.of(), Map.of(), Map.of(), Map.of());
+    }
   }
 
   private LocalCounts resolveLocalCounts(MagacinDto localResults) {
