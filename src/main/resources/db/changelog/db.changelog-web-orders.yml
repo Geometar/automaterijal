@@ -311,3 +311,14 @@ databaseChangeLog:
               - column:
                   name: provider_message
                   type: VARCHAR(255)
+
+  - changeSet:
+      id: 2025-12-23-1
+      author: codex
+      changes:
+        - addColumn:
+            tableName: web_order_items
+            columns:
+              - column:
+                  name: brand_name
+                  type: VARCHAR(120)

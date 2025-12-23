@@ -36,7 +36,7 @@ public class FakturaController {
 
   @NonNull PartnerService partnerService;
 
-  @GetMapping(value = "/{ppid}")
+  @GetMapping(value = "/{ppid:\\d+}")
   public ResponseEntity<Page<FakturaDto>> vratiSveFaktureKorisnika(
       @RequestParam(required = false) Integer page,
       @RequestParam(required = false) Integer pageSize,
@@ -98,6 +98,21 @@ public class FakturaController {
     return ResponseEntity.ok(fakture);
   }
 
+  @GetMapping(value = "/admin/{id:\\d+}")
+  public ResponseEntity<FakturaDto> vratiFakturuAdmin(
+      @PathVariable(name = "id") Integer id, Authentication authentication) {
+    Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+    if (partner == null || partner.getPrivilegije() != 2047) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Unauthorized");
+    }
+
+    FakturaDto fakture = fakturaService.vratiFakuturuPojedinacno(partner, id);
+    if (fakture != null) {
+      return ResponseEntity.ok(fakture);
+    }
+    throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Nismo nasli fakturu");
+  }
+
   @PostMapping
   public ResponseEntity<List<RobaLightDto>> podnesiFakturu(
       @RequestBody FakturaDto fakturaDto, Authentication authentication) {
@@ -116,7 +131,7 @@ public class FakturaController {
     return ResponseEntity.ok(response);
   }
 
-  @GetMapping(value = "/{ppid}/{id}")
+  @GetMapping(value = "/{ppid:\\d+}/{id:\\d+}")
   public ResponseEntity<FakturaDto> vratiFakturu(
       @PathVariable(name = "ppid") Integer ppid,
       @PathVariable(name = "id") Integer id,

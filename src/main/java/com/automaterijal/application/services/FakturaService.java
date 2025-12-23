@@ -187,6 +187,8 @@ public class FakturaService {
                   item.setTecDocArticleId(detalji.getTecDocArticleId());
                   item.setBrand(
                       detalji.getProizvodjac() != null ? detalji.getProizvodjac().getProid() : null);
+                  item.setBrandName(
+                      detalji.getProizvodjac() != null ? detalji.getProizvodjac().getNaziv() : null);
                   item.setCatalogNumber(detalji.getKataloskiBroj());
                   item.setArticleName(detalji.getNaziv());
                   item.setMagacinId(source == OrderItemSource.STOCK ? 1 : 0);
@@ -431,12 +433,25 @@ public class FakturaService {
                   d.setTecDocArticleId(item.getTecDocArticleId());
                   d.setKataloskiBroj(item.getCatalogNumber());
                   d.setNaziv(item.getArticleName());
-                  if (item.getBrand() != null) {
-	                    d.setProizvodjac(
-	                        com.automaterijal.application.domain.entity.Proizvodjac.builder()
-	                            .proid(item.getBrand())
-	                            .naziv(item.getBrand())
-	                            .build());
+                  if (StringUtils.hasText(item.getBrand()) || StringUtils.hasText(item.getBrandName())) {
+                    String brandId = item.getBrand();
+                    String brandName = null;
+                    if (StringUtils.hasText(brandId)) {
+                      var local = proizvodjacService.vratiProizvodjacaPoPk(brandId);
+                      if (local.isPresent()) {
+                        brandId = local.get().getProid();
+                        brandName = local.get().getNaziv();
+                      }
+                    }
+                    if (!StringUtils.hasText(brandName)) {
+                      brandName =
+                          StringUtils.hasText(item.getBrandName()) ? item.getBrandName() : brandId;
+                    }
+                    d.setProizvodjac(
+                        com.automaterijal.application.domain.entity.Proizvodjac.builder()
+                            .proid(brandId)
+                            .naziv(brandName)
+                            .build());
                   }
                   if (item.getImageUrl() != null || item.getImageRobaSlika() != null) {
                     com.automaterijal.application.domain.dto.SlikaDto s =
@@ -458,6 +473,7 @@ public class FakturaService {
                   if (item.getProviderKey() != null || item.getProviderArticleNumber() != null) {
                     d.setProviderAvailability(
                         com.automaterijal.application.domain.dto.ProviderAvailabilityDto.builder()
+                            .brand(item.getBrand())
                             .provider(item.getProviderKey())
                             .articleNumber(item.getProviderArticleNumber())
                             .available(item.getProviderAvailable())

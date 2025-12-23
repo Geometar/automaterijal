@@ -39,6 +39,9 @@ public class WebOrderItem {
   @Column(name = "brand")
   String brand;
 
+  @Column(name = "brand_name")
+  String brandName;
+
   @Column(name = "catalog_number")
   String catalogNumber;
 

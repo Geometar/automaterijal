@@ -221,6 +221,7 @@ public class ExternalOfferService {
       dto.setProviderAvailability(probe.getProviderAvailability());
       dto.setAvailabilityStatus(ArticleAvailabilityStatus.AVAILABLE);
       dto.setCena(probe.getProviderAvailability().getPrice());
+      dto.setRabat(probe.getRabat());
 
       dto.setGrupa(internal.groupId());
       dto.setGrupaNaziv(internal.groupName());
