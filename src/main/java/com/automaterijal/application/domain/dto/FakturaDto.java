@@ -11,6 +11,7 @@ import java.util.List;
 public class FakturaDto {
     Integer id;
     Integer orderId;
+    Integer internalOrder;
     String vremePorucivanja;
     ValueHelpDto status;
     ValueHelpDto nacinPlacanja;

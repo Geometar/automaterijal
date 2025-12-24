@@ -48,6 +48,7 @@ import org.springframework.util.StringUtils;
 public class ExternalOfferService {
 
   private static final int MAX_EXTERNAL_OFFERS = 50;
+  private static final int MAX_EXTERNAL_OFFERS_WITH_EXACT = 25;
   private static final int TECDOC_NUMBER_TYPE_ALL = 10;
   private static final int TECDOC_ARTICLE_ID_RESOLVE_DEFAULT_LIMIT = 10;
   private static final int TECDOC_ARTICLE_ID_RESOLVE_MAX_LIMIT = 25;
@@ -248,6 +249,7 @@ public class ExternalOfferService {
     List<Candidate> prioritized = new ArrayList<>();
     List<Candidate> missing = new ArrayList<>();
     Set<String> seen = new HashSet<>();
+    Candidate exactCandidate = null;
     for (Candidate candidate : candidates) {
       if (candidate == null
           || !StringUtils.hasText(candidate.brand())
@@ -267,6 +269,9 @@ public class ExternalOfferService {
 
       if (StringUtils.hasText(wanted)
           && normalizeCatalog(candidate.providerArticleNumber()).equalsIgnoreCase(wanted)) {
+        if (exactCandidate == null) {
+          exactCandidate = candidate;
+        }
         prioritized.add(candidate);
         continue;
       }
@@ -279,7 +284,28 @@ public class ExternalOfferService {
       missing = prioritized;
     }
 
-    if (missing.size() > MAX_EXTERNAL_OFFERS) {
+    if (exactCandidate != null && exactCandidate.genericArticleId() != null) {
+      Long genericId = exactCandidate.genericArticleId();
+      List<Candidate> scoped =
+          missing.stream()
+              .filter(candidate -> genericId.equals(candidate.genericArticleId()))
+              .collect(Collectors.toCollection(ArrayList::new));
+      if (!scoped.isEmpty()) {
+        List<Candidate> ordered = new ArrayList<>();
+        ordered.add(exactCandidate);
+        for (Candidate candidate : scoped) {
+          if (candidate != exactCandidate) {
+            ordered.add(candidate);
+          }
+        }
+        missing = ordered;
+      } else {
+        missing = List.of(exactCandidate);
+      }
+      if (missing.size() > MAX_EXTERNAL_OFFERS_WITH_EXACT) {
+        missing = missing.subList(0, MAX_EXTERNAL_OFFERS_WITH_EXACT);
+      }
+    } else if (missing.size() > MAX_EXTERNAL_OFFERS) {
       missing = missing.subList(0, MAX_EXTERNAL_OFFERS);
     }
 

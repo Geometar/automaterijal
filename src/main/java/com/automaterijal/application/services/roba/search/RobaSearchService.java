@@ -123,8 +123,7 @@ public class RobaSearchService {
         externalOfferService.prepareFromAssociatedTecDocArticles(
             articles, localForKeys, loggedPartner, normalized);
 
-    List<RobaLightDto> providerTargets =
-        collectProviderTargets(items, externalPayload.getProbes());
+    List<RobaLightDto> providerTargets = collectProviderTargets(items, externalPayload.getProbes());
     ProviderCounts counts = resolveProviderCounts(items);
     if (!providerTargets.isEmpty()) {
       robaEnrichmentService.populateExternalAvailability(
@@ -148,7 +147,10 @@ public class RobaSearchService {
 
       List<RobaLightDto> combined = new ArrayList<>(filteredItems);
       combined.addAll(externals);
-      combined = robaSortService.sortByGroup(combined);
+      combined =
+          StringUtils.hasText(normalized.getTrazenaRec())
+              ? robaSortService.sortByGroupWithExact(combined, normalized.getTrazenaRec())
+              : robaSortService.sortByGroup(combined);
       int pageSize = Math.max(1, originalPageSize);
       int page = Math.max(0, originalPage);
       magacinDto.setRobaDto(GeneralUtil.createPageable(combined, pageSize, page));
@@ -181,7 +183,10 @@ public class RobaSearchService {
                   .toList());
       combined.addAll(externals);
 
-      combined = robaSortService.sortByGroup(combined);
+      combined =
+          StringUtils.hasText(normalized.getTrazenaRec())
+              ? robaSortService.sortByGroupWithExact(combined, normalized.getTrazenaRec())
+              : robaSortService.sortByGroup(combined);
 
       int pageSize = Math.max(1, originalPageSize);
       int page = Math.max(0, originalPage);
@@ -201,7 +206,9 @@ public class RobaSearchService {
   }
 
   private String normalizeCatalog(String value) {
-    return StringUtils.hasText(value) ? CatalogNumberUtils.cleanPreserveSeparators(value.trim()) : "";
+    return StringUtils.hasText(value)
+        ? CatalogNumberUtils.cleanPreserveSeparators(value.trim())
+        : "";
   }
 
   private List<ArticleRecord> extractArticles(ArticlesResponse response) {
@@ -343,7 +350,10 @@ public class RobaSearchService {
 
       List<RobaLightDto> combined = new ArrayList<>(localAvailable);
 
-      combined = robaSortService.sortByGroup(combined);
+      combined =
+          hasSearchTerm
+              ? robaSortService.sortByGroupWithExact(combined, normalized.getTrazenaRec())
+              : robaSortService.sortByGroup(combined);
       magacinDto.setRobaDto(GeneralUtil.createPageable(combined, originalPageSize, originalPage));
 
       if (magacinDto.getRobaDto() != null && !magacinDto.getRobaDto().isEmpty()) {
@@ -378,6 +388,7 @@ public class RobaSearchService {
     allLocalParams.setPage(0);
     allLocalParams.setPageSize(Integer.MAX_VALUE);
     allLocalParams.setPaged(false);
+    boolean hasSearchTerm = StringUtils.hasText(normalized.getTrazenaRec());
 
     List<ArticleDirectSearchAllNumbersWithStateRecord> tecDoc =
         tecDocService.tecDocPretragaPoTrazenojReci(
@@ -397,7 +408,8 @@ public class RobaSearchService {
     localForKeys.setRobaDto(GeneralUtil.createPageable(allLocalItems, Integer.MAX_VALUE, 0));
 
     ExternalOfferPayload externalPayload =
-        externalOfferService.prepareFromTecDocSearch(tecDoc, localForKeys, loggedPartner, normalized);
+        externalOfferService.prepareFromTecDocSearch(
+            tecDoc, localForKeys, loggedPartner, normalized);
 
     List<RobaLightDto> providerTargets =
         collectProviderTargets(allLocalItems, externalPayload.getProbes());
@@ -426,7 +438,10 @@ public class RobaSearchService {
 
     List<RobaLightDto> combined = new ArrayList<>(visibleLocalItems);
     combined.addAll(externals);
-    combined = robaSortService.sortByGroup(combined);
+    combined =
+        StringUtils.hasText(normalized.getTrazenaRec())
+            ? robaSortService.sortByGroupWithExact(combined, normalized.getTrazenaRec())
+            : robaSortService.sortByGroup(combined);
 
     MagacinDto out = new MagacinDto();
     out.setRobaDto(GeneralUtil.createPageable(combined, originalPageSize, originalPage));

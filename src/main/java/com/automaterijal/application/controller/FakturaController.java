@@ -6,6 +6,7 @@ import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.services.FakturaService;
 import com.automaterijal.application.services.PartnerService;
 import com.automaterijal.application.utils.GeneralUtil;
+import com.automaterijal.application.utils.PartnerPrivilegeUtils;
 import com.automaterijal.application.utils.PartnerSpringBeanUtils;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -75,9 +76,10 @@ public class FakturaController {
       @RequestParam(required = false) Integer pageSize,
       @RequestParam(required = false) BigDecimal dateFrom,
       @RequestParam(required = false) BigDecimal dateTo,
+      @RequestParam(required = false) Boolean internal,
       Authentication authentication) {
     Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
-    if (partner == null || partner.getPrivilegije() != 2047) {
+    if (partner == null || !PartnerPrivilegeUtils.isInternal(partner)) {
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Unauthorized");
     }
 
@@ -94,7 +96,7 @@ public class FakturaController {
 
     Page<FakturaDto> fakture =
         fakturaService.vratiSveFaktureUlogovanogKorisnika(
-            partner, iPage, iPageSize, iVremeOd, iVremeDo);
+            partner, iPage, iPageSize, iVremeOd, iVremeDo, internal);
     return ResponseEntity.ok(fakture);
   }
 
@@ -102,7 +104,7 @@ public class FakturaController {
   public ResponseEntity<FakturaDto> vratiFakturuAdmin(
       @PathVariable(name = "id") Integer id, Authentication authentication) {
     Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
-    if (partner == null || partner.getPrivilegije() != 2047) {
+    if (partner == null || !PartnerPrivilegeUtils.isInternal(partner)) {
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Unauthorized");
     }
 
@@ -143,7 +145,7 @@ public class FakturaController {
           HttpStatus.UNAUTHORIZED, "Unauthorized to update this partner");
     } else if (ppid != null
         && ppid.intValue() != partner.getPpid().intValue()
-        && partner.getPrivilegije() != 2047) {
+        && !PartnerPrivilegeUtils.isInternal(partner)) {
 
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Los zahtev");
     }

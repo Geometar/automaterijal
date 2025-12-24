@@ -24,6 +24,7 @@ import com.automaterijal.application.domain.repository.valuehelp.StatusRepositor
 import com.automaterijal.application.services.roba.RobaCeneService;
 import com.automaterijal.application.services.roba.repo.RobaDatabaseService;
 import com.automaterijal.application.utils.GeneralUtil;
+import com.automaterijal.application.utils.PartnerPrivilegeUtils;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Timestamp;
@@ -74,12 +75,13 @@ public class FakturaService {
   public List<RobaLightDto> submitujFakturu(FakturaDto fakturaDto, Partner partner) {
     var now = Timestamp.valueOf(LocalDateTime.now());
     var nextOrderId = getNextOrderId(partner.getPpid());
+    boolean internalOrder = PartnerPrivilegeUtils.isInternal(partner);
 
     List<RobaLightDto> outOfStockItems = new ArrayList<>();
     List<FakturaDetaljiDto> stockDetails = new ArrayList<>();
 
     for (var detalji : Optional.ofNullable(fakturaDto.getDetalji()).orElse(List.of())) {
-      var source = determineItemSource(detalji);
+      var source = determineItemSource(detalji, internalOrder);
       if (source == OrderItemSource.STOCK) {
         stockDetails.add(detalji);
       } else {
@@ -110,9 +112,9 @@ public class FakturaService {
     }
 
     WebOrderHeader webOrderHeader =
-        saveWebOrder(fakturaDto, partner, nextOrderId, now);
+        saveWebOrder(fakturaDto, partner, nextOrderId, now, internalOrder);
 
-    if (!stockDetails.isEmpty()) {
+    if (!stockDetails.isEmpty() && !internalOrder) {
       saveErpStockOrder(fakturaDto, partner, nextOrderId, stockDetails);
       webOrderHeader.setErpExported(1);
     }
@@ -120,6 +122,7 @@ public class FakturaService {
     providerOrderService.placeOrders(webOrderHeader, partner);
 
     partnerService.povecanPartnerovOrderCount(partner);
+    sanitizeProviderPurchasePrice(outOfStockItems, partner);
     return outOfStockItems;
   }
 
@@ -137,7 +140,11 @@ public class FakturaService {
     return Math.max(erpLast, webLast) + 1;
   }
 
-  private OrderItemSource determineItemSource(FakturaDetaljiDto detalji) {
+  private OrderItemSource determineItemSource(
+      FakturaDetaljiDto detalji, boolean forceProvider) {
+    if (forceProvider) {
+      return OrderItemSource.PROVIDER;
+    }
     if (detalji == null || detalji.getRobaId() == null) {
       return OrderItemSource.PROVIDER;
     }
@@ -155,7 +162,11 @@ public class FakturaService {
   }
 
   private WebOrderHeader saveWebOrder(
-      FakturaDto fakturaDto, Partner partner, Integer orderId, Timestamp now) {
+      FakturaDto fakturaDto,
+      Partner partner,
+      Integer orderId,
+      Timestamp now,
+      boolean forceProvider) {
     WebOrderHeader header = new WebOrderHeader();
     header.setPpid(partner.getPpid());
     header.setOrderId(orderId);
@@ -173,13 +184,14 @@ public class FakturaService {
     header.setIznosNaruceno(fakturaDto.getIznosNarucen());
     header.setIznosPotvrdjeno(0.0);
     header.setErpExported(0);
+    header.setInternalOrder(forceProvider ? 1 : 0);
 
     var orderDetails = Optional.ofNullable(fakturaDto.getDetalji()).orElse(List.of());
     List<WebOrderItem> items =
         orderDetails.stream()
             .map(
                 detalji -> {
-                  var source = determineItemSource(detalji);
+                  var source = determineItemSource(detalji, forceProvider);
                   WebOrderItem item = new WebOrderItem();
                   item.setHeader(header);
                   item.setPpid(partner.getPpid());
@@ -267,6 +279,17 @@ public class FakturaService {
       Integer pageSize,
       LocalDateTime vremeOd,
       LocalDateTime vremeDo) {
+    return vratiSveFaktureUlogovanogKorisnika(partner, page, pageSize, vremeOd, vremeDo, null);
+  }
+
+  @Transactional(readOnly = true)
+  public Page<FakturaDto> vratiSveFaktureUlogovanogKorisnika(
+      Partner partner,
+      Integer page,
+      Integer pageSize,
+      LocalDateTime vremeOd,
+      LocalDateTime vremeDo,
+      Boolean internalOrder) {
     var iPage = page == null ? 0 : page;
     var iPageSize = pageSize == null ? 10 : pageSize;
     var limit = Math.max(1, (iPage + 1) * iPageSize);
@@ -280,13 +303,30 @@ public class FakturaService {
     Page<Faktura> erpPage;
     Page<WebOrderHeader> webPage;
     Set<String> erpMirrorKeys = new HashSet<>();
-    if (partner.getPrivilegije() == 2047) {
-      erpPage =
-          fakturaRepository.findByDataSentGreaterThanAndDataSentLessThanOrderByDataSentDesc(
-              erpRequest, vremeOdTs, vremeDoTs);
-      webPage =
-          webOrderHeaderRepository.findByDateSentGreaterThanAndDateSentLessThanOrderByDateSentDesc(
-              webRequest, vremeOdTs, vremeDoTs);
+    boolean internalOnly = Boolean.TRUE.equals(internalOrder);
+    boolean externalOnly = Boolean.FALSE.equals(internalOrder);
+    if (PartnerPrivilegeUtils.isInternal(partner)) {
+      if (internalOnly) {
+        erpPage = new PageImpl<>(List.of(), erpRequest, 0);
+        webPage =
+            webOrderHeaderRepository
+                .findByDateSentGreaterThanAndDateSentLessThanAndInternalOrderOrderByDateSentDesc(
+                    webRequest, vremeOdTs, vremeDoTs, 1);
+      } else {
+        erpPage =
+            fakturaRepository.findByDataSentGreaterThanAndDataSentLessThanOrderByDataSentDesc(
+                erpRequest, vremeOdTs, vremeDoTs);
+        if (externalOnly) {
+          webPage =
+              webOrderHeaderRepository
+                  .findByDateSentGreaterThanAndDateSentLessThanAndInternalOrderOrderByDateSentDesc(
+                      webRequest, vremeOdTs, vremeDoTs, 0);
+        } else {
+          webPage =
+              webOrderHeaderRepository.findByDateSentGreaterThanAndDateSentLessThanOrderByDateSentDesc(
+                  webRequest, vremeOdTs, vremeDoTs);
+        }
+      }
       for (var h : webPage.getContent()) {
         if (h != null
             && h.getErpExported() != null
@@ -300,10 +340,22 @@ public class FakturaService {
       erpPage =
           fakturaRepository.findByPpidAndDataSentGreaterThanAndDataSentLessThanOrderByDataSentDesc(
               partner.getPpid(), erpRequest, vremeOdTs, vremeDoTs);
-      webPage =
-          webOrderHeaderRepository
-              .findByPpidAndDateSentGreaterThanAndDateSentLessThanOrderByDateSentDesc(
-                  partner.getPpid(), webRequest, vremeOdTs, vremeDoTs);
+      if (internalOnly) {
+        webPage =
+            webOrderHeaderRepository
+                .findByPpidAndDateSentGreaterThanAndDateSentLessThanAndInternalOrderOrderByDateSentDesc(
+                    partner.getPpid(), webRequest, vremeOdTs, vremeDoTs, 1);
+      } else if (externalOnly) {
+        webPage =
+            webOrderHeaderRepository
+                .findByPpidAndDateSentGreaterThanAndDateSentLessThanAndInternalOrderOrderByDateSentDesc(
+                    partner.getPpid(), webRequest, vremeOdTs, vremeDoTs, 0);
+      } else {
+        webPage =
+            webOrderHeaderRepository
+                .findByPpidAndDateSentGreaterThanAndDateSentLessThanOrderByDateSentDesc(
+                    partner.getPpid(), webRequest, vremeOdTs, vremeDoTs);
+      }
       for (var h : webPage.getContent()) {
         if (h != null
             && h.getErpExported() != null
@@ -353,12 +405,27 @@ public class FakturaService {
             ? List.of()
             : merged.subList(start, end).stream().map(DatedDto::dto).toList();
 
-    long exportedCount =
-        partner.getPrivilegije() == 2047
-            ? webOrderHeaderRepository.countByDateSentGreaterThanAndDateSentLessThanAndErpExported(
-                vremeOdTs, vremeDoTs, 1)
-            : webOrderHeaderRepository.countByPpidAndDateSentGreaterThanAndDateSentLessThanAndErpExported(
-                partner.getPpid(), vremeOdTs, vremeDoTs, 1);
+    long exportedCount;
+    if (internalOnly) {
+      exportedCount = 0;
+    } else if (PartnerPrivilegeUtils.isInternal(partner)) {
+      exportedCount =
+          externalOnly
+              ? webOrderHeaderRepository
+                  .countByDateSentGreaterThanAndDateSentLessThanAndErpExportedAndInternalOrder(
+                      vremeOdTs, vremeDoTs, 1, 0)
+              : webOrderHeaderRepository.countByDateSentGreaterThanAndDateSentLessThanAndErpExported(
+                  vremeOdTs, vremeDoTs, 1);
+    } else {
+      exportedCount =
+          externalOnly
+              ? webOrderHeaderRepository
+                  .countByPpidAndDateSentGreaterThanAndDateSentLessThanAndErpExportedAndInternalOrder(
+                      partner.getPpid(), vremeOdTs, vremeDoTs, 1, 0)
+              : webOrderHeaderRepository
+                  .countByPpidAndDateSentGreaterThanAndDateSentLessThanAndErpExported(
+                      partner.getPpid(), vremeOdTs, vremeDoTs, 1);
+    }
     long total =
         Math.max(0, erpPage.getTotalElements() + webPage.getTotalElements() - exportedCount);
     return new PageImpl<>(content, PageRequest.of(iPage, iPageSize), total);
@@ -376,6 +443,9 @@ public class FakturaService {
   }
 
   private FakturaDto obogatiDtoCommon(FakturaDto fakturaDto, Partner partner, int brojStavki) {
+    if (fakturaDto.getInternalOrder() == null) {
+      fakturaDto.setInternalOrder(0);
+    }
     if (fakturaDto.getStatus() != null && fakturaDto.getStatus().getId() != null) {
       statusRepository
           .findById(fakturaDto.getStatus().getId())
@@ -414,6 +484,7 @@ public class FakturaService {
     FakturaDto dto = new FakturaDto();
     dto.setId(header.getId() + WEB_ID_OFFSET);
     dto.setOrderId(header.getOrderId());
+    dto.setInternalOrder(header.getInternalOrder());
     dto.setVremePorucivanja(header.getDateSent() != null ? header.getDateSent().toString() : null);
     dto.setStatus(vh(header.getStatus()));
     dto.setNacinPlacanja(vh(header.getNuid()));
@@ -530,6 +601,10 @@ public class FakturaService {
     if (dto.getIzvor() == null) {
       dto.setIzvor(OrderItemSource.STOCK.name());
     }
+    if (!PartnerPrivilegeUtils.isInternal(partner)
+        && dto.getProviderAvailability() != null) {
+      dto.getProviderAvailability().setPurchasePrice(null);
+    }
     if (dto.getStatus() != null && dto.getStatus().getId() != null) {
       statusRepository.findById(dto.getStatus().getId()).ifPresent(status -> mapper.map(dto, status));
     }
@@ -567,6 +642,21 @@ public class FakturaService {
     }
   }
 
+  private void sanitizeProviderPurchasePrice(List<RobaLightDto> items, Partner partner) {
+    if (PartnerPrivilegeUtils.isInternal(partner)) {
+      return;
+    }
+    if (items == null || items.isEmpty()) {
+      return;
+    }
+    for (RobaLightDto dto : items) {
+      if (dto == null || dto.getProviderAvailability() == null) {
+        continue;
+      }
+      dto.getProviderAvailability().setPurchasePrice(null);
+    }
+  }
+
   private void setSlikeRobaTabelaDetalji(FakturaDetaljiDto fakturaDetaljiDto) {
     if (fakturaDetaljiDto == null || fakturaDetaljiDto.getRobaId() == null) {
       return;
@@ -589,7 +679,7 @@ public class FakturaService {
     if (id != null && id >= WEB_ID_OFFSET) {
       var webId = id - WEB_ID_OFFSET;
       Optional<WebOrderHeader> webOrder;
-      if (partner.getPrivilegije() == 2047) {
+      if (PartnerPrivilegeUtils.isInternal(partner)) {
         webOrder = webOrderHeaderRepository.findById(webId);
       } else {
         webOrder = webOrderHeaderRepository.findByPpidAndId(partner.getPpid(), webId);
@@ -601,7 +691,7 @@ public class FakturaService {
     }
 
     Optional<Faktura> faktura;
-    if (partner.getPrivilegije() == 2047) {
+    if (PartnerPrivilegeUtils.isInternal(partner)) {
       faktura = fakturaRepository.findById(id);
     } else {
       faktura = fakturaRepository.findByPpidAndId(partner.getPpid(), id);

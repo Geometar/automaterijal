@@ -322,3 +322,312 @@ databaseChangeLog:
               - column:
                   name: brand_name
                   type: VARCHAR(120)
+
+  - changeSet:
+      id: 2025-12-30-1
+      author: codex
+      changes:
+        - dropTable:
+            tableName: web_order_items
+            cascadeConstraints: true
+        - dropTable:
+            tableName: web_order_headers
+            cascadeConstraints: true
+        - createTable:
+            tableName: web_order_headers
+            columns:
+              - column:
+                  name: id
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: ppid
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: order_id
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_update
+                  type: TIMESTAMP(19)
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: date_sent
+                  type: datetime(6)
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: SMALLINT
+                  defaultValueNumeric: 1
+                  constraints:
+                    nullable: false
+              - column:
+                  name: nuid
+                  type: SMALLINT
+              - column:
+                  name: niid
+                  type: SMALLINT
+              - column:
+                  name: prid
+                  type: SMALLINT
+              - column:
+                  name: back_order
+                  type: TINYINT(3)
+                  defaultValueNumeric: 0
+                  constraints:
+                    nullable: false
+              - column:
+                  name: realizovati
+                  type: TINYINT(3)
+                  defaultValueNumeric: 1
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_by_ppid
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: mes_isporuke_ppid
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: napomena
+                  type: VARCHAR(200)
+              - column:
+                  name: iznos_naruceno
+                  type: DECIMAL(15, 4)
+                  defaultValueNumeric: 0.0000
+                  constraints:
+                    nullable: false
+              - column:
+                  name: iznos_potvrdjeno
+                  type: DECIMAL(15, 4)
+                  defaultValueNumeric: 0.0000
+                  constraints:
+                    nullable: false
+              - column:
+                  name: ext_order_id
+                  type: VARCHAR(20)
+              - column:
+                  name: erp_exported
+                  type: TINYINT(3)
+                  defaultValueNumeric: 0
+                  constraints:
+                    nullable: false
+              - column:
+                  name: internal_order
+                  type: TINYINT(1)
+                  defaultValueNumeric: 0
+                  constraints:
+                    nullable: false
+        - createIndex:
+            tableName: web_order_headers
+            indexName: idx_web_order_headers_ppid_date
+            columns:
+              - column:
+                  name: ppid
+              - column:
+                  name: date_sent
+        - createTable:
+            tableName: web_order_items
+            columns:
+              - column:
+                  name: id
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: web_order_id
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: ppid
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: robaid
+                  type: INT
+                  constraints:
+                    nullable: true
+              - column:
+                  name: tecdoc_article_id
+                  type: BIGINT
+              - column:
+                  name: brand
+                  type: VARCHAR(20)
+              - column:
+                  name: brand_name
+                  type: VARCHAR(120)
+              - column:
+                  name: catalog_number
+                  type: VARCHAR(60)
+              - column:
+                  name: article_name
+                  type: VARCHAR(255)
+              - column:
+                  name: magacinid
+                  type: INT
+                  defaultValueNumeric: 0
+                  constraints:
+                    nullable: false
+              - column:
+                  name: kolicina
+                  type: DECIMAL(15, 3)
+                  defaultValueNumeric: 0.000
+                  constraints:
+                    nullable: false
+              - column:
+                  name: potvrdjena_kolicina
+                  type: DECIMAL(15, 3)
+                  defaultValueNumeric: 0.000
+                  constraints:
+                    nullable: false
+              - column:
+                  name: cena
+                  type: DECIMAL(15, 2)
+                  defaultValueNumeric: 0.00
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: SMALLINT
+                  defaultValueNumeric: 1
+                  constraints:
+                    nullable: false
+              - column:
+                  name: kolicine
+                  type: TINYINT(3)
+                  defaultValueNumeric: 1
+                  constraints:
+                    nullable: false
+              - column:
+                  name: rabat
+                  type: DECIMAL(15, 2)
+                  defaultValueNumeric: 0.00
+                  constraints:
+                    nullable: false
+              - column:
+                  name: pdv
+                  type: DECIMAL(15, 2)
+                  defaultValueNumeric: 0.00
+                  constraints:
+                    nullable: false
+              - column:
+                  name: insert_datetime
+                  type: TIMESTAMP(19)
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: napomena
+                  type: VARCHAR(50)
+              - column:
+                  name: item_source
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: provider_code
+                  type: VARCHAR(40)
+              - column:
+                  name: provider_key
+                  type: VARCHAR(60)
+              - column:
+                  name: provider_article_number
+                  type: VARCHAR(60)
+              - column:
+                  name: provider_available
+                  type: TINYINT(1)
+              - column:
+                  name: provider_total_quantity
+                  type: INT
+              - column:
+                  name: provider_warehouse
+                  type: VARCHAR(20)
+              - column:
+                  name: provider_warehouse_name
+                  type: VARCHAR(120)
+              - column:
+                  name: provider_warehouse_quantity
+                  type: INT
+              - column:
+                  name: provider_purchase_price
+                  type: DECIMAL(15, 4)
+              - column:
+                  name: provider_price
+                  type: DECIMAL(15, 4)
+              - column:
+                  name: provider_currency
+                  type: VARCHAR(10)
+              - column:
+                  name: provider_lead_time_business_days
+                  type: INT
+              - column:
+                  name: provider_delivery_to_customer_days_min
+                  type: INT
+              - column:
+                  name: provider_delivery_to_customer_days_max
+                  type: INT
+              - column:
+                  name: provider_next_dispatch_cutoff
+                  type: VARCHAR(10)
+              - column:
+                  name: provider_backorder
+                  type: TINYINT(1)
+              - column:
+                  name: provider_message
+                  type: VARCHAR(255)
+              - column:
+                  name: image_url
+                  type: VARCHAR(255)
+              - column:
+                  name: image_is_url
+                  type: TINYINT(1)
+              - column:
+                  name: image_roba_slika
+                  type: VARCHAR(255)
+        - addForeignKeyConstraint:
+            baseTableName: web_order_items
+            baseColumnNames: web_order_id
+            referencedTableName: web_order_headers
+            referencedColumnNames: id
+            constraintName: fk_web_order_items_header
+            onDelete: CASCADE
+        - createIndex:
+            tableName: web_order_items
+            indexName: idx_web_order_items_header
+            columns:
+              - column:
+                  name: web_order_id
+        - createIndex:
+            tableName: web_order_items
+            indexName: idx_web_order_items_source_status
+            columns:
+              - column:
+                  name: item_source
+              - column:
+                  name: status
+        - createIndex:
+            tableName: web_order_items
+            indexName: idx_web_order_items_provider
+            columns:
+              - column:
+                  name: provider_key
+              - column:
+                  name: provider_article_number

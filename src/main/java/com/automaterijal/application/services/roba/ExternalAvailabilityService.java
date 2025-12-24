@@ -13,6 +13,7 @@ import com.automaterijal.application.integration.shared.ProviderRoutingContext;
 import com.automaterijal.application.integration.shared.ProviderRoutingPurpose;
 import com.automaterijal.application.integration.shared.WarehouseAvailability;
 import com.automaterijal.application.utils.CatalogNumberUtils;
+import com.automaterijal.application.utils.PartnerPrivilegeUtils;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -297,6 +298,7 @@ public class ExternalAvailabilityService {
       return null;
     }
 
+    boolean exposePurchasePrice = PartnerPrivilegeUtils.isInternal(partner);
     String brand =
         dto != null && dto.getProizvodjac() != null ? dto.getProizvodjac().getProid() : null;
     String group = dto != null ? dto.getGrupa() : null;
@@ -312,7 +314,7 @@ public class ExternalAvailabilityService {
         .warehouse(availability.getWarehouse())
         .warehouseName(availability.getWarehouseName())
         .warehouseQuantity(availability.getWarehouseQuantity())
-        .purchasePrice(availability.getPurchasePrice())
+        .purchasePrice(exposePurchasePrice ? availability.getPurchasePrice() : null)
         .price(finalCustomerPrice)
         .currency(availability.getCurrency())
         .leadTimeBusinessDays(availability.getLeadTimeBusinessDays())

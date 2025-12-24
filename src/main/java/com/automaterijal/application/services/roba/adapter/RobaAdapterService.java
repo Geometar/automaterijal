@@ -165,11 +165,11 @@ public class RobaAdapterService {
     // Primeni filtere po proizvođaču i grupi ako je potrebno
     allRoba = robaFilterService.applyOptionalFilters(parametri, allRoba);
 
-    // Sortiraj robu po grupi ako kategorija nije zadana
-    allRoba = robaSortService.sortByGroup(allRoba);
-
-    // Sortiraj robu po podgrupi
-    allRoba = robaSortService.sortByTecDocSubGroup(allRoba, parametri);
+    // Sortiraj robu po grupi uz prioritet tačnog kataloškog broja (ako postoji).
+    allRoba =
+        StringUtils.hasText(parametri.getTrazenaRec())
+            ? robaSortService.sortByGroupWithExact(allRoba, parametri.getTrazenaRec())
+            : robaSortService.sortByGroup(allRoba);
 
     // Paginacija rezultata
     magacinDto.setRobaDto(

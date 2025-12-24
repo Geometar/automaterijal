@@ -37,6 +37,7 @@ import org.springframework.util.StringUtils;
 public class FebiInventoryProvider implements InventoryProvider {
 
   private static final String PROVIDER_NAME = "febi-stock";
+  private static final int MAX_ITEMS_PER_REQUEST = 25;
 
   private final FebiAuthClient authClient;
   private final FebiStockClient stockClient;
@@ -108,23 +109,68 @@ public class FebiInventoryProvider implements InventoryProvider {
             ? properties.getDefaultDestinationCountry()
             : "RS";
 
-    FebiStockRequest request =
-        FebiStockRequest.builder()
-            .destinationCountry(destination)
-            .items(query.getArticleNumbers())
-            .bypassArticleErrors(properties.isBypassArticleErrors())
-            .build();
-
-    try {
-      String token = authClient.getAccessToken();
-      FebiStockResponse response = stockClient.fetchStock(request, token);
-      return mapToResult(response, destination, query.getBrand());
-    } catch (ProviderAuthenticationException ex) {
-      // Token might be expired; refresh once and retry
-      String token = authClient.refreshTokenNow();
-      FebiStockResponse response = stockClient.fetchStock(request, token);
-      return mapToResult(response, destination, query.getBrand());
+    List<String> articles = query.getArticleNumbers();
+    if (articles.size() <= MAX_ITEMS_PER_REQUEST) {
+      FebiStockRequest request =
+          FebiStockRequest.builder()
+              .destinationCountry(destination)
+              .items(articles)
+              .bypassArticleErrors(properties.isBypassArticleErrors())
+              .build();
+      try {
+        String token = authClient.getAccessToken();
+        FebiStockResponse response = stockClient.fetchStock(request, token);
+        return mapToResult(response, destination, query.getBrand());
+      } catch (ProviderAuthenticationException ex) {
+        // Token might be expired; refresh once and retry
+        String token = authClient.refreshTokenNow();
+        FebiStockResponse response = stockClient.fetchStock(request, token);
+        return mapToResult(response, destination, query.getBrand());
+      }
     }
+
+    String token = authClient.getAccessToken();
+    List<AvailabilityItem> mergedItems = new java.util.ArrayList<>();
+    String resolvedDestination = null;
+
+    for (int i = 0; i < articles.size(); i += MAX_ITEMS_PER_REQUEST) {
+      List<String> batch = articles.subList(i, Math.min(i + MAX_ITEMS_PER_REQUEST, articles.size()));
+      FebiStockRequest request =
+          FebiStockRequest.builder()
+              .destinationCountry(destination)
+              .items(batch)
+              .bypassArticleErrors(properties.isBypassArticleErrors())
+              .build();
+      try {
+        FebiStockResponse response = stockClient.fetchStock(request, token);
+        AvailabilityResult partial = mapToResult(response, destination, query.getBrand());
+        if (resolvedDestination == null && partial != null) {
+          resolvedDestination = partial.getDestinationCountry();
+        }
+        if (partial != null && partial.getItems() != null) {
+          mergedItems.addAll(partial.getItems());
+        }
+      } catch (ProviderAuthenticationException ex) {
+        token = authClient.refreshTokenNow();
+        FebiStockResponse response = stockClient.fetchStock(request, token);
+        AvailabilityResult partial = mapToResult(response, destination, query.getBrand());
+        if (resolvedDestination == null && partial != null) {
+          resolvedDestination = partial.getDestinationCountry();
+        }
+        if (partial != null && partial.getItems() != null) {
+          mergedItems.addAll(partial.getItems());
+        }
+      }
+    }
+
+    return AvailabilityResult.builder()
+        .provider(providerName())
+        .providerType("inventory")
+        .status(ProviderCallStatus.SUCCESS)
+        .destinationCountry(
+            StringUtils.hasText(resolvedDestination) ? resolvedDestination : destination)
+        .items(mergedItems)
+        .build();
   }
 
   private AvailabilityResult mapToResult(

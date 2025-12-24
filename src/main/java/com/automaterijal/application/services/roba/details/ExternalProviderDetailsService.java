@@ -12,6 +12,7 @@ import com.automaterijal.application.integration.shared.ProviderDetailsResult;
 import com.automaterijal.application.integration.shared.ProviderRoutingContext;
 import com.automaterijal.application.integration.shared.ProviderRoutingPurpose;
 import com.automaterijal.application.services.roba.ProviderPricingService;
+import com.automaterijal.application.utils.PartnerPrivilegeUtils;
 import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.Locale;
@@ -108,6 +109,7 @@ public class ExternalProviderDetailsService {
       String group = dto.getGrupa();
       BigDecimal finalCustomerPrice =
           providerPricingService.calculateCustomerPrice(availability, group, brand, partner);
+      boolean exposePurchasePrice = PartnerPrivilegeUtils.isInternal(partner);
       ProviderAvailabilityDto priced =
           ProviderAvailabilityDto.builder()
               .brand(availability.getBrand())
@@ -118,7 +120,7 @@ public class ExternalProviderDetailsService {
               .warehouse(availability.getWarehouse())
               .warehouseName(availability.getWarehouseName())
               .warehouseQuantity(availability.getWarehouseQuantity())
-              .purchasePrice(availability.getPurchasePrice())
+              .purchasePrice(exposePurchasePrice ? availability.getPurchasePrice() : null)
               .price(finalCustomerPrice)
               .currency(availability.getCurrency())
               .leadTimeBusinessDays(availability.getLeadTimeBusinessDays())

@@ -12,6 +12,7 @@ import com.automaterijal.application.services.PartnerService;
 import com.automaterijal.application.services.security.UserDetailsService;
 import com.automaterijal.application.services.security.UsersService;
 import com.automaterijal.application.utils.PartnerSpringBeanUtils;
+import com.automaterijal.application.utils.PartnerPrivilegeUtils;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import lombok.AccessLevel;
@@ -112,7 +113,7 @@ public class PartnerController {
   @GetMapping(value = "/komercijalsti")
   public ResponseEntity<List<Partner>> vratiSveKomercijaliste(final Authentication authentication) {
     final var partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
-    if (partner.getPrivilegije().intValue() != 2047) {
+    if (!PartnerPrivilegeUtils.isInternal(partner)) {
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nije Admin");
     } else {
       return ResponseEntity.ok(partnerService.vratiSveKomercijaliste());
@@ -123,7 +124,7 @@ public class PartnerController {
   public ResponseEntity<List<PartnerDto>> pretraziPartnerePoNazivu(
       final Authentication authentication, @RequestParam final String naziv) {
     final var partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
-    if (partner == null || partner.getPrivilegije().intValue() != 2047) {
+    if (!PartnerPrivilegeUtils.isInternal(partner)) {
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nije Admin");
     }
     if (naziv == null || naziv.trim().isEmpty()) {
@@ -136,7 +137,7 @@ public class PartnerController {
   public ResponseEntity<Partner> vratiPartnera(
       @PathVariable("ppid") Integer ppid, final Authentication authentication) {
     Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
-    if (partner.getPrivilegije() != 2047) {
+    if (!PartnerPrivilegeUtils.isInternal(partner)) {
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nije Admin");
     }
     return ResponseEntity.ok(partnerService.vratiPartnera(ppid));
@@ -156,7 +157,7 @@ public class PartnerController {
   public ResponseEntity<PartnerCardResponseDto> vratiKarticuZaAdmina(
       final Authentication authentication, @PathVariable("ppid") final Integer ppid) {
     final var partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
-    if (partner == null || partner.getPrivilegije().intValue() != 2047) {
+    if (!PartnerPrivilegeUtils.isInternal(partner)) {
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nije Admin");
     }
     return ResponseEntity.ok(partnerCardService.vratiKarticuZaPartnera(ppid));
@@ -182,7 +183,7 @@ public class PartnerController {
       @RequestParam(name = "vrdok") String vrDok,
       @RequestParam(name = "brdok") String brDok) {
     final var partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
-    if (partner == null || partner.getPrivilegije().intValue() != 2047) {
+    if (!PartnerPrivilegeUtils.isInternal(partner)) {
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nije Admin");
     }
     return ResponseEntity.ok(partnerCardService.vratiDetaljeDokumenta(ppid, vrDok, brDok, true));

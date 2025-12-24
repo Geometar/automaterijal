@@ -14,14 +14,27 @@ public interface WebOrderHeaderRepository extends JpaRepository<WebOrderHeader, 
   Page<WebOrderHeader> findByDateSentGreaterThanAndDateSentLessThanOrderByDateSentDesc(
       Pageable pageable, Timestamp vremeOd, Timestamp vremeDo);
 
+  Page<WebOrderHeader> findByDateSentGreaterThanAndDateSentLessThanAndInternalOrderOrderByDateSentDesc(
+      Pageable pageable, Timestamp vremeOd, Timestamp vremeDo, Integer internalOrder);
+
   long countByDateSentGreaterThanAndDateSentLessThanAndErpExported(
       Timestamp vremeOd, Timestamp vremeDo, Integer erpExported);
+
+  long countByDateSentGreaterThanAndDateSentLessThanAndErpExportedAndInternalOrder(
+      Timestamp vremeOd, Timestamp vremeDo, Integer erpExported, Integer internalOrder);
 
   Page<WebOrderHeader> findByPpidAndDateSentGreaterThanAndDateSentLessThanOrderByDateSentDesc(
       Integer ppid, Pageable pageable, Timestamp vremeOd, Timestamp vremeDo);
 
+  Page<WebOrderHeader>
+      findByPpidAndDateSentGreaterThanAndDateSentLessThanAndInternalOrderOrderByDateSentDesc(
+          Integer ppid, Pageable pageable, Timestamp vremeOd, Timestamp vremeDo, Integer internalOrder);
+
   long countByPpidAndDateSentGreaterThanAndDateSentLessThanAndErpExported(
       Integer ppid, Timestamp vremeOd, Timestamp vremeDo, Integer erpExported);
+
+  long countByPpidAndDateSentGreaterThanAndDateSentLessThanAndErpExportedAndInternalOrder(
+      Integer ppid, Timestamp vremeOd, Timestamp vremeDo, Integer erpExported, Integer internalOrder);
 
   Optional<WebOrderHeader> findByPpidAndId(Integer ppid, Integer id);
 

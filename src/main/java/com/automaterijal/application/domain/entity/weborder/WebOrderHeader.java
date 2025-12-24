@@ -69,6 +69,9 @@ public class WebOrderHeader {
   @Column(name = "erp_exported")
   Integer erpExported;
 
+  @Column(name = "internal_order")
+  Integer internalOrder;
+
   @OneToMany(
       mappedBy = "header",
       fetch = FetchType.EAGER,

@@ -13,6 +13,7 @@ import com.automaterijal.application.services.roba.search.RobaSearchService;
 import com.automaterijal.application.services.roba.showcase.ShowcaseService;
 import com.automaterijal.application.services.tecdoc.TecDocAttributeService;
 import com.automaterijal.application.utils.PartnerSpringBeanUtils;
+import com.automaterijal.application.utils.PartnerPrivilegeUtils;
 import com.automaterijal.application.utils.RobaSpringBeanUtils;
 import java.util.List;
 import java.util.Optional;
@@ -107,7 +108,7 @@ public class RobaController {
       @RequestBody(required = false) String tekst,
       Authentication authentication) {
     var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
-    if (uPartner != null && uPartner.getPrivilegije() == 2047) {
+    if (PartnerPrivilegeUtils.isInternal(uPartner)) {
       log.info("Sacuvan tekst za robu {}", robaId);
       robaTekstService.sacuvajTekst(new RobaTekst(robaId, tekst));
       return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -124,7 +125,7 @@ public class RobaController {
       Authentication authentication) {
 
     var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
-    if (uPartner == null || uPartner.getPrivilegije() != 2047) {
+    if (!PartnerPrivilegeUtils.isInternal(uPartner)) {
       log.error("Neautorizovan pokusaj da se uploaduje slika za robu {}", robaId);
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nije Admin");
     }
@@ -145,7 +146,7 @@ public class RobaController {
       @PathVariable("robaID") Long robaId, Authentication authentication) {
 
     var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
-    if (uPartner == null || uPartner.getPrivilegije() != 2047) {
+    if (!PartnerPrivilegeUtils.isInternal(uPartner)) {
       log.error("Neautorizovan pokusaj da se uploaduje slika za robu {}", robaId);
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nije Admin");
     }
@@ -166,7 +167,7 @@ public class RobaController {
       Authentication authentication) {
 
     var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
-    if (uPartner == null || uPartner.getPrivilegije() != 2047) {
+    if (!PartnerPrivilegeUtils.isInternal(uPartner)) {
       log.error("Neautorizovan pokušaj čuvanja atribute za robu {}", robaId);
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nije Admin");
     }
@@ -186,7 +187,7 @@ public class RobaController {
       @PathVariable("robaID") Long robaId, Authentication authentication) {
 
     var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
-    if (uPartner == null || uPartner.getPrivilegije() != 2047) {
+    if (!PartnerPrivilegeUtils.isInternal(uPartner)) {
       log.error("Neautorizovan pokušaj čuvanja atribute za robu {}", robaId);
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nije Admin");
     }
