@@ -54,7 +54,7 @@ public class RobaSortService {
   }
 
   private Comparator<RobaLightDto> getGroupComparator(String wanted, Integer exactPodgrupa) {
-    return Comparator.<RobaLightDto>comparingInt(dto -> exactMatchRank(dto, wanted))
+    return Comparator.<RobaLightDto>comparingInt(dto -> exactMatchRankIfAvailable(dto, wanted))
         .thenComparingInt(this::availabilityRank)
         .thenComparing(dto -> dto == null || dto.getRobaid() == null) // TecDoc-only na kraj
         .thenComparing(robaDto -> robaDto.getPodGrupa() == 0) // Podgrupa ID 0 na kraj
@@ -69,6 +69,13 @@ public class RobaSortService {
       return 1;
     }
     return isExactMatch(dto, wanted) ? 0 : 1;
+  }
+
+  private int exactMatchRankIfAvailable(RobaLightDto dto, String wanted) {
+    if (availabilityRank(dto) >= 2) {
+      return 1;
+    }
+    return exactMatchRank(dto, wanted);
   }
 
   private boolean isExactMatch(RobaLightDto dto, String wanted) {
