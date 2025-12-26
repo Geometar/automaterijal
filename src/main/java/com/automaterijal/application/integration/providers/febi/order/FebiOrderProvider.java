@@ -5,6 +5,7 @@ import com.automaterijal.application.domain.entity.weborder.WebOrderHeader;
 import com.automaterijal.application.domain.entity.weborder.WebOrderItem;
 import com.automaterijal.application.integration.providers.febi.FebiAuthClient;
 import com.automaterijal.application.integration.providers.febi.order.FebiOrderProperties.OrderMode;
+import com.automaterijal.application.integration.providers.febi.order.model.FebiOrderBulkResponse;
 import com.automaterijal.application.integration.providers.febi.order.model.FebiOrderRequest;
 import com.automaterijal.application.integration.providers.febi.order.model.FebiOrderResponse;
 import com.automaterijal.application.integration.providers.febi.order.model.FebiOrderRequest.CustomerOrder;
@@ -43,7 +44,8 @@ public class FebiOrderProvider implements ProviderOrderProvider {
 
   private static final String PROVIDER_NAME = "febi-stock";
   private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ISO_DATE;
-  // TODO: Remove this hard guard when live ordering is approved for Febi.
+  private static final int BULK_ORDER_THRESHOLD = 100;
+  // TODO: Remove this hard guard when live ordering is approved by Febi.
   private static final boolean FORCE_MOCK_ORDERING = true;
 
   @NonNull FebiAuthClient authClient;
@@ -100,20 +102,15 @@ public class FebiOrderProvider implements ProviderOrderProvider {
           .build();
     }
 
+    boolean bulkOrder = isBulkOrder(itemsByPosition);
     try {
       String token = authClient.getAccessToken();
-      if (orderProperties.isSimulateBeforeCreate()) {
-        FebiOrderRequest simulateRequest = withType(orderRequest, "simulate");
-        FebiOrderResponse simulateResponse = orderClient.simulateOrder(simulateRequest, token);
-        if (simulateResponse == null) {
-          return ProviderOrderResult.builder()
-              .status(ProviderCallStatus.ERROR)
-              .message("Febi simulate returned empty response")
-              .build();
-        }
-      }
-
+      // TODO: Simulate endpoint intentionally not used per vendor guidance.
       FebiOrderRequest createRequest = withType(orderRequest, "create");
+      if (bulkOrder) {
+        FebiOrderBulkResponse response = orderClient.createBulkOrder(createRequest, token);
+        return buildBulkResult(response);
+      }
       FebiOrderResponse response = orderClient.createOrder(createRequest, token);
       return buildLiveResult(response, itemsByPosition);
     } catch (ProviderRateLimitException ex) {
@@ -313,6 +310,29 @@ public class FebiOrderProvider implements ProviderOrderProvider {
         .build();
   }
 
+  private ProviderOrderResult buildBulkResult(FebiOrderBulkResponse response) {
+    if (response == null || !StringUtils.hasText(response.getStatus())) {
+      return ProviderOrderResult.builder()
+          .status(ProviderCallStatus.ERROR)
+          .message("Febi bulk order response was empty")
+          .build();
+    }
+
+    String status = response.getStatus();
+    String message =
+        StringUtils.hasText(response.getTimestamp())
+            ? status + " at " + response.getTimestamp()
+            : status;
+
+    ProviderCallStatus callStatus =
+        "accepted".equalsIgnoreCase(status) ? ProviderCallStatus.SUCCESS : ProviderCallStatus.ERROR;
+
+    return ProviderOrderResult.builder()
+        .status(callStatus)
+        .message(message)
+        .build();
+  }
+
   private String resolveArticleNumber(WebOrderItem item) {
     if (item == null) {
       return null;
@@ -352,6 +372,10 @@ public class FebiOrderProvider implements ProviderOrderProvider {
       offset = 1;
     }
     return LocalDate.now().plusDays(offset).format(DATE_FORMAT);
+  }
+
+  private boolean isBulkOrder(Map<String, WebOrderItem> itemsByPosition) {
+    return itemsByPosition != null && itemsByPosition.size() > BULK_ORDER_THRESHOLD;
   }
 
   private String firstMessage(List<FebiOrderResponse.Message> messages) {
