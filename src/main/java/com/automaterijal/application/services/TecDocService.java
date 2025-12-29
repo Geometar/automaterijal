@@ -94,7 +94,8 @@ public class TecDocService {
   }
 
   public List<LinkageTargetDetails> getLinkageTargetDetails(Integer id, String type) {
-    return tecDocClient.getLinkageTargets(id, type);
+    Integer normalizedId = normalizeLinkageTargetId(id, type);
+    return tecDocClient.getLinkageTargets(normalizedId, type);
   }
 
   public ArticlesResponse getAssociatedArticles(Integer id, String type, String assembleGroupId) {
@@ -353,7 +354,8 @@ public class TecDocService {
         vehicle.getPowerHpTo(),
         vehicle.getCylinderCapacity(),
         vehicle.getYearOfConstructionFrom(),
-        vehicle.getYearOfConstructionTo());
+        vehicle.getYearOfConstructionTo(),
+        vehicle.getLinkingTargetType());
   }
 
   private static final class ModelGroup {
@@ -366,5 +368,15 @@ public class TecDocService {
       this.modelId = modelId;
       this.modelName = modelName;
     }
+  }
+
+  private Integer normalizeLinkageTargetId(Integer id, String type) {
+    if (id == null || type == null) {
+      return id;
+    }
+    if ("O".equalsIgnoreCase(type.trim()) && id >= 1_000_000) {
+      return id - 1_000_000;
+    }
+    return id;
   }
 }

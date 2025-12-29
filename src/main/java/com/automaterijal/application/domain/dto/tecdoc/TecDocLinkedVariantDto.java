@@ -16,4 +16,5 @@ public class TecDocLinkedVariantDto {
   Integer cylinderCapacity;
   Integer productionYearFrom;
   Integer productionYearTo;
+  String linkingTargetType;
 }
