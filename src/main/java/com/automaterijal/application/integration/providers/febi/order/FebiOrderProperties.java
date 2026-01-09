@@ -18,10 +18,10 @@ public class FebiOrderProperties {
   private OrderMode mode = OrderMode.MOCK;
   private String baseUrl =
       "https://bis1.prod.apimanagement.eu20.hana.ondemand.com/p/v1/order-api/api/v1";
-  private String deliveryParty;
-  private String shippingCondition;
-  private Integer requestedDeliveryOffsetDays = 1;
+  private String deliveryParty = "0001001983";
+  private String shippingCondition = "S9";
+  private Integer requestedDeliveryOffsetDays = 0;
   private boolean simulateBeforeCreate = false;
   private boolean requireAvailability = true;
-  private String customerOrderPrefix = "WEB-";
+  private String customerOrderPrefix = "AK AM ";
 }

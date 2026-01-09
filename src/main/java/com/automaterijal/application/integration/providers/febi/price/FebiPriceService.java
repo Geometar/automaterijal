@@ -28,16 +28,35 @@ public class FebiPriceService {
     reload();
   }
 
-  public void reload() {
+  public ReloadResult reload() {
     if (!StringUtils.hasText(properties.getPriceListPath())) {
       log.warn("integration.febi.price-list-path not configured; prices will be empty");
       priceIndex.clear();
-      return;
+      return new ReloadResult(0, null, null, null);
     }
-    Map<String, FebiPriceRecord> loaded =
-        loader.load(new File(properties.getPriceListPath()));
+
+    File priceList = new File(properties.getPriceListPath());
+    Map<String, FebiPriceRecord> loaded = loader.load(priceList);
     priceIndex.clear();
     priceIndex.putAll(loaded);
+    return new ReloadResult(
+        priceIndex.size(),
+        priceList.getAbsolutePath(),
+        priceList.exists() ? priceList.lastModified() : null,
+        priceList.exists() ? priceList.length() : null);
+  }
+
+  public Optional<PriceFileInfo> priceFileInfo() {
+    if (!StringUtils.hasText(properties.getPriceListPath())) {
+      return Optional.empty();
+    }
+    File priceList = new File(properties.getPriceListPath());
+    if (!priceList.exists() || !priceList.isFile()) {
+      return Optional.empty();
+    }
+    return Optional.of(
+        new PriceFileInfo(
+            priceList.getAbsolutePath(), priceList.lastModified(), priceList.length()));
   }
 
   public Optional<PriceQuote> findPrice(String articleNumber) {
@@ -85,4 +104,8 @@ public class FebiPriceService {
 
   public record PriceQuote(
       String articleNumber, BigDecimal purchasePrice, BigDecimal sellingPrice, String currency) {}
+
+  public record ReloadResult(Integer count, String path, Long lastModified, Long sizeBytes) {}
+
+  public record PriceFileInfo(String path, Long lastModified, Long sizeBytes) {}
 }

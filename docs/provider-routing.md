@@ -108,12 +108,12 @@ integration:
     order:
       mode: DISABLED
       base-url: https://bis1.prod.apimanagement.eu20.hana.ondemand.com/p/v1/order-api/api/v1
-      customer-order-prefix: WEB-
-      requested-delivery-offset-days: 1
+      customer-order-prefix: "AK AM "
+      requested-delivery-offset-days: 0
       simulate-before-create: false
       require-availability: true
-      delivery-party: ${FEBI_ORDER_DELIVERY_PARTY:}
-      shipping-condition: ${FEBI_ORDER_SHIPPING_CONDITION:}
+      delivery-party: ${FEBI_ORDER_DELIVERY_PARTY:0001001983}
+      shipping-condition: ${FEBI_ORDER_SHIPPING_CONDITION:S9}
 ```
 
 Environment defaults:
@@ -135,10 +135,10 @@ Environment defaults:
     "header": {
       "customer_order_number": "WEB-123456",
       "delivery_party": {
-        "partner_code": "000000815"
+        "partner_code": "0001001983"
       },
       "requested_date_of_delivery": "2024-01-07",
-      "shipping_condition": "33",
+      "shipping_condition": "S9",
       "type": "create"
     },
     "positions": [

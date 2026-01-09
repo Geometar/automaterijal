@@ -45,8 +45,6 @@ public class FebiOrderProvider implements ProviderOrderProvider {
   private static final String PROVIDER_NAME = "febi-stock";
   private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ISO_DATE;
   private static final int BULK_ORDER_THRESHOLD = 100;
-  // TODO: Remove this hard guard when live ordering is approved by Febi.
-  private static final boolean FORCE_MOCK_ORDERING = true;
 
   @NonNull FebiAuthClient authClient;
   @NonNull FebiOrderClient orderClient;
@@ -80,11 +78,6 @@ public class FebiOrderProvider implements ProviderOrderProvider {
           .build();
     }
 
-    boolean liveMode = isLiveMode(request.isMock());
-    if (!liveMode) {
-      return buildMockResult(eligibleItems);
-    }
-
     if (!StringUtils.hasText(orderProperties.getDeliveryParty())
         || !StringUtils.hasText(orderProperties.getShippingCondition())) {
       return ProviderOrderResult.builder()
@@ -102,17 +95,27 @@ public class FebiOrderProvider implements ProviderOrderProvider {
           .build();
     }
 
-    boolean bulkOrder = isBulkOrder(itemsByPosition);
+    boolean liveMode = isLiveMode(request.isMock());
     try {
       String token = authClient.getAccessToken();
-      // TODO: Simulate endpoint intentionally not used per vendor guidance.
-      FebiOrderRequest createRequest = withType(orderRequest, "create");
-      if (bulkOrder) {
-        FebiOrderBulkResponse response = orderClient.createBulkOrder(createRequest, token);
-        return buildBulkResult(response);
+      if (liveMode) {
+        boolean bulkOrder = isBulkOrder(itemsByPosition);
+        FebiOrderRequest createRequest = withType(orderRequest, "create");
+        if (bulkOrder) {
+          FebiOrderBulkResponse response = orderClient.createBulkOrder(createRequest, token);
+          return buildBulkResult(response);
+        }
+        FebiOrderResponse response = orderClient.createOrder(createRequest, token);
+        return buildLiveResult(response, itemsByPosition);
       }
-      FebiOrderResponse response = orderClient.createOrder(createRequest, token);
-      return buildLiveResult(response, itemsByPosition);
+
+      FebiOrderRequest simulateRequest = withType(orderRequest, "simulate");
+      FebiOrderResponse response = orderClient.simulateOrder(simulateRequest, token);
+      ProviderOrderResult result = buildLiveResult(response, itemsByPosition);
+      if (result != null) {
+        result.setMocked(true);
+      }
+      return result;
     } catch (ProviderRateLimitException ex) {
       return ProviderOrderResult.builder()
           .status(ProviderCallStatus.RATE_LIMITED)
@@ -172,9 +175,6 @@ public class FebiOrderProvider implements ProviderOrderProvider {
   }
 
   private boolean isLiveMode(boolean requestMock) {
-    if (FORCE_MOCK_ORDERING) {
-      return false;
-    }
     if (requestMock) {
       return false;
     }
@@ -187,26 +187,6 @@ public class FebiOrderProvider implements ProviderOrderProvider {
       }
     }
     return false;
-  }
-
-  private ProviderOrderResult buildMockResult(List<WebOrderItem> items) {
-    List<ProviderOrderLineResult> lineResults = new ArrayList<>();
-    for (WebOrderItem item : items) {
-      Integer confirmedQuantity = toRequestedQuantity(item.getKolicina());
-      lineResults.add(
-          ProviderOrderLineResult.builder()
-              .webOrderItemId(item.getId())
-              .confirmedQuantity(confirmedQuantity)
-              .backorder(false)
-              .message("mock")
-              .build());
-    }
-    return ProviderOrderResult.builder()
-        .status(ProviderCallStatus.SUCCESS)
-        .mocked(true)
-        .lineResults(lineResults)
-        .message("Mock Febi order executed")
-        .build();
   }
 
   private FebiOrderRequest buildOrderRequest(
@@ -364,14 +344,7 @@ public class FebiOrderProvider implements ProviderOrderProvider {
   }
 
   private String buildRequestedDate() {
-    int offset =
-        orderProperties.getRequestedDeliveryOffsetDays() != null
-            ? orderProperties.getRequestedDeliveryOffsetDays()
-            : 1;
-    if (offset < 1) {
-      offset = 1;
-    }
-    return LocalDate.now().plusDays(offset).format(DATE_FORMAT);
+    return LocalDate.now().format(DATE_FORMAT);
   }
 
   private boolean isBulkOrder(Map<String, WebOrderItem> itemsByPosition) {
