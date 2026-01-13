@@ -89,6 +89,9 @@ public class WebOrderItem {
   @Column(name = "provider_key")
   String providerKey;
 
+  @Column(name = "provider_delivery_party")
+  String providerDeliveryParty;
+
   @Column(name = "provider_article_number")
   String providerArticleNumber;
 

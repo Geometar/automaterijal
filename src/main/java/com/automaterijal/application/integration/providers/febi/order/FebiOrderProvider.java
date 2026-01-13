@@ -222,10 +222,12 @@ public class FebiOrderProvider implements ProviderOrderProvider {
     String customerOrderNumber = buildCustomerOrderNumber(header);
     String requestedDate = buildRequestedDate();
 
+    String deliveryPartyCode = resolveDeliveryParty(items);
+
     Header headerRequest =
         Header.builder()
             .customerOrderNumber(customerOrderNumber)
-            .deliveryParty(DeliveryParty.builder().partnerCode(orderProperties.getDeliveryParty()).build())
+            .deliveryParty(DeliveryParty.builder().partnerCode(deliveryPartyCode).build())
             .requestedDateOfDelivery(requestedDate)
             .shippingCondition(orderProperties.getShippingCondition())
             .type("create")
@@ -349,6 +351,40 @@ public class FebiOrderProvider implements ProviderOrderProvider {
 
   private boolean isBulkOrder(Map<String, WebOrderItem> itemsByPosition) {
     return itemsByPosition != null && itemsByPosition.size() > BULK_ORDER_THRESHOLD;
+  }
+
+  private String resolveDeliveryParty(List<WebOrderItem> items) {
+    String candidate = null;
+    if (items != null) {
+      for (WebOrderItem item : items) {
+        if (item == null) {
+          continue;
+        }
+        String code = item.getProviderDeliveryParty();
+        if (StringUtils.hasText(code)) {
+          candidate = code.trim();
+          break;
+        }
+      }
+    }
+
+    if (isAllowedDeliveryParty(candidate)) {
+      return candidate.trim();
+    }
+
+    return orderProperties.getDeliveryParty();
+  }
+
+  private boolean isAllowedDeliveryParty(String code) {
+    if (!StringUtils.hasText(code)) {
+      return false;
+    }
+    String trimmed = code.trim();
+    if (trimmed.equals(orderProperties.getDeliveryParty())) {
+      return true;
+    }
+    String pickup = orderProperties.getPickupDeliveryParty();
+    return StringUtils.hasText(pickup) && trimmed.equals(pickup.trim());
   }
 
   private String firstMessage(List<FebiOrderResponse.Message> messages) {

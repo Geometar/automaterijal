@@ -110,6 +110,7 @@ integration:
       simulate-before-create: false
       require-availability: true
       delivery-party: ${FEBI_ORDER_DELIVERY_PARTY:0001001983}
+      pickup-delivery-party: ${FEBI_ORDER_PICKUP_DELIVERY_PARTY:0001003023}
       shipping-condition: ${FEBI_ORDER_SHIPPING_CONDITION:S9}
 
 pricing:

@@ -631,3 +631,13 @@ databaseChangeLog:
                   name: provider_key
               - column:
                   name: provider_article_number
+  - changeSet:
+      id: 2025-03-05-1
+      author: codex
+      changes:
+        - addColumn:
+            tableName: web_order_items
+            columns:
+              - column:
+                  name: provider_delivery_party
+                  type: VARCHAR(20)

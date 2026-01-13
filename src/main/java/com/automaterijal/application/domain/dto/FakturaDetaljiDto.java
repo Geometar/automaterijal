@@ -28,5 +28,6 @@ public class FakturaDetaljiDto {
     ArticleAvailabilityStatus availabilityStatus;
     Boolean providerBackorder;
     String providerMessage;
+    String providerDeliveryParty;
 
 }

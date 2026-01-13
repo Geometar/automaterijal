@@ -19,6 +19,7 @@ public class FebiOrderProperties {
   private String baseUrl =
       "https://bis1.prod.apimanagement.eu20.hana.ondemand.com/p/v1/order-api/api/v1";
   private String deliveryParty = "0001001983";
+  private String pickupDeliveryParty = "0001003023";
   private String shippingCondition = "S9";
   private Integer requestedDeliveryOffsetDays = 0;
   private boolean simulateBeforeCreate = false;

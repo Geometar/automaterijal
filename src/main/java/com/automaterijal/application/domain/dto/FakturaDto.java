@@ -23,4 +23,5 @@ public class FakturaDto {
     Integer brojStavki;
     String partner;
     List<FakturaDetaljiDto> detalji;
+    List<ProviderOrderOptionDto> providerOptions;
 }

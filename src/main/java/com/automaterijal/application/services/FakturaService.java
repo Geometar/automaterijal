@@ -3,6 +3,7 @@ package com.automaterijal.application.services;
 import com.automaterijal.application.domain.dto.FakturaDetaljiDto;
 import com.automaterijal.application.domain.dto.FakturaDto;
 import com.automaterijal.application.domain.dto.ProizvodjacDTO;
+import com.automaterijal.application.domain.dto.ProviderOrderOptionDto;
 import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.dto.ValueHelpDto;
 import com.automaterijal.application.domain.constants.OrderItemSource;
@@ -31,8 +32,11 @@ import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -186,6 +190,8 @@ public class FakturaService {
     header.setErpExported(0);
     header.setInternalOrder(forceProvider ? 1 : 0);
 
+    Map<String, String> providerDeliveryParties =
+        resolveProviderDeliveryParties(fakturaDto, partner);
     var orderDetails = Optional.ofNullable(fakturaDto.getDetalji()).orElse(List.of());
     List<WebOrderItem> items =
         orderDetails.stream()
@@ -232,6 +238,7 @@ public class FakturaService {
                     item.setProviderDeliveryToCustomerDaysMax(a.getDeliveryToCustomerBusinessDaysMax());
                     item.setProviderNextDispatchCutoff(a.getNextDispatchCutoff());
                   }
+                  applyProviderDeliveryParty(item, providerDeliveryParties);
 
                   if (detalji.getSlika() != null) {
                     item.setImageUrl(detalji.getSlika().getSlikeUrl());
@@ -244,6 +251,57 @@ public class FakturaService {
 
     header.setItems(items);
     return webOrderHeaderRepository.save(header);
+  }
+
+  private Map<String, String> resolveProviderDeliveryParties(
+      FakturaDto fakturaDto, Partner partner) {
+    if (fakturaDto == null || !PartnerPrivilegeUtils.isInternal(partner)) {
+      return Map.of();
+    }
+    List<ProviderOrderOptionDto> options =
+        Optional.ofNullable(fakturaDto.getProviderOptions()).orElse(List.of());
+    if (options.isEmpty()) {
+      return Map.of();
+    }
+    Map<String, String> resolved = new HashMap<>();
+    for (ProviderOrderOptionDto option : options) {
+      if (option == null) {
+        continue;
+      }
+      String providerKey = normalizeProviderKey(option.getProviderKey());
+      if (!StringUtils.hasText(providerKey)) {
+        continue;
+      }
+      String deliveryParty = option.getDeliveryParty();
+      if (!StringUtils.hasText(deliveryParty)) {
+        continue;
+      }
+      resolved.put(providerKey, deliveryParty.trim());
+    }
+    return resolved;
+  }
+
+  private void applyProviderDeliveryParty(
+      WebOrderItem item, Map<String, String> providerDeliveryParties) {
+    if (item == null || providerDeliveryParties == null || providerDeliveryParties.isEmpty()) {
+      return;
+    }
+    String providerKey = normalizeProviderKey(item.getProviderKey());
+    if (!StringUtils.hasText(providerKey)) {
+      return;
+    }
+    String deliveryParty = providerDeliveryParties.get(providerKey);
+    if (!StringUtils.hasText(deliveryParty)) {
+      return;
+    }
+    item.setProviderDeliveryParty(deliveryParty.trim());
+  }
+
+  private String normalizeProviderKey(String providerKey) {
+    if (!StringUtils.hasText(providerKey)) {
+      return null;
+    }
+    return providerKey.trim().toLowerCase(Locale.ROOT);
   }
 
   private void saveErpStockOrder(
@@ -567,6 +625,7 @@ public class FakturaService {
                   }
                   d.setProviderBackorder(item.getProviderBackorder());
                   d.setProviderMessage(item.getProviderMessage());
+                  d.setProviderDeliveryParty(item.getProviderDeliveryParty());
                   return d;
                 })
             .toList();
