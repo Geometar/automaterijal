@@ -21,4 +21,5 @@ public class FebiPriceRecord {
   String level3;
   BigDecimal netPrice;
   String currency;
+  Integer packagingUnit;
 }

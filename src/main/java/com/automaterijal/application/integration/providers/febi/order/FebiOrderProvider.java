@@ -20,6 +20,7 @@ import com.automaterijal.application.integration.shared.ProviderOrderResult;
 import com.automaterijal.application.integration.shared.exception.ProviderAuthenticationException;
 import com.automaterijal.application.integration.shared.exception.ProviderRateLimitException;
 import com.automaterijal.application.integration.shared.exception.ProviderUnavailableException;
+import com.automaterijal.application.integration.providers.febi.price.FebiPriceService;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -49,6 +50,7 @@ public class FebiOrderProvider implements ProviderOrderProvider {
   @NonNull FebiAuthClient authClient;
   @NonNull FebiOrderClient orderClient;
   @NonNull FebiOrderProperties orderProperties;
+  @NonNull FebiPriceService priceService;
   @NonNull Environment environment;
 
   @Override
@@ -201,8 +203,12 @@ public class FebiOrderProvider implements ProviderOrderProvider {
     int index = 1;
     for (WebOrderItem item : items) {
       String articleNumber = resolveArticleNumber(item);
-      Integer quantity = toRequestedQuantity(item.getKolicina());
-      if (!StringUtils.hasText(articleNumber) || quantity == null || quantity <= 0) {
+      Integer baseQuantity = toRequestedQuantity(item.getKolicina());
+      if (!StringUtils.hasText(articleNumber) || baseQuantity == null || baseQuantity <= 0) {
+        continue;
+      }
+      Integer quantity = applyPackagingUnit(baseQuantity, resolvePackagingUnit(articleNumber));
+      if (quantity == null || quantity <= 0) {
         continue;
       }
       String position = String.valueOf(index++);
@@ -330,6 +336,22 @@ public class FebiOrderProvider implements ProviderOrderProvider {
       return null;
     }
     return Math.toIntExact(Math.round(quantity));
+  }
+
+  private int resolvePackagingUnit(String articleNumber) {
+    return priceService.findPackagingUnit(articleNumber).orElse(1);
+  }
+
+  private Integer applyPackagingUnit(Integer quantity, int packagingUnit) {
+    if (quantity == null) {
+      return null;
+    }
+    int multiplier = packagingUnit > 0 ? packagingUnit : 1;
+    long result = (long) quantity * (long) multiplier;
+    if (result > Integer.MAX_VALUE) {
+      return Integer.MAX_VALUE;
+    }
+    return (int) result;
   }
 
   private String buildCustomerOrderNumber(WebOrderHeader header) {

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -26,6 +27,7 @@ public class FebiPriceListLoader {
   private static final String COL_LEVEL3 = "level 3";
   private static final String COL_NET_PRICE = "neto cena";
   private static final String COL_CURRENCY = "valuta";
+  private static final String COL_PACKAGING_UNIT = "jedinica pakovanja";
 
   public Map<String, FebiPriceRecord> load(File priceFile) {
     Map<String, FebiPriceRecord> records = new HashMap<>();
@@ -57,13 +59,14 @@ public class FebiPriceListLoader {
         String level3 = readString(row, headerIndex.get(COL_LEVEL3));
         BigDecimal netPrice = readDecimal(row, headerIndex.get(COL_NET_PRICE));
         String currency = readString(row, headerIndex.get(COL_CURRENCY));
+        Integer packagingUnit = readInteger(row, headerIndex.get(COL_PACKAGING_UNIT));
 
         if (article == null || netPrice == null) {
           continue;
         }
 
         FebiPriceRecord record =
-            buildRecord(brand, article, level3, netPrice, currency);
+            buildRecord(brand, article, level3, netPrice, currency, packagingUnit);
         records.put(record.getNormalizedArticleNumber(), record);
         if (record.getNormalizedArticleNumberNoLeadingZeros() != null) {
           records.put(record.getNormalizedArticleNumberNoLeadingZeros(), record);
@@ -117,6 +120,18 @@ public class FebiPriceListLoader {
     }
   }
 
+  private Integer readInteger(Row row, Integer index) {
+    BigDecimal value = readDecimal(row, index);
+    if (value == null) {
+      return null;
+    }
+    try {
+      return value.setScale(0, RoundingMode.HALF_UP).intValueExact();
+    } catch (ArithmeticException ex) {
+      return null;
+    }
+  }
+
   private String readCellAsString(Cell cell) {
     if (cell == null) return null;
     if (cell.getCellType() == CellType.NUMERIC) {
@@ -130,7 +145,12 @@ public class FebiPriceListLoader {
   }
 
   private FebiPriceRecord buildRecord(
-      String brand, String article, String level3, BigDecimal netPrice, String currency) {
+      String brand,
+      String article,
+      String level3,
+      BigDecimal netPrice,
+      String currency,
+      Integer packagingUnit) {
     String normalized = normalizeArticle(article, false);
     String normalizedNoZeros = normalizeArticle(article, true);
     return FebiPriceRecord.builder()
@@ -141,6 +161,7 @@ public class FebiPriceListLoader {
         .level3(level3)
         .netPrice(netPrice)
         .currency(currency)
+        .packagingUnit(packagingUnit)
         .build();
   }
 

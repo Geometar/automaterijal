@@ -85,6 +85,24 @@ public class FebiPriceService {
             record.getCurrency()));
   }
 
+  public Optional<Integer> findPackagingUnit(String articleNumber) {
+    if (!StringUtils.hasText(articleNumber)) {
+      return Optional.empty();
+    }
+    String normalized = normalize(articleNumber, false);
+    String normalizedNoZeros = normalize(articleNumber, true);
+
+    FebiPriceRecord record =
+        Optional.ofNullable(priceIndex.get(normalized))
+            .orElse(priceIndex.get(normalizedNoZeros));
+
+    if (record == null || record.getPackagingUnit() == null || record.getPackagingUnit() <= 0) {
+      return Optional.empty();
+    }
+
+    return Optional.of(record.getPackagingUnit());
+  }
+
   private BigDecimal applyMargin(BigDecimal purchasePrice, String level3) {
     if (purchasePrice == null) return BigDecimal.ZERO;
     BigDecimal factor =
