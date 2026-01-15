@@ -1,6 +1,7 @@
 package com.automaterijal.application.domain.repository;
 
 import com.automaterijal.application.domain.dto.admin.HogwartsOrderRow;
+import com.automaterijal.application.domain.dto.admin.HogwartsRevenueAggRow;
 import com.automaterijal.application.domain.entity.Faktura;
 import java.sql.Timestamp;
 import java.util.List;
@@ -49,4 +50,13 @@ public interface FakturaRepository extends JpaRepository<Faktura, Integer> {
         @Param("statuses") List<Integer> statuses,
         @Param("since") Timestamp since,
         Pageable pageable);
+
+    @Query(
+        "select "
+            + "count(f) as orders, "
+            + "coalesce(sum(f.iznosNarucen), 0) as revenue, "
+            + "count(distinct f.ppid) as activePartners "
+            + "from Faktura f "
+            + "where f.dataSent is not null and f.dataSent >= :from and f.dataSent < :to")
+    HogwartsRevenueAggRow fetchRevenueAgg(@Param("from") Timestamp from, @Param("to") Timestamp to);
 }
