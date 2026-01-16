@@ -5,12 +5,15 @@ import com.automaterijal.application.domain.dto.tecdoc.AssemblyGroupWrapper;
 import com.automaterijal.application.domain.dto.tecdoc.Manufcatures;
 import com.automaterijal.application.domain.dto.tecdoc.Model;
 import com.automaterijal.application.services.TecDocService;
+import com.automaterijal.application.services.roba.details.RobaDetailsService;
 import com.automaterijal.application.services.roba.search.RobaSearchService;
 import com.automaterijal.application.domain.dto.tecdoc.TecDocLinkedManufacturerTargetsDto;
 import com.automaterijal.application.tecdoc.ArticleLinkedAllLinkingTargetManufacturer2Response;
 import com.automaterijal.application.tecdoc.LinkageTargetDetails;
 import com.automaterijal.application.utils.PartnerSpringBeanUtils;
 import com.automaterijal.application.utils.RobaSpringBeanUtils;
+import java.io.ByteArrayInputStream;
+import java.net.URLConnection;
 import java.util.List;
 import java.util.Optional;
 import lombok.AccessLevel;
@@ -36,17 +39,32 @@ public class TecDocController {
 
   @NonNull final TecDocService tecDocService;
   @NonNull final RobaSearchService robaSearchService;
+  @NonNull final RobaDetailsService robaDetailsService;
   @NonNull final RobaSpringBeanUtils robaSpringBeanUtils;
   @NonNull final PartnerSpringBeanUtils partnerSpringBeanUtils;
 
   /** Sa dobijenim dokument id-jem, vracamo nazamo byte[] dokument */
   @GetMapping(value = "dokument/{dokumentId}")
   public ResponseEntity<byte[]> vratiRobuPojedinacno(
-      @PathVariable("dokumentId") String dokumentId) {
-    byte[] documentBytes = tecDocService.vratiDokument(dokumentId, 0);
+      @PathVariable("dokumentId") String dokumentId,
+      @RequestParam(name = "tipSlike", required = false, defaultValue = "0") Integer tipSlike) {
+    byte[] documentBytes = tecDocService.vratiDokument(dokumentId, tipSlike);
+    if (documentBytes == null || documentBytes.length == 0) {
+      return ResponseEntity.notFound().build();
+    }
+
+    String mimeType = null;
+    try (ByteArrayInputStream bais = new ByteArrayInputStream(documentBytes)) {
+      mimeType = URLConnection.guessContentTypeFromStream(bais);
+    } catch (Exception ignore) {
+      // ignore
+    }
+    MediaType contentType =
+        mimeType != null ? MediaType.parseMediaType(mimeType) : MediaType.APPLICATION_OCTET_STREAM;
+
     return ResponseEntity.ok()
-        .contentType(MediaType.APPLICATION_PDF) // Or appropriate content type
-        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=document.pdf") // Optional
+        .contentType(contentType)
+        .header(HttpHeaders.CONTENT_DISPOSITION, "inline")
         .body(documentBytes);
   }
 
@@ -71,6 +89,18 @@ public class TecDocController {
     return ResponseEntity.ok().body(tecDocService.getModelSubTypes(manuId, modelId, type));
   }
 
+  @GetMapping(value = "/roba/{tecDocArticleId}")
+  public ResponseEntity<com.automaterijal.application.domain.dto.robadetalji.RobaExpandedDto>
+      getExternalRobaDetails(
+          @PathVariable("tecDocArticleId") Long tecDocArticleId,
+          Authentication authentication) {
+    var uPartner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+    return robaDetailsService
+        .fetchExternalRobaDetailsByTecDocArticleId(tecDocArticleId, uPartner)
+        .map(ResponseEntity::ok)
+        .orElse(ResponseEntity.notFound().build());
+  }
+
   @GetMapping(value = "/linkageTargets")
   public ResponseEntity<List<LinkageTargetDetails>> getLinkageTargets(
       @RequestParam(value = "tecdocTargetType") String type,
@@ -92,6 +122,20 @@ public class TecDocController {
                     HttpStatus.NOT_FOUND, "TecDoc artikal nije pronađen za zadatu robu"));
   }
 
+  @GetMapping(value = "/articles/by-article/{tecDocArticleId}/linked-manufacturers")
+  public ResponseEntity<ArticleLinkedAllLinkingTargetManufacturer2Response>
+      getArticleLinkedManufacturersByArticleId(
+          @PathVariable("tecDocArticleId") Long tecDocArticleId,
+          @RequestParam("linkingTargetType") String linkingTargetType) {
+    return tecDocService
+        .getArticleLinkedManufacturersByArticleId(tecDocArticleId, linkingTargetType)
+        .map(ResponseEntity::ok)
+        .orElseThrow(
+            () ->
+                new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "TecDoc artikal nije pronađen za zadati articleId"));
+  }
+
   @GetMapping(value = "/articles/{robaId}/linked-targets")
   public ResponseEntity<List<TecDocLinkedManufacturerTargetsDto>> getArticleLinkedTargets(
       @PathVariable("robaId") Long robaId,
@@ -103,6 +147,14 @@ public class TecDocController {
             () ->
                 new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "TecDoc artikal nije pronađen za zadatu robu"));
+  }
+
+  @GetMapping(value = "/articles/by-article/{tecDocArticleId}/linked-targets")
+  public ResponseEntity<List<TecDocLinkedManufacturerTargetsDto>> getArticleLinkedTargetsByArticleId(
+      @PathVariable("tecDocArticleId") Long tecDocArticleId,
+      @RequestParam("linkingTargetType") String linkingTargetType) {
+    return ResponseEntity.ok()
+        .body(tecDocService.getArticleLinkedTargetsByArticleId(tecDocArticleId, linkingTargetType));
   }
 
   @GetMapping(value = "/articles")
@@ -126,6 +178,7 @@ public class TecDocController {
             null,
             null,
             naStanju,
+            Optional.empty(),
             Optional.empty(),
             podgrupe,
             true,

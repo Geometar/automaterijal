@@ -41,10 +41,6 @@ public class ProizvodjacService {
     magacinDto.setProizvodjaci(mapper.map(proizvodjaci));
   }
 
-  public List<Proizvodjac> pronadjiSveProizvodjaceZaVrstu() {
-    return findAll();
-  }
-
   public Optional<Proizvodjac> vratiProizvodjacaPoPk(String id) {
     return proizvodjacRepository.findById(id);
   }
@@ -55,7 +51,8 @@ public class ProizvodjacService {
     }
     return proizvodjacRepository.findByProidIn(ids).stream()
         .filter(Objects::nonNull)
-        .collect(Collectors.toMap(Proizvodjac::getProid, Function.identity(), (left, right) -> left));
+        .collect(
+            Collectors.toMap(Proizvodjac::getProid, Function.identity(), (left, right) -> left));
   }
 
   public List<Proizvodjac> findAll() {

@@ -3,7 +3,7 @@ package com.automaterijal.application.services.roba.cache;
 import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.repository.ShowcaseRepositoryJooq;
 import com.automaterijal.application.services.ImageService;
-import com.automaterijal.application.services.roba.util.RobaHelper;
+import com.automaterijal.application.services.roba.RobaEnrichmentService;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -19,7 +19,7 @@ import org.springframework.util.StringUtils;
 public class ShowcaseCacheService {
 
   private final ShowcaseRepositoryJooq repo;
-  private final RobaHelper robaHelper;
+  private final RobaEnrichmentService robaEnrichmentService;
   private final ShowcaseLookupService lookupService;
   private final ImageService imageService;
 
@@ -44,7 +44,7 @@ public class ShowcaseCacheService {
     fillCategorieName(items, categoryNames);
 
     // resolve real image from FS (fills bytes); skip items without bytes
-    items.forEach(i -> i.setSlika(robaHelper.resolveImage(i.getRobaid(), i.getSlika())));
+    items.forEach(i -> i.setSlika(robaEnrichmentService.resolveImage(i.getRobaid(), i.getSlika())));
 
     var kept =
         items.stream()

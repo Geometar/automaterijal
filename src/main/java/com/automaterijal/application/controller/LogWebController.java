@@ -3,6 +3,7 @@ package com.automaterijal.application.controller;
 import com.automaterijal.application.domain.dto.LogWebDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.services.LogWebService;
+import com.automaterijal.application.utils.PartnerPrivilegeUtils;
 import com.automaterijal.application.utils.PartnerSpringBeanUtils;
 import lombok.AccessLevel;
 import lombok.NonNull;
@@ -35,7 +36,7 @@ public class LogWebController {
       @RequestParam(required = false) Integer pageSize,
       Authentication authentication) {
     Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
-    if (partner.getPrivilegije() != 2047) {
+    if (!PartnerPrivilegeUtils.isInternal(partner)) {
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nije Admin");
     }
     var iPage = page == null ? 0 : page;

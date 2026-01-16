@@ -6,6 +6,7 @@ import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.services.FakturaService;
 import com.automaterijal.application.services.PartnerService;
 import com.automaterijal.application.utils.GeneralUtil;
+import com.automaterijal.application.utils.PartnerPrivilegeUtils;
 import com.automaterijal.application.utils.PartnerSpringBeanUtils;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -36,7 +37,7 @@ public class FakturaController {
 
   @NonNull PartnerService partnerService;
 
-  @GetMapping(value = "/{ppid}")
+  @GetMapping(value = "/{ppid:\\d+}")
   public ResponseEntity<Page<FakturaDto>> vratiSveFaktureKorisnika(
       @RequestParam(required = false) Integer page,
       @RequestParam(required = false) Integer pageSize,
@@ -69,6 +70,51 @@ public class FakturaController {
     return ResponseEntity.ok(fakture);
   }
 
+  @GetMapping(value = "/admin")
+  public ResponseEntity<Page<FakturaDto>> getAllOrdersAdmin(
+      @RequestParam(required = false) Integer page,
+      @RequestParam(required = false) Integer pageSize,
+      @RequestParam(required = false) BigDecimal dateFrom,
+      @RequestParam(required = false) BigDecimal dateTo,
+      @RequestParam(required = false) Boolean internal,
+      Authentication authentication) {
+    Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+    if (partner == null || !PartnerPrivilegeUtils.isInternal(partner)) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Unauthorized");
+    }
+
+    var iPage = page == null ? 0 : page;
+    var iPageSize = pageSize == null ? 10 : pageSize;
+    var iVremeOd =
+        dateFrom == null
+            ? LocalDate.now().minusYears(5).atStartOfDay()
+            : GeneralUtil.timestampToLDT(dateFrom.longValue()).atStartOfDay();
+    var iVremeDo =
+        dateTo == null
+            ? LocalDate.now().atStartOfDay().plusDays(1)
+            : GeneralUtil.timestampToLDT(dateTo.longValue()).atStartOfDay().plusDays(1);
+
+    Page<FakturaDto> fakture =
+        fakturaService.vratiSveFaktureUlogovanogKorisnika(
+            partner, iPage, iPageSize, iVremeOd, iVremeDo, internal);
+    return ResponseEntity.ok(fakture);
+  }
+
+  @GetMapping(value = "/admin/{id:\\d+}")
+  public ResponseEntity<FakturaDto> vratiFakturuAdmin(
+      @PathVariable(name = "id") Integer id, Authentication authentication) {
+    Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+    if (partner == null || !PartnerPrivilegeUtils.isInternal(partner)) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Unauthorized");
+    }
+
+    FakturaDto fakture = fakturaService.vratiFakuturuPojedinacno(partner, id);
+    if (fakture != null) {
+      return ResponseEntity.ok(fakture);
+    }
+    throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Nismo nasli fakturu");
+  }
+
   @PostMapping
   public ResponseEntity<List<RobaLightDto>> podnesiFakturu(
       @RequestBody FakturaDto fakturaDto, Authentication authentication) {
@@ -87,7 +133,7 @@ public class FakturaController {
     return ResponseEntity.ok(response);
   }
 
-  @GetMapping(value = "/{ppid}/{id}")
+  @GetMapping(value = "/{ppid:\\d+}/{id:\\d+}")
   public ResponseEntity<FakturaDto> vratiFakturu(
       @PathVariable(name = "ppid") Integer ppid,
       @PathVariable(name = "id") Integer id,
@@ -99,7 +145,7 @@ public class FakturaController {
           HttpStatus.UNAUTHORIZED, "Unauthorized to update this partner");
     } else if (ppid != null
         && ppid.intValue() != partner.getPpid().intValue()
-        && partner.getPrivilegije() != 2047) {
+        && !PartnerPrivilegeUtils.isInternal(partner)) {
 
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Los zahtev");
     }

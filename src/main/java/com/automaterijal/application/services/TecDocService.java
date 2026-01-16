@@ -56,6 +56,13 @@ public class TecDocService {
     return tecDocClient.vratiDetaljeArtikla(Arrays.asList(articleId));
   }
 
+  public List<ArticlesByIds6Record> vratiDetaljeArtiklaBatch(List<Long> articleIds) {
+    if (articleIds == null || articleIds.isEmpty()) {
+      return List.of();
+    }
+    return tecDocClient.vratiDetaljeArtikla(articleIds);
+  }
+
   //    ******************** TecDoc Atributi  ********************
 
   public List<TecDocAtributi> vratiTecDocAtributePrekoRobeId(Long robaId) {
@@ -87,7 +94,8 @@ public class TecDocService {
   }
 
   public List<LinkageTargetDetails> getLinkageTargetDetails(Integer id, String type) {
-    return tecDocClient.getLinkageTargets(id, type);
+    Integer normalizedId = normalizeLinkageTargetId(id, type);
+    return tecDocClient.getLinkageTargets(normalizedId, type);
   }
 
   public ArticlesResponse getAssociatedArticles(Integer id, String type, String assembleGroupId) {
@@ -109,8 +117,8 @@ public class TecDocService {
     tecDocLogicService.fetchAndSaveTecDocAttributes(robaLightDtos);
   }
 
-  public Optional<ArticleLinkedAllLinkingTargetManufacturer2Response>
-      getArticleLinkedManufacturers(Long robaId, String linkingTargetType) {
+  public Optional<ArticleLinkedAllLinkingTargetManufacturer2Response> getArticleLinkedManufacturers(
+      Long robaId, String linkingTargetType) {
     if (linkingTargetType == null || linkingTargetType.isBlank()) {
       return Optional.empty();
     }
@@ -126,6 +134,17 @@ public class TecDocService {
                         articleId, sanitizedType)));
   }
 
+  public Optional<ArticleLinkedAllLinkingTargetManufacturer2Response>
+      getArticleLinkedManufacturersByArticleId(Long articleId, String linkingTargetType) {
+    if (articleId == null || linkingTargetType == null || linkingTargetType.isBlank()) {
+      return Optional.empty();
+    }
+
+    String sanitizedType = linkingTargetType.trim().toUpperCase(Locale.ROOT);
+    return Optional.ofNullable(
+        tecDocClient.getArticleLinkedAllLinkingTargetManufacturer2(articleId, sanitizedType));
+  }
+
   public List<TecDocLinkedManufacturerDto> getLinkedManufacturersByArticleId(
       Long articleId, String linkingTargetType) {
     if (articleId == null || linkingTargetType == null || linkingTargetType.isBlank()) {
@@ -137,9 +156,7 @@ public class TecDocService {
     ArticleLinkedAllLinkingTargetManufacturer2Response response =
         tecDocClient.getArticleLinkedAllLinkingTargetManufacturer2(articleId, sanitizedType);
 
-    if (response == null
-        || response.getData() == null
-        || response.getData().getArray() == null) {
+    if (response == null || response.getData() == null || response.getData().getArray() == null) {
       return List.of();
     }
 
@@ -148,18 +165,6 @@ public class TecDocService {
         .filter(record -> record.getManuId() != null)
         .map(record -> new TecDocLinkedManufacturerDto(record.getManuId(), record.getManuName()))
         .toList();
-  }
-
-  public List<TecDocLinkedManufacturerDto> getLinkedManufacturersForRoba(
-      Long robaId, String linkingTargetType) {
-    if (robaId == null) {
-      return List.of();
-    }
-
-    return tecDocAttributeService
-        .findTecDocArticleIdByRobaId(robaId)
-        .map(articleId -> getLinkedManufacturersByArticleId(articleId, linkingTargetType))
-        .orElse(List.of());
   }
 
   public Optional<List<TecDocLinkedManufacturerTargetsDto>> getArticleLinkedTargets(
@@ -172,7 +177,19 @@ public class TecDocService {
 
     return tecDocAttributeService
         .findTecDocArticleIdByRobaId(robaId)
-        .flatMap(articleId -> Optional.of(fetchLinkedManufacturersWithTargets(articleId, sanitizedType)));
+        .flatMap(
+            articleId ->
+                Optional.of(fetchLinkedManufacturersWithTargets(articleId, sanitizedType)));
+  }
+
+  public List<TecDocLinkedManufacturerTargetsDto> getArticleLinkedTargetsByArticleId(
+      Long articleId, String linkingTargetType) {
+    if (articleId == null || linkingTargetType == null || linkingTargetType.isBlank()) {
+      return List.of();
+    }
+
+    String sanitizedType = linkingTargetType.trim().toUpperCase(Locale.ROOT);
+    return fetchLinkedManufacturersWithTargets(articleId, sanitizedType);
   }
 
   private List<TecDocLinkedManufacturerTargetsDto> fetchLinkedManufacturersWithTargets(
@@ -258,17 +275,16 @@ public class TecDocService {
           details.subList(index, Math.min(details.size(), index + batchSize));
 
       ArticleLinkedAllLinkingTargetsByIds3Response response =
-          tecDocClient.getArticleLinkedAllLinkingTargetsByIds3(
-              articleId, linkingTargetType, batch);
+          tecDocClient.getArticleLinkedAllLinkingTargetsByIds3(articleId, linkingTargetType, batch);
 
-      if (response == null
-          || response.getData() == null
-          || response.getData().getArray() == null) {
+      if (response == null || response.getData() == null || response.getData().getArray() == null) {
         continue;
       }
 
       aggregated.addAll(
-          response.getData().getArray().stream().filter(Objects::nonNull).collect(Collectors.toList()));
+          response.getData().getArray().stream()
+              .filter(Objects::nonNull)
+              .collect(Collectors.toList()));
     }
 
     return aggregated;
@@ -287,19 +303,25 @@ public class TecDocService {
       for (ArticleLinkedVehiclesById2Record vehicle :
           record.getLinkedVehicles().getArray().stream().filter(Objects::nonNull).toList()) {
         Long modelId = vehicle.getModelId() != null ? vehicle.getModelId() : vehicle.getCarId();
+        if (modelId == null) {
+          continue;
+        }
+
         String modelName =
             vehicle.getModelDesc() != null
                 ? vehicle.getModelDesc()
                 : Optional.ofNullable(vehicle.getCarDesc()).orElse("Unknown model");
         String key = modelId + "|" + modelName;
 
-        ModelGroup group =
-            grouped.computeIfAbsent(key, k -> new ModelGroup(modelId, modelName));
+        ModelGroup group = grouped.computeIfAbsent(key, k -> new ModelGroup(modelId, modelName));
 
-        long articleLinkKey = record.getArticleLinkId();
-        long linkingTargetKey = record.getLinkingTargetId();
-        if (linkingTargetKey == 0L && vehicle.getCarId() != null) {
+        Long articleLinkKey = record.getArticleLinkId();
+        Long linkingTargetKey = record.getLinkingTargetId();
+        if ((linkingTargetKey == null || linkingTargetKey == 0L) && vehicle.getCarId() != null) {
           linkingTargetKey = vehicle.getCarId();
+        }
+        if (linkingTargetKey == null) {
+          continue;
         }
         String variantKey = articleLinkKey + ":" + linkingTargetKey;
 
@@ -316,9 +338,13 @@ public class TecDocService {
 
   private TecDocLinkedVariantDto toVariant(
       ArticleLinkedAllLinkingTargetsByIds3Record record, ArticleLinkedVehiclesById2Record vehicle) {
+    Long linkingTargetId = record.getLinkingTargetId();
+    if ((linkingTargetId == null || linkingTargetId == 0L) && vehicle.getCarId() != null) {
+      linkingTargetId = vehicle.getCarId();
+    }
     return new TecDocLinkedVariantDto(
         record.getArticleLinkId(),
-        record.getLinkingTargetId(),
+        linkingTargetId,
         vehicle.getCarId(),
         vehicle.getCarDesc(),
         vehicle.getConstructionType(),
@@ -328,7 +354,8 @@ public class TecDocService {
         vehicle.getPowerHpTo(),
         vehicle.getCylinderCapacity(),
         vehicle.getYearOfConstructionFrom(),
-        vehicle.getYearOfConstructionTo());
+        vehicle.getYearOfConstructionTo(),
+        vehicle.getLinkingTargetType());
   }
 
   private static final class ModelGroup {
@@ -341,5 +368,15 @@ public class TecDocService {
       this.modelId = modelId;
       this.modelName = modelName;
     }
+  }
+
+  private Integer normalizeLinkageTargetId(Integer id, String type) {
+    if (id == null || type == null) {
+      return id;
+    }
+    if ("O".equalsIgnoreCase(type.trim()) && id >= 1_000_000) {
+      return id - 1_000_000;
+    }
+    return id;
   }
 }

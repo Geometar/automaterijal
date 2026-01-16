@@ -5,6 +5,7 @@ import static com.automaterijal.db.tables.Komentar.KOMENTAR;
 
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.komercijalista.izvestaj.Komentar;
+import com.automaterijal.application.utils.PartnerPrivilegeUtils;
 import com.automaterijal.db.tables.records.FirmaRecord;
 import com.automaterijal.db.tables.records.KomentarRecord;
 import java.time.LocalDateTime;
@@ -33,7 +34,7 @@ public class IzvestajJooqRepository {
       Pageable pageable) {
     SelectWhereStep<KomentarRecord> komentarRecords = dslContext.selectFrom(KOMENTAR);
     SelectConditionStep<KomentarRecord> select = null;
-    if (partner.getPrivilegije() == 2047) {
+    if (PartnerPrivilegeUtils.isInternal(partner)) {
       select = komentarRecords.where("1=1");
     } else {
       select = komentarRecords.where(KOMENTAR.PPID.eq(partner.getPpid()));
@@ -50,7 +51,7 @@ public class IzvestajJooqRepository {
     if (vremeOd != null) {
       select.and(KOMENTAR.DATUM_KREIRANJA.greaterOrEqual(vremeOd));
     }
-    if (partner.getPrivilegije() == 2047 && komercijalista != null) {
+    if (PartnerPrivilegeUtils.isInternal(partner) && komercijalista != null) {
       select.and(KOMENTAR.PPID.eq(komercijalista));
     }
     select.orderBy(KOMENTAR.DATUM_KREIRANJA.desc());

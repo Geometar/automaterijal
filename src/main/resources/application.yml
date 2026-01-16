@@ -46,6 +46,11 @@ spring:
           starttls:
             enable: true
 
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+
 # Podesavanje scheduler-a
 schedule:
   izvestaj:
@@ -87,6 +92,36 @@ sitemap:
 blog:
   cover-image:
     directory: ../uploads/blog-cover
+
+integration:
+  providers:
+    rules:
+      - provider: febi-stock
+        enabled: true
+        priority: 100
+        purposes: [INVENTORY_ENRICHMENT, EXTERNAL_OFFER]
+        brands: [FEBI, BLUE]
+  febi:
+    order:
+      mode: DISABLED
+      base-url: https://bis1.prod.apimanagement.eu20.hana.ondemand.com/p/v1/order-api/api/v1
+      customer-order-prefix: "AK AM "
+      requested-delivery-offset-days: 0
+      simulate-before-create: false
+      require-availability: true
+      delivery-party: ${FEBI_ORDER_DELIVERY_PARTY:0001001983}
+      pickup-delivery-party: ${FEBI_ORDER_PICKUP_DELIVERY_PARTY:0001003023}
+      shipping-condition: ${FEBI_ORDER_SHIPPING_CONDITION:S9}
+
+pricing:
+  margin:
+    default-percent: 0.60
+    by-group:
+      ZAM: 0.40
+      AK: 0.30
+    by-provider:
+      FEBI-STOCK:
+        default-percent: 0.65
 
 roba:
   slika:

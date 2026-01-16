@@ -26,6 +26,7 @@ public class RobaSpringBeanUtils {
       List<String> mandatoryGrupe,
       List<String> mandatoryProid,
       Optional<Boolean> naStanju,
+      Optional<Boolean> dostupno,
       Optional<String> searchTerm,
       List<Integer> podgrupe,
       boolean tecdocPretaga,
@@ -49,6 +50,7 @@ public class RobaSpringBeanUtils {
             : new ArrayList<>();
 
     Boolean iNaStanju = naStanju.orElse(false);
+    Boolean iDostupno = dostupno.orElse(false);
 
     List<Integer> iPodgrupe = podgrupe;
 
@@ -71,6 +73,7 @@ public class RobaSpringBeanUtils {
         IMGrrupe,
         iMProid,
         iNaStanju,
+        iDostupno,
         iPodgrupe,
         iSearchTerm,
         tecdocPretaga,
@@ -86,6 +89,7 @@ public class RobaSpringBeanUtils {
       List<String> IMGrupe,
       List<String> iMProid,
       Boolean internalNaStanju,
+      Boolean internalDostupno,
       List<Integer> internaPodgrupe,
       String internalSearchTerm,
       boolean tecdocPretraga,
@@ -99,6 +103,7 @@ public class RobaSpringBeanUtils {
     up.setGrupa(IMGrupe);
     up.setMandatoryProid(iMProid);
     up.setNaStanju(internalNaStanju);
+    up.setDostupno(Boolean.TRUE.equals(internalDostupno));
     up.setTrazenaRec(internalSearchTerm);
     up.setPodgrupeZaPretragu(internaPodgrupe);
     up.setTecdocPretraga(tecdocPretraga);

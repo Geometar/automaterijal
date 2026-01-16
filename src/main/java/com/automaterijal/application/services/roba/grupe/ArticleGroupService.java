@@ -6,6 +6,8 @@ import com.automaterijal.application.domain.entity.Grupa;
 import com.automaterijal.application.domain.entity.PodGrupa;
 import com.automaterijal.application.domain.repository.GrupaRepository;
 import com.automaterijal.application.domain.repository.PodGrupaRepository;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Arrays;
 import java.util.List;
 import lombok.AccessLevel;
@@ -63,5 +65,14 @@ public class ArticleGroupService {
 
   public List<Grupa> findAll() {
     return grupaRepository.findAll();
+  }
+
+  public Map<String, String> groupNamesById() {
+    return grupaRepository.findAll().stream()
+        .filter(Objects::nonNull)
+        .filter(g -> g.getGrupaid() != null)
+        .collect(
+            java.util.stream.Collectors.toMap(
+                Grupa::getGrupaid, g -> Objects.requireNonNullElse(g.getNaziv(), ""), (a, b) -> a));
   }
 }

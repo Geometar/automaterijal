@@ -30,9 +30,19 @@ public class GeneralUtil {
   }
 
   public static <T> Page<T> createPageable(List<T> items, int pageSize, int pageNumber) {
-    int start = pageSize * pageNumber;
-    int end = Math.min((start + pageSize), items.size());
+    if (items == null) {
+      items = List.of();
+    }
+    int safePageSize = Math.max(1, pageSize);
+    int safePageNumber = Math.max(0, pageNumber);
+
+    int start = safePageSize * safePageNumber;
+    if (start >= items.size()) {
+      return new PageImpl<>(List.of(), PageRequest.of(safePageNumber, safePageSize), items.size());
+    }
+
+    int end = Math.min(start + safePageSize, items.size());
     return new PageImpl<>(
-        items.subList(start, end), PageRequest.of(pageNumber, pageSize), items.size());
+        items.subList(start, end), PageRequest.of(safePageNumber, safePageSize), items.size());
   }
 }

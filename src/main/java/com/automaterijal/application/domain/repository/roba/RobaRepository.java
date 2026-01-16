@@ -8,12 +8,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RobaRepository extends JpaRepository<Roba, Long> {
 
-  List<Roba> findByProizvodjacProid(String proid);
-
   Roba findByKatbrAndProizvodjacProidInAndStanjeGreaterThan(
       String katBr, List<String> proids, double stanje);
-
-  List<Roba> findByKatbr(String katBr);
 
   List<Roba> findByRobaidIn(List<Long> robaId);
 }

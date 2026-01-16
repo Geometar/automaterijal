@@ -3,6 +3,7 @@ package com.automaterijal.application.controller;
 import com.automaterijal.application.domain.dto.PartnerLogovanjeDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.services.AdminService;
+import com.automaterijal.application.utils.PartnerPrivilegeUtils;
 import com.automaterijal.application.utils.PartnerSpringBeanUtils;
 import lombok.AccessLevel;
 import lombok.NonNull;
@@ -38,7 +39,7 @@ public class AdminController {
   public ResponseEntity<Page<PartnerLogovanjeDto>> vratiUlogovanogPartnera(
       @RequestParam Integer page, @RequestParam Integer pageSize, Authentication authentication) {
     Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
-    if (partner.getPrivilegije() != 2047) {
+    if (!PartnerPrivilegeUtils.isInternal(partner)) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, NIJE_ADMIN);
     }
     return ResponseEntity.ok(adminService.vratiLogovanjePartnera(page, pageSize));

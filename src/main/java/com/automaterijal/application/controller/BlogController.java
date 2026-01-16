@@ -5,6 +5,7 @@ import com.automaterijal.application.domain.dto.blog.*;
 import com.automaterijal.application.domain.dto.common.PagedResponse;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.services.blog.BlogPostService;
+import com.automaterijal.application.utils.PartnerPrivilegeUtils;
 import com.automaterijal.application.utils.PartnerSpringBeanUtils;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -31,8 +32,6 @@ public class BlogController {
 
   private final BlogPostService blogPostService;
   private final PartnerSpringBeanUtils partnerSpringBeanUtils;
-
-  private static final int ADMIN_PRIVILEGIJE = 2047;
 
   @GetMapping("/posts")
   public PagedResponse<BlogPostPreviewDto> listPosts(
@@ -62,10 +61,7 @@ public class BlogController {
   @GetMapping("/posts/{slug}")
   public BlogPostDetailDto getPost(@PathVariable String slug, Authentication authentication) {
     Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
-    boolean isAdmin =
-        partner != null
-            && partner.getPrivilegije() != null
-            && partner.getPrivilegije().intValue() == ADMIN_PRIVILEGIJE;
+    boolean isAdmin = PartnerPrivilegeUtils.isInternal(partner);
     return isAdmin
         ? blogPostService.getPostIncludingDrafts(slug)
         : blogPostService.getPublishedPost(slug);

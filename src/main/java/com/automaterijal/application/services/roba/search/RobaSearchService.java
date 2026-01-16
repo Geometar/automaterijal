@@ -1,20 +1,28 @@
 package com.automaterijal.application.services.roba.search;
 
 import com.automaterijal.application.domain.constants.TecDocProizvodjaci;
+import com.automaterijal.application.domain.dto.ArticleAvailabilityStatus;
 import com.automaterijal.application.domain.dto.MagacinDto;
+import com.automaterijal.application.domain.dto.ProizvodjacDTO;
 import com.automaterijal.application.domain.dto.RobaLightDto;
-import com.automaterijal.application.domain.dto.PodgrupaDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
+import com.automaterijal.application.integration.shared.ProviderRoutingPurpose;
 import com.automaterijal.application.services.TecDocService;
+import com.automaterijal.application.services.roba.ExternalOfferService;
+import com.automaterijal.application.services.roba.ExternalOfferService.ExternalOfferPayload;
+import com.automaterijal.application.services.roba.RobaEnrichmentService;
 import com.automaterijal.application.services.roba.adapter.RobaAdapterService;
-import com.automaterijal.application.services.roba.util.TecDocCategoryMapper;
-import com.automaterijal.application.services.roba.util.RobaHelper;
+import com.automaterijal.application.services.roba.grupe.ArticleSubGroupService;
+import com.automaterijal.application.services.roba.sort.RobaSortService;
+import com.automaterijal.application.services.tecdoc.TecDocGenericArticleMappingService;
 import com.automaterijal.application.tecdoc.*;
 import com.automaterijal.application.utils.CatalogNumberUtils;
 import com.automaterijal.application.utils.GeneralUtil;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -32,11 +40,17 @@ import org.thymeleaf.util.SetUtils;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RobaSearchService {
-  private static final int MAX_TEC_DOC_RESULTS = 500;
+  private static final int MAX_TEC_DOC_RESULTS = 1000;
+  private static final int TECDOC_NUMBER_TYPE_ALL = 10;
+  private static final int MAX_PROVIDER_ITEMS = 1000;
 
   @NonNull final RobaAdapterService robaAdapterService;
   @NonNull final TecDocService tecDocService;
-  @NonNull final RobaHelper robaHelper;
+  @NonNull final RobaEnrichmentService robaEnrichmentService;
+  @NonNull final ExternalOfferService externalOfferService;
+  @NonNull final TecDocGenericArticleMappingService tecDocGenericArticleMappingService;
+  @NonNull final ArticleSubGroupService articleSubGroupService;
+  @NonNull final RobaSortService robaSortService;
 
   /** Main method for fetching associated articles with TecDoc data. */
   public MagacinDto getAssociatedArticles(
@@ -46,18 +60,23 @@ public class RobaSearchService {
       UniverzalniParametri parametri,
       Partner loggedPartner) {
 
+    UniverzalniParametri normalized =
+        parametri != null ? parametri.normalizedCopy() : new UniverzalniParametri();
+
     // Sačuvaj originalni paging/filter vrednosti
-    Integer originalPage = parametri.getPage() != null ? parametri.getPage() : 0;
+    Integer originalPage = normalized.getPage() != null ? normalized.getPage() : 0;
     Integer originalPageSize =
-        parametri.getPageSize() != null && parametri.getPageSize() > 0
-            ? parametri.getPageSize()
+        normalized.getPageSize() != null && normalized.getPageSize() > 0
+            ? normalized.getPageSize()
             : Integer.MAX_VALUE;
-    List<Integer> requestedSubGroups = parametri.getPodgrupeZaPretragu();
+    List<Integer> requestedSubGroups = normalized.getPodgrupeZaPretragu();
+    boolean filterAvailable = normalized.isNaStanju();
 
     // Izbegni lokalni filter podgrupa dok ne mapiramo TecDoc kategorije
-    parametri.setPage(0);
-    parametri.setPageSize(Integer.MAX_VALUE);
-    parametri.setPodgrupeZaPretragu(null);
+    UniverzalniParametri internalParams = normalized.copy();
+    internalParams.setPage(0);
+    internalParams.setPageSize(Integer.MAX_VALUE);
+    internalParams.setPodgrupeZaPretragu(null);
 
     // 1. Fetch TecDoc response (bez genericArticleIds da uzmemo sve kategorije)
     ArticlesResponse response = tecDocService.getAssociatedArticles(id, type, assembleGroupId);
@@ -72,36 +91,124 @@ public class RobaSearchService {
 
     // 4. Fetch products using generated catalog numbers
     MagacinDto magacinDto =
-        robaAdapterService.fetchProductsByTecDocArticles(catalogNumbers, parametri, articles);
+        robaAdapterService.fetchProductsByTecDocArticles(catalogNumbers, internalParams, articles);
 
-    // 4.1 Overwrite group/subgroup using TecDoc categories (only for this API)
-    TecDocCategoryMapper.apply(magacinDto, articles);
+    // 4.1 Auto-observation: povezujemo TecDoc genericArticleId sa internim podgrupama kad postoji
+    // lokalna roba
+    if (magacinDto.getRobaDto() != null && !magacinDto.getRobaDto().isEmpty()) {
+      tecDocGenericArticleMappingService.observeFromAssociatedArticles(
+          articles, magacinDto.getRobaDto().getContent());
+    }
 
-    // 4.2 Izgradi kategorije iz TecDoc genericArticle faceta (flat pod jednom grupom)
-    magacinDto.setCategories(buildCategoriesFromFacets(response));
+    // 4.2 Primeni filter podgrupe lokalno (pre enrichment-a)
+    List<RobaLightDto> items =
+        magacinDto.getRobaDto() != null ? magacinDto.getRobaDto().getContent() : List.of();
+    if (requestedSubGroups != null && !requestedSubGroups.isEmpty() && !items.isEmpty()) {
+      items = items.stream().filter(r -> requestedSubGroups.contains(r.getPodGrupa())).toList();
+    }
+    List<RobaLightDto> itemsForCatalogKeys = items;
 
-    // 4.2 Primeni filter podgrupe lokalno nakon mapiranja i vrati paging
-    if (magacinDto.getRobaDto() != null) {
-      List<RobaLightDto> items = magacinDto.getRobaDto().getContent();
+    if (!items.isEmpty()) {
+      robaEnrichmentService.applyPriceOnly(items, loggedPartner, false);
+    }
 
-      if (requestedSubGroups != null && !requestedSubGroups.isEmpty()) {
-        items =
-            items.stream()
-                .filter(r -> requestedSubGroups.contains(r.getPodGrupa()))
-                .toList();
+    List<RobaLightDto> localKeyItems =
+        itemsForCatalogKeys.stream()
+            .filter(Objects::nonNull)
+            .filter(r -> r.getRobaid() != null)
+            .toList();
+    MagacinDto localForKeys = new MagacinDto();
+    localForKeys.setRobaDto(GeneralUtil.createPageable(localKeyItems, Integer.MAX_VALUE, 0));
+    ExternalOfferPayload externalPayload =
+        externalOfferService.prepareFromAssociatedTecDocArticles(
+            articles, localForKeys, loggedPartner, normalized);
+
+    List<RobaLightDto> providerTargets = collectProviderTargets(items, externalPayload.getProbes());
+    ProviderCounts counts = resolveProviderCounts(items);
+    if (!providerTargets.isEmpty()) {
+      robaEnrichmentService.populateExternalAvailability(
+          providerTargets,
+          loggedPartner,
+          ProviderRoutingPurpose.EXTERNAL_OFFER,
+          counts.matchCount(),
+          counts.availableCount());
+      robaEnrichmentService.refreshAvailabilityStatus(items);
+    }
+
+    List<RobaLightDto> externals =
+        externalOfferService.materializeExternalOffers(externalPayload, normalized);
+
+    if (filterAvailable) {
+      List<RobaLightDto> filteredItems =
+          items.stream()
+              .filter(dto -> dto != null && dto.getAvailabilityStatus() != null)
+              .filter(dto -> dto.getAvailabilityStatus() != ArticleAvailabilityStatus.OUT_OF_STOCK)
+              .toList();
+
+      List<RobaLightDto> combined = new ArrayList<>(filteredItems);
+      combined.addAll(externals);
+      combined =
+          StringUtils.hasText(normalized.getTrazenaRec())
+              ? robaSortService.sortByGroupWithExact(combined, normalized.getTrazenaRec())
+              : robaSortService.sortByGroup(combined);
+      int pageSize = Math.max(1, originalPageSize);
+      int page = Math.max(0, originalPage);
+      magacinDto.setRobaDto(GeneralUtil.createPageable(combined, pageSize, page));
+      if (magacinDto.getRobaDto() != null && !magacinDto.getRobaDto().isEmpty()) {
+        robaEnrichmentService.enrichLightDtos(
+            magacinDto.getRobaDto().getContent(), loggedPartner, false);
       }
+
+      Set<Integer> union = new HashSet<>();
+      combined.stream().filter(Objects::nonNull).map(RobaLightDto::getPodGrupa).forEach(union::add);
+      magacinDto.setCategories(articleSubGroupService.buildCategoriesFromPodgrupaIds(union));
+      magacinDto.setProizvodjaci(buildManufacturersFromItems(combined));
+    } else {
+      Set<String> externalKeys = buildExternalKeys(externals);
+
+      List<RobaLightDto> combined =
+          new ArrayList<>(
+              items.stream()
+                  .filter(
+                      dto ->
+                          dto == null
+                              || dto.getRobaid() != null
+                              || dto.getProizvodjac() == null
+                              || !StringUtils.hasText(dto.getKatbr())
+                              || !StringUtils.hasText(dto.getProizvodjac().getProid())
+                              || !externalKeys.contains(
+                                  dto.getProizvodjac().getProid().trim().toUpperCase(Locale.ROOT)
+                                      + ":"
+                                      + normalizeCatalog(dto.getKatbr())))
+                  .toList());
+      combined.addAll(externals);
+
+      combined =
+          StringUtils.hasText(normalized.getTrazenaRec())
+              ? robaSortService.sortByGroupWithExact(combined, normalized.getTrazenaRec())
+              : robaSortService.sortByGroup(combined);
 
       int pageSize = Math.max(1, originalPageSize);
       int page = Math.max(0, originalPage);
-      magacinDto.setRobaDto(GeneralUtil.createPageable(items, pageSize, page));
-    }
+      magacinDto.setRobaDto(GeneralUtil.createPageable(combined, pageSize, page));
+      if (magacinDto.getRobaDto() != null && !magacinDto.getRobaDto().isEmpty()) {
+        robaEnrichmentService.enrichLightDtos(
+            magacinDto.getRobaDto().getContent(), loggedPartner, false);
+      }
 
-    // 5. Apply TecDoc attributes to the fetched products
-    if (!magacinDto.getRobaDto().isEmpty()) {
-      applyTecDocAttributes(magacinDto, loggedPartner);
+      Set<Integer> union = new HashSet<>();
+      combined.stream().filter(Objects::nonNull).map(RobaLightDto::getPodGrupa).forEach(union::add);
+      magacinDto.setCategories(articleSubGroupService.buildCategoriesFromPodgrupaIds(union));
+      magacinDto.setProizvodjaci(buildManufacturersFromItems(combined));
     }
 
     return magacinDto;
+  }
+
+  private String normalizeCatalog(String value) {
+    return StringUtils.hasText(value)
+        ? CatalogNumberUtils.cleanPreserveSeparators(value.trim())
+        : "";
   }
 
   private List<ArticleRecord> extractArticles(ArticlesResponse response) {
@@ -179,54 +286,176 @@ public class RobaSearchService {
                     .forEach(catalogNumbers::add));
   }
 
-  /** Applies TecDoc attributes to the fetched products for the final response. */
-  private void applyTecDocAttributes(MagacinDto magacinDto, Partner loggedPartner) {
-    tecDocService.batchVracanjeICuvanjeTDAtributa(magacinDto.getRobaDto().getContent());
-    robaHelper.setupForTable(magacinDto.getRobaDto().getContent(), loggedPartner);
-  }
+  public MagacinDto searchProducts(
+      UniverzalniParametri parametri, Partner loggedPartner, boolean skipProvider) {
 
-  private Map<String, List<PodgrupaDto>> buildCategoriesFromFacets(ArticlesResponse response) {
-    GenericArticleFacetCounts facets =
-        response != null ? response.getGenericArticleFacets() : null;
-    if (facets == null || facets.getCounts() == null) {
-      return Map.of();
+    UniverzalniParametri normalized =
+        parametri != null ? parametri.normalizedCopy() : new UniverzalniParametri();
+
+    Integer originalPage = normalized.getPage() != null ? normalized.getPage() : 0;
+    Integer originalPageSize =
+        normalized.getPageSize() != null && normalized.getPageSize() > 0
+            ? normalized.getPageSize()
+            : 10;
+    boolean filterAvailable = normalized.isNaStanju();
+    boolean hasSearchTerm = StringUtils.hasText(normalized.getTrazenaRec());
+    boolean includeExternalOffers = hasSearchTerm && !skipProvider;
+
+    if (includeExternalOffers) {
+      return searchProductsBySearchTermWithExternalOffers(
+          normalized, loggedPartner, originalPage, originalPageSize, filterAvailable);
     }
 
-    List<PodgrupaDto> subGroups =
-        facets.getCounts().stream()
-            .filter(Objects::nonNull)
-            .map(
-                count -> {
-                  PodgrupaDto dto = new PodgrupaDto();
-                  dto.setId(count.getGenericArticleId());
-                  dto.setNaziv(count.getGenericArticleDescription());
-                  dto.setGrupa("SVE");
-                  return dto;
-                })
-            .collect(Collectors.toList());
-
-    return Map.of("SVE", subGroups);
-  }
-
-  public MagacinDto searchProducts(UniverzalniParametri parametri, Partner ulogovaniPartner) {
-
-    String rawSearchTerm = parametri.getTrazenaRec();
-    if (StringUtils.hasText(rawSearchTerm)) {
-      parametri.setTrazenaRec(rawSearchTerm.trim());
+    UniverzalniParametri internal = normalized;
+    if (filterAvailable) {
+      internal = normalized.copy();
+      internal.setPage(0);
+      internal.setPageSize(Integer.MAX_VALUE);
+      internal.setPaged(false);
+      internal.setNaStanju(false);
     }
 
     MagacinDto magacinDto =
-        StringUtils.hasText(parametri.getTrazenaRec())
-            ? searchProductsBySearchTerm(parametri)
-            : robaAdapterService.searchFilteredProductsWithoutSearchTerm(parametri);
+        hasSearchTerm
+            ? searchProductsBySearchTerm(internal)
+            : robaAdapterService.searchFilteredProductsWithoutSearchTerm(internal);
 
-    if (!magacinDto.getRobaDto().isEmpty()) {
-      tecDocService.batchVracanjeICuvanjeTDAtributa(magacinDto.getRobaDto().getContent());
-      robaHelper.setupForTable(magacinDto.getRobaDto().getContent(), ulogovaniPartner);
+    List<RobaLightDto> items =
+        magacinDto.getRobaDto() != null ? magacinDto.getRobaDto().getContent() : List.of();
+
+    if (!items.isEmpty()) {
+      robaEnrichmentService.applyPriceOnly(items, loggedPartner, false);
     }
 
+    ProviderCounts counts = resolveProviderCounts(items);
+    if (!skipProvider) {
+      List<RobaLightDto> providerTargets = collectProviderTargets(items, List.of());
+      if (!providerTargets.isEmpty()) {
+        robaEnrichmentService.populateExternalAvailability(
+            providerTargets,
+            loggedPartner,
+            ProviderRoutingPurpose.INVENTORY_ENRICHMENT,
+            counts.matchCount(),
+            counts.availableCount());
+        robaEnrichmentService.refreshAvailabilityStatus(items);
+      }
+    }
+
+    if (filterAvailable && magacinDto.getRobaDto() != null) {
+      List<RobaLightDto> localAvailable =
+          items.stream()
+              .filter(dto -> dto != null && dto.getAvailabilityStatus() != null)
+              .filter(dto -> dto.getAvailabilityStatus() != ArticleAvailabilityStatus.OUT_OF_STOCK)
+              .toList();
+
+      List<RobaLightDto> combined = new ArrayList<>(localAvailable);
+
+      combined =
+          hasSearchTerm
+              ? robaSortService.sortByGroupWithExact(combined, normalized.getTrazenaRec())
+              : robaSortService.sortByGroup(combined);
+      magacinDto.setRobaDto(GeneralUtil.createPageable(combined, originalPageSize, originalPage));
+
+      if (magacinDto.getRobaDto() != null && !magacinDto.getRobaDto().isEmpty()) {
+        robaEnrichmentService.enrichLightDtos(
+            magacinDto.getRobaDto().getContent(), loggedPartner, false);
+      }
+
+      Set<Integer> union = new HashSet<>();
+      combined.stream().filter(Objects::nonNull).map(RobaLightDto::getPodGrupa).forEach(union::add);
+      magacinDto.setCategories(articleSubGroupService.buildCategoriesFromPodgrupaIds(union));
+
+      magacinDto.setProizvodjaci(buildManufacturersFromItems(combined));
+    } else if (magacinDto.getRobaDto() != null && !magacinDto.getRobaDto().isEmpty()) {
+      robaEnrichmentService.enrichLightDtos(
+          magacinDto.getRobaDto().getContent(), loggedPartner, false);
+    }
 
     return magacinDto;
+  }
+
+  public MagacinDto searchProducts(UniverzalniParametri parametri, Partner loggedPartner) {
+    return searchProducts(parametri, loggedPartner, false);
+  }
+
+  private MagacinDto searchProductsBySearchTermWithExternalOffers(
+      UniverzalniParametri normalized,
+      Partner loggedPartner,
+      Integer originalPage,
+      Integer originalPageSize,
+      boolean filterAvailable) {
+    UniverzalniParametri allLocalParams = normalized.copy();
+    allLocalParams.setPage(0);
+    allLocalParams.setPageSize(Integer.MAX_VALUE);
+    allLocalParams.setPaged(false);
+    boolean hasSearchTerm = StringUtils.hasText(normalized.getTrazenaRec());
+
+    List<ArticleDirectSearchAllNumbersWithStateRecord> tecDoc =
+        tecDocService.tecDocPretragaPoTrazenojReci(
+            normalized.getTrazenaRec(), null, TECDOC_NUMBER_TYPE_ALL);
+
+    MagacinDto localAll = searchProductsBySearchTerm(allLocalParams, tecDoc);
+    List<RobaLightDto> allLocalItems =
+        localAll.getRobaDto() != null ? localAll.getRobaDto().getContent() : List.of();
+
+    if (!allLocalItems.isEmpty()) {
+      robaEnrichmentService.applyPriceOnly(allLocalItems, loggedPartner, false);
+    }
+
+    tecDocGenericArticleMappingService.observeFromDirectSearch(tecDoc, allLocalItems);
+
+    MagacinDto localForKeys = new MagacinDto();
+    localForKeys.setRobaDto(GeneralUtil.createPageable(allLocalItems, Integer.MAX_VALUE, 0));
+
+    ExternalOfferPayload externalPayload =
+        externalOfferService.prepareFromTecDocSearch(
+            tecDoc, localForKeys, loggedPartner, normalized);
+
+    List<RobaLightDto> providerTargets =
+        collectProviderTargets(allLocalItems, externalPayload.getProbes());
+    ProviderCounts counts = resolveProviderCounts(allLocalItems);
+    if (!providerTargets.isEmpty()) {
+      robaEnrichmentService.populateExternalAvailability(
+          providerTargets,
+          loggedPartner,
+          ProviderRoutingPurpose.EXTERNAL_OFFER,
+          counts.matchCount(),
+          counts.availableCount());
+      robaEnrichmentService.refreshAvailabilityStatus(allLocalItems);
+    }
+
+    List<RobaLightDto> visibleLocalItems = allLocalItems;
+    if (filterAvailable) {
+      visibleLocalItems =
+          allLocalItems.stream()
+              .filter(dto -> dto != null && dto.getAvailabilityStatus() != null)
+              .filter(dto -> dto.getAvailabilityStatus() != ArticleAvailabilityStatus.OUT_OF_STOCK)
+              .toList();
+    }
+
+    List<RobaLightDto> externals =
+        externalOfferService.materializeExternalOffers(externalPayload, normalized);
+
+    List<RobaLightDto> combined = new ArrayList<>(visibleLocalItems);
+    combined.addAll(externals);
+    combined =
+        StringUtils.hasText(normalized.getTrazenaRec())
+            ? robaSortService.sortByGroupWithExact(combined, normalized.getTrazenaRec())
+            : robaSortService.sortByGroup(combined);
+
+    MagacinDto out = new MagacinDto();
+    out.setRobaDto(GeneralUtil.createPageable(combined, originalPageSize, originalPage));
+
+    if (out.getRobaDto() != null && !out.getRobaDto().isEmpty()) {
+      robaEnrichmentService.enrichLightDtos(out.getRobaDto().getContent(), loggedPartner, false);
+    }
+
+    Set<Integer> union = new HashSet<>();
+    combined.stream().filter(Objects::nonNull).map(RobaLightDto::getPodGrupa).forEach(union::add);
+    out.setCategories(articleSubGroupService.buildCategoriesFromPodgrupaIds(union));
+    out.setProizvodjaci(buildManufacturersFromItems(combined));
+
+    return out;
   }
 
   private MagacinDto searchProductsBySearchTerm(UniverzalniParametri parametri) {
@@ -234,35 +463,95 @@ public class RobaSearchService {
       return robaAdapterService.searchFilteredProductsWithoutSearchTerm(parametri);
     }
 
-    final Set<String> catalogNumbers = new HashSet<>();
-    Set<Long> robaId = new HashSet<>();
-
-    boolean found = robaAdapterService.searchProductsByName(parametri, catalogNumbers, robaId);
-    if (found) {
-      return robaAdapterService.searchProductsByIds(parametri, robaId);
+    SearchCandidates candidates = collectSearchCandidates(parametri);
+    if (candidates.matchedByName()) {
+      return robaAdapterService.searchProductsByIds(parametri, candidates.productIds());
     }
 
-    robaAdapterService.searchProductsByCatalogNumber(catalogNumbers, robaId, parametri);
-    if (!catalogNumbers.isEmpty()) {
-      robaAdapterService.fetchByAlternativeCatalogueNumber(catalogNumbers);
-      robaAdapterService.searchProductsByCatalogNumbersIn(catalogNumbers, robaId);
-    }
-
-    // Ukljucujemo tecdoc u pretragu
-    searchUsingTecDoc(parametri, catalogNumbers);
-    return robaAdapterService.fetchSearchResultsByCatalogNumbersAndFilters(parametri, catalogNumbers);
+    return robaAdapterService.fetchSearchResultsByCatalogNumbersAndFilters(
+        parametri, candidates.catalogNumbers());
   }
 
-  private void searchUsingTecDoc(UniverzalniParametri parametri, Set<String> catalogNumbers) {
+  private MagacinDto searchProductsBySearchTerm(
+      UniverzalniParametri parametri, List<ArticleDirectSearchAllNumbersWithStateRecord> tecDoc) {
+    if (!StringUtils.hasText(parametri.getTrazenaRec())) {
+      return robaAdapterService.searchFilteredProductsWithoutSearchTerm(parametri);
+    }
+
+    SearchCandidates candidates = collectSearchCandidates(parametri, tecDoc);
+    if (candidates.matchedByName()) {
+      return robaAdapterService.searchProductsByIds(parametri, candidates.productIds());
+    }
+
+    return robaAdapterService.fetchSearchResultsByCatalogNumbersAndFilters(
+        parametri, candidates.catalogNumbers());
+  }
+
+  private SearchCandidates collectSearchCandidates(UniverzalniParametri parametri) {
+    Set<String> catalogNumbers = new HashSet<>();
+    Set<Long> productIds = new HashSet<>();
+
+    boolean matchedByName =
+        robaAdapterService.searchProductsByName(parametri, catalogNumbers, productIds);
+    if (matchedByName) {
+      return new SearchCandidates(catalogNumbers, productIds, true);
+    }
+
+    collectLocalCatalogNumberCandidates(parametri, catalogNumbers, productIds);
+    addTecDocCatalogCandidates(parametri, catalogNumbers);
+
+    return new SearchCandidates(catalogNumbers, productIds, false);
+  }
+
+  private SearchCandidates collectSearchCandidates(
+      UniverzalniParametri parametri, List<ArticleDirectSearchAllNumbersWithStateRecord> tecDoc) {
+    Set<String> catalogNumbers = new HashSet<>();
+    Set<Long> productIds = new HashSet<>();
+
+    boolean matchedByName =
+        robaAdapterService.searchProductsByName(parametri, catalogNumbers, productIds);
+    if (matchedByName) {
+      return new SearchCandidates(catalogNumbers, productIds, true);
+    }
+
+    collectLocalCatalogNumberCandidates(parametri, catalogNumbers, productIds);
+    addTecDocCatalogCandidatesFromResponse(parametri.getTrazenaRec(), tecDoc, catalogNumbers);
+
+    return new SearchCandidates(catalogNumbers, productIds, false);
+  }
+
+  private void collectLocalCatalogNumberCandidates(
+      UniverzalniParametri parametri, Set<String> catalogNumbers, Set<Long> productIds) {
+    robaAdapterService.searchProductsByCatalogNumber(catalogNumbers, productIds, parametri);
+    if (catalogNumbers.isEmpty()) {
+      return;
+    }
+
+    robaAdapterService.fetchByAlternativeCatalogueNumber(catalogNumbers);
+    robaAdapterService.searchProductsByCatalogNumbersIn(catalogNumbers, productIds);
+  }
+
+  private void addTecDocCatalogCandidates(
+      UniverzalniParametri parametri, Set<String> catalogNumbers) {
     String searchTerm = parametri.getTrazenaRec();
     if (!StringUtils.hasText(searchTerm)) {
       return;
     }
 
-
     // TecDoc pretraga na osnovu tačne reči, tip pretrage je 10 (trazimo sve)
     List<ArticleDirectSearchAllNumbersWithStateRecord> response =
-        tecDocService.tecDocPretragaPoTrazenojReci(searchTerm, null, 10);
+        tecDocService.tecDocPretragaPoTrazenojReci(searchTerm, null, TECDOC_NUMBER_TYPE_ALL);
+
+    addTecDocCatalogCandidatesFromResponse(searchTerm, response, catalogNumbers);
+  }
+
+  private void addTecDocCatalogCandidatesFromResponse(
+      String searchTerm,
+      List<ArticleDirectSearchAllNumbersWithStateRecord> response,
+      Set<String> catalogNumbers) {
+    if (!StringUtils.hasText(searchTerm) || catalogNumbers == null) {
+      return;
+    }
 
     // Process TecDoc search results
     Set<String> tecDocNumbers =
@@ -275,7 +564,6 @@ public class RobaSearchService {
     if (catalogNumbers.size() < MAX_TEC_DOC_RESULTS) {
       catalogNumbers.add(searchTerm);
     }
-
   }
 
   /** Generic method to process article records and extract catalog numbers. */
@@ -319,5 +607,101 @@ public class RobaSearchService {
         break;
       }
     }
+  }
+
+  private ProviderCounts resolveProviderCounts(List<RobaLightDto> items) {
+    if (items == null || items.isEmpty()) {
+      return new ProviderCounts(0, 0);
+    }
+    int matchCount = items.size();
+    int availableCount =
+        (int) items.stream().filter(Objects::nonNull).filter(dto -> dto.getStanje() > 0).count();
+    return new ProviderCounts(matchCount, availableCount);
+  }
+
+  private List<RobaLightDto> collectProviderTargets(
+      List<RobaLightDto> locals, List<RobaLightDto> externalProbes) {
+    List<RobaLightDto> targets = new ArrayList<>();
+    if (externalProbes != null) {
+      for (RobaLightDto probe : externalProbes) {
+        if (probe != null) {
+          targets.add(probe);
+        }
+      }
+    }
+
+    int limit = MAX_PROVIDER_ITEMS > 0 ? MAX_PROVIDER_ITEMS : Integer.MAX_VALUE;
+    int remaining = limit - targets.size();
+    if (remaining <= 0) {
+      return targets;
+    }
+
+    if (locals != null) {
+      for (RobaLightDto dto : locals) {
+        if (remaining <= 0) {
+          break;
+        }
+        if (dto == null || dto.getStanje() > 0) {
+          continue;
+        }
+        targets.add(dto);
+        remaining--;
+      }
+      for (RobaLightDto dto : locals) {
+        if (remaining <= 0) {
+          break;
+        }
+        if (dto == null || dto.getStanje() <= 0) {
+          continue;
+        }
+        targets.add(dto);
+        remaining--;
+      }
+    }
+
+    return targets;
+  }
+
+  private Set<String> buildExternalKeys(List<RobaLightDto> externals) {
+    if (externals == null || externals.isEmpty()) {
+      return Set.of();
+    }
+    Set<String> externalKeys = new HashSet<>();
+    for (RobaLightDto dto : externals) {
+      if (dto == null || dto.getProizvodjac() == null || !StringUtils.hasText(dto.getKatbr())) {
+        continue;
+      }
+      String brand =
+          StringUtils.hasText(dto.getProizvodjac().getProid())
+              ? dto.getProizvodjac().getProid().trim().toUpperCase(Locale.ROOT)
+              : null;
+      if (!StringUtils.hasText(brand)) {
+        continue;
+      }
+      externalKeys.add(brand + ":" + normalizeCatalog(dto.getKatbr()));
+    }
+    return externalKeys;
+  }
+
+  private record ProviderCounts(int matchCount, int availableCount) {}
+
+  private record SearchCandidates(
+      Set<String> catalogNumbers, Set<Long> productIds, boolean matchedByName) {}
+
+  private List<ProizvodjacDTO> buildManufacturersFromItems(List<RobaLightDto> items) {
+    if (items == null || items.isEmpty()) {
+      return List.of();
+    }
+    Map<String, ProizvodjacDTO> byId = new java.util.LinkedHashMap<>();
+    for (RobaLightDto dto : items) {
+      if (dto == null
+          || dto.getProizvodjac() == null
+          || !StringUtils.hasText(dto.getProizvodjac().getProid())) {
+        continue;
+      }
+      String key = dto.getProizvodjac().getProid();
+      byId.putIfAbsent(key, dto.getProizvodjac());
+    }
+    return new ArrayList<>(byId.values());
   }
 }

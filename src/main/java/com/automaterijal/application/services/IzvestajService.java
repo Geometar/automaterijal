@@ -12,6 +12,7 @@ import com.automaterijal.application.domain.repository.FirmaRepository;
 import com.automaterijal.application.domain.repository.IzvestajJooqRepository;
 import com.automaterijal.application.domain.repository.KomentarRepository;
 import com.automaterijal.application.utils.GeneralUtil;
+import com.automaterijal.application.utils.PartnerPrivilegeUtils;
 import jakarta.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -167,7 +168,7 @@ public class IzvestajService {
     Optional<Komentar> komentar = komentarRepository.findById(id);
     if (komentar.isPresent()) {
       Komentar vracenKomentar = komentar.get();
-      if (ulogovaniPartner.getPrivilegije() != 2047
+      if (!PartnerPrivilegeUtils.isInternal(ulogovaniPartner)
           && ulogovaniPartner.getPpid().intValue() != vracenKomentar.getPpid().intValue()) {
         return retVal;
       }

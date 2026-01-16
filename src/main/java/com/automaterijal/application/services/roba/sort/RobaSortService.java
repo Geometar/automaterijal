@@ -3,10 +3,12 @@ package com.automaterijal.application.services.roba.sort;
 import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.services.roba.grupe.ArticleSubGroupService;
+import com.automaterijal.application.utils.CatalogNumberUtils;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 public class RobaSortService {
@@ -23,16 +25,107 @@ public class RobaSortService {
         .collect(Collectors.toList());
   }
 
+  public List<RobaLightDto> sortByGroupWithExact(List<RobaLightDto> roba, String searchTerm) {
+    String wanted = normalizeCatalog(searchTerm);
+    Integer exactPodgrupa = null;
+    if (StringUtils.hasText(wanted)) {
+      for (RobaLightDto dto : roba) {
+        if (isExactMatch(dto, wanted)) {
+          exactPodgrupa = dto != null ? dto.getPodGrupa() : null;
+          break;
+        }
+      }
+    }
+
+    Integer exactPodgrupaFinal = exactPodgrupa;
+    return roba.stream()
+        .peek(
+            robaDto -> {
+              if (robaDto.getPodGrupaNaziv() == null) {
+                robaDto.setPodGrupaNaziv(ArticleSubGroupService.ANONIMNA_GRUPA);
+              }
+            })
+        .sorted(getGroupComparator(wanted, exactPodgrupaFinal))
+        .collect(Collectors.toList());
+  }
+
   private Comparator<RobaLightDto> getGroupComparator() {
-    return Comparator.comparing(
-            (RobaLightDto robaLightDto) -> robaLightDto.getStanje() == 0) // Stanje > 0 prvo
+    return getGroupComparator(null, null);
+  }
+
+  private Comparator<RobaLightDto> getGroupComparator(String wanted, Integer exactPodgrupa) {
+    return Comparator.<RobaLightDto>comparingInt(dto -> exactMatchRankIfAvailable(dto, wanted))
+        .thenComparingInt(this::availabilityRank)
+        .thenComparing(dto -> dto == null || dto.getRobaid() == null) // TecDoc-only na kraj
         .thenComparing(robaDto -> robaDto.getPodGrupa() == 0) // Podgrupa ID 0 na kraj
+        .thenComparingInt(dto -> samePodgrupaRank(dto, exactPodgrupa))
+        .thenComparing(Comparator.comparing(RobaLightDto::getStanje).reversed())
         .thenComparing(
-            Comparator.comparing(RobaLightDto::getStanje)
-                .reversed()) // Sortiraj po stanju opadajuće
-        .thenComparing(
-            RobaLightDto::getPodGrupaNaziv,
-            Comparator.nullsLast(String::compareTo)); // Sortiraj po nazivu grupe
+            RobaLightDto::getPodGrupaNaziv, Comparator.nullsLast(String::compareTo)); // po nazivu
+  }
+
+  private int exactMatchRank(RobaLightDto dto, String wanted) {
+    if (!StringUtils.hasText(wanted)) {
+      return 1;
+    }
+    return isExactMatch(dto, wanted) ? 0 : 1;
+  }
+
+  private int exactMatchRankIfAvailable(RobaLightDto dto, String wanted) {
+    if (availabilityRank(dto) >= 2) {
+      return 1;
+    }
+    return exactMatchRank(dto, wanted);
+  }
+
+  private boolean isExactMatch(RobaLightDto dto, String wanted) {
+    if (dto == null || !StringUtils.hasText(wanted)) {
+      return false;
+    }
+    String katbr = normalizeCatalog(dto.getKatbr());
+    if (StringUtils.hasText(katbr) && katbr.equalsIgnoreCase(wanted)) {
+      return true;
+    }
+    String katbrpro = normalizeCatalog(dto.getKatbrpro());
+    return StringUtils.hasText(katbrpro) && katbrpro.equalsIgnoreCase(wanted);
+  }
+
+  private int samePodgrupaRank(RobaLightDto dto, Integer exactPodgrupa) {
+    if (dto == null || exactPodgrupa == null) {
+      return 1;
+    }
+    return dto.getPodGrupa() == exactPodgrupa ? 0 : 1;
+  }
+
+  private String normalizeCatalog(String value) {
+    return StringUtils.hasText(value)
+        ? CatalogNumberUtils.cleanPreserveSeparators(value.trim())
+        : "";
+  }
+
+  private int availabilityRank(RobaLightDto dto) {
+    if (dto == null) {
+      return 99;
+    }
+
+    if (dto.getAvailabilityStatus() != null) {
+      return switch (dto.getAvailabilityStatus()) {
+        case IN_STOCK -> 0;
+        case AVAILABLE -> 1;
+        case OUT_OF_STOCK -> 2;
+      };
+    }
+
+    if (dto.getStanje() > 0) {
+      return 0;
+    }
+
+    if (dto.getProviderAvailability() != null
+        && Boolean.TRUE.equals(dto.getProviderAvailability().getAvailable())) {
+      return 1;
+    }
+
+    return 2;
   }
 
   /** Sortira robu TecDoc po podgrupi. */

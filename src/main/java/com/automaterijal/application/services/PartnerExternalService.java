@@ -50,39 +50,37 @@ public class PartnerExternalService {
 
   public ExternalRobaDto pronadjiRobu(Integer ppid, String itemNo, Integer brandID) {
     ExternalRobaDto retVal;
-    itemNo = CatalogNumberUtils.cleanPreserveSeparators(itemNo);
-    // Pronadji sve proizvodjace koje partner moze da ima i samog partnera izvuci iz baze
-    List<PartnerB2bProizvodjac> listaProizvodjaca =
-        b2bProizvodjacRepository.findByProizvodjacKljuceviPpid(ppid);
+    String cleanedItemNo = CatalogNumberUtils.cleanPreserveSeparators(itemNo); // normalize input
     Partner partner = partnerService.pronadjiPartneraPoId(ppid);
-    List<String> kljuceviProizvodjaca =
-        listaProizvodjaca.stream()
+
+    // All manufacturer keys allowed for this partner (before optional brand filter)
+    List<PartnerB2bProizvodjac> partnerManufacturers =
+        b2bProizvodjacRepository.findByProizvodjacKljuceviPpid(ppid);
+    List<String> allowedManufacturerIds =
+        partnerManufacturers.stream()
             .map(b2bProizvodjac -> b2bProizvodjac.getProizvodjacKljucevi().getProid())
             .toList();
+    allowedManufacturerIds = filterByBrandIfProvided(brandID, allowedManufacturerIds);
 
-    // U slucaju da postoji brand id filtrirati kljuceve proizvodjaca samo da sadrzi taj ID
-    if (brandID != null && tdAutomaterijalService.vratiNasProIdIzTecDoca(brandID).isPresent()) {
-      String proId = tdAutomaterijalService.vratiNasProIdIzTecDoca(brandID).orElse("");
-      kljuceviProizvodjaca =
-          kljuceviProizvodjaca.stream().filter(kljuc -> kljuc.equals(proId)).toList();
-    }
-
-    Roba roba = robaDatabaseService.pronadjiPoPretaziIProizvodjacima(itemNo, kljuceviProizvodjaca);
+    Roba roba =
+        robaDatabaseService.pronadjiPoPretaziIProizvodjacima(cleanedItemNo, allowedManufacturerIds);
 
     if (roba != null) {
       log.info(
-          "B2B: Partneru {} vracena roba sa katBr {}",
+          "B2B: Partner {} received item with catalog number {}",
           partner.getMestaIsporuke().getNaziv(),
-          itemNo);
+          cleanedItemNo);
+
       BigDecimal cena =
           robaCeneService
               .vratiRobuB2BKomunikacija(
                   roba.getRobaid(), roba.getGrupaid(), roba.getProizvodjac().getProid(), partner)
               .setScale(2, RoundingMode.CEILING);
+
       retVal = mapper.map(roba, cena.doubleValue());
     } else {
       log.info(
-          "B2B: Partneru {} nije nadjena roba sa katBr {}",
+          "B2B: Partner {} did not find item with catalog number {}",
           partner.getMestaIsporuke().getNaziv(),
           itemNo);
       retVal = new ExternalRobaDto();
@@ -90,5 +88,18 @@ public class PartnerExternalService {
     }
 
     return retVal;
+  }
+
+  private List<String> filterByBrandIfProvided(
+      Integer brandID, List<String> allowedManufacturerIds) {
+    if (brandID == null || allowedManufacturerIds.isEmpty()) {
+      return allowedManufacturerIds;
+    }
+
+    // If TecDoc brand ID is provided, narrow allowed manufacturers to that brand only
+    return tdAutomaterijalService
+        .vratiNasProIdIzTecDoca(brandID)
+        .map(proId -> allowedManufacturerIds.stream().filter(pro -> pro.equals(proId)).toList())
+        .orElse(allowedManufacturerIds);
   }
 }

@@ -3,7 +3,7 @@ package com.automaterijal.application.services.roba.showcase;
 import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.dto.showcase.ShowcaseResponseDTO;
 import com.automaterijal.application.domain.entity.Partner;
-import com.automaterijal.application.services.roba.util.RobaHelper;
+import com.automaterijal.application.services.roba.RobaEnrichmentService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.Cache;
@@ -18,7 +18,7 @@ public class ShowcaseService {
   private static final String VER = "v3";
 
   private final CacheManager cacheManager;
-  private final RobaHelper robaHelper;
+  private final RobaEnrichmentService robaEnrichmentService;
 
   /** Read-only: uses prewarmed sections; computes prices/discounts per partner at runtime. */
   public ShowcaseResponseDTO buildShowcase(Partner partner) {
@@ -26,9 +26,9 @@ public class ShowcaseService {
     List<RobaLightDto> alati = getSection("alati");
     List<RobaLightDto> pribor = getSection("pribor");
 
-    robaHelper.setupPriceOnly(maziva, partner);
-    robaHelper.setupPriceOnly(alati, partner);
-    robaHelper.setupPriceOnly(pribor, partner);
+    robaEnrichmentService.applyPriceOnly(maziva, partner);
+    robaEnrichmentService.applyPriceOnly(alati, partner);
+    robaEnrichmentService.applyPriceOnly(pribor, partner);
 
     return new ShowcaseResponseDTO(List.of(), maziva, alati, pribor);
   }
