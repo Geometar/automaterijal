@@ -4,6 +4,7 @@ import com.automaterijal.application.domain.constants.OrderItemSource;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.weborder.WebOrderHeader;
 import com.automaterijal.application.domain.entity.weborder.WebOrderItem;
+import com.automaterijal.application.integration.providers.febi.order.FebiOrderProperties;
 import com.automaterijal.application.integration.registry.ProviderOrderRegistry;
 import com.automaterijal.application.integration.shared.ProviderOrderLineResult;
 import com.automaterijal.application.integration.shared.ProviderOrderProvider;
@@ -18,7 +19,6 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -29,7 +29,7 @@ import org.springframework.util.StringUtils;
 public class ProviderOrderService {
 
   @NonNull ProviderOrderRegistry providerOrderRegistry;
-  @NonNull Environment environment;
+  @NonNull FebiOrderProperties febiOrderProperties;
 
   public void placeOrders(WebOrderHeader header, Partner partner) {
     if (header == null || partner == null) {
@@ -42,7 +42,7 @@ public class ProviderOrderService {
       return;
     }
 
-    boolean mock = !isProdProfile();
+    boolean mock = febiOrderProperties.getMode() != FebiOrderProperties.OrderMode.LIVE;
     for (Map.Entry<String, List<WebOrderItem>> entry : itemsByProvider.entrySet()) {
       String providerKey = entry.getKey();
       ProviderOrderProvider provider =
@@ -131,16 +131,4 @@ public class ProviderOrderService {
     }
   }
 
-  private boolean isProdProfile() {
-    String[] profiles = environment.getActiveProfiles();
-    if (profiles == null) {
-      return false;
-    }
-    for (String profile : profiles) {
-      if ("prod".equalsIgnoreCase(profile)) {
-        return true;
-      }
-    }
-    return false;
-  }
 }

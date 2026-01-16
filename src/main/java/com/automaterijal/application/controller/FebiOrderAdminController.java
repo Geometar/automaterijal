@@ -1,11 +1,13 @@
 package com.automaterijal.application.controller;
 
+import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.integration.providers.febi.order.FebiOrderReferenceService;
 import com.automaterijal.application.integration.providers.febi.order.model.FebiAddressDto;
 import com.automaterijal.application.integration.providers.febi.order.model.FebiShippingConditionDto;
 import com.automaterijal.application.integration.shared.exception.ProviderAuthenticationException;
 import com.automaterijal.application.integration.shared.exception.ProviderRateLimitException;
 import com.automaterijal.application.integration.shared.exception.ProviderUnavailableException;
+import com.automaterijal.application.utils.PartnerPrivilegeUtils;
 import com.automaterijal.application.utils.PartnerSpringBeanUtils;
 import java.util.List;
 import java.util.function.Supplier;
@@ -57,10 +59,10 @@ public class FebiOrderAdminController {
   }
 
   private <T> T execute(Authentication authentication, Supplier<T> action) {
-//    Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
-//    if (!PartnerPrivilegeUtils.isInternal(partner)) {
-//      throw new ResponseStatusException(HttpStatus.FORBIDDEN, NIJE_ADMIN);
-//    }
+    Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+    if (!PartnerPrivilegeUtils.isInternal(partner)) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, NIJE_ADMIN);
+    }
 
     try {
       return action.get();

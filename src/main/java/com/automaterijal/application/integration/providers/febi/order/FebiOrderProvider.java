@@ -7,11 +7,12 @@ import com.automaterijal.application.integration.providers.febi.FebiAuthClient;
 import com.automaterijal.application.integration.providers.febi.order.FebiOrderProperties.OrderMode;
 import com.automaterijal.application.integration.providers.febi.order.model.FebiOrderBulkResponse;
 import com.automaterijal.application.integration.providers.febi.order.model.FebiOrderRequest;
-import com.automaterijal.application.integration.providers.febi.order.model.FebiOrderResponse;
 import com.automaterijal.application.integration.providers.febi.order.model.FebiOrderRequest.CustomerOrder;
 import com.automaterijal.application.integration.providers.febi.order.model.FebiOrderRequest.DeliveryParty;
 import com.automaterijal.application.integration.providers.febi.order.model.FebiOrderRequest.Header;
 import com.automaterijal.application.integration.providers.febi.order.model.FebiOrderRequest.Position;
+import com.automaterijal.application.integration.providers.febi.order.model.FebiOrderResponse;
+import com.automaterijal.application.integration.providers.febi.price.FebiPriceService;
 import com.automaterijal.application.integration.shared.ProviderCallStatus;
 import com.automaterijal.application.integration.shared.ProviderOrderLineResult;
 import com.automaterijal.application.integration.shared.ProviderOrderProvider;
@@ -20,14 +21,12 @@ import com.automaterijal.application.integration.shared.ProviderOrderResult;
 import com.automaterijal.application.integration.shared.exception.ProviderAuthenticationException;
 import com.automaterijal.application.integration.shared.exception.ProviderRateLimitException;
 import com.automaterijal.application.integration.shared.exception.ProviderUnavailableException;
-import com.automaterijal.application.integration.providers.febi.price.FebiPriceService;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -180,15 +179,7 @@ public class FebiOrderProvider implements ProviderOrderProvider {
     if (requestMock) {
       return false;
     }
-    if (orderProperties.getMode() != OrderMode.LIVE) {
-      return false;
-    }
-    for (String profile : Optional.ofNullable(environment.getActiveProfiles()).orElse(new String[0])) {
-      if ("prod".equalsIgnoreCase(profile)) {
-        return true;
-      }
-    }
-    return false;
+    return orderProperties.getMode() == OrderMode.LIVE;
   }
 
   private FebiOrderRequest buildOrderRequest(
