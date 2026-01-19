@@ -23,6 +23,7 @@ public class AvailabilityItem {
   BigDecimal purchasePrice;
   BigDecimal sellingPrice;
   String currency;
+  Integer packagingUnit;
   Integer leadTimeBusinessDays;
   Integer deliveryToCustomerBusinessDaysMin;
   Integer deliveryToCustomerBusinessDaysMax;

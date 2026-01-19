@@ -88,7 +88,8 @@ public class FebiOrderProvider implements ProviderOrderProvider {
     }
 
     Map<String, WebOrderItem> itemsByPosition = new HashMap<>();
-    FebiOrderRequest orderRequest = buildOrderRequest(request.getHeader(), eligibleItems, itemsByPosition);
+    FebiOrderRequest orderRequest =
+        buildOrderRequest(request.getHeader(), eligibleItems, itemsByPosition);
     if (orderRequest == null) {
       return ProviderOrderResult.builder()
           .status(ProviderCallStatus.ERROR)
@@ -198,7 +199,8 @@ public class FebiOrderProvider implements ProviderOrderProvider {
       if (!StringUtils.hasText(articleNumber) || baseQuantity == null || baseQuantity <= 0) {
         continue;
       }
-      Integer quantity = applyPackagingUnit(baseQuantity, resolvePackagingUnit(articleNumber));
+      Integer quantity =
+          applyPackagingUnit(baseQuantity, resolvePackagingUnit(articleNumber));
       if (quantity == null || quantity <= 0) {
         continue;
       }
@@ -337,8 +339,15 @@ public class FebiOrderProvider implements ProviderOrderProvider {
     if (quantity == null) {
       return null;
     }
-    int multiplier = packagingUnit > 0 ? packagingUnit : 1;
-    long result = (long) quantity * (long) multiplier;
+    int unit = packagingUnit > 0 ? packagingUnit : 1;
+    if (unit <= 1) {
+      return quantity;
+    }
+
+    long q = (long) quantity;
+    long u = (long) unit;
+    long packages = (q + u - 1) / u; // ceil(q/u)
+    long result = packages * u;
     if (result > Integer.MAX_VALUE) {
       return Integer.MAX_VALUE;
     }

@@ -233,6 +233,7 @@ public class FakturaService {
                     item.setProviderPurchasePrice(a.getPurchasePrice());
                     item.setProviderPrice(a.getPrice());
                     item.setProviderCurrency(a.getCurrency());
+                    item.setProviderPackagingUnit(a.getPackagingUnit());
                     item.setProviderLeadTimeBusinessDays(a.getLeadTimeBusinessDays());
                     item.setProviderDeliveryToCustomerDaysMin(a.getDeliveryToCustomerBusinessDaysMin());
                     item.setProviderDeliveryToCustomerDaysMax(a.getDeliveryToCustomerBusinessDaysMax());
@@ -613,6 +614,7 @@ public class FakturaService {
                             .purchasePrice(item.getProviderPurchasePrice())
                             .price(item.getProviderPrice())
                             .currency(item.getProviderCurrency())
+                            .packagingUnit(item.getProviderPackagingUnit())
                             .leadTimeBusinessDays(item.getProviderLeadTimeBusinessDays())
                             .deliveryToCustomerBusinessDaysMin(item.getProviderDeliveryToCustomerDaysMin())
                             .deliveryToCustomerBusinessDaysMax(item.getProviderDeliveryToCustomerDaysMax())

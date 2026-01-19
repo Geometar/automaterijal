@@ -285,6 +285,7 @@ public class ExternalAvailabilityService {
         .purchasePrice(item.getPurchasePrice())
         .price(item.getSellingPrice())
         .currency(item.getCurrency())
+        .packagingUnit(item.getPackagingUnit())
         .leadTimeBusinessDays(item.getLeadTimeBusinessDays())
         .deliveryToCustomerBusinessDaysMin(item.getDeliveryToCustomerBusinessDaysMin())
         .deliveryToCustomerBusinessDaysMax(item.getDeliveryToCustomerBusinessDaysMax())
@@ -299,6 +300,7 @@ public class ExternalAvailabilityService {
     }
 
     boolean exposePurchasePrice = PartnerPrivilegeUtils.isInternal(partner);
+    Integer packagingUnit = availability.getPackagingUnit();
     String brand =
         dto != null && dto.getProizvodjac() != null ? dto.getProizvodjac().getProid() : null;
     String group = dto != null ? dto.getGrupa() : null;
@@ -317,6 +319,7 @@ public class ExternalAvailabilityService {
         .purchasePrice(exposePurchasePrice ? availability.getPurchasePrice() : null)
         .price(finalCustomerPrice)
         .currency(availability.getCurrency())
+        .packagingUnit(packagingUnit)
         .leadTimeBusinessDays(availability.getLeadTimeBusinessDays())
         .deliveryToCustomerBusinessDaysMin(availability.getDeliveryToCustomerBusinessDaysMin())
         .deliveryToCustomerBusinessDaysMax(availability.getDeliveryToCustomerBusinessDaysMax())

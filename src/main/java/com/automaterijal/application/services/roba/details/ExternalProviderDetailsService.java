@@ -110,6 +110,7 @@ public class ExternalProviderDetailsService {
       BigDecimal finalCustomerPrice =
           providerPricingService.calculateCustomerPrice(availability, group, brand, partner);
       boolean exposePurchasePrice = PartnerPrivilegeUtils.isInternal(partner);
+      Integer packagingUnit = availability.getPackagingUnit();
       ProviderAvailabilityDto priced =
           ProviderAvailabilityDto.builder()
               .brand(availability.getBrand())
@@ -123,6 +124,7 @@ public class ExternalProviderDetailsService {
               .purchasePrice(exposePurchasePrice ? availability.getPurchasePrice() : null)
               .price(finalCustomerPrice)
               .currency(availability.getCurrency())
+              .packagingUnit(packagingUnit)
               .leadTimeBusinessDays(availability.getLeadTimeBusinessDays())
               .deliveryToCustomerBusinessDaysMin(availability.getDeliveryToCustomerBusinessDaysMin())
               .deliveryToCustomerBusinessDaysMax(availability.getDeliveryToCustomerBusinessDaysMax())

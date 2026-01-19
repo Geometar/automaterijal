@@ -119,6 +119,9 @@ public class WebOrderItem {
   @Column(name = "provider_currency")
   String providerCurrency;
 
+  @Column(name = "provider_packaging_unit")
+  Integer providerPackagingUnit;
+
   @Column(name = "provider_lead_time_business_days")
   Integer providerLeadTimeBusinessDays;
 

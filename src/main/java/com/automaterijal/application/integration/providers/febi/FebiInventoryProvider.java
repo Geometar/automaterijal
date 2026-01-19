@@ -221,6 +221,8 @@ public class FebiInventoryProvider implements InventoryProvider {
         priceService
             .findPrice(item.getArticleNumber())
             .orElse(null);
+    Integer packagingUnit =
+        priceService.findPackagingUnit(item.getArticleNumber()).orElse(null);
 
     return AvailabilityItem.builder()
         .brand(brand)
@@ -231,6 +233,7 @@ public class FebiInventoryProvider implements InventoryProvider {
         .purchasePrice(price != null ? price.purchasePrice() : null)
         .sellingPrice(price != null ? price.sellingPrice() : null)
         .currency(price != null ? price.currency() : null)
+        .packagingUnit(packagingUnit)
         .leadTimeBusinessDays(properties.getLeadTimeBusinessDays())
         .deliveryToCustomerBusinessDaysMin(properties.getDeliveryToCustomerBusinessDaysMin())
         .deliveryToCustomerBusinessDaysMax(properties.getDeliveryToCustomerBusinessDaysMax())
