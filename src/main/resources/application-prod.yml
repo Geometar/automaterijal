@@ -68,5 +68,10 @@ sitemap:
 
 integration:
   febi:
+    enabled: true
+    client-id: clktr_e9b5a2c8302cda39719738de3f28cf7f
+    client-secret: O1CgWaLoswnZHuI81R0gwzeI03DQTZw9
+    price-list-path: ${FEBI_PRICE_LIST_PATH:/home/ftpuser/automaterijal/misc/pricelist/febi-pricelist.xlsx}
+    bypass-article-errors: true
     order:
       mode: LIVE
