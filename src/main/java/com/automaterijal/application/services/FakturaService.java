@@ -440,7 +440,9 @@ public class FakturaService {
       merged.add(new DatedDto(faktura.getDataSent(), obogatiDto(dto, partner)));
     }
     for (var webOrder : webPage.getContent()) {
-      merged.add(new DatedDto(webOrder.getDateSent(), obogatiWebDto(mapWebOrder(webOrder), partner)));
+      var dto = obogatiWebDto(mapWebOrder(webOrder), partner);
+      overrideStatusFromErp(webOrder, dto);
+      merged.add(new DatedDto(webOrder.getDateSent(), dto));
     }
 
     merged.sort(
@@ -635,6 +637,26 @@ public class FakturaService {
     return dto;
   }
 
+  private void overrideStatusFromErp(WebOrderHeader header, FakturaDto dto) {
+    if (header == null || dto == null) {
+      return;
+    }
+    if (header.getErpExported() == null || header.getErpExported() != 1) {
+      return;
+    }
+    if (header.getPpid() == null || header.getOrderId() == null) {
+      return;
+    }
+    fakturaRepository
+        .findByPpidAndOrderId(header.getPpid(), header.getOrderId())
+        .map(Faktura::getStatus)
+        .ifPresent(
+            erpStatusId -> {
+              dto.setStatus(vh(erpStatusId));
+              statusRepository.findById(erpStatusId).ifPresent(status -> mapper.map(dto, status));
+            });
+  }
+
   private ValueHelpDto vh(Integer id) {
     ValueHelpDto dto = new ValueHelpDto();
     dto.setId(id);
@@ -747,6 +769,7 @@ public class FakturaService {
       }
       if (webOrder.isPresent()) {
         fakturaDto = obogatiWebDto(mapWebOrder(webOrder.get()), partner);
+        overrideStatusFromErp(webOrder.get(), fakturaDto);
       }
       return fakturaDto;
     }

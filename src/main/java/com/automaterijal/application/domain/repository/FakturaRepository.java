@@ -22,6 +22,8 @@ public interface FakturaRepository extends JpaRepository<Faktura, Integer> {
 
     Optional<Faktura> findByPpidAndId(Integer ppid, Integer id);
 
+    Optional<Faktura> findByPpidAndOrderId(Integer ppid, Integer orderId);
+
     Optional<Faktura> findFirstByPpidOrderByOrderIdDesc(Integer ppid);
 
     long countByStatus(Integer status);
