@@ -238,6 +238,9 @@ public class FakturaService {
                     item.setProviderDeliveryToCustomerDaysMin(a.getDeliveryToCustomerBusinessDaysMin());
                     item.setProviderDeliveryToCustomerDaysMax(a.getDeliveryToCustomerBusinessDaysMax());
                     item.setProviderNextDispatchCutoff(a.getNextDispatchCutoff());
+                    item.setProviderProductId(a.getProviderProductId());
+                    item.setProviderStockToken(a.getProviderStockToken());
+                    item.setProviderNoReturnable(a.getProviderNoReturnable());
                   }
                   applyProviderDeliveryParty(item, providerDeliveryParties);
 
@@ -621,6 +624,9 @@ public class FakturaService {
                             .deliveryToCustomerBusinessDaysMin(item.getProviderDeliveryToCustomerDaysMin())
                             .deliveryToCustomerBusinessDaysMax(item.getProviderDeliveryToCustomerDaysMax())
                             .nextDispatchCutoff(item.getProviderNextDispatchCutoff())
+                            .providerProductId(item.getProviderProductId())
+                            .providerStockToken(item.getProviderStockToken())
+                            .providerNoReturnable(item.getProviderNoReturnable())
                             .build());
                     d.setAvailabilityStatus(
                         Boolean.TRUE.equals(item.getProviderAvailable())

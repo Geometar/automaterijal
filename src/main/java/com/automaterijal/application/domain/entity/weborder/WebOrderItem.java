@@ -134,6 +134,15 @@ public class WebOrderItem {
   @Column(name = "provider_next_dispatch_cutoff")
   String providerNextDispatchCutoff;
 
+  @Column(name = "provider_product_id")
+  String providerProductId;
+
+  @Column(name = "provider_stock_token")
+  String providerStockToken;
+
+  @Column(name = "provider_no_returnable")
+  Boolean providerNoReturnable;
+
   @Column(name = "provider_backorder")
   Boolean providerBackorder;
 

@@ -32,6 +32,9 @@ sitemap:
   blog-prefix: /blog
 
 integration:
+  szakal:
+    enabled: true
+    data-dir: /Users/radespasojevic/Documents/Rade/Automaterijal/dokumenti/szakal
   febi:
     enabled: true
     client-id: clktr_e9b5a2c8302cda39719738de3f28cf7f
