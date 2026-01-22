@@ -2,6 +2,7 @@ package com.automaterijal.application.services.tecdoc;
 
 import com.automaterijal.application.domain.entity.tecdoc.TecDocBrands;
 import com.automaterijal.application.domain.repository.tecdoc.TecDocBrandsRepository;
+import java.util.List;
 import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.NonNull;
@@ -31,5 +32,16 @@ public class TecDocBrandService {
 
   public TecDocBrands save(TecDocBrands brands) {
     return tecDocBrandsRepository.saveAndFlush(brands);
+  }
+
+  public List<TecDocBrands> findAll() {
+    return tecDocBrandsRepository.findAll();
+  }
+
+  public void deleteByProid(String proid) {
+    if (proid == null || proid.isBlank()) {
+      return;
+    }
+    tecDocBrandsRepository.deleteById(proid);
   }
 }
