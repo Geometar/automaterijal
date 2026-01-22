@@ -59,6 +59,9 @@ public class PartnerController {
       final Authentication authentication, @RequestParam final boolean prviRequest) {
 
     final var dto = service.vratiUlogovanogKorisnika(authentication);
+    if (dto == null) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
     if (dto != null && prviRequest) {
       log.info("Ulogovao se partner: {}", dto.getNaziv());
       usersService.logovanomUseruPovecajKolikoSePutaLogovao(dto.getPpid());

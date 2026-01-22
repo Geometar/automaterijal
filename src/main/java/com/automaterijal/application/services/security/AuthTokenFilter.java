@@ -2,7 +2,6 @@ package com.automaterijal.application.services.security;
 
 import com.automaterijal.application.domain.model.CurrentUser;
 import com.automaterijal.application.utils.JwtUtils;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -10,11 +9,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.server.ResponseStatusException;
 
 public class AuthTokenFilter extends OncePerRequestFilter {
 
@@ -40,12 +41,18 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
           SecurityContextHolder.getContext().setAuthentication(authentication);
         }
+      } catch (ResponseStatusException ex) {
+        SecurityContextHolder.clearContext();
+        response.sendError(ex.getStatusCode().value(), ex.getReason());
+        return;
       } catch (JwtException ex) {
-        // Treat invalid tokens as unauthenticated; controller will enforce access.
         SecurityContextHolder.clearContext();
+        response.sendError(HttpStatus.UNAUTHORIZED.value(), "Invalid JWT token");
+        return;
       } catch (RuntimeException ex) {
-        // Treat invalid tokens as unauthenticated; controller will enforce access.
         SecurityContextHolder.clearContext();
+        response.sendError(HttpStatus.UNAUTHORIZED.value(), "Unauthorized");
+        return;
       }
     }
 
