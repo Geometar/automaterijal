@@ -29,7 +29,10 @@ import org.springframework.util.StringUtils;
 public class SzakalImportService {
   private static final int MASTER_COLUMNS = 12;
   private static final int PRICELIST_COLUMNS = 7;
+  private static final int OE_COLUMNS = 5;
   private static final int BATCH_SIZE = 1000;
+  private static final int OE_SHORT_MAX_LENGTH = 160;
+  private static final int OE_MAX_LENGTH = 255;
 
   private final JdbcTemplate jdbcTemplate;
   private final SzakalProperties properties;
@@ -57,6 +60,10 @@ public class SzakalImportService {
 
   public ImportResult importBarcodesOnly() {
     return importBarcodes(resolveBarcodeFile().orElse(null));
+  }
+
+  public ImportResult importOeOnly() {
+    return importOeLinks(resolveOeFile().orElse(null));
   }
 
   public StatusSummary status() {
@@ -88,6 +95,8 @@ public class SzakalImportService {
         .ifPresent(path -> candidates.add(buildFileInfo("master", path)));
     resolveBarcodeFile()
         .ifPresent(path -> candidates.add(buildFileInfo("barcode", path)));
+    resolveOeFile()
+        .ifPresent(path -> candidates.add(buildFileInfo("oe_link", path)));
     for (int listNo = 0; listNo <= 3; listNo++) {
       final int listIndex = listNo;
       resolvePriceListFile(listNo)
@@ -295,6 +304,74 @@ public class SzakalImportService {
     return new ImportResult(file.toString(), rows, durationMs(start));
   }
 
+  public ImportResult importOeLinks(Path file) {
+    if (file == null) {
+      log.warn("Szakal OE link file not found; skipping import");
+      return new ImportResult(null, 0, 0);
+    }
+
+    Instant start = Instant.now();
+    jdbcTemplate.update("delete from szakal_oe_links");
+
+    String sql =
+        "insert into szakal_oe_links (glid, oe_short, oe, maker, tecdoc_name, updated_at) "
+            + "values (?,?,?,?,?, current_timestamp) "
+            + "on duplicate key update "
+            + "oe=values(oe), "
+            + "tecdoc_name=values(tecdoc_name), "
+            + "updated_at=current_timestamp";
+
+    int rows = 0;
+    List<Object[]> batch = new ArrayList<>(BATCH_SIZE);
+    try (InputStream input = openFile(file);
+        BufferedReader reader =
+            new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8))) {
+      String line = reader.readLine(); // header
+      while ((line = reader.readLine()) != null) {
+        if (!StringUtils.hasText(line)) {
+          continue;
+        }
+        String[] parts = line.split("\t", -1);
+        if (parts.length < OE_COLUMNS) {
+          continue;
+        }
+        String glid = trimToNull(parts[0]);
+        if (!StringUtils.hasText(glid)) {
+          continue;
+        }
+        String tecdocName = trimNullLiteral(parts[1]);
+        String oeShort = normalizeOeShort(parts[2]);
+        String oe = trimNullLiteral(parts[3]);
+        if (oe != null && oe.length() > OE_MAX_LENGTH) {
+          oe = oe.substring(0, OE_MAX_LENGTH);
+        }
+        String maker = trimNullLiteral(parts[4]);
+        if (!StringUtils.hasText(oeShort)) {
+          oeShort = normalizeOeShort(oe);
+        }
+        if (!StringUtils.hasText(oeShort)) {
+          continue;
+        }
+        batch.add(
+            new Object[] {
+              glid,
+              oeShort,
+              oe,
+              maker != null ? maker : "",
+              tecdocName
+            });
+        if (batch.size() >= BATCH_SIZE) {
+          rows += flushBatch(sql, batch);
+        }
+      }
+    } catch (IOException ex) {
+      log.warn("Failed to import Szakal OE link file {}: {}", file, ex.getMessage());
+      return new ImportResult(file.toString(), 0, durationMs(start));
+    }
+    rows += flushBatch(sql, batch);
+    return new ImportResult(file.toString(), rows, durationMs(start));
+  }
+
   private int flushBatch(String sql, List<Object[]> batch) {
     if (batch.isEmpty()) {
       return 0;
@@ -347,6 +424,19 @@ public class SzakalImportService {
         "barcode_all.csv");
   }
 
+  private Optional<Path> resolveOeFile() {
+    Path base = resolveDataDir();
+    if (base == null) {
+      return Optional.empty();
+    }
+    return firstExisting(
+        base,
+        "oe_link.csv",
+        "oe_link.csv.zip",
+        "oe_link_all.csv.zip",
+        "oe_link_all.csv");
+  }
+
   private Optional<Path> firstExisting(Path base, String... names) {
     for (String name : names) {
       Path candidate = base.resolve(name);
@@ -392,6 +482,28 @@ public class SzakalImportService {
       return null;
     }
     return value.trim();
+  }
+
+  private String trimNullLiteral(String value) {
+    String trimmed = trimToNull(value);
+    if (!StringUtils.hasText(trimmed)) {
+      return null;
+    }
+    return "NULL".equalsIgnoreCase(trimmed) ? null : trimmed;
+  }
+
+  private String normalizeOeShort(String value) {
+    if (!StringUtils.hasText(value)) {
+      return null;
+    }
+    String cleaned = value.replaceAll("[^A-Za-z0-9]", "").toUpperCase(Locale.ROOT).trim();
+    if (!StringUtils.hasText(cleaned)) {
+      return null;
+    }
+    if (cleaned.length() > OE_SHORT_MAX_LENGTH) {
+      return cleaned.substring(0, OE_SHORT_MAX_LENGTH);
+    }
+    return cleaned;
   }
 
   private Integer parseInt(String value) {

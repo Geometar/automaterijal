@@ -152,3 +152,77 @@ databaseChangeLog:
               - column:
                   name: barcode
                   type: VARCHAR(80)
+  - changeSet:
+      id: 2026-01-21-5
+      author: codex
+      changes:
+        - createTable:
+            tableName: szakal_oe_links
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: glid
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: oe_short
+                  type: VARCHAR(160)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: oe
+                  type: VARCHAR(255)
+              - column:
+                  name: maker
+                  type: VARCHAR(120)
+                  defaultValue: ""
+                  constraints:
+                    nullable: false
+              - column:
+                  name: tecdoc_name
+                  type: VARCHAR(120)
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+        - addUniqueConstraint:
+            tableName: szakal_oe_links
+            columnNames: glid, oe_short, maker
+            constraintName: uq_szakal_oe_glid_short_maker
+        - createIndex:
+            tableName: szakal_oe_links
+            indexName: idx_szakal_oe_short
+            columns:
+              - column:
+                  name: oe_short
+        - createIndex:
+            tableName: szakal_oe_links
+            indexName: idx_szakal_oe_glid
+            columns:
+              - column:
+                  name: glid
+  - changeSet:
+      id: 2026-01-21-6
+      author: codex
+      changes:
+        - modifyDataType:
+            tableName: szakal_oe_links
+            columnName: oe_short
+            newDataType: VARCHAR(160)
+  - changeSet:
+      id: 2026-01-21-7
+      author: codex
+      changes:
+        - modifyDataType:
+            tableName: szakal_oe_links
+            columnName: oe
+            newDataType: VARCHAR(255)

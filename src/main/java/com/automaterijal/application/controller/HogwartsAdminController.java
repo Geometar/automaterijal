@@ -4,6 +4,7 @@ import com.automaterijal.application.domain.dto.admin.HogwartsOverviewResponse;
 import com.automaterijal.application.domain.dto.admin.HogwartsRevenueOverviewResponse;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.integration.providers.szakal.SzakalImportService;
+import com.automaterijal.application.integration.providers.szakal.SzakalOeSearchService;
 import com.automaterijal.application.domain.entity.tecdoc.TecDocBrands;
 import com.automaterijal.application.services.admin.HogwartsAdminService;
 import com.automaterijal.application.services.tecdoc.TecDocBrandService;
@@ -40,6 +41,7 @@ public class HogwartsAdminController {
 
   @NonNull final HogwartsAdminService hogwartsAdminService;
   @NonNull final SzakalImportService szakalImportService;
+  @NonNull final SzakalOeSearchService szakalOeSearchService;
   @NonNull final TecDocBrandService tecDocBrandService;
   @NonNull final PartnerSpringBeanUtils partnerSpringBeanUtils;
 
@@ -104,6 +106,16 @@ public class HogwartsAdminController {
     return ResponseEntity.ok(szakalImportService.importBarcodesOnly());
   }
 
+  @PostMapping("/szakal/import/oe-links")
+  public ResponseEntity<SzakalImportService.ImportResult> importSzakalOeLinks(
+      Authentication authentication) {
+    Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+    if (!PartnerPrivilegeUtils.isSuperAdmin(partner)) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nije Admin");
+    }
+    return ResponseEntity.ok(szakalImportService.importOeOnly());
+  }
+
   @GetMapping("/szakal/status")
   public ResponseEntity<SzakalImportService.StatusSummary> szakalStatus(
       Authentication authentication) {
@@ -122,6 +134,20 @@ public class HogwartsAdminController {
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nije Admin");
     }
     return ResponseEntity.ok(szakalImportService.files());
+  }
+
+  @GetMapping("/szakal/oe-search")
+  public ResponseEntity<List<SzakalOeSearchService.OeSearchResult>> szakalOeSearch(
+      @RequestParam(name = "oe") String oeNumber,
+      Authentication authentication) {
+    Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+    if (!PartnerPrivilegeUtils.isSuperAdmin(partner)) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nije Admin");
+    }
+    if (!StringUtils.hasText(oeNumber)) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "OE is required");
+    }
+    return ResponseEntity.ok(szakalOeSearchService.searchByOe(oeNumber));
   }
 
   @GetMapping("/tecdoc-brand-mappings/{proid}")
