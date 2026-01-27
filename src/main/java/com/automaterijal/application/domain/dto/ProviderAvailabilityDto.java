@@ -30,4 +30,7 @@ public class ProviderAvailabilityDto {
   Integer deliveryToCustomerBusinessDaysMin;
   Integer deliveryToCustomerBusinessDaysMax;
   String nextDispatchCutoff;
+  String providerProductId;
+  String providerStockToken;
+  Boolean providerNoReturnable;
 }

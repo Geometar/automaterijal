@@ -101,6 +101,11 @@ integration:
         priority: 100
         purposes: [INVENTORY_ENRICHMENT, EXTERNAL_OFFER]
         brands: [FEBI, BLUE]
+      - provider: szakal
+        enabled: true
+        priority: 50
+        purposes: [INVENTORY_ENRICHMENT, EXTERNAL_OFFER]
+        maxLocalAvailableCount: 20
   febi:
     order:
       mode: DISABLED
@@ -112,6 +117,15 @@ integration:
       delivery-party: ${FEBI_ORDER_DELIVERY_PARTY:0001001983}
       pickup-delivery-party: ${FEBI_ORDER_PICKUP_DELIVERY_PARTY:0001003023}
       shipping-condition: ${FEBI_ORDER_SHIPPING_CONDITION:S9}
+  szakal:
+    enabled: ${SZAKAL_ENABLED:false}
+    data-dir: ${SZAKAL_DATA_DIR:}
+    currency: RSD
+    lead-time-list0: 1
+    lead-time-list1: 2
+    lead-time-list2: 3
+    lead-time-list3: 5
+    warehouse-name: SZAKAL
 
 pricing:
   margin:

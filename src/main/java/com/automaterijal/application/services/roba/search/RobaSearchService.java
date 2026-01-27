@@ -4,13 +4,17 @@ import com.automaterijal.application.domain.constants.TecDocProizvodjaci;
 import com.automaterijal.application.domain.dto.ArticleAvailabilityStatus;
 import com.automaterijal.application.domain.dto.MagacinDto;
 import com.automaterijal.application.domain.dto.ProizvodjacDTO;
+import com.automaterijal.application.domain.dto.ProviderAvailabilityDto;
 import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
+import com.automaterijal.application.integration.providers.szakal.SzakalOeSearchService;
+import com.automaterijal.application.integration.providers.szakal.SzakalProperties;
 import com.automaterijal.application.integration.shared.ProviderRoutingPurpose;
 import com.automaterijal.application.services.TecDocService;
 import com.automaterijal.application.services.roba.ExternalOfferService;
 import com.automaterijal.application.services.roba.ExternalOfferService.ExternalOfferPayload;
+import com.automaterijal.application.services.roba.ProviderPricingService;
 import com.automaterijal.application.services.roba.RobaEnrichmentService;
 import com.automaterijal.application.services.roba.adapter.RobaAdapterService;
 import com.automaterijal.application.services.roba.grupe.ArticleSubGroupService;
@@ -19,6 +23,8 @@ import com.automaterijal.application.services.tecdoc.TecDocGenericArticleMapping
 import com.automaterijal.application.tecdoc.*;
 import com.automaterijal.application.utils.CatalogNumberUtils;
 import com.automaterijal.application.utils.GeneralUtil;
+import com.automaterijal.application.utils.PartnerPrivilegeUtils;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -43,6 +49,8 @@ public class RobaSearchService {
   private static final int MAX_TEC_DOC_RESULTS = 1000;
   private static final int TECDOC_NUMBER_TYPE_ALL = 10;
   private static final int MAX_PROVIDER_ITEMS = 1000;
+  private static final int MAX_OE_FALLBACK_NUMBERS = 200;
+  private static final int MAX_OE_FALLBACK_RESULTS = 50;
 
   @NonNull final RobaAdapterService robaAdapterService;
   @NonNull final TecDocService tecDocService;
@@ -51,6 +59,9 @@ public class RobaSearchService {
   @NonNull final TecDocGenericArticleMappingService tecDocGenericArticleMappingService;
   @NonNull final ArticleSubGroupService articleSubGroupService;
   @NonNull final RobaSortService robaSortService;
+  @NonNull final SzakalOeSearchService szakalOeSearchService;
+  @NonNull final SzakalProperties szakalProperties;
+  @NonNull final ProviderPricingService providerPricingService;
 
   /** Main method for fetching associated articles with TecDoc data. */
   public MagacinDto getAssociatedArticles(
@@ -137,6 +148,10 @@ public class RobaSearchService {
 
     List<RobaLightDto> externals =
         externalOfferService.materializeExternalOffers(externalPayload, normalized);
+    List<RobaLightDto> oeFallback =
+        externals.isEmpty()
+            ? buildOeFallbackFromArticles(articles, loggedPartner, externals)
+            : List.of();
 
     if (filterAvailable) {
       List<RobaLightDto> filteredItems =
@@ -147,6 +162,7 @@ public class RobaSearchService {
 
       List<RobaLightDto> combined = new ArrayList<>(filteredItems);
       combined.addAll(externals);
+      combined.addAll(oeFallback);
       combined =
           StringUtils.hasText(normalized.getTrazenaRec())
               ? robaSortService.sortByGroupWithExact(combined, normalized.getTrazenaRec())
@@ -182,6 +198,7 @@ public class RobaSearchService {
                                       + normalizeCatalog(dto.getKatbr())))
                   .toList());
       combined.addAll(externals);
+      combined.addAll(oeFallback);
 
       combined =
           StringUtils.hasText(normalized.getTrazenaRec())
@@ -284,6 +301,190 @@ public class RobaSearchService {
                     .map(CatalogNumberUtils::cleanPreserveSeparators)
                     .map(oe -> oe.concat("-OE"))
                     .forEach(catalogNumbers::add));
+  }
+
+  private List<RobaLightDto> buildOeFallbackFromArticles(
+      List<ArticleRecord> articles, Partner partner, List<RobaLightDto> existing) {
+    if (articles == null || articles.isEmpty()) {
+      return List.of();
+    }
+    List<String> oeNumbers = new ArrayList<>();
+    for (ArticleRecord article : articles) {
+      if (article == null || article.getOemNumbers() == null) {
+        continue;
+      }
+      for (ArticleRefRecord ref : article.getOemNumbers()) {
+        if (ref == null || !StringUtils.hasText(ref.getArticleNumber())) {
+          continue;
+        }
+        String normalized = CatalogNumberUtils.cleanPreserveSeparators(ref.getArticleNumber());
+        if (StringUtils.hasText(normalized)) {
+          oeNumbers.add(normalized);
+        }
+      }
+    }
+    return buildOeFallbackOffers(oeNumbers, partner, existing);
+  }
+
+  private List<RobaLightDto> buildOeFallbackFromSearchTerm(
+      String searchTerm, Partner partner, List<RobaLightDto> existing) {
+    if (!looksLikeOe(searchTerm)) {
+      return List.of();
+    }
+    return buildOeFallbackOffers(List.of(searchTerm), partner, existing);
+  }
+
+  private boolean looksLikeOe(String value) {
+    if (!StringUtils.hasText(value)) {
+      return false;
+    }
+    String normalized = value.replaceAll("[^A-Za-z0-9]", "");
+    if (normalized.length() < 4) {
+      return false;
+    }
+    return normalized.chars().anyMatch(Character::isDigit);
+  }
+
+  private List<RobaLightDto> buildOeFallbackOffers(
+      List<String> oeNumbers, Partner partner, List<RobaLightDto> existing) {
+    if (oeNumbers == null || oeNumbers.isEmpty()) {
+      return List.of();
+    }
+    List<String> limited = new ArrayList<>();
+    Set<String> seenNumbers = new HashSet<>();
+    for (String oe : oeNumbers) {
+      if (!StringUtils.hasText(oe)) {
+        continue;
+      }
+      if (!seenNumbers.add(oe)) {
+        continue;
+      }
+      if (limited.size() >= MAX_OE_FALLBACK_NUMBERS) {
+        break;
+      }
+      limited.add(oe);
+    }
+    if (limited.isEmpty()) {
+      return List.of();
+    }
+
+    List<SzakalOeSearchService.OeSearchResult> matches = new ArrayList<>();
+    for (String oe : limited) {
+      matches.addAll(szakalOeSearchService.searchByOe(oe));
+      if (matches.size() >= MAX_OE_FALLBACK_RESULTS) {
+        break;
+      }
+    }
+
+    if (matches.isEmpty()) {
+      return List.of();
+    }
+
+    List<RobaLightDto> results = new ArrayList<>();
+    HashSet<String> seen = new HashSet<>(collectProviderGlids(existing));
+    for (SzakalOeSearchService.OeSearchResult match : matches) {
+      if (match == null || !StringUtils.hasText(match.glid())) {
+        continue;
+      }
+      if (seen.contains(match.glid())) {
+        continue;
+      }
+      RobaLightDto dto = mapOeFallback(match, partner);
+      if (dto != null) {
+        results.add(dto);
+        seen.add(match.glid());
+      }
+      if (results.size() >= MAX_OE_FALLBACK_RESULTS) {
+        break;
+      }
+    }
+    return results;
+  }
+
+  private List<String> collectProviderGlids(List<RobaLightDto> items) {
+    if (items == null || items.isEmpty()) {
+      return List.of();
+    }
+    List<String> glids = new ArrayList<>();
+    for (RobaLightDto dto : items) {
+      if (dto == null || dto.getProviderAvailability() == null) {
+        continue;
+      }
+      String glid = dto.getProviderAvailability().getProviderProductId();
+      if (StringUtils.hasText(glid)) {
+        glids.add(glid);
+      }
+    }
+    return glids;
+  }
+
+  private RobaLightDto mapOeFallback(
+      SzakalOeSearchService.OeSearchResult match, Partner partner) {
+    if (match == null) {
+      return null;
+    }
+    String name =
+        StringUtils.hasText(match.nameRs())
+            ? match.nameRs()
+            : (StringUtils.hasText(match.nameEn()) ? match.nameEn() : "OE match");
+
+    String brandName =
+        StringUtils.hasText(match.brandName())
+            ? match.brandName()
+            : (StringUtils.hasText(match.maker()) ? match.maker() : "SZAKAL");
+    String brandKey = brandName.trim().toUpperCase(Locale.ROOT);
+
+    ProizvodjacDTO manufacturer = new ProizvodjacDTO();
+    manufacturer.setProid(brandKey);
+    manufacturer.setNaziv(brandName.trim());
+
+    String displayNumber =
+        StringUtils.hasText(match.oe()) ? match.oe() : match.oeShort();
+
+    ProviderAvailabilityDto availability =
+        ProviderAvailabilityDto.builder()
+            .brand(brandKey)
+            .provider("szakal")
+            .articleNumber(displayNumber)
+            .available(true)
+            .totalQuantity(match.stock())
+            .warehouse(match.listNo() != null ? "PL" + match.listNo() : null)
+            .warehouseName(szakalProperties.getWarehouseName())
+            .warehouseQuantity(match.stock())
+            .purchasePrice(match.unitPrice())
+            .currency(szakalProperties.getCurrency())
+            .packagingUnit(match.quantum())
+            .leadTimeBusinessDays(match.leadTimeDays())
+            .deliveryToCustomerBusinessDaysMin(szakalProperties.getDeliveryToCustomerBusinessDaysMin())
+            .deliveryToCustomerBusinessDaysMax(szakalProperties.getDeliveryToCustomerBusinessDaysMax())
+            .nextDispatchCutoff(match.orderDeadline())
+            .providerProductId(match.glid())
+            .providerStockToken(match.token())
+            .providerNoReturnable(match.notReturnable())
+            .build();
+
+    BigDecimal customerPrice =
+        providerPricingService.calculateCustomerPrice(availability, null, brandKey, partner);
+    availability.setPrice(customerPrice);
+    if (!PartnerPrivilegeUtils.isInternal(partner)) {
+      availability.setPurchasePrice(null);
+    }
+
+    RobaLightDto dto = new RobaLightDto();
+    dto.setRobaid(null);
+    dto.setKatbr(displayNumber);
+    dto.setKatbrpro(null);
+    dto.setNaziv(name);
+    dto.setProizvodjac(manufacturer);
+    dto.setGrupa(ArticleSubGroupService.ANONIMNA_GRUPA);
+    dto.setGrupaNaziv(ArticleSubGroupService.ANONIMNA_GRUPA);
+    dto.setPodGrupa(0);
+    dto.setPodGrupaNaziv(ArticleSubGroupService.ANONIMNA_GRUPA);
+    dto.setStanje(0);
+    dto.setProviderAvailability(availability);
+    dto.setCena(customerPrice);
+    dto.setAvailabilityStatus(ArticleAvailabilityStatus.AVAILABLE);
+    return dto;
   }
 
   public MagacinDto searchProducts(
@@ -435,9 +636,15 @@ public class RobaSearchService {
 
     List<RobaLightDto> externals =
         externalOfferService.materializeExternalOffers(externalPayload, normalized);
+    List<RobaLightDto> oeFallback =
+        externals.isEmpty()
+            ? buildOeFallbackFromSearchTerm(
+                normalized.getTrazenaRec(), loggedPartner, externals)
+            : List.of();
 
     List<RobaLightDto> combined = new ArrayList<>(visibleLocalItems);
     combined.addAll(externals);
+    combined.addAll(oeFallback);
     combined =
         StringUtils.hasText(normalized.getTrazenaRec())
             ? robaSortService.sortByGroupWithExact(combined, normalized.getTrazenaRec())

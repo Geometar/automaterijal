@@ -290,6 +290,9 @@ public class ExternalAvailabilityService {
         .deliveryToCustomerBusinessDaysMin(item.getDeliveryToCustomerBusinessDaysMin())
         .deliveryToCustomerBusinessDaysMax(item.getDeliveryToCustomerBusinessDaysMax())
         .nextDispatchCutoff(item.getNextDispatchCutoff())
+        .providerProductId(item.getProviderProductId())
+        .providerStockToken(item.getProviderStockToken())
+        .providerNoReturnable(item.getProviderNoReturnable())
         .build();
   }
 
@@ -324,6 +327,9 @@ public class ExternalAvailabilityService {
         .deliveryToCustomerBusinessDaysMin(availability.getDeliveryToCustomerBusinessDaysMin())
         .deliveryToCustomerBusinessDaysMax(availability.getDeliveryToCustomerBusinessDaysMax())
         .nextDispatchCutoff(availability.getNextDispatchCutoff())
+        .providerProductId(availability.getProviderProductId())
+        .providerStockToken(availability.getProviderStockToken())
+        .providerNoReturnable(availability.getProviderNoReturnable())
         .build();
   }
 
