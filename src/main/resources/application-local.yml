@@ -20,13 +20,13 @@ spring:
 # Putanje za slike proizvoda
 roba:
   slika:
-    tdPrefix: "/Users/radespasojevic/Documents/Rade/Automaterijal/tecdoc/slike/slike/"
+    tdPrefix: "/Users/radespasojevic/development/automaterijal/misc/tecdoc/pictures/"
     publicPrefix: "/images/roba/"
     noImageUrl: "/images/no-image/no-image.png"
 
 blog:
   cover-image:
-    directory: "/Users/radespasojevic/Documents/Rade/Automaterijal/tecdoc/slike/blog/"
+    directory: "/Users/radespasojevic/development/automaterijal/misc/tecdoc/blog"
 
 sitemap:
   blog-prefix: /blog
@@ -34,12 +34,12 @@ sitemap:
 integration:
   szakal:
     enabled: true
-    data-dir: /Users/radespasojevic/Documents/Rade/Automaterijal/dokumenti/szakal
+    data-dir: /Users/radespasojevic/development/automaterijal/misc/providers/szakal
   febi:
     enabled: true
     client-id: clktr_e9b5a2c8302cda39719738de3f28cf7f
     client-secret: O1CgWaLoswnZHuI81R0gwzeI03DQTZw9
-    price-list-path: /Users/radespasojevic/Documents/Rade/Automaterijal/dokumenti/pricelist/febi-pricelist.xlsx
+    price-list-path: /Users/radespasojevic/development/automaterijal/misc/providers/febi/febi-pricelist.xlsx
     bypass-article-errors: true
     # base-url and destination-country left default; override here if needed
     order:
