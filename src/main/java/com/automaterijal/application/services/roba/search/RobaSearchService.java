@@ -439,7 +439,11 @@ public class RobaSearchService {
     manufacturer.setNaziv(brandName.trim());
 
     String displayNumber =
-        StringUtils.hasText(match.oe()) ? match.oe() : match.oeShort();
+        StringUtils.hasText(match.articleCodeNorm())
+            ? match.articleCodeNorm()
+            : (StringUtils.hasText(match.tecdocArtnrNorm())
+                ? match.tecdocArtnrNorm()
+                : (StringUtils.hasText(match.oe()) ? match.oe() : match.oeShort()));
 
     ProviderAvailabilityDto availability =
         ProviderAvailabilityDto.builder()
@@ -476,10 +480,10 @@ public class RobaSearchService {
     dto.setKatbrpro(null);
     dto.setNaziv(name);
     dto.setProizvodjac(manufacturer);
-    dto.setGrupa(ArticleSubGroupService.ANONIMNA_GRUPA);
-    dto.setGrupaNaziv(ArticleSubGroupService.ANONIMNA_GRUPA);
-    dto.setPodGrupa(0);
-    dto.setPodGrupaNaziv(ArticleSubGroupService.ANONIMNA_GRUPA);
+    dto.setGrupa(ArticleSubGroupService.OE_FALLBACK_GRUPA);
+    dto.setGrupaNaziv(ArticleSubGroupService.OE_FALLBACK_GRUPA);
+    dto.setPodGrupa(ArticleSubGroupService.OE_FALLBACK_PODGRUPA_ID);
+    dto.setPodGrupaNaziv(ArticleSubGroupService.OE_FALLBACK_GRUPA);
     dto.setStanje(0);
     dto.setProviderAvailability(availability);
     dto.setCena(customerPrice);
@@ -645,6 +649,18 @@ public class RobaSearchService {
     List<RobaLightDto> combined = new ArrayList<>(visibleLocalItems);
     combined.addAll(externals);
     combined.addAll(oeFallback);
+
+    if (shouldExpandOeFromTecDoc(normalized, tecDoc, combined)) {
+      List<RobaLightDto> oeExpansion =
+          buildOeExpansionFromTecDoc(
+              tecDoc,
+              loggedPartner,
+              combined,
+              szakalProperties.getSearch().getOeExpansionMaxOe(),
+              szakalProperties.getSearch().getOeExpansionMaxResults());
+      combined.addAll(oeExpansion);
+    }
+
     combined =
         StringUtils.hasText(normalized.getTrazenaRec())
             ? robaSortService.sortByGroupWithExact(combined, normalized.getTrazenaRec())
@@ -824,6 +840,153 @@ public class RobaSearchService {
     int availableCount =
         (int) items.stream().filter(Objects::nonNull).filter(dto -> dto.getStanje() > 0).count();
     return new ProviderCounts(matchCount, availableCount);
+  }
+
+  private boolean shouldExpandOeFromTecDoc(
+      UniverzalniParametri parametri,
+      List<ArticleDirectSearchAllNumbersWithStateRecord> tecDoc,
+      List<RobaLightDto> combined) {
+    if (!isOeExpansionAllowed(parametri)) {
+      return false;
+    }
+    if (tecDoc == null || tecDoc.isEmpty()) {
+      return false;
+    }
+    if (szakalProperties.getSearch() == null
+        || !szakalProperties.getSearch().isOeExpansionEnabled()) {
+      return false;
+    }
+    Integer threshold = szakalProperties.getSearch().getOeExpansionMinAvailable();
+    int minAvailable = threshold != null ? threshold : 0;
+    return countAvailable(combined) < minAvailable;
+  }
+
+  private boolean isOeExpansionAllowed(UniverzalniParametri parametri) {
+    if (parametri == null) {
+      return false;
+    }
+    UniverzalniParametri.FilterByType filterByType = parametri.resolveFilterByType();
+    if (filterByType != null
+        && filterByType != UniverzalniParametri.FilterByType.NONE
+        && filterByType != UniverzalniParametri.FilterByType.SEARCH_TERM) {
+      return false;
+    }
+    List<String> manufacturers = parametri.resolveProizvodjac();
+    if (manufacturers != null && !manufacturers.isEmpty()) {
+      return false;
+    }
+    if (parametri.getGrupa() != null && !parametri.getGrupa().isEmpty()) {
+      return false;
+    }
+    if (parametri.getPodgrupeZaPretragu() != null && !parametri.getPodgrupeZaPretragu().isEmpty()) {
+      return false;
+    }
+    return true;
+  }
+
+  private int countAvailable(List<RobaLightDto> items) {
+    if (items == null || items.isEmpty()) {
+      return 0;
+    }
+    int count = 0;
+    for (RobaLightDto dto : items) {
+      if (isAvailable(dto)) {
+        count++;
+      }
+    }
+    return count;
+  }
+
+  private boolean isAvailable(RobaLightDto dto) {
+    if (dto == null) {
+      return false;
+    }
+    if (dto.getAvailabilityStatus() != null) {
+      return dto.getAvailabilityStatus() != ArticleAvailabilityStatus.OUT_OF_STOCK;
+    }
+    ProviderAvailabilityDto availability = dto.getProviderAvailability();
+    if (availability != null) {
+      if (Boolean.TRUE.equals(availability.getAvailable())) {
+        return true;
+      }
+      if (availability.getTotalQuantity() != null && availability.getTotalQuantity() > 0) {
+        return true;
+      }
+      if (availability.getWarehouseQuantity() != null && availability.getWarehouseQuantity() > 0) {
+        return true;
+      }
+    }
+    return dto.getStanje() > 0;
+  }
+
+  private List<RobaLightDto> buildOeExpansionFromTecDoc(
+      List<ArticleDirectSearchAllNumbersWithStateRecord> tecDoc,
+      Partner partner,
+      List<RobaLightDto> existing,
+      Integer maxOeNumbers,
+      Integer maxResults) {
+    if (tecDoc == null || tecDoc.isEmpty()) {
+      return List.of();
+    }
+    int oeLimit = maxOeNumbers != null ? maxOeNumbers : 0;
+    int resultLimit = maxResults != null ? maxResults : 0;
+    if (oeLimit <= 0 || resultLimit <= 0) {
+      return List.of();
+    }
+
+    List<SzakalOeSearchService.TecdocKey> keys = new ArrayList<>();
+    Set<String> seenKeys = new HashSet<>();
+    for (ArticleDirectSearchAllNumbersWithStateRecord record : tecDoc) {
+      if (record == null) {
+        continue;
+      }
+      String articleNo = record.getArticleNo();
+      Long brandNo = record.getBrandNo();
+      String normalized =
+          StringUtils.hasText(articleNo)
+              ? CatalogNumberUtils.cleanPreserveSeparators(articleNo)
+              : null;
+      if (!StringUtils.hasText(normalized) || brandNo == null) {
+        continue;
+      }
+      String key = brandNo + ":" + normalized;
+      if (!seenKeys.add(key)) {
+        continue;
+      }
+      keys.add(new SzakalOeSearchService.TecdocKey(brandNo, normalized));
+      if (keys.size() >= MAX_TEC_DOC_RESULTS) {
+        break;
+      }
+    }
+    if (keys.isEmpty()) {
+      return List.of();
+    }
+
+    List<SzakalOeSearchService.OeSearchResult> matches =
+        szakalOeSearchService.searchByTecdocKeys(keys, oeLimit, resultLimit);
+    if (matches.isEmpty()) {
+      return List.of();
+    }
+
+    List<RobaLightDto> results = new ArrayList<>();
+    HashSet<String> seen = new HashSet<>(collectProviderGlids(existing));
+    for (SzakalOeSearchService.OeSearchResult match : matches) {
+      if (match == null || !StringUtils.hasText(match.glid())) {
+        continue;
+      }
+      if (seen.contains(match.glid())) {
+        continue;
+      }
+      RobaLightDto dto = mapOeFallback(match, partner);
+      if (dto != null) {
+        results.add(dto);
+        seen.add(match.glid());
+      }
+      if (results.size() >= resultLimit) {
+        break;
+      }
+    }
+    return results;
   }
 
   private List<RobaLightDto> collectProviderTargets(

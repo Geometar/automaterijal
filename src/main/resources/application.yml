@@ -142,6 +142,11 @@ integration:
       cron-weekly: "0 0 4 * * SUN"
       max-retries: 3
       retry-backoff-ms: 2000
+    search:
+      oe-expansion-enabled: true
+      oe-expansion-min-available: 5
+      oe-expansion-max-oe: 10
+      oe-expansion-max-results: 50
 
 pricing:
   margin:

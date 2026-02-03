@@ -20,6 +20,7 @@ public class SzakalProperties {
   private String warehouseName = "SZAKAL";
   private Sftp sftp = new Sftp();
   private Sync sync = new Sync();
+  private Search search = new Search();
 
   @Data
   public static class Sftp {
@@ -40,5 +41,13 @@ public class SzakalProperties {
     private boolean runWeeklyOnStart = false;
     private Integer maxRetries = 3;
     private Long retryBackoffMs = 2000L;
+  }
+
+  @Data
+  public static class Search {
+    private boolean oeExpansionEnabled = true;
+    private Integer oeExpansionMinAvailable = 5;
+    private Integer oeExpansionMaxOe = 10;
+    private Integer oeExpansionMaxResults = 50;
   }
 }

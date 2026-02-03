@@ -26,6 +26,8 @@ public class ArticleSubGroupService {
   @NonNull final PodGrupaRepository podGrupaRepository;
   @NonNull final PodgrupeJooqRepository podgrupeJooqRepository;
   public static final String ANONIMNA_GRUPA = "OSTALO";
+  public static final int OE_FALLBACK_PODGRUPA_ID = -1;
+  public static final String OE_FALLBACK_GRUPA = "ALTERNATIVA OE";
 
   /** Start of: Metoda za popunjavanje svih grupa u zavisnosti od kriterijuma */
   public void popuniPodgrupe(MagacinDto magacinDto, List<RobaLightDto> roba) {
@@ -37,6 +39,9 @@ public class ArticleSubGroupService {
     if (shouldIncludeFallback(roba)) {
       grouped = withFallback(grouped);
     }
+    if (shouldIncludeOeFallback(roba)) {
+      grouped = withOeFallback(grouped);
+    }
     magacinDto.setCategories(grouped);
   }
 
@@ -45,7 +50,7 @@ public class ArticleSubGroupService {
         roba.stream()
             .map(RobaLightDto::getPodGrupa)
             .filter(Objects::nonNull)
-            .filter(id -> id != 0)
+            .filter(id -> id > 0)
             .collect(Collectors.toSet());
 
     List<PodgrupaDto> podgrupaDtos = new ArrayList<>();
@@ -61,6 +66,14 @@ public class ArticleSubGroupService {
         podgrupaDtos.stream().collect(Collectors.toMap(PodgrupaDto::getId, PodgrupaDto::getNaziv));
 
     for (RobaLightDto roba : robaLightDtos) {
+      if (roba == null) {
+        continue;
+      }
+      Integer podGrupa = roba.getPodGrupa();
+      if (podGrupa != null && podGrupa == OE_FALLBACK_PODGRUPA_ID) {
+        roba.setPodGrupaNaziv(OE_FALLBACK_GRUPA);
+        continue;
+      }
       roba.setPodGrupaNaziv(podgrupaNazivi.getOrDefault(roba.getPodGrupa(), ANONIMNA_GRUPA));
     }
   }
@@ -76,7 +89,7 @@ public class ArticleSubGroupService {
     Set<Integer> ids =
         podgrupaIds.stream()
             .filter(Objects::nonNull)
-            .filter(id -> id != 0)
+            .filter(id -> id > 0)
             .collect(Collectors.toSet());
     if (ids.isEmpty()) {
       return Map.of();
@@ -90,10 +103,14 @@ public class ArticleSubGroupService {
   public Map<String, List<PodgrupaDto>> buildCategoriesFromPodgrupaIds(Set<Integer> podgrupaIds) {
     Set<Integer> ids = podgrupaIds != null ? podgrupaIds : Set.of();
     boolean includeFallback = ids.contains(0);
+    boolean includeOeFallback = ids.contains(OE_FALLBACK_PODGRUPA_ID);
     List<PodgrupaDto> podgrupe = new ArrayList<>(loadPodgrupeWithGrupa(ids).values());
     Map<String, List<PodgrupaDto>> grouped = groupByGrupa(podgrupe);
     if (includeFallback) {
       grouped = withFallback(grouped);
+    }
+    if (includeOeFallback) {
+      grouped = withOeFallback(grouped);
     }
     return grouped;
   }
@@ -105,6 +122,19 @@ public class ArticleSubGroupService {
     return roba.stream()
         .filter(Objects::nonNull)
         .anyMatch(r -> r.getPodGrupa() == 0 || ANONIMNA_GRUPA.equals(r.getPodGrupaNaziv()));
+  }
+
+  private boolean shouldIncludeOeFallback(List<RobaLightDto> roba) {
+    if (roba == null || roba.isEmpty()) {
+      return false;
+    }
+    return roba.stream()
+        .filter(Objects::nonNull)
+        .anyMatch(
+            r ->
+                r.getPodGrupa() == OE_FALLBACK_PODGRUPA_ID
+                    || OE_FALLBACK_GRUPA.equals(r.getPodGrupaNaziv())
+                    || OE_FALLBACK_GRUPA.equals(r.getGrupaNaziv()));
   }
 
   private Map<String, List<PodgrupaDto>> withFallback(Map<String, List<PodgrupaDto>> grouped) {
@@ -122,6 +152,25 @@ public class ArticleSubGroupService {
     }
 
     copy.put(ANONIMNA_GRUPA, list);
+    return copy;
+  }
+
+  private Map<String, List<PodgrupaDto>> withOeFallback(Map<String, List<PodgrupaDto>> grouped) {
+    Map<String, List<PodgrupaDto>> copy = grouped != null ? new HashMap<>(grouped) : new HashMap<>();
+    List<PodgrupaDto> list = new ArrayList<>(copy.getOrDefault(OE_FALLBACK_GRUPA, List.of()));
+
+    boolean exists =
+        list.stream()
+            .anyMatch(dto -> dto != null && Objects.equals(dto.getId(), OE_FALLBACK_PODGRUPA_ID));
+    if (!exists) {
+      PodgrupaDto dto = new PodgrupaDto();
+      dto.setId(OE_FALLBACK_PODGRUPA_ID);
+      dto.setNaziv(OE_FALLBACK_GRUPA);
+      dto.setGrupa(OE_FALLBACK_GRUPA);
+      list.add(dto);
+    }
+
+    copy.put(OE_FALLBACK_GRUPA, list);
     return copy;
   }
 

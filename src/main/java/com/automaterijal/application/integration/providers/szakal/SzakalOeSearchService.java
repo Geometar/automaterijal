@@ -5,6 +5,7 @@ import com.automaterijal.application.integration.providers.szakal.model.SzakalPr
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -23,6 +24,7 @@ import org.springframework.util.StringUtils;
 public class SzakalOeSearchService {
   private static final Pattern NON_ALNUM = Pattern.compile("[^A-Za-z0-9]");
   private static final int OE_SHORT_MAX_LENGTH = 160;
+  private static final int IN_CLAUSE_LIMIT = 500;
 
   private final JdbcTemplate jdbcTemplate;
   private final SzakalMasterProductRepository masterRepository;
@@ -90,6 +92,8 @@ public class SzakalOeSearchService {
               product != null ? product.getBrandName() : null,
               product != null ? product.getNameRs() : null,
               product != null ? product.getNameEn() : null,
+              product != null ? product.getArticleCodeNorm() : null,
+              product != null ? product.getTecdocArtnrNorm() : null,
               product != null ? product.getUnit() : null,
               best.getStock(),
               best.getUnitPrice(),
@@ -101,6 +105,69 @@ public class SzakalOeSearchService {
               resolveLeadTime(best.getListNo())));
     }
 
+    return results;
+  }
+
+  public List<OeSearchResult> searchByTecdocKeys(
+      List<TecdocKey> keys, int maxOeNumbers, int maxResults) {
+    if (keys == null || keys.isEmpty() || maxOeNumbers <= 0 || maxResults <= 0) {
+      return List.of();
+    }
+
+    Map<Long, List<String>> artnrsByDlnr = new HashMap<>();
+    for (TecdocKey key : keys) {
+      if (key == null || key.dlnr() == null || !StringUtils.hasText(key.artnrNorm())) {
+        continue;
+      }
+      artnrsByDlnr.computeIfAbsent(key.dlnr(), ignored -> new ArrayList<>()).add(key.artnrNorm());
+    }
+    if (artnrsByDlnr.isEmpty()) {
+      return List.of();
+    }
+
+    Set<String> glids = new LinkedHashSet<>();
+    for (Map.Entry<Long, List<String>> entry : artnrsByDlnr.entrySet()) {
+      List<String> artnrs =
+          entry.getValue().stream().filter(StringUtils::hasText).distinct().toList();
+      if (artnrs.isEmpty()) {
+        continue;
+      }
+      for (SzakalMasterProduct product :
+          masterRepository.findByTecdocDlnrAndTecdocArtnrNormIn(entry.getKey(), artnrs)) {
+        if (product != null && StringUtils.hasText(product.getGlid())) {
+          glids.add(product.getGlid());
+        }
+      }
+    }
+
+    if (glids.isEmpty()) {
+      return List.of();
+    }
+
+    List<String> oeShorts = loadOeShortsForGlids(glids, maxOeNumbers);
+    if (oeShorts.isEmpty()) {
+      return List.of();
+    }
+
+    List<OeSearchResult> results = new ArrayList<>();
+    Set<String> seenGlids = new LinkedHashSet<>();
+    for (String oeShort : oeShorts) {
+      if (!StringUtils.hasText(oeShort)) {
+        continue;
+      }
+      for (OeSearchResult match : searchByOe(oeShort)) {
+        if (match == null || !StringUtils.hasText(match.glid())) {
+          continue;
+        }
+        if (!seenGlids.add(match.glid())) {
+          continue;
+        }
+        results.add(match);
+        if (results.size() >= maxResults) {
+          return results;
+        }
+      }
+    }
     return results;
   }
 
@@ -154,8 +221,45 @@ public class SzakalOeSearchService {
     return cleaned;
   }
 
+  private List<String> loadOeShortsForGlids(Set<String> glids, int limit) {
+    if (glids == null || glids.isEmpty() || limit <= 0) {
+      return List.of();
+    }
+
+    List<String> glidList = new ArrayList<>(glids);
+    LinkedHashSet<String> oeShorts = new LinkedHashSet<>();
+    int offset = 0;
+    while (offset < glidList.size() && oeShorts.size() < limit) {
+      int end = Math.min(offset + IN_CLAUSE_LIMIT, glidList.size());
+      List<String> chunk = glidList.subList(offset, end);
+      String placeholders = chunk.stream().map(value -> "?").collect(Collectors.joining(","));
+      String sql =
+          "select distinct oe_short from szakal_oe_links where glid in ("
+              + placeholders
+              + ")";
+      List<String> rows =
+          jdbcTemplate.query(
+              sql,
+              chunk.toArray(),
+              (rs, rowNum) -> rs.getString("oe_short"));
+      for (String oe : rows) {
+        if (!StringUtils.hasText(oe)) {
+          continue;
+        }
+        oeShorts.add(oe);
+        if (oeShorts.size() >= limit) {
+          break;
+        }
+      }
+      offset = end;
+    }
+    return new ArrayList<>(oeShorts);
+  }
+
   private record OeLinkRow(
       String glid, String oeShort, String oe, String maker, String tecdocName) {}
+
+  public record TecdocKey(Long dlnr, String artnrNorm) {}
 
   public record OeSearchResult(
       String glid,
@@ -166,6 +270,8 @@ public class SzakalOeSearchService {
       String brandName,
       String nameRs,
       String nameEn,
+      String articleCodeNorm,
+      String tecdocArtnrNorm,
       String unit,
       Integer stock,
       java.math.BigDecimal unitPrice,
