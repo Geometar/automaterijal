@@ -30,7 +30,7 @@ public class SzakalImportService {
   private static final int MASTER_COLUMNS = 12;
   private static final int PRICELIST_COLUMNS = 7;
   private static final int OE_COLUMNS = 5;
-  private static final int BATCH_SIZE = 1000;
+  private static final int BATCH_SIZE = 5000;
   private static final int OE_SHORT_MAX_LENGTH = 160;
   private static final int OE_MAX_LENGTH = 255;
 
@@ -97,6 +97,8 @@ public class SzakalImportService {
         .ifPresent(path -> candidates.add(buildFileInfo("barcode", path)));
     resolveOeFile()
         .ifPresent(path -> candidates.add(buildFileInfo("oe_link", path)));
+    resolveNoReturnFile()
+        .ifPresent(path -> candidates.add(buildFileInfo("no_return", path)));
     for (int listNo = 0; listNo <= 3; listNo++) {
       final int listIndex = listNo;
       resolvePriceListFile(listNo)
@@ -435,6 +437,19 @@ public class SzakalImportService {
         "oe_link.csv.zip",
         "oe_link_all.csv.zip",
         "oe_link_all.csv");
+  }
+
+  private Optional<Path> resolveNoReturnFile() {
+    Path base = resolveDataDir();
+    if (base == null) {
+      return Optional.empty();
+    }
+    return firstExisting(
+        base,
+        "no_return.csv",
+        "no_return.csv.zip",
+        "no_return_all.csv.zip",
+        "no_return_all.csv");
   }
 
   private Optional<Path> firstExisting(Path base, String... names) {

@@ -119,13 +119,29 @@ integration:
       shipping-condition: ${FEBI_ORDER_SHIPPING_CONDITION:S9}
   szakal:
     enabled: ${SZAKAL_ENABLED:false}
-    data-dir: ${SZAKAL_DATA_DIR:}
+    data-dir: ${SZAKAL_DATA_DIR:./data/szakal}
     currency: RSD
     lead-time-list0: 1
     lead-time-list1: 2
     lead-time-list2: 3
     lead-time-list3: 5
     warehouse-name: SZAKAL
+    sftp:
+      host: store.szakalmetal.hu
+      port: 1221
+      username: 22EJrs
+      password: Chou7aech9je
+      remote-dir: down
+      connect-timeout-ms: 10000
+      read-timeout-ms: 60000
+    sync:
+      enabled: false
+      run-on-start: false
+      run-weekly-on-start: false
+      cron-pricelists: "0 0 5 * * *"
+      cron-weekly: "0 0 4 * * SUN"
+      max-retries: 3
+      retry-backoff-ms: 2000
 
 pricing:
   margin:

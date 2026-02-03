@@ -18,4 +18,27 @@ public class SzakalProperties {
   private Integer deliveryToCustomerBusinessDaysMin;
   private Integer deliveryToCustomerBusinessDaysMax;
   private String warehouseName = "SZAKAL";
+  private Sftp sftp = new Sftp();
+  private Sync sync = new Sync();
+
+  @Data
+  public static class Sftp {
+    private String host;
+    private Integer port = 22;
+    private String username;
+    private String password;
+    private String remoteDir = "down";
+    private Integer connectTimeoutMs = 10000;
+    private Integer readTimeoutMs = 60000;
+    private String hostKeyFingerprint;
+  }
+
+  @Data
+  public static class Sync {
+    private boolean enabled = false;
+    private boolean runOnStart = false;
+    private boolean runWeeklyOnStart = false;
+    private Integer maxRetries = 3;
+    private Long retryBackoffMs = 2000L;
+  }
 }
