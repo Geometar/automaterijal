@@ -21,6 +21,7 @@ public class SzakalProperties {
   private Sftp sftp = new Sftp();
   private Sync sync = new Sync();
   private Search search = new Search();
+  private Api api = new Api();
 
   @Data
   public static class Sftp {
@@ -49,5 +50,15 @@ public class SzakalProperties {
     private Integer oeExpansionMinAvailable = 5;
     private Integer oeExpansionMaxOe = 10;
     private Integer oeExpansionMaxResults = 50;
+  }
+
+  @Data
+  public static class Api {
+    private String baseUrl = "https://webservice.szakalmetal.hu";
+    private String username;
+    private String password;
+    private Integer connectTimeoutMs = 10000;
+    private Integer readTimeoutMs = 10000;
+    private Long cacheTtlMs = 120000L;
   }
 }

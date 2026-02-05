@@ -138,8 +138,8 @@ integration:
       enabled: false
       run-on-start: false
       run-weekly-on-start: false
-      cron-pricelists: "0 0 5 * * *"
-      cron-weekly: "0 0 4 * * SUN"
+      cron-pricelists: "0 0 3 * * *"
+      cron-weekly: "0 0 3 * * SUN"
       max-retries: 3
       retry-backoff-ms: 2000
     search:
@@ -147,6 +147,13 @@ integration:
       oe-expansion-min-available: 5
       oe-expansion-max-oe: 10
       oe-expansion-max-results: 50
+    api:
+      base-url: ${SZAKAL_API_BASE_URL:https://webservice.szakalmetal.hu}
+      username: automaterijal
+      password: automaterijal
+      connect-timeout-ms: 10000
+      read-timeout-ms: 10000
+      cache-ttl-ms: 120000
 
 pricing:
   margin:
