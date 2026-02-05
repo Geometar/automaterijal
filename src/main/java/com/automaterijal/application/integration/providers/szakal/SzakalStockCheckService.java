@@ -91,6 +91,7 @@ public class SzakalStockCheckService {
         null,
         null,
         null,
+        null,
         properties.getCurrency());
   }
 
@@ -105,6 +106,7 @@ public class SzakalStockCheckService {
           requested,
           false,
           0,
+          null,
           null,
           null,
           null,
@@ -134,9 +136,12 @@ public class SzakalStockCheckService {
             .findFirst()
             .orElse(available.isEmpty() ? stocks.get(0) : available.get(0));
 
-    boolean availableFlag = maxQty >= requested && maxQty > 0;
     Integer orderQuantum = best != null ? best.orderQuantum() : null;
     Integer moq = best != null ? best.moq() : null;
+    boolean availableFlag = maxQty >= requested && maxQty > 0;
+    if (moq != null && moq > 0 && maxQty < moq) {
+      availableFlag = false;
+    }
     Integer chosenQuantum =
         orderQuantum != null && orderQuantum > 0 ? orderQuantum : moq;
     Boolean noReturnable = best != null ? best.noReturnable() : null;
@@ -154,6 +159,7 @@ public class SzakalStockCheckService {
         availableFlag,
         maxQty,
         chosenQuantum,
+        moq,
         noReturnable,
         stockToken,
         unitPrice,
@@ -230,6 +236,7 @@ public class SzakalStockCheckService {
       boolean available,
       Integer availableQuantity,
       Integer orderQuantum,
+      Integer moq,
       Boolean noReturnable,
       String stockToken,
       BigDecimal purchasePrice,
