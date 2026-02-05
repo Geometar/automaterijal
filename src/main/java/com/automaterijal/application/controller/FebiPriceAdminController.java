@@ -93,6 +93,23 @@ public class FebiPriceAdminController {
         .orElseGet(() -> ResponseEntity.status(HttpStatus.NO_CONTENT).build());
   }
 
+  @GetMapping("/status")
+  public ResponseEntity<PriceStatusResponse> status(Authentication authentication) {
+    Partner partner = partnerSpringBeanUtils.vratiPartneraIsSesije(authentication);
+    ensureSuperAdmin(partner);
+
+    var dbStatus = priceService.dbStatus();
+    var fileInfo = priceService.priceFileInfo().orElse(null);
+
+    return ResponseEntity.ok(
+        new PriceStatusResponse(
+            dbStatus.count(),
+            dbStatus.updatedAt(),
+            fileInfo != null ? fileInfo.path() : null,
+            fileInfo != null ? fileInfo.lastModified() : null,
+            fileInfo != null ? fileInfo.sizeBytes() : null));
+  }
+
   private File resolveTargetFile() {
     String path = febiProperties.getPriceListPath();
     if (!StringUtils.hasText(path)) {
@@ -120,4 +137,7 @@ public class FebiPriceAdminController {
       Integer count, String path, Long lastModified, Long sizeBytes) {}
 
   public record PriceFileInfoResponse(String path, Long lastModified, Long sizeBytes) {}
+
+  public record PriceStatusResponse(
+      Integer count, Long dbUpdatedAt, String path, Long lastModified, Long sizeBytes) {}
 }

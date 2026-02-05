@@ -7,5 +7,6 @@
     <include file="db.changelog-blog.yml" relativeToChangelogFile="true"/>
     <include file="db.changelog-web-orders.yml" relativeToChangelogFile="true"/>
     <include file="db.changelog-szakal.yml" relativeToChangelogFile="true"/>
+    <include file="db.changelog-febi.yml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

@@ -175,9 +175,19 @@ public class FebiInventoryProvider implements InventoryProvider {
 
   private AvailabilityResult mapToResult(
       FebiStockResponse response, String requestedDestination, String brand) {
+    List<FebiStockResponseItem> items = response != null ? response.getItems() : null;
+    FebiPriceService.PriceLookup priceLookup =
+        priceService.buildLookup(
+            items != null
+                ? items.stream()
+                    .map(FebiStockResponseItem::getArticleNumber)
+                    .filter(StringUtils::hasText)
+                    .toList()
+                : Collections.emptyList());
+
     List<AvailabilityItem> mapped =
-        response != null && response.getItems() != null
-            ? response.getItems().stream().map(item -> mapItem(item, brand)).toList()
+        items != null
+            ? items.stream().map(item -> mapItem(item, brand, priceLookup)).toList()
             : Collections.emptyList();
 
     return AvailabilityResult.builder()
@@ -192,7 +202,8 @@ public class FebiInventoryProvider implements InventoryProvider {
         .build();
   }
 
-  private AvailabilityItem mapItem(FebiStockResponseItem item, String brand) {
+  private AvailabilityItem mapItem(
+      FebiStockResponseItem item, String brand, FebiPriceService.PriceLookup priceLookup) {
     if (item == null) {
       return AvailabilityItem.builder()
           .brand(brand)
@@ -217,12 +228,9 @@ public class FebiInventoryProvider implements InventoryProvider {
     AvailabilityStatus status =
         totalQuantity > 0 ? AvailabilityStatus.AVAILABLE : AvailabilityStatus.NOT_AVAILABLE;
 
-    var price =
-        priceService
-            .findPrice(item.getArticleNumber())
-            .orElse(null);
+    var price = priceService.findPrice(item.getArticleNumber(), priceLookup).orElse(null);
     Integer packagingUnit =
-        priceService.findPackagingUnit(item.getArticleNumber()).orElse(null);
+        priceService.findPackagingUnit(item.getArticleNumber(), priceLookup).orElse(null);
 
     return AvailabilityItem.builder()
         .brand(brand)
