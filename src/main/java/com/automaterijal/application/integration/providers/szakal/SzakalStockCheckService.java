@@ -48,6 +48,12 @@ public class SzakalStockCheckService {
     }
 
     int concurrency = resolveMaxConcurrency(validItems.size());
+    long batchStartedAt = System.currentTimeMillis();
+    int refreshedTokenCount = 0;
+    int keptTokenCount = 0;
+    int missingRequestTokenCount = 0;
+    int missingLatestTokenCount = 0;
+    int unavailableCount = 0;
     ExecutorService executor = Executors.newFixedThreadPool(concurrency);
     try {
       List<CompletableFuture<StockCheckResult>> futures = new ArrayList<>(validItems.size());
@@ -58,7 +64,24 @@ public class SzakalStockCheckService {
       List<StockCheckResult> results = new ArrayList<>(validItems.size());
       for (CompletableFuture<StockCheckResult> future : futures) {
         try {
-          results.add(future.join());
+          StockCheckResult result = future.join();
+          results.add(result);
+          if (result != null) {
+            String requestToken = trimToNull(result.token());
+            String latestToken = trimToNull(result.stockToken());
+            if (!StringUtils.hasText(requestToken)) {
+              missingRequestTokenCount++;
+            } else if (!StringUtils.hasText(latestToken)) {
+              missingLatestTokenCount++;
+            } else if (requestToken.equals(latestToken)) {
+              keptTokenCount++;
+            } else {
+              refreshedTokenCount++;
+            }
+            if (!result.available()) {
+              unavailableCount++;
+            }
+          }
         } catch (CompletionException ex) {
           Throwable cause = ex.getCause();
           if (cause instanceof RuntimeException runtimeException) {
@@ -67,6 +90,17 @@ public class SzakalStockCheckService {
           throw new ProviderUnavailableException("Unexpected Szakal stock-check failure", cause);
         }
       }
+      long tookMs = System.currentTimeMillis() - batchStartedAt;
+      log.info(
+          "Szakal stock-check batch: items={}, concurrency={}, tookMs={}, keptTokens={}, refreshedTokens={}, missingRequestToken={}, missingLatestToken={}, unavailable={}",
+          validItems.size(),
+          concurrency,
+          tookMs,
+          keptTokenCount,
+          refreshedTokenCount,
+          missingRequestTokenCount,
+          missingLatestTokenCount,
+          unavailableCount);
       return results;
     } finally {
       executor.shutdown();
