@@ -173,10 +173,7 @@ public class ExternalAvailabilityService {
         if (mapped == null || !Boolean.TRUE.equals(mapped.getAvailable())) {
           continue;
         }
-        if (best == null
-            || (mapped.getTotalQuantity() != null
-                && (best.getTotalQuantity() == null
-                    || mapped.getTotalQuantity() > best.getTotalQuantity()))) {
+        if (shouldReplaceBestForArticle(best, mapped, providerPriority)) {
           best = mapped;
         }
       }
@@ -351,6 +348,54 @@ public class ExternalAvailabilityService {
       return -1;
     }
     return candidate.compareTo(existing);
+  }
+
+  private boolean shouldReplaceBestForArticle(
+      ProviderAvailabilityDto currentBest,
+      ProviderAvailabilityDto candidate,
+      Map<String, Integer> providerPriority) {
+    if (candidate == null) {
+      return false;
+    }
+    if (currentBest == null) {
+      return true;
+    }
+
+    boolean candidateAvailable = Boolean.TRUE.equals(candidate.getAvailable());
+    boolean currentAvailable = Boolean.TRUE.equals(currentBest.getAvailable());
+    if (candidateAvailable && !currentAvailable) {
+      return true;
+    }
+    if (!candidateAvailable && currentAvailable) {
+      return false;
+    }
+
+    int candidatePriority = providerPriorityFor(providerPriority, candidate.getProvider());
+    int currentPriority = providerPriorityFor(providerPriority, currentBest.getProvider());
+    if (candidatePriority > currentPriority) {
+      return true;
+    }
+    if (candidatePriority < currentPriority) {
+      return false;
+    }
+
+    int priceDecision = comparePrice(candidate.getPrice(), currentBest.getPrice());
+    if (priceDecision < 0) {
+      return true;
+    }
+    if (priceDecision > 0) {
+      return false;
+    }
+
+    Integer candidateQty = candidate.getTotalQuantity();
+    Integer currentQty = currentBest.getTotalQuantity();
+    if (candidateQty == null) {
+      return false;
+    }
+    if (currentQty == null) {
+      return true;
+    }
+    return candidateQty > currentQty;
   }
 
   private String resolveWarehouseName(WarehouseAvailability warehouse) {

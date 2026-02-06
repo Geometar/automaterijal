@@ -148,8 +148,13 @@ public class RobaSearchService {
 
     List<RobaLightDto> externals =
         externalOfferService.materializeExternalOffers(externalPayload, normalized);
+
+    // When user explicitly filters by subgroup (e.g. selects specific vehicle category),
+    // avoid broad OE fallback expansion that can inject generic "OSTALO" rows.
+    boolean allowOeFallback =
+        normalized.getPodgrupeZaPretragu() == null || normalized.getPodgrupeZaPretragu().isEmpty();
     List<RobaLightDto> oeFallback =
-        externals.isEmpty()
+        allowOeFallback && externals.isEmpty()
             ? buildOeFallbackFromArticles(articles, loggedPartner, externals)
             : List.of();
 
