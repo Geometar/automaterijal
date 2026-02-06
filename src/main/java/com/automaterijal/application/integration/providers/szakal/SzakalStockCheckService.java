@@ -6,20 +6,28 @@ import com.automaterijal.application.integration.providers.szakal.SzakalApiClien
 import com.automaterijal.application.integration.providers.szakal.SzakalApiClient.StockInfoRequest;
 import com.automaterijal.application.integration.providers.szakal.SzakalApiClient.StockInfoResponse;
 import com.automaterijal.application.integration.providers.szakal.SzakalApiClient.StockInfoTokenRequest;
+import com.automaterijal.application.integration.shared.exception.ProviderUnavailableException;
 import com.automaterijal.application.services.roba.ProviderPricingService;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+import org.springframework.web.client.HttpStatusCodeException;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class SzakalStockCheckService {
   private static final String SEARCH_ORDER = "fastest_first";
   private static final int MAX_REQUEST_QTY = 50;
@@ -33,30 +41,55 @@ public class SzakalStockCheckService {
     if (CollectionUtils.isEmpty(items)) {
       return List.of();
     }
-    List<StockCheckResult> results = new ArrayList<>();
-    for (StockCheckItem item : items) {
-      if (item == null) {
-        continue;
-      }
-      String key = cacheKey(item, partner);
-      CacheEntry cached = key != null ? cache.get(key) : null;
-      long now = System.currentTimeMillis();
-      if (cached != null && cached.expiresAt() > now) {
-        results.add(cached.result());
-        continue;
+
+    List<StockCheckItem> validItems = items.stream().filter(Objects::nonNull).toList();
+    if (validItems.isEmpty()) {
+      return List.of();
+    }
+
+    int concurrency = resolveMaxConcurrency(validItems.size());
+    ExecutorService executor = Executors.newFixedThreadPool(concurrency);
+    try {
+      List<CompletableFuture<StockCheckResult>> futures = new ArrayList<>(validItems.size());
+      for (StockCheckItem item : validItems) {
+        futures.add(CompletableFuture.supplyAsync(() -> checkOne(item, partner), executor));
       }
 
-      StockCheckResult result = fetch(item, partner);
-      if (key != null) {
-        cache.put(key, new CacheEntry(result, now + resolveCacheTtlMs()));
+      List<StockCheckResult> results = new ArrayList<>(validItems.size());
+      for (CompletableFuture<StockCheckResult> future : futures) {
+        try {
+          results.add(future.join());
+        } catch (CompletionException ex) {
+          Throwable cause = ex.getCause();
+          if (cause instanceof RuntimeException runtimeException) {
+            throw runtimeException;
+          }
+          throw new ProviderUnavailableException("Unexpected Szakal stock-check failure", cause);
+        }
       }
-      results.add(result);
+      return results;
+    } finally {
+      executor.shutdown();
     }
-    return results;
   }
 
   public List<StockCheckResult> check(List<StockCheckItem> items) {
     return check(items, null);
+  }
+
+  private StockCheckResult checkOne(StockCheckItem item, Partner partner) {
+    String key = cacheKey(item, partner);
+    CacheEntry cached = key != null ? cache.get(key) : null;
+    long now = System.currentTimeMillis();
+    if (cached != null && cached.expiresAt() > now) {
+      return cached.result();
+    }
+
+    StockCheckResult result = fetch(item, partner);
+    if (key != null) {
+      cache.put(key, new CacheEntry(result, now + resolveCacheTtlMs()));
+    }
+    return result;
   }
 
   private StockCheckResult fetch(StockCheckItem item, Partner partner) {
@@ -65,19 +98,56 @@ public class SzakalStockCheckService {
     int quantity = normalizeQuantity(item.quantity());
 
     if (StringUtils.hasText(token)) {
-      StockInfoTokenRequest request =
-          new StockInfoTokenRequest(token, quantity, SEARCH_ORDER, false, false);
-      StockInfoResponse response = apiClient.stockByToken(request);
-      return toResult(item, response, partner);
+      try {
+        StockInfoTokenRequest request =
+            new StockInfoTokenRequest(token, quantity, SEARCH_ORDER, false, false);
+        StockInfoResponse response = apiClient.stockByToken(request);
+
+        if (hasStocks(response) || !StringUtils.hasText(glid)) {
+          return toResult(item, response, partner);
+        }
+
+        log.debug("Szakal token returned empty stock list, falling back to GLID. token={}, glid={}", token, glid);
+        return fetchByGlid(item, glid, quantity, partner);
+      } catch (ProviderUnavailableException ex) {
+        if (StringUtils.hasText(glid) && isNotFound(ex)) {
+          log.info("Szakal token not found, falling back to GLID. token={}, glid={}", token, glid);
+          return fetchByGlid(item, glid, quantity, partner);
+        }
+        throw ex;
+      }
     }
 
     if (StringUtils.hasText(glid)) {
-      StockInfoRequest request =
-          new StockInfoRequest(glid, quantity, SEARCH_ORDER, false, false);
-      StockInfoResponse response = apiClient.stockByGlid(request);
-      return toResult(item, response, partner);
+      return fetchByGlid(item, glid, quantity, partner);
     }
 
+    return emptyResult(item, quantity);
+  }
+
+  private StockCheckResult fetchByGlid(StockCheckItem item, String glid, int quantity, Partner partner) {
+    StockInfoRequest request =
+        new StockInfoRequest(glid, quantity, SEARCH_ORDER, false, false);
+    StockInfoResponse response = apiClient.stockByGlid(request);
+    return toResult(item, response, partner);
+  }
+
+  private boolean hasStocks(StockInfoResponse response) {
+    return response != null && !CollectionUtils.isEmpty(response.stocks());
+  }
+
+  private boolean isNotFound(ProviderUnavailableException ex) {
+    Throwable current = ex;
+    while (current != null) {
+      if (current instanceof HttpStatusCodeException statusCodeException) {
+        return statusCodeException.getStatusCode().value() == 404;
+      }
+      current = current.getCause();
+    }
+    return false;
+  }
+
+  private StockCheckResult emptyResult(StockCheckItem item, int quantity) {
     return new StockCheckResult(
         item.token(),
         item.glid(),
@@ -198,6 +268,13 @@ public class SzakalStockCheckService {
     SzakalProperties.Api api = properties.getApi();
     Long ttl = api != null ? api.getCacheTtlMs() : null;
     return ttl != null && ttl > 0 ? ttl : 120_000L;
+  }
+
+  private int resolveMaxConcurrency(int itemCount) {
+    SzakalProperties.Api api = properties.getApi();
+    Integer configured = api != null ? api.getStockCheckMaxConcurrency() : null;
+    int limit = configured != null && configured > 0 ? configured : 3;
+    return Math.max(1, Math.min(limit, itemCount));
   }
 
   private String cacheKey(StockCheckItem item, Partner partner) {

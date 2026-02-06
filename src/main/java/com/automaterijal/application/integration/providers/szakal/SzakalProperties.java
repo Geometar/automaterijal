@@ -60,5 +60,6 @@ public class SzakalProperties {
     private Integer connectTimeoutMs = 10000;
     private Integer readTimeoutMs = 10000;
     private Long cacheTtlMs = 120000L;
+    private Integer stockCheckMaxConcurrency = 3;
   }
 }
