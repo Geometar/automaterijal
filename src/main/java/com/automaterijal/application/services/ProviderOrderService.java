@@ -9,6 +9,7 @@ import com.automaterijal.application.integration.shared.ProviderOrderLineResult;
 import com.automaterijal.application.integration.shared.ProviderOrderProvider;
 import com.automaterijal.application.integration.shared.ProviderOrderRequest;
 import com.automaterijal.application.integration.shared.ProviderOrderResult;
+import com.automaterijal.application.utils.PartnerPrivilegeUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +28,10 @@ import org.springframework.util.StringUtils;
 @Slf4j
 public class ProviderOrderService {
 
+  private static final String SZAKAL_PROVIDER_KEY = "szakal";
+
   @NonNull ProviderOrderRegistry providerOrderRegistry;
+
   public void placeOrders(WebOrderHeader header, Partner partner) {
     if (header == null || partner == null) {
       return;
@@ -38,11 +42,13 @@ public class ProviderOrderService {
     if (itemsByProvider.isEmpty()) {
       return;
     }
+
     boolean mock = false;
+    boolean internalUser = PartnerPrivilegeUtils.isInternal(partner);
+
     for (Map.Entry<String, List<WebOrderItem>> entry : itemsByProvider.entrySet()) {
       String providerKey = entry.getKey();
-      ProviderOrderProvider provider =
-          providerOrderRegistry.findByName(providerKey).orElse(null);
+      ProviderOrderProvider provider = providerOrderRegistry.findByName(providerKey).orElse(null);
       if (provider == null) {
         log.warn("No ordering provider found for {}", providerKey);
         continue;
@@ -61,7 +67,7 @@ public class ProviderOrderService {
               .build();
 
       ProviderOrderResult result = provider.placeOrder(request);
-      applyResult(header, entry.getValue(), result);
+      applyResult(header, entry.getValue(), result, providerKey, internalUser);
     }
   }
 
@@ -86,13 +92,14 @@ public class ProviderOrderService {
   private void applyResult(
       WebOrderHeader header,
       List<WebOrderItem> items,
-      ProviderOrderResult result) {
+      ProviderOrderResult result,
+      String providerKey,
+      boolean internalUser) {
     if (header == null || result == null) {
       return;
     }
 
-    if (StringUtils.hasText(result.getProviderOrderId())
-        && !StringUtils.hasText(header.getExtOrderId())) {
+    if (StringUtils.hasText(result.getProviderOrderId()) && !StringUtils.hasText(header.getExtOrderId())) {
       header.setExtOrderId(result.getProviderOrderId());
     }
 
@@ -115,16 +122,56 @@ public class ProviderOrderService {
       if (lineResult == null) {
         continue;
       }
-      if (lineResult.getConfirmedQuantity() != null) {
-        item.setPotvrdjenaKolicina(lineResult.getConfirmedQuantity().doubleValue());
+
+      Integer confirmed = lineResult.getConfirmedQuantity();
+      Boolean backorder = lineResult.getBackorder();
+
+      if (confirmed != null) {
+        item.setPotvrdjenaKolicina(confirmed.doubleValue());
       }
-      if (lineResult.getBackorder() != null) {
-        item.setProviderBackorder(lineResult.getBackorder());
+      if (backorder != null) {
+        item.setProviderBackorder(backorder);
       }
+
+      if (confirmed != null && confirmed <= 0 && Boolean.TRUE.equals(backorder)) {
+        // Keep item in cart/order, but clearly mark it unavailable for re-check/UX.
+        item.setProviderAvailable(false);
+        item.setProviderTotalQuantity(0);
+        item.setProviderWarehouseQuantity(0);
+      }
+
       if (lineResult.getMessage() != null) {
-        item.setProviderMessage(lineResult.getMessage());
+        item.setProviderMessage(normalizeLineMessage(lineResult, providerKey, internalUser));
       }
     }
   }
 
+  private String normalizeLineMessage(
+      ProviderOrderLineResult lineResult,
+      String providerKey,
+      boolean internalUser) {
+    String rawMessage = lineResult != null ? lineResult.getMessage() : null;
+    if (!StringUtils.hasText(rawMessage)) {
+      return rawMessage;
+    }
+
+    if (internalUser || !SZAKAL_PROVIDER_KEY.equalsIgnoreCase(providerKey)) {
+      return rawMessage;
+    }
+
+    Integer confirmed = lineResult.getConfirmedQuantity();
+    Boolean backorder = lineResult.getBackorder();
+
+    if (confirmed != null && confirmed > 0 && Boolean.TRUE.equals(backorder)) {
+      return "Delimicno potvrdjeno iz eksternog magacina.";
+    }
+    if (confirmed != null && confirmed > 0) {
+      return "Porudzbina je potvrdjena iz eksternog magacina.";
+    }
+    if (Boolean.TRUE.equals(backorder)) {
+      return "Artikal trenutno nije dostupan u eksternom magacinu.";
+    }
+
+    return "Provera eksternog magacina nije uspela. Pokusajte ponovo.";
+  }
 }
