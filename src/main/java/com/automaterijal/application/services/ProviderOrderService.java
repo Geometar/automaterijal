@@ -4,7 +4,6 @@ import com.automaterijal.application.domain.constants.OrderItemSource;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.weborder.WebOrderHeader;
 import com.automaterijal.application.domain.entity.weborder.WebOrderItem;
-import com.automaterijal.application.integration.providers.febi.order.FebiOrderProperties;
 import com.automaterijal.application.integration.registry.ProviderOrderRegistry;
 import com.automaterijal.application.integration.shared.ProviderOrderLineResult;
 import com.automaterijal.application.integration.shared.ProviderOrderProvider;
@@ -29,8 +28,6 @@ import org.springframework.util.StringUtils;
 public class ProviderOrderService {
 
   @NonNull ProviderOrderRegistry providerOrderRegistry;
-  @NonNull FebiOrderProperties febiOrderProperties;
-
   public void placeOrders(WebOrderHeader header, Partner partner) {
     if (header == null || partner == null) {
       return;
@@ -41,8 +38,7 @@ public class ProviderOrderService {
     if (itemsByProvider.isEmpty()) {
       return;
     }
-
-    boolean mock = febiOrderProperties.getMode() != FebiOrderProperties.OrderMode.LIVE;
+    boolean mock = false;
     for (Map.Entry<String, List<WebOrderItem>> entry : itemsByProvider.entrySet()) {
       String providerKey = entry.getKey();
       ProviderOrderProvider provider =

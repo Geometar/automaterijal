@@ -119,6 +119,8 @@ integration:
       shipping-condition: ${FEBI_ORDER_SHIPPING_CONDITION:S9}
   szakal:
     enabled: ${SZAKAL_ENABLED:false}
+    order:
+      mode: ${SZAKAL_ORDER_MODE:DISABLED}
     data-dir: ${SZAKAL_DATA_DIR:./data/szakal}
     currency: RSD
     lead-time-list0: 1
@@ -147,6 +149,7 @@ integration:
       oe-expansion-min-available: 5
       oe-expansion-max-oe: 10
       oe-expansion-max-results: 50
+      oe-fallback-min-available: 2
     api:
       base-url: ${SZAKAL_API_BASE_URL:https://webservice.szakalmetal.hu}
       username: automaterijal

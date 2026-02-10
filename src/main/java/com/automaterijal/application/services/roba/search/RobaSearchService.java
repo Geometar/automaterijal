@@ -148,15 +148,9 @@ public class RobaSearchService {
 
     List<RobaLightDto> externals =
         externalOfferService.materializeExternalOffers(externalPayload, normalized);
-
-    // When user explicitly filters by subgroup (e.g. selects specific vehicle category),
-    // avoid broad OE fallback expansion that can inject generic "OSTALO" rows.
-    boolean allowOeFallback =
-        normalized.getPodgrupeZaPretragu() == null || normalized.getPodgrupeZaPretragu().isEmpty();
-    List<RobaLightDto> oeFallback =
-        allowOeFallback && externals.isEmpty()
-            ? buildOeFallbackFromArticles(articles, loggedPartner, externals)
-            : List.of();
+    // OE fallback je namerno iskljucen za vehicle/associated tok.
+    // Koristi se samo kod explicit search-term pretrage.
+    List<RobaLightDto> oeFallback = List.of();
 
     if (filterAvailable) {
       List<RobaLightDto> filteredItems =
@@ -328,15 +322,18 @@ public class RobaSearchService {
         }
       }
     }
-    return buildOeFallbackOffers(oeNumbers, partner, existing);
+    return buildOeFallbackOffers(oeNumbers, partner, existing, Set.of());
   }
 
   private List<RobaLightDto> buildOeFallbackFromSearchTerm(
-      String searchTerm, Partner partner, List<RobaLightDto> existing) {
+      String searchTerm,
+      Partner partner,
+      List<RobaLightDto> existing,
+      Set<String> excludedBrandKeys) {
     if (!looksLikeOe(searchTerm)) {
       return List.of();
     }
-    return buildOeFallbackOffers(List.of(searchTerm), partner, existing);
+    return buildOeFallbackOffers(List.of(searchTerm), partner, existing, excludedBrandKeys);
   }
 
   private boolean looksLikeOe(String value) {
@@ -350,8 +347,29 @@ public class RobaSearchService {
     return normalized.chars().anyMatch(Character::isDigit);
   }
 
+  private boolean shouldUseOeFallbackForSearchTerm(String searchTerm, int availableRegularOffers) {
+    int threshold =
+        szakalProperties.getSearch() != null
+                && szakalProperties.getSearch().getOeFallbackMinAvailable() != null
+            ? Math.max(0, szakalProperties.getSearch().getOeFallbackMinAvailable())
+            : 2;
+
+    return looksLikeOe(searchTerm) && availableRegularOffers <= threshold;
+  }
+
+  private int countAvailableOffers(List<RobaLightDto> localItems, List<RobaLightDto> externalItems) {
+    long local =
+        localItems == null ? 0 : localItems.stream().filter(this::isAvailable).count();
+    long external =
+        externalItems == null ? 0 : externalItems.stream().filter(this::isAvailable).count();
+    return Math.toIntExact(local + external);
+  }
+
   private List<RobaLightDto> buildOeFallbackOffers(
-      List<String> oeNumbers, Partner partner, List<RobaLightDto> existing) {
+      List<String> oeNumbers,
+      Partner partner,
+      List<RobaLightDto> existing,
+      Set<String> excludedBrandKeys) {
     if (oeNumbers == null || oeNumbers.isEmpty()) {
       return List.of();
     }
@@ -389,6 +407,9 @@ public class RobaSearchService {
     HashSet<String> seen = new HashSet<>(collectProviderGlids(existing));
     for (SzakalOeSearchService.OeSearchResult match : matches) {
       if (match == null || !StringUtils.hasText(match.glid())) {
+        continue;
+      }
+      if (isExcludedTecDocBrand(match, excludedBrandKeys)) {
         continue;
       }
       if (seen.contains(match.glid())) {
@@ -603,6 +624,7 @@ public class RobaSearchService {
     List<ArticleDirectSearchAllNumbersWithStateRecord> tecDoc =
         tecDocService.tecDocPretragaPoTrazenojReci(
             normalized.getTrazenaRec(), null, TECDOC_NUMBER_TYPE_ALL);
+    Set<String> tecDocBrandKeys = resolveTecDocBrandKeys(tecDoc);
 
     MagacinDto localAll = searchProductsBySearchTerm(allLocalParams, tecDoc);
     List<RobaLightDto> allLocalItems =
@@ -645,24 +667,30 @@ public class RobaSearchService {
 
     List<RobaLightDto> externals =
         externalOfferService.materializeExternalOffers(externalPayload, normalized);
+
+    int availableRegularOffers = countAvailableOffers(visibleLocalItems, externals);
+    boolean useOeFallback =
+        shouldUseOeFallbackForSearchTerm(normalized.getTrazenaRec(), availableRegularOffers);
+
     List<RobaLightDto> oeFallback =
-        externals.isEmpty()
+        useOeFallback
             ? buildOeFallbackFromSearchTerm(
-                normalized.getTrazenaRec(), loggedPartner, externals)
+                normalized.getTrazenaRec(), loggedPartner, externals, tecDocBrandKeys)
             : List.of();
 
     List<RobaLightDto> combined = new ArrayList<>(visibleLocalItems);
     combined.addAll(externals);
     combined.addAll(oeFallback);
 
-    if (shouldExpandOeFromTecDoc(normalized, tecDoc, combined)) {
+    if (useOeFallback && shouldExpandOeFromTecDoc(normalized, tecDoc, combined)) {
       List<RobaLightDto> oeExpansion =
           buildOeExpansionFromTecDoc(
               tecDoc,
               loggedPartner,
               combined,
               szakalProperties.getSearch().getOeExpansionMaxOe(),
-              szakalProperties.getSearch().getOeExpansionMaxResults());
+              szakalProperties.getSearch().getOeExpansionMaxResults(),
+              tecDocBrandKeys);
       combined.addAll(oeExpansion);
     }
 
@@ -929,7 +957,8 @@ public class RobaSearchService {
       Partner partner,
       List<RobaLightDto> existing,
       Integer maxOeNumbers,
-      Integer maxResults) {
+      Integer maxResults,
+      Set<String> excludedBrandKeys) {
     if (tecDoc == null || tecDoc.isEmpty()) {
       return List.of();
     }
@@ -977,6 +1006,9 @@ public class RobaSearchService {
     HashSet<String> seen = new HashSet<>(collectProviderGlids(existing));
     for (SzakalOeSearchService.OeSearchResult match : matches) {
       if (match == null || !StringUtils.hasText(match.glid())) {
+        continue;
+      }
+      if (isExcludedTecDocBrand(match, excludedBrandKeys)) {
         continue;
       }
       if (seen.contains(match.glid())) {
@@ -1056,6 +1088,55 @@ public class RobaSearchService {
       externalKeys.add(brand + ":" + normalizeCatalog(dto.getKatbr()));
     }
     return externalKeys;
+  }
+
+
+  private Set<String> resolveTecDocBrandKeys(
+      List<ArticleDirectSearchAllNumbersWithStateRecord> tecDoc) {
+    if (tecDoc == null || tecDoc.isEmpty()) {
+      return Set.of();
+    }
+    Set<String> keys = new HashSet<>();
+    for (ArticleDirectSearchAllNumbersWithStateRecord record : tecDoc) {
+      if (record == null) {
+        continue;
+      }
+      if (record.getBrandNo() != null) {
+        TecDocProizvodjaci manufacturer = TecDocProizvodjaci.pronadjiPoKljucu(record.getBrandNo());
+        if (manufacturer != null) {
+          String enumKey = normalizeBrandKey(manufacturer.getCleanName());
+          if (StringUtils.hasText(enumKey)) {
+            keys.add(enumKey);
+          }
+        }
+      }
+      String byName = normalizeBrandKey(record.getBrandName());
+      if (StringUtils.hasText(byName)) {
+        keys.add(byName);
+      }
+    }
+    return keys;
+  }
+
+  private boolean isExcludedTecDocBrand(
+      SzakalOeSearchService.OeSearchResult match, Set<String> excludedBrandKeys) {
+    if (match == null || excludedBrandKeys == null || excludedBrandKeys.isEmpty()) {
+      return false;
+    }
+    String brandName = normalizeBrandKey(match.brandName());
+    if (StringUtils.hasText(brandName) && excludedBrandKeys.contains(brandName)) {
+      return true;
+    }
+    String makerName = normalizeBrandKey(match.maker());
+    return StringUtils.hasText(makerName) && excludedBrandKeys.contains(makerName);
+  }
+
+  private String normalizeBrandKey(String value) {
+    if (!StringUtils.hasText(value)) {
+      return null;
+    }
+    String normalized = value.replaceAll("[^A-Za-z0-9]", "").toUpperCase(Locale.ROOT);
+    return StringUtils.hasText(normalized) ? normalized : null;
   }
 
   private record ProviderCounts(int matchCount, int availableCount) {}

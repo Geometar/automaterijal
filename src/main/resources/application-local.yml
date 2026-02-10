@@ -34,6 +34,8 @@ sitemap:
 integration:
   szakal:
     enabled: true
+    order:
+      mode: MOCK
     data-dir: /Users/radespasojevic/development/automaterijal/misc/providers/szakal
   febi:
     enabled: true

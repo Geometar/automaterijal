@@ -8,6 +8,12 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "integration.szakal")
 public class SzakalProperties {
+  public enum OrderMode {
+    DISABLED,
+    MOCK,
+    LIVE
+  }
+
   private boolean enabled = false;
   private String dataDir;
   private String currency = "RSD";
@@ -21,6 +27,7 @@ public class SzakalProperties {
   private Sftp sftp = new Sftp();
   private Sync sync = new Sync();
   private Search search = new Search();
+  private Order order = new Order();
   private Api api = new Api();
 
   @Data
@@ -50,6 +57,12 @@ public class SzakalProperties {
     private Integer oeExpansionMinAvailable = 5;
     private Integer oeExpansionMaxOe = 10;
     private Integer oeExpansionMaxResults = 50;
+    private Integer oeFallbackMinAvailable = 2;
+  }
+
+  @Data
+  public static class Order {
+    private OrderMode mode = OrderMode.DISABLED;
   }
 
   @Data

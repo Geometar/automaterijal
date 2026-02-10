@@ -40,6 +40,10 @@ public class SzakalApiClient {
     return post("/stock_info", request, StockInfoResponse.class);
   }
 
+  public OrderResponse orderByToken(TokenOrderRequest request) {
+    return post("/order_by_token", request, OrderResponse.class);
+  }
+
   private <T> T post(String path, Object body, Class<T> type) {
     SzakalProperties.Api api = properties.getApi();
     if (!StringUtils.hasText(api.getBaseUrl())) {
@@ -58,18 +62,47 @@ public class SzakalApiClient {
       return response.getBody();
     } catch (HttpStatusCodeException ex) {
       int status = ex.getStatusCode().value();
+      String responseBody = StringUtils.hasText(ex.getResponseBodyAsString()) ? ex.getResponseBodyAsString().trim() : null;
       if (status == 401 || status == 403) {
         throw new ProviderAuthenticationException("Szakal API authentication failed", ex);
       }
       if (status == 429) {
         throw new ProviderRateLimitException("Szakal API rate limited", ex);
       }
-      log.warn("Szakal API call {} failed with {} {}", path, ex.getStatusCode(), ex.getResponseBodyAsString());
-      throw new ProviderUnavailableException("Szakal API error", ex);
+      if (status == 404) {
+        String message = StringUtils.hasText(responseBody) ? "Szakal not found: " + responseBody : "Szakal not found";
+        throw new ProviderUnavailableException(message, ex);
+      }
+      log.warn("Szakal API call {} failed with {} {}", path, ex.getStatusCode(), responseBody);
+      String message = StringUtils.hasText(responseBody) ? "Szakal API error " + status + ": " + responseBody : "Szakal API error " + status;
+      throw new ProviderUnavailableException(message, ex);
     } catch (RuntimeException ex) {
       throw new ProviderUnavailableException("Unexpected Szakal API failure", ex);
     }
   }
+
+  public record TokenOrderRequest(
+      @JsonProperty("stock_token") String stockToken,
+      @JsonProperty("quantity") Integer quantity,
+      @JsonProperty("order_note") String orderNote) {}
+
+  public record OrderResponse(
+      @JsonProperty("orders") List<OrderItem> orders) {}
+
+  public record OrderItem(
+      @JsonProperty("order_id") String orderId,
+      @JsonProperty("quantity") Integer quantity,
+      @JsonProperty("unit_price") BigDecimal unitPrice,
+      @JsonProperty("no_returnable") Boolean noReturnable,
+      @JsonProperty("core_charge") BigDecimal coreCharge,
+      @JsonProperty("expected_delivery") String expectedDelivery,
+      @JsonProperty("product") OrderProduct product) {}
+
+  public record OrderProduct(
+      @JsonProperty("glid") String glid,
+      @JsonProperty("code") String code,
+      @JsonProperty("maker") String maker,
+      @JsonProperty("name") String name) {}
 
   public record StockInfoRequest(
       @JsonProperty("glid") String glid,

@@ -48,7 +48,7 @@ public class SzakalInventoryProvider implements InventoryProvider {
   public ProviderCapabilities capabilities() {
     return ProviderCapabilities.builder()
         .inventory(true)
-        .ordering(false)
+        .ordering(true)
         .orderHistory(false)
         .enabled(properties.isEnabled())
         .build();
