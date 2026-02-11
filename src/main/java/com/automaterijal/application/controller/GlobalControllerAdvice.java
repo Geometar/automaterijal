@@ -1,5 +1,6 @@
 package com.automaterijal.application.controller;
 
+import com.automaterijal.application.exception.CheckoutConflictException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,6 +35,10 @@ public class GlobalControllerAdvice {
     body.put("error", ex.getReason());
     body.put("message", ex.getMessage());
     body.put("path", request.getDescription(false));
+    if (ex instanceof CheckoutConflictException checkoutConflictException
+        && checkoutConflictException.getDetails() != null) {
+      body.put("details", checkoutConflictException.getDetails());
+    }
 
     log.error("Exception caught: ", ex);
     return new ResponseEntity<>(body, ex.getStatusCode());

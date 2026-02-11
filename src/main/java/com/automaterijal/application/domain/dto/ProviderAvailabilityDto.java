@@ -26,6 +26,7 @@ public class ProviderAvailabilityDto {
   BigDecimal price;
   String currency;
   Integer packagingUnit;
+  Integer minOrderQuantity;
   Integer leadTimeBusinessDays;
   Integer deliveryToCustomerBusinessDaysMin;
   Integer deliveryToCustomerBusinessDaysMax;

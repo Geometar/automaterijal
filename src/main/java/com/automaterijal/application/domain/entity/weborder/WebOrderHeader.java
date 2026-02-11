@@ -66,6 +66,9 @@ public class WebOrderHeader {
   @Column(name = "ext_order_id")
   String extOrderId;
 
+  @Column(name = "request_key")
+  String requestKey;
+
   @Column(name = "erp_exported")
   Integer erpExported;
 

@@ -651,3 +651,22 @@ databaseChangeLog:
               - column:
                   name: provider_packaging_unit
                   type: INT
+  - changeSet:
+      id: 2026-02-11-1
+      author: codex
+      changes:
+        - addColumn:
+            tableName: web_order_headers
+            columns:
+              - column:
+                  name: request_key
+                  type: VARCHAR(64)
+        - createIndex:
+            tableName: web_order_headers
+            indexName: uk_web_order_headers_ppid_request_key
+            unique: true
+            columns:
+              - column:
+                  name: ppid
+              - column:
+                  name: request_key

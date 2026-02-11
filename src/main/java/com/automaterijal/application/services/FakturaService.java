@@ -6,6 +6,8 @@ import com.automaterijal.application.domain.dto.ProizvodjacDTO;
 import com.automaterijal.application.domain.dto.ProviderOrderOptionDto;
 import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.dto.ValueHelpDto;
+import com.automaterijal.application.domain.dto.checkout.CheckoutConflictDetailsDto;
+import com.automaterijal.application.domain.dto.checkout.CheckoutConflictItemDto;
 import com.automaterijal.application.domain.constants.OrderItemSource;
 import com.automaterijal.application.domain.constants.StatusiKonstante;
 import com.automaterijal.application.domain.entity.Faktura;
@@ -22,12 +24,14 @@ import com.automaterijal.application.domain.repository.weborder.WebOrderHeaderRe
 import com.automaterijal.application.domain.repository.valuehelp.NacinPlacanjaRepository;
 import com.automaterijal.application.domain.repository.valuehelp.NacinPrevozaRepository;
 import com.automaterijal.application.domain.repository.valuehelp.StatusRepository;
+import com.automaterijal.application.exception.CheckoutConflictException;
 import com.automaterijal.application.services.roba.RobaCeneService;
 import com.automaterijal.application.services.roba.repo.RobaDatabaseService;
 import com.automaterijal.application.utils.GeneralUtil;
 import com.automaterijal.application.utils.PartnerPrivilegeUtils;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
@@ -40,6 +44,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -48,6 +54,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Sort;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -59,6 +66,8 @@ import org.springframework.util.StringUtils;
 public class FakturaService {
 
   private static final int WEB_ID_OFFSET = 1_000_000_000;
+  private static final int MAGACIN_SABAC_ID = 1;
+  private static final String FEBI_PROVIDER_KEY = "febi-stock";
 
   @NonNull final FakturaRepository fakturaRepository;
   @NonNull final FakturaDetaljiRepository fakturaDetaljiRepository;
@@ -76,56 +85,96 @@ public class FakturaService {
   @NonNull final RobaMapper robaMapper;
   @NonNull final ImageService imageService;
 
+  private static final class SplitAllocation {
+    private final FakturaDetaljiDto detail;
+    private final double stockQuantity;
+    private final double providerQuantity;
+
+    private SplitAllocation(FakturaDetaljiDto detail, double stockQuantity, double providerQuantity) {
+      this.detail = detail;
+      this.stockQuantity = stockQuantity;
+      this.providerQuantity = providerQuantity;
+    }
+
+    private boolean hasStockQuantity() {
+      return stockQuantity > 0d;
+    }
+
+    private boolean hasProviderQuantity() {
+      return providerQuantity > 0d;
+    }
+  }
+
+  @Transactional(noRollbackFor = CheckoutConflictException.class)
   public List<RobaLightDto> submitujFakturu(FakturaDto fakturaDto, Partner partner) {
     var now = Timestamp.valueOf(LocalDateTime.now());
-    var nextOrderId = getNextOrderId(partner.getPpid());
     boolean internalOrder = PartnerPrivilegeUtils.isInternal(partner);
-
-    List<RobaLightDto> outOfStockItems = new ArrayList<>();
-    List<FakturaDetaljiDto> stockDetails = new ArrayList<>();
-
-    for (var detalji : Optional.ofNullable(fakturaDto.getDetalji()).orElse(List.of())) {
-      var source = determineItemSource(detalji, internalOrder);
-      if (source == OrderItemSource.STOCK) {
-        stockDetails.add(detalji);
-      } else {
-        if (detalji != null && detalji.getRobaId() != null) {
-          robaDatabaseService
-              .findByRobaId(detalji.getRobaId())
-              .ifPresent(roba -> outOfStockItems.add(robaMapper.map(roba)));
-        } else if (detalji != null) {
-          RobaLightDto placeholder = new RobaLightDto();
-          placeholder.setRobaid(null);
-          placeholder.setTecDocArticleId(detalji.getTecDocArticleId());
-          placeholder.setKatbr(detalji.getKataloskiBroj());
-          placeholder.setNaziv(detalji.getNaziv());
-          placeholder.setSlika(detalji.getSlika());
-          placeholder.setProviderAvailability(detalji.getProviderAvailability());
-          placeholder.setAvailabilityStatus(detalji.getAvailabilityStatus());
-          placeholder.setCena(
-              detalji.getCena() != null ? java.math.BigDecimal.valueOf(detalji.getCena()) : null);
-          placeholder.setRabat(detalji.getRabat());
-          if (detalji.getProizvodjac() != null) {
-            ProizvodjacDTO p = new ProizvodjacDTO();
-            p.setProizvodjac(detalji.getProizvodjac());
-            placeholder.setProizvodjac(p);
-          }
-          outOfStockItems.add(placeholder);
-        }
+    String requestKey = normalizeRequestKey(fakturaDto != null ? fakturaDto.getIdempotencyKey() : null);
+    if (requestKey != null) {
+      Optional<WebOrderHeader> existing =
+          webOrderHeaderRepository.findByPpidAndRequestKey(partner.getPpid(), requestKey);
+      if (existing.isPresent()) {
+        return resumeIdempotentSubmission(existing.get(), fakturaDto, partner, internalOrder);
       }
     }
 
-    WebOrderHeader webOrderHeader =
-        saveWebOrder(fakturaDto, partner, nextOrderId, now, internalOrder);
+    var nextOrderId = getNextOrderId(partner.getPpid());
+
+    List<FakturaDetaljiDto> orderDetails = Optional.ofNullable(fakturaDto.getDetalji()).orElse(List.of());
+    List<SplitAllocation> allocations = allocateDetails(orderDetails, internalOrder);
+    List<FakturaDetaljiDto> stockDetails = extractStockDetails(allocations);
+    List<RobaLightDto> outOfStockItems = extractProviderItems(allocations);
+
+    WebOrderHeader webOrderHeader;
+    try {
+      webOrderHeader =
+          saveWebOrder(fakturaDto, partner, nextOrderId, now, internalOrder, allocations, requestKey);
+    } catch (DataIntegrityViolationException ex) {
+      if (requestKey == null) {
+        throw ex;
+      }
+      Optional<WebOrderHeader> existing =
+          webOrderHeaderRepository.findByPpidAndRequestKey(partner.getPpid(), requestKey);
+      if (existing.isPresent()) {
+        return resumeIdempotentSubmission(existing.get(), fakturaDto, partner, internalOrder);
+      }
+      throw ex;
+    }
+
+    providerOrderService.preflightOrders(webOrderHeader, partner);
+    validateProviderConfirmation(webOrderHeader);
+    providerOrderService.clearProcessingMarkers(webOrderHeader);
+    providerOrderService.placeOrders(webOrderHeader, partner);
+    validateProviderConfirmation(webOrderHeader);
 
     if (!stockDetails.isEmpty() && !internalOrder) {
       saveErpStockOrder(fakturaDto, partner, nextOrderId, stockDetails);
       webOrderHeader.setErpExported(1);
     }
 
-    providerOrderService.placeOrders(webOrderHeader, partner);
-
     partnerService.povecanPartnerovOrderCount(partner);
+    sanitizeProviderPurchasePrice(outOfStockItems, partner);
+    return outOfStockItems;
+  }
+
+  private List<RobaLightDto> resumeIdempotentSubmission(
+      WebOrderHeader existingHeader, FakturaDto fakturaDto, Partner partner, boolean internalOrder) {
+    providerOrderService.placeOrders(existingHeader, partner);
+    validateProviderConfirmation(existingHeader);
+
+    if (!internalOrder && (existingHeader.getErpExported() == null || existingHeader.getErpExported() != 1)) {
+      List<FakturaDetaljiDto> stockDetails = extractStockDetailsFromHeader(existingHeader);
+      if (!stockDetails.isEmpty()) {
+        Integer orderId =
+            existingHeader.getOrderId() != null
+                ? existingHeader.getOrderId()
+                : getNextOrderId(partner.getPpid());
+        saveErpStockOrder(fakturaDto, partner, orderId, stockDetails);
+        existingHeader.setErpExported(1);
+      }
+    }
+
+    List<RobaLightDto> outOfStockItems = extractProviderItemsFromHeader(existingHeader);
     sanitizeProviderPurchasePrice(outOfStockItems, partner);
     return outOfStockItems;
   }
@@ -144,33 +193,14 @@ public class FakturaService {
     return Math.max(erpLast, webLast) + 1;
   }
 
-  private OrderItemSource determineItemSource(
-      FakturaDetaljiDto detalji, boolean forceProvider) {
-    if (forceProvider) {
-      return OrderItemSource.PROVIDER;
-    }
-    if (detalji == null || detalji.getRobaId() == null) {
-      return OrderItemSource.PROVIDER;
-    }
-    Optional<Roba> robaOptional = robaDatabaseService.findByRobaId(detalji.getRobaId());
-    if (robaOptional.isEmpty()) {
-      return OrderItemSource.PROVIDER;
-    }
-    Roba roba = robaOptional.get();
-    if (detalji.getKolicina() == null) {
-      return OrderItemSource.PROVIDER;
-    }
-    return roba.getStanje() >= detalji.getKolicina()
-        ? OrderItemSource.STOCK
-        : OrderItemSource.PROVIDER;
-  }
-
   private WebOrderHeader saveWebOrder(
       FakturaDto fakturaDto,
       Partner partner,
       Integer orderId,
       Timestamp now,
-      boolean forceProvider) {
+      boolean forceProvider,
+      List<SplitAllocation> allocations,
+      String requestKey) {
     WebOrderHeader header = new WebOrderHeader();
     header.setPpid(partner.getPpid());
     header.setOrderId(orderId);
@@ -189,72 +219,671 @@ public class FakturaService {
     header.setIznosPotvrdjeno(0.0);
     header.setErpExported(0);
     header.setInternalOrder(forceProvider ? 1 : 0);
+    header.setRequestKey(requestKey);
 
     Map<String, String> providerDeliveryParties =
         resolveProviderDeliveryParties(fakturaDto, partner);
-    var orderDetails = Optional.ofNullable(fakturaDto.getDetalji()).orElse(List.of());
-    List<WebOrderItem> items =
-        orderDetails.stream()
-            .map(
-                detalji -> {
-                  var source = determineItemSource(detalji, forceProvider);
-                  WebOrderItem item = new WebOrderItem();
-                  item.setHeader(header);
-                  item.setPpid(partner.getPpid());
-                  item.setRobaId(detalji.getRobaId());
-                  item.setTecDocArticleId(detalji.getTecDocArticleId());
-                  item.setBrand(
-                      detalji.getProizvodjac() != null ? detalji.getProizvodjac().getProid() : null);
-                  item.setBrandName(
-                      detalji.getProizvodjac() != null ? detalji.getProizvodjac().getNaziv() : null);
-                  item.setCatalogNumber(detalji.getKataloskiBroj());
-                  item.setArticleName(detalji.getNaziv());
-                  item.setMagacinId(source == OrderItemSource.STOCK ? 1 : 0);
-                  item.setKolicina(detalji.getKolicina());
-                  item.setPotvrdjenaKolicina(0.0);
-                  item.setCena(detalji.getCena() != null ? detalji.getCena() : 0.0);
-                  item.setStatus(StatusiKonstante.NIJE_UZETA_U_OBRADU.getFieldValue());
-                  item.setKolicine(1);
-                  item.setRabat(detalji.getRabat() != null ? detalji.getRabat() : 0.0);
-                  item.setPdv(20.0);
-                  item.setInsertDatetime(now);
-                  item.setItemSource(source);
-                  item.setProviderCode(source == OrderItemSource.PROVIDER ? "EXTERNAL" : null);
-
-                  if (detalji.getProviderAvailability() != null) {
-                    var a = detalji.getProviderAvailability();
-                    item.setProviderKey(a.getProvider());
-                    item.setProviderArticleNumber(a.getArticleNumber());
-                    item.setProviderAvailable(a.getAvailable());
-                    item.setProviderTotalQuantity(a.getTotalQuantity());
-                    item.setProviderWarehouse(a.getWarehouse());
-                    item.setProviderWarehouseName(a.getWarehouseName());
-                    item.setProviderWarehouseQuantity(a.getWarehouseQuantity());
-                    item.setProviderPurchasePrice(a.getPurchasePrice());
-                    item.setProviderPrice(a.getPrice());
-                    item.setProviderCurrency(a.getCurrency());
-                    item.setProviderPackagingUnit(a.getPackagingUnit());
-                    item.setProviderLeadTimeBusinessDays(a.getLeadTimeBusinessDays());
-                    item.setProviderDeliveryToCustomerDaysMin(a.getDeliveryToCustomerBusinessDaysMin());
-                    item.setProviderDeliveryToCustomerDaysMax(a.getDeliveryToCustomerBusinessDaysMax());
-                    item.setProviderNextDispatchCutoff(a.getNextDispatchCutoff());
-                    item.setProviderProductId(a.getProviderProductId());
-                    item.setProviderStockToken(a.getProviderStockToken());
-                    item.setProviderNoReturnable(a.getProviderNoReturnable());
-                  }
-                  applyProviderDeliveryParty(item, providerDeliveryParties);
-
-                  if (detalji.getSlika() != null) {
-                    item.setImageUrl(detalji.getSlika().getSlikeUrl());
-                    item.setImageIsUrl(detalji.getSlika().isUrl());
-                    item.setImageRobaSlika(detalji.getSlika().getRobaSlika());
-                  }
-                  return item;
-                })
-            .collect(Collectors.toCollection(ArrayList::new));
+    List<WebOrderItem> items = new ArrayList<>();
+    for (SplitAllocation allocation : allocations) {
+      if (allocation == null || allocation.detail == null) {
+        continue;
+      }
+      if (allocation.hasStockQuantity()) {
+        items.add(
+            buildWebOrderItem(
+                header,
+                partner,
+                allocation.detail,
+                allocation.stockQuantity,
+                OrderItemSource.STOCK,
+                now,
+                providerDeliveryParties));
+      }
+      if (allocation.hasProviderQuantity()) {
+        items.add(
+            buildWebOrderItem(
+                header,
+                partner,
+                allocation.detail,
+                allocation.providerQuantity,
+                OrderItemSource.PROVIDER,
+                now,
+                providerDeliveryParties));
+      }
+    }
 
     header.setItems(items);
     return webOrderHeaderRepository.save(header);
+  }
+
+  private String normalizeRequestKey(String requestKey) {
+    if (!StringUtils.hasText(requestKey)) {
+      return null;
+    }
+    String normalized = requestKey.trim();
+    if (normalized.length() <= 64) {
+      return normalized;
+    }
+    return sha256Hex(normalized);
+  }
+
+  private String sha256Hex(String input) {
+    try {
+      MessageDigest digest = MessageDigest.getInstance("SHA-256");
+      byte[] hash = digest.digest(input.getBytes(StandardCharsets.UTF_8));
+      StringBuilder sb = new StringBuilder(hash.length * 2);
+      for (byte b : hash) {
+        sb.append(String.format("%02x", b));
+      }
+      return sb.toString();
+    } catch (NoSuchAlgorithmException ex) {
+      throw new IllegalStateException("SHA-256 is not available", ex);
+    }
+  }
+
+  private WebOrderItem buildWebOrderItem(
+      WebOrderHeader header,
+      Partner partner,
+      FakturaDetaljiDto detalji,
+      double quantity,
+      OrderItemSource source,
+      Timestamp now,
+      Map<String, String> providerDeliveryParties) {
+    WebOrderItem item = new WebOrderItem();
+    item.setHeader(header);
+    item.setPpid(partner.getPpid());
+    item.setRobaId(detalji.getRobaId());
+    item.setTecDocArticleId(detalji.getTecDocArticleId());
+    item.setBrand(detalji.getProizvodjac() != null ? detalji.getProizvodjac().getProid() : null);
+    item.setBrandName(detalji.getProizvodjac() != null ? detalji.getProizvodjac().getNaziv() : null);
+    item.setCatalogNumber(detalji.getKataloskiBroj());
+    item.setArticleName(detalji.getNaziv());
+    item.setMagacinId(source == OrderItemSource.STOCK ? MAGACIN_SABAC_ID : 0);
+    item.setKolicina(quantity);
+    item.setPotvrdjenaKolicina(0.0);
+    item.setCena(detalji.getCena() != null ? detalji.getCena() : 0.0);
+    item.setStatus(StatusiKonstante.NIJE_UZETA_U_OBRADU.getFieldValue());
+    item.setKolicine(1);
+    item.setRabat(detalji.getRabat() != null ? detalji.getRabat() : 0.0);
+    item.setPdv(20.0);
+    item.setInsertDatetime(now);
+    item.setItemSource(source);
+    item.setProviderCode(source == OrderItemSource.PROVIDER ? "EXTERNAL" : null);
+
+    if (source == OrderItemSource.PROVIDER && detalji.getProviderAvailability() != null) {
+      var a = detalji.getProviderAvailability();
+      item.setProviderKey(a.getProvider());
+      item.setProviderArticleNumber(a.getArticleNumber());
+      item.setProviderAvailable(a.getAvailable());
+      item.setProviderTotalQuantity(a.getTotalQuantity());
+      item.setProviderWarehouse(a.getWarehouse());
+      item.setProviderWarehouseName(a.getWarehouseName());
+      item.setProviderWarehouseQuantity(a.getWarehouseQuantity());
+      item.setProviderPurchasePrice(a.getPurchasePrice());
+      item.setProviderPrice(a.getPrice());
+      item.setProviderCurrency(a.getCurrency());
+      item.setProviderPackagingUnit(a.getPackagingUnit());
+      item.setProviderLeadTimeBusinessDays(a.getLeadTimeBusinessDays());
+      item.setProviderDeliveryToCustomerDaysMin(a.getDeliveryToCustomerBusinessDaysMin());
+      item.setProviderDeliveryToCustomerDaysMax(a.getDeliveryToCustomerBusinessDaysMax());
+      item.setProviderNextDispatchCutoff(a.getNextDispatchCutoff());
+      item.setProviderProductId(a.getProviderProductId());
+      item.setProviderStockToken(a.getProviderStockToken());
+      item.setProviderNoReturnable(a.getProviderNoReturnable());
+    }
+    applyProviderDeliveryParty(item, providerDeliveryParties);
+
+    if (detalji.getSlika() != null) {
+      item.setImageUrl(detalji.getSlika().getSlikeUrl());
+      item.setImageIsUrl(detalji.getSlika().isUrl());
+      item.setImageRobaSlika(detalji.getSlika().getRobaSlika());
+    }
+    return item;
+  }
+
+  private List<SplitAllocation> allocateDetails(
+      List<FakturaDetaljiDto> details, boolean forceProvider) {
+    if (details == null || details.isEmpty()) {
+      return List.of();
+    }
+
+    Map<Long, Double> stockByRobaId = new HashMap<>();
+    List<SplitAllocation> out = new ArrayList<>();
+    for (FakturaDetaljiDto detalji : details) {
+      SplitAllocation allocation = allocateDetail(detalji, forceProvider, stockByRobaId);
+      if (allocation == null) {
+        continue;
+      }
+      if (allocation.hasStockQuantity() || allocation.hasProviderQuantity()) {
+        out.add(allocation);
+      }
+    }
+    return out;
+  }
+
+  private SplitAllocation allocateDetail(
+      FakturaDetaljiDto detalji, boolean forceProvider, Map<Long, Double> stockByRobaId) {
+    if (detalji == null) {
+      return null;
+    }
+    double requested = sanitizeQuantity(detalji.getKolicina());
+    if (requested <= 0d) {
+      return new SplitAllocation(detalji, 0d, 0d);
+    }
+
+    if (forceProvider) {
+      return new SplitAllocation(detalji, 0d, requested);
+    }
+    if (detalji.getRobaId() == null) {
+      return new SplitAllocation(detalji, 0d, requested);
+    }
+
+    double localStock = resolveLocalStock(detalji.getRobaId(), stockByRobaId);
+    if (localStock >= requested) {
+      stockByRobaId.put(detalji.getRobaId(), Math.max(0d, localStock - requested));
+      return new SplitAllocation(detalji, requested, 0d);
+    }
+
+    if (!isFebiAvailability(detalji)) {
+      return new SplitAllocation(detalji, 0d, requested);
+    }
+
+    int packagingUnit = resolveProviderPackagingUnit(detalji);
+    int minOrderQuantity = resolveProviderMinOrderQuantity(detalji, packagingUnit);
+    double localAllocation;
+    double providerRequested;
+    if (shouldPreferProviderOnlyAllocation(
+        requested,
+        localStock,
+        packagingUnit,
+        minOrderQuantity)) {
+      localAllocation = 0d;
+      providerRequested = requested;
+    } else {
+      localAllocation = Math.min(localStock, requested);
+      providerRequested = Math.max(0d, requested - localAllocation);
+    }
+
+    stockByRobaId.put(detalji.getRobaId(), Math.max(0d, localStock - localAllocation));
+    if (providerRequested <= 0d) {
+      return new SplitAllocation(detalji, localAllocation, 0d);
+    }
+
+    validateFebiSnapshotAvailability(
+        detalji,
+        requested,
+        localAllocation,
+        providerRequested);
+    return new SplitAllocation(detalji, localAllocation, providerRequested);
+  }
+
+  private boolean shouldPreferProviderOnlyAllocation(
+      double requestedQty,
+      double localStock,
+      int packagingUnit,
+      int minOrderQuantity) {
+    int requested = toRequestedQuantity(requestedQty);
+    int local = toRequestedQuantity(localStock);
+    if (requested <= local) {
+      return false;
+    }
+    boolean constrainedExternal = packagingUnit > 1 || minOrderQuantity > 1;
+    if (!constrainedExternal) {
+      return false;
+    }
+    boolean packagingCompatible = packagingUnit <= 1 || requested % packagingUnit == 0;
+    boolean minimumCompatible = requested >= minOrderQuantity;
+    return packagingCompatible && minimumCompatible;
+  }
+
+  private List<FakturaDetaljiDto> extractStockDetails(List<SplitAllocation> allocations) {
+    List<FakturaDetaljiDto> stockDetails = new ArrayList<>();
+    for (SplitAllocation allocation : allocations) {
+      if (allocation == null || allocation.detail == null || !allocation.hasStockQuantity()) {
+        continue;
+      }
+      stockDetails.add(copyDetailWithQuantity(allocation.detail, allocation.stockQuantity));
+    }
+    return stockDetails;
+  }
+
+  private List<RobaLightDto> extractProviderItems(List<SplitAllocation> allocations) {
+    List<RobaLightDto> outOfStockItems = new ArrayList<>();
+    for (SplitAllocation allocation : allocations) {
+      if (allocation == null || allocation.detail == null || !allocation.hasProviderQuantity()) {
+        continue;
+      }
+      FakturaDetaljiDto detalji = allocation.detail;
+      if (detalji.getRobaId() != null) {
+        robaDatabaseService
+            .findByRobaId(detalji.getRobaId())
+            .ifPresent(roba -> outOfStockItems.add(robaMapper.map(roba)));
+        continue;
+      }
+
+      RobaLightDto placeholder = new RobaLightDto();
+      placeholder.setRobaid(null);
+      placeholder.setTecDocArticleId(detalji.getTecDocArticleId());
+      placeholder.setKatbr(detalji.getKataloskiBroj());
+      placeholder.setNaziv(detalji.getNaziv());
+      placeholder.setSlika(detalji.getSlika());
+      placeholder.setProviderAvailability(detalji.getProviderAvailability());
+      placeholder.setAvailabilityStatus(detalji.getAvailabilityStatus());
+      placeholder.setCena(detalji.getCena() != null ? java.math.BigDecimal.valueOf(detalji.getCena()) : null);
+      placeholder.setRabat(detalji.getRabat());
+      if (detalji.getProizvodjac() != null) {
+        ProizvodjacDTO p = new ProizvodjacDTO();
+        p.setProizvodjac(detalji.getProizvodjac());
+        placeholder.setProizvodjac(p);
+      }
+      outOfStockItems.add(placeholder);
+    }
+    return outOfStockItems;
+  }
+
+  private FakturaDetaljiDto copyDetailWithQuantity(FakturaDetaljiDto source, double quantity) {
+    FakturaDetaljiDto copy = new FakturaDetaljiDto();
+    copy.setRobaId(source.getRobaId());
+    copy.setTecDocArticleId(source.getTecDocArticleId());
+    copy.setSlika(source.getSlika());
+    copy.setKataloskiBroj(source.getKataloskiBroj());
+    copy.setKataloskiBrojProizvodjaca(source.getKataloskiBrojProizvodjaca());
+    copy.setNaziv(source.getNaziv());
+    copy.setProizvodjac(source.getProizvodjac());
+    copy.setKolicina(quantity);
+    copy.setPotvrdjenaKolicina(source.getPotvrdjenaKolicina());
+    copy.setCena(source.getCena());
+    copy.setStatus(source.getStatus());
+    copy.setRabat(source.getRabat());
+    copy.setVremePorucivanja(source.getVremePorucivanja());
+    copy.setIzvor(source.getIzvor());
+    copy.setProviderAvailability(source.getProviderAvailability());
+    copy.setAvailabilityStatus(source.getAvailabilityStatus());
+    copy.setProviderBackorder(source.getProviderBackorder());
+    copy.setProviderMessage(source.getProviderMessage());
+    copy.setProviderDeliveryParty(source.getProviderDeliveryParty());
+    return copy;
+  }
+
+  private double sanitizeQuantity(Double quantity) {
+    if (quantity == null || !Double.isFinite(quantity)) {
+      return 0d;
+    }
+    return Math.max(0d, quantity);
+  }
+
+  private double resolveLocalStock(Long robaId, Map<Long, Double> stockByRobaId) {
+    if (robaId == null) {
+      return 0d;
+    }
+    Double cached = stockByRobaId.get(robaId);
+    if (cached != null) {
+      return cached;
+    }
+
+    double stock =
+        robaDatabaseService
+            .findByRobaId(robaId)
+            .map(Roba::getStanje)
+            .map(s -> Double.isFinite(s) ? Math.max(0d, s) : 0d)
+            .orElse(0d);
+    stockByRobaId.put(robaId, stock);
+    return stock;
+  }
+
+  private boolean isFebiAvailability(FakturaDetaljiDto detalji) {
+    if (detalji == null || detalji.getProviderAvailability() == null) {
+      return false;
+    }
+    String provider = detalji.getProviderAvailability().getProvider();
+    return FEBI_PROVIDER_KEY.equalsIgnoreCase(normalizeProviderKey(provider));
+  }
+
+  private int resolveProviderSnapshotQuantity(FakturaDetaljiDto detalji) {
+    if (detalji == null || detalji.getProviderAvailability() == null) {
+      return 0;
+    }
+    Integer warehouseQty = detalji.getProviderAvailability().getWarehouseQuantity();
+    Integer totalQty = detalji.getProviderAvailability().getTotalQuantity();
+    int best = Math.max(warehouseQty != null ? warehouseQty : 0, totalQty != null ? totalQty : 0);
+    return Math.max(0, best);
+  }
+
+  private int resolveProviderPackagingUnit(FakturaDetaljiDto detalji) {
+    if (detalji == null || detalji.getProviderAvailability() == null) {
+      return 1;
+    }
+    Integer raw = detalji.getProviderAvailability().getPackagingUnit();
+    return raw != null && raw > 1 ? raw : 1;
+  }
+
+  private int resolveProviderMinOrderQuantity(FakturaDetaljiDto detalji, int packagingUnit) {
+    if (detalji == null || detalji.getProviderAvailability() == null) {
+      return Math.max(1, packagingUnit);
+    }
+    Integer raw = detalji.getProviderAvailability().getMinOrderQuantity();
+    int normalized = raw != null && raw > 0 ? raw : 1;
+    if (packagingUnit > 1) {
+      return Math.max(packagingUnit, ((normalized + packagingUnit - 1) / packagingUnit) * packagingUnit);
+    }
+    return normalized;
+  }
+
+  private void validateFebiSnapshotAvailability(
+      FakturaDetaljiDto detalji,
+      double requestedTotalQty,
+      double localAllocationQty,
+      double providerRequestedQty) {
+    if (detalji == null) {
+      return;
+    }
+    int providerRequested = toRequestedQuantity(providerRequestedQty);
+    if (providerRequested <= 0) {
+      return;
+    }
+    boolean available =
+        detalji.getProviderAvailability() != null
+            && Boolean.TRUE.equals(detalji.getProviderAvailability().getAvailable());
+    int snapshotQty = resolveProviderSnapshotQuantity(detalji);
+
+    int requestedTotal = toRequestedQuantity(requestedTotalQty);
+    int localAllocation = toRequestedQuantity(localAllocationQty);
+    int packagingUnit = resolveProviderPackagingUnit(detalji);
+    int minOrderQuantity = resolveProviderMinOrderQuantity(detalji, packagingUnit);
+    int providerMaxOrderable =
+        packagingUnit > 1 ? (snapshotQty / packagingUnit) * packagingUnit : snapshotQty;
+    boolean constrainedExternal = packagingUnit > 1 || minOrderQuantity > 1;
+    int maxOrderable =
+        constrainedExternal
+            ? Math.max(0, Math.max(localAllocation, providerMaxOrderable))
+            : Math.max(0, localAllocation + providerMaxOrderable);
+    boolean packagingCompatible = packagingUnit <= 1 || providerRequested % packagingUnit == 0;
+    boolean minimumCompatible = providerRequested >= minOrderQuantity;
+    if (available && snapshotQty >= providerRequested && packagingCompatible && minimumCompatible) {
+      return;
+    }
+    CheckoutConflictItemDto item =
+        CheckoutConflictItemDto.builder()
+            .robaId(detalji.getRobaId())
+            .tecDocArticleId(detalji.getTecDocArticleId())
+            .catalogNumber(detalji.getKataloskiBroj())
+            .articleName(detalji.getNaziv())
+            .providerKey(FEBI_PROVIDER_KEY)
+            .requestedQuantity(requestedTotal)
+            .confirmedQuantity(Math.min(requestedTotal, localAllocation))
+            .maxOrderableQuantity(maxOrderable)
+            .message(
+                !minimumCompatible
+                    ? "Minimalna dodatna kolicina iz magacina Beograd je " + minOrderQuantity + "."
+                    : (packagingCompatible
+                        ? "Nema dovoljno stanja u magacinu Beograd za trazenu dodatnu kolicinu."
+                        : "Dodatna kolicina iz magacina Beograd mora biti u koraku pakovanja: "
+                            + packagingUnit
+                            + "."))
+            .build();
+    throwCheckoutConflict(
+        "Nije moguce potvrditi dostupnost iz eksternog magacina.",
+        List.of(item));
+  }
+
+  private void validateProviderConfirmation(WebOrderHeader header) {
+    if (header == null || header.getItems() == null || header.getItems().isEmpty()) {
+      return;
+    }
+    Map<String, Integer> stockAllocationsByKey = resolveStockAllocationsByItemKey(header);
+    List<CheckoutConflictItemDto> failed = new ArrayList<>();
+    for (WebOrderItem item : header.getItems()) {
+      if (item == null || item.getItemSource() != OrderItemSource.PROVIDER) {
+        continue;
+      }
+      int requested = toRequestedQuantity(item.getKolicina());
+      if (requested <= 0) {
+        continue;
+      }
+      int confirmed = toRequestedQuantity(item.getPotvrdjenaKolicina());
+      boolean explicitUnavailable =
+          Boolean.TRUE.equals(item.getProviderBackorder())
+              || Boolean.FALSE.equals(item.getProviderAvailable());
+      boolean hasProviderResponse =
+          confirmed > 0
+              || item.getProviderBackorder() != null
+              || StringUtils.hasText(item.getProviderMessage())
+              || explicitUnavailable;
+      if (hasProviderResponse && confirmed < requested) {
+        int localAllocation = stockAllocationsByKey.getOrDefault(buildConflictItemKey(item), 0);
+        failed.add(buildProviderConflictItem(item, requested, confirmed, localAllocation));
+      }
+    }
+
+    if (failed.isEmpty()) {
+      return;
+    }
+
+    throwCheckoutConflict(
+        "Nije moguce potvrditi dostupnost iz eksternog magacina.",
+        failed);
+  }
+
+  private String buildItemLabel(String katalog, String naziv) {
+    if (StringUtils.hasText(katalog)) {
+      return katalog.trim();
+    }
+    if (StringUtils.hasText(naziv)) {
+      return naziv.trim();
+    }
+    return "stavku";
+  }
+
+  private CheckoutConflictItemDto buildProviderConflictItem(
+      WebOrderItem item, int requestedProvider, int confirmedProvider, int localAllocation) {
+    int requestedTotal = Math.max(0, requestedProvider) + Math.max(0, localAllocation);
+    int maxOrderable = Math.max(0, localAllocation) + Math.max(0, confirmedProvider);
+    int confirmedTotal = Math.min(requestedTotal, maxOrderable);
+    return CheckoutConflictItemDto.builder()
+        .robaId(item.getRobaId())
+        .tecDocArticleId(item.getTecDocArticleId())
+        .catalogNumber(item.getCatalogNumber())
+        .articleName(item.getArticleName())
+        .providerKey(normalizeProviderKey(item.getProviderKey()))
+        .requestedQuantity(requestedTotal)
+        .confirmedQuantity(confirmedTotal)
+        .maxOrderableQuantity(maxOrderable)
+        .message(resolveProviderConflictMessage(item))
+        .build();
+  }
+
+  private Map<String, Integer> resolveStockAllocationsByItemKey(WebOrderHeader header) {
+    Map<String, Integer> byKey = new HashMap<>();
+    if (header == null || header.getItems() == null || header.getItems().isEmpty()) {
+      return byKey;
+    }
+    for (WebOrderItem item : header.getItems()) {
+      if (item == null || item.getItemSource() != OrderItemSource.STOCK) {
+        continue;
+      }
+      int qty = toRequestedQuantity(item.getKolicina());
+      if (qty <= 0) {
+        continue;
+      }
+      byKey.merge(buildConflictItemKey(item), qty, Integer::sum);
+    }
+    return byKey;
+  }
+
+  private String buildConflictItemKey(WebOrderItem item) {
+    if (item == null) {
+      return "item";
+    }
+    if (item.getRobaId() != null) {
+      return "roba:" + item.getRobaId();
+    }
+    if (item.getTecDocArticleId() != null) {
+      return "tecdoc:" + item.getTecDocArticleId();
+    }
+    if (StringUtils.hasText(item.getCatalogNumber())) {
+      return "catalog:" + item.getCatalogNumber().trim().toLowerCase(Locale.ROOT);
+    }
+    if (StringUtils.hasText(item.getArticleName())) {
+      return "name:" + item.getArticleName().trim().toLowerCase(Locale.ROOT);
+    }
+    return "item:" + (item.getId() != null ? item.getId() : 0);
+  }
+
+  private String resolveProviderConflictMessage(WebOrderItem item) {
+    if (item == null) {
+      return "Eksterni magacin nije potvrdio trazenu kolicinu.";
+    }
+    if (StringUtils.hasText(item.getProviderMessage())) {
+      return item.getProviderMessage().trim();
+    }
+    return "Eksterni magacin nije potvrdio trazenu kolicinu.";
+  }
+
+  private void throwCheckoutConflict(String summary, List<CheckoutConflictItemDto> items) {
+    List<CheckoutConflictItemDto> sanitized = items != null ? items : List.of();
+    String listed =
+        sanitized.stream()
+            .limit(3)
+            .map(i -> buildItemLabel(i.getCatalogNumber(), i.getArticleName()))
+            .collect(Collectors.joining(", "));
+    String preview =
+        StringUtils.hasText(listed)
+            ? " " + listed + (sanitized.size() > 3 ? " (+" + (sanitized.size() - 3) + ")" : "")
+            : "";
+    CheckoutConflictDetailsDto details =
+        CheckoutConflictDetailsDto.builder()
+            .code("CHECKOUT_PROVIDER_UNAVAILABLE")
+            .action("ADJUST_CART_AND_RETRY")
+            .items(sanitized)
+            .build();
+    throw new CheckoutConflictException(
+        summary + preview + ". Izmenite kolicinu ili uklonite stavku pa potvrdite ponovo.",
+        details);
+  }
+
+  private int toRequestedQuantity(Double quantity) {
+    if (quantity == null || !Double.isFinite(quantity)) {
+      return 0;
+    }
+    return (int) Math.ceil(Math.max(0d, quantity));
+  }
+
+  private List<FakturaDetaljiDto> extractStockDetailsFromHeader(WebOrderHeader header) {
+    if (header == null || header.getItems() == null || header.getItems().isEmpty()) {
+      return List.of();
+    }
+    List<FakturaDetaljiDto> details = new ArrayList<>();
+    for (WebOrderItem item : header.getItems()) {
+      if (item == null || item.getItemSource() != OrderItemSource.STOCK) {
+        continue;
+      }
+      int quantity = toRequestedQuantity(item.getKolicina());
+      if (quantity <= 0) {
+        continue;
+      }
+      FakturaDetaljiDto detail = new FakturaDetaljiDto();
+      detail.setRobaId(item.getRobaId());
+      detail.setTecDocArticleId(item.getTecDocArticleId());
+      detail.setKataloskiBroj(item.getCatalogNumber());
+      detail.setNaziv(item.getArticleName());
+      detail.setKolicina((double) quantity);
+      detail.setPotvrdjenaKolicina(item.getPotvrdjenaKolicina());
+      detail.setCena(item.getCena());
+      detail.setRabat(item.getRabat());
+      detail.setIzvor(OrderItemSource.STOCK.name());
+      if (StringUtils.hasText(item.getBrand()) || StringUtils.hasText(item.getBrandName())) {
+        detail.setProizvodjac(
+            com.automaterijal.application.domain.entity.Proizvodjac.builder()
+                .proid(item.getBrand())
+                .naziv(item.getBrandName())
+                .build());
+      }
+      if (item.getImageUrl() != null || item.getImageRobaSlika() != null) {
+        com.automaterijal.application.domain.dto.SlikaDto image =
+            new com.automaterijal.application.domain.dto.SlikaDto();
+        image.setSlikeUrl(item.getImageUrl());
+        image.setUrl(Boolean.TRUE.equals(item.getImageIsUrl()));
+        image.setRobaSlika(item.getImageRobaSlika());
+        detail.setSlika(image);
+      }
+      details.add(detail);
+    }
+    return details;
+  }
+
+  private List<RobaLightDto> extractProviderItemsFromHeader(WebOrderHeader header) {
+    if (header == null || header.getItems() == null || header.getItems().isEmpty()) {
+      return List.of();
+    }
+    List<RobaLightDto> out = new ArrayList<>();
+    for (WebOrderItem item : header.getItems()) {
+      if (item == null || item.getItemSource() != OrderItemSource.PROVIDER) {
+        continue;
+      }
+      if (toRequestedQuantity(item.getKolicina()) <= 0) {
+        continue;
+      }
+      if (item.getRobaId() != null) {
+        robaDatabaseService
+            .findByRobaId(item.getRobaId())
+            .ifPresent(roba -> out.add(robaMapper.map(roba)));
+        continue;
+      }
+      RobaLightDto placeholder = new RobaLightDto();
+      placeholder.setRobaid(null);
+      placeholder.setTecDocArticleId(item.getTecDocArticleId());
+      placeholder.setKatbr(item.getCatalogNumber());
+      placeholder.setNaziv(item.getArticleName());
+      if (item.getImageUrl() != null || item.getImageRobaSlika() != null) {
+        com.automaterijal.application.domain.dto.SlikaDto image =
+            new com.automaterijal.application.domain.dto.SlikaDto();
+        image.setSlikeUrl(item.getImageUrl());
+        image.setUrl(Boolean.TRUE.equals(item.getImageIsUrl()));
+        image.setRobaSlika(item.getImageRobaSlika());
+        placeholder.setSlika(image);
+      }
+      if (StringUtils.hasText(item.getBrand()) || StringUtils.hasText(item.getBrandName())) {
+        ProizvodjacDTO p = new ProizvodjacDTO();
+        p.setProizvodjac(
+            com.automaterijal.application.domain.entity.Proizvodjac.builder()
+                .proid(item.getBrand())
+                .naziv(item.getBrandName())
+                .build());
+        placeholder.setProizvodjac(p);
+      }
+      if (item.getProviderKey() != null || item.getProviderArticleNumber() != null) {
+        placeholder.setProviderAvailability(
+            com.automaterijal.application.domain.dto.ProviderAvailabilityDto.builder()
+                .brand(item.getBrand())
+                .provider(item.getProviderKey())
+                .articleNumber(item.getProviderArticleNumber())
+                .available(item.getProviderAvailable())
+                .totalQuantity(item.getProviderTotalQuantity())
+                .warehouse(item.getProviderWarehouse())
+                .warehouseName(item.getProviderWarehouseName())
+                .warehouseQuantity(item.getProviderWarehouseQuantity())
+                .purchasePrice(item.getProviderPurchasePrice())
+                .price(item.getProviderPrice())
+                .currency(item.getProviderCurrency())
+                .packagingUnit(item.getProviderPackagingUnit())
+                .leadTimeBusinessDays(item.getProviderLeadTimeBusinessDays())
+                .deliveryToCustomerBusinessDaysMin(item.getProviderDeliveryToCustomerDaysMin())
+                .deliveryToCustomerBusinessDaysMax(item.getProviderDeliveryToCustomerDaysMax())
+                .nextDispatchCutoff(item.getProviderNextDispatchCutoff())
+                .providerProductId(item.getProviderProductId())
+                .providerStockToken(item.getProviderStockToken())
+                .providerNoReturnable(item.getProviderNoReturnable())
+                .build());
+        placeholder.setAvailabilityStatus(
+            Boolean.TRUE.equals(item.getProviderAvailable())
+                ? com.automaterijal.application.domain.dto.ArticleAvailabilityStatus.AVAILABLE
+                : com.automaterijal.application.domain.dto.ArticleAvailabilityStatus.OUT_OF_STOCK);
+      }
+      placeholder.setCena(item.getCena() != null ? java.math.BigDecimal.valueOf(item.getCena()) : null);
+      placeholder.setRabat(item.getRabat());
+      out.add(placeholder);
+    }
+    return out;
   }
 
   private Map<String, String> resolveProviderDeliveryParties(
