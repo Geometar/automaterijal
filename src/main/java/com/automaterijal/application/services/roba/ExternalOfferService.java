@@ -5,6 +5,7 @@ import com.automaterijal.application.domain.dto.ArticleAvailabilityStatus;
 import com.automaterijal.application.domain.dto.MagacinDto;
 import com.automaterijal.application.domain.dto.PodgrupaDto;
 import com.automaterijal.application.domain.dto.ProizvodjacDTO;
+import com.automaterijal.application.domain.dto.ProviderAvailabilityDto;
 import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.entity.Proizvodjac;
@@ -153,7 +154,9 @@ public class ExternalOfferService {
 
     List<Candidate> availableCandidates = new ArrayList<>();
     for (RobaLightDto probe : probes) {
-      if (probe == null || probe.getProviderAvailability() == null) {
+      if (probe == null
+          || probe.getProviderAvailability() == null
+          || !isProviderAvailable(probe.getProviderAvailability())) {
         continue;
       }
       String key = buildProbeKey(probe);
@@ -175,7 +178,9 @@ public class ExternalOfferService {
     int tecDocResolveRemaining = resolveTecDocArticleIdLimit(parametri);
 
     for (RobaLightDto probe : probes) {
-      if (probe == null || probe.getProviderAvailability() == null) {
+      if (probe == null
+          || probe.getProviderAvailability() == null
+          || !isProviderAvailable(probe.getProviderAvailability())) {
         continue;
       }
 
@@ -233,6 +238,20 @@ public class ExternalOfferService {
     }
 
     return offers;
+  }
+
+  private boolean isProviderAvailable(ProviderAvailabilityDto availability) {
+    if (availability == null) {
+      return false;
+    }
+    if (!Boolean.TRUE.equals(availability.getAvailable())) {
+      return false;
+    }
+    Integer totalQuantity = availability.getTotalQuantity();
+    Integer warehouseQuantity = availability.getWarehouseQuantity();
+    int total = totalQuantity != null ? totalQuantity : 0;
+    int warehouse = warehouseQuantity != null ? warehouseQuantity : 0;
+    return Math.max(total, warehouse) > 0;
   }
 
   private ExternalOfferPayload prepareExternalOffers(

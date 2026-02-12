@@ -105,7 +105,7 @@ public class FakturaService {
     }
   }
 
-  @Transactional(noRollbackFor = CheckoutConflictException.class)
+  @Transactional
   public List<RobaLightDto> submitujFakturu(FakturaDto fakturaDto, Partner partner) {
     var now = Timestamp.valueOf(LocalDateTime.now());
     boolean internalOrder = PartnerPrivilegeUtils.isInternal(partner);
@@ -1136,6 +1136,10 @@ public class FakturaService {
   }
 
   private FakturaDto obogatiDtoCommon(FakturaDto fakturaDto, Partner partner, int brojStavki) {
+    if (fakturaDto.getProviderCall() == null) {
+      // Legacy/ERP rows do not carry provider-call metadata; treat as no call.
+      fakturaDto.setProviderCall(false);
+    }
     if (fakturaDto.getInternalOrder() == null) {
       fakturaDto.setInternalOrder(0);
     }
@@ -1187,6 +1191,7 @@ public class FakturaService {
     dto.setIznosNarucen(header.getIznosNaruceno());
     dto.setIznosPotvrdjen(header.getIznosPotvrdjeno());
     dto.setPartner(String.valueOf(header.getPpid()));
+    dto.setProviderCall(ProviderCallResolver.hasProviderCall(header));
 
     var details =
         Optional.ofNullable(header.getItems()).orElse(List.of()).stream()

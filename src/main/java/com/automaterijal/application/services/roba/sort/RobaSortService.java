@@ -6,12 +6,14 @@ import com.automaterijal.application.services.roba.grupe.ArticleSubGroupService;
 import com.automaterijal.application.utils.CatalogNumberUtils;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 @Service
 public class RobaSortService {
+  private static final String FEBI_PROVIDER_KEY = "febi-stock";
 
   public List<RobaLightDto> sortByGroup(List<RobaLightDto> roba) {
     return roba.stream()
@@ -56,6 +58,7 @@ public class RobaSortService {
   private Comparator<RobaLightDto> getGroupComparator(String wanted, Integer exactPodgrupa) {
     return Comparator.<RobaLightDto>comparingInt(dto -> exactMatchRankIfAvailable(dto, wanted))
         .thenComparingInt(this::availabilityRank)
+        .thenComparingInt(this::providerPriorityRank)
         .thenComparing(dto -> dto == null || dto.getRobaid() == null) // TecDoc-only na kraj
         .thenComparing(robaDto -> robaDto.getPodGrupa() == 0) // Podgrupa ID 0 na kraj
         .thenComparingInt(dto -> samePodgrupaRank(dto, exactPodgrupa))
@@ -126,6 +129,21 @@ public class RobaSortService {
     }
 
     return 2;
+  }
+
+  private int providerPriorityRank(RobaLightDto dto) {
+    if (availabilityRank(dto) != 1
+        || dto == null
+        || dto.getProviderAvailability() == null
+        || !Boolean.TRUE.equals(dto.getProviderAvailability().getAvailable())) {
+      return 9;
+    }
+    String provider = dto.getProviderAvailability().getProvider();
+    if (!StringUtils.hasText(provider)) {
+      return 8;
+    }
+    String normalized = provider.trim().toLowerCase(Locale.ROOT);
+    return FEBI_PROVIDER_KEY.equals(normalized) ? 0 : 1;
   }
 
   /** Sortira robu TecDoc po podgrupi. */

@@ -22,6 +22,7 @@ public class FakturaDto {
     Double iznosPotvrdjen;
     Integer brojStavki;
     String partner;
+    Boolean providerCall;
     String idempotencyKey;
     List<FakturaDetaljiDto> detalji;
     List<ProviderOrderOptionDto> providerOptions;
