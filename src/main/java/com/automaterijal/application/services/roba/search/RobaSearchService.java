@@ -122,6 +122,10 @@ public class RobaSearchService {
     if (requestedSubGroups != null && !requestedSubGroups.isEmpty() && !items.isEmpty()) {
       items = items.stream().filter(r -> requestedSubGroups.contains(r.getPodGrupa())).toList();
     }
+    if (filterAvailable && !items.isEmpty()) {
+      // Ensure availability filtering sees price-adjusted local stock state.
+      robaEnrichmentService.applyPriceOnly(items, loggedPartner, false);
+    }
     List<RobaLightDto> itemsForCatalogKeys = items;
 
     List<RobaLightDto> localKeyItems =
@@ -567,6 +571,10 @@ public class RobaSearchService {
 
     List<RobaLightDto> items =
         magacinDto.getRobaDto() != null ? magacinDto.getRobaDto().getContent() : List.of();
+    if (filterAvailable && !items.isEmpty()) {
+      // When filtering by availability, pre-warm price-based stock before status filtering.
+      robaEnrichmentService.applyPriceOnly(items, loggedPartner, false);
+    }
     ProviderCounts counts = resolveProviderCounts(items);
     if (!skipProvider) {
       List<RobaLightDto> providerTargets = collectProviderTargets(items, List.of());
@@ -651,6 +659,10 @@ public class RobaSearchService {
     MagacinDto localAll = searchProductsBySearchTerm(allLocalParams, tecDoc);
     List<RobaLightDto> allLocalItems =
         localAll.getRobaDto() != null ? localAll.getRobaDto().getContent() : List.of();
+    if (filterAvailable && !allLocalItems.isEmpty()) {
+      // Keep naStanju correctness for full-scope local set before provider merge.
+      robaEnrichmentService.applyPriceOnly(allLocalItems, loggedPartner, false);
+    }
 
     long localFetchMs = System.currentTimeMillis() - externalStartedAt;
 

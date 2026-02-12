@@ -158,6 +158,8 @@ class RobaSearchServiceTest {
 
     MagacinDto out = service.searchProducts(parametri, partner, false);
 
+    verify(robaEnrichmentService).applyPriceOnly(anyList(), eq(partner), eq(false));
+
     assertThat(out.getRobaDto().getContent())
         .extracting(RobaLightDto::getPodGrupa)
         .containsExactlyInAnyOrder(10, 30)
@@ -171,6 +173,21 @@ class RobaSearchServiceTest {
     ArgumentCaptor<Set<Integer>> subGroupsCaptor = ArgumentCaptor.forClass(Set.class);
     verify(articleSubGroupService).buildCategoriesFromPodgrupaIds(subGroupsCaptor.capture());
     assertThat(subGroupsCaptor.getValue()).containsExactlyInAnyOrder(10, 30);
+  }
+
+  @Test
+  void searchProducts_naStanjuTrue_withoutSearchTerm_prewarmsPriceAvailability() {
+    UniverzalniParametri parametri = new UniverzalniParametri();
+    parametri.setPage(0);
+    parametri.setPageSize(10);
+    parametri.setNaStanju(true);
+
+    RobaLightDto local = roba("FEBI", 10, 2, ArticleAvailabilityStatus.IN_STOCK, "F-2");
+    when(robaAdapterService.searchFilteredProductsWithoutSearchTerm(any())).thenReturn(magacin(local));
+
+    service.searchProducts(parametri, partner, false);
+
+    verify(robaEnrichmentService).applyPriceOnly(anyList(), eq(partner), eq(false));
   }
 
   @Test

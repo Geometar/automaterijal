@@ -14,6 +14,8 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -25,6 +27,7 @@ import org.springframework.util.StringUtils;
 public class TecDocBrandService {
 
   @NonNull TecDocBrandsRepository tecDocBrandsRepository;
+  @NonNull CacheManager cacheManager;
 
   @Cacheable(cacheNames = "tecdocBrandByProid", key = "#proId")
   public Optional<TecDocBrands> findById(String proId) {
@@ -67,7 +70,20 @@ public class TecDocBrandService {
   }
 
   public TecDocBrands save(TecDocBrands brands) {
-    return tecDocBrandsRepository.saveAndFlush(brands);
+    Long previousBrandId = null;
+    if (brands != null && StringUtils.hasText(brands.getProid())) {
+      previousBrandId =
+          tecDocBrandsRepository.findById(brands.getProid()).map(TecDocBrands::getBrandId).orElse(null);
+    }
+
+    TecDocBrands saved = tecDocBrandsRepository.saveAndFlush(brands);
+    if (saved != null) {
+      evictBrandCaches(saved.getProid(), saved.getBrandId());
+      if (previousBrandId != null && !Objects.equals(previousBrandId, saved.getBrandId())) {
+        evictCacheKey("tecdocProidByBrandId", previousBrandId);
+      }
+    }
+    return saved;
   }
 
   public List<TecDocBrands> findAll() {
@@ -78,6 +94,24 @@ public class TecDocBrandService {
     if (proid == null || proid.isBlank()) {
       return;
     }
+    Optional<TecDocBrands> existing = tecDocBrandsRepository.findById(proid);
     tecDocBrandsRepository.deleteById(proid);
+    evictBrandCaches(proid, existing.map(TecDocBrands::getBrandId).orElse(null));
+  }
+
+  private void evictBrandCaches(String proid, Long brandId) {
+    evictCacheKey("tecdocBrandByProid", proid);
+    evictCacheKey("tecdocProidByBrandId", brandId);
+  }
+
+  private void evictCacheKey(String cacheName, Object key) {
+    if (key == null) {
+      return;
+    }
+    Cache cache = cacheManager.getCache(cacheName);
+    if (cache == null) {
+      return;
+    }
+    cache.evict(key);
   }
 }
