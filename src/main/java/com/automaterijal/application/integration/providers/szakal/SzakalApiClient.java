@@ -1,5 +1,6 @@
 package com.automaterijal.application.integration.providers.szakal;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.automaterijal.application.integration.shared.exception.ProviderAuthenticationException;
 import com.automaterijal.application.integration.shared.exception.ProviderRateLimitException;
@@ -86,9 +87,11 @@ public class SzakalApiClient {
       @JsonProperty("quantity") Integer quantity,
       @JsonProperty("order_note") String orderNote) {}
 
+  @JsonIgnoreProperties(ignoreUnknown = true)
   public record OrderResponse(
       @JsonProperty("orders") List<OrderItem> orders) {}
 
+  @JsonIgnoreProperties(ignoreUnknown = true)
   public record OrderItem(
       @JsonProperty("order_id") String orderId,
       @JsonProperty("quantity") Integer quantity,
@@ -98,6 +101,7 @@ public class SzakalApiClient {
       @JsonProperty("expected_delivery") String expectedDelivery,
       @JsonProperty("product") OrderProduct product) {}
 
+  @JsonIgnoreProperties(ignoreUnknown = true)
   public record OrderProduct(
       @JsonProperty("glid") String glid,
       @JsonProperty("code") String code,
@@ -118,9 +122,11 @@ public class SzakalApiClient {
       @JsonProperty("forbid_no_returnable") Boolean forbidNoReturnable,
       @JsonProperty("forbid_products_with_core_charge") Boolean forbidProductsWithCoreCharge) {}
 
+  @JsonIgnoreProperties(ignoreUnknown = true)
   public record StockInfoResponse(
       @JsonProperty("stocks") List<StockInfoItem> stocks) {}
 
+  @JsonIgnoreProperties(ignoreUnknown = true)
   public record StockInfoItem(
       @JsonProperty("stock_order_token") String stockOrderToken,
       @JsonProperty("quantity") Integer quantity,
