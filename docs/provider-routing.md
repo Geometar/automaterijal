@@ -285,3 +285,118 @@ Optional<RobaExpandedDto> dto =
 - Inventory flow merge: `src/main/java/com/automaterijal/application/services/roba/ExternalAvailabilityService.java`
 - Context model: `src/main/java/com/automaterijal/application/integration/shared/ProviderRoutingContext.java`
 - Provider API: `src/main/java/com/automaterijal/application/integration/shared/InventoryProvider.java`
+
+## 2026-02: Implemented story (FEBI combined quantity + checkout guard)
+
+This section documents what was implemented in BE + FE for the FEBI combined-warehouse story
+and the global checkout conflict handling.
+
+### Scope
+- FEBI-only combined quantity behavior (`provider == "febi-stock"`):
+  - local stock (Magacin Sabac) + external stock (Magacin Beograd/FEBI)
+  - special packaging/MOQ handling (`1 -> 20 -> 40`, etc.)
+- Checkout conflict blocking for all providers:
+  - if provider does not confirm requested quantity, checkout returns `409`
+  - cart is kept; user adjusts quantity/removes item and retries
+- Idempotent checkout submit via `request_key`.
+
+### FE behavior summary
+- Availability and quantity clamp for FEBI combined stock is centralized in:
+  - `automaterijal-webshop/src/app/shared/utils/availability-utils.ts`
+- Same logic reused in:
+  - row, product-card, details, cart-state
+- Cart and details can show split by warehouses when request crosses local stock:
+  - local part: `Šabac X kom`
+  - external part: `Magacin Beograd Y kom` (admin can see explicit FEBI label).
+
+### BE behavior summary
+- `FakturaService.submitujFakturu`:
+  - splits each line into STOCK and/or PROVIDER allocation
+  - saves web order snapshot (including provider fields)
+  - preflight provider call
+  - validates provider confirmation
+  - executes live provider call
+  - validates again before ERP stock export
+- Conflict payload:
+  - throws `CheckoutConflictException` with details object
+  - `GlobalControllerAdvice` exposes `details` in HTTP error body.
+- Idempotency:
+  - `FakturaDto.idempotencyKey` persisted as `web_order_headers.request_key`
+  - unique index on `(ppid, request_key)`
+  - long keys are normalized to SHA-256 hex (64 chars).
+
+### Quantity decision diagram (FEBI combined)
+```mermaid
+flowchart TD
+    A[User enters quantity Q] --> B{Provider is FEBI?}
+    B -- No --> C[Use regular stock/provider clamp]
+    B -- Yes --> D[Read local L and provider snapshot P]
+    D --> E{Q <= L?}
+    E -- Yes --> F[Take from Sabac only]
+    E -- No --> G{MOQ/packaging constrained?}
+    G -- No --> H[Mixed: local + external]
+    G -- Yes --> I{Q matches provider-only bucket?}
+    I -- Yes --> J[Provider-only bucket, e.g. 20/40]
+    I -- No --> K[Closest valid mixed/provider bucket]
+```
+
+### Checkout flow diagram (request -> provider -> ERP)
+```mermaid
+sequenceDiagram
+    participant FE as FE Cart
+    participant API as FakturaService
+    participant POS as ProviderOrderService
+    participant PR as Provider (FEBI/Szakal/...)
+    participant DB as web_order_headers/items
+    participant ERP as ERP faktura
+
+    FE->>API: submit invoice + idempotencyKey
+    API->>DB: save web order snapshot (split STOCK/PROVIDER)
+    API->>POS: preflightOrders(mock=true)
+    POS->>PR: provider preflight
+    PR-->>POS: per-line response (or status/message)
+    POS-->>API: update line markers
+    API->>API: validateProviderConfirmation
+
+    alt provider conflict
+      API-->>FE: 409 CHECKOUT_PROVIDER_UNAVAILABLE + details
+      Note over FE: Cart is kept, user adjusts and retries
+    else confirmed
+      API->>POS: clearProcessingMarkers
+      API->>POS: placeOrders(mock=false)
+      POS->>PR: live order
+      PR-->>POS: confirmation
+      API->>API: validateProviderConfirmation
+      API->>ERP: export STOCK lines
+      API-->>FE: success
+    end
+```
+
+### Data model / persistence diagram
+```mermaid
+flowchart LR
+    FEK[idempotencyKey] --> DTO[FakturaDto.idempotencyKey]
+    DTO --> HDR[web_order_headers.request_key]
+    HDR --> IDX[(unique index: ppid + request_key)]
+    HDR --> ITEM[web_order_items snapshot]
+    ITEM --> CONF[provider_backorder/provider_message/potvrdjena_kolicina]
+```
+
+### Manual smoke checklist
+- FEBI item with local=1, provider pack=20:
+  - quantity steps follow expected bucket progression
+  - add-to-cart twice does not lock at wrong max
+- Mixed case local+external:
+  - cart shows split quantities and delivery hint
+- Provider reject/partial confirm:
+  - checkout returns conflict
+  - cart is not cleared
+  - user can reduce/remove and retry in same cart
+- Non-FEBI provider:
+  - no FEBI combined quantity behavior is applied
+  - global conflict handling still works.
+
+### Known caveat (non-blocking)
+- Current `ProviderOrderService` has a fallback path for `SUCCESS` without line results.
+  If provider message semantics change, classification may need tightening in provider adapters
+  (preferred: explicit per-line or explicit call status contracts).

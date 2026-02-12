@@ -1,0 +1,228 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2026-01-21-1
+      author: codex
+      changes:
+        - createTable:
+            tableName: szakal_master_products
+            columns:
+              - column:
+                  name: glid
+                  type: VARCHAR(20)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: tecdoc_dlnr
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: tecdoc_artnr_norm
+                  type: VARCHAR(80)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: article_code_norm
+                  type: VARCHAR(80)
+              - column:
+                  name: size_norm
+                  type: VARCHAR(40)
+              - column:
+                  name: unit
+                  type: VARCHAR(20)
+              - column:
+                  name: brand_name
+                  type: VARCHAR(120)
+              - column:
+                  name: name_rs
+                  type: VARCHAR(255)
+              - column:
+                  name: name_en
+                  type: VARCHAR(255)
+              - column:
+                  name: weight_grams
+                  type: INT
+              - column:
+                  name: customtariff
+                  type: VARCHAR(40)
+              - column:
+                  name: deposit_glid
+                  type: VARCHAR(20)
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+        - createIndex:
+            tableName: szakal_master_products
+            indexName: idx_szakal_master_dlnr_artnr
+            columns:
+              - column:
+                  name: tecdoc_dlnr
+              - column:
+                  name: tecdoc_artnr_norm
+        - createIndex:
+            tableName: szakal_master_products
+            indexName: idx_szakal_master_article_code
+            columns:
+              - column:
+                  name: article_code_norm
+
+  - changeSet:
+      id: 2026-01-21-2
+      author: codex
+      changes:
+        - createTable:
+            tableName: szakal_pricelist_items
+            columns:
+              - column:
+                  name: list_no
+                  type: TINYINT(3)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: glid
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: stock
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: unit_price
+                  type: DECIMAL(15, 4)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: not_returnable
+                  type: TINYINT(1)
+              - column:
+                  name: quantum
+                  type: INT
+              - column:
+                  name: order_deadline
+                  type: VARCHAR(10)
+              - column:
+                  name: token
+                  type: VARCHAR(255)
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+        - addPrimaryKey:
+            tableName: szakal_pricelist_items
+            columnNames: list_no, glid
+            constraintName: pk_szakal_pricelist_items
+        - createIndex:
+            tableName: szakal_pricelist_items
+            indexName: idx_szakal_pricelist_glid
+            columns:
+              - column:
+                  name: glid
+
+  - changeSet:
+      id: 2026-01-21-3
+      author: codex
+      changes:
+        - addColumn:
+            tableName: web_order_items
+            columns:
+              - column:
+                  name: provider_product_id
+                  type: VARCHAR(30)
+              - column:
+                  name: provider_stock_token
+                  type: VARCHAR(255)
+              - column:
+                  name: provider_no_returnable
+                  type: TINYINT(1)
+  - changeSet:
+      id: 2026-01-21-4
+      author: codex
+      changes:
+        - addColumn:
+            tableName: szakal_master_products
+            columns:
+              - column:
+                  name: barcode
+                  type: VARCHAR(80)
+  - changeSet:
+      id: 2026-01-21-5
+      author: codex
+      changes:
+        - createTable:
+            tableName: szakal_oe_links
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: glid
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: oe_short
+                  type: VARCHAR(160)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: oe
+                  type: VARCHAR(255)
+              - column:
+                  name: maker
+                  type: VARCHAR(120)
+                  defaultValue: ""
+                  constraints:
+                    nullable: false
+              - column:
+                  name: tecdoc_name
+                  type: VARCHAR(120)
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+        - addUniqueConstraint:
+            tableName: szakal_oe_links
+            columnNames: glid, oe_short, maker
+            constraintName: uq_szakal_oe_glid_short_maker
+        - createIndex:
+            tableName: szakal_oe_links
+            indexName: idx_szakal_oe_short
+            columns:
+              - column:
+                  name: oe_short
+        - createIndex:
+            tableName: szakal_oe_links
+            indexName: idx_szakal_oe_glid
+            columns:
+              - column:
+                  name: glid
+  - changeSet:
+      id: 2026-01-21-6
+      author: codex
+      changes:
+        - modifyDataType:
+            tableName: szakal_oe_links
+            columnName: oe_short
+            newDataType: VARCHAR(160)
+  - changeSet:
+      id: 2026-01-21-7
+      author: codex
+      changes:
+        - modifyDataType:
+            tableName: szakal_oe_links
+            columnName: oe
+            newDataType: VARCHAR(255)

@@ -101,6 +101,11 @@ integration:
         priority: 100
         purposes: [INVENTORY_ENRICHMENT, EXTERNAL_OFFER]
         brands: [FEBI, BLUE]
+      - provider: szakal
+        enabled: true
+        priority: 50
+        purposes: [INVENTORY_ENRICHMENT, EXTERNAL_OFFER]
+        maxLocalAvailableCount: 20
   febi:
     order:
       mode: DISABLED
@@ -112,6 +117,47 @@ integration:
       delivery-party: ${FEBI_ORDER_DELIVERY_PARTY:0001001983}
       pickup-delivery-party: ${FEBI_ORDER_PICKUP_DELIVERY_PARTY:0001003023}
       shipping-condition: ${FEBI_ORDER_SHIPPING_CONDITION:S9}
+  szakal:
+    enabled: ${SZAKAL_ENABLED:false}
+    order:
+      mode: ${SZAKAL_ORDER_MODE:DISABLED}
+    data-dir: ${SZAKAL_DATA_DIR:./data/szakal}
+    currency: RSD
+    lead-time-list0: 1
+    lead-time-list1: 2
+    lead-time-list2: 3
+    lead-time-list3: 5
+    warehouse-name: SZAKAL
+    sftp:
+      host: store.szakalmetal.hu
+      port: 1221
+      username: 22EJrs
+      password: Chou7aech9je
+      remote-dir: down
+      connect-timeout-ms: 10000
+      read-timeout-ms: 60000
+    sync:
+      enabled: false
+      run-on-start: false
+      run-weekly-on-start: false
+      cron-pricelists: "0 0 3 * * *"
+      cron-weekly: "0 0 3 * * SUN"
+      max-retries: 3
+      retry-backoff-ms: 2000
+    search:
+      oe-expansion-enabled: true
+      oe-expansion-min-available: 5
+      oe-expansion-max-oe: 10
+      oe-expansion-max-results: 50
+      oe-fallback-min-available: 2
+    api:
+      base-url: ${SZAKAL_API_BASE_URL:https://webservice.szakalmetal.hu}
+      username: automaterijal
+      password: automaterijal
+      connect-timeout-ms: 10000
+      read-timeout-ms: 10000
+      cache-ttl-ms: 120000
+      stock-check-max-concurrency: 3
 
 pricing:
   margin:

@@ -129,6 +129,9 @@ public class ExternalProviderDetailsService {
               .deliveryToCustomerBusinessDaysMin(availability.getDeliveryToCustomerBusinessDaysMin())
               .deliveryToCustomerBusinessDaysMax(availability.getDeliveryToCustomerBusinessDaysMax())
               .nextDispatchCutoff(availability.getNextDispatchCutoff())
+              .providerProductId(availability.getProviderProductId())
+              .providerStockToken(availability.getProviderStockToken())
+              .providerNoReturnable(availability.getProviderNoReturnable())
               .build();
       dto.setProviderAvailability(priced);
       if (dto.getCena() == null) {

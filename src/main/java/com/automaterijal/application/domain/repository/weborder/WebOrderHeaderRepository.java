@@ -39,4 +39,6 @@ public interface WebOrderHeaderRepository extends JpaRepository<WebOrderHeader, 
   Optional<WebOrderHeader> findByPpidAndId(Integer ppid, Integer id);
 
   Optional<WebOrderHeader> findFirstByPpidOrderByOrderIdDesc(Integer ppid);
+
+  Optional<WebOrderHeader> findByPpidAndRequestKey(Integer ppid, String requestKey);
 }
