@@ -14,6 +14,7 @@ import com.automaterijal.application.integration.shared.ProviderOrderRequest;
 import com.automaterijal.application.integration.shared.ProviderOrderResult;
 import com.automaterijal.application.utils.PartnerPrivilegeUtils;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.Test;
 
 class ProviderOrderServiceTest {
@@ -170,6 +171,89 @@ class ProviderOrderServiceTest {
     assertThat(item.getProviderMessage()).isEqualTo("Porudzbina je potvrdjena iz eksternog magacina.");
   }
 
+  @Test
+  void successWithoutLineResultsAndNoEligibleMessageMarksProviderItemsAsUnavailable() {
+    ProviderOrderResult result =
+        ProviderOrderResult.builder()
+            .status(ProviderCallStatus.SUCCESS)
+            .message("No eligible order positions for provider")
+            .lineResults(List.of())
+            .build();
+
+    ProviderOrderService service =
+        new ProviderOrderService(new ProviderOrderRegistry(List.of(new FixedProvider("febi-stock", result))));
+
+    WebOrderItem item = buildProviderItem(16, "febi-stock");
+    item.setProviderAvailable(true);
+    item.setProviderTotalQuantity(8);
+    item.setProviderWarehouseQuantity(8);
+    WebOrderHeader header = new WebOrderHeader();
+    header.setItems(List.of(item));
+
+    service.placeOrders(header, buildPartner(false));
+
+    assertThat(item.getPotvrdjenaKolicina()).isEqualTo(0.0);
+    assertThat(item.getProviderBackorder()).isTrue();
+    assertThat(item.getProviderAvailable()).isFalse();
+    assertThat(item.getProviderTotalQuantity()).isZero();
+    assertThat(item.getProviderWarehouseQuantity()).isZero();
+    assertThat(item.getProviderMessage()).isEqualTo("Eksterni magacin nije potvrdio trazene stavke.");
+  }
+
+  @Test
+  void successWithoutLineResultsMarksRequestedAsConfirmed() {
+    ProviderOrderResult result =
+        ProviderOrderResult.builder()
+            .status(ProviderCallStatus.SUCCESS)
+            .message("Order accepted")
+            .lineResults(List.of())
+            .build();
+
+    ProviderOrderService service =
+        new ProviderOrderService(new ProviderOrderRegistry(List.of(new FixedProvider("szakal", result))));
+
+    WebOrderItem item = buildProviderItem(17, "szakal");
+    item.setKolicina(2.0);
+    WebOrderHeader header = new WebOrderHeader();
+    header.setItems(List.of(item));
+
+    service.placeOrders(header, buildPartner(false));
+
+    assertThat(item.getPotvrdjenaKolicina()).isEqualTo(2.0);
+    assertThat(item.getProviderBackorder()).isFalse();
+    assertThat(item.getProviderMessage()).isEqualTo("Porudzbina je potvrdjena iz eksternog magacina.");
+  }
+
+  @Test
+  void secondSubmitSkipsAlreadyProcessedProviderItems() {
+    ProviderOrderResult result =
+        ProviderOrderResult.builder()
+            .status(ProviderCallStatus.SUCCESS)
+            .lineResults(
+                List.of(
+                    ProviderOrderLineResult.builder()
+                        .webOrderItemId(18)
+                        .confirmedQuantity(1)
+                        .backorder(false)
+                        .message("ok")
+                        .build()))
+            .build();
+
+    CountingProvider provider = new CountingProvider("febi-stock", result);
+    ProviderOrderService service =
+        new ProviderOrderService(new ProviderOrderRegistry(List.of(provider)));
+
+    WebOrderItem item = buildProviderItem(18, "febi-stock");
+    WebOrderHeader header = new WebOrderHeader();
+    header.setItems(List.of(item));
+
+    service.placeOrders(header, buildPartner(false));
+    service.placeOrders(header, buildPartner(false));
+
+    assertThat(provider.callCount()).isEqualTo(1);
+    assertThat(item.getPotvrdjenaKolicina()).isEqualTo(1.0);
+  }
+
   private static WebOrderItem buildProviderItem(int id, String providerKey) {
     WebOrderItem item = new WebOrderItem();
     item.setId(id);
@@ -203,6 +287,33 @@ class ProviderOrderServiceTest {
 
     @Override
     public ProviderOrderResult placeOrder(ProviderOrderRequest request) {
+      return result;
+    }
+  }
+
+  private static final class CountingProvider implements ProviderOrderProvider {
+
+    private final String name;
+    private final ProviderOrderResult result;
+    private final AtomicInteger calls = new AtomicInteger();
+
+    private CountingProvider(String name, ProviderOrderResult result) {
+      this.name = name;
+      this.result = result;
+    }
+
+    int callCount() {
+      return calls.get();
+    }
+
+    @Override
+    public String providerName() {
+      return name;
+    }
+
+    @Override
+    public ProviderOrderResult placeOrder(ProviderOrderRequest request) {
+      calls.incrementAndGet();
       return result;
     }
   }
