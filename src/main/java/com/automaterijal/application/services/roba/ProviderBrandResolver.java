@@ -5,6 +5,7 @@ import com.automaterijal.application.integration.shared.InventoryQuery;
 import com.automaterijal.application.integration.shared.ProviderRoutingContext;
 import com.automaterijal.application.services.tecdoc.TecDocBrandService;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.NonNull;
@@ -31,9 +32,17 @@ public class ProviderBrandResolver {
 
   public Optional<String> resolveInventoryBrand(
       Long tecDocBrandId, String tecDocBrandName, ProviderRoutingContext context) {
+    return resolveInventoryBrand(tecDocBrandId, tecDocBrandName, context, null);
+  }
+
+  public Optional<String> resolveInventoryBrand(
+      Long tecDocBrandId,
+      String tecDocBrandName,
+      ProviderRoutingContext context,
+      Map<Long, String> preResolvedProidsByBrandId) {
     String byDb =
         tecDocBrandId != null
-            ? tecDocBrandService.findProidByBrandId(tecDocBrandId).orElse(null)
+            ? resolveByBrandId(tecDocBrandId, preResolvedProidsByBrandId)
             : null;
     if (StringUtils.hasText(byDb)) {
       String normalized = normalizeBrand(byDb);
@@ -46,6 +55,17 @@ public class ProviderBrandResolver {
         .resolveBrandKey(tecDocBrandId, tecDocBrandName, context)
         .map(this::normalizeBrand)
         .filter(brand -> hasInventoryProvider(brand, context));
+  }
+
+  private String resolveByBrandId(Long tecDocBrandId, Map<Long, String> preResolvedProidsByBrandId) {
+    if (tecDocBrandId == null) {
+      return null;
+    }
+    if (preResolvedProidsByBrandId != null) {
+      // Batch path: avoid per-record DB fallback for missing mappings.
+      return preResolvedProidsByBrandId.get(tecDocBrandId);
+    }
+    return tecDocBrandService.findProidByBrandId(tecDocBrandId).orElse(null);
   }
 
   private boolean hasInventoryProvider(String brand, ProviderRoutingContext context) {

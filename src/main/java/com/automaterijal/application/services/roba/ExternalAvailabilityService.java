@@ -55,6 +55,7 @@ public class ExternalAvailabilityService {
     if (items == null || items.isEmpty()) {
       return;
     }
+    Partner pricingPartner = priceService.resolvePricingPartner(partner);
 
     Map<String, List<RobaLightDto>> byBrand = new HashMap<>();
     List<RobaLightDto> unresolved = new ArrayList<>();
@@ -75,11 +76,18 @@ public class ExternalAvailabilityService {
 
     for (Map.Entry<String, List<RobaLightDto>> entry : byBrand.entrySet()) {
       populateForBrand(
-          entry.getKey(), entry.getValue(), partner, purpose, localMatchCount, localAvailableCount);
+          entry.getKey(),
+          entry.getValue(),
+          partner,
+          pricingPartner,
+          purpose,
+          localMatchCount,
+          localAvailableCount);
     }
 
     if (!unresolved.isEmpty()) {
-      populateForBrand(null, unresolved, partner, purpose, localMatchCount, localAvailableCount);
+      populateForBrand(
+          null, unresolved, partner, pricingPartner, purpose, localMatchCount, localAvailableCount);
     }
   }
 
@@ -124,7 +132,8 @@ public class ExternalAvailabilityService {
   private void populateForBrand(
       String brand,
       List<RobaLightDto> dtos,
-      Partner partner,
+      Partner requestPartner,
+      Partner pricingPartner,
       ProviderRoutingPurpose purpose,
       Integer localMatchCount,
       Integer localAvailableCount) {
@@ -133,7 +142,7 @@ public class ExternalAvailabilityService {
     }
 
     ProviderRoutingContext context =
-        buildContext(partner, dtos, purpose, localMatchCount, localAvailableCount);
+        buildContext(requestPartner, dtos, purpose, localMatchCount, localAvailableCount);
     InventoryQuery selectionQuery = InventoryQuery.builder().brand(brand).build();
     List<InventoryProvider> providers = providerRegistry.findInventoryProviders(selectionQuery, context);
     if (providers.isEmpty()) {
@@ -179,11 +188,13 @@ public class ExternalAvailabilityService {
       }
 
       if (best != null) {
-        dto.setProviderAvailability(applyPartnerPricing(best, dto, partner));
+        dto.setProviderAvailability(applyPartnerPricing(best, dto, requestPartner, pricingPartner));
         if (dto.getRabat() == null) {
           String brandKey =
               dto.getProizvodjac() != null ? dto.getProizvodjac().getProid() : null;
-          dto.setRabat(priceService.vratiRabatPartneraNaArtikal(brandKey, dto.getGrupa(), partner));
+          dto.setRabat(
+              priceService.vratiRabatPartneraNaArtikal(
+                  brandKey, dto.getGrupa(), pricingPartner));
         }
         if (dto.getRobaid() == null && dto.getCena() == null && dto.getProviderAvailability() != null) {
           dto.setCena(dto.getProviderAvailability().getPrice());
@@ -294,18 +305,21 @@ public class ExternalAvailabilityService {
   }
 
   private ProviderAvailabilityDto applyPartnerPricing(
-      ProviderAvailabilityDto availability, RobaLightDto dto, Partner partner) {
+      ProviderAvailabilityDto availability,
+      RobaLightDto dto,
+      Partner requestPartner,
+      Partner pricingPartner) {
     if (availability == null) {
       return null;
     }
 
-    boolean exposePurchasePrice = PartnerPrivilegeUtils.isInternal(partner);
+    boolean exposePurchasePrice = PartnerPrivilegeUtils.isInternal(requestPartner);
     Integer packagingUnit = availability.getPackagingUnit();
     String brand =
         dto != null && dto.getProizvodjac() != null ? dto.getProizvodjac().getProid() : null;
     String group = dto != null ? dto.getGrupa() : null;
     BigDecimal finalCustomerPrice =
-        providerPricingService.calculateCustomerPrice(availability, group, brand, partner);
+        providerPricingService.calculateCustomerPrice(availability, group, brand, pricingPartner);
 
     return ProviderAvailabilityDto.builder()
         .brand(availability.getBrand())

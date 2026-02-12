@@ -13,6 +13,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -183,6 +184,7 @@ public class ArticleSubGroupService {
     return podGrupaRepository.findByPodGrupaIdIn(podgrupaKeys);
   }
 
+  @Cacheable(cacheNames = "articleSubGroupsAll")
   public List<PodGrupa> findAll() {
     return podGrupaRepository.findAll();
   }

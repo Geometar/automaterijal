@@ -190,6 +190,13 @@ public class RobaCeneService {
     return robaCeneRepository.findByMagacinidAndRobaidIn(GLAVNIMAGACIN, robaIds);
   }
 
+  /**
+   * Resolves partner once for pricing calculations (logged-in partner or default partner fallback).
+   */
+  public Partner resolvePricingPartner(Partner partner) {
+    return getDefaultPartnerIfNotExist(partner);
+  }
+
   private Partner getDefaultPartnerIfNotExist(Partner partner) {
     if (partner != null) {
       return partner;

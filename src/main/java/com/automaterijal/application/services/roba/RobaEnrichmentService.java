@@ -53,6 +53,7 @@ public class RobaEnrichmentService {
     if (items == null || items.isEmpty()) {
       return;
     }
+    Partner pricingPartner = priceService.resolvePricingPartner(partner);
 
     List<RobaLightDto> valid =
         items.stream()
@@ -90,7 +91,7 @@ public class RobaEnrichmentService {
         tecDocAttributeService.addManualTechnicalDetails(dto, attributes);
         applyDocumentAttributes(attributes, dto);
 
-        setupPrice(dto, pricesByRobaId, partner);
+        setupPrice(dto, pricesByRobaId, pricingPartner);
         dto.setGrupaNaziv(groupNames.get(dto.getGrupa()));
         dto.setSlika(resolveImage(dto.getRobaid(), dto.getSlika()));
       }
@@ -112,6 +113,7 @@ public class RobaEnrichmentService {
     if (items == null || items.isEmpty()) {
       return;
     }
+    Partner pricingPartner = priceService.resolvePricingPartner(partner);
 
     List<Long> ids =
         items.stream()
@@ -123,7 +125,7 @@ public class RobaEnrichmentService {
         mapPricesByRobaId(priceService.pronadjiCeneZaRobuBatch(ids));
 
     for (RobaLightDto dto : items) {
-      setupPrice(dto, pricesByRobaId, partner);
+      setupPrice(dto, pricesByRobaId, pricingPartner);
     }
 
     if (includeProviderAvailability) {
@@ -215,7 +217,8 @@ public class RobaEnrichmentService {
         .collect(Collectors.toCollection(ArrayList::new));
   }
 
-  private void setupPrice(RobaLightDto dto, Map<Long, RobaCene> pricesByRobaId, Partner partner) {
+  private void setupPrice(
+      RobaLightDto dto, Map<Long, RobaCene> pricesByRobaId, Partner pricingPartner) {
     if (dto == null || dto.getRobaid() == null) {
       return;
     }
@@ -224,10 +227,10 @@ public class RobaEnrichmentService {
 
     dto.setCena(
         priceService.vratiCenuRobeBatch(
-            price, dto.getGrupa(), dto.getProizvodjac().getProid(), partner));
+            price, dto.getGrupa(), dto.getProizvodjac().getProid(), pricingPartner));
     dto.setRabat(
         priceService.vratiRabatPartneraNaArtikal(
-            dto.getProizvodjac().getProid(), dto.getGrupa(), partner));
+            dto.getProizvodjac().getProid(), dto.getGrupa(), pricingPartner));
     markOutOfStockIfPriceMissing(dto);
   }
 

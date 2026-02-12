@@ -37,11 +37,14 @@ import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.thymeleaf.util.SetUtils;
 
+
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -73,6 +76,8 @@ public class RobaSearchService {
 
     UniverzalniParametri normalized =
         parametri != null ? parametri.normalizedCopy() : new UniverzalniParametri();
+
+    long associatedStartedAt = System.currentTimeMillis();
 
     // Sačuvaj originalni paging/filter vrednosti
     Integer originalPage = normalized.getPage() != null ? normalized.getPage() : 0;
@@ -118,10 +123,6 @@ public class RobaSearchService {
       items = items.stream().filter(r -> requestedSubGroups.contains(r.getPodGrupa())).toList();
     }
     List<RobaLightDto> itemsForCatalogKeys = items;
-
-    if (!items.isEmpty()) {
-      robaEnrichmentService.applyPriceOnly(items, loggedPartner, false);
-    }
 
     List<RobaLightDto> localKeyItems =
         itemsForCatalogKeys.stream()
@@ -217,6 +218,17 @@ public class RobaSearchService {
       magacinDto.setCategories(articleSubGroupService.buildCategoriesFromPodgrupaIds(union));
       magacinDto.setProizvodjaci(buildManufacturersFromItems(combined));
     }
+    log.info(
+        "Roba search perf: flow=associated, page={}, pageSize={}, filterAvailable={}, requestedSubgroups={}, localItems={}, externalItems={}, oeFallbackItems={}, resultItems={}, tookMs={}",
+        originalPage,
+        originalPageSize,
+        filterAvailable,
+        requestedSubGroups != null ? requestedSubGroups.size() : 0,
+        items != null ? items.size() : 0,
+        externals != null ? externals.size() : 0,
+        oeFallback != null ? oeFallback.size() : 0,
+        magacinDto.getRobaDto() != null ? magacinDto.getRobaDto().getNumberOfElements() : 0,
+        System.currentTimeMillis() - associatedStartedAt);
 
     return magacinDto;
   }
@@ -532,6 +544,8 @@ public class RobaSearchService {
     boolean hasSearchTerm = StringUtils.hasText(normalized.getTrazenaRec());
     boolean includeExternalOffers = hasSearchTerm && !skipProvider;
 
+    long regularStartedAt = System.currentTimeMillis();
+
     if (includeExternalOffers) {
       return searchProductsBySearchTermWithExternalOffers(
           normalized, loggedPartner, originalPage, originalPageSize, filterAvailable);
@@ -553,11 +567,6 @@ public class RobaSearchService {
 
     List<RobaLightDto> items =
         magacinDto.getRobaDto() != null ? magacinDto.getRobaDto().getContent() : List.of();
-
-    if (!items.isEmpty()) {
-      robaEnrichmentService.applyPriceOnly(items, loggedPartner, false);
-    }
-
     ProviderCounts counts = resolveProviderCounts(items);
     if (!skipProvider) {
       List<RobaLightDto> providerTargets = collectProviderTargets(items, List.of());
@@ -602,6 +611,17 @@ public class RobaSearchService {
           magacinDto.getRobaDto().getContent(), loggedPartner, false);
     }
 
+    log.info(
+        "Roba search perf: flow=regular, hasSearchTerm={}, filterAvailable={}, skipProvider={}, page={}, pageSize={}, localItems={}, resultItems={}, tookMs={}",
+        hasSearchTerm,
+        filterAvailable,
+        skipProvider,
+        originalPage,
+        originalPageSize,
+        items != null ? items.size() : 0,
+        magacinDto.getRobaDto() != null ? magacinDto.getRobaDto().getNumberOfElements() : 0,
+        System.currentTimeMillis() - regularStartedAt);
+
     return magacinDto;
   }
 
@@ -621,6 +641,8 @@ public class RobaSearchService {
     allLocalParams.setPaged(false);
     boolean hasSearchTerm = StringUtils.hasText(normalized.getTrazenaRec());
 
+    long externalStartedAt = System.currentTimeMillis();
+
     List<ArticleDirectSearchAllNumbersWithStateRecord> tecDoc =
         tecDocService.tecDocPretragaPoTrazenojReci(
             normalized.getTrazenaRec(), null, TECDOC_NUMBER_TYPE_ALL);
@@ -630,14 +652,14 @@ public class RobaSearchService {
     List<RobaLightDto> allLocalItems =
         localAll.getRobaDto() != null ? localAll.getRobaDto().getContent() : List.of();
 
-    if (!allLocalItems.isEmpty()) {
-      robaEnrichmentService.applyPriceOnly(allLocalItems, loggedPartner, false);
-    }
+    long localFetchMs = System.currentTimeMillis() - externalStartedAt;
 
     tecDocGenericArticleMappingService.observeFromDirectSearch(tecDoc, allLocalItems);
 
     MagacinDto localForKeys = new MagacinDto();
     localForKeys.setRobaDto(GeneralUtil.createPageable(allLocalItems, Integer.MAX_VALUE, 0));
+
+    long providerStageStartedAt = System.currentTimeMillis();
 
     ExternalOfferPayload externalPayload =
         externalOfferService.prepareFromTecDocSearch(
@@ -656,6 +678,9 @@ public class RobaSearchService {
       robaEnrichmentService.refreshAvailabilityStatus(allLocalItems);
     }
 
+    long providerStageMs = System.currentTimeMillis() - providerStageStartedAt;
+
+    long mergeStageStartedAt = System.currentTimeMillis();
     List<RobaLightDto> visibleLocalItems = allLocalItems;
     if (filterAvailable) {
       visibleLocalItems =
@@ -702,14 +727,36 @@ public class RobaSearchService {
     MagacinDto out = new MagacinDto();
     out.setRobaDto(GeneralUtil.createPageable(combined, originalPageSize, originalPage));
 
+    long mergeStageMs = System.currentTimeMillis() - mergeStageStartedAt;
+    long finalPageEnrichMs = 0L;
+
     if (out.getRobaDto() != null && !out.getRobaDto().isEmpty()) {
+      long finalPageEnrichStartedAt = System.currentTimeMillis();
       robaEnrichmentService.enrichLightDtos(out.getRobaDto().getContent(), loggedPartner, false);
+      finalPageEnrichMs = System.currentTimeMillis() - finalPageEnrichStartedAt;
     }
 
     Set<Integer> union = new HashSet<>();
     combined.stream().filter(Objects::nonNull).map(RobaLightDto::getPodGrupa).forEach(union::add);
     out.setCategories(articleSubGroupService.buildCategoriesFromPodgrupaIds(union));
     out.setProizvodjaci(buildManufacturersFromItems(combined));
+
+    log.info(
+        "Roba search perf: flow=external-search, hasSearchTerm={}, filterAvailable={}, page={}, pageSize={}, localItems={}, visibleLocalItems={}, externalItems={}, oeFallbackItems={}, resultItems={}, localFetchMs={}, providerStageMs={}, mergeStageMs={}, finalPageEnrichMs={}, tookMs={}",
+        hasSearchTerm,
+        filterAvailable,
+        originalPage,
+        originalPageSize,
+        allLocalItems.size(),
+        visibleLocalItems.size(),
+        externals.size(),
+        oeFallback.size(),
+        out.getRobaDto() != null ? out.getRobaDto().getNumberOfElements() : 0,
+        localFetchMs,
+        providerStageMs,
+        mergeStageMs,
+        finalPageEnrichMs,
+        System.currentTimeMillis() - externalStartedAt);
 
     return out;
   }

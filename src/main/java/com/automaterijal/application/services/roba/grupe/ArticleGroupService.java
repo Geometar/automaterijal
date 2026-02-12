@@ -15,6 +15,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +32,7 @@ public class ArticleGroupService {
   public static final List<String> FORBIDDEN_CATEGORIES =
       Arrays.asList("PN", "TG", "6000", "LUCO", "ANULL");
 
+  @Cacheable(cacheNames = "articleGroupsTree")
   public List<ArticleGroupsDto> fetchAllGroupsWithSubgroups() {
     List<Grupa> allGroups = grupaRepository.findAllByOrderByNaziv();
     List<PodGrupa> allSubGroups = podGrupaRepository.findAll();
@@ -63,10 +65,12 @@ public class ArticleGroupService {
     return grupaRepository.findById(groupId).map(Grupa::getNaziv).orElse("");
   }
 
+  @Cacheable(cacheNames = "articleGroupsAll")
   public List<Grupa> findAll() {
     return grupaRepository.findAll();
   }
 
+  @Cacheable(cacheNames = "articleGroupNamesById")
   public Map<String, String> groupNamesById() {
     return grupaRepository.findAll().stream()
         .filter(Objects::nonNull)
