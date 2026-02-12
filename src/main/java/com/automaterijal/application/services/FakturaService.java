@@ -329,6 +329,7 @@ public class FakturaService {
       item.setProviderProductId(a.getProviderProductId());
       item.setProviderStockToken(a.getProviderStockToken());
       item.setProviderNoReturnable(a.getProviderNoReturnable());
+      item.setProviderCoreCharge(a.getCoreCharge());
     }
     applyProviderDeliveryParty(item, providerDeliveryParties);
 
@@ -872,6 +873,7 @@ public class FakturaService {
                 .providerProductId(item.getProviderProductId())
                 .providerStockToken(item.getProviderStockToken())
                 .providerNoReturnable(item.getProviderNoReturnable())
+                .coreCharge(item.getProviderCoreCharge())
                 .build());
         placeholder.setAvailabilityStatus(
             Boolean.TRUE.equals(item.getProviderAvailable())
@@ -1260,6 +1262,7 @@ public class FakturaService {
                             .providerProductId(item.getProviderProductId())
                             .providerStockToken(item.getProviderStockToken())
                             .providerNoReturnable(item.getProviderNoReturnable())
+                .coreCharge(item.getProviderCoreCharge())
                             .build());
                     d.setAvailabilityStatus(
                         Boolean.TRUE.equals(item.getProviderAvailable())

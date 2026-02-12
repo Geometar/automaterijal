@@ -143,6 +143,9 @@ public class WebOrderItem {
   @Column(name = "provider_no_returnable")
   Boolean providerNoReturnable;
 
+  @Column(name = "provider_core_charge")
+  BigDecimal providerCoreCharge;
+
   @Column(name = "provider_backorder")
   Boolean providerBackorder;
 
