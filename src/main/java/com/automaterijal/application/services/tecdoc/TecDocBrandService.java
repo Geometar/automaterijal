@@ -2,14 +2,23 @@ package com.automaterijal.application.services.tecdoc;
 
 import com.automaterijal.application.domain.entity.tecdoc.TecDocBrands;
 import com.automaterijal.application.domain.repository.tecdoc.TecDocBrandsRepository;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -18,11 +27,17 @@ import org.springframework.stereotype.Service;
 public class TecDocBrandService {
 
   @NonNull TecDocBrandsRepository tecDocBrandsRepository;
+  @NonNull CacheManager cacheManager;
 
+  @Cacheable(cacheNames = "tecdocBrandByProid", key = "#proId")
   public Optional<TecDocBrands> findById(String proId) {
+    if (!StringUtils.hasText(proId)) {
+      return Optional.empty();
+    }
     return tecDocBrandsRepository.findById(proId);
   }
 
+  @Cacheable(cacheNames = "tecdocProidByBrandId", key = "#brandId")
   public Optional<String> findProidByBrandId(Long brandId) {
     if (brandId == null) {
       return Optional.empty();
@@ -30,8 +45,45 @@ public class TecDocBrandService {
     return tecDocBrandsRepository.findFirstByBrandId(brandId).map(TecDocBrands::getProid);
   }
 
+  public Map<Long, String> findProidsByBrandIds(Collection<Long> brandIds) {
+    if (brandIds == null || brandIds.isEmpty()) {
+      return Map.of();
+    }
+    List<Long> normalized =
+        brandIds.stream().filter(Objects::nonNull).distinct().toList();
+    if (normalized.isEmpty()) {
+      return Map.of();
+    }
+
+    Map<Long, String> mapped = new LinkedHashMap<>();
+    List<TecDocBrands> brands = tecDocBrandsRepository.findByBrandIdIn(normalized);
+    if (brands == null || brands.isEmpty()) {
+      return Collections.emptyMap();
+    }
+    for (TecDocBrands brand : brands) {
+      if (brand == null || brand.getBrandId() == null || !StringUtils.hasText(brand.getProid())) {
+        continue;
+      }
+      mapped.putIfAbsent(brand.getBrandId(), brand.getProid());
+    }
+    return mapped;
+  }
+
   public TecDocBrands save(TecDocBrands brands) {
-    return tecDocBrandsRepository.saveAndFlush(brands);
+    Long previousBrandId = null;
+    if (brands != null && StringUtils.hasText(brands.getProid())) {
+      previousBrandId =
+          tecDocBrandsRepository.findById(brands.getProid()).map(TecDocBrands::getBrandId).orElse(null);
+    }
+
+    TecDocBrands saved = tecDocBrandsRepository.saveAndFlush(brands);
+    if (saved != null) {
+      evictBrandCaches(saved.getProid(), saved.getBrandId());
+      if (previousBrandId != null && !Objects.equals(previousBrandId, saved.getBrandId())) {
+        evictCacheKey("tecdocProidByBrandId", previousBrandId);
+      }
+    }
+    return saved;
   }
 
   public List<TecDocBrands> findAll() {
@@ -42,6 +94,24 @@ public class TecDocBrandService {
     if (proid == null || proid.isBlank()) {
       return;
     }
+    Optional<TecDocBrands> existing = tecDocBrandsRepository.findById(proid);
     tecDocBrandsRepository.deleteById(proid);
+    evictBrandCaches(proid, existing.map(TecDocBrands::getBrandId).orElse(null));
+  }
+
+  private void evictBrandCaches(String proid, Long brandId) {
+    evictCacheKey("tecdocBrandByProid", proid);
+    evictCacheKey("tecdocProidByBrandId", brandId);
+  }
+
+  private void evictCacheKey(String cacheName, Object key) {
+    if (key == null) {
+      return;
+    }
+    Cache cache = cacheManager.getCache(cacheName);
+    if (cache == null) {
+      return;
+    }
+    cache.evict(key);
   }
 }

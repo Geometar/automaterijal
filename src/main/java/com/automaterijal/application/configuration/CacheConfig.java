@@ -71,6 +71,54 @@ public class CacheConfig {
 
     registerCache(
         jCache,
+        "articleGroupsTree",
+        CacheConfigurationBuilder.newCacheConfigurationBuilder(
+                Object.class, Object.class, ResourcePoolsBuilder.heap(20))
+            .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(Duration.ofMinutes(30)))
+            .build());
+
+    registerCache(
+        jCache,
+        "articleGroupsAll",
+        CacheConfigurationBuilder.newCacheConfigurationBuilder(
+                Object.class, Object.class, ResourcePoolsBuilder.heap(20))
+            .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(Duration.ofMinutes(30)))
+            .build());
+
+    registerCache(
+        jCache,
+        "articleGroupNamesById",
+        CacheConfigurationBuilder.newCacheConfigurationBuilder(
+                Object.class, Object.class, ResourcePoolsBuilder.heap(20))
+            .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(Duration.ofMinutes(30)))
+            .build());
+
+    registerCache(
+        jCache,
+        "articleSubGroupsAll",
+        CacheConfigurationBuilder.newCacheConfigurationBuilder(
+                Object.class, Object.class, ResourcePoolsBuilder.heap(20))
+            .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(Duration.ofMinutes(30)))
+            .build());
+
+    registerCache(
+        jCache,
+        "tecdocBrandByProid",
+        CacheConfigurationBuilder.newCacheConfigurationBuilder(
+                Object.class, Object.class, ResourcePoolsBuilder.heap(5_000))
+            .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(Duration.ofHours(6)))
+            .build());
+
+    registerCache(
+        jCache,
+        "tecdocProidByBrandId",
+        CacheConfigurationBuilder.newCacheConfigurationBuilder(
+                Object.class, Object.class, ResourcePoolsBuilder.heap(5_000))
+            .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(Duration.ofHours(6)))
+            .build());
+
+    registerCache(
+        jCache,
         "imageCache",
         CacheConfigurationBuilder.newCacheConfigurationBuilder(
                 Object.class, Object.class, ResourcePoolsBuilder.heap(1_000))

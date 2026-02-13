@@ -226,3 +226,13 @@ databaseChangeLog:
             tableName: szakal_oe_links
             columnName: oe
             newDataType: VARCHAR(255)
+  - changeSet:
+      id: 2026-02-12-1
+      author: codex
+      changes:
+        - addColumn:
+            tableName: web_order_items
+            columns:
+              - column:
+                  name: provider_core_charge
+                  type: DECIMAL(15,4)

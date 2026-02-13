@@ -15,6 +15,7 @@ import com.automaterijal.application.services.ProizvodjacService;
 import com.automaterijal.application.services.TecDocService;
 import com.automaterijal.application.services.tecdoc.TecDocGenericArticleMappingService;
 import com.automaterijal.application.services.tecdoc.TecDocPreviewService;
+import com.automaterijal.application.services.tecdoc.TecDocBrandService;
 import com.automaterijal.application.services.roba.grupe.ArticleGroupService;
 import com.automaterijal.application.services.roba.grupe.ArticleSubGroupService;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
@@ -63,6 +64,7 @@ public class ExternalOfferService {
   @NonNull TecDocPreviewService tecDocPreviewService;
   @NonNull ProviderBrandResolver providerBrandResolver;
   @NonNull TecDocService tecDocService;
+  @NonNull TecDocBrandService tecDocBrandService;
   @NonNull ProizvodjacService proizvodjacService;
 
   Map<String, TecDocArticleIdCacheEntry> tecDocArticleIdCache =
@@ -527,6 +529,13 @@ public class ExternalOfferService {
       return List.of();
     }
 
+    Map<Long, String> proidsByBrandId =
+        tecDocBrandService.findProidsByBrandIds(
+            records.stream()
+                .map(ArticleDirectSearchAllNumbersWithStateRecord::getBrandNo)
+                .filter(Objects::nonNull)
+                .toList());
+
     List<Candidate> candidates = new ArrayList<>();
 
     for (ArticleDirectSearchAllNumbersWithStateRecord record : records) {
@@ -538,7 +547,8 @@ public class ExternalOfferService {
 
       String brand =
           providerBrandResolver
-              .resolveInventoryBrand(record.getBrandNo(), record.getBrandName(), context)
+              .resolveInventoryBrand(
+                  record.getBrandNo(), record.getBrandName(), context, proidsByBrandId)
               .orElse(null);
       if (!StringUtils.hasText(brand)) {
         continue;
@@ -576,6 +586,13 @@ public class ExternalOfferService {
       return List.of();
     }
 
+    Map<Long, String> proidsByBrandId =
+        tecDocBrandService.findProidsByBrandIds(
+            articles.stream()
+                .map(ArticleRecord::getDataSupplierId)
+                .filter(Objects::nonNull)
+                .toList());
+
     List<Candidate> candidates = new ArrayList<>();
 
     for (ArticleRecord article : articles) {
@@ -585,7 +602,8 @@ public class ExternalOfferService {
 
       String brand =
           providerBrandResolver
-              .resolveInventoryBrand(article.getDataSupplierId(), article.getMfrName(), context)
+              .resolveInventoryBrand(
+                  article.getDataSupplierId(), article.getMfrName(), context, proidsByBrandId)
               .orElse(null);
       if (!StringUtils.hasText(brand)) {
         continue;
