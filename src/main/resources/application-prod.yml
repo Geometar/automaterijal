@@ -75,3 +75,10 @@ integration:
     bypass-article-errors: true
     order:
       mode: LIVE
+  szakal:
+    enabled: true
+    order:
+      mode: LIVE
+    data-dir: /home/ftpuser/automaterijal/misc/providers/szakal
+    sync:
+      enabled: false
