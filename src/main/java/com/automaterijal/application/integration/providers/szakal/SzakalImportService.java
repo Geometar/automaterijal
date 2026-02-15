@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.sql.Types;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -33,6 +34,34 @@ public class SzakalImportService {
   private static final int BATCH_SIZE = 5000;
   private static final int OE_SHORT_MAX_LENGTH = 160;
   private static final int OE_MAX_LENGTH = 255;
+  private static final int[] MASTER_ARG_TYPES = {
+    Types.VARCHAR,
+    Types.BIGINT,
+    Types.VARCHAR,
+    Types.VARCHAR,
+    Types.VARCHAR,
+    Types.VARCHAR,
+    Types.VARCHAR,
+    Types.VARCHAR,
+    Types.VARCHAR,
+    Types.INTEGER,
+    Types.VARCHAR,
+    Types.VARCHAR
+  };
+  private static final int[] PRICE_LIST_ARG_TYPES = {
+    Types.INTEGER,
+    Types.VARCHAR,
+    Types.INTEGER,
+    Types.DECIMAL,
+    Types.BOOLEAN,
+    Types.INTEGER,
+    Types.VARCHAR,
+    Types.VARCHAR
+  };
+  private static final int[] BARCODE_ARG_TYPES = {Types.VARCHAR, Types.VARCHAR};
+  private static final int[] OE_ARG_TYPES = {
+    Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR
+  };
 
   private final JdbcTemplate jdbcTemplate;
   private final SzakalProperties properties;
@@ -183,14 +212,14 @@ public class SzakalImportService {
               depositGlid
             });
         if (batch.size() >= BATCH_SIZE) {
-          rows += flushBatch(sql, batch);
+          rows += flushBatch(sql, batch, MASTER_ARG_TYPES);
         }
       }
     } catch (IOException ex) {
       log.warn("Failed to import Szakal master file {}: {}", file, ex.getMessage());
       return new ImportResult(file.toString(), 0, durationMs(start));
     }
-    rows += flushBatch(sql, batch);
+    rows += flushBatch(sql, batch, MASTER_ARG_TYPES);
     return new ImportResult(file.toString(), rows, durationMs(start));
   }
 
@@ -252,14 +281,14 @@ public class SzakalImportService {
               token
             });
         if (batch.size() >= BATCH_SIZE) {
-          rows += flushBatch(sql, batch);
+          rows += flushBatch(sql, batch, PRICE_LIST_ARG_TYPES);
         }
       }
     } catch (IOException ex) {
       log.warn("Failed to import Szakal price list {} from {}: {}", listNo, file, ex.getMessage());
       return new ImportResult(file.toString(), 0, durationMs(start));
     }
-    rows += flushBatch(sql, batch);
+    rows += flushBatch(sql, batch, PRICE_LIST_ARG_TYPES);
     return new ImportResult(file.toString(), rows, durationMs(start));
   }
 
@@ -295,14 +324,14 @@ public class SzakalImportService {
         }
         batch.add(new Object[] {barcode, glid});
         if (batch.size() >= BATCH_SIZE) {
-          rows += flushBatch(sql, batch);
+          rows += flushBatch(sql, batch, BARCODE_ARG_TYPES);
         }
       }
     } catch (IOException ex) {
       log.warn("Failed to import Szakal barcode file {}: {}", file, ex.getMessage());
       return new ImportResult(file.toString(), 0, durationMs(start));
     }
-    rows += flushBatch(sql, batch);
+    rows += flushBatch(sql, batch, BARCODE_ARG_TYPES);
     return new ImportResult(file.toString(), rows, durationMs(start));
   }
 
@@ -363,22 +392,22 @@ public class SzakalImportService {
               tecdocName
             });
         if (batch.size() >= BATCH_SIZE) {
-          rows += flushBatch(sql, batch);
+          rows += flushBatch(sql, batch, OE_ARG_TYPES);
         }
       }
     } catch (IOException ex) {
       log.warn("Failed to import Szakal OE link file {}: {}", file, ex.getMessage());
       return new ImportResult(file.toString(), 0, durationMs(start));
     }
-    rows += flushBatch(sql, batch);
+    rows += flushBatch(sql, batch, OE_ARG_TYPES);
     return new ImportResult(file.toString(), rows, durationMs(start));
   }
 
-  private int flushBatch(String sql, List<Object[]> batch) {
+  private int flushBatch(String sql, List<Object[]> batch, int[] argTypes) {
     if (batch.isEmpty()) {
       return 0;
     }
-    int[] counts = jdbcTemplate.batchUpdate(sql, batch);
+    int[] counts = jdbcTemplate.batchUpdate(sql, batch, argTypes);
     batch.clear();
     int total = 0;
     for (int count : counts) {

@@ -80,3 +80,5 @@ integration:
     order:
       mode: LIVE
     data-dir: /home/ftpuser/automaterijal/misc/providers/szakal
+    sync:
+      enabled: false
