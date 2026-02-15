@@ -155,6 +155,7 @@ databaseChangeLog:
   - changeSet:
       id: 2026-01-21-5
       author: codex
+      validCheckSum: ANY
       changes:
         - createTable:
             tableName: szakal_oe_links
@@ -194,10 +195,6 @@ databaseChangeLog:
                   defaultValueComputed: CURRENT_TIMESTAMP
                   constraints:
                     nullable: false
-        - addUniqueConstraint:
-            tableName: szakal_oe_links
-            columnNames: glid, oe_short, maker
-            constraintName: uq_szakal_oe_glid_short_maker
         - createIndex:
             tableName: szakal_oe_links
             indexName: idx_szakal_oe_short
@@ -210,6 +207,42 @@ databaseChangeLog:
             columns:
               - column:
                   name: glid
+  - changeSet:
+      id: 2026-01-21-5a
+      author: codex
+      preConditions:
+        - onFail: MARK_RAN
+        - dbms:
+            type: mysql
+        - not:
+            - indexExists:
+                tableName: szakal_oe_links
+                indexName: uq_szakal_oe_glid_short_maker
+      changes:
+        - sql:
+            stripComments: true
+            splitStatements: true
+            endDelimiter: ;
+            sql: |
+              CREATE UNIQUE INDEX uq_szakal_oe_glid_short_maker
+              ON szakal_oe_links (glid, oe_short(120), maker(40));
+  - changeSet:
+      id: 2026-01-21-5b
+      author: codex
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - dbms:
+                type: mysql
+        - not:
+            - indexExists:
+                tableName: szakal_oe_links
+                indexName: uq_szakal_oe_glid_short_maker
+      changes:
+        - addUniqueConstraint:
+            tableName: szakal_oe_links
+            columnNames: glid, oe_short, maker
+            constraintName: uq_szakal_oe_glid_short_maker
   - changeSet:
       id: 2026-01-21-6
       author: codex
