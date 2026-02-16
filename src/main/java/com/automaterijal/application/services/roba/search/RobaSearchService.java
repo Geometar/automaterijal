@@ -54,6 +54,7 @@ public class RobaSearchService {
   private static final int MAX_PROVIDER_ITEMS = 1000;
   private static final int MAX_OE_FALLBACK_NUMBERS = 200;
   private static final int MAX_OE_FALLBACK_RESULTS = 50;
+  private static final Set<String> IN_STOCK_PROVIDER_COMBINE_BRANDS = Set.of("FEBI", "BLUE");
 
   @NonNull final RobaAdapterService robaAdapterService;
   @NonNull final TecDocService tecDocService;
@@ -1117,7 +1118,7 @@ public class RobaSearchService {
         if (remaining <= 0) {
           break;
         }
-        if (dto == null || dto.getStanje() <= 0) {
+        if (!shouldIncludeInStockProviderLookup(dto)) {
           continue;
         }
         targets.add(dto);
@@ -1147,6 +1148,17 @@ public class RobaSearchService {
       externalKeys.add(brand + ":" + normalizeCatalog(dto.getKatbr()));
     }
     return externalKeys;
+  }
+
+  private boolean shouldIncludeInStockProviderLookup(RobaLightDto dto) {
+    if (dto == null || dto.getStanje() <= 0 || dto.getProizvodjac() == null) {
+      return false;
+    }
+    String proid = dto.getProizvodjac().getProid();
+    if (!StringUtils.hasText(proid)) {
+      return false;
+    }
+    return IN_STOCK_PROVIDER_COMBINE_BRANDS.contains(proid.trim().toUpperCase(Locale.ROOT));
   }
 
 

@@ -3,6 +3,7 @@ package com.automaterijal.application.integration.registry;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
 import com.automaterijal.application.integration.shared.AvailabilityResult;
@@ -36,9 +37,9 @@ class ProviderRegistryTest {
     febi = provider("febi-stock", 50, true, true, true);
     szakal = provider("szakal", 20, true, true, true);
 
-    when(routingPolicy.priorityFor(eq(febi), any(), any())).thenReturn(100);
-    when(routingPolicy.priorityFor(eq(szakal), any(), any())).thenReturn(20);
-    when(routingPolicy.allows(any(InventoryProvider.class), any(), any())).thenReturn(true);
+    lenient().when(routingPolicy.priorityFor(eq(febi), any(), any())).thenReturn(100);
+    lenient().when(routingPolicy.priorityFor(eq(szakal), any(), any())).thenReturn(20);
+    lenient().when(routingPolicy.allows(any(InventoryProvider.class), any(), any())).thenReturn(true);
 
     registry = new ProviderRegistry(List.of(szakal, febi), routingPolicy);
   }
@@ -127,7 +128,6 @@ class ProviderRegistryTest {
           }
         };
 
-    when(routingPolicy.priorityFor(eq(resolver), any(), any())).thenReturn(100);
     when(routingPolicy.allows(eq(resolver), any(), any())).thenReturn(true);
 
     ProviderRegistry local = new ProviderRegistry(List.of(resolver), routingPolicy);

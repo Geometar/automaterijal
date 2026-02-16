@@ -7,6 +7,7 @@ import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anySet;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -18,6 +19,7 @@ import com.automaterijal.application.domain.entity.Partner;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
 import com.automaterijal.application.integration.providers.szakal.SzakalOeSearchService;
 import com.automaterijal.application.integration.providers.szakal.SzakalProperties;
+import com.automaterijal.application.integration.shared.ProviderRoutingPurpose;
 import com.automaterijal.application.services.TecDocService;
 import com.automaterijal.application.services.roba.ExternalOfferService;
 import com.automaterijal.application.services.roba.ExternalOfferService.ExternalOfferPayload;
@@ -74,10 +76,10 @@ class RobaSearchServiceTest {
     partner = new Partner();
     partner.setPpid(1001);
 
-    when(robaSortService.sortByGroup(anyList())).thenAnswer(invocation -> invocation.getArgument(0));
-    when(robaSortService.sortByGroupWithExact(anyList(), any()))
+    lenient().when(robaSortService.sortByGroup(anyList())).thenAnswer(invocation -> invocation.getArgument(0));
+    lenient().when(robaSortService.sortByGroupWithExact(anyList(), any()))
         .thenAnswer(invocation -> invocation.getArgument(0));
-    when(articleSubGroupService.buildCategoriesFromPodgrupaIds(anySet())).thenReturn(Map.of());
+    lenient().when(articleSubGroupService.buildCategoriesFromPodgrupaIds(anySet())).thenReturn(Map.of());
   }
 
   @Test
@@ -188,6 +190,36 @@ class RobaSearchServiceTest {
     service.searchProducts(parametri, partner, false);
 
     verify(robaEnrichmentService).applyPriceOnly(anyList(), eq(partner), eq(false));
+  }
+
+  @Test
+  void searchProducts_withoutSearchTerm_callsInStockProviderLookupOnlyForFebiAndBlue() {
+    UniverzalniParametri parametri = new UniverzalniParametri();
+    parametri.setPage(0);
+    parametri.setPageSize(10);
+    parametri.setNaStanju(false);
+
+    RobaLightDto febiInStock = roba("FEBI", 10, 3, ArticleAvailabilityStatus.IN_STOCK, "F-IN");
+    RobaLightDto boschInStock = roba("BOSCH", 20, 2, ArticleAvailabilityStatus.IN_STOCK, "B-IN");
+    RobaLightDto boschOut = roba("BOSCH", 20, 0, ArticleAvailabilityStatus.OUT_OF_STOCK, "B-OUT");
+    when(robaAdapterService.searchFilteredProductsWithoutSearchTerm(any()))
+        .thenReturn(magacin(febiInStock, boschInStock, boschOut));
+
+    service.searchProducts(parametri, partner, false);
+
+    ArgumentCaptor<List<RobaLightDto>> targetsCaptor = ArgumentCaptor.forClass(List.class);
+    verify(robaEnrichmentService)
+        .populateExternalAvailability(
+            targetsCaptor.capture(),
+            eq(partner),
+            eq(ProviderRoutingPurpose.INVENTORY_ENRICHMENT),
+            eq(3),
+            eq(2));
+
+    assertThat(targetsCaptor.getValue())
+        .extracting(RobaLightDto::getKatbr)
+        .contains("F-IN", "B-OUT")
+        .doesNotContain("B-IN");
   }
 
   @Test

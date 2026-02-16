@@ -32,14 +32,16 @@ import org.springframework.util.StringUtils;
 public class ExternalAvailabilityService {
 
   private static final int MAX_ARTICLES_PER_REQUEST = 50;
+  private static final String FEBI_PROVIDER_KEY = "febi-stock";
 
   @NonNull ProviderRegistry providerRegistry;
   @NonNull RobaCeneService priceService;
   @NonNull ProviderPricingService providerPricingService;
 
   /**
-   * Popunjava providerAvailability za artikle sa podržanim proizvođačima,
-   * bez obzira na stanje.
+   * Popunjava providerAvailability za artikle sa podržanim proizvođačima.
+   * Za artikle koji su lokalno na stanju, kombinacija lokalnog i eksternog izvora je dozvoljena
+   * samo kada je eksterni provider FEBI.
    */
   public void populateExternalAvailability(List<? extends RobaLightDto> items, Partner partner) {
     populateExternalAvailability(
@@ -188,7 +190,13 @@ public class ExternalAvailabilityService {
       }
 
       if (best != null) {
-        dto.setProviderAvailability(applyPartnerPricing(best, dto, requestPartner, pricingPartner));
+        if (dto.getStanje() > 0 && !isFebiProvider(best)) {
+          dto.setProviderAvailability(null);
+          continue;
+        }
+        ProviderAvailabilityDto priced =
+            applyPartnerPricing(best, dto, requestPartner, pricingPartner);
+        dto.setProviderAvailability(priced);
         if (dto.getRabat() == null) {
           String brandKey =
               dto.getProizvodjac() != null ? dto.getProizvodjac().getProid() : null;
@@ -482,6 +490,13 @@ public class ExternalAvailabilityService {
   private boolean hasInventoryProvider(String brand, ProviderRoutingContext context) {
     InventoryQuery query = InventoryQuery.builder().brand(brand).build();
     return !providerRegistry.findInventoryProviders(query, context).isEmpty();
+  }
+
+  private boolean isFebiProvider(ProviderAvailabilityDto availability) {
+    if (availability == null || !StringUtils.hasText(availability.getProvider())) {
+      return false;
+    }
+    return FEBI_PROVIDER_KEY.equalsIgnoreCase(availability.getProvider().trim());
   }
 
   private ProviderRoutingContext buildContext(

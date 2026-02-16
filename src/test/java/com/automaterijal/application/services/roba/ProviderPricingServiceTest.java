@@ -87,7 +87,6 @@ class ProviderPricingServiceTest {
     ProviderAvailabilityDto availability =
         ProviderAvailabilityDto.builder().provider("szakal").purchasePrice(null).price(null).build();
     Partner partner = new Partner();
-    when(robaCeneService.resolvePartnerPriceMultiplier(null, null, partner)).thenReturn(1.0);
 
     BigDecimal result = service.calculateCustomerPrice(availability, null, null, partner);
 
