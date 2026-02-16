@@ -33,18 +33,23 @@ spring:
 
   # Mail server konfiguracija
   mail:
-    host: smtp.gmail.com
-    port: 587
-    username: webshop.automaterijal@gmail.com
-    password: hjaqamkpzuzbtcyl
+    host: ${MAIL_HOST:sofija.orion.rs}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:webshop@automaterijal.com}
+    password: 'Crninovembar18!!'
     protocol: smtp
     defaultEncoding: UTF-8
     properties:
       mail:
         smtp:
           auth: true
+          ssl:
+            enable: ${MAIL_SMTP_SSL_ENABLE:false}
+            trust: ${MAIL_SSL_TRUST:${MAIL_HOST:sofija.orion.rs}}
+            checkserveridentity: ${MAIL_SSL_CHECK_SERVER_IDENTITY:true}
           starttls:
-            enable: true
+            enable: ${MAIL_SMTP_STARTTLS_ENABLE:true}
+            required: ${MAIL_SMTP_STARTTLS_REQUIRED:true}
 
   servlet:
     multipart:
