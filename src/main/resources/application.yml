@@ -170,6 +170,7 @@ pricing:
     by-group:
       ZAM: 0.40
       AK: 0.30
+      KVAC: 0.50
     by-provider:
       FEBI-STOCK:
         default-percent: 0.65

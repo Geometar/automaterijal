@@ -83,6 +83,22 @@ class ProviderPricingServiceTest {
   }
 
   @Test
+  void resolvesDiacriticGroupIdAgainstAsciiConfiguredKey() {
+    pricingProperties.getMargin().setByGroup(Map.of("KVAC", new BigDecimal("0.50")));
+    ProviderAvailabilityDto availability =
+        ProviderAvailabilityDto.builder()
+            .provider("febi-stock")
+            .purchasePrice(new BigDecimal("100.00"))
+            .build();
+    when(robaCeneService.resolvePartnerPriceMultiplier("KVAČ", "LUK", null)).thenReturn(1.00);
+
+    BigDecimal result = service.calculateCustomerPrice(availability, "KVAČ", "LUK", null);
+
+    // 100 * (1 + 0.50) * 1.20 = 180.00
+    assertThat(result).isEqualByComparingTo("180.00");
+  }
+
+  @Test
   void returnsNullWhenNoBasePriceCanBeResolved() {
     ProviderAvailabilityDto availability =
         ProviderAvailabilityDto.builder().provider("szakal").purchasePrice(null).price(null).build();

@@ -4,8 +4,10 @@ import com.automaterijal.application.domain.dto.ProviderAvailabilityDto;
 import com.automaterijal.application.domain.entity.Partner;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.Normalizer;
 import java.util.Locale;
 import java.util.Map;
+import java.util.regex.Pattern;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import org.springframework.util.StringUtils;
 public class ProviderPricingService {
 
   private static final BigDecimal VAT_FACTOR = new BigDecimal("1.20");
+  private static final Pattern DIACRITICS = Pattern.compile("\\p{M}+");
 
   @NonNull RobaCeneService priceService;
   @NonNull ProviderPricingProperties pricingProperties;
@@ -98,7 +101,25 @@ public class ProviderPricingService {
     if (byGroup == null || byGroup.isEmpty() || !StringUtils.hasText(groupId)) {
       return null;
     }
-    String normalized = groupId.trim().toUpperCase(Locale.ROOT);
-    return byGroup.get(normalized);
+    String normalizedGroupId = normalizeGroupKey(groupId);
+    BigDecimal direct = byGroup.get(normalizedGroupId);
+    if (direct != null) {
+      return direct;
+    }
+
+    for (Map.Entry<String, BigDecimal> entry : byGroup.entrySet()) {
+      if (normalizedGroupId.equals(normalizeGroupKey(entry.getKey()))) {
+        return entry.getValue();
+      }
+    }
+
+    return null;
+  }
+
+  private String normalizeGroupKey(String groupKey) {
+    String normalized = groupKey.trim().toUpperCase(Locale.ROOT);
+    String withoutDiacritics =
+        DIACRITICS.matcher(Normalizer.normalize(normalized, Normalizer.Form.NFD)).replaceAll("");
+    return withoutDiacritics.replace('\u0110', 'D');
   }
 }
