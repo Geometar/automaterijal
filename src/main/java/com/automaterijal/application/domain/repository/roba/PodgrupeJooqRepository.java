@@ -31,7 +31,7 @@ public class PodgrupeJooqRepository {
   private List<PodgrupaDto> fetchPodgrupe(Set<Integer> sviKljucevi) {
     var whereClause =
         dslContext
-            .select(PODGRUPA.PODGRUPAID, PODGRUPA.NAZIV, GRUPA.NAZIV)
+            .select(PODGRUPA.PODGRUPAID, PODGRUPA.NAZIV, GRUPA.GRUPAID, GRUPA.NAZIV)
             .from(PODGRUPA)
             .join(GRUPA)
             .on(PODGRUPA.GRUPAID.eq(GRUPA.GRUPAID));
@@ -47,7 +47,8 @@ public class PodgrupeJooqRepository {
               PodgrupaDto result = new PodgrupaDto();
               result.setId(data.value1());
               result.setNaziv(data.value2());
-              result.setGrupa(data.value3());
+              result.setGrupaId(data.value3());
+              result.setGrupa(data.value4());
               return result;
             })
         .toList();

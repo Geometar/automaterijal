@@ -464,13 +464,16 @@ public class ExternalOfferService {
       }
 
       PodgrupaDto dto = podgrupe.get(podgrupaId);
-      if (dto == null || !StringUtils.hasText(dto.getGrupa())) {
+      if (dto == null || !StringUtils.hasText(dto.getGrupaId())) {
         continue;
       }
 
-      String groupId = dto.getGrupa();
+      String groupId = dto.getGrupaId();
       String mappedName = groupNames.get(groupId);
-      String groupName = StringUtils.hasText(mappedName) ? mappedName : groupId;
+      String groupName = StringUtils.hasText(dto.getGrupa()) ? dto.getGrupa() : mappedName;
+      if (!StringUtils.hasText(groupName)) {
+        groupName = groupId;
+      }
       internalByGeneric.putIfAbsent(
           genericId, new InternalCategory(groupId, groupName, podgrupaId, dto.getNaziv()));
     }

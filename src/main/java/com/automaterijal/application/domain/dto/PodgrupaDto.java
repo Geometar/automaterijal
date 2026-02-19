@@ -9,5 +9,6 @@ import lombok.experimental.FieldDefaults;
 public class PodgrupaDto {
   Integer id;
   String naziv;
+  String grupaId;
   String grupa;
 }
