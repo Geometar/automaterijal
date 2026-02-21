@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.automaterijal.application.integration.shared.InventoryProvider;
 import com.automaterijal.application.integration.shared.InventoryQuery;
+import com.automaterijal.application.integration.shared.InventoryQueryItem;
+import com.automaterijal.application.integration.shared.ProviderBulkMode;
 import com.automaterijal.application.integration.shared.ProviderCapabilities;
 import com.automaterijal.application.integration.shared.ProviderRoutingContext;
 import com.automaterijal.application.integration.shared.ProviderRoutingPurpose;
@@ -118,7 +120,73 @@ class ProviderRoutingPolicyTest {
     assertThat(priority).isEqualTo(12);
   }
 
+  @Test
+  void brandRuleMatchesWhenQueryContainsItemsWithoutRootBrand() {
+    ProviderRoutingProperties properties = new ProviderRoutingProperties();
+    ProviderRoutingProperties.Rule rule = new ProviderRoutingProperties.Rule();
+    rule.setProvider("gazela");
+    rule.setEnabled(true);
+    rule.setPriority(60);
+    rule.setPurposes(Set.of(ProviderRoutingPurpose.EXTERNAL_OFFER));
+    rule.setBrands(Set.of("BOSCH"));
+    properties.setRules(List.of(rule));
+
+    ProviderRoutingPolicy policy = new ProviderRoutingPolicy(properties);
+    ProviderRoutingContext context =
+        ProviderRoutingContext.builder().purpose(ProviderRoutingPurpose.EXTERNAL_OFFER).build();
+
+    InventoryQuery matchingQuery =
+        InventoryQuery.builder()
+            .items(List.of(InventoryQueryItem.builder().brand("BOSCH").articleNumber("A1").build()))
+            .build();
+    InventoryQuery nonMatchingQuery =
+        InventoryQuery.builder()
+            .items(List.of(InventoryQueryItem.builder().brand("MANN").articleNumber("A1").build()))
+            .build();
+
+    assertThat(policy.allows(provider("gazela", 10), matchingQuery, context)).isTrue();
+    assertThat(policy.priorityFor(provider("gazela", 10), matchingQuery, context)).isEqualTo(60);
+    assertThat(policy.allows(provider("gazela", 10), nonMatchingQuery, context)).isFalse();
+  }
+
+  @Test
+  void configuredBulkModeAndBatchSizeOverrideProviderDefaults() {
+    ProviderRoutingProperties properties = new ProviderRoutingProperties();
+    ProviderRoutingProperties.Rule rule = new ProviderRoutingProperties.Rule();
+    rule.setProvider("gazela");
+    rule.setEnabled(true);
+    rule.setPurposes(Set.of(ProviderRoutingPurpose.EXTERNAL_OFFER));
+    rule.setBulkMode(ProviderBulkMode.MIXED_BRAND);
+    rule.setMaxBatchSize(40);
+    properties.setRules(List.of(rule));
+
+    ProviderRoutingPolicy policy = new ProviderRoutingPolicy(properties);
+    InventoryProvider provider = provider("gazela", 10, ProviderBulkMode.SAME_BRAND, 20);
+    InventoryQuery query = InventoryQuery.builder().brand("BOSCH").build();
+    ProviderRoutingContext context =
+        ProviderRoutingContext.builder().purpose(ProviderRoutingPurpose.EXTERNAL_OFFER).build();
+
+    assertThat(policy.bulkModeFor(provider, query, context)).isEqualTo(ProviderBulkMode.MIXED_BRAND);
+    assertThat(policy.maxBatchSizeFor(provider, query, context)).isEqualTo(40);
+  }
+
+  @Test
+  void bulkModeAndBatchSizeFallBackToProviderDefaultsWhenNotConfigured() {
+    ProviderRoutingPolicy policy = new ProviderRoutingPolicy(new ProviderRoutingProperties());
+    InventoryProvider provider = provider("febi-stock", 10, ProviderBulkMode.SAME_BRAND, 25);
+
+    assertThat(policy.bulkModeFor(provider, InventoryQuery.builder().brand("FEBI").build(), null))
+        .isEqualTo(ProviderBulkMode.SAME_BRAND);
+    assertThat(policy.maxBatchSizeFor(provider, InventoryQuery.builder().brand("FEBI").build(), null))
+        .isEqualTo(25);
+  }
+
   private static InventoryProvider provider(String name, int priority) {
+    return provider(name, priority, ProviderBulkMode.SAME_BRAND, 20);
+  }
+
+  private static InventoryProvider provider(
+      String name, int priority, ProviderBulkMode bulkMode, int maxBatchSize) {
     return new InventoryProvider() {
       @Override
       public String providerName() {
@@ -133,6 +201,16 @@ class ProviderRoutingPolicyTest {
       @Override
       public ProviderCapabilities capabilities() {
         return ProviderCapabilities.inventoryOnly();
+      }
+
+      @Override
+      public ProviderBulkMode bulkMode() {
+        return bulkMode;
+      }
+
+      @Override
+      public int maxArticlesPerRequest() {
+        return maxBatchSize;
       }
 
       @Override

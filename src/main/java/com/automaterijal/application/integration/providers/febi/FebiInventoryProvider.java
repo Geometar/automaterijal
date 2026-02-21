@@ -10,15 +10,22 @@ import com.automaterijal.application.integration.shared.AvailabilityResult;
 import com.automaterijal.application.integration.shared.AvailabilityStatus;
 import com.automaterijal.application.integration.shared.InventoryProvider;
 import com.automaterijal.application.integration.shared.InventoryQuery;
+import com.automaterijal.application.integration.shared.InventoryQueryItem;
 import com.automaterijal.application.integration.shared.ProviderCallStatus;
 import com.automaterijal.application.integration.shared.ProviderCapabilities;
+import com.automaterijal.application.integration.shared.ProviderRoutingContext;
 import com.automaterijal.application.integration.shared.WarehouseAvailability;
 import com.automaterijal.application.integration.shared.exception.ProviderAuthenticationException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Locale;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -37,7 +44,6 @@ import org.springframework.util.StringUtils;
 public class FebiInventoryProvider implements InventoryProvider {
 
   private static final String PROVIDER_NAME = "febi-stock";
-  private static final int MAX_ITEMS_PER_REQUEST = 25;
 
   private final FebiAuthClient authClient;
   private final FebiStockClient stockClient;
@@ -60,6 +66,12 @@ public class FebiInventoryProvider implements InventoryProvider {
   }
 
   @Override
+  public int maxArticlesPerRequest() {
+    Integer configured = properties.getMaxItemsPerRequest();
+    return configured != null && configured > 0 ? configured : 25;
+  }
+
+  @Override
   public boolean supportsBrand(String brand) {
     if (!StringUtils.hasText(brand)) {
       return false;
@@ -67,6 +79,22 @@ public class FebiInventoryProvider implements InventoryProvider {
 
     return properties.getSupportedBrands().stream()
         .anyMatch(b -> b != null && b.equalsIgnoreCase(brand));
+  }
+
+  @Override
+  public boolean supports(InventoryQuery query, ProviderRoutingContext context) {
+    if (query != null && query.getItems() != null && !query.getItems().isEmpty()) {
+      Set<String> brands =
+          query.getItems().stream()
+              .filter(Objects::nonNull)
+              .map(InventoryQueryItem::getBrand)
+              .filter(StringUtils::hasText)
+              .map(String::trim)
+              .map(value -> value.toUpperCase(Locale.ROOT))
+              .collect(java.util.stream.Collectors.toSet());
+      return brands.stream().anyMatch(this::supportsBrand);
+    }
+    return InventoryProvider.super.supports(query, context);
   }
 
   @Override
@@ -100,8 +128,14 @@ public class FebiInventoryProvider implements InventoryProvider {
 
   @Override
   public AvailabilityResult checkAvailability(InventoryQuery query) {
-    if (query == null || query.getArticleNumbers() == null || query.getArticleNumbers().isEmpty()) {
+    if (query == null
+        || ((query.getArticleNumbers() == null || query.getArticleNumbers().isEmpty())
+            && (query.getItems() == null || query.getItems().isEmpty()))) {
       throw new IllegalArgumentException("InventoryQuery with article numbers is required");
+    }
+
+    if (query.getItems() != null && !query.getItems().isEmpty()) {
+      return checkAvailabilityForItems(query);
     }
 
     String destination =
@@ -110,7 +144,8 @@ public class FebiInventoryProvider implements InventoryProvider {
             : "RS";
 
     List<String> articles = query.getArticleNumbers();
-    if (articles.size() <= MAX_ITEMS_PER_REQUEST) {
+    int batchSize = maxArticlesPerRequest();
+    if (articles.size() <= batchSize) {
       FebiStockRequest request =
           FebiStockRequest.builder()
               .destinationCountry(destination)
@@ -133,8 +168,8 @@ public class FebiInventoryProvider implements InventoryProvider {
     List<AvailabilityItem> mergedItems = new java.util.ArrayList<>();
     String resolvedDestination = null;
 
-    for (int i = 0; i < articles.size(); i += MAX_ITEMS_PER_REQUEST) {
-      List<String> batch = articles.subList(i, Math.min(i + MAX_ITEMS_PER_REQUEST, articles.size()));
+    for (int i = 0; i < articles.size(); i += batchSize) {
+      List<String> batch = articles.subList(i, Math.min(i + batchSize, articles.size()));
       FebiStockRequest request =
           FebiStockRequest.builder()
               .destinationCountry(destination)
@@ -169,6 +204,59 @@ public class FebiInventoryProvider implements InventoryProvider {
         .status(ProviderCallStatus.SUCCESS)
         .destinationCountry(
             StringUtils.hasText(resolvedDestination) ? resolvedDestination : destination)
+        .items(mergedItems)
+        .build();
+  }
+
+  private AvailabilityResult checkAvailabilityForItems(InventoryQuery query) {
+    Map<String, LinkedHashSet<String>> byBrand = new LinkedHashMap<>();
+    for (InventoryQueryItem item : query.getItems()) {
+      if (item == null || !StringUtils.hasText(item.getBrand()) || !StringUtils.hasText(item.getArticleNumber())) {
+        continue;
+      }
+      if (!supportsBrand(item.getBrand())) {
+        continue;
+      }
+      String brand = item.getBrand().trim().toUpperCase(Locale.ROOT);
+      byBrand.computeIfAbsent(brand, ignored -> new LinkedHashSet<>()).add(item.getArticleNumber().trim());
+    }
+
+    if (byBrand.isEmpty()) {
+      return AvailabilityResult.builder()
+          .provider(providerName())
+          .providerType("inventory")
+          .status(ProviderCallStatus.SUCCESS)
+          .items(List.of())
+          .build();
+    }
+
+    List<AvailabilityItem> mergedItems = new ArrayList<>();
+    String destination = null;
+    for (Map.Entry<String, LinkedHashSet<String>> entry : byBrand.entrySet()) {
+      InventoryQuery brandQuery =
+          InventoryQuery.builder()
+              .brand(entry.getKey())
+              .articleNumbers(new ArrayList<>(entry.getValue()))
+              .destinationCountry(query.getDestinationCountry())
+              .requestedQuantity(query.getRequestedQuantity())
+              .build();
+      AvailabilityResult partial = checkAvailability(brandQuery);
+      if (partial == null) {
+        continue;
+      }
+      if (!StringUtils.hasText(destination) && StringUtils.hasText(partial.getDestinationCountry())) {
+        destination = partial.getDestinationCountry();
+      }
+      if (partial.getItems() != null && !partial.getItems().isEmpty()) {
+        mergedItems.addAll(partial.getItems());
+      }
+    }
+
+    return AvailabilityResult.builder()
+        .provider(providerName())
+        .providerType("inventory")
+        .status(ProviderCallStatus.SUCCESS)
+        .destinationCountry(destination)
         .items(mergedItems)
         .build();
   }

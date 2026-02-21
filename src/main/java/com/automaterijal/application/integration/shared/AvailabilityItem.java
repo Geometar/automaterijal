@@ -27,6 +27,12 @@ public class AvailabilityItem {
   Integer leadTimeBusinessDays;
   Integer deliveryToCustomerBusinessDaysMin;
   Integer deliveryToCustomerBusinessDaysMax;
+  Boolean cityBranchAware;
+  Integer cityWarehouseQuantity;
+  Integer fallbackDeliveryBusinessDaysMin;
+  Integer fallbackDeliveryBusinessDaysMax;
+  WarehouseAvailability displayWarehouse;
+  Integer displayWarehouseQuantity;
   String nextDispatchCutoff;
   String providerProductId;
   String providerStockToken;

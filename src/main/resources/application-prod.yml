@@ -40,6 +40,8 @@ spring:
 
 # Putanje za slike proizvoda
 roba:
+  search:
+    max-provider-items: ${ROBA_SEARCH_MAX_PROVIDER_ITEMS:20}
   slika:
     tdPrefix: "/home/ftpuser/automaterijal/misc/tecdoc/slike/"
     publicPrefix: "/images/roba/"
@@ -67,6 +69,12 @@ sitemap:
     model-end-cutoff-year: 1995
 
 integration:
+  gazela:
+    enabled: ${GAZELA_ENABLED:false}
+    api:
+      base-url: ${GAZELA_API_BASE_URL:}
+      user-id: ${GAZELA_API_USER_ID:}
+      password: ${GAZELA_API_PASSWORD:}
   febi:
     enabled: true
     client-id: clktr_e9b5a2c8302cda39719738de3f28cf7f

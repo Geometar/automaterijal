@@ -49,8 +49,8 @@ import org.springframework.util.StringUtils;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ExternalOfferService {
 
-  private static final int MAX_EXTERNAL_OFFERS = 50;
-  private static final int MAX_EXTERNAL_OFFERS_WITH_EXACT = 25;
+  private static final int MAX_EXTERNAL_OFFERS = 20;
+  private static final int MAX_EXTERNAL_OFFERS_WITH_EXACT = 10;
   private static final int TECDOC_NUMBER_TYPE_ALL = 10;
   private static final int TECDOC_ARTICLE_ID_RESOLVE_DEFAULT_LIMIT = 10;
   private static final int TECDOC_ARTICLE_ID_RESOLVE_MAX_LIMIT = 25;

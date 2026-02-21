@@ -2,7 +2,10 @@ package com.automaterijal.application.integration.registry;
 
 import com.automaterijal.application.integration.shared.InventoryProvider;
 import com.automaterijal.application.integration.shared.InventoryQuery;
+import com.automaterijal.application.integration.shared.InventoryQueryItem;
+import com.automaterijal.application.integration.shared.ProviderBulkMode;
 import com.automaterijal.application.integration.shared.ProviderRoutingContext;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -57,6 +60,35 @@ public class ProviderRoutingPolicy {
     return configured.orElse(provider.priority());
   }
 
+  public ProviderBulkMode bulkModeFor(
+      InventoryProvider provider, InventoryQuery query, ProviderRoutingContext context) {
+    if (provider == null) {
+      return ProviderBulkMode.SAME_BRAND;
+    }
+    List<ProviderRoutingProperties.Rule> matching = matchingRules(provider.providerName(), query, context);
+    for (ProviderRoutingProperties.Rule rule : matching) {
+      if (rule.getBulkMode() != null) {
+        return rule.getBulkMode();
+      }
+    }
+    return provider.bulkMode();
+  }
+
+  public int maxBatchSizeFor(
+      InventoryProvider provider, InventoryQuery query, ProviderRoutingContext context) {
+    if (provider == null) {
+      return 20;
+    }
+    List<ProviderRoutingProperties.Rule> matching = matchingRules(provider.providerName(), query, context);
+    for (ProviderRoutingProperties.Rule rule : matching) {
+      if (rule.getMaxBatchSize() != null && rule.getMaxBatchSize() > 0) {
+        return rule.getMaxBatchSize();
+      }
+    }
+    int providerDefault = provider.maxArticlesPerRequest();
+    return providerDefault > 0 ? providerDefault : 20;
+  }
+
   public boolean allows(String providerName, String brand, ProviderRoutingContext context) {
     List<ProviderRoutingProperties.Rule> rules = rulesForProvider(providerName);
     if (rules.isEmpty()) {
@@ -100,10 +132,46 @@ public class ProviderRoutingPolicy {
         .toList();
   }
 
+  private List<ProviderRoutingProperties.Rule> matchingRules(
+      String providerName, InventoryQuery query, ProviderRoutingContext context) {
+    return rulesForProvider(providerName).stream()
+        .filter(rule -> rule.getEnabled() == null || rule.getEnabled())
+        .filter(rule -> matches(rule, query, context))
+        .sorted(
+            Comparator.comparingInt(
+                    (ProviderRoutingProperties.Rule rule) ->
+                        rule.getPriority() != null ? rule.getPriority() : Integer.MIN_VALUE)
+                .reversed())
+        .toList();
+  }
+
   private boolean matches(
       ProviderRoutingProperties.Rule rule, InventoryQuery query, ProviderRoutingContext context) {
-    String brand = query != null ? query.getBrand() : null;
-    return matches(rule, brand, context);
+    if (rule == null) {
+      return false;
+    }
+    if (!matchesContextAndCounts(rule, context)) {
+      return false;
+    }
+    if (CollectionUtils.isEmpty(rule.getBrands())) {
+      return true;
+    }
+    if (query == null) {
+      return false;
+    }
+
+    if (StringUtils.hasText(query.getBrand())) {
+      return matchesConfiguredBrand(rule, query.getBrand());
+    }
+
+    if (CollectionUtils.isEmpty(query.getItems())) {
+      return false;
+    }
+    return query.getItems().stream()
+        .filter(Objects::nonNull)
+        .map(InventoryQueryItem::getBrand)
+        .filter(StringUtils::hasText)
+        .anyMatch(brand -> matchesConfiguredBrand(rule, brand));
   }
 
   private boolean matches(
@@ -111,7 +179,14 @@ public class ProviderRoutingPolicy {
     if (rule == null) {
       return false;
     }
+    if (!matchesContextAndCounts(rule, context)) {
+      return false;
+    }
+    return matchesConfiguredBrand(rule, brand);
+  }
 
+  private boolean matchesContextAndCounts(
+      ProviderRoutingProperties.Rule rule, ProviderRoutingContext context) {
     if (!CollectionUtils.isEmpty(rule.getPurposes())) {
       if (context == null || context.getPurpose() == null) {
         return false;
@@ -120,22 +195,6 @@ public class ProviderRoutingPolicy {
         return false;
       }
     }
-
-    if (!CollectionUtils.isEmpty(rule.getBrands())) {
-      if (!StringUtils.hasText(brand)) {
-        return false;
-      }
-      String normalized = brand.trim().toUpperCase(Locale.ROOT);
-      boolean match =
-          rule.getBrands().stream()
-              .filter(StringUtils::hasText)
-              .map(value -> value.trim().toUpperCase(Locale.ROOT))
-              .anyMatch(candidate -> candidate.equals(normalized));
-      if (!match) {
-        return false;
-      }
-    }
-
     if (!CollectionUtils.isEmpty(rule.getGroups())) {
       if (context == null || CollectionUtils.isEmpty(context.getGroups())) {
         return false;
@@ -166,6 +225,20 @@ public class ProviderRoutingPolicy {
     }
 
     return true;
+  }
+
+  private boolean matchesConfiguredBrand(ProviderRoutingProperties.Rule rule, String brand) {
+    if (CollectionUtils.isEmpty(rule.getBrands())) {
+      return true;
+    }
+    if (!StringUtils.hasText(brand)) {
+      return false;
+    }
+    String normalized = brand.trim().toUpperCase(Locale.ROOT);
+    return rule.getBrands().stream()
+        .filter(StringUtils::hasText)
+        .map(value -> value.trim().toUpperCase(Locale.ROOT))
+        .anyMatch(candidate -> candidate.equals(normalized));
   }
 
   private boolean matchesRange(Integer value, Integer min, Integer max) {

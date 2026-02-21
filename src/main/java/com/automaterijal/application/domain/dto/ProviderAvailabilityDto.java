@@ -24,6 +24,10 @@ public class ProviderAvailabilityDto {
   String warehouse;
   String warehouseName;
   Integer warehouseQuantity;
+  Boolean cityBranchAware;
+  Integer cityWarehouseQuantity;
+  Integer fallbackDeliveryBusinessDaysMin;
+  Integer fallbackDeliveryBusinessDaysMax;
   BigDecimal purchasePrice;
   BigDecimal price;
   BigDecimal coreCharge;

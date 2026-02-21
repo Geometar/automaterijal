@@ -2,18 +2,22 @@ package com.automaterijal.application.services.roba.sort;
 
 import com.automaterijal.application.domain.dto.RobaLightDto;
 import com.automaterijal.application.domain.model.UniverzalniParametri;
+import com.automaterijal.application.integration.registry.ProviderRoutingProperties;
 import com.automaterijal.application.services.roba.grupe.ArticleSubGroupService;
 import com.automaterijal.application.utils.CatalogNumberUtils;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 @Service
+@RequiredArgsConstructor
 public class RobaSortService {
-  private static final String FEBI_PROVIDER_KEY = "febi-stock";
+  private final ProviderRoutingProperties providerRoutingProperties;
 
   public List<RobaLightDto> sortByGroup(List<RobaLightDto> roba) {
     return roba.stream()
@@ -142,8 +146,35 @@ public class RobaSortService {
     if (!StringUtils.hasText(provider)) {
       return 8;
     }
-    String normalized = provider.trim().toLowerCase(Locale.ROOT);
-    return FEBI_PROVIDER_KEY.equals(normalized) ? 0 : 1;
+    int providerPriority = resolveConfiguredProviderPriority(provider.trim().toLowerCase(Locale.ROOT));
+    // Comparator sorts ascending, so we invert priority: larger priority should come first.
+    return -providerPriority;
+  }
+
+  private int resolveConfiguredProviderPriority(String provider) {
+    if (!StringUtils.hasText(provider)) {
+      return 0;
+    }
+    if (providerRoutingProperties == null || providerRoutingProperties.getRules() == null) {
+      return 0;
+    }
+
+    int configured =
+        providerRoutingProperties.getRules().stream()
+            .filter(Objects::nonNull)
+            .filter(rule -> rule.getEnabled() == null || rule.getEnabled())
+            .filter(rule -> StringUtils.hasText(rule.getProvider()))
+            .filter(rule -> provider.equalsIgnoreCase(rule.getProvider().trim()))
+            .map(ProviderRoutingProperties.Rule::getPriority)
+            .filter(Objects::nonNull)
+            .mapToInt(Integer::intValue)
+            .max()
+            .orElse(Integer.MIN_VALUE);
+
+    if (configured != Integer.MIN_VALUE) {
+      return configured;
+    }
+    return 0;
   }
 
   /** Sortira robu TecDoc po podgrupi. */

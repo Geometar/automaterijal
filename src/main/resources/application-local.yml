@@ -19,6 +19,8 @@ spring:
 
 # Putanje za slike proizvoda
 roba:
+  search:
+    max-provider-items: 20
   slika:
     tdPrefix: "/Users/radespasojevic/development/automaterijal/misc/tecdoc/pictures/"
     publicPrefix: "/images/roba/"
@@ -32,6 +34,12 @@ sitemap:
   blog-prefix: /blog
 
 integration:
+  gazela:
+    enabled: true
+    api:
+      base-url: http://79.101.31.113:8091/api
+      user-id: 5836
+      password: P5CPsGGM9PpW85XAH6V7kSdhhfAyqx
   szakal:
     enabled: true
     order:

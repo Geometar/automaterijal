@@ -58,6 +58,7 @@ public class SzakalProperties {
     private Integer oeExpansionMaxOe = 10;
     private Integer oeExpansionMaxResults = 50;
     private Integer oeFallbackMinAvailable = 2;
+    private Integer maxBatchSize = 20;
   }
 
   @Data

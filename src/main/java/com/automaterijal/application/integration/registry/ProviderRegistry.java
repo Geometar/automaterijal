@@ -3,6 +3,7 @@ package com.automaterijal.application.integration.registry;
 import com.automaterijal.application.integration.shared.AvailabilityResult;
 import com.automaterijal.application.integration.shared.InventoryProvider;
 import com.automaterijal.application.integration.shared.InventoryQuery;
+import com.automaterijal.application.integration.shared.ProviderBulkMode;
 import com.automaterijal.application.integration.shared.ProviderCallStatus;
 import com.automaterijal.application.integration.shared.exception.ProviderAuthenticationException;
 import com.automaterijal.application.integration.shared.exception.ProviderRateLimitException;
@@ -45,14 +46,25 @@ public class ProviderRegistry {
     return orderedProviders(query, context).stream()
         .filter(provider -> provider.capabilities() != null && provider.capabilities().isEnabled())
         .filter(provider -> provider.capabilities().isInventory())
-        .filter(provider -> routingPolicy.allows(provider, query, context))
-        .filter(provider -> provider.supports(query, context))
+        .filter(provider -> safeAllows(provider, query, context))
+        .filter(provider -> safeSupports(provider, query, context))
         .toList();
   }
 
   public List<AvailabilityResult> checkAvailability(
       InventoryQuery query, ProviderRoutingContext context) {
     return findInventoryProviders(query, context).stream()
+        .map(provider -> invokeSafe(provider, query))
+        .toList();
+  }
+
+  public List<AvailabilityResult> checkAvailability(
+      List<InventoryProvider> providers, InventoryQuery query) {
+    if (providers == null || providers.isEmpty()) {
+      return Collections.emptyList();
+    }
+    return providers.stream()
+        .filter(Objects::nonNull)
         .map(provider -> invokeSafe(provider, query))
         .toList();
   }
@@ -75,13 +87,24 @@ public class ProviderRegistry {
         continue;
       }
 
-      Optional<String> resolved = provider.resolveBrandKey(tecDocBrandId, tecDocBrandName);
+      Optional<String> resolved;
+      try {
+        resolved = provider.resolveBrandKey(tecDocBrandId, tecDocBrandName);
+      } catch (RuntimeException ex) {
+        log.warn(
+            "Provider {} failed while resolving brand key for tecDocBrandId={} tecDocBrandName='{}': {}",
+            provider.providerName(),
+            tecDocBrandId,
+            tecDocBrandName,
+            ex.getMessage());
+        continue;
+      }
       if (resolved != null && resolved.isPresent()) {
         if (context == null) {
           return resolved;
         }
         InventoryQuery query = InventoryQuery.builder().brand(resolved.get()).build();
-        if (routingPolicy.allows(provider, query, context) && provider.supports(query, context)) {
+        if (safeAllows(provider, query, context) && safeSupports(provider, query, context)) {
           return resolved;
         }
       }
@@ -90,9 +113,47 @@ public class ProviderRegistry {
     return Optional.empty();
   }
 
+  private boolean safeAllows(
+      InventoryProvider provider, InventoryQuery query, ProviderRoutingContext context) {
+    try {
+      return routingPolicy.allows(provider, query, context);
+    } catch (RuntimeException ex) {
+      log.warn(
+          "Routing policy check failed for provider {} and brand {}: {}",
+          provider != null ? provider.providerName() : "n/a",
+          query != null ? query.getBrand() : "n/a",
+          ex.getMessage());
+      return false;
+    }
+  }
+
+  private boolean safeSupports(
+      InventoryProvider provider, InventoryQuery query, ProviderRoutingContext context) {
+    try {
+      return provider != null && provider.supports(query, context);
+    } catch (RuntimeException ex) {
+      log.warn(
+          "Provider {} failed during supports() for brand {}: {}",
+          provider != null ? provider.providerName() : "n/a",
+          query != null ? query.getBrand() : "n/a",
+          ex.getMessage());
+      return false;
+    }
+  }
+
   public int priorityFor(
       InventoryProvider provider, InventoryQuery query, ProviderRoutingContext context) {
     return routingPolicy.priorityFor(provider, query, context);
+  }
+
+  public ProviderBulkMode bulkModeFor(
+      InventoryProvider provider, InventoryQuery query, ProviderRoutingContext context) {
+    return routingPolicy.bulkModeFor(provider, query, context);
+  }
+
+  public int maxBatchSizeFor(
+      InventoryProvider provider, InventoryQuery query, ProviderRoutingContext context) {
+    return routingPolicy.maxBatchSizeFor(provider, query, context);
   }
 
   private List<InventoryProvider> orderedProviders(

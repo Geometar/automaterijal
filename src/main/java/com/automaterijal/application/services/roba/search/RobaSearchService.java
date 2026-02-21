@@ -39,6 +39,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.experimental.FieldDefaults;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.thymeleaf.util.SetUtils;
@@ -51,10 +52,11 @@ import org.thymeleaf.util.SetUtils;
 public class RobaSearchService {
   private static final int MAX_TEC_DOC_RESULTS = 1000;
   private static final int TECDOC_NUMBER_TYPE_ALL = 10;
-  private static final int MAX_PROVIDER_ITEMS = 1000;
   private static final int MAX_OE_FALLBACK_NUMBERS = 200;
   private static final int MAX_OE_FALLBACK_RESULTS = 50;
-  private static final Set<String> IN_STOCK_PROVIDER_COMBINE_BRANDS = Set.of("FEBI", "BLUE");
+
+  @Value("${roba.search.max-provider-items:20}")
+  int maxProviderItems;
 
   @NonNull final RobaAdapterService robaAdapterService;
   @NonNull final TecDocService tecDocService;
@@ -1097,7 +1099,7 @@ public class RobaSearchService {
       }
     }
 
-    int limit = MAX_PROVIDER_ITEMS > 0 ? MAX_PROVIDER_ITEMS : Integer.MAX_VALUE;
+    int limit = maxProviderItems > 0 ? maxProviderItems : Integer.MAX_VALUE;
     int remaining = limit - targets.size();
     if (remaining <= 0) {
       return targets;
@@ -1151,14 +1153,7 @@ public class RobaSearchService {
   }
 
   private boolean shouldIncludeInStockProviderLookup(RobaLightDto dto) {
-    if (dto == null || dto.getStanje() <= 0 || dto.getProizvodjac() == null) {
-      return false;
-    }
-    String proid = dto.getProizvodjac().getProid();
-    if (!StringUtils.hasText(proid)) {
-      return false;
-    }
-    return IN_STOCK_PROVIDER_COMBINE_BRANDS.contains(proid.trim().toUpperCase(Locale.ROOT));
+    return dto != null && dto.getStanje() > 0;
   }
 
 

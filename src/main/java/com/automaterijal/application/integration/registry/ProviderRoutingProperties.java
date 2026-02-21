@@ -1,6 +1,7 @@
 package com.automaterijal.application.integration.registry;
 
 import com.automaterijal.application.integration.shared.ProviderRoutingPurpose;
+import com.automaterijal.application.integration.shared.ProviderBulkMode;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -28,5 +29,7 @@ public class ProviderRoutingProperties {
     private Integer maxLocalMatchCount;
     private Integer minLocalAvailableCount;
     private Integer maxLocalAvailableCount;
+    private ProviderBulkMode bulkMode;
+    private Integer maxBatchSize;
   }
 }

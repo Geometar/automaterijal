@@ -35,4 +35,5 @@ public class FebiProperties {
   private Integer deliveryToCustomerBusinessDaysMax = 2;
   private String dispatchCutoff = "16:00";
   private String warehouseName = "Magacin Beograd (FEBI)";
+  private Integer maxItemsPerRequest = 25;
 }

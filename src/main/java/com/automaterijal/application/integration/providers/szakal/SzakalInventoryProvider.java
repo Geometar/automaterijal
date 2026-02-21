@@ -7,8 +7,10 @@ import com.automaterijal.application.integration.shared.AvailabilityResult;
 import com.automaterijal.application.integration.shared.AvailabilityStatus;
 import com.automaterijal.application.integration.shared.InventoryProvider;
 import com.automaterijal.application.integration.shared.InventoryQuery;
+import com.automaterijal.application.integration.shared.InventoryQueryItem;
 import com.automaterijal.application.integration.shared.ProviderCallStatus;
 import com.automaterijal.application.integration.shared.ProviderCapabilities;
+import com.automaterijal.application.integration.shared.ProviderRoutingContext;
 import com.automaterijal.application.integration.shared.WarehouseAvailability;
 import com.automaterijal.application.services.tecdoc.TecDocBrandService;
 import com.automaterijal.application.utils.CatalogNumberUtils;
@@ -55,14 +57,38 @@ public class SzakalInventoryProvider implements InventoryProvider {
   }
 
   @Override
+  public int maxArticlesPerRequest() {
+    Integer configured =
+        properties.getSearch() != null ? properties.getSearch().getMaxBatchSize() : null;
+    return configured != null && configured > 0 ? configured : 20;
+  }
+
+  @Override
   public boolean supportsBrand(String brand) {
     return StringUtils.hasText(brand);
   }
 
   @Override
+  public boolean supports(InventoryQuery query, ProviderRoutingContext context) {
+    if (query != null && query.getItems() != null && !query.getItems().isEmpty()) {
+      return query.getItems().stream()
+          .filter(Objects::nonNull)
+          .map(InventoryQueryItem::getBrand)
+          .anyMatch(this::supportsBrand);
+    }
+    return InventoryProvider.super.supports(query, context);
+  }
+
+  @Override
   public AvailabilityResult checkAvailability(InventoryQuery query) {
-    if (query == null || CollectionUtils.isEmpty(query.getArticleNumbers())) {
+    if (query == null
+        || (CollectionUtils.isEmpty(query.getArticleNumbers())
+            && CollectionUtils.isEmpty(query.getItems()))) {
       throw new IllegalArgumentException("InventoryQuery with article numbers is required");
+    }
+
+    if (!CollectionUtils.isEmpty(query.getItems())) {
+      return checkAvailabilityForItems(query);
     }
 
     Long dlnr = resolveTecDocBrandId(query.getBrand());
@@ -139,6 +165,48 @@ public class SzakalInventoryProvider implements InventoryProvider {
         .providerType("inventory")
         .status(ProviderCallStatus.SUCCESS)
         .items(items)
+        .build();
+  }
+
+  private AvailabilityResult checkAvailabilityForItems(InventoryQuery query) {
+    Map<String, List<String>> byBrand = new HashMap<>();
+    for (InventoryQueryItem item : query.getItems()) {
+      if (item == null || !StringUtils.hasText(item.getBrand()) || !StringUtils.hasText(item.getArticleNumber())) {
+        continue;
+      }
+      byBrand.computeIfAbsent(item.getBrand().trim().toUpperCase(Locale.ROOT), ignored -> new ArrayList<>())
+          .add(item.getArticleNumber());
+    }
+
+    if (byBrand.isEmpty()) {
+      return AvailabilityResult.builder()
+          .provider(providerName())
+          .providerType("inventory")
+          .status(ProviderCallStatus.SUCCESS)
+          .items(List.of())
+          .build();
+    }
+
+    List<AvailabilityItem> merged = new ArrayList<>();
+    for (Map.Entry<String, List<String>> entry : byBrand.entrySet()) {
+      InventoryQuery brandQuery =
+          InventoryQuery.builder()
+              .brand(entry.getKey())
+              .articleNumbers(entry.getValue())
+              .destinationCountry(query.getDestinationCountry())
+              .requestedQuantity(query.getRequestedQuantity())
+              .build();
+      AvailabilityResult partial = checkAvailability(brandQuery);
+      if (partial != null && partial.getItems() != null) {
+        merged.addAll(partial.getItems());
+      }
+    }
+
+    return AvailabilityResult.builder()
+        .provider(providerName())
+        .providerType("inventory")
+        .status(ProviderCallStatus.SUCCESS)
+        .items(merged)
         .build();
   }
 

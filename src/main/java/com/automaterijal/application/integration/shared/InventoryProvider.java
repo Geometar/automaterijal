@@ -21,6 +21,18 @@ public interface InventoryProvider {
     return supportsBrand(query != null ? query.getBrand() : null);
   }
 
+  /**
+   * Maximum number of article numbers this provider should receive in one availability request.
+   * Router can use this to chunk requests without hardcoded provider-name checks.
+   */
+  default int maxArticlesPerRequest() {
+    return 20;
+  }
+
+  default ProviderBulkMode bulkMode() {
+    return ProviderBulkMode.SAME_BRAND;
+  }
+
   AvailabilityResult checkAvailability(InventoryQuery query);
 
   /**

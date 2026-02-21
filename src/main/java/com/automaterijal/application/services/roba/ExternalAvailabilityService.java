@@ -9,12 +9,15 @@ import com.automaterijal.application.integration.shared.AvailabilityResult;
 import com.automaterijal.application.integration.shared.AvailabilityStatus;
 import com.automaterijal.application.integration.shared.InventoryProvider;
 import com.automaterijal.application.integration.shared.InventoryQuery;
+import com.automaterijal.application.integration.shared.InventoryQueryItem;
+import com.automaterijal.application.integration.shared.ProviderBulkMode;
 import com.automaterijal.application.integration.shared.ProviderRoutingContext;
 import com.automaterijal.application.integration.shared.ProviderRoutingPurpose;
 import com.automaterijal.application.integration.shared.WarehouseAvailability;
 import com.automaterijal.application.utils.CatalogNumberUtils;
 import com.automaterijal.application.utils.PartnerPrivilegeUtils;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -31,8 +34,8 @@ import org.springframework.util.StringUtils;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ExternalAvailabilityService {
 
-  private static final int MAX_ARTICLES_PER_REQUEST = 50;
-  private static final String FEBI_PROVIDER_KEY = "febi-stock";
+  private static final int MAX_ARTICLES_PER_REQUEST = 20;
+  private static final BigDecimal SPEED_PRICE_DELTA_THRESHOLD = new BigDecimal("0.02");
 
   @NonNull ProviderRegistry providerRegistry;
   @NonNull RobaCeneService priceService;
@@ -41,7 +44,7 @@ public class ExternalAvailabilityService {
   /**
    * Popunjava providerAvailability za artikle sa podržanim proizvođačima.
    * Za artikle koji su lokalno na stanju, kombinacija lokalnog i eksternog izvora je dozvoljena
-   * samo kada je eksterni provider FEBI.
+   * samo kada eksterni provider ima najvisi priority u trenutnom routing kontekstu.
    */
   public void populateExternalAvailability(List<? extends RobaLightDto> items, Partner partner) {
     populateExternalAvailability(
@@ -76,10 +79,9 @@ public class ExternalAvailabilityService {
       }
     }
 
-    for (Map.Entry<String, List<RobaLightDto>> entry : byBrand.entrySet()) {
-      populateForBrand(
-          entry.getKey(),
-          entry.getValue(),
+    if (!byBrand.isEmpty()) {
+      populateAcrossBrands(
+          byBrand,
           partner,
           pricingPartner,
           purpose,
@@ -88,8 +90,8 @@ public class ExternalAvailabilityService {
     }
 
     if (!unresolved.isEmpty()) {
-      populateForBrand(
-          null, unresolved, partner, pricingPartner, purpose, localMatchCount, localAvailableCount);
+      populateWithoutResolvedBrand(
+          unresolved, partner, pricingPartner, purpose, localMatchCount, localAvailableCount);
     }
   }
 
@@ -131,8 +133,244 @@ public class ExternalAvailabilityService {
     return null;
   }
 
-  private void populateForBrand(
-      String brand,
+  private void populateAcrossBrands(
+      Map<String, List<RobaLightDto>> byBrand,
+      Partner requestPartner,
+      Partner pricingPartner,
+      ProviderRoutingPurpose purpose,
+      Integer localMatchCount,
+      Integer localAvailableCount) {
+    if (byBrand == null || byBrand.isEmpty()) {
+      return;
+    }
+
+    NavigableSet<Integer> tiers = new TreeSet<>(Comparator.reverseOrder());
+    Map<String, BrandExecution> executions =
+        buildBrandExecutions(
+            byBrand, requestPartner, purpose, localMatchCount, localAvailableCount, tiers);
+    if (executions.isEmpty()) {
+      return;
+    }
+
+    Map<String, ProviderAvailabilityDto> bestByArticle = new HashMap<>();
+    for (Integer tier : tiers) {
+      if (tier == null) {
+        continue;
+      }
+      Map<String, ProviderAvailabilityDto> tierBest = new HashMap<>();
+      Map<String, Integer> tierPriority = buildTierPriority(executions.values(), tier);
+      processSameBrandTier(executions.values(), tier, tierBest, tierPriority);
+      processMixedBrandTier(executions, tier, tierBest, tierPriority);
+
+      for (Map.Entry<String, ProviderAvailabilityDto> entry : tierBest.entrySet()) {
+        bestByArticle.putIfAbsent(entry.getKey(), entry.getValue());
+      }
+
+      removeResolvedArticles(executions.values(), bestByArticle);
+    }
+
+    applyBestAvailabilityForExecutions(
+        executions.values(), bestByArticle, requestPartner, pricingPartner);
+  }
+
+  private Map<String, BrandExecution> buildBrandExecutions(
+      Map<String, List<RobaLightDto>> byBrand,
+      Partner requestPartner,
+      ProviderRoutingPurpose purpose,
+      Integer localMatchCount,
+      Integer localAvailableCount,
+      NavigableSet<Integer> tiers) {
+    Map<String, BrandExecution> executions = new LinkedHashMap<>();
+    for (Map.Entry<String, List<RobaLightDto>> entry : byBrand.entrySet()) {
+      String brand = entry.getKey();
+      List<RobaLightDto> dtos = entry.getValue();
+      if (dtos == null || dtos.isEmpty()) {
+        continue;
+      }
+      ProviderRoutingContext context =
+          buildContext(requestPartner, dtos, purpose, localMatchCount, localAvailableCount);
+      InventoryQuery selectionQuery = InventoryQuery.builder().brand(brand).build();
+      List<InventoryProvider> providers = providerRegistry.findInventoryProviders(selectionQuery, context);
+      if (providers.isEmpty()) {
+        continue;
+      }
+      Map<String, Integer> providerPriority =
+          resolveProviderPriorityMap(providers, selectionQuery, context);
+      List<ProviderPlan> plans = buildProviderPlans(providers, providerPriority, selectionQuery, context);
+      plans.stream().map(plan -> plan.priority).forEach(tiers::add);
+      Set<String> unresolvedArticleNumbers =
+          dtos.stream()
+              .flatMap(dto -> collectArticleNumbers(dto).stream())
+              .collect(Collectors.toCollection(LinkedHashSet::new));
+      if (unresolvedArticleNumbers.isEmpty()) {
+        continue;
+      }
+      executions.put(
+          brand, new BrandExecution(brand, dtos, providerPriority, plans, unresolvedArticleNumbers));
+    }
+    return executions;
+  }
+
+  private List<ProviderPlan> buildProviderPlans(
+      List<InventoryProvider> providers,
+      Map<String, Integer> providerPriority,
+      InventoryQuery selectionQuery,
+      ProviderRoutingContext context) {
+    List<ProviderPlan> plans = new ArrayList<>();
+    for (InventoryProvider provider : providers) {
+      int priority = providerPriorityFor(providerPriority, provider.providerName());
+      ProviderBulkMode bulkMode = providerRegistry.bulkModeFor(provider, selectionQuery, context);
+      int maxBatchSize = providerRegistry.maxBatchSizeFor(provider, selectionQuery, context);
+      if (maxBatchSize <= 0) {
+        maxBatchSize = provider.maxArticlesPerRequest();
+      }
+      if (maxBatchSize <= 0) {
+        maxBatchSize = MAX_ARTICLES_PER_REQUEST;
+      }
+      plans.add(new ProviderPlan(provider, priority, bulkMode, maxBatchSize));
+    }
+    return plans;
+  }
+
+  private Map<String, Integer> buildTierPriority(Collection<BrandExecution> executions, int tier) {
+    Map<String, Integer> tierPriority = new HashMap<>();
+    for (BrandExecution execution : executions) {
+      for (ProviderPlan plan : execution.providerPlans) {
+        if (plan.priority == tier) {
+          tierPriority.putIfAbsent(plan.provider.providerName(), tier);
+        }
+      }
+    }
+    return tierPriority;
+  }
+
+  private void processSameBrandTier(
+      Collection<BrandExecution> executions,
+      int tier,
+      Map<String, ProviderAvailabilityDto> tierBest,
+      Map<String, Integer> tierPriority) {
+    for (BrandExecution execution : executions) {
+      if (execution.unresolvedArticleNumbers.isEmpty()) {
+        continue;
+      }
+      List<ProviderPlan> sameBrandProviders =
+          execution.providerPlans.stream()
+              .filter(plan -> plan.priority == tier)
+              .filter(plan -> plan.bulkMode != ProviderBulkMode.MIXED_BRAND)
+              .toList();
+      if (sameBrandProviders.isEmpty()) {
+        continue;
+      }
+      List<InventoryProvider> tierProviders =
+          sameBrandProviders.stream().map(plan -> plan.provider).toList();
+      int chunkSize = resolveChunkSizeForPlans(sameBrandProviders);
+      List<String> unresolvedSnapshot = new ArrayList<>(execution.unresolvedArticleNumbers);
+      for (int i = 0; i < unresolvedSnapshot.size(); i += chunkSize) {
+        List<String> chunk =
+            unresolvedSnapshot.subList(i, Math.min(i + chunkSize, unresolvedSnapshot.size()));
+        InventoryQuery query =
+            InventoryQuery.builder().brand(execution.brand).articleNumbers(chunk).build();
+        List<AvailabilityResult> results = providerRegistry.checkAvailability(tierProviders, query);
+        mergeResults(tierBest, results, tierPriority, execution.brand);
+      }
+    }
+  }
+
+  private void processMixedBrandTier(
+      Map<String, BrandExecution> executions,
+      int tier,
+      Map<String, ProviderAvailabilityDto> tierBest,
+      Map<String, Integer> tierPriority) {
+    Map<String, InventoryProvider> mixedProviders = new LinkedHashMap<>();
+    Map<String, Integer> mixedBatchSizes = new HashMap<>();
+    Map<String, Set<String>> mixedBrands = new HashMap<>();
+    for (BrandExecution execution : executions.values()) {
+      for (ProviderPlan plan : execution.providerPlans) {
+        if (plan.priority != tier || plan.bulkMode != ProviderBulkMode.MIXED_BRAND) {
+          continue;
+        }
+        String providerName = plan.provider.providerName();
+        mixedProviders.putIfAbsent(providerName, plan.provider);
+        mixedBatchSizes.merge(
+            providerName,
+            plan.maxBatchSize > 0 ? plan.maxBatchSize : MAX_ARTICLES_PER_REQUEST,
+            Math::min);
+        mixedBrands.computeIfAbsent(providerName, ignored -> new LinkedHashSet<>()).add(execution.brand);
+      }
+    }
+
+    for (Map.Entry<String, InventoryProvider> entry : mixedProviders.entrySet()) {
+      String providerName = entry.getKey();
+      InventoryProvider provider = entry.getValue();
+      Set<String> eligibleBrands = mixedBrands.getOrDefault(providerName, Set.of());
+      if (eligibleBrands.isEmpty()) {
+        continue;
+      }
+      List<InventoryQueryItem> unresolvedItems =
+          collectUnresolvedItemsForBrands(executions, eligibleBrands);
+      if (unresolvedItems.isEmpty()) {
+        continue;
+      }
+
+      int configuredBatch = mixedBatchSizes.getOrDefault(providerName, MAX_ARTICLES_PER_REQUEST);
+      int chunkSize = Math.max(1, Math.min(MAX_ARTICLES_PER_REQUEST, configuredBatch));
+      for (int i = 0; i < unresolvedItems.size(); i += chunkSize) {
+        List<InventoryQueryItem> chunk =
+            unresolvedItems.subList(i, Math.min(i + chunkSize, unresolvedItems.size()));
+        List<String> chunkArticles =
+            chunk.stream()
+                .map(InventoryQueryItem::getArticleNumber)
+                .filter(StringUtils::hasText)
+                .distinct()
+                .toList();
+        InventoryQuery query = InventoryQuery.builder().items(chunk).articleNumbers(chunkArticles).build();
+        List<AvailabilityResult> results = providerRegistry.checkAvailability(List.of(provider), query);
+        mergeResults(tierBest, results, tierPriority, null);
+      }
+    }
+  }
+
+  private List<InventoryQueryItem> collectUnresolvedItemsForBrands(
+      Map<String, BrandExecution> executions, Set<String> brands) {
+    List<InventoryQueryItem> unresolvedItems = new ArrayList<>();
+    for (String brand : brands) {
+      BrandExecution execution = executions.get(brand);
+      if (execution == null || execution.unresolvedArticleNumbers.isEmpty()) {
+        continue;
+      }
+      for (String articleNumber : execution.unresolvedArticleNumbers) {
+        unresolvedItems.add(
+            InventoryQueryItem.builder().brand(brand).articleNumber(articleNumber).build());
+      }
+    }
+    return unresolvedItems;
+  }
+
+  private void removeResolvedArticles(
+      Collection<BrandExecution> executions, Map<String, ProviderAvailabilityDto> bestByArticle) {
+    for (BrandExecution execution : executions) {
+      execution.unresolvedArticleNumbers.removeIf(
+          article -> bestByArticle.containsKey(availabilityKey(execution.brand, article)));
+    }
+  }
+
+  private void applyBestAvailabilityForExecutions(
+      Collection<BrandExecution> executions,
+      Map<String, ProviderAvailabilityDto> bestByArticle,
+      Partner requestPartner,
+      Partner pricingPartner) {
+    for (BrandExecution execution : executions) {
+      for (RobaLightDto dto : execution.dtos) {
+        ProviderAvailabilityDto best =
+            selectBestForDto(
+                dto, execution.brand, bestByArticle, execution.providerPriority);
+        applyBestAvailability(
+            dto, best, requestPartner, pricingPartner, execution.providerPriority);
+      }
+    }
+  }
+
+  private void populateWithoutResolvedBrand(
       List<RobaLightDto> dtos,
       Partner requestPartner,
       Partner pricingPartner,
@@ -143,20 +381,20 @@ public class ExternalAvailabilityService {
       return;
     }
 
+    List<InventoryQueryItem> allQueryItems = collectUnresolvedQueryItems(dtos);
+    if (allQueryItems.isEmpty()) {
+      return;
+    }
+
     ProviderRoutingContext context =
         buildContext(requestPartner, dtos, purpose, localMatchCount, localAvailableCount);
-    InventoryQuery selectionQuery = InventoryQuery.builder().brand(brand).build();
+    InventoryQuery selectionQuery = InventoryQuery.builder().items(allQueryItems).build();
     List<InventoryProvider> providers = providerRegistry.findInventoryProviders(selectionQuery, context);
     if (providers.isEmpty()) {
       return;
     }
     Map<String, Integer> providerPriority =
-        providers.stream()
-            .collect(
-                Collectors.toMap(
-                    InventoryProvider::providerName,
-                    provider -> providerRegistry.priorityFor(provider, selectionQuery, context),
-                    (left, right) -> left));
+        resolveProviderPriorityMap(providers, selectionQuery, context);
 
     List<String> allArticleNumbers =
         dtos.stream().flatMap(dto -> collectArticleNumbers(dto).stream()).distinct().toList();
@@ -165,50 +403,169 @@ public class ExternalAvailabilityService {
     }
 
     Map<String, ProviderAvailabilityDto> bestByArticle = new HashMap<>();
+    NavigableMap<Integer, List<InventoryProvider>> providersByPriority =
+        new TreeMap<>(Comparator.reverseOrder());
+    for (InventoryProvider provider : providers) {
+      int priority = providerPriorityFor(providerPriority, provider.providerName());
+      providersByPriority.computeIfAbsent(priority, ignored -> new ArrayList<>()).add(provider);
+    }
 
-    for (int i = 0; i < allArticleNumbers.size(); i += MAX_ARTICLES_PER_REQUEST) {
-      List<String> chunk =
-          allArticleNumbers.subList(
-              i, Math.min(i + MAX_ARTICLES_PER_REQUEST, allArticleNumbers.size()));
-      InventoryQuery query = InventoryQuery.builder().brand(brand).articleNumbers(chunk).build();
-      List<AvailabilityResult> results = providerRegistry.checkAvailability(query, context);
-      mergeResults(bestByArticle, results, providerPriority, brand);
+    Set<String> unresolvedArticleNumbers = new LinkedHashSet<>(allArticleNumbers);
+    for (List<InventoryProvider> tierProviders : providersByPriority.values()) {
+      if (unresolvedArticleNumbers.isEmpty()) {
+        break;
+      }
+      int chunkSize = resolveTierChunkSize(tierProviders);
+      List<InventoryQueryItem> unresolvedSnapshot =
+          allQueryItems.stream()
+              .filter(Objects::nonNull)
+              .filter(item -> StringUtils.hasText(item.getArticleNumber()))
+              .filter(item -> unresolvedArticleNumbers.contains(normalize(item.getArticleNumber())))
+              .toList();
+      for (int i = 0; i < unresolvedSnapshot.size(); i += chunkSize) {
+        List<InventoryQueryItem> chunkItems =
+            unresolvedSnapshot.subList(
+                i, Math.min(i + chunkSize, unresolvedSnapshot.size()));
+        List<String> chunkArticleNumbers =
+            chunkItems.stream()
+                .map(InventoryQueryItem::getArticleNumber)
+                .filter(StringUtils::hasText)
+                .map(this::normalize)
+                .filter(StringUtils::hasText)
+                .distinct()
+                .toList();
+        InventoryQuery query =
+            InventoryQuery.builder()
+                .items(chunkItems)
+                .articleNumbers(chunkArticleNumbers)
+                .build();
+        List<AvailabilityResult> results = providerRegistry.checkAvailability(tierProviders, query);
+        if (CollectionUtils.isEmpty(results)) {
+          continue;
+        }
+        Map<String, ProviderAvailabilityDto> tierBestByArticle = new HashMap<>();
+        mergeResults(tierBestByArticle, results, providerPriority, null);
+        for (Map.Entry<String, ProviderAvailabilityDto> entry : tierBestByArticle.entrySet()) {
+          bestByArticle.putIfAbsent(entry.getKey(), entry.getValue());
+        }
+        for (String articleNumber : chunkArticleNumbers) {
+          if (hasAnyAvailabilityForArticle(bestByArticle, articleNumber)) {
+            unresolvedArticleNumbers.remove(articleNumber);
+          }
+        }
+      }
     }
 
     for (RobaLightDto dto : dtos) {
-      List<String> candidates = collectArticleNumbers(dto);
-      ProviderAvailabilityDto best = null;
-      for (String candidate : candidates) {
+      ProviderAvailabilityDto best =
+          selectBestForDto(dto, null, bestByArticle, providerPriority);
+      applyBestAvailability(dto, best, requestPartner, pricingPartner, providerPriority);
+    }
+  }
+
+  private Map<String, Integer> resolveProviderPriorityMap(
+      List<InventoryProvider> providers,
+      InventoryQuery selectionQuery,
+      ProviderRoutingContext context) {
+    if (providers == null || providers.isEmpty()) {
+      return Map.of();
+    }
+    return providers.stream()
+        .collect(
+            Collectors.toMap(
+                InventoryProvider::providerName,
+                provider -> providerRegistry.priorityFor(provider, selectionQuery, context),
+                (left, right) -> left));
+  }
+
+  private ProviderAvailabilityDto selectBestForDto(
+      RobaLightDto dto,
+      String brand,
+      Map<String, ProviderAvailabilityDto> bestByArticle,
+      Map<String, Integer> providerPriority) {
+    List<String> candidates = collectArticleNumbers(dto);
+    ProviderAvailabilityDto best = null;
+    Integer bestPriority = null;
+    for (String candidate : candidates) {
+      List<ProviderAvailabilityDto> mappedCandidates;
+      if (StringUtils.hasText(brand)) {
         String key = availabilityKey(brand, candidate);
         ProviderAvailabilityDto mapped = bestByArticle.get(key);
+        mappedCandidates = mapped != null ? List.of(mapped) : List.of();
+      } else {
+        String normalizedCandidate = normalize(candidate);
+        if (!StringUtils.hasText(normalizedCandidate)) {
+          continue;
+        }
+        mappedCandidates =
+            bestByArticle.entrySet().stream()
+                .filter(entry -> normalizedCandidate.equals(articlePartFromAvailabilityKey(entry.getKey())))
+                .map(Map.Entry::getValue)
+                .toList();
+      }
+      for (ProviderAvailabilityDto mapped : mappedCandidates) {
         if (mapped == null || !Boolean.TRUE.equals(mapped.getAvailable())) {
+          continue;
+        }
+        int mappedPriority = providerPriorityFor(providerPriority, mapped.getProvider());
+        if (best == null || bestPriority == null || mappedPriority > bestPriority) {
+          best = mapped;
+          bestPriority = mappedPriority;
+          continue;
+        }
+        if (mappedPriority < bestPriority) {
           continue;
         }
         if (shouldReplaceBestForArticle(best, mapped, providerPriority)) {
           best = mapped;
         }
       }
+    }
+    return best;
+  }
 
-      if (best != null) {
-        if (dto.getStanje() > 0 && !isFebiProvider(best)) {
-          dto.setProviderAvailability(null);
+  private List<InventoryQueryItem> collectUnresolvedQueryItems(List<RobaLightDto> dtos) {
+    if (dtos == null || dtos.isEmpty()) {
+      return List.of();
+    }
+    Map<String, InventoryQueryItem> dedup = new LinkedHashMap<>();
+    for (RobaLightDto dto : dtos) {
+      if (dto == null) {
+        continue;
+      }
+      List<String> articles = collectArticleNumbers(dto);
+      if (articles.isEmpty()) {
+        continue;
+      }
+      Set<String> brands = new LinkedHashSet<>();
+      if (dto.getProizvodjac() != null) {
+        if (StringUtils.hasText(dto.getProizvodjac().getProid())) {
+          brands.add(dto.getProizvodjac().getProid().trim().toUpperCase(Locale.ROOT));
+        }
+        if (StringUtils.hasText(dto.getProizvodjac().getNaziv())) {
+          brands.add(dto.getProizvodjac().getNaziv().trim().toUpperCase(Locale.ROOT));
+        }
+      }
+      for (String brand : brands) {
+        if (!StringUtils.hasText(brand)) {
           continue;
         }
-        ProviderAvailabilityDto priced =
-            applyPartnerPricing(best, dto, requestPartner, pricingPartner);
-        dto.setProviderAvailability(priced);
-        if (dto.getRabat() == null) {
-          String brandKey =
-              dto.getProizvodjac() != null ? dto.getProizvodjac().getProid() : null;
-          dto.setRabat(
-              priceService.vratiRabatPartneraNaArtikal(
-                  brandKey, dto.getGrupa(), pricingPartner));
-        }
-        if (dto.getRobaid() == null && dto.getCena() == null && dto.getProviderAvailability() != null) {
-          dto.setCena(dto.getProviderAvailability().getPrice());
+        for (String article : articles) {
+          String normalizedArticle = normalize(article);
+          if (!StringUtils.hasText(normalizedArticle)) {
+            continue;
+          }
+          String key = brand + ":" + normalizedArticle;
+          dedup.putIfAbsent(
+              key,
+              InventoryQueryItem.builder()
+                  .brand(brand)
+                  .articleNumber(normalizedArticle)
+                  .build());
         }
       }
     }
+    return List.copyOf(dedup.values());
   }
 
   private void mergeResults(
@@ -241,6 +598,9 @@ public class ExternalAvailabilityService {
         String defaultBrand =
             StringUtils.hasText(itemBrand) ? itemBrand : normalizedRequestedBrand;
         ProviderAvailabilityDto mapped = mapItem(result.getProvider(), item, defaultBrand);
+        if (!Boolean.TRUE.equals(mapped.getAvailable())) {
+          continue;
+        }
         String key;
         if (StringUtils.hasText(normalizedRequestedBrand)) {
           key = availabilityKey(mapped.getBrand(), mapped.getArticleNumber());
@@ -249,37 +609,7 @@ public class ExternalAvailabilityService {
           key = availabilityKey(brandForKey, mapped.getArticleNumber());
         }
         ProviderAvailabilityDto existing = bestByArticle.get(key);
-        if (existing == null) {
-          bestByArticle.put(key, mapped);
-          continue;
-        }
-
-        Integer existingQty = existing.getTotalQuantity();
-        Integer newQty = mapped.getTotalQuantity();
-        Integer existingProviderPriority = providerPriorityFor(providerPriority, existing.getProvider());
-        Integer newProviderPriority = providerPriorityFor(providerPriority, mapped.getProvider());
-        boolean takeNew =
-            Boolean.TRUE.equals(mapped.getAvailable())
-                && !Boolean.TRUE.equals(existing.getAvailable());
-        if (!takeNew) {
-          boolean availabilityEqual = Objects.equals(mapped.getAvailable(), existing.getAvailable());
-          if (availabilityEqual) {
-            if (newProviderPriority > existingProviderPriority) {
-              takeNew = true;
-            } else if (newProviderPriority.equals(existingProviderPriority)) {
-              int priceDecision = comparePrice(mapped.getPrice(), existing.getPrice());
-              if (priceDecision < 0) {
-                takeNew = true;
-              } else if (priceDecision == 0) {
-                boolean qtyBetter = newQty != null && (existingQty == null || newQty > existingQty);
-                if (qtyBetter) {
-                  takeNew = true;
-                }
-              }
-            }
-          }
-        }
-        if (takeNew) {
+        if (shouldReplaceBestForArticle(existing, mapped, providerPriority)) {
           bestByArticle.put(key, mapped);
         }
       }
@@ -289,17 +619,27 @@ public class ExternalAvailabilityService {
   private ProviderAvailabilityDto mapItem(
       String provider, AvailabilityItem item, String defaultBrand) {
     WarehouseAvailability bestWarehouse = pickBestWarehouse(item.getWarehouses());
+    WarehouseAvailability warehouseForDisplay =
+        item.getDisplayWarehouse() != null ? item.getDisplayWarehouse() : bestWarehouse;
+    Integer warehouseQuantity =
+        item.getDisplayWarehouseQuantity() != null
+            ? item.getDisplayWarehouseQuantity()
+            : (warehouseForDisplay != null ? warehouseForDisplay.getQuantity() : null);
     return ProviderAvailabilityDto.builder()
         .brand(defaultBrand)
         .provider(provider)
         .articleNumber(item.getArticleNumber())
         .available(isAvailable(item))
         .totalQuantity(item.getTotalQuantity())
-        .warehouse(bestWarehouse != null ? bestWarehouse.getLocation() : null)
-        .warehouseName(resolveWarehouseName(bestWarehouse))
-        .warehouseQuantity(bestWarehouse != null ? bestWarehouse.getQuantity() : null)
+        .warehouse(warehouseForDisplay != null ? warehouseForDisplay.getLocation() : null)
+        .warehouseName(resolveWarehouseName(warehouseForDisplay))
+        .warehouseQuantity(warehouseQuantity)
+        .cityBranchAware(item.getCityBranchAware())
+        .cityWarehouseQuantity(item.getCityWarehouseQuantity())
+        .fallbackDeliveryBusinessDaysMin(item.getFallbackDeliveryBusinessDaysMin())
+        .fallbackDeliveryBusinessDaysMax(item.getFallbackDeliveryBusinessDaysMax())
         .purchasePrice(item.getPurchasePrice())
-        .price(item.getSellingPrice())
+        .price(item.getSellingPrice() != null ? item.getSellingPrice() : item.getPurchasePrice())
         .currency(item.getCurrency())
         .packagingUnit(item.getPackagingUnit())
         .leadTimeBusinessDays(item.getLeadTimeBusinessDays())
@@ -338,6 +678,10 @@ public class ExternalAvailabilityService {
         .warehouse(availability.getWarehouse())
         .warehouseName(availability.getWarehouseName())
         .warehouseQuantity(availability.getWarehouseQuantity())
+        .cityBranchAware(availability.getCityBranchAware())
+        .cityWarehouseQuantity(availability.getCityWarehouseQuantity())
+        .fallbackDeliveryBusinessDaysMin(availability.getFallbackDeliveryBusinessDaysMin())
+        .fallbackDeliveryBusinessDaysMax(availability.getFallbackDeliveryBusinessDaysMax())
         .purchasePrice(exposePurchasePrice ? availability.getPurchasePrice() : null)
         .price(finalCustomerPrice)
         .currency(availability.getCurrency())
@@ -352,6 +696,31 @@ public class ExternalAvailabilityService {
         .build();
   }
 
+  private void applyBestAvailability(
+      RobaLightDto dto,
+      ProviderAvailabilityDto best,
+      Partner requestPartner,
+      Partner pricingPartner,
+      Map<String, Integer> providerPriority) {
+    if (dto == null || best == null) {
+      return;
+    }
+    if (dto.getStanje() > 0 && !isTopPriorityProvider(best, providerPriority)) {
+      dto.setProviderAvailability(null);
+      return;
+    }
+    ProviderAvailabilityDto priced =
+        applyPartnerPricing(best, dto, requestPartner, pricingPartner);
+    dto.setProviderAvailability(priced);
+    if (dto.getRabat() == null) {
+      String brandKey = dto.getProizvodjac() != null ? dto.getProizvodjac().getProid() : null;
+      dto.setRabat(priceService.vratiRabatPartneraNaArtikal(brandKey, dto.getGrupa(), pricingPartner));
+    }
+    if (dto.getRobaid() == null && dto.getCena() == null && dto.getProviderAvailability() != null) {
+      dto.setCena(dto.getProviderAvailability().getPrice());
+    }
+  }
+
   private int providerPriorityFor(Map<String, Integer> priority, String provider) {
     if (priority == null || !StringUtils.hasText(provider)) {
       return 0;
@@ -359,7 +728,13 @@ public class ExternalAvailabilityService {
     return priority.getOrDefault(provider, 0);
   }
 
-  private int comparePrice(BigDecimal candidate, BigDecimal existing) {
+  private int comparePrice(ProviderAvailabilityDto candidate, ProviderAvailabilityDto existing) {
+    BigDecimal candidatePrice = resolveComparablePrice(candidate);
+    BigDecimal existingPrice = resolveComparablePrice(existing);
+    return comparePriceValues(candidatePrice, existingPrice);
+  }
+
+  private int comparePriceValues(BigDecimal candidate, BigDecimal existing) {
     if (candidate == null && existing == null) {
       return 0;
     }
@@ -392,20 +767,25 @@ public class ExternalAvailabilityService {
       return false;
     }
 
+    Boolean speedOverride = preferFasterDeliveryWhenPriceClose(candidate, currentBest);
+    if (speedOverride != null) {
+      return speedOverride;
+    }
+
+    int priceDecision = comparePrice(candidate, currentBest);
+    if (priceDecision < 0) {
+      return true;
+    }
+    if (priceDecision > 0) {
+      return false;
+    }
+
     int candidatePriority = providerPriorityFor(providerPriority, candidate.getProvider());
     int currentPriority = providerPriorityFor(providerPriority, currentBest.getProvider());
     if (candidatePriority > currentPriority) {
       return true;
     }
     if (candidatePriority < currentPriority) {
-      return false;
-    }
-
-    int priceDecision = comparePrice(candidate.getPrice(), currentBest.getPrice());
-    if (priceDecision < 0) {
-      return true;
-    }
-    if (priceDecision > 0) {
       return false;
     }
 
@@ -418,6 +798,77 @@ public class ExternalAvailabilityService {
       return true;
     }
     return candidateQty > currentQty;
+  }
+
+  private Boolean preferFasterDeliveryWhenPriceClose(
+      ProviderAvailabilityDto candidate, ProviderAvailabilityDto existing) {
+    BigDecimal candidatePrice = resolveComparablePrice(candidate);
+    BigDecimal existingPrice = resolveComparablePrice(existing);
+
+    if (candidatePrice == null || existingPrice == null) {
+      return null;
+    }
+    if (candidatePrice.compareTo(BigDecimal.ZERO) <= 0 || existingPrice.compareTo(BigDecimal.ZERO) <= 0) {
+      return null;
+    }
+
+    BigDecimal base = candidatePrice.min(existingPrice);
+    BigDecimal deltaPct =
+        candidatePrice
+            .subtract(existingPrice)
+            .abs()
+            .divide(base, 4, RoundingMode.HALF_UP);
+
+    if (deltaPct.compareTo(SPEED_PRICE_DELTA_THRESHOLD) >= 0) {
+      return null;
+    }
+
+    int speedDecision = compareDeliverySpeed(candidate, existing);
+    if (speedDecision < 0) {
+      return true;
+    }
+    if (speedDecision > 0) {
+      return false;
+    }
+    return null;
+  }
+
+  private BigDecimal resolveComparablePrice(ProviderAvailabilityDto dto) {
+    if (dto == null) {
+      return null;
+    }
+    if (dto.getPurchasePrice() != null && dto.getPurchasePrice().compareTo(BigDecimal.ZERO) > 0) {
+      return dto.getPurchasePrice();
+    }
+    return null;
+  }
+
+  private int compareDeliverySpeed(
+      ProviderAvailabilityDto candidate, ProviderAvailabilityDto existing) {
+    Integer candidateDays = resolveDeliveryDays(candidate);
+    Integer existingDays = resolveDeliveryDays(existing);
+    if (candidateDays == null || existingDays == null) {
+      return 0;
+    }
+    return Integer.compare(candidateDays, existingDays);
+  }
+
+  private Integer resolveDeliveryDays(ProviderAvailabilityDto dto) {
+    if (dto == null) {
+      return null;
+    }
+
+    Integer min = dto.getDeliveryToCustomerBusinessDaysMin();
+    Integer max = dto.getDeliveryToCustomerBusinessDaysMax();
+    if (min != null && min >= 0 && max != null && max >= 0) {
+      return min;
+    }
+
+    Integer lead = dto.getLeadTimeBusinessDays();
+    if (lead != null && lead >= 0) {
+      return lead;
+    }
+    return null;
   }
 
   private String resolveWarehouseName(WarehouseAvailability warehouse) {
@@ -487,17 +938,90 @@ public class ExternalAvailabilityService {
         : normalizedArticle;
   }
 
+  private String articlePartFromAvailabilityKey(String key) {
+    if (!StringUtils.hasText(key)) {
+      return "";
+    }
+    int separator = key.indexOf(':');
+    if (separator < 0) {
+      return normalize(key);
+    }
+    return normalize(key.substring(separator + 1));
+  }
+
+  private boolean hasAnyAvailabilityForArticle(
+      Map<String, ProviderAvailabilityDto> bestByArticle, String articleNumber) {
+    if (bestByArticle == null || bestByArticle.isEmpty()) {
+      return false;
+    }
+    String normalizedArticle = normalize(articleNumber);
+    if (!StringUtils.hasText(normalizedArticle)) {
+      return false;
+    }
+    return bestByArticle.keySet().stream()
+        .filter(StringUtils::hasText)
+        .map(this::articlePartFromAvailabilityKey)
+        .anyMatch(normalizedArticle::equals);
+  }
+
   private boolean hasInventoryProvider(String brand, ProviderRoutingContext context) {
     InventoryQuery query = InventoryQuery.builder().brand(brand).build();
     return !providerRegistry.findInventoryProviders(query, context).isEmpty();
   }
 
-  private boolean isFebiProvider(ProviderAvailabilityDto availability) {
-    if (availability == null || !StringUtils.hasText(availability.getProvider())) {
+  private boolean isTopPriorityProvider(
+      ProviderAvailabilityDto availability, Map<String, Integer> providerPriority) {
+    if (availability == null || providerPriority == null || providerPriority.isEmpty()) {
       return false;
     }
-    return FEBI_PROVIDER_KEY.equalsIgnoreCase(availability.getProvider().trim());
+    int highestPriority =
+        providerPriority.values().stream()
+            .filter(Objects::nonNull)
+            .mapToInt(Integer::intValue)
+            .max()
+            .orElse(0);
+    if (highestPriority <= 0) {
+      return false;
+    }
+    return providerPriorityFor(providerPriority, availability.getProvider()) == highestPriority;
   }
+
+  private int resolveTierChunkSize(List<InventoryProvider> providers) {
+    if (providers == null || providers.isEmpty()) {
+      return MAX_ARTICLES_PER_REQUEST;
+    }
+    int chunkSize = MAX_ARTICLES_PER_REQUEST;
+    for (InventoryProvider provider : providers) {
+      if (provider == null) {
+        continue;
+      }
+      int providerLimit = provider.maxArticlesPerRequest();
+      if (providerLimit <= 0) {
+        continue;
+      }
+      chunkSize = Math.min(chunkSize, providerLimit);
+    }
+    return Math.max(1, chunkSize);
+  }
+
+  private int resolveChunkSizeForPlans(List<ProviderPlan> plans) {
+    if (plans == null || plans.isEmpty()) {
+      return MAX_ARTICLES_PER_REQUEST;
+    }
+    if (plans.stream().anyMatch(plan -> plan != null && plan.bulkMode == ProviderBulkMode.NONE)) {
+      return 1;
+    }
+    int chunkSize = MAX_ARTICLES_PER_REQUEST;
+    for (ProviderPlan plan : plans) {
+      if (plan == null) {
+        continue;
+      }
+      int providerLimit = plan.maxBatchSize > 0 ? plan.maxBatchSize : MAX_ARTICLES_PER_REQUEST;
+      chunkSize = Math.min(chunkSize, providerLimit);
+    }
+    return Math.max(1, chunkSize);
+  }
+
 
   private ProviderRoutingContext buildContext(
       Partner partner,
@@ -573,5 +1097,41 @@ public class ExternalAvailabilityService {
       groups.add(dto.getGrupa().trim());
     }
     return groups;
+  }
+
+  private static class ProviderPlan {
+    private final InventoryProvider provider;
+    private final int priority;
+    private final ProviderBulkMode bulkMode;
+    private final int maxBatchSize;
+
+    private ProviderPlan(
+        InventoryProvider provider, int priority, ProviderBulkMode bulkMode, int maxBatchSize) {
+      this.provider = provider;
+      this.priority = priority;
+      this.bulkMode = bulkMode != null ? bulkMode : ProviderBulkMode.SAME_BRAND;
+      this.maxBatchSize = maxBatchSize;
+    }
+  }
+
+  private static class BrandExecution {
+    private final String brand;
+    private final List<RobaLightDto> dtos;
+    private final Map<String, Integer> providerPriority;
+    private final List<ProviderPlan> providerPlans;
+    private final Set<String> unresolvedArticleNumbers;
+
+    private BrandExecution(
+        String brand,
+        List<RobaLightDto> dtos,
+        Map<String, Integer> providerPriority,
+        List<ProviderPlan> providerPlans,
+        Set<String> unresolvedArticleNumbers) {
+      this.brand = brand;
+      this.dtos = dtos;
+      this.providerPriority = providerPriority;
+      this.providerPlans = providerPlans;
+      this.unresolvedArticleNumbers = unresolvedArticleNumbers;
+    }
   }
 }

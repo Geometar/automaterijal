@@ -6,7 +6,8 @@ deterministic, scalable way.
 ## Quick mental model
 - Providers can be **brand-specific** (manufacturer API) or **store-like** (returns many brands).
 - Routing is **rules-driven** via YAML (priority, purpose, brands, groups).
-- Selection of same article is **availability -> priority -> price**.
+- Providers are evaluated by **priority tiers**. Lower tiers are called only for unresolved articles.
+- For same article in the same tier, selection is **availability -> price** (with speed override when prices are within 2%).
 
 ## Where rules live
 Rules are in `src/main/resources/application.yml`:
@@ -32,8 +33,14 @@ integration:
    - capability (enabled + inventory)
    - YAML policy (`ProviderRoutingPolicy`)
    - provider `supports(query, context)`  
-3) Providers are **sorted by priority**, then name for determinism.
-4) All matching providers are called; results are merged.
+3) Providers are **sorted by priority**, then grouped by tier.
+4) For each tier:
+   - Call providers only for currently unresolved articles.
+   - Merge tier results.
+   - Mark resolved articles (available match found).
+5) Continue to lower tier only for unresolved articles.
+6) Router chunks each request by provider batch capability (`maxArticlesPerRequest`) instead of hardcoded provider-name checks.
+7) Bulk strategy is configuration-driven per provider rule (`bulk-mode`), not by provider-name conditionals.
 
 Local counts are used to gate providers (e.g. `maxLocalMatchCount`).  
 For external offers, counts come from the local results page (total matches + in‑stock count).
@@ -48,11 +55,44 @@ Current purposes:
 - `DETAILS`: fetch full provider details (without TecDoc) for a single item.
 
 ## Merge/selection policy
-If multiple providers return the same article:
+If multiple providers return the same article in the same priority tier:
 1) **Available** beats **not available**.
-2) If availability equal: **higher priority wins**.
-3) If priority equal: **lower price wins**.
-4) If price equal: higher quantity wins (fallback).
+2) If prices differ by **< 2%**: **faster delivery** wins.
+3) Otherwise: **lower price** wins.
+4) If still equal: **higher priority** wins.
+5) If still equal: higher quantity wins (fallback).
+
+Price comparison uses provider **purchase price**.
+
+Across different priorities, higher-priority tier wins first; lower tiers are only fallback for unresolved articles.
+
+## City-aware delivery profile (generic)
+- Providers can aggregate `totalQuantity` across all warehouses.
+- If a provider has branch-in-city behavior, populate these optional fields on `AvailabilityItem`:
+  - `cityBranchAware`
+  - `cityWarehouseQuantity`
+  - `fallbackDeliveryBusinessDaysMin` / `fallbackDeliveryBusinessDaysMax`
+  - `displayWarehouse` / `displayWarehouseQuantity` (what FE should show as primary warehouse row)
+- FE delivery label rule stays generic:
+  - if requested qty <= `cityWarehouseQuantity`: `Tokom dana`
+  - otherwise use fallback range (for example `1-2 radna dana`)
+- Order dispatch warehouse can be fixed independently from availability aggregation.
+
+### Gazela example
+- Gazela maps city quantity from `integration.gazela.delivery-profile.city-warehouse-ids`.
+- If no city IDs are configured, fallback is `integration.gazela.warehouse-sabac-id`.
+- Display warehouse naming can use `Gazela <magacin>` so source is explicit in UI.
+
+## Performance knobs
+- `roba.search.max-provider-items` limits how many local/probe items enter provider lookup in one search flow.
+- `integration.providers.rules[].bulk-mode` controls batching strategy:
+  - `NONE`: one-by-one
+  - `SAME_BRAND`: grouped per brand
+  - `MIXED_BRAND`: mixed brand batch (provider receives brand+article pairs)
+- Provider batch size is configurable per provider:
+  - FEBI: `integration.febi.max-items-per-request`
+  - Gazela: `integration.gazela.api.max-batch-size`
+  - Szakal: `integration.szakal.search.max-batch-size`
 
 ## Pricing for external providers
 Backend computes the **final customer price** for provider items using:
@@ -203,6 +243,12 @@ When `ProviderAvailabilityDto` exists, the following fields are stored:
 - `deliveryToCustomerBusinessDaysMax` -> `provider_delivery_to_customer_days_max`
 - `nextDispatchCutoff` -> `provider_next_dispatch_cutoff`
 
+Runtime-only (not persisted in current `WebOrderItem` schema):
+- `cityBranchAware`
+- `cityWarehouseQuantity`
+- `fallbackDeliveryBusinessDaysMin`
+- `fallbackDeliveryBusinessDaysMax`
+
 ## Brand-specific vs store-like providers
 ### Brand-specific (manufacturer)
 - `supportsBrand` should enforce brand list.
@@ -246,6 +292,10 @@ Optional<RobaExpandedDto> dto =
      - `sellingPrice` = provider selling price (if you have it)
      - `ProviderPricingService` computes final customer price using
        `purchasePrice` + margin + PDV + partner multiplier (fallback to `sellingPrice`).
+   - Optional city-aware fields (for same-day/local branch UX):
+     - `cityBranchAware`, `cityWarehouseQuantity`
+     - `fallbackDeliveryBusinessDaysMin`, `fallbackDeliveryBusinessDaysMax`
+     - `displayWarehouse`, `displayWarehouseQuantity`
 
 3) **Add routing rules**
    - Edit `src/main/resources/application.yml` and add:
@@ -257,6 +307,7 @@ Optional<RobaExpandedDto> dto =
              enabled: true
              priority: 100
              purposes: [INVENTORY_ENRICHMENT, EXTERNAL_OFFER]
+             bulk-mode: MIXED_BRAND    # NONE | SAME_BRAND | MIXED_BRAND
              brands: [BRAND1, BRAND2]   # optional
              groups: [ZAM, AK]         # optional
      ```

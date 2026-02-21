@@ -104,6 +104,96 @@ class ProviderRegistryTest {
   }
 
   @Test
+  void findInventoryProviders_skipsProviderWhenSupportsThrowsAndKeepsOthers() {
+    InventoryProvider failingSupports =
+        new BaseProvider("failing-supports", 90, true, true, true) {
+          @Override
+          public AvailabilityResult checkAvailability(InventoryQuery query) {
+            return AvailabilityResult.builder()
+                .provider("failing-supports")
+                .providerType("inventory")
+                .status(ProviderCallStatus.SUCCESS)
+                .items(List.of())
+                .build();
+          }
+
+          @Override
+          public boolean supports(InventoryQuery query, ProviderRoutingContext context) {
+            throw new RuntimeException("boom");
+          }
+        };
+
+    InventoryProvider healthy = provider("healthy", 10, true, true, true);
+    when(routingPolicy.priorityFor(eq(failingSupports), any(), any())).thenReturn(90);
+    when(routingPolicy.priorityFor(eq(healthy), any(), any())).thenReturn(10);
+    when(routingPolicy.allows(eq(failingSupports), any(), any())).thenReturn(true);
+    when(routingPolicy.allows(eq(healthy), any(), any())).thenReturn(true);
+
+    ProviderRegistry local = new ProviderRegistry(List.of(failingSupports, healthy), routingPolicy);
+
+    List<InventoryProvider> providers =
+        local.findInventoryProviders(
+            InventoryQuery.builder().brand("BOSCH").build(),
+            ProviderRoutingContext.builder().purpose(ProviderRoutingPurpose.EXTERNAL_OFFER).build());
+
+    assertThat(providers).extracting(InventoryProvider::providerName).containsExactly("healthy");
+  }
+
+  @Test
+  void resolveBrandKey_continuesWhenHigherPriorityProviderThrows() {
+    InventoryProvider failingResolver =
+        new BaseProvider("failing-resolver", 90, true, true, true) {
+          @Override
+          public AvailabilityResult checkAvailability(InventoryQuery query) {
+            return AvailabilityResult.builder()
+                .provider("failing-resolver")
+                .providerType("inventory")
+                .status(ProviderCallStatus.SUCCESS)
+                .items(List.of())
+                .build();
+          }
+
+          @Override
+          public Optional<String> resolveBrandKey(Long tecDocBrandId, String tecDocBrandName) {
+            throw new RuntimeException("boom");
+          }
+        };
+
+    InventoryProvider healthyResolver =
+        new BaseProvider("healthy-resolver", 10, true, true, true) {
+          @Override
+          public AvailabilityResult checkAvailability(InventoryQuery query) {
+            return AvailabilityResult.builder()
+                .provider("healthy-resolver")
+                .providerType("inventory")
+                .status(ProviderCallStatus.SUCCESS)
+                .items(List.of())
+                .build();
+          }
+
+          @Override
+          public Optional<String> resolveBrandKey(Long tecDocBrandId, String tecDocBrandName) {
+            return Optional.of("BOSCH");
+          }
+        };
+
+    when(routingPolicy.priorityFor(eq(failingResolver), any(), any())).thenReturn(90);
+    when(routingPolicy.priorityFor(eq(healthyResolver), any(), any())).thenReturn(10);
+    when(routingPolicy.allows(eq(failingResolver), any(), any())).thenReturn(true);
+    when(routingPolicy.allows(eq(healthyResolver), any(), any())).thenReturn(true);
+
+    ProviderRegistry local = new ProviderRegistry(List.of(failingResolver, healthyResolver), routingPolicy);
+
+    Optional<String> resolved =
+        local.resolveBrandKey(
+            30L,
+            "BOSCH",
+            ProviderRoutingContext.builder().purpose(ProviderRoutingPurpose.EXTERNAL_OFFER).build());
+
+    assertThat(resolved).contains("BOSCH");
+  }
+
+  @Test
   void resolveBrandKeyRespectsRoutingAndSupport() {
     InventoryProvider resolver =
         new BaseProvider("resolver", 10, true, true, true) {
